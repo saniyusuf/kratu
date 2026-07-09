@@ -1,0 +1,126 @@
+<meta charset="utf-8">
+<title>Kratu — Status & Roadmap</title>
+<style>
+  :root{--paper:#f3f1ea;--paper2:#ece9df;--card:#fbfaf6;--ink:#191f3a;--ink-soft:#3b4472;--ink-mute:#6a7196;--line:#d9d5c7;--line-strong:#c3bda9;--gold:#b47f1e;--indigo:#2f3a74;--good:#3f7a4d;--clay:#a3502e;--amber:#b9902a;--maxw:78ch;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 120px;}
+  h1,h2,h3,.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:600;text-wrap:balance;}
+  header.mast{max-width:var(--maxw);margin:0 auto;padding:70px 24px 26px;}
+  .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 16px;}
+  h1{font-size:46px;line-height:1.04;margin:0 0 10px;letter-spacing:-.01em;}
+  h1 .sub{display:block;font-size:19px;font-weight:400;color:var(--ink-soft);font-style:italic;margin-top:14px;}
+  .rule{height:3px;background:var(--gold);width:60px;margin:22px 0 0;border-radius:2px;}
+  section{margin-top:50px;}
+  h2{font-size:15px;margin:0 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line-strong);display:flex;align-items:baseline;gap:12px;}
+  h2 .num{font-family:ui-monospace,"SF Mono",monospace;font-size:13px;color:var(--gold);font-weight:700;}
+  h2 .t{font-size:23px;}
+  p{margin:0 0 15px;} .lead{font-size:18px;color:var(--ink-soft);}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;background:var(--paper2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  a{color:var(--gold);}
+  .banner{background:var(--indigo);color:#f4f4fb;border-radius:12px;padding:15px 20px;display:flex;gap:14px;align-items:baseline;font-size:15px;line-height:1.5;margin:8px 0 0;}
+  .banner b{color:#fff;} .banner .tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:#d59a2c;color:#241a06;font-weight:800;padding:3px 8px;border-radius:5px;white-space:nowrap;align-self:center;}
+  ul.feat{list-style:none;padding:0;margin:0;}
+  ul.feat li{display:grid;grid-template-columns:78px 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline;}
+  ul.feat li:first-child{border-top:none;}
+  .pill{font-size:10px;font-weight:800;letter-spacing:.08em;padding:3px 9px;border-radius:20px;white-space:nowrap;text-align:center;}
+  .pill.live{background:#e2efe4;color:var(--good);border:1px solid #bcd9c2;}
+  .pill.partial{background:#f6efdb;color:var(--amber);border:1px solid #e6d7a8;}
+  .pill.next{background:#efe6e1;color:var(--clay);border:1px solid #ddc7bb;}
+  .feat .h{font-weight:700;} .feat .d{color:var(--ink-soft);font-size:15px;margin-top:2px;}
+  .stackrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;}
+  .card .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:7px;}
+  .card p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+  .road{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line);}
+  .road:first-of-type{border-top:none;}
+  .road .when{font-family:ui-monospace,monospace;font-size:12px;color:var(--gold);font-weight:700;padding-top:3px;text-transform:uppercase;letter-spacing:.06em;}
+  .road h3{margin:0 0 6px;font-size:17px;} .road ul{margin:0;padding-left:18px;} .road li{margin:0 0 5px;font-size:15px;color:var(--ink-soft);}
+  .road li::marker{color:var(--gold);}
+  .limits li{margin:0 0 8px;} .limits{padding-left:20px;} .limits li::marker{color:var(--clay);}
+  .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line-strong);color:var(--ink-mute);font-size:13.5px;}
+  @media(max-width:600px){h1{font-size:34px;} .stackrow{grid-template-columns:1fr;} ul.feat li{grid-template-columns:70px 1fr;}}
+</style>
+
+<header class="mast">
+  <p class="kicker">Kratu · Status &amp; Roadmap · 9 Jul 2026</p>
+  <h1>Where Kratu stands
+    <span class="sub">A voice-first, offline literacy tutor for Hausa speakers — what works today, and where it can go.</span>
+  </h1>
+  <div class="rule"></div>
+  <div class="banner"><span class="tag">Try it</span><div>The alphabet lessons run locally at <code>http://localhost:8791/kratu-lessons.html</code>. Everything below refers to that working prototype — no accounts, no API keys, and after the model loads once, <b>no internet</b>.</div></div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2><span class="num">01</span><span class="t">What works today</span></h2>
+    <p class="lead">A complete alphabet lesson loop, driven by the learner's voice, running entirely on-device.</p>
+    <ul class="feat">
+      <li><span class="pill live">LIVE</span><div><div class="h">Offline speech recognition (Vosk)</div><div class="d">An on-device recogniser (WebAssembly) hears the learner say letters — no cloud, works with no internet. This replaced the flaky browser/Google recogniser and is the big reliability win.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Real Hausa tutor voice</div><div class="d">Every prompt, praise and reminder is spoken in Hausa (pre-rendered, embedded in the page). Letters are said the English way.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Staged alphabet board (A–Z)</div><div class="d">The whole alphabet as a board, split into 7 groups of ~4. Groups unlock in order; finished ones turn gold. Progress is saved on the device.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Teach → recite → mix, per group</div><div class="d">Each letter taught (said twice), then recited in order, then shuffled — nothing advances until the learner says them. Right → kudos, wrong → retry, two misses → the tutor reminds by saying it.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Two tests</div><div class="d">A main test (recite A→Z) and a final <em>sequence-completion</em> test (“O P Q R … what's next?”).</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Gender-aware Hausa</div><div class="d">Uses the correct <code>ka/ki</code>, <code>-nka/-nki</code> forms in both audio and text based on the learner's gender.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Classroom animations</div><div class="d">Background colour + a raised hand signal whose turn it is to talk (tutor = indigo, your turn = gold hand-raise, you speaking = green).</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Scoring</div><div class="d">Per-letter attempts, correct count, and what was said when wrong — shown in a results table.</div></div></li>
+      <li><span class="pill live">LIVE</span><div><div class="h">Onboarding (name + gender)</div><div class="d">Gender select and spoken/typed name capture, greeting the learner by name — and it flows straight into the lessons.</div></div></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span><span class="t">How it's built</span></h2>
+    <div class="stackrow">
+      <div class="card"><span class="lbl">Recognition</span><p><b>Vosk</b> small English model (~40&nbsp;MB), running in-browser via WebAssembly, constrained to the current group's letters for accuracy. Fully offline.</p></div>
+      <div class="card"><span class="lbl">Voice</span><p><b>Pre-rendered Hausa + English</b> clips embedded as audio data — instant, offline, consistent. The “pre-authored curriculum” model.</p></div>
+      <div class="card"><span class="lbl">App</span><p>A single self-contained HTML page. <b>No backend, no API keys.</b> Progress in the browser's local storage.</p></div>
+      <div class="card"><span class="lbl">Deployment fit</span><p>Serves from local files — exactly how the <b>offline learning centre</b> (Starlink-optional) will run on its own tablets.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span><span class="t">Honest notes &amp; current limits</span></h2>
+    <div class="banner" style="background:#f6efdb;color:#4a3d12"><span class="tag" style="background:var(--clay);color:#fff">Note</span><div>The working files were briefly lost when a temporary folder was cleared, and have been <b>rebuilt and moved to a permanent location</b> (<code>~/Documents/kratu/</code>) so this can't happen again. The name bank was also expanded from 45 to <b>117 names</b> in the process.</div></div>
+    <ul class="limits" style="margin-top:16px">
+      <li><b>Letter recognition isn't perfect.</b> Isolated letters are acoustically hard (B/C/D/E all sound alike). Vosk + a per-group grammar + a lenient nearest-letter matcher makes it good, not flawless; a <em>skip</em> button means it never dead-ends.</li>
+      <li><b>One Hausa voice.</b> The free voice sounds female. A true male voice (and richer intonation) needs a production TTS — the app is already structured for it.</li>
+      <li><b>Teaching pace</b> is deliberate (each letter said twice) — tunable.</li>
+      <li><b>Browser-only for now.</b> Packaging it as a tablet app for the centre is a straightforward next step.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span><span class="t">Where it can go — possible features</span></h2>
+    <div class="road">
+      <div class="when">Near term</div>
+      <div><h3>Finish the alphabet track</h3><ul>
+        <li><b>Lowercase pass</b> — teach <code>a b c d…</code> after the capitals, and matching cases.</li>
+        <li><b>Facilitator view</b> — a room dashboard: who's on which group, who's struggling, per-learner scores.</li>
+        <li><b>Better letter accuracy</b> — tune the grammar/matcher per group; optional male voice.</li>
+        <li><b>Adaptive review</b> — resurface the letters a learner keeps missing.</li>
+      </ul></div>
+    </div>
+    <div class="road">
+      <div class="when">Mid term</div>
+      <div><h3>From letters to reading</h3><ul>
+        <li><b>Phonics &amp; blending</b> — letter <em>sounds</em>, then simple CVC words (<code>cat</code>, <code>dog</code>) with pictures.</li>
+        <li><b>Sight words &amp; short sentences</b> — read-along and read-back.</li>
+        <li><b>Numbers &amp; basic maths</b> — the exact same teach→say-back→test loop, with unambiguous answers (<code>uku → 3</code>).</li>
+        <li><b>Writing / tracing</b> — trace the letter on the tablet, not just say it.</li>
+      </ul></div>
+    </div>
+    <div class="road">
+      <div class="when">Bigger vision</div>
+      <div><h3>The real product</h3><ul>
+        <li><b>Pronunciation scoring</b> — not just “right letter” but <em>how well</em> it was said (the original goal).</li>
+        <li><b>Free-conversation mode</b> — talk to it in Hausa about anything, English-pivot under the hood.</li>
+        <li><b>Progress over time &amp; sync</b> — a learner profile that follows the person across tablets, syncing when Starlink is up.</li>
+        <li><b>More languages</b> — the same engine for other Nigerian languages.</li>
+        <li><b>Photo/AI login for non-readers</b>, and real recorded voice talent for warmth.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <div class="foot">Kratu · status &amp; roadmap. Prototype: <code>~/Documents/kratu/</code> · lessons at <code>localhost:8791/kratu-lessons.html</code>. Offline, no keys, built to lift schooling that isn't reaching everyone.</div>
+</div>

@@ -1,0 +1,136 @@
+<meta charset="utf-8">
+<title>Kratu Lessons — Design</title>
+<style>
+  :root{--paper:#f3f1ea;--paper2:#ece9df;--card:#fbfaf6;--ink:#191f3a;--ink-soft:#3b4472;--ink-mute:#6a7196;--line:#d9d5c7;--line-strong:#c3bda9;--gold:#b47f1e;--indigo:#2f3a74;--indigo-wash:#e7e8f2;--good:#3f7a4d;--clay:#a3502e;--maxw:76ch;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 120px;}
+  h1,h2,h3,.serif{font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--ink);text-wrap:balance;font-weight:600;}
+  header.mast{max-width:var(--maxw);margin:0 auto;padding:70px 24px 30px;}
+  .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 16px;}
+  h1{font-size:48px;line-height:1.03;margin:0 0 10px;letter-spacing:-.01em;}
+  h1 .sub{display:block;font-size:19px;font-weight:400;color:var(--ink-soft);font-style:italic;margin-top:14px;}
+  .dek{font-size:18px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;}
+  .rule{height:3px;background:var(--gold);width:60px;margin:24px 0 0;border-radius:2px;}
+  section{margin-top:52px;}
+  h2{font-size:15px;margin:0 0 20px;padding-bottom:10px;border-bottom:1px solid var(--line-strong);display:flex;align-items:baseline;gap:12px;}
+  h2 .num{font-family:ui-monospace,"SF Mono",monospace;font-size:13px;color:var(--gold);font-weight:700;}
+  h2 .t{font-size:24px;}
+  h3{font-size:18px;margin:26px 0 6px;}
+  p{margin:0 0 16px;} .lead{font-size:18.5px;color:var(--ink-soft);}
+  code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13.5px;background:var(--paper2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  /* board mockup */
+  .board{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;max-width:440px;margin:14px 0;}
+  .cell{aspect-ratio:1/1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:600;font-size:18px;background:#efece2;color:var(--line-strong);border:1.5px solid var(--line);position:relative;}
+  .cell.cur{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+  .cell.done{background:var(--gold);color:#fff;border-color:var(--gold);}
+  .cell.done::after{content:"✓";position:absolute;top:1px;right:4px;font-size:9px;}
+  .cell:not(.done):not(.cur)::before{content:"🔒";position:absolute;top:2px;left:3px;font-size:9px;opacity:.6;}
+  .cell.cur::before{content:"🔓";position:absolute;top:2px;left:3px;font-size:9px;}
+  .legend{display:flex;gap:18px;font-size:13px;color:var(--ink-mute);margin-bottom:6px;flex-wrap:wrap;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;} .sw{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  /* flow steps */
+  .flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;margin:10px 0 6px;}
+  .step{flex:1 1 150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;position:relative;}
+  .step .n{font-family:ui-monospace,monospace;font-size:12px;color:var(--gold);font-weight:700;}
+  .step h4{margin:4px 0 4px;font-size:16px;font-family:Georgia,serif;}
+  .step p{margin:0;font-size:14px;color:var(--ink-soft);}
+  .arrow{align-self:center;color:var(--line-strong);font-size:22px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .card h3{margin:0 0 6px;font-size:16px;} .card p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+  .card .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;display:block;margin-bottom:8px;}
+  .modes{display:flex;flex-direction:column;gap:10px;margin:8px 0;}
+  .mode{display:flex;align-items:center;gap:14px;border-radius:12px;padding:12px 16px;border:1px solid var(--line);}
+  .mode.ai{background:#e6e8f4;} .mode.listen{background:#f6ecd6;} .mode.hear{background:#e2efe1;}
+  .mode .em{font-size:26px;} .mode b{font-size:15px;} .mode small{color:var(--ink-mute);display:block;font-size:13.5px;}
+  .tbl{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0;}
+  .tbl th,.tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .tbl th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-mute);border-bottom:2px solid var(--line-strong);}
+  .foot{margin-top:60px;padding-top:18px;border-top:1px solid var(--line-strong);color:var(--ink-mute);font-size:13.5px;}
+  @media(max-width:600px){h1{font-size:36px;} .grid2{grid-template-columns:1fr;} .board{grid-template-columns:repeat(7,1fr);}}
+</style>
+
+<header class="mast">
+  <p class="kicker">Kratu · Alphabet Lessons · Design</p>
+  <h1>Learning the letters, one small win at a time
+    <span class="sub">A gated, spoken curriculum that hears the learner and adapts — built for a Hausa-speaking classroom, running fully offline.</span>
+  </h1>
+  <p class="dek">The alphabet is broken into small groups. Each group is taught, recited, and mixed up before the next unlocks — and it all happens by voice, with the tutor speaking Hausa and the learner answering with English letters.</p>
+  <div class="rule"></div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2><span class="num">01</span><span class="t">The board — the whole journey at a glance</span></h2>
+    <p class="lead">Learners see the full alphabet as a board. Only the current group is open; finished groups turn gold. It makes progress visible and gives every completed group a small, satisfying win.</p>
+    <div class="legend"><span><i class="sw" style="background:var(--indigo)"></i> current group</span><span><i class="sw" style="background:var(--gold)"></i> completed</span><span><i class="sw" style="background:#efece2;border:1px solid var(--line)"></i> locked</span></div>
+    <div class="board" id="board"></div>
+    <p style="font-size:15px;color:var(--ink-mute)">26 letters · <strong>7 groups of ~4</strong> · progress saved on the device, so a learner can leave and come back.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span><span class="t">Inside one group — teach → recite → mix</span></h2>
+    <p>Every group runs the same three-beat rhythm. Nothing advances until the learner has actually said the letters.</p>
+    <div class="flow">
+      <div class="step"><div class="n">STEP 1</div><h4>Teach</h4><p>Each letter shown big, said <strong>twice</strong> the English way, framed in Hausa: <em>“Wannan shi ne … A”</em>.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">STEP 2</div><h4>Recite in order</h4><p>Learner says each letter back, A→D. Right = kudos; wrong = try again; two misses = the tutor reminds them.</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">STEP 3</div><h4>Mix it up</h4><p>The same four, <strong>shuffled</strong>, to prove it isn't just memorised order.</p></div>
+    </div>
+    <p style="font-size:15px;color:var(--ink-mute)">On completion the group's cards flip to gold on the board, and the next group opens.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span><span class="t">The two tests</span></h2>
+    <div class="grid2">
+      <div class="card"><span class="lbl">Main test</span><h3>Recite A → Z</h3><p>Once all groups are done, the learner says the whole alphabet in order — the proof they know every letter.</p></div>
+      <div class="card"><span class="lbl">Final test</span><h3>What comes next?</h3><p>The board shows a run like <code>O P Q R ?</code> and asks the learner to say the letter that follows. This tests real recall of sequence, not recognition.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span><span class="t">A classroom you can feel — the colour & hand cues</span></h2>
+    <p>The screen behaves like a patient teacher. The background and a raised hand signal, at a glance, <em>whose turn it is to talk</em> — vital for a learner who can't yet read the instructions.</p>
+    <div class="modes">
+      <div class="mode ai"><span class="em">🔵</span><div><b>The tutor is speaking</b><small>Background washes cool indigo; a little equaliser animates. The learner watches and listens.</small></div></div>
+      <div class="mode listen"><span class="em">☝️</span><div><b>Your turn</b><small>The app raises its hand and the background warms to gold — the cue to speak, like a classroom.</small></div></div>
+      <div class="mode hear"><span class="em">🟢</span><div><b>You're speaking</b><small>Background turns green and the letter grows, live, as the recogniser hears the learner's voice.</small></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span><span class="t">It speaks to each learner correctly</span></h2>
+    <p>Hausa marks gender in address. The tutor uses the right forms based on the learner's gender chosen at the start — <strong>ka/ki</strong>, <strong>-nka/-nki</strong> — in both the spoken audio and the on-screen text, so it never sounds wrong.</p>
+    <table class="tbl">
+      <thead><tr><th>Prompt</th><th>To a boy (namiji)</th><th>To a girl (mace)</th></tr></thead>
+      <tbody>
+        <tr><td>Say it</td><td>Ka faɗi shi</td><td>Ki faɗi shi</td></tr>
+        <tr><td>Say the letters yourself</td><td>Ka faɗi haruffan da kanka</td><td>Ki faɗi haruffan da kanki</td></tr>
+        <tr><td>You finished the group</td><td>Ka gama wannan rukuni</td><td>Kin gama wannan rukuni</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span><span class="t">What every attempt records</span></h2>
+    <p>The lesson quietly keeps score, so a facilitator can see who's struggling and with what. At the end there's a table: per-letter attempts, how many were right, and <em>what the learner said when wrong</em>.</p>
+    <table class="tbl">
+      <thead><tr><th>Harafi</th><th>Attempts</th><th>Correct</th><th>Heard wrong</th></tr></thead>
+      <tbody>
+        <tr><td class="serif" style="color:var(--indigo);font-weight:700">B</td><td>3</td><td>1</td><td style="color:var(--clay)">v, dee</td></tr>
+        <tr><td class="serif" style="color:var(--indigo);font-weight:700">E</td><td>1</td><td>1</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:15px;color:var(--ink-mute)">This is the seed of the bigger promise: measuring each learner over time, and adapting.</p>
+  </section>
+
+  <div class="foot">Kratu · lessons design · the alphabet track. Runs offline in the browser via an on-device recogniser; the same shape extends to lowercase letters, words, and reading.</div>
+</div>
+
+<script>
+  var ALL='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), b=document.getElementById('board');
+  ALL.forEach(function(L,i){var g=Math.floor(i/4);var c=document.createElement('div');c.className='cell'+(g===0?' done':g===1?' cur':'');c.textContent=L;b.appendChild(c);});
+</script>
