@@ -421,8 +421,10 @@
   Array.prototype.forEach.call(document.querySelectorAll('#s-gender .choice'), function(btn){ btn.addEventListener('click', function(){ gender=btn.getAttribute('data-g'); loadVosk(); startNameStep(); }); });
 
   // ---- mic permission gate: must be granted before the app proceeds ----
-  function afterPermission(fromGesture){ loadVosk(); if (gender) { renderBoard(); show('board'); play('board_intro'); } else { show('gender'); genderSpoke = false; if (fromGesture) { genderSpoke = true; play('gender_ask'); } } }
-  // speak the gender prompt on first touch when it opened on a fresh load (no prior gesture to autoplay)
+  // try to autoplay the gender prompt; if the browser blocks it (no engagement yet), a tap plays it
+  function speakGender(){ var src=AUDIO['gender_ask']; if(!src) return; stopAudio(); var a=new Audio(src); curAudio=a; setMode('ai'); var done=false, fin=function(){ if(done)return; done=true; if(curAudio===a) curAudio=null; }; a.onended=fin; a.onerror=fin; a.onplay=function(){ genderSpoke=true; }; var p=a.play(); if(p&&p.catch) p.catch(function(){ fin(); }); }
+  function afterPermission(){ loadVosk(); if (gender) { renderBoard(); show('board'); play('board_intro'); } else { show('gender'); genderSpoke = false; speakGender(); } }
+  // fallback: if autoplay was blocked, speak the gender prompt on the first touch
   document.addEventListener('pointerdown', function(){ if (!genderSpoke && stages.gender.classList.contains('on')) { genderSpoke = true; play('gender_ask'); } }, true);
   // show the mic gate ONLY if permission isn't already granted; otherwise go straight in (no audio, no gate)
   function bootGate(){
@@ -436,7 +438,7 @@
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ $('perm-status').textContent=''; $('perm-denied').hidden=false; self.disabled=false; return; }
     navigator.mediaDevices.getUserMedia({ audio:true }).then(function(stream){
       try{ stream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){}   // release; the grant persists for this origin
-      $('perm-status').textContent='An ba da izini ✓'; afterPermission(true);
+      $('perm-status').textContent='An ba da izini ✓'; afterPermission();
     }).catch(function(e){ self.disabled=false; $('perm-status').textContent=''; $('perm-denied').hidden=false; pDbg('perm denied: '+(e&&e.name)); });
   });
   document.getElementById('perm-retry').addEventListener('click', function(){ document.getElementById('perm-allow').click(); });
