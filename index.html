@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Kratu — Haruffa (Alphabet Lessons)</title>
 <script src="vosk.js" defer></script>
 <style>
@@ -407,9 +410,9 @@
   $('l-hear').addEventListener('click', function(){ stopListen(); var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(!L) return; playSeq([[ga('remind'),1],['en_'+L,.8]], function(){ if(micBtn.style.display!=='none') armMic('Danna maɓalli '+KA()+' faɗa.'); }); });
   $('l-skip').addEventListener('click', function(){ if(busy||phase==='done'||phase==='teach') return; stopListen(); stopAudio(); if(phase==='seqtest'){ var row=$('l-seqrow'); row.style.display='none'; letterEl.style.display=''; nextSeqRound(); return; } if(phase==='maintest'){ seqIdx++; askMain(); return; } seqIdx++; askRecite(); });
   $('home').addEventListener('click', function(){ goBoard(); });
-  $('replay').addEventListener('click', function(){ if(stages.permission.classList.contains('on')){ permSpoke=true; play('perm'); } else if(stages.lesson.classList.contains('on')){ var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(L&&AUDIO['en_'+L]) play('en_'+L,null,.82); } else if(stages.board.classList.contains('on')) play('board_intro'); });
+  $('replay').addEventListener('click', function(){ if(stages.lesson.classList.contains('on')){ var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(L&&AUDIO['en_'+L]) play('en_'+L,null,.82); } else if(stages.board.classList.contains('on')) play('board_intro'); else if(stages.name.classList.contains('on')) play(gender==='f'?'name_ask_f':'name_ask_m'); });
   // full restart — wipe the session and go right back to the very beginning (permission gate)
-  function fullRestart(){ state={doneGroups:[],scores:{}}; gender=''; learnerName=''; permSpoke=false; stopListen(); stopAudio(); setMode(''); show('permission'); }
+  function fullRestart(){ state={doneGroups:[],scores:{}}; gender=''; learnerName=''; stopListen(); stopAudio(); setMode(''); bootGate(); }
   $('reset').addEventListener('click', fullRestart);
   $('res-again').addEventListener('click', fullRestart);
 
@@ -418,6 +421,13 @@
 
   // ---- mic permission gate: must be granted before the app proceeds ----
   function afterPermission(){ loadVosk(); if (gender) { renderBoard(); show('board'); play('board_intro'); } else { show('gender'); } }
+  // show the mic gate ONLY if permission isn't already granted; otherwise go straight in (no audio, no gate)
+  function bootGate(){
+    show('permission');
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'microphone' }).then(function(st){ if (st && st.state === 'granted') afterPermission(); }).catch(function(){});
+    }
+  }
   document.getElementById('perm-allow').addEventListener('click', function(){
     var self=this; self.disabled=true; $('perm-status').textContent='Ana neman izini… (requesting)'; $('perm-denied').hidden=true;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ $('perm-status').textContent=''; $('perm-denied').hidden=false; self.disabled=false; return; }
@@ -428,13 +438,9 @@
   });
   document.getElementById('perm-retry').addEventListener('click', function(){ document.getElementById('perm-allow').click(); });
 
-  // boot — always start at the permission gate, and speak the Hausa ask
-  var permSpoke = false;
-  // session-only: wipe any state a previous version may have saved, so a refresh always starts clean
+  // boot — clear any old saved state (session-only), then show the mic gate only if not already granted
   try { ['kratu_lessons_v2', 'kratu_lessons_v1', 'kratu_gender', 'kratu_name'].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
-  show('permission');
-  // browsers block audio before a gesture, so speak the Hausa permission line on the first touch anywhere
-  document.addEventListener('pointerdown', function pk(){ if (!permSpoke && stages.permission.classList.contains('on')) { permSpoke = true; play('perm'); } }, true);
+  bootGate();
 })();
 </script>
 </body>
