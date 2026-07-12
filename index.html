@@ -362,8 +362,9 @@
   $('board-start').addEventListener('click', function(){ busy=false; loadVosk(); var cur=firstUndone(); if(cur>=GROUPS.length){ startMainTest(); return; } groupIdx=cur; pDbg('start group '+(groupIdx+1)+' '+GROUPS[groupIdx].join('')); startTeach(); });
 
   // TEACH
-  function startTeach(){ phase='teach'; seq=GROUPS[groupIdx].slice(); seqIdx=0; show('lesson'); showMic(false); showControls(false); $('l-seqrow').style.display='none'; setEyebrow('Koyon haruffa · rukuni '+(groupIdx+1)); teachStep(); }
-  function teachStep(){ if(seqIdx>=seq.length){ startRecite('order'); return; } var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); playSeq([['wannan',1],['en_'+L,.82],['sake',1],['en_'+L,.82],['next',1]], function(){ seqIdx++; teachStep(); }); }
+  var teachGen = 0;
+  function startTeach(){ phase='teach'; seq=GROUPS[groupIdx].slice(); seqIdx=0; show('lesson'); showMic(false); showControls(true); $('l-seqrow').style.display='none'; setEyebrow('Koyon haruffa · rukuni '+(groupIdx+1)); teachStep(); }
+  function teachStep(){ if(seqIdx>=seq.length){ startRecite('order'); return; } var g=++teachGen; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); playSeq([['wannan',1],['en_'+L,.82],['sake',1],['en_'+L,.82],['next',1]], function(){ if(g!==teachGen) return; seqIdx++; teachStep(); }); }
 
   // RECITE / SCATTER
   function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
@@ -424,7 +425,7 @@
 
   // controls
   $('l-hear').addEventListener('click', function(){ stopListen(); var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(!L) return; playSeq([[ga('remind'),1],['en_'+L,.8]], function(){ if(micBtn.style.display!=='none') armMic('Danna maɓalli '+KA()+' faɗa.'); }); });
-  $('l-skip').addEventListener('click', function(){ if(busy||phase==='done'||phase==='teach') return; stopListen(); stopAudio(); if(phase==='seqtest'){ var row=$('l-seqrow'); row.style.display='none'; letterEl.style.display=''; nextSeqRound(); return; } if(phase==='maintest'){ seqIdx++; askMain(); return; } seqIdx++; askRecite(); });
+  $('l-skip').addEventListener('click', function(){ if(busy||phase==='done') return; stopListen(); stopAudio(); if(phase==='teach'){ ++teachGen; seqIdx++; teachStep(); return; } if(phase==='seqtest'){ var row=$('l-seqrow'); row.style.display='none'; letterEl.style.display=''; nextSeqRound(); return; } if(phase==='maintest'){ seqIdx++; askMain(); return; } seqIdx++; askRecite(); });
   $('home').addEventListener('click', function(){ goBoard(); });
   $('replay').addEventListener('click', function(){ if(stages.lesson.classList.contains('on')){ var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(L&&AUDIO['en_'+L]) play('en_'+L,null,.82); } else if(stages.board.classList.contains('on')) play('board_intro'); else if(stages.name.classList.contains('on')) play(gender==='f'?'name_ask_f':'name_ask_m'); });
   // full restart — wipe the session and go right back to the very beginning (permission gate)
