@@ -312,17 +312,17 @@
 
   // ================= Vosk =================
   var voskModel=null, voskRec=null, voskLoading=false, audioCtx=null, micStream=null, procNode=null, srcNode=null, feeding=false;
-  function loadVosk(){ if(voskModel||voskLoading) return; if(typeof Vosk==='undefined'){ pDbg('Vosk n/a'); return; } voskLoading=true; pDbg('loading model…'); Vosk.createModel('vosk-model.tar.gz').then(function(m){ voskModel=m; voskLoading=false; pDbg('vosk ready ✓'); }).catch(function(e){ voskLoading=false; pDbg('vosk fail: '+e); }); }
+  function loadVosk(){ if(voskModel||voskLoading) return; if(typeof Vosk==='undefined'){ pDbg('Vosk n/a'); return; } voskLoading=true; pDbg('loading model…'); Vosk.createModel('vosk-model.tar.gz').then(function(m){ voskModel=m; voskLoading=false; pDbg('vosk ready ✓'); if(pendingListen){ pendingListen=false; if(activeListen && stages.lesson.classList.contains('on') && !listening) beginListen(); } }).catch(function(e){ voskLoading=false; pDbg('vosk fail: '+e); }); }
   function ensureAudio(){ return new Promise(function(res){ if(audioCtx&&micStream){ if(audioCtx.state==='suspended'){try{audioCtx.resume();}catch(e){}} res(true); return; } navigator.mediaDevices.getUserMedia({video:false,audio:{echoCancellation:true,noiseSuppression:true,channelCount:1}}).then(function(stream){ micStream=stream; audioCtx=new(window.AudioContext||window.webkitAudioContext)(); procNode=audioCtx.createScriptProcessor(4096,1,1); procNode.onaudioprocess=function(e){ if(feeding&&voskRec){ try{ voskRec.acceptWaveform(e.inputBuffer); }catch(err){} } }; srcNode=audioCtx.createMediaStreamSource(micStream); srcNode.connect(procNode); procNode.connect(audioCtx.destination); pDbg('mic ready '+audioCtx.sampleRate+'Hz'); res(true); }).catch(function(e){ pDbg('mic err: '+(e&&e.name)); res(false); }); }); }
 
   // ---------- generic say-back ----------
   var micBtn=$('l-mic'), fbEl=$('l-fb'), letterEl=$('l-letter');
-  var listenSeq=0, listening=false, listenTimer=null, activeListen=null;
+  var listenSeq=0, listening=false, listenTimer=null, activeListen=null, pendingListen=false;
   function armMic(msg){ clearTimeout(listenTimer); listening=false; feeding=false; micBtn.classList.remove('rec'); micBtn.classList.add('urge'); setMode('listen'); fbEl.className='fb wait'; fbEl.textContent=msg||('Danna maɓalli, '+KA()+' faɗa.'); }
   function stopListen(){ clearTimeout(listenTimer); listening=false; feeding=false; micBtn.classList.remove('rec'); ++listenSeq; }
   function beginListen(){
     if(listening) return;
-    if(!voskModel){ armMic('Ana shirya murya… jira kaɗan.'); loadVosk(); return; }
+    if(!voskModel){ pendingListen=true; micBtn.classList.add('urge'); fbEl.className='fb wait'; fbEl.textContent='Ana shirya murya…'; loadVosk(); return; }  // queue: auto-start (go green) the moment the model is ready
     stopAudio();
     ensureAudio().then(function(ok){
       if(!ok){ armMic('An hana murya. Ba da izini, ko Tsallake.'); return; }
@@ -368,11 +368,11 @@
 
   // RECITE / SCATTER
   function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
-  function startRecite(mode){ phase=mode; seq=(mode==='scatter')?shuffle(GROUPS[groupIdx]):GROUPS[groupIdx].slice(); seqIdx=0; show('lesson'); showMic(true); showControls(true); $('l-seqrow').style.display='none'; setEyebrow((mode==='scatter'?'Gwaji gauraye · rukuni ':'Ka faɗi su · rukuni ')+(groupIdx+1)); pDbg(mode+' '+seq.join('')); play(ga(mode==='scatter'?'scatter_intro':'recite_intro'), function(){ askRecite(); }); }
+  function startRecite(mode){ phase=mode; seq=(mode==='scatter')?shuffle(GROUPS[groupIdx]):GROUPS[groupIdx].slice(); seqIdx=0; show('lesson'); showMic(true); showControls(true); $('l-seqrow').style.display='none'; setEyebrow((mode==='scatter'?'Gwaji gauraye · rukuni ':'Ka faɗi su · rukuni ')+(groupIdx+1)); renderStagebar(seq.length,0); setLetter(seq[0]); activeListen={allowed:seq.slice(),onResult:onReciteResult}; pDbg(mode+' '+seq.join('')); play(ga(mode==='scatter'?'scatter_intro':'recite_intro'), function(){ askRecite(); }); }
   function askRecite(){
     if(seqIdx>=seq.length){ if(phase==='order'){ startRecite('scatter'); return; } groupDone(); return; }
     attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L);
-    play(ga('prompt'), function(){ activeListen={allowed:seq.slice(),onResult:onReciteResult}; armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); });
+    activeListen={allowed:seq.slice(),onResult:onReciteResult}; play(ga('prompt'), function(){ armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); });
   }
   function onReciteResult(L, raw){
     var target=seq[seqIdx];
@@ -391,8 +391,8 @@
   }
 
   // MAIN TEST
-  function startMainTest(){ phase='maintest'; seq=ALL.slice(); seqIdx=0; show('lesson'); showMic(true); showControls(true); $('l-seqrow').style.display='none'; setEyebrow('Babbar jarrabawa · A → Z'); play(ga('test_order'), function(){ askMain(); }); }
-  function askMain(){ if(seqIdx>=seq.length){ startSeqTest(); return; } attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); play(ga('prompt'), function(){ activeListen={allowed:ALL,onResult:onMainResult}; armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); }); }
+  function startMainTest(){ phase='maintest'; seq=ALL.slice(); seqIdx=0; show('lesson'); showMic(true); showControls(true); $('l-seqrow').style.display='none'; setEyebrow('Babbar jarrabawa · A → Z'); setLetter(seq[0]); activeListen={allowed:ALL,onResult:onMainResult}; play(ga('test_order'), function(){ askMain(); }); }
+  function askMain(){ if(seqIdx>=seq.length){ startSeqTest(); return; } attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); activeListen={allowed:ALL,onResult:onMainResult}; play(ga('prompt'), function(){ armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); }); }
   function onMainResult(L, raw){ var target=seq[seqIdx];
     if(L===target){ score(target,true); fbEl.className='fb good'; fbEl.textContent='✓'; letterEl.classList.add('correct'); play('kudos', function(){ seqIdx++; askMain(); }); }
     else { attempts++; score(target,false,raw||L||''); if(attempts>=2){ playSeq([[ga('remind'),1],['en_'+target,.8]], function(){ activeListen={allowed:ALL,onResult:onMainResult}; armMic('Sake gwadawa.'); }); } else { fbEl.className='fb bad'; fbEl.textContent=L?('Wannan '+L+' ne — sake.'):'Ban ji ba — sake.'; play('retry', function(){ activeListen={allowed:ALL,onResult:onMainResult}; armMic('Sake gwadawa.'); }); } }
@@ -400,7 +400,7 @@
 
   // FINAL TEST — sequence completion
   var seqRounds=0, seqTarget='';
-  function startSeqTest(){ phase='seqtest'; seqRounds=0; show('lesson'); showMic(true); showControls(true); setEyebrow('Jarrabawa ta ƙarshe · ci gaba'); play(ga('seq_intro'), function(){ nextSeqRound(); }); }
+  function startSeqTest(){ phase='seqtest'; seqRounds=0; show('lesson'); showMic(true); showControls(true); setEyebrow('Jarrabawa ta ƙarshe · ci gaba'); activeListen={allowed:ALL,onResult:onSeqResult}; play(ga('seq_intro'), function(){ nextSeqRound(); }); }
   function nextSeqRound(){
     if(seqRounds>=4){ finishAll(); return; }
     seqRounds++; var start=Math.floor(Math.random()*21); var given=ALL.slice(start,start+4); seqTarget=ALL[start+4];
@@ -408,7 +408,7 @@
     given.forEach(function(g){ var s=document.createElement('span'); s.className='sq'; s.textContent=g; row.appendChild(s); });
     var q=document.createElement('span'); q.className='q'; q.textContent='?'; row.appendChild(q);
     renderStagebar(4, seqRounds-1, seqRounds-1);
-    play('seq_prompt', function(){ activeListen={allowed:ALL,onResult:onSeqResult}; armMic('Wanne ne na gaba? Danna maɓalli.'); });
+    activeListen={allowed:ALL,onResult:onSeqResult}; play('seq_prompt', function(){ armMic('Wanne ne na gaba? Danna maɓalli.'); });
   }
   function onSeqResult(L, raw){
     var row=$('l-seqrow'), q=row.querySelector('.q');
