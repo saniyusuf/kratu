@@ -60,3 +60,30 @@ The m (GFDL 1.2) — https://commons.wikimedia.org/wiki/File:African_Bush_Elepha
 - **bucket** — A bucket with ash - un seau de cendres.jpg by SuSanA Secretariat (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:A_bucket_with_ash_-_un_seau_de_cendres.jpg
 - **motorcycle** — Parked 2009 Harley.jpg by Daniel Case (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:Parked_2009_Harley.jpg
 - **cup** — It's tea time by Markus Grossalber (by) — https://www.flickr.com/photos/58883622@N02/8666057433
+- **crocodile** — Nile crocodile head.jpg by Leigh Bedford (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Nile_crocodile_head.jpg
+- **ant** — Camponotus vagus on plant stem 2026.jpg by InsektenDoku (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Camponotus_vagus_on_plant_stem_2026.jpg
+- **butterfly** — African monarch butterfly (Danaus chrysippus).jpg by Charles J. Sharp (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:African_monarch_butterfly_(Danaus_chrysippus).jpg
+- **rat** — Cricetomys gambianus as a captive pet.jpg by Louisvarley (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Cricetomys_gambianus_as_a_captive_pet.jpg
+- **bee** — Bee-Purple-Flower-Macro ForestWander.jpg by ForestWander (CC BY-SA 3.0 us) — https://commons.wikimedia.org/wiki/File:Bee-Purple-Flower-Macro_ForestWander.jpg
+- **watermelon** — Liat Portal for Foodie Disorder - Whole watermelon before cutting.jpg by HaJunkiyada (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Whole_watermelon_before_cutting.jpg
+- **pawpaw** — 2011.09-385-158arp Mountain papaya(Vasconcellea pubescens),fr(wh,TS) Naivasha-Gilgil(Rift Valley Prov.),KE tue13sep2011-1230h.jpg by Rik Schuiling / TropCrop - Tropical Crop (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:2011.09-385-158arp_Mountain_papaya(Vasconcellea_pubescens),fr(wh,TS)_Naivasha-Gilgil(Rift_Valley_Prov.),KE_tue13sep2011-1230h.jpg
+- **carrot** — Fresh Carrots 02.jpg by Muktee1494 (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Fresh_Carrots_02.jpg
+- **okra** — Okra fruit.jpg by Dagentle (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Okra_fruit.jpg
+- **sugarcane** — Sugarcane stalks.jpg by Sarah and Jason (CC BY-SA 2.0) — https://commons.wikimedia.org/wiki/File:Sugarcane_stalks.jpg
+- **salt** — Salt-cutout.png by Iodised_salt.JPG: Drtony999
+Salt_trans.p (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:Salt-cutout.png
+- **cap** — Hausa cap (ƙube) 02.jpg by Anasskoko (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Hausa_cap_(ƙube)_02.jpg
+- **shoe** — Whole-cut shoe.jpg by Sijokjose (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Whole-cut_shoe.jpg
+- **bag** — Handbag (AM 2016.7.17-3).jpg by Gianni Versace (CC BY 4.0) — https://commons.wikimedia.org/wiki/File:Handbag_(AM_2016.7.17-3).jpg
+- **mat** — Nigerian Local Hand-woven Floor Mat for Sitting and Sleeping.jpg by BENJAMINS212 (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Nigerian_Local_Hand-woven_Floor_Mat_for_Sitting_and_Sleeping.jpg
+- **lamp** — Lamp at Dubay Creek, Al Seef.jpg by KpokeJlJla (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Lamp_at_Dubay_Creek,_Al_Seef.jpg
+- **phone** — Wikipedia homepage on a large Android phone, 2015-04-16.jpg by Sage Ross (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Wikipedia_homepage_on_a_large_Android_phone,_2015-04-16.jpg
+- **soap** — African Black Soap.jpg by Ashley Pomeroy (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:African_Black_Soap.jpg
+- **comb** — Combing Afro hair 02.jpg by Adesolive (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Combing_Afro_hair_02.jpg
+- **hair** — A woman braiding hair 02.jpg by Umshushima (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:A_woman_braiding_hair_02.jpg
+- **river** — Flottage du bois dans le delta du Niger.jpg by Terry Whalebone from Bolton, UK (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Flottage_du_bois_dans_le_delta_du_Niger.jpg
+- **cloud** — Blue sky and white rain smoky clouds.jpg by PapiPijuan (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Blue_sky_and_white_rain_smoky_clouds.jpg
+- **sand** — Close up of sand at Sai Yok National Park 2013.jpg by Lolavies (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:Close_up_of_sand_at_Sai_Yok_National_Park_2013.jpg
+- **road** — Dirt road kenya.jpg by Mikenjau (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Dirt_road_kenya.jpg
+- **truck** — Cargo Truck 15.jpg by SAgbley (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Cargo_Truck_15.jpg
+- **tricycle** — Keke napep on the move.jpg by Richard Edozie (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Keke_napep_on_the_move.jpg
