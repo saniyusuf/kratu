@@ -1994,5 +1994,265 @@
  "en_Z": {
   "text": "Z",
   "lang": "en-NG"
+ },
+ "act_desc_colors": {
+  "text": "Launuka. A nan za mu koyi launuka da Turanci.",
+  "lang": "ha"
+ },
+ "act_desc_shapes": {
+  "text": "Siffofi. A nan za mu koyi siffofi da Turanci.",
+  "lang": "ha"
+ },
+ "act_desc_numbers": {
+  "text": "Lambobi. A nan za mu koyi ƙidaya da Turanci.",
+  "lang": "ha"
+ },
+ "act_desc_quiz": {
+  "text": "Nemo hoto. Za a faɗi sunan abu, sannan a danna hotonsa.",
+  "lang": "ha"
+ },
+ "act_desc_read": {
+  "text": "Karatu. A nan za mu karanta kalmomi, harafi-harafi.",
+  "lang": "ha"
+ },
+ "cat_start_colors": {
+  "text": "Yanzu za mu koyi launuka. Za mu faɗi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_start_shapes": {
+  "text": "Yanzu za mu koyi siffofi. Za mu faɗi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_start_numbers": {
+  "text": "Yanzu za mu koyi ƙidaya. Duba ɗigogi, sannan a faɗi lambar da Turanci.",
+  "lang": "ha"
+ },
+ "quiz_intro": {
+  "text": "Saurara da kyau! Za a faɗi sunan abu da Turanci, sannan a danna hotonsa.",
+  "lang": "ha"
+ },
+ "quiz_tap": {
+  "text": "Danna hoton abin da aka faɗa.",
+  "lang": "ha"
+ },
+ "quiz_wrong": {
+  "text": "A'a, ba wannan ba. A sake saurara, a sake gwadawa.",
+  "lang": "ha"
+ },
+ "read_intro": {
+  "text": "Ga kalma. Za mu karanta ta tare, harafi-harafi.",
+  "lang": "ha"
+ },
+ "read_word": {
+  "text": "Yanzu, a karanta kalmar gaba ɗaya, da babbar murya.",
+  "lang": "ha"
+ },
+ "read_good": {
+  "text": "Madalla! Ka iya karatu!",
+  "lang": "ha"
+ },
+ "cat_colors": {
+  "text": "Launuka",
+  "lang": "ha"
+ },
+ "cat_shapes": {
+  "text": "Siffofi",
+  "lang": "ha"
+ },
+ "cat_numbers": {
+  "text": "Lambobi",
+  "lang": "ha"
+ },
+ "wen_red": {
+  "text": "Red",
+  "lang": "en-NG"
+ },
+ "wha_red": {
+  "text": "ja",
+  "lang": "ha"
+ },
+ "wen_blue": {
+  "text": "Blue",
+  "lang": "en-NG"
+ },
+ "wha_blue": {
+  "text": "shuɗi",
+  "lang": "ha"
+ },
+ "wen_green": {
+  "text": "Green",
+  "lang": "en-NG"
+ },
+ "wha_green": {
+  "text": "kore",
+  "lang": "ha"
+ },
+ "wen_yellow": {
+  "text": "Yellow",
+  "lang": "en-NG"
+ },
+ "wha_yellow": {
+  "text": "rawaya",
+  "lang": "ha"
+ },
+ "wen_black": {
+  "text": "Black",
+  "lang": "en-NG"
+ },
+ "wha_black": {
+  "text": "baƙi",
+  "lang": "ha"
+ },
+ "wen_white": {
+  "text": "White",
+  "lang": "en-NG"
+ },
+ "wha_white": {
+  "text": "fari",
+  "lang": "ha"
+ },
+ "wen_brown": {
+  "text": "Brown",
+  "lang": "en-NG"
+ },
+ "wha_brown": {
+  "text": "ruwan ƙasa",
+  "lang": "ha"
+ },
+ "wen_pink": {
+  "text": "Pink",
+  "lang": "en-NG"
+ },
+ "wha_pink": {
+  "text": "ruwan hoda",
+  "lang": "ha"
+ },
+ "wen_circle": {
+  "text": "Circle",
+  "lang": "en-NG"
+ },
+ "wha_circle": {
+  "text": "da'ira",
+  "lang": "ha"
+ },
+ "wen_square": {
+  "text": "Square",
+  "lang": "en-NG"
+ },
+ "wha_square": {
+  "text": "murabba'i",
+  "lang": "ha"
+ },
+ "wen_triangle": {
+  "text": "Triangle",
+  "lang": "en-NG"
+ },
+ "wha_triangle": {
+  "text": "alwatika",
+  "lang": "ha"
+ },
+ "wen_heart": {
+  "text": "Heart",
+  "lang": "en-NG"
+ },
+ "wha_heart": {
+  "text": "zuciya",
+  "lang": "ha"
+ },
+ "wen_cross": {
+  "text": "Cross",
+  "lang": "en-NG"
+ },
+ "wha_cross": {
+  "text": "gicciye",
+  "lang": "ha"
+ },
+ "wen_ring": {
+  "text": "Ring",
+  "lang": "en-NG"
+ },
+ "wha_ring": {
+  "text": "zobe",
+  "lang": "ha"
+ },
+ "wen_one": {
+  "text": "One",
+  "lang": "en-NG"
+ },
+ "wha_one": {
+  "text": "ɗaya",
+  "lang": "ha"
+ },
+ "wen_two": {
+  "text": "Two",
+  "lang": "en-NG"
+ },
+ "wha_two": {
+  "text": "biyu",
+  "lang": "ha"
+ },
+ "wen_three": {
+  "text": "Three",
+  "lang": "en-NG"
+ },
+ "wha_three": {
+  "text": "uku",
+  "lang": "ha"
+ },
+ "wen_four": {
+  "text": "Four",
+  "lang": "en-NG"
+ },
+ "wha_four": {
+  "text": "huɗu",
+  "lang": "ha"
+ },
+ "wen_five": {
+  "text": "Five",
+  "lang": "en-NG"
+ },
+ "wha_five": {
+  "text": "biyar",
+  "lang": "ha"
+ },
+ "wen_six": {
+  "text": "Six",
+  "lang": "en-NG"
+ },
+ "wha_six": {
+  "text": "shida",
+  "lang": "ha"
+ },
+ "wen_seven": {
+  "text": "Seven",
+  "lang": "en-NG"
+ },
+ "wha_seven": {
+  "text": "bakwai",
+  "lang": "ha"
+ },
+ "wen_eight": {
+  "text": "Eight",
+  "lang": "en-NG"
+ },
+ "wha_eight": {
+  "text": "takwas",
+  "lang": "ha"
+ },
+ "wen_nine": {
+  "text": "Nine",
+  "lang": "en-NG"
+ },
+ "wha_nine": {
+  "text": "tara",
+  "lang": "ha"
+ },
+ "wen_ten": {
+  "text": "Ten",
+  "lang": "en-NG"
+ },
+ "wha_ten": {
+  "text": "goma",
+  "lang": "ha"
  }
 }
