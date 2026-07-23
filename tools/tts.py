@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
-"""Kratu TTS module — pluggable providers.
+"""Kratu TTS module.
 
-Providers:
-  google  — Google Translate TTS (free, no key, robotic; the current default)
-  spitch  — Spitch (https://spitch.app) real Nigerian voices; needs SPITCH_API_KEY
-
-Select with --provider, or the KRATU_TTS env var. Usage:
+Current provider: Google Translate TTS (free, no key). The provider layer is
+kept so a better voice (e.g. human recordings, another API) can be added later
+without touching the generator.
 
   python3 tools/tts.py --text "Sannu!" --lang ha --out clip.mp3
-  KRATU_TTS=spitch python3 tools/tts.py --text "Sannu!" --lang ha --out clip.mp3
 """
 from __future__ import annotations
-import os, sys, time, urllib.request, urllib.parse
-
-# voice used per language when the provider supports voices
-SPITCH_VOICES = {"ha": "amina", "en": "john", "yo": "sade", "ig": "ngozi"}
-SPITCH_BASE = os.environ.get("SPITCH_BASE_URL", "https://api.spi-tch.com")
+import os, time, urllib.request, urllib.parse
 
 
 def synth_google(text: str, lang: str) -> bytes:
@@ -25,39 +18,14 @@ def synth_google(text: str, lang: str) -> bytes:
     return urllib.request.urlopen(req, timeout=30).read()
 
 
-def synth_spitch(text: str, lang: str, voice: str | None = None,
-                 speed: float | None = None, fmt: str = "mp3") -> bytes:
-    key = os.environ.get("SPITCH_API_KEY")
-    if not key:
-        raise RuntimeError("SPITCH_API_KEY not set — export it or use --provider google")
-    body = {"text": text, "language": lang,
-            "voice": voice or SPITCH_VOICES.get(lang, "john"), "format": fmt}
-    if speed is None:
-        env = os.environ.get("SPITCH_SPEED")
-        speed = float(env) if env else None
-    if speed is not None:
-        body["speed"] = speed
-    import json as _json
-    req = urllib.request.Request(SPITCH_BASE + "/v1/speech",
-                                 data=_json.dumps(body).encode(),
-                                 headers={"Authorization": "Bearer " + key,
-                                          "Content-Type": "application/json"})
-    return urllib.request.urlopen(req, timeout=60).read()
-
-
-def synth(text: str, lang: str, provider: str | None = None, voice: str | None = None,
-          retries: int = 3, speed: float | None = None, fmt: str = "mp3") -> bytes:
+def synth(text: str, lang: str, provider: str | None = None, retries: int = 3) -> bytes:
     provider = provider or os.environ.get("KRATU_TTS", "google")
+    if provider != "google":
+        raise ValueError("unknown provider: " + provider)
     last = None
     for _ in range(retries):
         try:
-            if provider == "spitch":
-                return synth_spitch(text, lang, voice, speed, fmt)
-            if provider == "google":
-                return synth_google(text, lang)
-            raise ValueError("unknown provider: " + provider)
-        except (RuntimeError, ValueError):
-            raise
+            return synth_google(text, lang)
         except Exception as e:  # transient network — retry
             last = e
             time.sleep(1.5)
@@ -69,11 +37,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--text", required=True)
     ap.add_argument("--lang", default="ha")
-    ap.add_argument("--provider", default=None, help="google | spitch (default: $KRATU_TTS or google)")
-    ap.add_argument("--voice", default=None, help="spitch voice override (e.g. amina, zainab)")
-    ap.add_argument("--speed", type=float, default=None, help="spitch speech rate (1.0 = normal, 0.85 = slower)")
     ap.add_argument("--out", default="out.mp3")
     a = ap.parse_args()
-    data = synth(a.text, a.lang, a.provider, a.voice, speed=a.speed)
+    data = synth(a.text, a.lang)
     open(a.out, "wb").write(data)
-    print("wrote %s (%d bytes) via %s" % (a.out, len(data), a.provider or os.environ.get("KRATU_TTS", "google")))
+    print("wrote %s (%d bytes)" % (a.out, len(data)))
