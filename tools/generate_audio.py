@@ -14,7 +14,7 @@ Examples:
 Injection appends a final `Object.assign(AUDIO, {...})` to kratu-lessons.html
 (and copies to index.html), which wins over earlier definitions at runtime.
 """
-import argparse, base64, fnmatch, json, os, sys, time
+import argparse, audioop, base64, fnmatch, io, json, os, subprocess, sys, tempfile, time, wave
 
 sys.path.insert(0, os.path.dirname(__file__))
 from tts import synth  # noqa: E402
@@ -23,6 +23,27 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST = os.path.join(ROOT, "tools", "clips_manifest.json")
 APP = os.path.join(ROOT, "kratu-lessons.html")
 INDEX = os.path.join(ROOT, "index.html")
+
+
+def normalize_to_aac(wav_bytes: bytes, peak_target: float) -> tuple:
+    """Boost WAV to peak_target of full scale, encode to AAC (m4a) via afconvert."""
+    wf = wave.open(io.BytesIO(wav_bytes))
+    nch, sw, fr, nf = wf.getnchannels(), wf.getsampwidth(), wf.getframerate(), wf.getnframes()
+    frames = wf.readframes(nf)
+    peak = audioop.max(frames, sw) or 1
+    full = float(2 ** (8 * sw - 1) - 1)
+    factor = min(full * peak_target / peak, 6.0)
+    frames = audioop.mul(frames, sw, factor)
+    with tempfile.TemporaryDirectory() as td:
+        wp, mp = os.path.join(td, "a.wav"), os.path.join(td, "a.m4a")
+        out = wave.open(wp, "wb")
+        out.setnchannels(nch); out.setsampwidth(sw); out.setframerate(fr)
+        out.writeframes(frames); out.close()
+        r = subprocess.run(["afconvert", wp, "-o", mp, "-f", "m4af", "-d", "aac", "-b", "56000"],
+                           capture_output=True)
+        if r.returncode != 0:
+            raise RuntimeError("afconvert failed: " + r.stderr.decode()[:120])
+        return open(mp, "rb").read(), "audio/mp4"
 
 
 def inject(audio: dict):
@@ -46,6 +67,8 @@ def main():
     ap.add_argument("--keys", default=None, help="comma-separated keys or glob patterns (e.g. 'wha_*,w_intro')")
     ap.add_argument("--out", default=None, help="also write the audio JSON here")
     ap.add_argument("--inject", action="store_true", help="splice results into the app")
+    ap.add_argument("--speed", type=float, default=None, help="spitch speech rate (e.g. 0.85 = slower)")
+    ap.add_argument("--gain", type=float, default=None, help="normalize loudness to this peak fraction (e.g. 0.95); spitch only — outputs AAC")
     ap.add_argument("--delay", type=float, default=0.15, help="seconds between requests")
     a = ap.parse_args()
 
@@ -64,8 +87,13 @@ def main():
     for i, k in enumerate(keys):
         c = manifest[k]
         try:
-            data = synth(c["text"], c["lang"], a.provider, a.voice)
-            audio[k] = "data:audio/mpeg;base64," + base64.b64encode(data).decode()
+            if a.gain:
+                wav = synth(c["text"], c["lang"], a.provider, a.voice, speed=a.speed, fmt="wav")
+                data, mime = normalize_to_aac(wav, a.gain)
+            else:
+                data = synth(c["text"], c["lang"], a.provider, a.voice, speed=a.speed)
+                mime = "audio/mpeg"
+            audio[k] = "data:" + mime + ";base64," + base64.b64encode(data).decode()
             print("ok %-22s %5dB  (%d/%d)" % (k, len(data), i + 1, len(keys)))
         except Exception as e:
             fails.append(k)

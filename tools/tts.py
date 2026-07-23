@@ -25,12 +25,18 @@ def synth_google(text: str, lang: str) -> bytes:
     return urllib.request.urlopen(req, timeout=30).read()
 
 
-def synth_spitch(text: str, lang: str, voice: str | None = None) -> bytes:
+def synth_spitch(text: str, lang: str, voice: str | None = None,
+                 speed: float | None = None, fmt: str = "mp3") -> bytes:
     key = os.environ.get("SPITCH_API_KEY")
     if not key:
         raise RuntimeError("SPITCH_API_KEY not set — export it or use --provider google")
     body = {"text": text, "language": lang,
-            "voice": voice or SPITCH_VOICES.get(lang, "john"), "format": "mp3"}
+            "voice": voice or SPITCH_VOICES.get(lang, "john"), "format": fmt}
+    if speed is None:
+        env = os.environ.get("SPITCH_SPEED")
+        speed = float(env) if env else None
+    if speed is not None:
+        body["speed"] = speed
     import json as _json
     req = urllib.request.Request(SPITCH_BASE + "/v1/speech",
                                  data=_json.dumps(body).encode(),
@@ -40,13 +46,13 @@ def synth_spitch(text: str, lang: str, voice: str | None = None) -> bytes:
 
 
 def synth(text: str, lang: str, provider: str | None = None, voice: str | None = None,
-          retries: int = 3) -> bytes:
+          retries: int = 3, speed: float | None = None, fmt: str = "mp3") -> bytes:
     provider = provider or os.environ.get("KRATU_TTS", "google")
     last = None
     for _ in range(retries):
         try:
             if provider == "spitch":
-                return synth_spitch(text, lang, voice)
+                return synth_spitch(text, lang, voice, speed, fmt)
             if provider == "google":
                 return synth_google(text, lang)
             raise ValueError("unknown provider: " + provider)
@@ -65,8 +71,9 @@ if __name__ == "__main__":
     ap.add_argument("--lang", default="ha")
     ap.add_argument("--provider", default=None, help="google | spitch (default: $KRATU_TTS or google)")
     ap.add_argument("--voice", default=None, help="spitch voice override (e.g. amina, zainab)")
+    ap.add_argument("--speed", type=float, default=None, help="spitch speech rate (1.0 = normal, 0.85 = slower)")
     ap.add_argument("--out", default="out.mp3")
     a = ap.parse_args()
-    data = synth(a.text, a.lang, a.provider, a.voice)
+    data = synth(a.text, a.lang, a.provider, a.voice, speed=a.speed)
     open(a.out, "wb").write(data)
     print("wrote %s (%d bytes) via %s" % (a.out, len(data), a.provider or os.environ.get("KRATU_TTS", "google")))
