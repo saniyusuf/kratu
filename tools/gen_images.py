@@ -16,16 +16,18 @@ ap.add_argument("--keys",default=None)
 ap.add_argument("--force",action="store_true")
 ap.add_argument("--steps",type=int,default=4)
 ap.add_argument("--size",type=int,default=768)
+ap.add_argument("--variant",type=int,default=0,help="extra candidate: bumps seed, writes <key>.v<N>.png")
 a=ap.parse_args()
 prompts=json.load(open(os.path.join(ROOT,"tools","image_prompts.json")))
 keys=list(prompts)
 if a.keys: keys=[k.strip() for k in a.keys.split(",") if k.strip() in prompts]
 os.makedirs(OUT,exist_ok=True)
-todo=[k for k in keys if a.force or not os.path.exists(os.path.join(OUT,k+".png"))]
+suffix=(".v%d"%a.variant) if a.variant else ""
+todo=[k for k in keys if a.force or not os.path.exists(os.path.join(OUT,k+suffix+".png"))]
 print("generating %d images (skipping %d existing)"%(len(todo),len(keys)-len(todo)))
 for i,k in enumerate(todo):
-    seed=int(hashlib.md5(k.encode()).hexdigest()[:6],16)
-    dst=os.path.join(OUT,k+".png")
+    seed=int(hashlib.md5(k.encode()).hexdigest()[:6],16)+a.variant*99991
+    dst=os.path.join(OUT,k+suffix+".png")
     r=subprocess.run([VENV,"--model",MODEL,"--base-model","schnell","--steps",str(a.steps),
         "--seed",str(seed),"--width",str(a.size),"--height",str(a.size),
         "--prompt",prompts[k],"--output",dst],capture_output=True,text=True)
