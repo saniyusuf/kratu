@@ -1890,5 +1890,109 @@
  "gender_ask": {
   "text": "Sannu! Idan ke mace ce, danna fari. Idan kai namiji ne, danna ja.",
   "lang": "ha"
+ },
+ "en_A": {
+  "text": "A",
+  "lang": "en"
+ },
+ "en_B": {
+  "text": "B",
+  "lang": "en"
+ },
+ "en_C": {
+  "text": "C",
+  "lang": "en"
+ },
+ "en_D": {
+  "text": "D",
+  "lang": "en"
+ },
+ "en_E": {
+  "text": "E",
+  "lang": "en"
+ },
+ "en_F": {
+  "text": "F",
+  "lang": "en"
+ },
+ "en_G": {
+  "text": "G",
+  "lang": "en"
+ },
+ "en_H": {
+  "text": "H",
+  "lang": "en"
+ },
+ "en_I": {
+  "text": "I",
+  "lang": "en"
+ },
+ "en_J": {
+  "text": "J",
+  "lang": "en"
+ },
+ "en_K": {
+  "text": "K",
+  "lang": "en"
+ },
+ "en_L": {
+  "text": "L",
+  "lang": "en"
+ },
+ "en_M": {
+  "text": "M",
+  "lang": "en"
+ },
+ "en_N": {
+  "text": "N",
+  "lang": "en"
+ },
+ "en_O": {
+  "text": "O",
+  "lang": "en"
+ },
+ "en_P": {
+  "text": "P",
+  "lang": "en"
+ },
+ "en_Q": {
+  "text": "Q",
+  "lang": "en"
+ },
+ "en_R": {
+  "text": "R",
+  "lang": "en"
+ },
+ "en_S": {
+  "text": "S",
+  "lang": "en"
+ },
+ "en_T": {
+  "text": "T",
+  "lang": "en"
+ },
+ "en_U": {
+  "text": "U",
+  "lang": "en"
+ },
+ "en_V": {
+  "text": "V",
+  "lang": "en"
+ },
+ "en_W": {
+  "text": "W",
+  "lang": "en"
+ },
+ "en_X": {
+  "text": "X",
+  "lang": "en"
+ },
+ "en_Y": {
+  "text": "Y",
+  "lang": "en"
+ },
+ "en_Z": {
+  "text": "Z",
+  "lang": "en"
  }
 }
