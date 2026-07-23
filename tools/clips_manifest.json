@@ -1,0 +1,1894 @@
+{
+ "wen_dog": {
+  "text": "Dog",
+  "lang": "en"
+ },
+ "wha_dog": {
+  "text": "kare",
+  "lang": "ha"
+ },
+ "wen_cat": {
+  "text": "Cat",
+  "lang": "en"
+ },
+ "wha_cat": {
+  "text": "kyanwa",
+  "lang": "ha"
+ },
+ "wen_goat": {
+  "text": "Goat",
+  "lang": "en"
+ },
+ "wha_goat": {
+  "text": "akuya",
+  "lang": "ha"
+ },
+ "wen_cow": {
+  "text": "Cow",
+  "lang": "en"
+ },
+ "wha_cow": {
+  "text": "saniya",
+  "lang": "ha"
+ },
+ "wen_sheep": {
+  "text": "Sheep",
+  "lang": "en"
+ },
+ "wha_sheep": {
+  "text": "tunkiya",
+  "lang": "ha"
+ },
+ "wen_horse": {
+  "text": "Horse",
+  "lang": "en"
+ },
+ "wha_horse": {
+  "text": "doki",
+  "lang": "ha"
+ },
+ "wen_donkey": {
+  "text": "Donkey",
+  "lang": "en"
+ },
+ "wha_donkey": {
+  "text": "jaki",
+  "lang": "ha"
+ },
+ "wen_chicken": {
+  "text": "Chicken",
+  "lang": "en"
+ },
+ "wha_chicken": {
+  "text": "kaza",
+  "lang": "ha"
+ },
+ "wen_duck": {
+  "text": "Duck",
+  "lang": "en"
+ },
+ "wha_duck": {
+  "text": "agwagwa",
+  "lang": "ha"
+ },
+ "wen_lion": {
+  "text": "Lion",
+  "lang": "en"
+ },
+ "wha_lion": {
+  "text": "zaki",
+  "lang": "ha"
+ },
+ "wen_elephant": {
+  "text": "Elephant",
+  "lang": "en"
+ },
+ "wha_elephant": {
+  "text": "giwa",
+  "lang": "ha"
+ },
+ "wen_monkey": {
+  "text": "Monkey",
+  "lang": "en"
+ },
+ "wha_monkey": {
+  "text": "biri",
+  "lang": "ha"
+ },
+ "wen_snake": {
+  "text": "Snake",
+  "lang": "en"
+ },
+ "wha_snake": {
+  "text": "maciji",
+  "lang": "ha"
+ },
+ "wen_camel": {
+  "text": "Camel",
+  "lang": "en"
+ },
+ "wha_camel": {
+  "text": "raƙumi",
+  "lang": "ha"
+ },
+ "wen_rabbit": {
+  "text": "Rabbit",
+  "lang": "en"
+ },
+ "wha_rabbit": {
+  "text": "zomo",
+  "lang": "ha"
+ },
+ "wen_ram": {
+  "text": "Ram",
+  "lang": "en"
+ },
+ "wha_ram": {
+  "text": "rago",
+  "lang": "ha"
+ },
+ "wen_fish": {
+  "text": "Fish",
+  "lang": "en"
+ },
+ "wha_fish": {
+  "text": "kifi",
+  "lang": "ha"
+ },
+ "wen_bird": {
+  "text": "Bird",
+  "lang": "en"
+ },
+ "wha_bird": {
+  "text": "tsuntsu",
+  "lang": "ha"
+ },
+ "wen_tortoise": {
+  "text": "Tortoise",
+  "lang": "en"
+ },
+ "wha_tortoise": {
+  "text": "kunkuru",
+  "lang": "ha"
+ },
+ "wen_lizard": {
+  "text": "Lizard",
+  "lang": "en"
+ },
+ "wha_lizard": {
+  "text": "ƙadangare",
+  "lang": "ha"
+ },
+ "wen_frog": {
+  "text": "Frog",
+  "lang": "en"
+ },
+ "wha_frog": {
+  "text": "kwaɗo",
+  "lang": "ha"
+ },
+ "wen_crocodile": {
+  "text": "Crocodile",
+  "lang": "en"
+ },
+ "wha_crocodile": {
+  "text": "kada",
+  "lang": "ha"
+ },
+ "wen_ant": {
+  "text": "Ant",
+  "lang": "en"
+ },
+ "wha_ant": {
+  "text": "tururuwa",
+  "lang": "ha"
+ },
+ "wen_butterfly": {
+  "text": "Butterfly",
+  "lang": "en"
+ },
+ "wha_butterfly": {
+  "text": "malam buɗe littafi",
+  "lang": "ha"
+ },
+ "wen_rat": {
+  "text": "Rat",
+  "lang": "en"
+ },
+ "wha_rat": {
+  "text": "ɓera",
+  "lang": "ha"
+ },
+ "wen_bee": {
+  "text": "Bee",
+  "lang": "en"
+ },
+ "wha_bee": {
+  "text": "ƙudan zuma",
+  "lang": "ha"
+ },
+ "wen_apple": {
+  "text": "Apple",
+  "lang": "en"
+ },
+ "wha_apple": {
+  "text": "tuffa",
+  "lang": "ha"
+ },
+ "wen_banana": {
+  "text": "Banana",
+  "lang": "en"
+ },
+ "wha_banana": {
+  "text": "ayaba",
+  "lang": "ha"
+ },
+ "wen_orange": {
+  "text": "Orange",
+  "lang": "en"
+ },
+ "wha_orange": {
+  "text": "lemu",
+  "lang": "ha"
+ },
+ "wen_mango": {
+  "text": "Mango",
+  "lang": "en"
+ },
+ "wha_mango": {
+  "text": "mangwaro",
+  "lang": "ha"
+ },
+ "wen_pineapple": {
+  "text": "Pineapple",
+  "lang": "en"
+ },
+ "wha_pineapple": {
+  "text": "abarba",
+  "lang": "ha"
+ },
+ "wen_yam": {
+  "text": "Yam",
+  "lang": "en"
+ },
+ "wha_yam": {
+  "text": "doya",
+  "lang": "ha"
+ },
+ "wen_corn": {
+  "text": "Corn",
+  "lang": "en"
+ },
+ "wha_corn": {
+  "text": "masara",
+  "lang": "ha"
+ },
+ "wen_rice": {
+  "text": "Rice",
+  "lang": "en"
+ },
+ "wha_rice": {
+  "text": "shinkafa",
+  "lang": "ha"
+ },
+ "wen_beans": {
+  "text": "Beans",
+  "lang": "en"
+ },
+ "wha_beans": {
+  "text": "wake",
+  "lang": "ha"
+ },
+ "wen_bread": {
+  "text": "Bread",
+  "lang": "en"
+ },
+ "wha_bread": {
+  "text": "burodi",
+  "lang": "ha"
+ },
+ "wen_egg": {
+  "text": "Egg",
+  "lang": "en"
+ },
+ "wha_egg": {
+  "text": "kwai",
+  "lang": "ha"
+ },
+ "wen_milk": {
+  "text": "Milk",
+  "lang": "en"
+ },
+ "wha_milk": {
+  "text": "madara",
+  "lang": "ha"
+ },
+ "wen_groundnut": {
+  "text": "Groundnut",
+  "lang": "en"
+ },
+ "wha_groundnut": {
+  "text": "gyaɗa",
+  "lang": "ha"
+ },
+ "wen_onion": {
+  "text": "Onion",
+  "lang": "en"
+ },
+ "wha_onion": {
+  "text": "albasa",
+  "lang": "ha"
+ },
+ "wen_tomato": {
+  "text": "Tomato",
+  "lang": "en"
+ },
+ "wha_tomato": {
+  "text": "tumatir",
+  "lang": "ha"
+ },
+ "wen_pepper": {
+  "text": "Pepper",
+  "lang": "en"
+ },
+ "wha_pepper": {
+  "text": "barkono",
+  "lang": "ha"
+ },
+ "wen_watermelon": {
+  "text": "Watermelon",
+  "lang": "en"
+ },
+ "wha_watermelon": {
+  "text": "kankana",
+  "lang": "ha"
+ },
+ "wen_pawpaw": {
+  "text": "Pawpaw",
+  "lang": "en"
+ },
+ "wha_pawpaw": {
+  "text": "gwanda",
+  "lang": "ha"
+ },
+ "wen_carrot": {
+  "text": "Carrot",
+  "lang": "en"
+ },
+ "wha_carrot": {
+  "text": "karas",
+  "lang": "ha"
+ },
+ "wen_okra": {
+  "text": "Okra",
+  "lang": "en"
+ },
+ "wha_okra": {
+  "text": "kuɓewa",
+  "lang": "ha"
+ },
+ "wen_sugarcane": {
+  "text": "Sugarcane",
+  "lang": "en"
+ },
+ "wha_sugarcane": {
+  "text": "rake",
+  "lang": "ha"
+ },
+ "wen_salt": {
+  "text": "Salt",
+  "lang": "en"
+ },
+ "wha_salt": {
+  "text": "gishiri",
+  "lang": "ha"
+ },
+ "wen_chair": {
+  "text": "Chair",
+  "lang": "en"
+ },
+ "wha_chair": {
+  "text": "kujera",
+  "lang": "ha"
+ },
+ "wen_table": {
+  "text": "Table",
+  "lang": "en"
+ },
+ "wha_table": {
+  "text": "tebur",
+  "lang": "ha"
+ },
+ "wen_bed": {
+  "text": "Bed",
+  "lang": "en"
+ },
+ "wha_bed": {
+  "text": "gado",
+  "lang": "ha"
+ },
+ "wen_door": {
+  "text": "Door",
+  "lang": "en"
+ },
+ "wha_door": {
+  "text": "ƙofa",
+  "lang": "ha"
+ },
+ "wen_cup": {
+  "text": "Cup",
+  "lang": "en"
+ },
+ "wha_cup": {
+  "text": "koko",
+  "lang": "ha"
+ },
+ "wen_plate": {
+  "text": "Plate",
+  "lang": "en"
+ },
+ "wha_plate": {
+  "text": "faranti",
+  "lang": "ha"
+ },
+ "wen_spoon": {
+  "text": "Spoon",
+  "lang": "en"
+ },
+ "wha_spoon": {
+  "text": "cokali",
+  "lang": "ha"
+ },
+ "wen_knife": {
+  "text": "Knife",
+  "lang": "en"
+ },
+ "wha_knife": {
+  "text": "wuƙa",
+  "lang": "ha"
+ },
+ "wen_pot": {
+  "text": "Pot",
+  "lang": "en"
+ },
+ "wha_pot": {
+  "text": "tukunya",
+  "lang": "ha"
+ },
+ "wen_bucket": {
+  "text": "Bucket",
+  "lang": "en"
+ },
+ "wha_bucket": {
+  "text": "guga",
+  "lang": "ha"
+ },
+ "wen_broom": {
+  "text": "Broom",
+  "lang": "en"
+ },
+ "wha_broom": {
+  "text": "tsintsiya",
+  "lang": "ha"
+ },
+ "wen_clock": {
+  "text": "Clock",
+  "lang": "en"
+ },
+ "wha_clock": {
+  "text": "agogo",
+  "lang": "ha"
+ },
+ "wen_key": {
+  "text": "Key",
+  "lang": "en"
+ },
+ "wha_key": {
+  "text": "makulli",
+  "lang": "ha"
+ },
+ "wen_book": {
+  "text": "Book",
+  "lang": "en"
+ },
+ "wha_book": {
+  "text": "littafi",
+  "lang": "ha"
+ },
+ "wen_umbrella": {
+  "text": "Umbrella",
+  "lang": "en"
+ },
+ "wha_umbrella": {
+  "text": "laima",
+  "lang": "ha"
+ },
+ "wen_iron": {
+  "text": "Iron",
+  "lang": "en"
+ },
+ "wha_iron": {
+  "text": "ayron",
+  "lang": "ha"
+ },
+ "wen_cap": {
+  "text": "Cap",
+  "lang": "en"
+ },
+ "wha_cap": {
+  "text": "hula",
+  "lang": "ha"
+ },
+ "wen_shoe": {
+  "text": "Shoe",
+  "lang": "en"
+ },
+ "wha_shoe": {
+  "text": "takalmi",
+  "lang": "ha"
+ },
+ "wen_bag": {
+  "text": "Bag",
+  "lang": "en"
+ },
+ "wha_bag": {
+  "text": "jaka",
+  "lang": "ha"
+ },
+ "wen_mat": {
+  "text": "Mat",
+  "lang": "en"
+ },
+ "wha_mat": {
+  "text": "tabarma",
+  "lang": "ha"
+ },
+ "wen_lamp": {
+  "text": "Lamp",
+  "lang": "en"
+ },
+ "wha_lamp": {
+  "text": "fitila",
+  "lang": "ha"
+ },
+ "wen_phone": {
+  "text": "Phone",
+  "lang": "en"
+ },
+ "wha_phone": {
+  "text": "waya",
+  "lang": "ha"
+ },
+ "wen_soap": {
+  "text": "Soap",
+  "lang": "en"
+ },
+ "wha_soap": {
+  "text": "sabulu",
+  "lang": "ha"
+ },
+ "wen_comb": {
+  "text": "Comb",
+  "lang": "en"
+ },
+ "wha_comb": {
+  "text": "matsefi",
+  "lang": "ha"
+ },
+ "wen_eye": {
+  "text": "Eye",
+  "lang": "en"
+ },
+ "wha_eye": {
+  "text": "ido",
+  "lang": "ha"
+ },
+ "wen_ear": {
+  "text": "Ear",
+  "lang": "en"
+ },
+ "wha_ear": {
+  "text": "kunne",
+  "lang": "ha"
+ },
+ "wen_nose": {
+  "text": "Nose",
+  "lang": "en"
+ },
+ "wha_nose": {
+  "text": "hanci",
+  "lang": "ha"
+ },
+ "wen_mouth": {
+  "text": "Mouth",
+  "lang": "en"
+ },
+ "wha_mouth": {
+  "text": "baki",
+  "lang": "ha"
+ },
+ "wen_hand": {
+  "text": "Hand",
+  "lang": "en"
+ },
+ "wha_hand": {
+  "text": "hannu",
+  "lang": "ha"
+ },
+ "wen_leg": {
+  "text": "Leg",
+  "lang": "en"
+ },
+ "wha_leg": {
+  "text": "ƙafa",
+  "lang": "ha"
+ },
+ "wen_head": {
+  "text": "Head",
+  "lang": "en"
+ },
+ "wha_head": {
+  "text": "kai",
+  "lang": "ha"
+ },
+ "wen_tooth": {
+  "text": "Tooth",
+  "lang": "en"
+ },
+ "wha_tooth": {
+  "text": "haƙori",
+  "lang": "ha"
+ },
+ "wen_hair": {
+  "text": "Hair",
+  "lang": "en"
+ },
+ "wha_hair": {
+  "text": "gashi",
+  "lang": "ha"
+ },
+ "wen_finger": {
+  "text": "Finger",
+  "lang": "en"
+ },
+ "wha_finger": {
+  "text": "yatsa",
+  "lang": "ha"
+ },
+ "wen_sun": {
+  "text": "Sun",
+  "lang": "en"
+ },
+ "wha_sun": {
+  "text": "rana",
+  "lang": "ha"
+ },
+ "wen_moon": {
+  "text": "Moon",
+  "lang": "en"
+ },
+ "wha_moon": {
+  "text": "wata",
+  "lang": "ha"
+ },
+ "wen_star": {
+  "text": "Star",
+  "lang": "en"
+ },
+ "wha_star": {
+  "text": "tauraro",
+  "lang": "ha"
+ },
+ "wen_tree": {
+  "text": "Tree",
+  "lang": "en"
+ },
+ "wha_tree": {
+  "text": "itace",
+  "lang": "ha"
+ },
+ "wen_fire": {
+  "text": "Fire",
+  "lang": "en"
+ },
+ "wha_fire": {
+  "text": "wuta",
+  "lang": "ha"
+ },
+ "wen_rain": {
+  "text": "Rain",
+  "lang": "en"
+ },
+ "wha_rain": {
+  "text": "ruwan sama",
+  "lang": "ha"
+ },
+ "wen_stone": {
+  "text": "Stone",
+  "lang": "en"
+ },
+ "wha_stone": {
+  "text": "dutse",
+  "lang": "ha"
+ },
+ "wen_flower": {
+  "text": "Flower",
+  "lang": "en"
+ },
+ "wha_flower": {
+  "text": "fure",
+  "lang": "ha"
+ },
+ "wen_river": {
+  "text": "River",
+  "lang": "en"
+ },
+ "wha_river": {
+  "text": "kogi",
+  "lang": "ha"
+ },
+ "wen_cloud": {
+  "text": "Cloud",
+  "lang": "en"
+ },
+ "wha_cloud": {
+  "text": "girgije",
+  "lang": "ha"
+ },
+ "wen_sand": {
+  "text": "Sand",
+  "lang": "en"
+ },
+ "wha_sand": {
+  "text": "yashi",
+  "lang": "ha"
+ },
+ "wen_road": {
+  "text": "Road",
+  "lang": "en"
+ },
+ "wha_road": {
+  "text": "hanya",
+  "lang": "ha"
+ },
+ "wen_car": {
+  "text": "Car",
+  "lang": "en"
+ },
+ "wha_car": {
+  "text": "mota",
+  "lang": "ha"
+ },
+ "wen_bicycle": {
+  "text": "Bicycle",
+  "lang": "en"
+ },
+ "wha_bicycle": {
+  "text": "keke",
+  "lang": "ha"
+ },
+ "wen_motorcycle": {
+  "text": "Motorcycle",
+  "lang": "en"
+ },
+ "wha_motorcycle": {
+  "text": "babur",
+  "lang": "ha"
+ },
+ "wen_airplane": {
+  "text": "Airplane",
+  "lang": "en"
+ },
+ "wha_airplane": {
+  "text": "jirgin sama",
+  "lang": "ha"
+ },
+ "wen_boat": {
+  "text": "Boat",
+  "lang": "en"
+ },
+ "wha_boat": {
+  "text": "jirgin ruwa",
+  "lang": "ha"
+ },
+ "wen_bus": {
+  "text": "Bus",
+  "lang": "en"
+ },
+ "wha_bus": {
+  "text": "bas",
+  "lang": "ha"
+ },
+ "wen_truck": {
+  "text": "Truck",
+  "lang": "en"
+ },
+ "wha_truck": {
+  "text": "babbar mota",
+  "lang": "ha"
+ },
+ "wen_tricycle": {
+  "text": "Tricycle",
+  "lang": "en"
+ },
+ "wha_tricycle": {
+  "text": "keke napep",
+  "lang": "ha"
+ },
+ "wen_giraffe": {
+  "text": "Giraffe",
+  "lang": "en"
+ },
+ "wha_giraffe": {
+  "text": "raƙumin dawa",
+  "lang": "ha"
+ },
+ "wen_hippo": {
+  "text": "Hippo",
+  "lang": "en"
+ },
+ "wha_hippo": {
+  "text": "dorina",
+  "lang": "ha"
+ },
+ "wen_buffalo": {
+  "text": "Buffalo",
+  "lang": "en"
+ },
+ "wha_buffalo": {
+  "text": "ɓauna",
+  "lang": "ha"
+ },
+ "wen_leopard": {
+  "text": "Leopard",
+  "lang": "en"
+ },
+ "wha_leopard": {
+  "text": "damisa",
+  "lang": "ha"
+ },
+ "wen_hyena": {
+  "text": "Hyena",
+  "lang": "en"
+ },
+ "wha_hyena": {
+  "text": "kura",
+  "lang": "ha"
+ },
+ "wen_fox": {
+  "text": "Fox",
+  "lang": "en"
+ },
+ "wha_fox": {
+  "text": "dila",
+  "lang": "ha"
+ },
+ "wen_crab": {
+  "text": "Crab",
+  "lang": "en"
+ },
+ "wha_crab": {
+  "text": "kaguwa",
+  "lang": "ha"
+ },
+ "wen_snail": {
+  "text": "Snail",
+  "lang": "en"
+ },
+ "wha_snail": {
+  "text": "katantanwa",
+  "lang": "ha"
+ },
+ "wen_spider": {
+  "text": "Spider",
+  "lang": "en"
+ },
+ "wha_spider": {
+  "text": "gizo-gizo",
+  "lang": "ha"
+ },
+ "wen_mosquito": {
+  "text": "Mosquito",
+  "lang": "en"
+ },
+ "wha_mosquito": {
+  "text": "sauro",
+  "lang": "ha"
+ },
+ "wen_fly": {
+  "text": "Fly",
+  "lang": "en"
+ },
+ "wha_fly": {
+  "text": "ƙuda",
+  "lang": "ha"
+ },
+ "wen_cockroach": {
+  "text": "Cockroach",
+  "lang": "en"
+ },
+ "wha_cockroach": {
+  "text": "kyankyaso",
+  "lang": "ha"
+ },
+ "wen_grasshopper": {
+  "text": "Grasshopper",
+  "lang": "en"
+ },
+ "wha_grasshopper": {
+  "text": "fara",
+  "lang": "ha"
+ },
+ "wen_scorpion": {
+  "text": "Scorpion",
+  "lang": "en"
+ },
+ "wha_scorpion": {
+  "text": "kunama",
+  "lang": "ha"
+ },
+ "wen_pigeon": {
+  "text": "Pigeon",
+  "lang": "en"
+ },
+ "wha_pigeon": {
+  "text": "tantabara",
+  "lang": "ha"
+ },
+ "wen_parrot": {
+  "text": "Parrot",
+  "lang": "en"
+ },
+ "wha_parrot": {
+  "text": "aku",
+  "lang": "ha"
+ },
+ "wen_owl": {
+  "text": "Owl",
+  "lang": "en"
+ },
+ "wha_owl": {
+  "text": "mujiya",
+  "lang": "ha"
+ },
+ "wen_eagle": {
+  "text": "Eagle",
+  "lang": "en"
+ },
+ "wha_eagle": {
+  "text": "gaggafa",
+  "lang": "ha"
+ },
+ "wen_crow": {
+  "text": "Crow",
+  "lang": "en"
+ },
+ "wha_crow": {
+  "text": "hankaka",
+  "lang": "ha"
+ },
+ "wen_bat": {
+  "text": "Bat",
+  "lang": "en"
+ },
+ "wha_bat": {
+  "text": "jemage",
+  "lang": "ha"
+ },
+ "wen_squirrel": {
+  "text": "Squirrel",
+  "lang": "en"
+ },
+ "wha_squirrel": {
+  "text": "kurege",
+  "lang": "ha"
+ },
+ "wen_vulture": {
+  "text": "Vulture",
+  "lang": "en"
+ },
+ "wha_vulture": {
+  "text": "ungulu",
+  "lang": "ha"
+ },
+ "wen_ostrich": {
+  "text": "Ostrich",
+  "lang": "en"
+ },
+ "wha_ostrich": {
+  "text": "jimina",
+  "lang": "ha"
+ },
+ "wen_worm": {
+  "text": "Worm",
+  "lang": "en"
+ },
+ "wha_worm": {
+  "text": "tsutsa",
+  "lang": "ha"
+ },
+ "wen_guava": {
+  "text": "Guava",
+  "lang": "en"
+ },
+ "wha_guava": {
+  "text": "gwaiba",
+  "lang": "ha"
+ },
+ "wen_coconut": {
+  "text": "Coconut",
+  "lang": "en"
+ },
+ "wha_coconut": {
+  "text": "kwakwa",
+  "lang": "ha"
+ },
+ "wen_lemon": {
+  "text": "Lemon",
+  "lang": "en"
+ },
+ "wha_lemon": {
+  "text": "lemon tsami",
+  "lang": "ha"
+ },
+ "wen_date": {
+  "text": "Date",
+  "lang": "en"
+ },
+ "wha_date": {
+  "text": "dabino",
+  "lang": "ha"
+ },
+ "wen_potato": {
+  "text": "Potato",
+  "lang": "en"
+ },
+ "wha_potato": {
+  "text": "dankali",
+  "lang": "ha"
+ },
+ "wen_cassava": {
+  "text": "Cassava",
+  "lang": "en"
+ },
+ "wha_cassava": {
+  "text": "rogo",
+  "lang": "ha"
+ },
+ "wen_millet": {
+  "text": "Millet",
+  "lang": "en"
+ },
+ "wha_millet": {
+  "text": "gero",
+  "lang": "ha"
+ },
+ "wen_ginger": {
+  "text": "Ginger",
+  "lang": "en"
+ },
+ "wha_ginger": {
+  "text": "citta",
+  "lang": "ha"
+ },
+ "wen_garlic": {
+  "text": "Garlic",
+  "lang": "en"
+ },
+ "wha_garlic": {
+  "text": "tafarnuwa",
+  "lang": "ha"
+ },
+ "wen_cabbage": {
+  "text": "Cabbage",
+  "lang": "en"
+ },
+ "wha_cabbage": {
+  "text": "kabeji",
+  "lang": "ha"
+ },
+ "wen_cucumber": {
+  "text": "Cucumber",
+  "lang": "en"
+ },
+ "wha_cucumber": {
+  "text": "kokwamba",
+  "lang": "ha"
+ },
+ "wen_pumpkin": {
+  "text": "Pumpkin",
+  "lang": "en"
+ },
+ "wha_pumpkin": {
+  "text": "kabewa",
+  "lang": "ha"
+ },
+ "wen_sugar": {
+  "text": "Sugar",
+  "lang": "en"
+ },
+ "wha_sugar": {
+  "text": "sukari",
+  "lang": "ha"
+ },
+ "wen_tea": {
+  "text": "Tea",
+  "lang": "en"
+ },
+ "wha_tea": {
+  "text": "shayi",
+  "lang": "ha"
+ },
+ "wen_coffee": {
+  "text": "Coffee",
+  "lang": "en"
+ },
+ "wha_coffee": {
+  "text": "kofi",
+  "lang": "ha"
+ },
+ "wen_butter": {
+  "text": "Butter",
+  "lang": "en"
+ },
+ "wha_butter": {
+  "text": "man shanu",
+  "lang": "ha"
+ },
+ "wen_cheese": {
+  "text": "Cheese",
+  "lang": "en"
+ },
+ "wha_cheese": {
+  "text": "cuku",
+  "lang": "ha"
+ },
+ "wen_meat": {
+  "text": "Meat",
+  "lang": "en"
+ },
+ "wha_meat": {
+  "text": "nama",
+  "lang": "ha"
+ },
+ "wen_soup": {
+  "text": "Soup",
+  "lang": "en"
+ },
+ "wha_soup": {
+  "text": "miya",
+  "lang": "ha"
+ },
+ "wen_oil": {
+  "text": "Oil",
+  "lang": "en"
+ },
+ "wha_oil": {
+  "text": "mai",
+  "lang": "ha"
+ },
+ "wen_biscuit": {
+  "text": "Biscuit",
+  "lang": "en"
+ },
+ "wha_biscuit": {
+  "text": "biskit",
+  "lang": "ha"
+ },
+ "wen_cake": {
+  "text": "Cake",
+  "lang": "en"
+ },
+ "wha_cake": {
+  "text": "kek",
+  "lang": "ha"
+ },
+ "wen_candy": {
+  "text": "Candy",
+  "lang": "en"
+ },
+ "wha_candy": {
+  "text": "alewa",
+  "lang": "ha"
+ },
+ "wen_window": {
+  "text": "Window",
+  "lang": "en"
+ },
+ "wha_window": {
+  "text": "taga",
+  "lang": "ha"
+ },
+ "wen_roof": {
+  "text": "Roof",
+  "lang": "en"
+ },
+ "wha_roof": {
+  "text": "jinka",
+  "lang": "ha"
+ },
+ "wen_wall": {
+  "text": "Wall",
+  "lang": "en"
+ },
+ "wha_wall": {
+  "text": "bango",
+  "lang": "ha"
+ },
+ "wen_fan": {
+  "text": "Fan",
+  "lang": "en"
+ },
+ "wha_fan": {
+  "text": "fanka",
+  "lang": "ha"
+ },
+ "wen_radio": {
+  "text": "Radio",
+  "lang": "en"
+ },
+ "wha_radio": {
+  "text": "rediyo",
+  "lang": "ha"
+ },
+ "wen_television": {
+  "text": "Television",
+  "lang": "en"
+ },
+ "wha_television": {
+  "text": "talabijin",
+  "lang": "ha"
+ },
+ "wen_fridge": {
+  "text": "Fridge",
+  "lang": "en"
+ },
+ "wha_fridge": {
+  "text": "firiji",
+  "lang": "ha"
+ },
+ "wen_stove": {
+  "text": "Stove",
+  "lang": "en"
+ },
+ "wha_stove": {
+  "text": "murhu",
+  "lang": "ha"
+ },
+ "wen_kettle": {
+  "text": "Kettle",
+  "lang": "en"
+ },
+ "wha_kettle": {
+  "text": "buta",
+  "lang": "ha"
+ },
+ "wen_bowl": {
+  "text": "Bowl",
+  "lang": "en"
+ },
+ "wha_bowl": {
+  "text": "kwano",
+  "lang": "ha"
+ },
+ "wen_basket": {
+  "text": "Basket",
+  "lang": "en"
+ },
+ "wha_basket": {
+  "text": "kwando",
+  "lang": "ha"
+ },
+ "wen_bottle": {
+  "text": "Bottle",
+  "lang": "en"
+ },
+ "wha_bottle": {
+  "text": "kwalba",
+  "lang": "ha"
+ },
+ "wen_box": {
+  "text": "Box",
+  "lang": "en"
+ },
+ "wha_box": {
+  "text": "akwati",
+  "lang": "ha"
+ },
+ "wen_candle": {
+  "text": "Candle",
+  "lang": "en"
+ },
+ "wha_candle": {
+  "text": "kyandir",
+  "lang": "ha"
+ },
+ "wen_matches": {
+  "text": "Matches",
+  "lang": "en"
+ },
+ "wha_matches": {
+  "text": "ashana",
+  "lang": "ha"
+ },
+ "wen_needle": {
+  "text": "Needle",
+  "lang": "en"
+ },
+ "wha_needle": {
+  "text": "allura",
+  "lang": "ha"
+ },
+ "wen_thread": {
+  "text": "Thread",
+  "lang": "en"
+ },
+ "wha_thread": {
+  "text": "zare",
+  "lang": "ha"
+ },
+ "wen_scissors": {
+  "text": "Scissors",
+  "lang": "en"
+ },
+ "wha_scissors": {
+  "text": "almakashi",
+  "lang": "ha"
+ },
+ "wen_rope": {
+  "text": "Rope",
+  "lang": "en"
+ },
+ "wha_rope": {
+  "text": "igiya",
+  "lang": "ha"
+ },
+ "wen_nail": {
+  "text": "Nail",
+  "lang": "en"
+ },
+ "wha_nail": {
+  "text": "ƙusa",
+  "lang": "ha"
+ },
+ "wen_hammer": {
+  "text": "Hammer",
+  "lang": "en"
+ },
+ "wha_hammer": {
+  "text": "guduma",
+  "lang": "ha"
+ },
+ "wen_axe": {
+  "text": "Axe",
+  "lang": "en"
+ },
+ "wha_axe": {
+  "text": "gatari",
+  "lang": "ha"
+ },
+ "wen_hoe": {
+  "text": "Hoe",
+  "lang": "en"
+ },
+ "wha_hoe": {
+  "text": "fartanya",
+  "lang": "ha"
+ },
+ "wen_ladder": {
+  "text": "Ladder",
+  "lang": "en"
+ },
+ "wha_ladder": {
+  "text": "tsani",
+  "lang": "ha"
+ },
+ "wen_towel": {
+  "text": "Towel",
+  "lang": "en"
+ },
+ "wha_towel": {
+  "text": "tawul",
+  "lang": "ha"
+ },
+ "wen_blanket": {
+  "text": "Blanket",
+  "lang": "en"
+ },
+ "wha_blanket": {
+  "text": "bargo",
+  "lang": "ha"
+ },
+ "wen_tongue": {
+  "text": "Tongue",
+  "lang": "en"
+ },
+ "wha_tongue": {
+  "text": "harshe",
+  "lang": "ha"
+ },
+ "wen_neck": {
+  "text": "Neck",
+  "lang": "en"
+ },
+ "wha_neck": {
+  "text": "wuya",
+  "lang": "ha"
+ },
+ "wen_shoulder": {
+  "text": "Shoulder",
+  "lang": "en"
+ },
+ "wha_shoulder": {
+  "text": "kafada",
+  "lang": "ha"
+ },
+ "wen_chest": {
+  "text": "Chest",
+  "lang": "en"
+ },
+ "wha_chest": {
+  "text": "kirji",
+  "lang": "ha"
+ },
+ "wen_belly": {
+  "text": "Belly",
+  "lang": "en"
+ },
+ "wha_belly": {
+  "text": "ciki",
+  "lang": "ha"
+ },
+ "wen_back": {
+  "text": "Back",
+  "lang": "en"
+ },
+ "wha_back": {
+  "text": "baya",
+  "lang": "ha"
+ },
+ "wen_knee": {
+  "text": "Knee",
+  "lang": "en"
+ },
+ "wha_knee": {
+  "text": "gwiwa",
+  "lang": "ha"
+ },
+ "wen_skin": {
+  "text": "Skin",
+  "lang": "en"
+ },
+ "wha_skin": {
+  "text": "fata",
+  "lang": "ha"
+ },
+ "wen_beard": {
+  "text": "Beard",
+  "lang": "en"
+ },
+ "wha_beard": {
+  "text": "gemu",
+  "lang": "ha"
+ },
+ "wen_face": {
+  "text": "Face",
+  "lang": "en"
+ },
+ "wha_face": {
+  "text": "fuska",
+  "lang": "ha"
+ },
+ "wen_sky": {
+  "text": "Sky",
+  "lang": "en"
+ },
+ "wha_sky": {
+  "text": "sama",
+  "lang": "ha"
+ },
+ "wen_leaf": {
+  "text": "Leaf",
+  "lang": "en"
+ },
+ "wha_leaf": {
+  "text": "ganye",
+  "lang": "ha"
+ },
+ "wen_grass": {
+  "text": "Grass",
+  "lang": "en"
+ },
+ "wha_grass": {
+  "text": "ciyawa",
+  "lang": "ha"
+ },
+ "wen_mountain": {
+  "text": "Mountain",
+  "lang": "en"
+ },
+ "wha_mountain": {
+  "text": "tsauni",
+  "lang": "ha"
+ },
+ "wen_sea": {
+  "text": "Sea",
+  "lang": "en"
+ },
+ "wha_sea": {
+  "text": "teku",
+  "lang": "ha"
+ },
+ "wen_lake": {
+  "text": "Lake",
+  "lang": "en"
+ },
+ "wha_lake": {
+  "text": "tafki",
+  "lang": "ha"
+ },
+ "wen_well": {
+  "text": "Well",
+  "lang": "en"
+ },
+ "wha_well": {
+  "text": "rijiya",
+  "lang": "ha"
+ },
+ "wen_farm": {
+  "text": "Farm",
+  "lang": "en"
+ },
+ "wha_farm": {
+  "text": "gona",
+  "lang": "ha"
+ },
+ "wen_forest": {
+  "text": "Forest",
+  "lang": "en"
+ },
+ "wha_forest": {
+  "text": "daji",
+  "lang": "ha"
+ },
+ "wen_smoke": {
+  "text": "Smoke",
+  "lang": "en"
+ },
+ "wha_smoke": {
+  "text": "hayaƙi",
+  "lang": "ha"
+ },
+ "wen_wind": {
+  "text": "Wind",
+  "lang": "en"
+ },
+ "wha_wind": {
+  "text": "iska",
+  "lang": "ha"
+ },
+ "wen_night": {
+  "text": "Night",
+  "lang": "en"
+ },
+ "wha_night": {
+  "text": "dare",
+  "lang": "ha"
+ },
+ "wen_rainbow": {
+  "text": "Rainbow",
+  "lang": "en"
+ },
+ "wha_rainbow": {
+  "text": "bakan gizo",
+  "lang": "ha"
+ },
+ "wen_lightning": {
+  "text": "Lightning",
+  "lang": "en"
+ },
+ "wha_lightning": {
+  "text": "walƙiya",
+  "lang": "ha"
+ },
+ "wen_dust": {
+  "text": "Dust",
+  "lang": "en"
+ },
+ "wha_dust": {
+  "text": "ƙura",
+  "lang": "ha"
+ },
+ "wen_mud": {
+  "text": "Mud",
+  "lang": "en"
+ },
+ "wha_mud": {
+  "text": "laka",
+  "lang": "ha"
+ },
+ "wen_hole": {
+  "text": "Hole",
+  "lang": "en"
+ },
+ "wha_hole": {
+  "text": "rami",
+  "lang": "ha"
+ },
+ "wen_shadow": {
+  "text": "Shadow",
+  "lang": "en"
+ },
+ "wha_shadow": {
+  "text": "inuwa",
+  "lang": "ha"
+ },
+ "wen_train": {
+  "text": "Train",
+  "lang": "en"
+ },
+ "wha_train": {
+  "text": "jirgin ƙasa",
+  "lang": "ha"
+ },
+ "wen_helicopter": {
+  "text": "Helicopter",
+  "lang": "en"
+ },
+ "wha_helicopter": {
+  "text": "helkwafta",
+  "lang": "ha"
+ },
+ "wen_canoe": {
+  "text": "Canoe",
+  "lang": "en"
+ },
+ "wha_canoe": {
+  "text": "kwale-kwale",
+  "lang": "ha"
+ },
+ "wen_tractor": {
+  "text": "Tractor",
+  "lang": "en"
+ },
+ "wha_tractor": {
+  "text": "tarakta",
+  "lang": "ha"
+ },
+ "wen_cart": {
+  "text": "Cart",
+  "lang": "en"
+ },
+ "wha_cart": {
+  "text": "amalanke",
+  "lang": "ha"
+ },
+ "wen_ambulance": {
+  "text": "Ambulance",
+  "lang": "en"
+ },
+ "wha_ambulance": {
+  "text": "motar asibiti",
+  "lang": "ha"
+ },
+ "wen_taxi": {
+  "text": "Taxi",
+  "lang": "en"
+ },
+ "wha_taxi": {
+  "text": "tasi",
+  "lang": "ha"
+ },
+ "cat_animals": {
+  "text": "Dabbobi",
+  "lang": "ha"
+ },
+ "cat_desc_animals": {
+  "text": "Dabbobi. Wannan darasi ne game da dabbobi iri-iri da suke rayuwa a kewayenmu.",
+  "lang": "ha"
+ },
+ "cat_start_animals": {
+  "text": "Yanzu za mu ga hotunan dabbobi. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_food": {
+  "text": "Abinci",
+  "lang": "ha"
+ },
+ "cat_desc_food": {
+  "text": "Abinci. Wannan darasi ne game da abinci iri-iri da muke ci a kullum.",
+  "lang": "ha"
+ },
+ "cat_start_food": {
+  "text": "Yanzu za mu ga hotunan abinci. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_home": {
+  "text": "Kayan gida",
+  "lang": "ha"
+ },
+ "cat_desc_home": {
+  "text": "Kayan gida. Wannan darasi ne game da kayayyakin da ake amfani da su a gida.",
+  "lang": "ha"
+ },
+ "cat_start_home": {
+  "text": "Yanzu za mu ga hotunan kayan gida. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_body": {
+  "text": "Jiki",
+  "lang": "ha"
+ },
+ "cat_desc_body": {
+  "text": "Jiki. Wannan darasi ne game da sassa daban-daban na jikin mutum.",
+  "lang": "ha"
+ },
+ "cat_start_body": {
+  "text": "Yanzu za mu ga hotunan sassan jiki. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_nature": {
+  "text": "Yanayi",
+  "lang": "ha"
+ },
+ "cat_desc_nature": {
+  "text": "Yanayi. Wannan darasi ne game da abubuwan da ke cikin yanayi da muhalli.",
+  "lang": "ha"
+ },
+ "cat_start_nature": {
+  "text": "Yanzu za mu ga hotunan abubuwan yanayi. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "cat_vehicles": {
+  "text": "Motoci",
+  "lang": "ha"
+ },
+ "cat_desc_vehicles": {
+  "text": "Motoci. Wannan darasi ne game da motoci da abubuwan hawa daban-daban.",
+  "lang": "ha"
+ },
+ "cat_start_vehicles": {
+  "text": "Yanzu za mu ga hotunan motoci. Za mu koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "w_intro": {
+  "text": "Yanzu, mu kalli hotuna.",
+  "lang": "ha"
+ },
+ "w_in_en": {
+  "text": "Da Turanci, shi ne...",
+  "lang": "ha"
+ },
+ "w_what": {
+  "text": "Ka san menene wannan?",
+  "lang": "ha"
+ },
+ "w_what_f": {
+  "text": "Kin san menene wannan?",
+  "lang": "ha"
+ },
+ "w_say_ha": {
+  "text": "Ka faɗa mini a Hausa.",
+  "lang": "ha"
+ },
+ "w_say_ha_f": {
+  "text": "Ki faɗa mini a Hausa.",
+  "lang": "ha"
+ },
+ "w_know_en": {
+  "text": "Ka san shi da Turanci?",
+  "lang": "ha"
+ },
+ "w_know_en_f": {
+  "text": "Kin san shi da Turanci?",
+  "lang": "ha"
+ },
+ "w_say_en": {
+  "text": "Ka faɗa da Turanci.",
+  "lang": "ha"
+ },
+ "w_say_en_f": {
+  "text": "Ki faɗa da Turanci.",
+  "lang": "ha"
+ },
+ "w_spell": {
+  "text": "Ka san yadda ake rubuta shi?",
+  "lang": "ha"
+ },
+ "w_spell_f": {
+  "text": "Kin san yadda ake rubuta shi?",
+  "lang": "ha"
+ },
+ "w_spell_go": {
+  "text": "Ka rubuta shi, harafi-harafi.",
+  "lang": "ha"
+ },
+ "w_spell_go_f": {
+  "text": "Ki rubuta shi, harafi-harafi.",
+  "lang": "ha"
+ },
+ "w_alldone": {
+  "text": "Madalla! Ka iya sosai.",
+  "lang": "ha"
+ },
+ "w_alldone_f": {
+  "text": "Madalla! Kin iya sosai.",
+  "lang": "ha"
+ },
+ "w_mix_intro": {
+  "text": "Yanzu, ka faɗi su duka da Turanci.",
+  "lang": "ha"
+ },
+ "w_mix_intro_f": {
+  "text": "Yanzu, ki faɗi su duka da Turanci.",
+  "lang": "ha"
+ },
+ "w_try": {
+  "text": "Yanzu, ka gwada ka faɗe shi da kanka.",
+  "lang": "ha"
+ },
+ "w_try_f": {
+  "text": "Yanzu, ki gwada ki faɗe shi da kanki.",
+  "lang": "ha"
+ },
+ "w_said_en": {
+  "text": "Daidai ne! Amma wannan Turanci ne. A Hausa kuwa, shi ne...",
+  "lang": "ha"
+ },
+ "w_no": {
+  "text": "A'a, ba shi ba ne. Wannan...",
+  "lang": "ha"
+ },
+ "w_menu_intro": {
+  "text": "Ga darussa dabam-dabam. Danna kowane hoto don sanin abin da ke cikinsa.",
+  "lang": "ha"
+ },
+ "w_sel_hint": {
+  "text": "Danna farin maɓalli don farawa. Ko danna baƙin maɓalli don komawa.",
+  "lang": "ha"
+ },
+ "w_tap_white": {
+  "text": "Danna farin maɓalli don farawa.",
+  "lang": "ha"
+ },
+ "act_pick": {
+  "text": "Zaɓi darasi ɗaya, don jin ƙarin bayani a kansa.",
+  "lang": "ha"
+ },
+ "act_desc_letters": {
+  "text": "Haruffa. A nan za mu koyi haruffan Turanci.",
+  "lang": "ha"
+ },
+ "act_desc_things": {
+  "text": "Abubuwa. A nan za mu ga hotuna, mu kuma koyi sunayensu da Turanci.",
+  "lang": "ha"
+ },
+ "act_desc_spell": {
+  "text": "Rubutu. A nan za mu koyi rubuta kalmomin Turanci, harafi-harafi.",
+  "lang": "ha"
+ },
+ "w_spell_lesson": {
+  "text": "Yanzu, za mu koyi rubuta sunayen waɗannan abubuwa da Turanci, harafi-harafi.",
+  "lang": "ha"
+ },
+ "w_spell_locked": {
+  "text": "Da farko, a gama darasi a cikin Abubuwa. Sa'an nan a dawo nan, don rubuta sunayensu.",
+  "lang": "ha"
+ },
+ "w_spell_test": {
+  "text": "Yanzu, gwaji! A rubuta kowanne, harafi-harafi.",
+  "lang": "ha"
+ },
+ "name_hint_m": {
+  "text": "Danna shuɗin maɓalli, sannan ka faɗi sunanka.",
+  "lang": "ha"
+ },
+ "name_hint_f": {
+  "text": "Danna shuɗin maɓalli, sannan ki faɗi sunanki.",
+  "lang": "ha"
+ },
+ "gender_ask": {
+  "text": "Sannu! Idan ke mace ce, danna fari. Idan kai namiji ne, danna ja.",
+  "lang": "ha"
+ }
+}
