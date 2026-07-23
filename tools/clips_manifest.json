@@ -2004,7 +2004,7 @@
   "lang": "ha"
  },
  "act_desc_numbers": {
-  "text": "Lambobi. A nan za mu koyi ƙidaya da Turanci.",
+  "text": "Lambobi. A nan za a nuna yatsun hannu, mu koyi ƙidaya da Turanci.",
   "lang": "ha"
  },
  "act_desc_quiz": {
@@ -2024,7 +2024,7 @@
   "lang": "ha"
  },
  "cat_start_numbers": {
-  "text": "Yanzu za mu koyi ƙidaya. Duba ɗigogi, sannan a faɗi lambar da Turanci.",
+  "text": "Yanzu za mu koyi ƙidaya. Za a nuna yatsun hannu. A ƙirga yatsun da aka ɗaga, sannan a faɗi lambar da Turanci.",
   "lang": "ha"
  },
  "quiz_intro": {
@@ -2253,6 +2253,10 @@
  },
  "wha_ten": {
   "text": "goma",
+  "lang": "ha"
+ },
+ "w_next_letter": {
+  "text": "Yanzu, a faɗi harafi na gaba.",
   "lang": "ha"
  }
 }
