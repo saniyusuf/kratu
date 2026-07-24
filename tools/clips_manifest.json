@@ -2260,5 +2260,25 @@
  "w_next_letter": {
   "text": "Yanzu, a faɗi harafi na gaba.",
   "lang": "ha"
+ },
+ "z_intro": {
+  "text": "Sannu! Sunana Zaki! Ni ne abokinka a nan, zan taimaka maka wajen koyo.",
+  "lang": "ha"
+ },
+ "z_speak": {
+  "text": "Duk lokacin da ake son yin magana, a danna ni. Zan saurara da kyau!",
+  "lang": "ha"
+ },
+ "z_rehear": {
+  "text": "Idan ana son sake jin bayanin abin da za a yi, a danna wannan ƙaramar alama da ke kusa da ni.",
+  "lang": "ha"
+ },
+ "z_askname_m": {
+  "text": "To, mu fara! Danna ni, sannan ka faɗi sunanka.",
+  "lang": "ha"
+ },
+ "z_askname_f": {
+  "text": "To, mu fara! Danna ni, sannan ki faɗi sunanki.",
+  "lang": "ha"
  }
 }
