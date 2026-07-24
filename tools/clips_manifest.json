@@ -2262,11 +2262,11 @@
   "lang": "ha"
  },
  "z_intro": {
-  "text": "Sannu! Sunana Ladi! Ni ce abokiyarka a nan, zan taimaka maka wajen koyo.",
+  "text": "Sannu! Sunana Laila! Ni ce abokiyarka a nan, zan taimaka maka wajen koyo.",
   "lang": "ha"
  },
  "z_speak": {
-  "text": "Duk lokacin da ake son yin magana, a danna ni. Zan saurara da kyau!",
+  "text": "Duk lokacin da ake son yin magana, a danna kaina. Zan saurara da kyau!",
   "lang": "ha"
  },
  "z_rehear": {
@@ -2274,11 +2274,15 @@
   "lang": "ha"
  },
  "z_askname_m": {
-  "text": "To, mu fara! Danna ni, sannan ka faɗi sunanka.",
+  "text": "To, mu fara! Danna kaina, sannan ka faɗi sunanka.",
   "lang": "ha"
  },
  "z_askname_f": {
-  "text": "To, mu fara! Danna ni, sannan ki faɗi sunanki.",
+  "text": "To, mu fara! Danna kaina, sannan ki faɗi sunanki.",
+  "lang": "ha"
+ },
+ "z_corner": {
+  "text": "Zan zauna a kusurwar allo, a can ƙasa. Duk lokacin da ake buƙatata, a danna kaina.",
   "lang": "ha"
  }
 }
