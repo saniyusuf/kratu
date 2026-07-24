@@ -1882,11 +1882,11 @@
   "lang": "ha"
  },
  "name_hint_m": {
-  "text": "Danna Laila, sannan ka faɗi sunanka.",
+  "text": "Danna kan Laila, sannan ka faɗi sunanka.",
   "lang": "ha"
  },
  "name_hint_f": {
-  "text": "Danna Laila, sannan ki faɗi sunanki.",
+  "text": "Danna kan Laila, sannan ki faɗi sunanki.",
   "lang": "ha"
  },
  "gender_ask": {
@@ -2266,7 +2266,7 @@
   "lang": "ha"
  },
  "z_speak": {
-  "text": "Duk lokacin da ake son yin magana, a danna kaina. Zan saurara da kyau!",
+  "text": "Duk lokacin da ake son yin magana, a danna kan Laila. Zan saurara da kyau!",
   "lang": "ha"
  },
  "z_rehear": {
