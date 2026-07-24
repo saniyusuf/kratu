@@ -1808,12 +1808,14 @@
   "lang": "ha"
  },
  "w_alldone": {
-  "text": "Madalla! Kaa iyaa sosai.",
-  "lang": "ha"
+  "text": "Madalla! Kaa, iyaa sosai.",
+  "lang": "ha",
+  "post": "comma gap trimmed to 90ms (see tools/trim_gap note in git history)"
  },
  "w_alldone_f": {
-  "text": "Madalla! Kin iyaa sosai.",
-  "lang": "ha"
+  "text": "Madalla! Kin, iyaa sosai.",
+  "lang": "ha",
+  "post": "comma gap trimmed to 90ms"
  },
  "w_mix_intro": {
   "text": "Yanzu, ka faɗi su duka da Turanci.",
