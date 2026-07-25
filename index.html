@@ -933,21 +933,26 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
   function zShow(on){ $('zaki').style.display=on?'block':'none'; }
   function zPoint(where){ var p=$('zaki-point'); if(!where){ p.style.display='none'; return; } p.className='at-'+where; p.style.display='block'; }
   $('zaki-img').addEventListener('click', function(){
+    if(introActive){ introFinish(); return; }
     if(stages.name.classList.contains('on') && !nameDone && !$('name-mic').disabled){ nameMic.click(); return; }
     if(stages.words.classList.contains('on') && wMicBtn.style.display!=='none'){ wMicBtn.click(); return; }
     if(stages.lesson.classList.contains('on') && micBtn.style.display!=='none'){ micBtn.click(); return; }
     helpNarrate();
   });
   $('zaki-hear').addEventListener('click', function(e){ e.stopPropagation(); helpNarrate(); });
+  var introActive=false;
+  function introFinish(){ if(!introActive) return; introActive=false; stopAudio(); $('zaki-point').style.display='none'; $('zaki').classList.remove('z-center'); zShow(false); setMode(''); startNameStep(); }
   function zakiIntro(){
+    introActive=true;
     show('name'); nameUiLock(true); $('name-q').textContent='';
-    zShow(true); $('zaki').classList.add('z-center');   // centre her boldly just for the intro
+    zShow(true); $('zaki').classList.add('z-center');
     play(ga('z_intro'), function(){
+      if(!introActive) return;
       zPoint('img');
       play('z_speak', function(){
-        zPoint(null); $('zaki').classList.remove('z-center');
-        zShow(false);            // Laila leaves the stage; she continues AS the speak button
-        startNameStep();         // normal name prompt (name_ask + 'tap Laila' hint)
+        if(!introActive) return;
+        introActive=false; zPoint(null); $('zaki').classList.remove('z-center');
+        zShow(false); startNameStep();
       });
     });
   }
