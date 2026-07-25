@@ -1846,7 +1846,7 @@
   "lang": "ha"
  },
  "w_sel_hint": {
-  "text": "Danna Laila don farawa. Ko danna baƙar Laila don komawa.",
+  "text": "Danna Laila don farawa. Ko danna baƙin maballi don komawa.",
   "lang": "ha"
  },
  "w_tap_white": {
@@ -2274,11 +2274,11 @@
   "lang": "ha"
  },
  "yn_hint": {
-  "text": "Idan ka san shi, danna Laila mai murmushi. In ba ka sani ba, danna baƙar Laila.",
+  "text": "Idan ka san shi, danna Laila. In ba ka sani ba, danna baƙin maballi.",
   "lang": "ha"
  },
  "yn_hint_f": {
-  "text": "Idan kin san shi, danna Laila mai murmushi. In ba ki sani ba, danna baƙar Laila.",
+  "text": "Idan kin san shi, danna Laila. In ba ki sani ba, danna baƙin maballi.",
   "lang": "ha"
  },
  "perm": {
