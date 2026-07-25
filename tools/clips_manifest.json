@@ -2272,5 +2272,9 @@
  "z_intro_f": {
   "text": "Sannu! Sunana Laila! Ni ce abokiyarki a nan, zan taimaka miki wajen koyo.",
   "lang": "ha"
+ },
+ "yn_hint": {
+  "text": "Idan daidai ne, danna Laila kore mai murmushi. Idan ba daidai ba, danna Laila ja.",
+  "lang": "ha"
  }
 }
