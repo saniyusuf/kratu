@@ -2274,7 +2274,15 @@
   "lang": "ha"
  },
  "yn_hint": {
-  "text": "Idan daidai ne, danna Laila kore mai murmushi. Idan ba daidai ba, danna Laila ja.",
+  "text": "Idan ka san shi, danna Laila mai murmushi. In ba ka sani ba, danna baƙar Laila.",
+  "lang": "ha"
+ },
+ "yn_hint_f": {
+  "text": "Idan kin san shi, danna Laila mai murmushi. In ba ki sani ba, danna baƙar Laila.",
+  "lang": "ha"
+ },
+ "perm": {
+  "text": "Danna Laila don ba da izinin murya.",
   "lang": "ha"
  }
 }
