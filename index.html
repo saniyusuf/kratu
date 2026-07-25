@@ -533,7 +533,7 @@
   // ---------- generic say-back ----------
   var micBtn=$('l-mic'), fbEl=$('l-fb'), letterEl=$('l-letter');
   var listenSeq=0, listening=false, listenTimer=null, activeListen=null, pendingListen=false;
-  function armMic(msg){ clearTimeout(listenTimer); listening=false; feeding=false; micBtn.classList.remove('rec'); micBtn.classList.add('urge'); setMode('listen'); fbEl.className='fb wait'; fbEl.textContent=msg||('Danna maɓalli, '+KA()+' faɗa.'); }
+  function armMic(msg){ clearTimeout(listenTimer); listening=false; feeding=false; micBtn.classList.remove('rec'); micBtn.classList.add('urge'); setMode('listen'); fbEl.className='fb wait'; fbEl.textContent=msg||('Danna kan Laila, '+KA()+' faɗa.'); }
   function stopListen(){ clearTimeout(listenTimer); listening=false; feeding=false; micBtn.classList.remove('rec'); ++listenSeq; }
   function beginListen(){
     if(listening) return;
@@ -552,7 +552,7 @@
     });
   }
   function endListen(my){ if(my!==listenSeq) return; feeding=false; listening=false; micBtn.classList.remove('rec'); clearTimeout(listenTimer); setMode(''); }
-  micBtn.addEventListener('click', function(){ if(listening){ stopListen(); armMic('Danna sannan '+KA()+' sake faɗa.'); } else beginListen(); });
+  micBtn.addEventListener('click', function(){ if(listening){ stopListen(); armMic('Danna kan Laila, sannan '+KA()+' sake faɗa.'); } else beginListen(); });
 
   // ================= engine =================
   var groupIdx=0, phase='', seq=[], seqIdx=0, attempts=0, busy=false, stagebar=$('l-stagebar');
@@ -587,14 +587,14 @@
   function askRecite(){
     if(seqIdx>=seq.length){ if(phase==='order'){ startRecite('scatter'); return; } groupDone(); return; }
     attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L);
-    activeListen={allowed:seq.slice(),onResult:onReciteResult}; play(ga('prompt'), function(){ armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); });
+    activeListen={allowed:seq.slice(),onResult:onReciteResult}; play(ga('prompt'), function(){ armMic('Danna kan Laila, '+KA()+' faɗi harafin.'); });
   }
   function onReciteResult(L, raw){
     var target=seq[seqIdx];
     if(L===target){ score(target,true); fbEl.className='fb good'; fbEl.textContent='Madalla! ✓'; letterEl.classList.add('correct'); play('kudos', function(){ seqIdx++; askRecite(); }); }
     else { attempts++; score(target,false,raw||L||'');
-      if(attempts>=2){ fbEl.className='fb bad'; fbEl.textContent='Ka saurara…'.replace('Ka', gender==='f'?'Ki':'Ka'); playSeq([[ga('remind'),1],['en_'+target,.8]], function(){ activeListen={allowed:seq.slice(),onResult:onReciteResult}; armMic('Sake gwadawa — danna maɓalli.'); }); }
-      else { fbEl.className='fb bad'; fbEl.textContent=L?('Wannan '+L+' ne — sake gwadawa.'):'Ban ji ba — sake gwadawa.'; play('retry', function(){ activeListen={allowed:seq.slice(),onResult:onReciteResult}; armMic('Sake gwadawa — danna maɓalli.'); }); }
+      if(attempts>=2){ fbEl.className='fb bad'; fbEl.textContent='Ka saurara…'.replace('Ka', gender==='f'?'Ki':'Ka'); playSeq([[ga('remind'),1],['en_'+target,.8]], function(){ activeListen={allowed:seq.slice(),onResult:onReciteResult}; armMic('Sake gwadawa — danna kan Laila.'); }); }
+      else { fbEl.className='fb bad'; fbEl.textContent=L?('Wannan '+L+' ne — sake gwadawa.'):'Ban ji ba — sake gwadawa.'; play('retry', function(){ activeListen={allowed:seq.slice(),onResult:onReciteResult}; armMic('Sake gwadawa — danna kan Laila.'); }); }
     }
   }
   function groupDone(){
@@ -607,7 +607,7 @@
 
   // MAIN TEST
   function startMainTest(){ phase='maintest'; seq=ALL.slice(); seqIdx=0; show('lesson'); showMic(true); showControls(true); $('l-seqrow').style.display='none'; setEyebrow('Babbar jarrabawa · A → Z'); setLetter(seq[0]); activeListen={allowed:ALL,onResult:onMainResult}; play(ga('test_order'), function(){ askMain(); }); }
-  function askMain(){ if(seqIdx>=seq.length){ startSeqTest(); return; } attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); activeListen={allowed:ALL,onResult:onMainResult}; play(ga('prompt'), function(){ armMic('Danna maɓalli, '+KA()+' faɗi harafin.'); }); }
+  function askMain(){ if(seqIdx>=seq.length){ startSeqTest(); return; } attempts=0; var L=seq[seqIdx]; renderStagebar(seq.length,seqIdx); setLetter(L); activeListen={allowed:ALL,onResult:onMainResult}; play(ga('prompt'), function(){ armMic('Danna kan Laila, '+KA()+' faɗi harafin.'); }); }
   function onMainResult(L, raw){ var target=seq[seqIdx];
     if(L===target){ score(target,true); fbEl.className='fb good'; fbEl.textContent='✓'; letterEl.classList.add('correct'); play('kudos', function(){ seqIdx++; askMain(); }); }
     else { attempts++; score(target,false,raw||L||''); if(attempts>=2){ playSeq([[ga('remind'),1],['en_'+target,.8]], function(){ activeListen={allowed:ALL,onResult:onMainResult}; armMic('Sake gwadawa.'); }); } else { fbEl.className='fb bad'; fbEl.textContent=L?('Wannan '+L+' ne — sake.'):'Ban ji ba — sake.'; play('retry', function(){ activeListen={allowed:ALL,onResult:onMainResult}; armMic('Sake gwadawa.'); }); } }
@@ -623,7 +623,7 @@
     given.forEach(function(g){ var s=document.createElement('span'); s.className='sq'; s.textContent=g; row.appendChild(s); });
     var q=document.createElement('span'); q.className='q'; q.textContent='?'; row.appendChild(q);
     renderStagebar(4, seqRounds-1, seqRounds-1);
-    activeListen={allowed:ALL,onResult:onSeqResult}; play('seq_prompt', function(){ armMic('Wanne ne na gaba? Danna maɓalli.'); });
+    activeListen={allowed:ALL,onResult:onSeqResult}; play('seq_prompt', function(){ armMic('Wanne ne na gaba? Danna kan Laila.'); });
   }
   function onSeqResult(L, raw){
     var row=$('l-seqrow'), q=row.querySelector('.q');
@@ -639,7 +639,7 @@
   }
 
   // controls
-  $('l-hear').addEventListener('click', function(){ stopListen(); var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(!L) return; playSeq([[ga('remind'),1],['en_'+L,.8]], function(){ if(micBtn.style.display!=='none') armMic('Danna maɓalli '+KA()+' faɗa.'); }); });
+  $('l-hear').addEventListener('click', function(){ stopListen(); var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(!L) return; playSeq([[ga('remind'),1],['en_'+L,.8]], function(){ if(micBtn.style.display!=='none') armMic('Danna kan Laila '+KA()+' faɗa.'); }); });
   $('l-skip').addEventListener('click', function(){ if(busy||phase==='done') return; stopListen(); stopAudio(); if(phase==='teach'){ ++teachGen; seqIdx++; teachStep(); return; } if(phase==='seqtest'){ var row=$('l-seqrow'); row.style.display='none'; letterEl.style.display=''; nextSeqRound(); return; } if(phase==='maintest'){ seqIdx++; askMain(); return; } seqIdx++; askRecite(); });
   $('home').addEventListener('click', function(){ if(stages.words.classList.contains('on')||stages.board.classList.contains('on')||stages.lesson.classList.contains('on')) goActivity(); else goBoard(); });
   $('replay').addEventListener('click', function(){ if(stages.words.classList.contains('on')){ if(typeof wHearFn==='function') wHearFn(); } else if(stages.activity.classList.contains('on')){ play('chooser'); } else if(stages.lesson.classList.contains('on')){ var L=(phase==='seqtest')?seqTarget:seq[seqIdx]; if(L&&AUDIO['en_'+L]) play('en_'+L,null,.82); } else if(stages.board.classList.contains('on')) play('board_intro'); else if(stages.name.classList.contains('on')) play(gender==='f'?'name_ask_f':'name_ask_m'); });
@@ -821,8 +821,8 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
     wLOpts={ grammar:WGRAM, timeout:6000, match:wMatch,
       onResult:function(r){ if(r===eng){ wfb.className='fb good'; wfb.textContent='✓ '+wItem.w; play('kudos', wLearnDone); return; }
         tries++; if(tries>=3){ wfb.className='fb wait'; wfb.textContent=wItem.w; playSeq([['remind',1],['wen_'+eng,1]], wLearnDone); }
-        else { wfb.className='fb bad'; wfb.textContent=(r?('“'+r.toUpperCase()+'” ✗'):'Sake gwadawa'); playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna maɓalli, '+KA()+' faɗa da Turanci.'); }); } } };
-    play(ga('w_say_en'), function(){ wArm('Danna maɓalli, '+KA()+' faɗa da Turanci.'); }); }
+        else { wfb.className='fb bad'; wfb.textContent=(r?('“'+r.toUpperCase()+'” ✗'):'Sake gwadawa'); playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna kan Laila, '+KA()+' faɗa da Turanci.'); }); } } };
+    play(ga('w_say_en'), function(){ wArm('Danna kan Laila, '+KA()+' faɗa da Turanci.'); }); }
   function wTeachEnglish(){ var eng=wEng(); wMicBtn.style.display='none'; wPic.style.display='';
     wHearFn=function(){ play('wen_'+eng); };
     playSeq([['w_in_en',1],['wen_'+eng,1]], function(){
@@ -830,7 +830,7 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
         onResult:function(r){ if(r===eng){ wfb.className='fb good'; wfb.textContent='✓ '+wItem.w; play('kudos', wLearnDone); }
           else { wfb.className='fb wait'; wfb.textContent=wItem.w; playSeq([['remind',1],['wen_'+eng,1]], wLearnDone); } } };
       wMicBtn.style.display='flex';
-      play(ga('w_try'), function(){ wArm('Danna maɓalli, '+KA()+' faɗa da Turanci.'); });
+      play(ga('w_try'), function(){ wArm('Danna kan Laila, '+KA()+' faɗa da Turanci.'); });
     }); }
 
   // ---- MIX: shuffle the lesson's objects, say each in English (verified) ----
@@ -841,8 +841,8 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
     wLOpts={ grammar:WGRAM, timeout:6000, match:wMatch,
       onResult:function(r){ if(r===eng){ wfb.className='fb good'; wfb.textContent='✓ '+wItem.w; play('kudos', function(){ wSi++; wMixNext(); }); return; }
         tries++; if(tries>=3){ wfb.className='fb wait'; wfb.textContent=wItem.w; playSeq([['remind',1],['wen_'+eng,1]], function(){ wSi++; wMixNext(); }); }
-        else { wfb.className='fb bad'; wfb.textContent=(r?('“'+r.toUpperCase()+'” ✗'):'Sake gwadawa'); playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna maɓalli, '+KA()+' faɗa da Turanci.'); }); } } };
-    play(ga('w_say_en'), function(){ wArm('Danna maɓalli, '+KA()+' faɗa da Turanci.'); }); }
+        else { wfb.className='fb bad'; wfb.textContent=(r?('“'+r.toUpperCase()+'” ✗'):'Sake gwadawa'); playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna kan Laila, '+KA()+' faɗa da Turanci.'); }); } } };
+    play(ga('w_say_en'), function(){ wArm('Danna kan Laila, '+KA()+' faɗa da Turanci.'); }); }
 
   // ---- SPELL lessons: photo -> hear the English word -> spell it letter-by-letter (voice-verified) ----
   function wSpellNextObj(){ if(wSi>=wSeq.length){ wStartSpellTest(); return; } wShowPic(wSeq[wSi], wTag('rubutu', wSi+1, wSeq.length)); var eng=wEng();
@@ -863,8 +863,8 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
     wLOpts={ grammar:[cur.toLowerCase(), NAMES[cur], '[unk]'], timeout:5000, match:function(t){ return classifyPhrase(t,[cur])?cur:null; },
       onResult:function(r){ if(r===cur){ wSpellIdx++; wRenderSlots(); wfb.className='fb good'; wfb.textContent='✓'; play('kudos', wSpellLetter); }
         else { tries++; if(tries>=2){ wSpellIdx++; wRenderSlots(); playSeq([[ga('remind'),1],['en_'+cur,.8]], wSpellLetter); }
-          else { wfb.className='fb bad'; wfb.textContent='Sake'; playSeq([['retry',1],['en_'+cur,.82]], function(){ wArm('Danna maɓalli, '+KA()+' faɗi harafin.'); }); } } } };
-    play('w_next_letter', function(){ wArm('Danna maɓalli, '+KA()+' faɗi harafin.'); }); }
+          else { wfb.className='fb bad'; wfb.textContent='Sake'; playSeq([['retry',1],['en_'+cur,.82]], function(){ wArm('Danna kan Laila, '+KA()+' faɗi harafin.'); }); } } } };
+    play('w_next_letter', function(){ wArm('Danna kan Laila, '+KA()+' faɗi harafin.'); }); }
   function wSpellWordDone(){ wSlots.style.display='flex'; wfb.className='fb good'; wfb.textContent='🎉 '+wItem.w; play('kudos', function(){ toast(wItem.w+' ✓'); wSi++; setTimeout(wSpellRoute,300); }); }
   function wSpellTeach(){ wMicBtn.style.display='none'; wSpellIdx=0; wRenderSlots(); var L=wItem.w.split('');
     (function nx(i){ if(i>=L.length){ wSpellIdx=L.length; wRenderSlots(); wfb.className='fb good'; wfb.textContent=wItem.w; play('kudos', function(){ toast(wItem.w+' ✓'); wSi++; setTimeout(wSpellRoute,300); }); return; }
@@ -921,8 +921,8 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
     wLOpts={ grammar:[eng,eng+'s','[unk]'], timeout:6000, match:function(t){ return t.indexOf(eng)>=0?'OK':null; },
       onResult:function(r){ if(r==='OK'){ wSlots.style.display='none'; wPic.style.display=''; wPic.innerHTML=wItem.img; wfb.className='fb good'; wfb.textContent='✓ '+word; playSeq([['read_good',1],['kudos',1]], function(){ rIdx++; rNext(); }); return; }
         tries++; if(tries>=3){ wfb.className='fb wait'; wfb.textContent=word; playSeq([['remind',1],['wen_'+eng,1]], function(){ rIdx++; rNext(); }); }
-        else { wfb.className='fb bad'; wfb.textContent='Sake gwadawa'; playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna maɓalli, '+KA()+' karanta kalmar.'); }); } } };
-    play('read_word', function(){ wArm('Danna maɓalli, '+KA()+' karanta kalmar.'); }); }
+        else { wfb.className='fb bad'; wfb.textContent='Sake gwadawa'; playSeq([['retry',1],['wen_'+eng,1]], function(){ wArm('Danna kan Laila, '+KA()+' karanta kalmar.'); }); } } };
+    play('read_word', function(){ wArm('Danna kan Laila, '+KA()+' karanta kalmar.'); }); }
 
   function wAllDone(){ stopAudio(); wStopL(); setMode(''); wResetUI(); wPic.style.display=''; wPic.textContent='🎉'; wEye.textContent='Ku iya!'; wfb.className='fb good'; wfb.textContent='Madalla!'; play(ga('w_alldone'), function(){ setTimeout(goActivity,1000); }); }
 
