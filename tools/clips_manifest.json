@@ -2268,5 +2268,9 @@
  "z_speak": {
   "text": "Duk lokacin da ake son yin magana, a danna kan Laila. Zan saurara da kyau!",
   "lang": "ha"
+ },
+ "z_intro_f": {
+  "text": "Sannu! Sunana Laila! Ni ce abokiyarki a nan, zan taimaka miki wajen koyo.",
+  "lang": "ha"
  }
 }
