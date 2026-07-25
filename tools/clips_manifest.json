@@ -2284,5 +2284,17 @@
  "perm": {
   "text": "Danna Laila don ba da izinin murya.",
   "lang": "ha"
+ },
+ "yn_hint_yes": {
+  "text": "Idan ka san shi, danna Laila.",
+  "lang": "ha"
+ },
+ "yn_hint_yes_f": {
+  "text": "Idan kin san shi, danna Laila.",
+  "lang": "ha"
+ },
+ "yn_hint_no": {
+  "text": "In ba haka ba, danna baƙin maballi.",
+  "lang": "ha"
  }
 }
