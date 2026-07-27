@@ -1284,7 +1284,7 @@
   "lang": "en-NG"
  },
  "wha_bottle": {
-  "text": "kwalba",
+  "text": "Kwalaba",
   "lang": "ha"
  },
  "wen_box": {
@@ -1644,7 +1644,7 @@
   "lang": "en-NG"
  },
  "wha_canoe": {
-  "text": "kwale-kwale",
+  "text": "Kwalekwale",
   "lang": "ha"
  },
  "wen_tractor": {
@@ -2286,15 +2286,23 @@
   "lang": "ha"
  },
  "yn_hint_yes": {
-  "text": "Idan ka san shi, danna Laila.",
+  "text": "Idan ka san amsar, danna Laila sannan ka faɗa.",
   "lang": "ha"
  },
  "yn_hint_yes_f": {
-  "text": "Idan kin san shi, danna Laila.",
+  "text": "Idan kin san amsar, danna Laila sannan ki faɗa.",
   "lang": "ha"
  },
  "yn_hint_no": {
   "text": "In ba haka ba, danna baƙin maballi.",
+  "lang": "ha"
+ },
+ "wen_stick": {
+  "text": "Stick",
+  "lang": "en-NG"
+ },
+ "wha_stick": {
+  "text": "Sanda",
   "lang": "ha"
  }
 }

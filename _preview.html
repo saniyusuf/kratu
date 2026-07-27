@@ -1,0 +1,55 @@
+<!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kratu — Krea render preview</title>
+<style>
+ body{margin:0;background:#14172b;color:#eee;font-family:system-ui,sans-serif}
+ header{position:sticky;top:0;background:#0f1222;padding:14px 20px;box-shadow:0 2px 12px rgba(0,0,0,.4);z-index:5;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+ h1{font-size:18px;margin:0;font-weight:800}
+ #count{font-size:15px;color:#ffd479;font-weight:700}
+ .sub{font-size:12px;color:#8b93b8}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:18px}
+ .cell{background:#1c2036;border-radius:12px;overflow:hidden;text-align:center;opacity:.25;transition:opacity .4s,transform .12s}
+ .cell.have{opacity:1;cursor:zoom-in}
+ .cell.have:hover{transform:translateY(-3px)}
+ .cell img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#0c0e1a}
+ .cell .lbl{font-size:13px;font-weight:700;padding:7px 4px;color:#dfe3f5}
+ .cell.pending .lbl:after{content:" · …";color:#6b7299}
+ .cell.skip{opacity:.5} .cell.skip .lbl:after{content:" · kept";color:#8b93b8}
+ /* lightbox */
+ #lb{position:fixed;inset:0;background:rgba(8,10,20,.94);display:none;align-items:center;justify-content:center;z-index:50;flex-direction:column;gap:14px}
+ #lb.on{display:flex}
+ #lb img{max-width:90vw;max-height:80vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.6)}
+ #lb .cap{font-size:22px;font-weight:800;letter-spacing:.02em}
+ #lb .cap small{color:#8b93b8;font-weight:600;font-size:14px;margin-left:10px}
+ #lb .x{position:absolute;top:18px;right:24px;font-size:34px;color:#cbd0ea;cursor:pointer;line-height:1}
+ #lb .nav{position:absolute;top:50%;transform:translateY(-50%);font-size:46px;color:#cbd0ea;cursor:pointer;user-select:none;padding:0 18px}
+ #lb .prev{left:6px} #lb .next{right:6px}
+ #lb .hint{position:absolute;bottom:18px;font-size:12px;color:#6b7299}
+</style></head><body>
+<header><h1>🐔 Kratu — Krea-dev renders</h1><span id="count">…</span><span class="sub">auto-refreshes every 15s · click any image to zoom</span></header>
+<div class="grid" id="grid"></div>
+<div id="lb"><span class="x" onclick="closeLb()">×</span><span class="nav prev" onclick="step(-1)">‹</span><span class="nav next" onclick="step(1)">›</span><img id="lbimg" alt=""><div class="cap" id="lbcap"></div><div class="hint">← → to browse · Esc to close</div></div>
+<script>
+ const KEYS=["dog","cat","goat","cow","sheep","horse","donkey","chicken","duck","lion","elephant","monkey","snake","camel","rabbit","ram","fish","bird","tortoise","lizard","frog","crocodile","ant","butterfly","rat","bee","apple","banana","orange","mango","pineapple","yam","corn","rice","beans","bread","egg","groundnut","onion","tomato","pepper","watermelon","pawpaw","carrot","okra","sugarcane","salt","chair","table","bed","door","cup","plate","spoon","knife","pot","bucket","broom","clock","key","book","umbrella","iron","cap","shoe","bag","mat","lamp","phone","soap","comb","bottle","eye","ear","nose","mouth","hand","leg","head","tooth","hair","finger","sun","moon","star","tree","fire","rain","stone","flower","river","cloud","sand","road","stick","car","bicycle","motorcycle","airplane","boat","bus","truck","tricycle","canoe"];
+ const SKIP=["key"];
+ const grid=document.getElementById("grid"), cells={};
+ const rendered=[]; // keys with images, for lightbox nav
+ let lbIdx=-1;
+ KEYS.forEach(k=>{ const d=document.createElement("div"); d.className="cell pending"+(SKIP.includes(k)?" skip":"");
+   d.innerHTML=`<img alt="${k}"><div class="lbl">${k}</div>`; grid.appendChild(d); cells[k]=d;
+   d.addEventListener("click",()=>{ if(d.classList.contains("have")) openLb(k); }); });
+ function refresh(){
+   KEYS.forEach(k=>{ const d=cells[k]; if(d.classList.contains("have")) return;
+     const t=new Image();
+     t.onload=()=>{ d.querySelector("img").src=t.src; d.classList.add("have"); d.classList.remove("pending"); if(!rendered.includes(k)) rendered.push(k); };
+     t.src=".render-krea/"+k+".png?cb="+Date.now(); });
+   setTimeout(()=>{ document.getElementById("count").textContent=document.querySelectorAll(".cell.have").length+" / "+KEYS.length+" rendered"; },1500);
+ }
+ function openLb(k){ lbIdx=rendered.indexOf(k); showLb(); document.getElementById("lb").classList.add("on"); }
+ function showLb(){ const k=rendered[lbIdx]; document.getElementById("lbimg").src=".render-krea/"+k+".png?cb="+Date.now();
+   document.getElementById("lbcap").innerHTML=k+" <small>"+(lbIdx+1)+" / "+rendered.length+"</small>"; }
+ function step(n){ if(!rendered.length) return; lbIdx=(lbIdx+n+rendered.length)%rendered.length; showLb(); }
+ function closeLb(){ document.getElementById("lb").classList.remove("on"); }
+ document.addEventListener("keydown",e=>{ if(!document.getElementById("lb").classList.contains("on")) return;
+   if(e.key==="Escape")closeLb(); if(e.key==="ArrowLeft")step(-1); if(e.key==="ArrowRight")step(1); });
+ document.getElementById("lb").addEventListener("click",e=>{ if(e.target.id==="lb")closeLb(); });
+ refresh(); setInterval(refresh,15000);
+</script></body></html>

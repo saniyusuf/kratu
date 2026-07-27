@@ -2,3 +2,4 @@ tools/.venv-img/
 tools/.models/
 tools/.genimg/
 .playwright-mcp/
+.render-krea/
