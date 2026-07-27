@@ -1572,7 +1572,7 @@
   "lang": "en-NG"
  },
  "wha_night": {
-  "text": "dare",
+  "text": "Dare",
   "lang": "ha"
  },
  "wen_rainbow": {
@@ -2303,6 +2303,198 @@
  },
  "wha_stick": {
   "text": "Sanda",
+  "lang": "ha"
+ },
+ "wen_mama": {
+  "text": "Mama",
+  "lang": "en-NG"
+ },
+ "wha_mama": {
+  "text": "Mama",
+  "lang": "ha"
+ },
+ "wen_baba": {
+  "text": "Baba",
+  "lang": "en-NG"
+ },
+ "wha_baba": {
+  "text": "Baba",
+  "lang": "ha"
+ },
+ "wen_boy": {
+  "text": "Boy",
+  "lang": "en-NG"
+ },
+ "wha_boy": {
+  "text": "Yaro",
+  "lang": "ha"
+ },
+ "wen_girl": {
+  "text": "Girl",
+  "lang": "en-NG"
+ },
+ "wha_girl": {
+  "text": "Yarinya",
+  "lang": "ha"
+ },
+ "wen_teacher": {
+  "text": "Teacher",
+  "lang": "en-NG"
+ },
+ "wha_teacher": {
+  "text": "Malam",
+  "lang": "ha"
+ },
+ "wen_friend": {
+  "text": "Friend",
+  "lang": "en-NG"
+ },
+ "wha_friend": {
+  "text": "Aboki",
+  "lang": "ha"
+ },
+ "wen_eat": {
+  "text": "Eat",
+  "lang": "en-NG"
+ },
+ "wha_eat": {
+  "text": "Ci",
+  "lang": "ha"
+ },
+ "wen_drink": {
+  "text": "Drink",
+  "lang": "en-NG"
+ },
+ "wha_drink": {
+  "text": "Sha",
+  "lang": "ha"
+ },
+ "wen_run": {
+  "text": "Run",
+  "lang": "en-NG"
+ },
+ "wha_run": {
+  "text": "Gudu",
+  "lang": "ha"
+ },
+ "wen_sit": {
+  "text": "Sit",
+  "lang": "en-NG"
+ },
+ "wha_sit": {
+  "text": "Zauna",
+  "lang": "ha"
+ },
+ "wen_sleep": {
+  "text": "Sleep",
+  "lang": "en-NG"
+ },
+ "wha_sleep": {
+  "text": "Barci",
+  "lang": "ha"
+ },
+ "wen_wash": {
+  "text": "Wash",
+  "lang": "en-NG"
+ },
+ "wha_wash": {
+  "text": "Wanka",
+  "lang": "ha"
+ },
+ "wen_play": {
+  "text": "Play",
+  "lang": "en-NG"
+ },
+ "wha_play": {
+  "text": "Wasa",
+  "lang": "ha"
+ },
+ "wen_kaftan": {
+  "text": "Kaftan",
+  "lang": "en-NG"
+ },
+ "wha_kaftan": {
+  "text": "Kaftani",
+  "lang": "ha"
+ },
+ "wen_hijab": {
+  "text": "Hijab",
+  "lang": "en-NG"
+ },
+ "wha_hijab": {
+  "text": "Hijabi",
+  "lang": "ha"
+ },
+ "wen_wrapper": {
+  "text": "Wrapper",
+  "lang": "en-NG"
+ },
+ "wha_wrapper": {
+  "text": "Zane",
+  "lang": "ha"
+ },
+ "wen_pencil": {
+  "text": "Pencil",
+  "lang": "en-NG"
+ },
+ "wha_pencil": {
+  "text": "Fensir",
+  "lang": "ha"
+ },
+ "wen_slate": {
+  "text": "Slate",
+  "lang": "en-NG"
+ },
+ "wha_slate": {
+  "text": "Allo",
+  "lang": "ha"
+ },
+ "wen_chalk": {
+  "text": "Chalk",
+  "lang": "en-NG"
+ },
+ "wha_chalk": {
+  "text": "Alli",
+  "lang": "ha"
+ },
+ "wen_board": {
+  "text": "Board",
+  "lang": "en-NG"
+ },
+ "wha_board": {
+  "text": "Allon aji",
+  "lang": "ha"
+ },
+ "wen_day": {
+  "text": "Day",
+  "lang": "en-NG"
+ },
+ "wha_day": {
+  "text": "Yini",
+  "lang": "ha"
+ },
+ "wen_morning": {
+  "text": "Morning",
+  "lang": "en-NG"
+ },
+ "wha_morning": {
+  "text": "Safiya",
+  "lang": "ha"
+ },
+ "wen_hot": {
+  "text": "Hot",
+  "lang": "en-NG"
+ },
+ "wha_hot": {
+  "text": "Zafi",
+  "lang": "ha"
+ },
+ "wen_cold": {
+  "text": "Cold",
+  "lang": "en-NG"
+ },
+ "wha_cold": {
+  "text": "Sanyi",
   "lang": "ha"
  }
 }
