@@ -2552,5 +2552,29 @@
 "press_allo": {
 "text": "danna baƙin allo.",
 "lang": "ha"
+},
+"spell_intro": {
+"text": "Yanzu, ka rubuta shi da Turanci. Akwai hanyoyi biyu.",
+"lang": "ha"
+},
+"spell_intro_f": {
+"text": "Yanzu, ki rubuta shi da Turanci. Akwai hanyoyi biyu.",
+"lang": "ha"
+},
+"spell_way_speak": {
+"text": "Ka danna Laila, ka faɗi harafin.",
+"lang": "ha"
+},
+"spell_way_speak_f": {
+"text": "Ki danna Laila, ki faɗi harafin.",
+"lang": "ha"
+},
+"spell_way_tap": {
+"text": "Ko kuma ka danna kowane harafi.",
+"lang": "ha"
+},
+"spell_way_tap_f": {
+"text": "Ko kuma ki danna kowane harafi.",
+"lang": "ha"
 }
 }
