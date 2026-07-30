@@ -1846,7 +1846,7 @@
 "lang": "ha"
 },
 "w_sel_hint": {
-"text": "Danna Laila don farawa. Ko danna baƙin allo don komawa.",
+"text": "Danna Laila don farawa. Don komawa,",
 "lang": "ha"
 },
 "w_tap_white": {
@@ -2274,11 +2274,11 @@
 "lang": "ha"
 },
 "yn_hint": {
-"text": "Idan ka san sunansa da Turanci, danna Laila. In ba haka ba, danna baƙin allo.",
+"text": "Idan ka san sunansa da Turanci, danna Laila. In ba haka ba,",
 "lang": "ha"
 },
 "yn_hint_f": {
-"text": "Idan kin san sunansa da Turanci, danna Laila. In ba haka ba, danna baƙin allo.",
+"text": "Idan kin san sunansa da Turanci, danna Laila. In ba haka ba,",
 "lang": "ha"
 },
 "perm": {
@@ -2294,7 +2294,7 @@
 "lang": "ha"
 },
 "yn_hint_no": {
-"text": "In ba haka ba, danna baƙin allo.",
+"text": "In ba haka ba,",
 "lang": "ha"
 },
 "wen_stick": {
@@ -2547,6 +2547,10 @@
 },
 "spell_tap_say_f": {
 "text": "Za ki iya danna harafin, ko ki faɗe shi.",
+"lang": "ha"
+},
+"press_allo": {
+"text": "danna baƙin allo.",
 "lang": "ha"
 }
 }
