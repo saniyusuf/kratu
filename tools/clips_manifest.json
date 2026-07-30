@@ -1846,7 +1846,7 @@
 "lang": "ha"
 },
 "w_sel_hint": {
-"text": "Danna Laila don farawa. Ko danna bakin allo don komawa.",
+"text": "Danna Laila don farawa. Ko danna baƙin allo don komawa.",
 "lang": "ha"
 },
 "w_tap_white": {
@@ -1998,7 +1998,7 @@
 "lang": "en-NG"
 },
 "act_desc_colors": {
-"text": "Launuka. A nan za mu koyi launuka da Turanci.",
+"text": "Launuka, wato kala. A nan za mu koyi launuka da Turanci.",
 "lang": "ha"
 },
 "act_desc_shapes": {
@@ -2018,7 +2018,7 @@
 "lang": "ha"
 },
 "cat_start_colors": {
-"text": "Yanzu za mu koyi launuka. Za mu faɗi sunayensu da Turanci.",
+"text": "Yanzu za mu koyi launuka, wato kala. Za mu faɗi sunayensu da Turanci.",
 "lang": "ha"
 },
 "cat_start_shapes": {
@@ -2274,11 +2274,11 @@
 "lang": "ha"
 },
 "yn_hint": {
-"text": "Idan ka san sunansa da Turanci, danna Laila. In ba haka ba, danna bakin allo.",
+"text": "Idan ka san sunansa da Turanci, danna Laila. In ba haka ba, danna baƙin allo.",
 "lang": "ha"
 },
 "yn_hint_f": {
-"text": "Idan kin san sunansa da Turanci, danna Laila. In ba haka ba, danna bakin allo.",
+"text": "Idan kin san sunansa da Turanci, danna Laila. In ba haka ba, danna baƙin allo.",
 "lang": "ha"
 },
 "perm": {
@@ -2294,7 +2294,7 @@
 "lang": "ha"
 },
 "yn_hint_no": {
-"text": "In ba haka ba, danna bakin allo.",
+"text": "In ba haka ba, danna baƙin allo.",
 "lang": "ha"
 },
 "wen_stick": {
@@ -2495,6 +2495,58 @@
 },
 "wha_cold": {
 "text": "Sanyi",
+"lang": "ha"
+},
+"spell_ord_1": {
+"text": "Danna ko a faɗi harafi na farko.",
+"lang": "ha"
+},
+"spell_ord_2": {
+"text": "Danna ko a faɗi harafi na biyu.",
+"lang": "ha"
+},
+"spell_ord_3": {
+"text": "Danna ko a faɗi harafi na uku.",
+"lang": "ha"
+},
+"spell_ord_4": {
+"text": "Danna ko a faɗi harafi na huɗu.",
+"lang": "ha"
+},
+"spell_ord_5": {
+"text": "Danna ko a faɗi harafi na biyar.",
+"lang": "ha"
+},
+"spell_ord_6": {
+"text": "Danna ko a faɗi harafi na shida.",
+"lang": "ha"
+},
+"spell_ord_7": {
+"text": "Danna ko a faɗi harafi na bakwai.",
+"lang": "ha"
+},
+"spell_ord_8": {
+"text": "Danna ko a faɗi harafi na takwas.",
+"lang": "ha"
+},
+"spell_ord_9": {
+"text": "Danna ko a faɗi harafi na tara.",
+"lang": "ha"
+},
+"spell_yes_hint": {
+"text": "Idan ka san yadda ake rubuta shi, danna Laila.",
+"lang": "ha"
+},
+"spell_yes_hint_f": {
+"text": "Idan kin san yadda ake rubuta shi, danna Laila.",
+"lang": "ha"
+},
+"spell_tap_say": {
+"text": "Za ka iya danna harafin, ko ka faɗe shi.",
+"lang": "ha"
+},
+"spell_tap_say_f": {
+"text": "Za ki iya danna harafin, ko ki faɗe shi.",
 "lang": "ha"
 }
 }
