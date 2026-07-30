@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kratu — Product Requirements Document</title>
+<style>
+:root{
+  --paper:#FBFAF6; --card:#FFFFFF; --ink:#16182A; --muted:#585B6E; --faint:#8A8DA0;
+  --line:#E7E3D8; --line-strong:#D8D3C4;
+  --indigo:#34459C; --indigo-soft:#EEF0FB;
+  --amber:#D98A22; --amber-soft:#FBF0DC;
+  --green:#2C8A57; --green-soft:#E4F2E9;
+  --red:#C0492B; --red-soft:#F8E6E0;
+  --shadow:0 1px 2px rgba(22,24,42,.05), 0 8px 30px rgba(22,24,42,.06);
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --maxw:900px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#131420; --card:#1B1D2B; --ink:#ECEBF2; --muted:#A7A9BA; --faint:#787B8F;
+    --line:#2A2C3D; --line-strong:#383B50;
+    --indigo:#8E9BEC; --indigo-soft:#20233A;
+    --amber:#EDAE4E; --amber-soft:#2E2517;
+    --green:#5BC08C; --green-soft:#16281E;
+    --red:#E88666; --red-soft:#2E1B16;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.34);
+  }
+}
+:root[data-theme="light"]{
+  --paper:#FBFAF6; --card:#FFFFFF; --ink:#16182A; --muted:#585B6E; --faint:#8A8DA0;
+  --line:#E7E3D8; --line-strong:#D8D3C4; --indigo:#34459C; --indigo-soft:#EEF0FB;
+  --amber:#D98A22; --amber-soft:#FBF0DC; --green:#2C8A57; --green-soft:#E4F2E9;
+  --red:#C0492B; --red-soft:#F8E6E0; --shadow:0 1px 2px rgba(22,24,42,.05), 0 8px 30px rgba(22,24,42,.06);
+}
+:root[data-theme="dark"]{
+  --paper:#131420; --card:#1B1D2B; --ink:#ECEBF2; --muted:#A7A9BA; --faint:#787B8F;
+  --line:#2A2C3D; --line-strong:#383B50; --indigo:#8E9BEC; --indigo-soft:#20233A;
+  --amber:#EDAE4E; --amber-soft:#2E2517; --green:#5BC08C; --green-soft:#16281E;
+  --red:#E88666; --red-soft:#2E1B16; --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+  font-size:16.5px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  font-feature-settings:"kern" 1;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; line-height:1.18; text-wrap:balance; color:var(--ink)}
+p{margin:0 0 1em}
+a{color:var(--indigo); text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--indigo); outline-offset:3px; border-radius:3px}
+strong{font-weight:650}
+sup{font-size:.62em; line-height:0; color:var(--amber); font-family:var(--mono); padding-left:1px}
+
+.eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.mono{font-family:var(--mono)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ---------- COVER ---------- */
+.cover{padding:76px 0 40px; border-bottom:1px solid var(--line)}
+.cover .eyebrow{color:var(--indigo)}
+.logomark{width:96px; height:96px; display:block; margin-bottom:26px; filter:drop-shadow(0 8px 18px rgba(120,74,16,.18))}
+.cover h1{font-size:clamp(52px,10vw,88px); margin:.08em 0 .1em; letter-spacing:-.015em; line-height:.98}
+.cover .lede{font-family:var(--serif); font-size:clamp(19px,2.6vw,23px); color:var(--muted); font-style:italic; max-width:34ch; margin:0 0 30px}
+.cover .thesis{max-width:60ch; color:var(--ink); font-size:17.5px}
+.metagrid{display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:34px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--card)}
+.metagrid div{padding:14px 16px; border-right:1px solid var(--line)}
+.metagrid div:last-child{border-right:none}
+.metagrid dt{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin-bottom:5px}
+.metagrid dd{margin:0; font-weight:600; font-size:14.5px}
+.fillin{color:var(--amber); border-bottom:1px dashed var(--amber); font-weight:600}
+
+/* ---------- TOC ---------- */
+.toc{padding:34px 0; border-bottom:1px solid var(--line)}
+.toc ol{list-style:none; margin:14px 0 0; padding:0; column-count:2; column-gap:44px}
+.toc li{break-inside:avoid; display:flex; gap:12px; align-items:baseline; padding:5px 0; border-bottom:1px dotted var(--line)}
+.toc .n{font-family:var(--mono); color:var(--amber); font-size:12.5px; width:26px; flex:none}
+.toc a{color:var(--ink); text-decoration:none; font-size:15px}
+.toc a:hover{color:var(--indigo)}
+
+/* ---------- SECTION ---------- */
+section.doc{padding:46px 0; border-bottom:1px solid var(--line)}
+.sec-head{display:flex; gap:16px; align-items:baseline; margin-bottom:8px}
+.sec-num{font-family:var(--mono); font-size:14px; color:var(--amber); font-weight:600; letter-spacing:.04em; flex:none}
+section.doc h2{font-size:clamp(27px,4.4vw,36px); margin:0; letter-spacing:-.01em}
+.sec-sub{color:var(--muted); font-size:17px; max-width:64ch; margin:4px 0 26px 0}
+section.doc h3{font-size:20px; margin:30px 0 8px}
+section.doc h4{font-size:15.5px; font-family:var(--sans); font-weight:700; margin:20px 0 6px; letter-spacing:.01em}
+.body{max-width:68ch}
+.body ul,.body ol{margin:0 0 1em; padding-left:1.2em}
+.body li{margin:.28em 0}
+.body li::marker{color:var(--indigo)}
+
+/* ---------- MODULES ---------- */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:26px 0}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:var(--shadow)}
+.stat .big{font-family:var(--serif); font-size:34px; font-weight:600; line-height:1; color:var(--indigo); font-variant-numeric:tabular-nums}
+.stat.amber .big{color:var(--amber)} .stat.green .big{color:var(--green)}
+.stat .lbl{margin-top:8px; font-size:13px; color:var(--muted); line-height:1.4}
+
+.callout{border-left:3px solid var(--amber); background:var(--amber-soft); border-radius:0 10px 10px 0; padding:14px 18px; margin:22px 0; font-size:14.5px}
+.callout.indigo{border-color:var(--indigo); background:var(--indigo-soft)}
+.callout.green{border-color:var(--green); background:var(--green-soft)}
+.callout .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); display:block; margin-bottom:4px}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:24px 0}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:24px 0}
+.card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow); break-inside:avoid}
+.card h4{margin-top:0}
+.chip{display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.04em; padding:2px 8px; border-radius:999px; background:var(--indigo-soft); color:var(--indigo); border:1px solid color-mix(in srgb,var(--indigo) 22%, transparent); margin:2px 3px 2px 0}
+
+/* persona */
+.persona{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin:16px 0; box-shadow:var(--shadow); break-inside:avoid}
+.persona .av{width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; background:var(--indigo-soft)}
+.persona h4{margin:0 0 2px}
+.persona .role{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber)}
+
+/* flow / pipeline */
+.flow{display:flex; gap:0; align-items:stretch; margin:26px 0; overflow-x:auto; padding-bottom:6px}
+.flow .step{flex:1 1 0; min-width:130px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; position:relative; box-shadow:var(--shadow)}
+.flow .step + .step{margin-left:26px}
+.flow .step + .step::before{content:"→"; position:absolute; left:-22px; top:50%; transform:translateY(-50%); color:var(--amber); font-size:18px; font-family:var(--mono)}
+.flow .step .t{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint)}
+.flow .step .h{font-family:var(--serif); font-weight:600; font-size:16px; margin:5px 0}
+.flow .step p{font-size:12.5px; color:var(--muted); margin:0}
+
+/* loop */
+.loop{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; margin:24px 0}
+.loop .n{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; box-shadow:var(--shadow)}
+.loop .n .num{font-family:var(--mono); font-size:11px; color:var(--amber)}
+.loop .n .h{font-weight:700; font-size:14px; margin:4px 0 3px}
+.loop .n p{font-size:12.5px; color:var(--muted); margin:0}
+
+/* architecture stack */
+.stack{margin:24px 0; border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow)}
+.layer{display:grid; grid-template-columns:150px 1fr; gap:0; border-bottom:1px solid var(--line); background:var(--card)}
+.layer:last-child{border-bottom:none}
+.layer .name{padding:14px 16px; background:var(--indigo-soft); font-family:var(--mono); font-size:12px; font-weight:600; color:var(--indigo); display:flex; align-items:center; letter-spacing:.02em}
+.layer .items{padding:12px 14px; display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.pill{font-size:12.5px; padding:4px 10px; border-radius:7px; background:var(--paper); border:1px solid var(--line-strong); color:var(--ink)}
+
+/* tables */
+.tablewrap{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:12px}
+table{border-collapse:collapse; width:100%; font-size:14px; background:var(--card); min-width:560px}
+th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+thead th{background:var(--indigo-soft); color:var(--indigo); font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+td .id{font-family:var(--mono); font-size:12px; color:var(--amber); font-weight:600}
+.tag{font-family:var(--mono); font-size:10.5px; padding:2px 7px; border-radius:5px; white-space:nowrap}
+.tag.must{background:var(--red-soft); color:var(--red)}
+.tag.should{background:var(--amber-soft); color:var(--amber)}
+.tag.could{background:var(--indigo-soft); color:var(--indigo)}
+.tag.done{background:var(--green-soft); color:var(--green)}
+
+/* roadmap */
+.road{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:0; margin:26px 0; border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.phase{padding:16px 16px 18px; border-right:1px solid var(--line); background:var(--card); position:relative}
+.phase:last-child{border-right:none}
+.phase .ph{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--amber)}
+.phase .when{font-weight:700; font-size:15px; margin:3px 0 8px}
+.phase .bar{height:5px; border-radius:3px; background:linear-gradient(90deg,var(--indigo),var(--amber)); margin-bottom:10px}
+.phase ul{margin:0; padding-left:1.05em; font-size:12.5px; color:var(--muted)}
+.phase li{margin:.2em 0}
+
+/* risk matrix */
+.matrix{display:grid; grid-template-columns:90px repeat(3,1fr); gap:6px; margin:22px 0; font-size:12px}
+.matrix .cell{border:1px solid var(--line); border-radius:8px; padding:9px 10px; min-height:58px; background:var(--card)}
+.matrix .axis{background:transparent; border:none; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); display:flex; align-items:center; padding:4px}
+.matrix .hi{background:var(--red-soft)} .matrix .med{background:var(--amber-soft)} .matrix .lo{background:var(--green-soft)}
+.matrix .cell b{font-size:11px}
+
+/* budget bars */
+.budget{margin:22px 0}
+.brow{display:grid; grid-template-columns:200px 1fr 64px; gap:12px; align-items:center; padding:7px 0}
+.brow .cat{font-size:13.5px}
+.brow .track{height:12px; background:var(--paper); border:1px solid var(--line); border-radius:7px; overflow:hidden}
+.brow .fill{height:100%; background:linear-gradient(90deg,var(--indigo),color-mix(in srgb,var(--indigo) 55%,var(--amber)))}
+.brow .pct{font-family:var(--mono); font-size:13px; text-align:right; font-variant-numeric:tabular-nums; color:var(--muted)}
+
+.two-list{columns:2; column-gap:36px; margin:12px 0}
+.two-list li{break-inside:avoid}
+@media (max-width:720px){
+  .metagrid,.grid2,.grid3{grid-template-columns:1fr}
+  .toc ol,.two-list{column-count:1; columns:1}
+  .layer{grid-template-columns:1fr}
+  .layer .name{border-bottom:1px solid var(--line)}
+  .brow{grid-template-columns:120px 1fr 48px}
+  .wrap{padding:0 18px}
+}
+@media (prefers-reduced-motion:no-preference){
+  a,.stat{transition:color .15s ease}
+}
+footer.doc{padding:40px 0 70px; color:var(--faint); font-size:12.5px}
+footer.doc .mono{color:var(--muted)}
+hr.soft{border:none; border-top:1px solid var(--line); margin:26px 0}
+
+@media print{
+  :root{--paper:#fff; --card:#fff; --shadow:none}
+  body{font-size:11pt}
+  .wrap{max-width:none; padding:0}
+  section.doc{padding:14px 0}
+  .cover{padding-top:8px}
+  .sec-head{break-after:avoid}
+  .card,.persona,.stat,.tablewrap,.road,.stack,.flow,.matrix,.callout,.loop .n,tr{break-inside:avoid}
+  h2,h3,h4{break-after:avoid}
+  a{color:var(--ink); text-decoration:none}
+  .toc{break-after:page}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===================== COVER ===================== -->
+<header class="cover">
+  <span class="eyebrow">Product Requirements Document · Grant Submission</span>
+  <svg class="logomark" viewBox="0 0 240 240" role="img" aria-label="Laila, the Kratu mascot">
+    <defs>
+      <radialGradient id="b3" cx="38%" cy="30%" r="80%"><stop offset="0%" stop-color="#F6B45A"/><stop offset="55%" stop-color="#EC9B3C"/><stop offset="100%" stop-color="#D07E22"/></radialGradient>
+      <radialGradient id="be3" cx="45%" cy="38%" r="70%"><stop offset="0%" stop-color="#FCE3B4"/><stop offset="100%" stop-color="#F4C578"/></radialGradient>
+      <linearGradient id="w3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E58C2E"/><stop offset="100%" stop-color="#C6741F"/></linearGradient>
+      <linearGradient id="c3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EF5A4C"/><stop offset="100%" stop-color="#CE3A2C"/></linearGradient>
+      <linearGradient id="bk3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F8B94A"/><stop offset="100%" stop-color="#E08E28"/></linearGradient>
+      <radialGradient id="e3" cx="40%" cy="35%" r="70%"><stop offset="0%" stop-color="#4a4033"/><stop offset="100%" stop-color="#23201a"/></radialGradient>
+    </defs>
+    <g stroke="#D9861F" stroke-width="6" stroke-linecap="round" fill="none"><path d="M88 220 h30 M103 220 v8 M96 226 l7-6 M110 226 l-7-6"/><path d="M124 220 h30 M139 220 v8 M132 226 l7-6 M146 226 l-7-6"/></g>
+    <path d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+    <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/>
+    <ellipse cx="98" cy="110" rx="40" ry="26" fill="#ffffff" opacity="0.18"/>
+    <ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+    <path d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+    <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+    <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+    <path d="M78 96 q42 -22 84 0" stroke="#F4C63D" stroke-width="5" fill="none"/>
+    <path d="M159 111 l3 -15 q14 4 20 16 q-12 -2 -23 -1z" fill="#E4483B"/>
+    <circle cx="86" cy="152" r="12" fill="#F4A7B1" opacity="0.85"/><circle cx="154" cy="152" r="12" fill="#F4A7B1" opacity="0.85"/>
+    <g><circle cx="102" cy="131" r="16" fill="#fff"/><circle cx="138" cy="131" r="16" fill="#fff"/><circle cx="104" cy="133" r="8.5" fill="url(#e3)"/><circle cx="136" cy="133" r="8.5" fill="url(#e3)"/><circle cx="107.5" cy="129.5" r="3.2" fill="#fff"/><circle cx="139.5" cy="129.5" r="3.2" fill="#fff"/></g>
+    <path d="M107 150 q13 5 26 0 l-4 6 q-9 4 -18 0 z" fill="url(#bk3)"/>
+    <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+  </svg>
+  <h1>Kratu</h1>
+  <p class="lede">An offline, voice-first tutor that teaches non-literate Hausa-speaking children to read and speak English.</p>
+  <p class="thesis">Kratu turns a low-cost tablet — with no internet required after setup — into a patient, one-to-one teacher. A child who cannot yet read taps a friendly guide, hears a word, sees a photograph from their own world, says it aloud, and is understood. Every lesson runs fully on-device, in the child's mother tongue, guided by voice so that literacy is never a prerequisite for learning.</p>
+  <dl class="metagrid">
+    <div><dt>Document</dt><dd>PRD v1.0</dd></div>
+    <div><dt>Date</dt><dd><span class="fillin">[Month YYYY]</span></dd></div>
+    <div><dt>Prepared&nbsp;by</dt><dd><span class="fillin">[Applicant / Org]</span></dd></div>
+    <div><dt>Status</dt><dd>Working prototype</dd></div>
+  </dl>
+</header>
+
+<!-- ===================== TOC ===================== -->
+<nav class="toc" aria-label="Contents">
+  <span class="eyebrow">Contents</span>
+  <ol>
+    <li><span class="n">01</span><a href="#s1">Executive Summary</a></li>
+    <li><span class="n">02</span><a href="#s2">The Problem &amp; Context</a></li>
+    <li><span class="n">03</span><a href="#s3">Vision, Mission &amp; Objectives</a></li>
+    <li><span class="n">04</span><a href="#s4">Theory of Change</a></li>
+    <li><span class="n">05</span><a href="#s5">Beneficiaries &amp; Personas</a></li>
+    <li><span class="n">06</span><a href="#s6">Product Overview</a></li>
+    <li><span class="n">07</span><a href="#s7">Learning Model &amp; Pedagogy</a></li>
+    <li><span class="n">08</span><a href="#s8">Feature Set</a></li>
+    <li><span class="n">09</span><a href="#s9">Content &amp; Curriculum</a></li>
+    <li><span class="n">10</span><a href="#s10">Experience &amp; Accessibility</a></li>
+    <li><span class="n">11</span><a href="#s11">Technology &amp; Engineering</a></li>
+    <li><span class="n">12</span><a href="#s12">Privacy, Safety &amp; Data</a></li>
+    <li><span class="n">13</span><a href="#s13">Deployment &amp; Operations</a></li>
+    <li><span class="n">14</span><a href="#s14">Roadmap &amp; Milestones</a></li>
+    <li><span class="n">15</span><a href="#s15">Monitoring &amp; Evaluation</a></li>
+    <li><span class="n">16</span><a href="#s16">Impact &amp; SDG Alignment</a></li>
+    <li><span class="n">17</span><a href="#s17">Risks &amp; Mitigations</a></li>
+    <li><span class="n">18</span><a href="#s18">Sustainability &amp; Scaling</a></li>
+    <li><span class="n">19</span><a href="#s19">Budget Framework</a></li>
+    <li><span class="n">20</span><a href="#s20">Team &amp; Governance</a></li>
+    <li><span class="n">21</span><a href="#s21">Requirements Register</a></li>
+    <li><span class="n">22</span><a href="#s22">Appendices &amp; Sources</a></li>
+  </ol>
+</nav>
+
+<!-- 01 EXEC SUMMARY -->
+<section class="doc" id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Executive Summary</h2></div>
+  <p class="sec-sub">What Kratu is, who it serves, and why it deserves funding — in one page.</p>
+  <div class="body">
+    <p><strong>Kratu is a self-contained learning application</strong> that teaches foundational English literacy — letters, sounds, vocabulary, spelling, and reading — to children who speak Hausa and cannot yet read in any language. It runs entirely offline on an ordinary tablet, is operated by voice and touch rather than text, and grounds every lesson in photographs and words drawn from the child's own environment in northern Nigeria.</p>
+    <p>The learning experience is anchored by <strong>Laila</strong>, a friendly on-screen guide. A child hears an instruction in Hausa, taps Laila, speaks a word in English, and Kratu — using on-device speech recognition — tells them instantly whether they were understood. No teacher needs to be literate in English; no lesson needs a network connection; no child needs to be able to read a single word to begin.</p>
+    <div class="stats">
+      <div class="stat"><div class="big tnum">100%</div><div class="lbl">Offline after install — no connectivity required to teach</div></div>
+      <div class="stat amber"><div class="big tnum">0</div><div class="lbl">Reading ability assumed of the child at start</div></div>
+      <div class="stat green"><div class="big tnum">130+</div><div class="lbl">Photorealistic, context-relevant vocabulary images</div></div>
+      <div class="stat"><div class="big tnum">8</div><div class="lbl">Learning modes from alphabet to reading</div></div>
+    </div>
+    <p>A working prototype exists today: a single-file web application with staged A–Z alphabet lessons, thirteen vocabulary domains, spelling and reading modes, gender-aware voice guidance, and fully on-device speech recognition. <strong>This grant funds the path from prototype to a field-ready learning programme</strong> — content depth, a hardened offline installer, a facilitator toolkit, a supervised pilot at a physical learning centre, and an independent evaluation of learning gains.</p>
+    <div class="callout indigo"><span class="k">Scope of this request</span> Funding covers curriculum completion, a field-ready offline build and facilitator toolkit, a monitored pilot with <span class="fillin">[N]</span> children, and an independent evaluation of learning gains — producing a template that can be replicated across underserved, low-connectivity communities.</div>
+  </div>
+</section>
+
+<!-- 02 PROBLEM -->
+<section class="doc" id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2>The Problem &amp; Context</h2></div>
+  <p class="sec-sub">A literacy emergency, concentrated where infrastructure is thinnest and mother-tongue tools are rarest.</p>
+  <div class="body">
+    <p>Nigeria carries one of the largest out-of-school and low-literacy populations in the world, and that burden is not spread evenly. It falls hardest on the north, on rural communities, and on girls — precisely the children for whom conventional, text-first, connected, English-medium edtech is least usable.</p>
+    <div class="stats">
+      <div class="stat amber"><div class="big tnum">~10–18M<sup>‡</sup></div><div class="lbl">Out-of-school children in Nigeria — among the highest counts globally</div></div>
+      <div class="stat"><div class="big tnum">50M+<sup>‡</sup></div><div class="lbl">First-language Hausa speakers across West Africa</div></div>
+      <div class="stat"><div class="big tnum">North<sup>‡</sup></div><div class="lbl">Region where out-of-school and low-literacy rates concentrate</div></div>
+      <div class="stat green"><div class="big tnum">Girls<sup>‡</sup></div><div class="lbl">Disproportionately excluded from foundational literacy</div></div>
+    </div>
+    <h3>Why existing tools do not reach these children</h3>
+    <ul>
+      <li><strong>They assume literacy to teach literacy.</strong> Most learning apps require the child to read menus, buttons, and instructions — a barrier for the very children who most need to learn to read.</li>
+      <li><strong>They assume connectivity.</strong> Streamed video, cloud accounts, and online speech services fail in communities with intermittent or absent internet and unreliable power.</li>
+      <li><strong>They assume English as the language of instruction,</strong> leaving a Hausa-speaking child with no bridge from what they know to what they are learning.</li>
+      <li><strong>They assume an adult teacher fluent in English</strong> is present and available for one-to-one practice — a scarce resource in under-resourced classrooms.</li>
+      <li><strong>They are culturally distant</strong> — illustrations, names, and examples drawn from contexts the child has never seen.</li>
+    </ul>
+    <div class="callout"><span class="k">The gap Kratu fills</span> A learning tool that needs no reading ability, no internet, no English-literate adult, and no cultural translation — because it is voice-first, offline-first, mother-tongue-scaffolded, and built from the child's own world.</div>
+    <p class="mono" style="font-size:12px;color:var(--faint)"><sup>‡</sup> Figures are indicative and must be replaced with current, cited statistics before submission. Suggested sources listed in §22.</p>
+  </div>
+</section>
+
+<!-- 03 VISION -->
+<section class="doc" id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Vision, Mission &amp; Objectives</h2></div>
+  <div class="body">
+    <div class="grid2">
+      <div class="card"><h4>Vision</h4><p style="margin:0">A generation of children in low-connectivity, mother-tongue communities who cross the threshold into literacy — regardless of whether a school, a network, or an English-speaking teacher can reach them.</p></div>
+      <div class="card"><h4>Mission</h4><p style="margin:0">To put a patient, one-to-one, voice-guided literacy tutor into the hands of every child who has been left behind by text-first, connected, English-only education.</p></div>
+    </div>
+    <h3>Programme objectives</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:44px">#</th><th>Objective</th><th style="width:34%">Success looks like</th></tr></thead>
+        <tbody>
+          <tr><td class="id">O1</td><td>Complete a coherent, staged curriculum from alphabet to first reading.</td><td>A child can progress end-to-end with no external instruction.</td></tr>
+          <tr><td class="id">O2</td><td>Prove measurable learning gains in a supervised pilot.</td><td>Statistically meaningful pre/post improvement in letter, word, and sound recognition.</td></tr>
+          <tr><td class="id">O3</td><td>Make deployment turnkey for a non-specialist facilitator.</td><td>A centre can install and run Kratu with a one-page guide.</td></tr>
+          <tr><td class="id">O4</td><td>Guarantee it works with zero connectivity and modest hardware.</td><td>Full function on an entry-level tablet, offline, on battery/solar.</td></tr>
+          <tr><td class="id">O5</td><td>Produce a replicable template for other languages and regions.</td><td>Content and voice layers swappable without re-engineering.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 04 THEORY OF CHANGE -->
+<section class="doc" id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Theory of Change</h2></div>
+  <p class="sec-sub">How inputs become lasting literacy outcomes.</p>
+  <div class="flow" role="list">
+    <div class="step" role="listitem"><span class="t">Inputs</span><div class="h">What we put in</div><p>Tablets, the Kratu app, mother-tongue audio, a trained facilitator, a safe learning space.</p></div>
+    <div class="step" role="listitem"><span class="t">Activities</span><div class="h">What happens</div><p>Daily short, voice-guided sessions; listen → identify → speak → verify practice loops.</p></div>
+    <div class="step" role="listitem"><span class="t">Outputs</span><div class="h">What is produced</div><p>Hours of practice; letters, words, and sounds attempted and verified per child.</p></div>
+    <div class="step" role="listitem"><span class="t">Outcomes</span><div class="h">What changes</div><p>Recognition of letters &amp; sounds; a growing spoken-English vocabulary; early decoding.</p></div>
+    <div class="step" role="listitem"><span class="t">Impact</span><div class="h">Why it matters</div><p>Children literacy-ready for school and life — including those a classroom never reached.</p></div>
+  </div>
+  <div class="body">
+    <p><strong>Core assumption.</strong> When the barriers of reading-ability, connectivity, language, and teacher-availability are removed, a motivated child with regular access to patient, responsive, mother-tongue practice will make foundational literacy gains. Kratu's design removes each of those four barriers by construction; the pilot (§15) exists to test the assumption and quantify the gain.</p>
+  </div>
+</section>
+
+<!-- 05 PERSONAS -->
+<section class="doc" id="s5">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Beneficiaries &amp; Personas</h2></div>
+  <p class="sec-sub">Designed around the people who will actually hold the device.</p>
+  <div class="persona">
+    <div class="av">🧒</div>
+    <div><span class="role">Primary learner</span><h4>Amina, 7 — speaks Hausa, cannot yet read</h4>
+    <p style="margin:0">Has never attended, or has irregularly attended, formal school. Curious and capable, but locked out of every tool that requires reading to begin. <strong>Needs:</strong> to be spoken to, not read at; instant, encouraging feedback; and pictures of a world she recognizes. <strong>Kratu gives her:</strong> a guide who talks, a microphone that understands her, and success on the very first tap.</p></div>
+  </div>
+  <div class="persona">
+    <div class="av">🧑‍🏫</div>
+    <div><span class="role">Facilitator</span><h4>Musa — community centre volunteer</h4>
+    <p style="margin:0">Committed and trusted, but not a trained teacher and not fluent in English. <strong>Needs:</strong> a tool that teaches without him having to; simple setup; a way to see who is progressing. <strong>Kratu gives him:</strong> a self-driving lesson, a one-page install, and per-child progress at a glance.</p></div>
+  </div>
+  <div class="persona">
+    <div class="av">🏫</div>
+    <div><span class="role">Host site</span><h4>The learning centre — community, NGO, or faith-based</h4>
+    <p style="margin:0">A room, a handful of tablets, intermittent power, and often no reliable internet (connectivity, where present, may be via satellite such as Starlink). <strong>Needs:</strong> tools that survive offline, share devices across many children, and require minimal supervision. <strong>Kratu gives it:</strong> a fully offline programme, per-child profiles on shared hardware, and low operating overhead.</p></div>
+  </div>
+</section>
+
+<!-- 06 PRODUCT OVERVIEW -->
+<section class="doc" id="s6">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Product Overview</h2></div>
+  <div class="body">
+    <p>Kratu presents as a warm, calm, full-screen application. A child chooses their profile, and is then guided entirely by voice through a set of learning modes that build on one another. Every screen has a consistent grammar: <strong>a friendly guide who speaks, a large picture, and one or two large touch targets</strong> — never a wall of text or a cluttered menu.</p>
+    <div class="grid3">
+      <div class="card"><h4>Guided by Laila</h4><p style="margin:0">A 3-D animated mascot who gives instructions, invites the child to speak, and celebrates success — the single, consistent point of interaction.</p></div>
+      <div class="card"><h4>Spoken, not written</h4><p style="margin:0">All instruction is audio in Hausa; the target language (English) is heard and spoken. Reading is the goal, never the entry requirement.</p></div>
+      <div class="card"><h4>Answered by voice</h4><p style="margin:0">The child speaks into the device and is understood on-device — turning passive tapping into active production.</p></div>
+    </div>
+    <div class="callout green"><span class="k">Design north star</span> A four-year-old who has never seen a screen should be able to succeed at their first lesson without a single word of written instruction.</div>
+  </div>
+</section>
+
+<!-- 07 PEDAGOGY -->
+<section class="doc" id="s7">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Learning Model &amp; Pedagogy</h2></div>
+  <p class="sec-sub">A tight, repeatable practice loop, staged so difficulty rises only as mastery grows.</p>
+  <div class="body">
+    <h3>The core practice loop</h3>
+    <div class="loop">
+      <div class="n"><div class="num">1 · Hear</div><div class="h">Listen</div><p>Kratu names the item in Hausa, then models the English word.</p></div>
+      <div class="n"><div class="num">2 · See</div><div class="h">Anchor</div><p>A photograph from the child's world fixes meaning to the sound.</p></div>
+      <div class="n"><div class="num">3 · Choose</div><div class="h">Decide</div><p>"Do you know it in English?" — tap Laila to try, or the board to be taught.</p></div>
+      <div class="n"><div class="num">4 · Speak</div><div class="h">Produce</div><p>The child says the word aloud; the device listens on-device.</p></div>
+      <div class="n"><div class="num">5 · Know</div><div class="h">Verify</div><p>Instant, encouraging feedback — correct, or gently modelled again.</p></div>
+    </div>
+    <h3>Pedagogical foundations</h3>
+    <ul>
+      <li><strong>Mother-tongue scaffolding.</strong> New English is always bridged from Hausa the child already owns — reducing cognitive load and honouring their first language.</li>
+      <li><strong>Active production over passive recognition.</strong> The child <em>speaks</em>; spoken production, verified in the moment, builds durable phonological memory that tap-only quizzes cannot.</li>
+      <li><strong>Immediate, judgement-free feedback.</strong> Every attempt is met at once — celebrated or re-modelled — never punished. Repetition is safe.</li>
+      <li><strong>Staged mastery.</strong> Content is chunked and gated: the alphabet is taught in small groups; vocabulary is learned then mixed then tested; each stage unlocks the next.</li>
+      <li><strong>Dual coding.</strong> Sound + image + spoken production together encode each item through multiple channels.</li>
+      <li><strong>Low-stimulation calm.</strong> No timers, scores, or loud game mechanics that overwhelm a first-time learner — attention stays on the word.</li>
+    </ul>
+    <h3>Progression</h3>
+    <div class="flow">
+      <div class="step"><span class="t">Stage 1</span><div class="h">Letters</div><p>Recognise and voice A–Z in small taught groups, then mixed and tested.</p></div>
+      <div class="step"><span class="t">Stage 2</span><div class="h">Words</div><p>Learn vocabulary by domain: hear → identify → speak → verify.</p></div>
+      <div class="step"><span class="t">Stage 3</span><div class="h">Spelling</div><p>Hear a word, then build it letter-by-letter by voice.</p></div>
+      <div class="step"><span class="t">Stage 4</span><div class="h">Reading</div><p>Decode whole words aloud — the first act of reading.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 FEATURES -->
+<section class="doc" id="s8">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Feature Set</h2></div>
+  <p class="sec-sub">The learning modes and system features, with current build status.</p>
+  <div class="body">
+    <h3>Learning modes</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:150px">Mode (Hausa)</th><th>What the child does</th><th style="width:90px">Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Haruffa</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Alphabet</span></td><td>Learn and voice letters A–Z in staged groups, then mixed practice and a full test.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td><strong>Abubuwa</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Objects</span></td><td>Identify and speak everyday things across many domains, verified by voice.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td><strong>Rubutu</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Spelling</span></td><td>Hear a word and assemble it letter-by-letter, spoken aloud.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td><strong>Karatu</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Reading</span></td><td>Read whole words aloud — verified decoding.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td><strong>Launuka · Siffofi · Lambobi</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Colours · Shapes · Numbers</span></td><td>Foundational concept vocabulary as dedicated domains.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td><strong>Nemo hoto</strong><br><span class="mono" style="font-size:11px;color:var(--faint)">Listen &amp; find</span></td><td>Hear a word and choose the matching picture — receptive practice.</td><td><span class="tag should">Expanding</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>System features</h3>
+    <div class="grid2">
+      <div class="card"><h4>Laila, the voice guide 🐓</h4><p style="margin:0">A 3-D animated mascot — she blinks, breathes, and glows when inviting the child to speak. Pressing Laila directly turns on the listener; she <em>is</em> the microphone.</p></div>
+      <div class="card"><h4>Gender-aware voice</h4><p style="margin:0">Instructions are grammatically matched to the child's gender in Hausa (e.g. <em>ka</em>/<em>ki</em>), so guidance sounds natural and personal.</p></div>
+      <div class="card"><h4>On-device speech recognition</h4><p style="margin:0">The child's speech is recognised locally, with no audio ever leaving the device — the engine that makes "speak and be understood" possible offline.</p></div>
+      <div class="card"><h4>Per-child progress</h4><p style="margin:0">Named profiles track mastery per mode and domain on shared hardware, so many children can share one tablet.</p></div>
+      <div class="card"><h4>Culturally grounded images</h4><p style="margin:0">A library of photorealistic pictures shows animals, food, homes, and people the child actually knows — a goat, not a moose.</p></div>
+      <div class="card"><h4>Fully offline</h4><p style="margin:0">Every asset — audio, images, recogniser — ships inside the app. After install, nothing needs a network.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONTENT -->
+<section class="doc" id="s9">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Content &amp; Curriculum</h2></div>
+  <p class="sec-sub">The vocabulary domains, and the media that bring each word to life.</p>
+  <div class="body">
+    <h3>Vocabulary domains</h3>
+    <p>Words are organised into recognisable domains so learning is contextual and cumulative:</p>
+    <p style="margin:.2em 0 1.2em">
+      <span class="chip">Dabbobi · Animals</span><span class="chip">Abinci · Food</span><span class="chip">Kayan gida · Home</span><span class="chip">Jiki · Body</span><span class="chip">Yanayi · Nature</span><span class="chip">Motoci · Vehicles</span><span class="chip">Mutane · People</span><span class="chip">Ayyuka · Actions</span><span class="chip">Tufafi · Clothing</span><span class="chip">Makaranta · School</span><span class="chip">Launuka · Colours</span><span class="chip">Siffofi · Shapes</span><span class="chip">Lambobi · Numbers</span>
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="big tnum">13</div><div class="lbl">Vocabulary domains, alphabet, spelling &amp; reading</div></div>
+      <div class="stat amber"><div class="big tnum">130+</div><div class="lbl">Unique photorealistic images, culturally specific</div></div>
+      <div class="stat green"><div class="big tnum">2</div><div class="lbl">Audio languages — Hausa guidance, English target</div></div>
+      <div class="stat"><div class="big tnum">A–Z</div><div class="lbl">Full alphabet with per-letter sound &amp; word</div></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h4>Audio</h4><p style="margin:0">Every instruction, word, and letter is a pre-generated voice clip in Hausa and English, bundled in the app — clear, consistent, and available offline.</p></div>
+      <div class="card"><h4>Imagery</h4><p style="margin:0">Photorealistic images generated and curated for cultural fit — the animals, foods, and people of the child's environment, not stock clip-art.</p></div>
+      <div class="card"><h4>Grant-funded depth</h4><p style="margin:0">This grant expands each domain toward richer coverage and adds early sentence and phrase work beyond single words.</p></div>
+    </div>
+    <div class="callout"><span class="k">Editorial control</span> All content is reviewed by native Hausa speakers and educators for linguistic accuracy, cultural appropriateness, and pronunciation — a standing quality gate, not a one-off pass.</div>
+  </div>
+</section>
+
+<!-- 10 UX / ACCESSIBILITY -->
+<section class="doc" id="s10">
+  <div class="sec-head"><span class="sec-num">10</span><h2>Experience &amp; Accessibility</h2></div>
+  <p class="sec-sub">Principles that make the product usable by a non-literate first-time user.</p>
+  <div class="body">
+    <div class="grid2">
+      <div class="card"><h4>No reading to learn to read</h4><p style="margin:0">Every action is reachable by listening and tapping. Written labels are decorative reinforcement, never the only path.</p></div>
+      <div class="card"><h4>One decision per screen</h4><p style="margin:0">Large targets, generous spacing, and at most a couple of choices keep a first-time learner from ever being lost.</p></div>
+      <div class="card"><h4>Consistent grammar</h4><p style="margin:0">The same guide, in the same place, doing the same thing on every screen — predictability lowers anxiety and builds independence.</p></div>
+      <div class="card"><h4>Forgiving &amp; patient</h4><p style="margin:0">No penalties, timers, or dead-ends. A child can replay, retry, or step back at any moment, endlessly.</p></div>
+      <div class="card"><h4>Low-power, low-stimulation</h4><p style="margin:0">Calm colour, minimal motion, no jarring sound — kinder on attention and on battery.</p></div>
+      <div class="card"><h4>Robust on modest hardware</h4><p style="margin:0">Designed for entry-level tablets and small screens, with touch targets sized for small hands.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 TECHNOLOGY -->
+<section class="doc" id="s11">
+  <div class="sec-head"><span class="sec-num">11</span><h2>Technology &amp; Engineering</h2></div>
+  <p class="sec-sub">A reference description of how Kratu is built — the stack, the pipelines, the data model, and the on-device speech engine that makes an offline talking tutor possible.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="big">Web</div><div class="lbl">Open standards (HTML / CSS / JS) — no proprietary runtime</div></div>
+    <div class="stat amber"><div class="big">On-device</div><div class="lbl">Speech recognition runs locally in WebAssembly</div></div>
+    <div class="stat green"><div class="big tnum">0</div><div class="lbl">Network calls required to deliver a lesson</div></div>
+    <div class="stat"><div class="big">1 file</div><div class="lbl">Self-contained application artifact</div></div>
+  </div>
+
+  <h3>11.1 · System design at a glance</h3>
+  <div class="stack">
+    <div class="layer"><div class="name">Experience</div><div class="items"><span class="pill">Full-screen web UI</span><span class="pill">Voice + touch, no reading</span><span class="pill">Animated SVG mascot (Laila)</span></div></div>
+    <div class="layer"><div class="name">Learning logic</div><div class="items"><span class="pill">Staged lesson engine</span><span class="pill">Mastery gating</span><span class="pill">Per-child progress store</span></div></div>
+    <div class="layer"><div class="name">Speech in</div><div class="items"><span class="pill">Vosk / Kaldi recogniser (WASM)</span><span class="pill">Grammar-constrained decoding</span><span class="pill">Web Audio capture pipeline</span></div></div>
+    <div class="layer"><div class="name">Speech out</div><div class="items"><span class="pill">Pre-generated Hausa + English clips</span><span class="pill">Gender-aware selection</span><span class="pill">Bundled, no network</span></div></div>
+    <div class="layer"><div class="name">Media</div><div class="items"><span class="pill">WebP image library</span><span class="pill">Encoded audio (data URIs)</span><span class="pill">Vector mascot &amp; icons</span></div></div>
+    <div class="layer"><div class="name">Delivery</div><div class="items"><span class="pill">Single self-contained artifact</span><span class="pill">Cache-first / installable (roadmap)</span><span class="pill">Runs from local storage</span></div></div>
+    <div class="layer"><div class="name">Hardware</div><div class="items"><span class="pill">Entry-level Android tablet</span><span class="pill">Battery / solar</span><span class="pill">Optional satellite for updates only</span></div></div>
+  </div>
+  <div class="body">
+    <p>Kratu is a <strong>framework-free, single-artifact web application</strong>. There is no server, no account system, and no cloud dependency in the learning path: the interface, lesson logic, speech recogniser, audio, and images all live inside the package and execute on the device. Being built on the open web platform means it runs across the widest range of low-cost hardware without per-platform rebuilds.</p>
+  </div>
+
+  <h3>11.2 · On-device speech recognition</h3>
+  <div class="body">
+    <p>The enabling technology — and the hardest engineering — is recognising a child's speech <strong>entirely on the device, with no connectivity</strong>. Kratu uses a <strong>Vosk</strong> speech recogniser (built on the Kaldi engine) compiled to <strong>WebAssembly</strong>, with a compact acoustic model bundled in the app. Audio is captured through the browser's Web Audio pipeline and streamed to the recogniser frame-by-frame; nothing is ever transmitted off the device.</p>
+    <div class="flow" role="list">
+      <div class="step" role="listitem"><span class="t">Capture</span><div class="h">Microphone</div><p>getUserMedia — mono, echo-cancelled, noise-suppressed.</p></div>
+      <div class="step" role="listitem"><span class="t">Stream</span><div class="h">Web Audio</div><p>AudioContext → processor node feeds raw frames.</p></div>
+      <div class="step" role="listitem"><span class="t">Decode</span><div class="h">Recogniser (WASM)</div><p>Kaldi model returns partial + final text on-device.</p></div>
+      <div class="step" role="listitem"><span class="t">Match</span><div class="h">Grammar &amp; fuzzy match</div><p>Result mapped to the lesson's expected target.</p></div>
+      <div class="step" role="listitem"><span class="t">Respond</span><div class="h">Feedback</div><p>Correct → advance; else gently model &amp; retry.</p></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:34%">Component</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Engine</td><td>Vosk (Kaldi-based) offline recogniser, compiled to WebAssembly for the browser.</td></tr>
+          <tr><td>Model</td><td>Compact bundled acoustic model (≈ <span class="tnum">40&nbsp;MB</span>), loaded once from local storage.</td></tr>
+          <tr><td>Audio capture</td><td>Web Audio API — single-channel, echo cancellation and noise suppression on; frames streamed live to the recogniser.</td></tr>
+          <tr><td>Grammar constraint</td><td>The recogniser is restricted to the <em>expected</em> tokens for the current task (the letters in a group, or a domain's words). This sharply raises accuracy on child speech and cuts compute.</td></tr>
+          <tr><td>Matching layer</td><td>Recognised text is mapped to the target with tolerant matching; up to a few forgiving retries before the word is re-modelled.</td></tr>
+          <tr><td>Privacy</td><td>All processing is local. No audio is recorded to disk, transmitted, or sent to any service.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><span class="k">Design consequence</span> Because recognition is grammar-constrained per lesson, Kratu can be both accurate and fast on modest hardware — it only ever has to decide between a small, known set of expected answers, not transcribe open speech.</div>
+  </div>
+
+  <h3>11.3 · Guidance audio (speech out)</h3>
+  <div class="body">
+    <p>Every instruction, letter, and word the child hears is a <strong>pre-generated voice clip</strong>, bundled inside the app as encoded audio so playback never touches the network. Two languages run in parallel: <strong>Hausa</strong> for all guidance, and <strong>English</strong> as the target being taught. Clips are selected at runtime, including <strong>gender-aware variants</strong> so instructions are grammatically correct for the child (Hausa distinguishes, e.g., <em>ka</em> / <em>ki</em>).</p>
+    <div class="grid2">
+      <div class="card"><h4>Current build</h4><p style="margin:0">Guidance audio is produced from text-to-speech, layered and packaged by a build step, and embedded directly in the app as encoded clips.</p></div>
+      <div class="card"><h4>Production path</h4><p style="margin:0">For final quality and clean licensing, the programme moves guidance audio to <strong>native-speaker recordings</strong> (a grant content deliverable, §9/§19), keeping the same runtime.</p></div>
+    </div>
+  </div>
+
+  <h3>11.4 · Visual content pipeline</h3>
+  <div class="body">
+    <p>Kratu's pictures are <strong>photorealistic and culturally specific</strong> — a goat, not a moose; local food, homes, and people. They are produced with modern <strong>text-to-image diffusion models</strong> (FLUX family) run locally, from a curated prompt library, then reviewed for cultural fit and pronunciation alignment.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:34%">Stage</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Generation</td><td>FLUX diffusion models (a higher-fidelity model for finals, a fast model for iteration) run locally on Apple-silicon hardware, driven by a versioned prompt library.</td></tr>
+          <tr><td>Curation</td><td>Every image is reviewed by native speakers/educators for accuracy and appropriateness before it enters the library.</td></tr>
+          <tr><td>Optimisation</td><td>Downscaled to ≈ 640&nbsp;px on the long edge and re-encoded to <strong>WebP (~q90)</strong>, alpha-safe and visually lossless — small files for constrained storage.</td></tr>
+          <tr><td>Packaging</td><td>Optimised images are embedded in the app so they load instantly and fully offline.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>11.5 · Lesson engine &amp; data model</h3>
+  <div class="body">
+    <p><strong>Content is data, not code.</strong> Vocabulary domains, the alphabet, and each mode's sequence are described declaratively; the same engine drives every mode. This is what makes new languages and regions a content exercise rather than a rebuild.</p>
+    <ul>
+      <li><strong>Content model.</strong> Each domain is a list of items; an item carries its written word, its image, and the keys of its Hausa and English audio clips. The alphabet is grouped into small taught sets.</li>
+      <li><strong>Phase machine.</strong> A mode advances through phases — for words: <em>learn → mixed → test</em>; the alphabet: <em>taught group → mixed → full test</em>; plus dedicated spelling, reading, and listen-and-find phases.</li>
+      <li><strong>Mastery gating.</strong> Progress unlocks the next chunk; verified spoken answers, not mere taps, move the child forward.</li>
+      <li><strong>Progress store.</strong> Per-child profiles and mastery are persisted locally on the device (browser storage), keyed by profile — so many children share one tablet with independent progress and no personal data collected.</li>
+    </ul>
+  </div>
+
+  <h3>11.6 · Offline delivery, storage &amp; footprint</h3>
+  <div class="body">
+    <p>Kratu ships as a <strong>self-contained artifact</strong> with all media inlined, so it runs from local storage with no network. Installable offline caching (service worker / PWA) so it launches like a native app from the home screen is a near-term <strong>hardening deliverable</strong> (§14, Phase 2).</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:40%">Characteristic</th><th>Value <span class="mono" style="font-size:10px;color:var(--faint)">(indicative — confirm on shipping build)</span></th></tr></thead>
+        <tbody>
+          <tr><td>Application + media bundle</td><td class="tnum">≈ <span class="fillin">[15–25]</span> MB (HTML, encoded audio, WebP images)</td></tr>
+          <tr><td>Speech model</td><td class="tnum">≈ 40 MB (bundled once)</td></tr>
+          <tr><td>Total on-device footprint</td><td class="tnum">≈ <span class="fillin">[~55–65]</span> MB</td></tr>
+          <tr><td>Runtime dependencies</td><td>A modern mobile browser engine (bundled on any current Android tablet)</td></tr>
+          <tr><td>Connectivity</td><td>None to teach; optional network only to install or update</td></tr>
+          <tr><td>Distribution</td><td>Side-load once from a file or memory card; no app-store dependency required</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>11.7 · Interface, rendering &amp; the mascot</h3>
+  <div class="body">
+    <p>The interface is standard web UI, tuned for a first-time, non-literate user: large targets, one decision per screen, calm colour, and reduced-motion awareness. <strong>Laila</strong> — the guide the child taps to speak — is a single <strong>vector (SVG) mascot</strong> with gradient 3-D shading and lightweight CSS animation (an idle breathe and a blink). Being vector, she is razor-sharp at any screen size and costs almost nothing in storage or battery. Pressing Laila directly switches on the listener: she <em>is</em> the microphone, so there is never a separate control to hunt for.</p>
+  </div>
+
+  <h3>11.8 · Technology stack</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:20%">Layer</th><th>Technology</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>Runtime</td><td>Open web platform (HTML, CSS, vanilla JS)</td><td>Cross-device UI &amp; logic with no framework or build runtime</td></tr>
+        <tr><td>Speech-in</td><td>Vosk / Kaldi, WebAssembly</td><td>Offline, on-device speech recognition</td></tr>
+        <tr><td>Audio-in</td><td>Web Audio API + getUserMedia</td><td>Live microphone capture &amp; framing</td></tr>
+        <tr><td>Speech-out</td><td>Pre-generated / recorded voice clips</td><td>Bundled Hausa &amp; English guidance audio</td></tr>
+        <tr><td>Imagery</td><td>FLUX diffusion (local) → WebP</td><td>Culturally-specific vocabulary pictures</td></tr>
+        <tr><td>State</td><td>Browser local storage</td><td>Per-child profiles &amp; progress, on-device</td></tr>
+        <tr><td>Graphics</td><td>Inline SVG + CSS</td><td>Scalable mascot, icons, animation</td></tr>
+        <tr><td>Delivery</td><td>Single artifact; PWA caching (roadmap)</td><td>Offline install &amp; launch</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>11.9 · Engineering &amp; content tooling</h3>
+  <div class="body">
+    <p>Behind the app sits a small toolchain that keeps content reproducible — so expanding the curriculum is a repeatable process, not bespoke work each time:</p>
+    <div class="grid2">
+      <div class="card"><h4>Audio toolchain</h4><p style="margin:0">Scripts synthesise/prepare voice clips per language, merge audio layers, and maintain a manifest of every clip — making it straightforward to add or re-voice content.</p></div>
+      <div class="card"><h4>Image toolchain</h4><p style="margin:0">A prompt library plus a resumable render driver generate images locally; a compression step standardises every picture to the WebP target.</p></div>
+      <div class="card"><h4>Content as data</h4><p style="margin:0">Domains, items, and lessons are defined in structured data files, so new vocabulary drops in without touching the engine.</p></div>
+      <div class="card"><h4>Reproducible builds</h4><p style="margin:0">Media and manifests are version-controlled, so any release can be rebuilt and audited — important for a fundable, maintainable programme.</p></div>
+    </div>
+  </div>
+
+  <h3>11.10 · Engineering principles</h3>
+  <div class="body">
+    <ul>
+      <li><strong>Offline-first, not offline-tolerant.</strong> The network is used only for optional install/updates — never to deliver a lesson.</li>
+      <li><strong>Single-artifact simplicity.</strong> A self-contained package a facilitator can side-load and run, minimising IT overhead at the centre.</li>
+      <li><strong>Cross-platform by default.</strong> Open web technology runs on the widest range of low-cost devices without per-platform rebuilds.</li>
+      <li><strong>Swappable content &amp; language layers.</strong> Audio, images, and vocabulary are data — the path to new languages without re-engineering.</li>
+      <li><strong>Privacy by construction.</strong> The architecture collects essentially nothing; the speech pipeline never leaves the device.</li>
+    </ul>
+    <div class="callout"><span class="k">Build status</span> The core enabling technology — real speech recognition running entirely offline on low-cost hardware — is implemented and working in the current prototype. The engineering scope funded by this grant is <em>hardening</em> (installable offline packaging, provisioning, facilitator reporting) and <em>content</em>, not unproven core technology.</div>
+  </div>
+</section>
+
+<!-- 12 PRIVACY -->
+<section class="doc" id="s12">
+  <div class="sec-head"><span class="sec-num">12</span><h2>Privacy, Safety &amp; Data</h2></div>
+  <p class="sec-sub">Child-safe by construction — the safest data is the data never collected.</p>
+  <div class="body">
+    <div class="grid2">
+      <div class="card"><h4>Voice never leaves the device</h4><p style="margin:0">Speech recognition runs entirely on-device. No child's voice recording is transmitted, stored remotely, or sent to any third party.</p></div>
+      <div class="card"><h4>No accounts, no personal data</h4><p style="margin:0">Profiles use a first name or avatar only. No email, phone, location, or identifying data is required or collected.</p></div>
+      <div class="card"><h4>No ads, no tracking, no in-app purchases</h4><p style="margin:0">There is no advertising, behavioural tracking, or commercial content of any kind directed at children.</p></div>
+      <div class="card"><h4>Local, exportable progress</h4><p style="margin:0">Progress data stays on the device and can be summarised for the facilitator; aggregate, de-identified metrics support evaluation.</p></div>
+    </div>
+    <div class="callout green"><span class="k">Alignment</span> The design is built to respect children's-data and privacy principles (e.g. data minimisation and purpose limitation) by collecting essentially nothing — the final programme will complete a safeguarding and data-protection review with the host organisation before pilot.</div>
+  </div>
+</section>
+
+<!-- 13 DEPLOYMENT -->
+<section class="doc" id="s13">
+  <div class="sec-head"><span class="sec-num">13</span><h2>Deployment &amp; Operations</h2></div>
+  <p class="sec-sub">The learning-centre model — how Kratu actually reaches children.</p>
+  <div class="body">
+    <div class="flow">
+      <div class="step"><span class="t">Provision</span><div class="h">Set up</div><p>Tablets are charged and the app side-loaded once, from a facilitator's device or a single memory card.</p></div>
+      <div class="step"><span class="t">Onboard</span><div class="h">Profiles</div><p>Each child creates a simple named profile in under a minute, guided by voice.</p></div>
+      <div class="step"><span class="t">Practice</span><div class="h">Daily use</div><p>Short, self-driving sessions; children rotate across shared devices.</p></div>
+      <div class="step"><span class="t">Review</span><div class="h">Oversight</div><p>The facilitator checks per-child progress and celebrates milestones.</p></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h4>Facilitator toolkit (grant deliverable)</h4><p style="margin:0">A one-page install guide, a short session-routine card, and a troubleshooting sheet — all designed for a non-specialist volunteer.</p></div>
+      <div class="card"><h4>Operating requirements</h4><p style="margin:0">A safe room, a shared set of charged tablets, and a facilitator for an hour a day. No classroom, no internet, no English-literate teacher required.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 ROADMAP -->
+<section class="doc" id="s14">
+  <div class="sec-head"><span class="sec-num">14</span><h2>Roadmap &amp; Milestones</h2></div>
+  <p class="sec-sub">The grant period, phased from prototype to evaluated pilot. Durations are indicative.</p>
+  <div class="road">
+    <div class="phase"><span class="ph">Phase 0 · Done</span><div class="when">Prototype</div><div class="bar" style="background:var(--green)"></div><ul><li>Offline speech working</li><li>A–Z + 13 domains</li><li>Spelling &amp; reading</li><li>Laila voice guide</li></ul></div>
+    <div class="phase"><span class="ph">Phase 1 · Q1–Q2</span><div class="when">Content &amp; polish</div><div class="bar"></div><ul><li>Curriculum completion</li><li>Vocabulary depth</li><li>Native-speaker review</li><li>Accessibility pass</li></ul></div>
+    <div class="phase"><span class="ph">Phase 2 · Q2–Q3</span><div class="when">Field-ready build</div><div class="bar"></div><ul><li>Hardened installer</li><li>Facilitator toolkit</li><li>Device provisioning</li><li>Progress reporting</li></ul></div>
+    <div class="phase"><span class="ph">Phase 3 · Q3–Q4</span><div class="when">Monitored pilot</div><div class="bar"></div><ul><li>Centre deployment</li><li>Baseline assessment</li><li>Supervised daily use</li><li>Data collection</li></ul></div>
+    <div class="phase"><span class="ph">Phase 4 · Q4</span><div class="when">Evaluate &amp; share</div><div class="bar"></div><ul><li>Endline assessment</li><li>Independent analysis</li><li>Learnings report</li><li>Scale-up plan</li></ul></div>
+  </div>
+  <p class="mono" style="font-size:12px;color:var(--faint)">Timeline assumes a ~12-month grant period. Replace quarters with grant-specific dates before submission.</p>
+</section>
+
+<!-- 15 M&E -->
+<section class="doc" id="s15">
+  <div class="sec-head"><span class="sec-num">15</span><h2>Monitoring &amp; Evaluation</h2></div>
+  <p class="sec-sub">How we will know Kratu works — and prove it to funders.</p>
+  <div class="body">
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:44px">#</th><th>Indicator</th><th>Method</th><th style="width:24%">Target</th></tr></thead>
+        <tbody>
+          <tr><td class="id">M1</td><td>Letter recognition gain</td><td>Pre/post one-to-one assessment</td><td class="fillin">[e.g. +X letters]</td></tr>
+          <tr><td class="id">M2</td><td>Spoken-word vocabulary gain</td><td>Pre/post picture-naming task</td><td class="fillin">[e.g. +X words]</td></tr>
+          <tr><td class="id">M3</td><td>Early decoding / reading</td><td>Word-reading probe</td><td class="fillin">[% reading N words]</td></tr>
+          <tr><td class="id">M4</td><td>Engagement / dosage</td><td>On-device usage summaries</td><td class="fillin">[min/child/week]</td></tr>
+          <tr><td class="id">M5</td><td>Retention over the pilot</td><td>Active-learner tracking</td><td class="fillin">[% retained]</td></tr>
+          <tr><td class="id">M6</td><td>Facilitator usability</td><td>Structured interview / survey</td><td class="fillin">[qualitative]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Approach</h3>
+    <ul>
+      <li><strong>Baseline &amp; endline.</strong> Each child is assessed on entry and again after the pilot, with the difference as the primary learning measure.</li>
+      <li><strong>Built-in dosage data.</strong> The app's own usage summaries provide objective practice-time evidence without extra instrumentation or any personal data.</li>
+      <li><strong>Mixed methods.</strong> Quantitative gains are paired with facilitator and (where appropriate) caregiver interviews for the "why" behind the numbers.</li>
+      <li><strong>Independent analysis.</strong> Evaluation is designed with, and reviewed by, an external partner to ensure credibility.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 16 IMPACT -->
+<section class="doc" id="s16">
+  <div class="sec-head"><span class="sec-num">16</span><h2>Impact &amp; SDG Alignment</h2></div>
+  <div class="body">
+    <div class="grid3">
+      <div class="card"><h4>SDG 4 — Quality Education</h4><p style="margin:0">Directly advances foundational literacy (target 4.6) and early-childhood learning readiness (4.2) for excluded children.</p></div>
+      <div class="card"><h4>SDG 5 — Gender Equality</h4><p style="margin:0">Reaches girls who are disproportionately excluded from schooling, in a private, safe, at-the-centre setting.</p></div>
+      <div class="card"><h4>SDG 10 — Reduced Inequalities</h4><p style="margin:0">Targets exactly the rural, low-connectivity, mother-tongue communities that mainstream edtech bypasses.</p></div>
+    </div>
+    <h3>Who benefits, and how far it reaches</h3>
+    <div class="stats">
+      <div class="stat"><div class="big tnum"><span class="fillin">[N]</span></div><div class="lbl">Children directly reached in the pilot</div></div>
+      <div class="stat amber"><div class="big tnum"><span class="fillin">[N]</span></div><div class="lbl">Devices deployed across <span class="fillin">[N]</span> centres</div></div>
+      <div class="stat green"><div class="big tnum">1:many</div><div class="lbl">Each device serves many children on rotation</div></div>
+      <div class="stat"><div class="big tnum">∞</div><div class="lbl">Marginal cost of an extra lesson, once installed</div></div>
+    </div>
+    <div class="callout"><span class="k">Cost characteristics</span> Because delivery is offline and self-driving, the marginal cost of teaching one more child one more lesson is effectively zero. Reach is bounded by devices and centres rather than by teachers or bandwidth.</div>
+  </div>
+</section>
+
+<!-- 17 RISKS -->
+<section class="doc" id="s17">
+  <div class="sec-head"><span class="sec-num">17</span><h2>Risks &amp; Mitigations</h2></div>
+  <p class="sec-sub">Principal risks, positioned by likelihood and impact, each with a mitigation.</p>
+  <div class="matrix" aria-hidden="false">
+    <div class="cell axis"></div><div class="cell axis">Low impact</div><div class="cell axis">Med impact</div><div class="cell axis">High impact</div>
+    <div class="cell axis">High likel.</div><div class="cell med"><b>R4</b> Device sharing limits practice time</div><div class="cell hi"><b>R1</b> Speech accuracy across child voices/accents</div><div class="cell hi"><b>R2</b> Facilitator capacity / turnover</div>
+    <div class="cell axis">Med likel.</div><div class="cell lo">Content review backlog</div><div class="cell med"><b>R5</b> Hardware / power reliability</div><div class="cell med"><b>R3</b> Pilot recruitment &amp; retention</div>
+    <div class="cell axis">Low likel.</div><div class="cell lo">Cosmetic UI issues</div><div class="cell lo">Storage constraints</div><div class="cell med"><b>R6</b> Safeguarding / data concerns</div>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:44px">#</th><th>Risk</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td class="id">R1</td><td>Recogniser under-performs on some child voices or accents.</td><td>Grammar-constrained matching, forgiving retries, native-speaker tuning, and continuous accuracy monitoring in the pilot.</td></tr>
+        <tr><td class="id">R2</td><td>Facilitators are stretched or turn over.</td><td>Self-driving lessons minimise facilitator load; a one-page toolkit makes any volunteer replaceable quickly.</td></tr>
+        <tr><td class="id">R3</td><td>Pilot recruitment or retention falls short.</td><td>Partner with an established community/host organisation; buffer cohort size; track and act on retention weekly.</td></tr>
+        <tr><td class="id">R4</td><td>Shared devices cap per-child practice time.</td><td>Fast profile switching, short sessions, and device-to-child ratio planning at each centre.</td></tr>
+        <tr><td class="id">R5</td><td>Power or hardware unreliability.</td><td>Battery/solar operation, rugged low-cost devices, and spares in the deployment budget.</td></tr>
+        <tr><td class="id">R6</td><td>Safeguarding or data-protection concerns.</td><td>Collect essentially no personal data; on-device only; complete a safeguarding review with the host before pilot.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 18 SUSTAINABILITY -->
+<section class="doc" id="s18">
+  <div class="sec-head"><span class="sec-num">18</span><h2>Sustainability &amp; Scaling</h2></div>
+  <div class="body">
+    <div class="grid2">
+      <div class="card"><h4>Low marginal cost</h4><p style="margin:0">Once built and installed, additional lessons and additional children cost effectively nothing — the economics improve with scale.</p></div>
+      <div class="card"><h4>Replicable template</h4><p style="margin:0">Content and language are data layers. A new language or region reuses the entire engine — the biggest cost is content, not code.</p></div>
+      <div class="card"><h4>Partner-delivered</h4><p style="margin:0">Delivery rides on existing community, NGO, and faith-based networks rather than requiring new institutions.</p></div>
+      <div class="card"><h4>Open, durable technology</h4><p style="margin:0">Built on open web standards with no proprietary lock-in, keeping long-term maintenance affordable.</p></div>
+    </div>
+    <h3>Beyond the grant</h3>
+    <ul>
+      <li><strong>Prove it once, template it many times.</strong> A successful, evaluated pilot becomes the reference model for replication across regions and languages.</li>
+      <li><strong>Diversify funding.</strong> Pilot evidence unlocks follow-on philanthropic, institutional, and government channels for scale-up.</li>
+      <li><strong>Grow the content library</strong> collaboratively with local educators, compounding value for every future deployment.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 19 BUDGET -->
+<section class="doc" id="s19">
+  <div class="sec-head"><span class="sec-num">19</span><h2>Budget Framework</h2></div>
+  <p class="sec-sub">Indicative allocation across categories. Replace percentages and amounts with your grant-specific figures.</p>
+  <div class="budget">
+    <div class="brow"><span class="cat">Content &amp; curriculum</span><div class="track"><div class="fill" style="width:22%"></div></div><span class="pct fillin">22%</span></div>
+    <div class="brow"><span class="cat">Engineering &amp; hardening</span><div class="track"><div class="fill" style="width:20%"></div></div><span class="pct fillin">20%</span></div>
+    <div class="brow"><span class="cat">Devices &amp; connectivity</span><div class="track"><div class="fill" style="width:18%"></div></div><span class="pct fillin">18%</span></div>
+    <div class="brow"><span class="cat">Centre operations &amp; facilitation</span><div class="track"><div class="fill" style="width:16%"></div></div><span class="pct fillin">16%</span></div>
+    <div class="brow"><span class="cat">Monitoring &amp; evaluation</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="pct fillin">12%</span></div>
+    <div class="brow"><span class="cat">Coordination &amp; admin</span><div class="track"><div class="fill" style="width:7%"></div></div><span class="pct fillin">7%</span></div>
+    <div class="brow"><span class="cat">Contingency</span><div class="track"><div class="fill" style="width:5%"></div></div><span class="pct fillin">5%</span></div>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Category</th><th>What it covers</th><th style="width:22%">Amount</th></tr></thead>
+      <tbody>
+        <tr><td>Content &amp; curriculum</td><td>Vocabulary expansion, audio production, native-speaker review, educator design.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Engineering &amp; hardening</td><td>Installer, provisioning, progress reporting, accessibility, QA.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Devices &amp; connectivity</td><td>Tablets, charging/solar, spares, optional satellite for updates.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Centre operations</td><td>Facilitator stipends, space, training, materials.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Monitoring &amp; evaluation</td><td>Assessment tools, enumerators, external analysis, reporting.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Coordination &amp; admin</td><td>Project management, safeguarding, financial administration.</td><td class="fillin">[amount]</td></tr>
+        <tr><td>Contingency</td><td>Buffer for hardware, exchange, and field surprises.</td><td class="fillin">[amount]</td></tr>
+        <tr><td><strong>Total request</strong></td><td>—</td><td class="fillin"><strong>[total]</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 20 TEAM -->
+<section class="doc" id="s20">
+  <div class="sec-head"><span class="sec-num">20</span><h2>Team &amp; Governance</h2></div>
+  <p class="sec-sub">Roles required to deliver. Complete with named individuals and partners before submission.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th style="width:30%">Role</th><th>Responsibility</th><th style="width:24%">Held by</th></tr></thead>
+      <tbody>
+        <tr><td>Project lead</td><td>Overall delivery, budget, funder reporting.</td><td class="fillin">[name]</td></tr>
+        <tr><td>Product &amp; engineering</td><td>App development, offline speech, releases.</td><td class="fillin">[name]</td></tr>
+        <tr><td>Learning design</td><td>Curriculum, pedagogy, assessment design.</td><td class="fillin">[name / partner]</td></tr>
+        <tr><td>Hausa language &amp; content</td><td>Translation, voice, cultural &amp; pronunciation review.</td><td class="fillin">[name / partner]</td></tr>
+        <tr><td>Field &amp; community partner</td><td>Centre access, facilitation, safeguarding.</td><td class="fillin">[org]</td></tr>
+        <tr><td>Monitoring &amp; evaluation</td><td>Baseline/endline, independent analysis.</td><td class="fillin">[partner]</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout indigo"><span class="k">Governance</span> A lightweight steering check at each phase gate (§14) reviews progress, spend, safeguarding, and evaluation integrity against this document.</div>
+</section>
+
+<!-- 21 REQUIREMENTS -->
+<section class="doc" id="s21">
+  <div class="sec-head"><span class="sec-num">21</span><h2>Requirements Register</h2></div>
+  <p class="sec-sub">Functional and non-functional requirements, prioritised. <span class="tag must">Must</span> <span class="tag should">Should</span> <span class="tag could">Could</span> <span class="tag done">Built</span></p>
+  <div class="body">
+    <h3>Functional requirements</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:56px">ID</th><th>Requirement</th><th style="width:80px">Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="id">FR-1</td><td>All navigation and instruction is operable by voice + touch, with no reading required.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-2</td><td>Recognise a child's spoken word/letter on-device and give immediate correct/retry feedback.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-3</td><td>Deliver staged alphabet learning (taught groups → mixed → test).</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-4</td><td>Deliver vocabulary learning across all domains (hear → identify → speak → verify).</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-5</td><td>Deliver spelling (voice, letter-by-letter) and reading (whole-word) modes.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-6</td><td>Maintain per-child profiles and progress on shared devices.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-7</td><td>Match instruction grammar to the child's gender in Hausa.</td><td><span class="tag done">Built</span></td></tr>
+          <tr><td class="id">FR-8</td><td>Provide a facilitator progress summary per child.</td><td><span class="tag should">Should</span></td></tr>
+          <tr><td class="id">FR-9</td><td>Support early phrase/sentence practice beyond single words.</td><td><span class="tag could">Could</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Non-functional requirements</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:66px">ID</th><th>Requirement</th><th style="width:80px">Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="id">NFR-1</td><td>Fully functional with zero network connectivity after install.</td><td><span class="tag must">Must</span></td></tr>
+          <tr><td class="id">NFR-2</td><td>Runs on entry-level tablets within typical storage and memory limits.</td><td><span class="tag must">Must</span></td></tr>
+          <tr><td class="id">NFR-3</td><td>No child audio or personal data leaves the device.</td><td><span class="tag must">Must</span></td></tr>
+          <tr><td class="id">NFR-4</td><td>Installable by a non-technical facilitator via a one-page guide.</td><td><span class="tag should">Should</span></td></tr>
+          <tr><td class="id">NFR-5</td><td>Content &amp; language layers swappable without engineering changes.</td><td><span class="tag should">Should</span></td></tr>
+          <tr><td class="id">NFR-6</td><td>Operable on battery/solar with modest power draw.</td><td><span class="tag should">Should</span></td></tr>
+          <tr><td class="id">NFR-7</td><td>Respects reduced-motion and calm, low-stimulation design.</td><td><span class="tag could">Could</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 22 APPENDIX -->
+<section class="doc" id="s22">
+  <div class="sec-head"><span class="sec-num">22</span><h2>Appendices &amp; Sources</h2></div>
+  <div class="body">
+    <h3>A · Glossary (selected Hausa terms)</h3>
+    <ul class="two-list">
+      <li><strong>Kratu</strong> — the application / learning programme</li>
+      <li><strong>Laila</strong> — the on-screen voice guide (mascot)</li>
+      <li><strong>Allo</strong> — writing board / slate (the "back" motif)</li>
+      <li><strong>Haruffa</strong> — letters / alphabet</li>
+      <li><strong>Abubuwa</strong> — things / objects</li>
+      <li><strong>Rubutu</strong> — writing / spelling</li>
+      <li><strong>Karatu</strong> — reading</li>
+      <li><strong>Launuka</strong> — colours</li>
+      <li><strong>Siffofi</strong> — shapes</li>
+      <li><strong>Lambobi</strong> — numbers</li>
+      <li><strong>Dabbobi</strong> — animals</li>
+      <li><strong>Abinci</strong> — food</li>
+    </ul>
+    <h3>B · Suggested sources to cite (replace ‡ figures)</h3>
+    <ul>
+      <li>UNESCO Institute for Statistics (UIS) — out-of-school children &amp; literacy data.</li>
+      <li>UNICEF Nigeria — education and out-of-school children briefings.</li>
+      <li>Nigeria National Bureau of Statistics (NBS) — literacy &amp; education surveys.</li>
+      <li>Nigeria Demographic and Health Survey (NDHS) — regional/gender literacy indicators.</li>
+      <li>Federal Ministry of Education / UBEC — national education statistics.</li>
+      <li>Ethnologue / language references — Hausa speaker population.</li>
+    </ul>
+    <div class="callout"><span class="k">Before you submit</span> Replace every <span class="fillin">amber placeholder</span> and every ‡-marked figure with grant-specific, cited values. Confirm the timeline, budget total, team, partners, and pilot size with your host organisation.</div>
+    <h3>C · Current build status</h3>
+    <p>A working single-file prototype exists with: staged A–Z lessons; thirteen vocabulary domains; spelling and reading modes; the Laila voice guide with gender-aware instruction; on-device speech recognition; per-child progress; and a photorealistic, culturally-specific image library — all running fully offline.</p>
+  </div>
+</section>
+
+<footer class="doc">
+  <p class="mono">KRATU · PRODUCT REQUIREMENTS DOCUMENT · v1.0</p>
+  <p>Prepared to accompany a grant application. All amber placeholders and ‡-marked statistics are to be completed with verified, grant-specific figures before submission. This document describes intended outcomes; learning gains are to be measured in the pilot described in §15.</p>
+</footer>
+
+</div>
+
+<script>
+// keep the print/theme tokens honest if a host stamps data-theme; no behaviour needed otherwise
+document.documentElement.setAttribute('lang','en');
+</script>
+</body>
+</html>
