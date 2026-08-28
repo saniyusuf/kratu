@@ -1001,15 +1001,17 @@ var CATS=[{"key":"animals","en":"Animals","ha":"Dabbobi","items":[{"w":"DOG","im
     moveTo(stops[0]); setTimeout(step, 220);
   }
   function wSpellLetter(){ if(wSpellIdx>=wItem.w.length){ $('w-abc').style.display='none'; wAbcTap=null; wSpellWordDone(); return; }
-    var cur=wItem.w.charAt(wSpellIdx), tries=0, sil=0, done=false;
+    var cur=wItem.w.charAt(wSpellIdx), tries=0, sil=0, done=false, word=wItem.w.toLowerCase();
     wRenderSlots(); renderAbc();   // no answer given away — the child finds the letter (a one-time demo showed them how, see wSpellTry)
     wHearFn=function(){ play('en_'+cur,null,.7); };
     var armInput=function(){ if(!done) wBegin(); };   // auto-listen for the spoken letter; the tap-alphabet stays live in parallel
     var advance=function(){ if(done)return; done=true; wStopL(); wAbcTap=null; abcClearHint(); wSpellIdx++; wRenderSlots(); wfb.className='fb good'; wfb.textContent='✓'; play('kudos', wSpellLetter); };
+    var wordDone=function(){ if(done)return; done=true; wStopL(); wAbcTap=null; abcClearHint(); wSpellIdx=wItem.w.length; wRenderSlots(); $('w-abc').style.display='none'; wfb.className='fb good'; wfb.textContent='🎉 '+wItem.w; play('kudos', function(){ toast(wItem.w+' ✓'); wSi++; setTimeout(wSpellRoute,300); }); };   // said the whole word instead of spelling — still counts
     var reveal=function(){ if(done)return; done=true; wStopL(); wAbcTap=null; abcClearHint(); markAbc(cur,'good'); wfb.className='fb wait'; wfb.textContent=cur; playSeq([[ga('remind'),1],['en_'+cur,.7]], function(){ wSpellIdx++; wRenderSlots(); wSpellLetter(); }); };
     var wrong=function(){ if(done)return; tries++; if(tries>=3){ reveal(); return; } wfb.className='fb bad'; wfb.textContent='Sake'; playSeq([['retry',1],['en_'+cur,.7]], armInput); };
-    wLOpts={ grammar:[cur.toLowerCase(), NAMES[cur], '[unk]'], timeout:6000, match:function(t){ return classifyPhrase(t,[cur])?cur:null; },
-      onResult:function(r,t){ if(done)return; if(r===cur){ advance(); } else if(t&&t.trim()){ sil=0; wrong(); } else { sil++; if(sil<3) armInput(); } } };
+    var saidWord=function(t){ var toks=(t||'').toLowerCase().split(/\s+/); for(var i=0;i<toks.length;i++){ var tk=toks[i].replace(/[^a-z]/g,''); if(word.length>1 && (tk===word||tk===word+'s')) return true; } return false; };
+    wLOpts={ grammar:[cur.toLowerCase(), NAMES[cur], word, '[unk]'], timeout:6000, match:function(t){ if(saidWord(t)) return '__WORD__'; return classifyPhrase(t,[cur])?cur:null; },
+      onResult:function(r,t){ if(done)return; if(r==='__WORD__'){ wordDone(); } else if(r===cur){ advance(); } else if(t&&t.trim()){ sil=0; wrong(); } else { sil++; if(sil<3) armInput(); } } };
     wAbcTap=function(L){ if(done)return; if(L===cur){ markAbc(L,'good'); advance(); } else { markAbc(L,'bad'); wrong(); } };
     var ord=wSpellIdx+1, ordKey=(AUDIO['spell_ord_'+ord]?'spell_ord_'+ord:'w_next_letter');   // "tap or say the Nth letter"
     play(ordKey, armInput); }
