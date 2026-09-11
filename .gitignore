@@ -3,3 +3,4 @@ tools/.models/
 tools/.genimg/
 .playwright-mcp/
 .render-krea/
+tools/.env
