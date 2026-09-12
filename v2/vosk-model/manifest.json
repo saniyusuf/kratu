@@ -1,0 +1,61 @@
+{
+"model": "vosk-model-small-en-us-0.15",
+"files": [
+{
+"path": "graph/Gr.fst",
+"size": 24013795
+},
+{
+"path": "graph/HCLr.fst",
+"size": 22416994
+},
+{
+"path": "am/final.mdl",
+"size": 15962575
+},
+{
+"path": "ivector/final.ie",
+"size": 8288887
+},
+{
+"path": "ivector/final.dubm",
+"size": 168048
+},
+{
+"path": "ivector/final.mat",
+"size": 44975
+},
+{
+"path": "graph/phones/word_boundary.int",
+"size": 1761
+},
+{
+"path": "ivector/global_cmvn.stats",
+"size": 1080
+},
+{
+"path": "conf/model.conf",
+"size": 290
+},
+{
+"path": "README",
+"size": 199
+},
+{
+"path": "conf/mfcc.conf",
+"size": 131
+},
+{
+"path": "graph/disambig_tid.int",
+"size": 102
+},
+{
+"path": "ivector/online_cmvn.conf",
+"size": 95
+},
+{
+"path": "ivector/splice.conf",
+"size": 35
+}
+]
+}
