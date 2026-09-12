@@ -309,7 +309,7 @@ app=(tpl+'<div id="app"><div class="tabs"><button id="tb-working"></button><butt
      '<div class="row2"><button class="close"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Rufe · close</button></div></div></div>'
      '<div id="leave" hidden><div class="lbox"><div class="ltitle">Ƙare zaman? · End the session?</div><div class="lpair"><button class="yn yes lv-laila" aria-label="Na gama"><span class="lm" style="width:112px;height:112px"></span><small>Na gama · done</small></button><button class="yn no board lv-slate" aria-label="Sake farawa">'+SLATE+'<small>Sake farawa · reset</small></button></div></div></div>')
 body=head.replace('<title>','<title>Kratu</title><!--',1).replace('</title>','-->',1)  # keep the design's <title> out; ours goes first
-body='<title>Kratu</title>'+body[body.index('<style'):]
+body='<title>Kratu</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%23FBF3DE%27/%3E%3Ctext x=%2732%27 y=%2747%27 font-size=%2742%27 font-family=%27Arial,sans-serif%27 font-weight=%27700%27 text-anchor=%27middle%27 fill=%27%23E0474B%27%3EK%3C/text%3E%3C/svg%3E">'+body[body.index('<style'):]   # inline favicon: no /favicon.ico 404 on the live site
 EN=json.load(open(R/'tools'/'clip_en.json',encoding='utf-8')); HA=json.load(open(R/'tools'/'live_texts.json',encoding='utf-8'))
 router=router.replace('__GPH_F__',json.dumps(GPH_F)).replace('__GPH_M__',json.dumps(GPH_M)).replace('__EN__',json.dumps(EN,ensure_ascii=False)).replace('__HA__',json.dumps({k:v for k,v in HA.items() if v},ensure_ascii=False))
 page=body+css+app+router+scripts+speech
