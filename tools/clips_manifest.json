@@ -212,7 +212,7 @@
 "lang": "en-NG"
 },
 "wha_apple": {
-"text": "tuffa",
+"text": "aful",
 "lang": "ha"
 },
 "wen_banana": {
@@ -1288,7 +1288,7 @@
 "lang": "ha"
 },
 "wen_box": {
-"text": "Box",
+"text": "Trunk",
 "lang": "en-NG"
 },
 "wha_box": {
@@ -1878,8 +1878,9 @@
 "lang": "ha"
 },
 "w_spell_test": {
-"text": "Yanzu, gwaji! A rubuta kowanne, harafi-harafi.",
-"lang": "ha"
+"text": "Yanzu, jarrabawa! A rubuta kowanne, harafi-harafi.",
+"lang": "ha",
+"was": "Yanzu, gwaji! A rubuta kowanne, harafi-harafi."
 },
 "name_hint_m": {
 "text": "Danna kan Laila, sannan ka faɗi sunanka.",
@@ -2038,20 +2039,23 @@
 "lang": "ha"
 },
 "quiz_wrong": {
-"text": "A'a, ba wannan ba. A sake saurara, a sake gwadawa.",
-"lang": "ha"
+"text": "A'a, ba wannan ba. A sa ke saurara, a sa ke gwadawa.",
+"lang": "ha",
+"was": "A'a, ba wannan ba. A sake saurara, a sake gwadawa."
 },
 "read_intro": {
-"text": "Ga kalma. Za mu karanta ta tare, harafi-harafi.",
-"lang": "ha"
+"text": "Ga kalma. Za mu karanta wannan kalma tare. Harafi, harafi.",
+"lang": "ha",
+"was": "Ga kalma. Za mu karanta ta tare, harafi-harafi."
 },
 "read_word": {
 "text": "Yanzu, a karanta kalmar gaba ɗaya, da babbar murya.",
 "lang": "ha"
 },
 "read_good": {
-"text": "Madalla! Ka iya karatu!",
-"lang": "ha"
+"text": "Madalla! Yanzu ka iya karatu!",
+"lang": "ha",
+"was": "Madalla! Ka iya karatu!"
 },
 "cat_colors": {
 "text": "Launuka",
@@ -2306,7 +2310,7 @@
 "lang": "ha"
 },
 "wen_mama": {
-"text": "Mama",
+"text": "Mother",
 "lang": "en-NG"
 },
 "wha_mama": {
@@ -2314,7 +2318,7 @@
 "lang": "ha"
 },
 "wen_baba": {
-"text": "Baba",
+"text": "Father",
 "lang": "en-NG"
 },
 "wha_baba": {
@@ -2575,6 +2579,2339 @@
 },
 "spell_way_tap_f": {
 "text": "Ko kuma ki danna kowane harafi.",
+"lang": "ha"
+},
+"wen_dove": {
+"text": "Dove",
+"lang": "en-NG"
+},
+"wha_dove": {
+"text": "tantabara",
+"lang": "ha"
+},
+"wen_guineafowl": {
+"text": "Guinea fowl",
+"lang": "en-NG"
+},
+"wha_guineafowl": {
+"text": "zabo",
+"lang": "ha"
+},
+"wen_turkey": {
+"text": "Turkey",
+"lang": "en-NG"
+},
+"wha_turkey": {
+"text": "talotalo",
+"lang": "ha"
+},
+"wen_pig": {
+"text": "Pig",
+"lang": "en-NG"
+},
+"wha_pig": {
+"text": "alade",
+"lang": "ha"
+},
+"wen_gazelle": {
+"text": "Gazelle",
+"lang": "en-NG"
+},
+"wha_gazelle": {
+"text": "barewa",
+"lang": "ha"
+},
+"wen_baboon": {
+"text": "Baboon",
+"lang": "en-NG"
+},
+"wha_baboon": {
+"text": "gwaggo",
+"lang": "ha"
+},
+"wen_warthog": {
+"text": "Warthog",
+"lang": "en-NG"
+},
+"wha_warthog": {
+"text": "gadu",
+"lang": "ha"
+},
+"wen_hawk": {
+"text": "Hawk",
+"lang": "en-NG"
+},
+"wha_hawk": {
+"text": "shaho",
+"lang": "ha"
+},
+"wen_termite": {
+"text": "Termite",
+"lang": "en-NG"
+},
+"wha_termite": {
+"text": "gara",
+"lang": "ha"
+},
+"wen_chameleon": {
+"text": "Chameleon",
+"lang": "en-NG"
+},
+"wha_chameleon": {
+"text": "hawainiya",
+"lang": "ha"
+},
+"wen_gecko": {
+"text": "Gecko",
+"lang": "en-NG"
+},
+"wha_gecko": {
+"text": "tsaka",
+"lang": "ha"
+},
+"wen_earthworm": {
+"text": "Earthworm",
+"lang": "en-NG"
+},
+"wha_earthworm": {
+"text": "tsutsa",
+"lang": "ha"
+},
+"wen_catfish": {
+"text": "Catfish",
+"lang": "en-NG"
+},
+"wha_catfish": {
+"text": "tarwaɗa",
+"lang": "ha"
+},
+"wen_bull": {
+"text": "Bull",
+"lang": "en-NG"
+},
+"wha_bull": {
+"text": "bijimi",
+"lang": "ha"
+},
+"wen_tamarind": {
+"text": "Tamarind",
+"lang": "en-NG"
+},
+"wha_tamarind": {
+"text": "tsamiya",
+"lang": "ha"
+},
+"wen_sorghum": {
+"text": "Guinea corn",
+"lang": "en-NG"
+},
+"wha_sorghum": {
+"text": "dawa",
+"lang": "ha"
+},
+"wen_sweet_potato": {
+"text": "Sweet potato",
+"lang": "en-NG"
+},
+"wha_sweet_potato": {
+"text": "dankali",
+"lang": "ha"
+},
+"wen_garden_egg": {
+"text": "Garden egg",
+"lang": "en-NG"
+},
+"wha_garden_egg": {
+"text": "gauta",
+"lang": "ha"
+},
+"wen_moringa": {
+"text": "Moringa",
+"lang": "en-NG"
+},
+"wha_moringa": {
+"text": "zogale",
+"lang": "ha"
+},
+"wen_spinach": {
+"text": "Spinach",
+"lang": "en-NG"
+},
+"wha_spinach": {
+"text": "alayyahu",
+"lang": "ha"
+},
+"wen_cashew": {
+"text": "Cashew",
+"lang": "en-NG"
+},
+"wha_cashew": {
+"text": "kanju",
+"lang": "ha"
+},
+"wen_water": {
+"text": "Water",
+"lang": "en-NG"
+},
+"wha_water": {
+"text": "ruwa",
+"lang": "ha"
+},
+"wen_honey": {
+"text": "Honey",
+"lang": "en-NG"
+},
+"wha_honey": {
+"text": "zuma",
+"lang": "ha"
+},
+"wen_tuwo": {
+"text": "Tuwo",
+"lang": "en-NG"
+},
+"wha_tuwo": {
+"text": "tuwo",
+"lang": "ha"
+},
+"wen_miya": {
+"text": "Soup",
+"lang": "en-NG"
+},
+"wha_miya": {
+"text": "miya",
+"lang": "ha"
+},
+"wen_kunu": {
+"text": "Kunu",
+"lang": "en-NG"
+},
+"wha_kunu": {
+"text": "kunu",
+"lang": "ha"
+},
+"wen_fura": {
+"text": "Fura",
+"lang": "en-NG"
+},
+"wha_fura": {
+"text": "fura",
+"lang": "ha"
+},
+"wen_masa": {
+"text": "Masa",
+"lang": "en-NG"
+},
+"wha_masa": {
+"text": "masa",
+"lang": "ha"
+},
+"wen_kosai": {
+"text": "Bean cake",
+"lang": "en-NG"
+},
+"wha_kosai": {
+"text": "ƙosai",
+"lang": "ha"
+},
+"wen_suya": {
+"text": "Suya",
+"lang": "en-NG"
+},
+"wha_suya": {
+"text": "suya",
+"lang": "ha"
+},
+"wen_sweet": {
+"text": "Sweet",
+"lang": "en-NG"
+},
+"wha_sweet": {
+"text": "alewa",
+"lang": "ha"
+},
+"wen_pillow": {
+"text": "Pillow",
+"lang": "en-NG"
+},
+"wha_pillow": {
+"text": "matashin kai",
+"lang": "ha"
+},
+"wen_mattress": {
+"text": "Mattress",
+"lang": "en-NG"
+},
+"wha_mattress": {
+"text": "katifa",
+"lang": "ha"
+},
+"wen_calabash": {
+"text": "Calabash",
+"lang": "en-NG"
+},
+"wha_calabash": {
+"text": "ƙwarya",
+"lang": "ha"
+},
+"wen_mortar": {
+"text": "Mortar",
+"lang": "en-NG"
+},
+"wha_mortar": {
+"text": "turmi",
+"lang": "ha"
+},
+"wen_pestle": {
+"text": "Pestle",
+"lang": "en-NG"
+},
+"wha_pestle": {
+"text": "taɓarya",
+"lang": "ha"
+},
+"wen_prayer_mat": {
+"text": "Prayer mat",
+"lang": "en-NG"
+},
+"wha_prayer_mat": {
+"text": "sallaya",
+"lang": "ha"
+},
+"wen_jerrycan": {
+"text": "Jerrycan",
+"lang": "en-NG"
+},
+"wha_jerrycan": {
+"text": "jarkan",
+"lang": "ha"
+},
+"wen_basin": {
+"text": "Basin",
+"lang": "en-NG"
+},
+"wha_basin": {
+"text": "kwano",
+"lang": "ha"
+},
+"wen_fork": {
+"text": "Fork",
+"lang": "en-NG"
+},
+"wha_fork": {
+"text": "cokali mai yatsa",
+"lang": "ha"
+},
+"wen_torch": {
+"text": "Torch",
+"lang": "en-NG"
+},
+"wha_torch": {
+"text": "tocila",
+"lang": "ha"
+},
+"wen_mirror": {
+"text": "Mirror",
+"lang": "en-NG"
+},
+"wha_mirror": {
+"text": "madubi",
+"lang": "ha"
+},
+"wen_bench": {
+"text": "Bench",
+"lang": "en-NG"
+},
+"wha_bench": {
+"text": "benci",
+"lang": "ha"
+},
+"wen_cupboard": {
+"text": "Cupboard",
+"lang": "en-NG"
+},
+"wha_cupboard": {
+"text": "kabad",
+"lang": "ha"
+},
+"wen_curtain": {
+"text": "Curtain",
+"lang": "en-NG"
+},
+"wha_curtain": {
+"text": "labule",
+"lang": "ha"
+},
+"wen_toothbrush": {
+"text": "Toothbrush",
+"lang": "en-NG"
+},
+"wha_toothbrush": {
+"text": "buroshi",
+"lang": "ha"
+},
+"wen_tap": {
+"text": "Tap",
+"lang": "en-NG"
+},
+"wha_tap": {
+"text": "famfo",
+"lang": "ha"
+},
+"wen_arm": {
+"text": "Arm",
+"lang": "en-NG"
+},
+"wha_arm": {
+"text": "hannu",
+"lang": "ha"
+},
+"wen_foot": {
+"text": "Foot",
+"lang": "en-NG"
+},
+"wha_foot": {
+"text": "ƙafa",
+"lang": "ha"
+},
+"wen_toe": {
+"text": "Toe",
+"lang": "en-NG"
+},
+"wha_toe": {
+"text": "ɗan yatsan ƙafa",
+"lang": "ha"
+},
+"wen_stomach": {
+"text": "Stomach",
+"lang": "en-NG"
+},
+"wha_stomach": {
+"text": "ciki",
+"lang": "ha"
+},
+"wen_cheek": {
+"text": "Cheek",
+"lang": "en-NG"
+},
+"wha_cheek": {
+"text": "kunci",
+"lang": "ha"
+},
+"wen_chin": {
+"text": "Chin",
+"lang": "en-NG"
+},
+"wha_chin": {
+"text": "haɓa",
+"lang": "ha"
+},
+"wen_lip": {
+"text": "Lip",
+"lang": "en-NG"
+},
+"wha_lip": {
+"text": "leɓe",
+"lang": "ha"
+},
+"wen_eyebrow": {
+"text": "Eyebrow",
+"lang": "en-NG"
+},
+"wha_eyebrow": {
+"text": "gira",
+"lang": "ha"
+},
+"wen_forehead": {
+"text": "Forehead",
+"lang": "en-NG"
+},
+"wha_forehead": {
+"text": "goshi",
+"lang": "ha"
+},
+"wen_elbow": {
+"text": "Elbow",
+"lang": "en-NG"
+},
+"wha_elbow": {
+"text": "gwiwar hannu",
+"lang": "ha"
+},
+"wen_bone": {
+"text": "Bone",
+"lang": "en-NG"
+},
+"wha_bone": {
+"text": "ƙashi",
+"lang": "ha"
+},
+"wen_thumb": {
+"text": "Thumb",
+"lang": "en-NG"
+},
+"wha_thumb": {
+"text": "babban yatsa",
+"lang": "ha"
+},
+"wen_palm": {
+"text": "Palm",
+"lang": "en-NG"
+},
+"wha_palm": {
+"text": "tafin hannu",
+"lang": "ha"
+},
+"wen_heel": {
+"text": "Heel",
+"lang": "en-NG"
+},
+"wha_heel": {
+"text": "diddige",
+"lang": "ha"
+},
+"wen_waist": {
+"text": "Waist",
+"lang": "en-NG"
+},
+"wha_waist": {
+"text": "kugu",
+"lang": "ha"
+},
+"wen_hill": {
+"text": "Hill",
+"lang": "en-NG"
+},
+"wha_hill": {
+"text": "tudu",
+"lang": "ha"
+},
+"wen_thunder": {
+"text": "Thunder",
+"lang": "en-NG"
+},
+"wha_thunder": {
+"text": "tsawa",
+"lang": "ha"
+},
+"wen_seed": {
+"text": "Seed",
+"lang": "en-NG"
+},
+"wha_seed": {
+"text": "iri",
+"lang": "ha"
+},
+"wen_root": {
+"text": "Root",
+"lang": "en-NG"
+},
+"wha_root": {
+"text": "saiwa",
+"lang": "ha"
+},
+"wen_desert": {
+"text": "Desert",
+"lang": "en-NG"
+},
+"wha_desert": {
+"text": "hamada",
+"lang": "ha"
+},
+"wen_shade": {
+"text": "Shade",
+"lang": "en-NG"
+},
+"wha_shade": {
+"text": "inuwa",
+"lang": "ha"
+},
+"wen_evening": {
+"text": "Evening",
+"lang": "en-NG"
+},
+"wha_evening": {
+"text": "yamma",
+"lang": "ha"
+},
+"wen_afternoon": {
+"text": "Afternoon",
+"lang": "en-NG"
+},
+"wha_afternoon": {
+"text": "rana tsaka",
+"lang": "ha"
+},
+"wen_flood": {
+"text": "Flood",
+"lang": "en-NG"
+},
+"wha_flood": {
+"text": "ambaliya",
+"lang": "ha"
+},
+"wen_harmattan": {
+"text": "Harmattan",
+"lang": "en-NG"
+},
+"wha_harmattan": {
+"text": "hunturu",
+"lang": "ha"
+},
+"wen_baobab": {
+"text": "Baobab tree",
+"lang": "en-NG"
+},
+"wha_baobab": {
+"text": "kuka",
+"lang": "ha"
+},
+"wen_neem": {
+"text": "Neem tree",
+"lang": "en-NG"
+},
+"wha_neem": {
+"text": "dogon yaro",
+"lang": "ha"
+},
+"wen_acacia": {
+"text": "Acacia",
+"lang": "en-NG"
+},
+"wha_acacia": {
+"text": "bagaruwa",
+"lang": "ha"
+},
+"wen_keke": {
+"text": "Keke (tricycle taxi)",
+"lang": "en-NG"
+},
+"wha_keke": {
+"text": "keke napep",
+"lang": "ha"
+},
+"wen_wheelbarrow": {
+"text": "Wheelbarrow",
+"lang": "en-NG"
+},
+"wha_wheelbarrow": {
+"text": "amalanke",
+"lang": "ha"
+},
+"wen_donkey_cart": {
+"text": "Donkey cart",
+"lang": "en-NG"
+},
+"wha_donkey_cart": {
+"text": "keken jaki",
+"lang": "ha"
+},
+"wen_ship": {
+"text": "Ship",
+"lang": "en-NG"
+},
+"wha_ship": {
+"text": "jirgin ruwa",
+"lang": "ha"
+},
+"wen_van": {
+"text": "Van",
+"lang": "en-NG"
+},
+"wha_van": {
+"text": "bas ƙarama",
+"lang": "ha"
+},
+"wen_tanker": {
+"text": "Tanker",
+"lang": "en-NG"
+},
+"wha_tanker": {
+"text": "tanka",
+"lang": "ha"
+},
+"wen_fire_engine": {
+"text": "Fire engine",
+"lang": "en-NG"
+},
+"wha_fire_engine": {
+"text": "motar kashe gobara",
+"lang": "ha"
+},
+"wen_police_car": {
+"text": "Police car",
+"lang": "en-NG"
+},
+"wha_police_car": {
+"text": "motar ’yan sanda",
+"lang": "ha"
+},
+"wen_scooter": {
+"text": "Scooter",
+"lang": "en-NG"
+},
+"wha_scooter": {
+"text": "sukuta",
+"lang": "ha"
+},
+"wen_rocket": {
+"text": "Rocket",
+"lang": "en-NG"
+},
+"wha_rocket": {
+"text": "roka",
+"lang": "ha"
+},
+"wen_grandmother": {
+"text": "Grandmother",
+"lang": "en-NG"
+},
+"wha_grandmother": {
+"text": "kaka",
+"lang": "ha"
+},
+"wen_grandfather": {
+"text": "Grandfather",
+"lang": "en-NG"
+},
+"wha_grandfather": {
+"text": "kaka",
+"lang": "ha"
+},
+"wen_baby": {
+"text": "Baby",
+"lang": "en-NG"
+},
+"wha_baby": {
+"text": "jariri",
+"lang": "ha"
+},
+"wen_brother": {
+"text": "Brother",
+"lang": "en-NG"
+},
+"wha_brother": {
+"text": "ɗan’uwa",
+"lang": "ha"
+},
+"wen_sister": {
+"text": "Sister",
+"lang": "en-NG"
+},
+"wha_sister": {
+"text": "’yar’uwa",
+"lang": "ha"
+},
+"wen_uncle": {
+"text": "Uncle",
+"lang": "en-NG"
+},
+"wha_uncle": {
+"text": "kawu",
+"lang": "ha"
+},
+"wen_aunt": {
+"text": "Aunt",
+"lang": "en-NG"
+},
+"wha_aunt": {
+"text": "goggo",
+"lang": "ha"
+},
+"wen_doctor": {
+"text": "Doctor",
+"lang": "en-NG"
+},
+"wha_doctor": {
+"text": "likita",
+"lang": "ha"
+},
+"wen_nurse": {
+"text": "Nurse",
+"lang": "en-NG"
+},
+"wha_nurse": {
+"text": "nas",
+"lang": "ha"
+},
+"wen_farmer": {
+"text": "Farmer",
+"lang": "en-NG"
+},
+"wha_farmer": {
+"text": "manomi",
+"lang": "ha"
+},
+"wen_trader": {
+"text": "Trader",
+"lang": "en-NG"
+},
+"wha_trader": {
+"text": "ɗan kasuwa",
+"lang": "ha"
+},
+"wen_soldier": {
+"text": "Soldier",
+"lang": "en-NG"
+},
+"wha_soldier": {
+"text": "soja",
+"lang": "ha"
+},
+"wen_policeman": {
+"text": "Policeman",
+"lang": "en-NG"
+},
+"wha_policeman": {
+"text": "ɗan sanda",
+"lang": "ha"
+},
+"wen_driver": {
+"text": "Driver",
+"lang": "en-NG"
+},
+"wha_driver": {
+"text": "direba",
+"lang": "ha"
+},
+"wen_tailor": {
+"text": "Tailor",
+"lang": "en-NG"
+},
+"wha_tailor": {
+"text": "maɗinki",
+"lang": "ha"
+},
+"wen_imam": {
+"text": "Imam",
+"lang": "en-NG"
+},
+"wha_imam": {
+"text": "limami",
+"lang": "ha"
+},
+"wen_emir": {
+"text": "Emir",
+"lang": "en-NG"
+},
+"wha_emir": {
+"text": "sarki",
+"lang": "ha"
+},
+"wen_student": {
+"text": "Student",
+"lang": "en-NG"
+},
+"wha_student": {
+"text": "ɗalibi",
+"lang": "ha"
+},
+"wen_neighbour": {
+"text": "Neighbour",
+"lang": "en-NG"
+},
+"wha_neighbour": {
+"text": "maƙwabci",
+"lang": "ha"
+},
+"wen_man": {
+"text": "Man",
+"lang": "en-NG"
+},
+"wha_man": {
+"text": "namiji",
+"lang": "ha"
+},
+"wen_woman": {
+"text": "Woman",
+"lang": "en-NG"
+},
+"wha_woman": {
+"text": "mace",
+"lang": "ha"
+},
+"wen_child": {
+"text": "Child",
+"lang": "en-NG"
+},
+"wha_child": {
+"text": "yaro",
+"lang": "ha"
+},
+"wen_old_man": {
+"text": "Old man",
+"lang": "en-NG"
+},
+"wha_old_man": {
+"text": "dattijo",
+"lang": "ha"
+},
+"wen_herder": {
+"text": "Herder",
+"lang": "en-NG"
+},
+"wha_herder": {
+"text": "makiyayi",
+"lang": "ha"
+},
+"wen_fisherman": {
+"text": "Fisherman",
+"lang": "en-NG"
+},
+"wha_fisherman": {
+"text": "masunci",
+"lang": "ha"
+},
+"wen_blacksmith": {
+"text": "Blacksmith",
+"lang": "en-NG"
+},
+"wha_blacksmith": {
+"text": "maƙeri",
+"lang": "ha"
+},
+"wen_barber": {
+"text": "Barber",
+"lang": "en-NG"
+},
+"wha_barber": {
+"text": "wanzami",
+"lang": "ha"
+},
+"wen_mechanic": {
+"text": "Mechanic",
+"lang": "en-NG"
+},
+"wha_mechanic": {
+"text": "makaniki",
+"lang": "ha"
+},
+"wen_carpenter": {
+"text": "Carpenter",
+"lang": "en-NG"
+},
+"wha_carpenter": {
+"text": "kafinta",
+"lang": "ha"
+},
+"wen_butcher": {
+"text": "Butcher",
+"lang": "en-NG"
+},
+"wha_butcher": {
+"text": "mahauci",
+"lang": "ha"
+},
+"wen_walk": {
+"text": "Walk",
+"lang": "en-NG"
+},
+"wha_walk": {
+"text": "tafiya",
+"lang": "ha"
+},
+"wen_jump": {
+"text": "Jump",
+"lang": "en-NG"
+},
+"wha_jump": {
+"text": "tsalle",
+"lang": "ha"
+},
+"wen_stand": {
+"text": "Stand",
+"lang": "en-NG"
+},
+"wha_stand": {
+"text": "tsayawa",
+"lang": "ha"
+},
+"wen_cry": {
+"text": "Cry",
+"lang": "en-NG"
+},
+"wha_cry": {
+"text": "kuka",
+"lang": "ha"
+},
+"wen_laugh": {
+"text": "Laugh",
+"lang": "en-NG"
+},
+"wha_laugh": {
+"text": "dariya",
+"lang": "ha"
+},
+"wen_sing": {
+"text": "Sing",
+"lang": "en-NG"
+},
+"wha_sing": {
+"text": "waƙa",
+"lang": "ha"
+},
+"wen_dance": {
+"text": "Dance",
+"lang": "en-NG"
+},
+"wha_dance": {
+"text": "rawa",
+"lang": "ha"
+},
+"wen_read": {
+"text": "Read",
+"lang": "en-NG"
+},
+"wha_read": {
+"text": "karatu",
+"lang": "ha"
+},
+"wen_write": {
+"text": "Write",
+"lang": "en-NG"
+},
+"wha_write": {
+"text": "rubutu",
+"lang": "ha"
+},
+"wen_draw": {
+"text": "Draw",
+"lang": "en-NG"
+},
+"wha_draw": {
+"text": "zane",
+"lang": "ha"
+},
+"wen_cook": {
+"text": "Cook",
+"lang": "en-NG"
+},
+"wha_cook": {
+"text": "girki",
+"lang": "ha"
+},
+"wen_sweep": {
+"text": "Sweep",
+"lang": "en-NG"
+},
+"wha_sweep": {
+"text": "share",
+"lang": "ha"
+},
+"wen_pray": {
+"text": "Pray",
+"lang": "en-NG"
+},
+"wha_pray": {
+"text": "sallah",
+"lang": "ha"
+},
+"wen_climb": {
+"text": "Climb",
+"lang": "en-NG"
+},
+"wha_climb": {
+"text": "hawa",
+"lang": "ha"
+},
+"wen_swim": {
+"text": "Swim",
+"lang": "en-NG"
+},
+"wha_swim": {
+"text": "iyo",
+"lang": "ha"
+},
+"wen_clap": {
+"text": "Clap",
+"lang": "en-NG"
+},
+"wha_clap": {
+"text": "tafi",
+"lang": "ha"
+},
+"wen_talk": {
+"text": "Talk",
+"lang": "en-NG"
+},
+"wha_talk": {
+"text": "magana",
+"lang": "ha"
+},
+"wen_listen": {
+"text": "Listen",
+"lang": "en-NG"
+},
+"wha_listen": {
+"text": "saurara",
+"lang": "ha"
+},
+"wen_look": {
+"text": "Look",
+"lang": "en-NG"
+},
+"wha_look": {
+"text": "kallo",
+"lang": "ha"
+},
+"wen_open": {
+"text": "Open",
+"lang": "en-NG"
+},
+"wha_open": {
+"text": "buɗe",
+"lang": "ha"
+},
+"wen_close": {
+"text": "Close",
+"lang": "en-NG"
+},
+"wha_close": {
+"text": "rufe",
+"lang": "ha"
+},
+"wen_give": {
+"text": "Give",
+"lang": "en-NG"
+},
+"wha_give": {
+"text": "bayarwa",
+"lang": "ha"
+},
+"wen_carry": {
+"text": "Carry",
+"lang": "en-NG"
+},
+"wha_carry": {
+"text": "ɗauka",
+"lang": "ha"
+},
+"wen_push": {
+"text": "Push",
+"lang": "en-NG"
+},
+"wha_push": {
+"text": "tura",
+"lang": "ha"
+},
+"wen_pull": {
+"text": "Pull",
+"lang": "en-NG"
+},
+"wha_pull": {
+"text": "ja",
+"lang": "ha"
+},
+"wen_kick": {
+"text": "Kick",
+"lang": "en-NG"
+},
+"wha_kick": {
+"text": "shura",
+"lang": "ha"
+},
+"wen_throw": {
+"text": "Throw",
+"lang": "en-NG"
+},
+"wha_throw": {
+"text": "jefa",
+"lang": "ha"
+},
+"wen_catch": {
+"text": "Catch",
+"lang": "en-NG"
+},
+"wha_catch": {
+"text": "kamawa",
+"lang": "ha"
+},
+"wen_ride": {
+"text": "Ride a bicycle",
+"lang": "en-NG"
+},
+"wha_ride": {
+"text": "hawan keke",
+"lang": "ha"
+},
+"wen_drive": {
+"text": "Drive",
+"lang": "en-NG"
+},
+"wha_drive": {
+"text": "tuƙi",
+"lang": "ha"
+},
+"wen_wake": {
+"text": "Wake up",
+"lang": "en-NG"
+},
+"wha_wake": {
+"text": "farkawa",
+"lang": "ha"
+},
+"wen_bathe": {
+"text": "Bathe",
+"lang": "en-NG"
+},
+"wha_bathe": {
+"text": "wanka",
+"lang": "ha"
+},
+"wen_brush_teeth": {
+"text": "Brush teeth",
+"lang": "en-NG"
+},
+"wha_brush_teeth": {
+"text": "goge haƙori",
+"lang": "ha"
+},
+"wen_dress": {
+"text": "Get dressed",
+"lang": "en-NG"
+},
+"wha_dress": {
+"text": "sa kaya",
+"lang": "ha"
+},
+"wen_farm_work": {
+"text": "Farm",
+"lang": "en-NG"
+},
+"wha_farm_work": {
+"text": "noma",
+"lang": "ha"
+},
+"wen_fetch_water": {
+"text": "Fetch water",
+"lang": "en-NG"
+},
+"wha_fetch_water": {
+"text": "ɗiban ruwa",
+"lang": "ha"
+},
+"wen_sell": {
+"text": "Sell",
+"lang": "en-NG"
+},
+"wha_sell": {
+"text": "sayarwa",
+"lang": "ha"
+},
+"wen_buy": {
+"text": "Buy",
+"lang": "en-NG"
+},
+"wha_buy": {
+"text": "saya",
+"lang": "ha"
+},
+"wen_help": {
+"text": "Help",
+"lang": "en-NG"
+},
+"wha_help": {
+"text": "taimako",
+"lang": "ha"
+},
+"wen_shirt": {
+"text": "Shirt",
+"lang": "en-NG"
+},
+"wha_shirt": {
+"text": "riga",
+"lang": "ha"
+},
+"wen_trousers": {
+"text": "Trousers",
+"lang": "en-NG"
+},
+"wha_trousers": {
+"text": "wando",
+"lang": "ha"
+},
+"wen_skirt": {
+"text": "Skirt",
+"lang": "en-NG"
+},
+"wha_skirt": {
+"text": "siket",
+"lang": "ha"
+},
+"wen_scarf": {
+"text": "Headscarf",
+"lang": "en-NG"
+},
+"wha_scarf": {
+"text": "ɗankwali",
+"lang": "ha"
+},
+"wen_turban": {
+"text": "Turban",
+"lang": "en-NG"
+},
+"wha_turban": {
+"text": "rawani",
+"lang": "ha"
+},
+"wen_socks": {
+"text": "Socks",
+"lang": "en-NG"
+},
+"wha_socks": {
+"text": "safa",
+"lang": "ha"
+},
+"wen_belt": {
+"text": "Belt",
+"lang": "en-NG"
+},
+"wha_belt": {
+"text": "bel",
+"lang": "ha"
+},
+"wen_button": {
+"text": "Button",
+"lang": "en-NG"
+},
+"wha_button": {
+"text": "maɓalli",
+"lang": "ha"
+},
+"wen_pocket": {
+"text": "Pocket",
+"lang": "en-NG"
+},
+"wha_pocket": {
+"text": "aljihu",
+"lang": "ha"
+},
+"wen_zip": {
+"text": "Zip",
+"lang": "en-NG"
+},
+"wha_zip": {
+"text": "zik",
+"lang": "ha"
+},
+"wen_glasses": {
+"text": "Glasses",
+"lang": "en-NG"
+},
+"wha_glasses": {
+"text": "gilashin ido",
+"lang": "ha"
+},
+"wen_watch": {
+"text": "Watch",
+"lang": "en-NG"
+},
+"wha_watch": {
+"text": "agogon hannu",
+"lang": "ha"
+},
+"wen_earring": {
+"text": "Earring",
+"lang": "en-NG"
+},
+"wha_earring": {
+"text": "’yan kunne",
+"lang": "ha"
+},
+"wen_necklace": {
+"text": "Necklace",
+"lang": "en-NG"
+},
+"wha_necklace": {
+"text": "sarƙa",
+"lang": "ha"
+},
+"wen_sweater": {
+"text": "Sweater",
+"lang": "en-NG"
+},
+"wha_sweater": {
+"text": "suwaita",
+"lang": "ha"
+},
+"wen_jacket": {
+"text": "Jacket",
+"lang": "en-NG"
+},
+"wha_jacket": {
+"text": "jaket",
+"lang": "ha"
+},
+"wen_uniform": {
+"text": "School uniform",
+"lang": "en-NG"
+},
+"wha_uniform": {
+"text": "yunifom",
+"lang": "ha"
+},
+"wen_pen": {
+"text": "Pen",
+"lang": "en-NG"
+},
+"wha_pen": {
+"text": "biro",
+"lang": "ha"
+},
+"wen_ruler": {
+"text": "Ruler",
+"lang": "en-NG"
+},
+"wha_ruler": {
+"text": "rula",
+"lang": "ha"
+},
+"wen_eraser": {
+"text": "Eraser",
+"lang": "en-NG"
+},
+"wha_eraser": {
+"text": "roba",
+"lang": "ha"
+},
+"wen_sharpener": {
+"text": "Sharpener",
+"lang": "en-NG"
+},
+"wha_sharpener": {
+"text": "feɗa",
+"lang": "ha"
+},
+"wen_crayon": {
+"text": "Crayon",
+"lang": "en-NG"
+},
+"wha_crayon": {
+"text": "kala",
+"lang": "ha"
+},
+"wen_paper": {
+"text": "Paper",
+"lang": "en-NG"
+},
+"wha_paper": {
+"text": "takarda",
+"lang": "ha"
+},
+"wen_notebook": {
+"text": "Notebook",
+"lang": "en-NG"
+},
+"wha_notebook": {
+"text": "littafin rubutu",
+"lang": "ha"
+},
+"wen_desk": {
+"text": "Desk",
+"lang": "en-NG"
+},
+"wha_desk": {
+"text": "tebur",
+"lang": "ha"
+},
+"wen_bell": {
+"text": "Bell",
+"lang": "en-NG"
+},
+"wha_bell": {
+"text": "ƙararrawa",
+"lang": "ha"
+},
+"wen_school": {
+"text": "School",
+"lang": "en-NG"
+},
+"wha_school": {
+"text": "makaranta",
+"lang": "ha"
+},
+"wen_classroom": {
+"text": "Classroom",
+"lang": "en-NG"
+},
+"wha_classroom": {
+"text": "aji",
+"lang": "ha"
+},
+"wen_lunch_box": {
+"text": "Lunch box",
+"lang": "en-NG"
+},
+"wha_lunch_box": {
+"text": "akwatin abinci",
+"lang": "ha"
+},
+"wen_water_bottle": {
+"text": "Water bottle",
+"lang": "en-NG"
+},
+"wha_water_bottle": {
+"text": "kwalbar ruwa",
+"lang": "ha"
+},
+"wen_flag": {
+"text": "Flag",
+"lang": "en-NG"
+},
+"wha_flag": {
+"text": "tuta",
+"lang": "ha"
+},
+"wen_globe": {
+"text": "Globe",
+"lang": "en-NG"
+},
+"wha_globe": {
+"text": "duniya",
+"lang": "ha"
+},
+"wen_computer": {
+"text": "Computer",
+"lang": "en-NG"
+},
+"wha_computer": {
+"text": "kwamfuta",
+"lang": "ha"
+},
+"wen_calculator": {
+"text": "Calculator",
+"lang": "en-NG"
+},
+"wha_calculator": {
+"text": "kalkuleta",
+"lang": "ha"
+},
+"wen_glue": {
+"text": "Glue",
+"lang": "en-NG"
+},
+"wha_glue": {
+"text": "gam",
+"lang": "ha"
+},
+"wha_eleven": {
+"text": "goma sha ɗaya",
+"lang": "ha"
+},
+"wen_eleven": {
+"text": "Eleven",
+"lang": "en-NG"
+},
+"wha_twelve": {
+"text": "goma sha biyu",
+"lang": "ha"
+},
+"wen_twelve": {
+"text": "Twelve",
+"lang": "en-NG"
+},
+"wha_thirteen": {
+"text": "goma sha uku",
+"lang": "ha"
+},
+"wen_thirteen": {
+"text": "Thirteen",
+"lang": "en-NG"
+},
+"wha_fourteen": {
+"text": "goma sha huɗu",
+"lang": "ha"
+},
+"wen_fourteen": {
+"text": "Fourteen",
+"lang": "en-NG"
+},
+"wha_fifteen": {
+"text": "goma sha biyar",
+"lang": "ha"
+},
+"wen_fifteen": {
+"text": "Fifteen",
+"lang": "en-NG"
+},
+"wha_sixteen": {
+"text": "goma sha shida",
+"lang": "ha"
+},
+"wen_sixteen": {
+"text": "Sixteen",
+"lang": "en-NG"
+},
+"wha_seventeen": {
+"text": "goma sha bakwai",
+"lang": "ha"
+},
+"wen_seventeen": {
+"text": "Seventeen",
+"lang": "en-NG"
+},
+"wha_eighteen": {
+"text": "goma sha takwas",
+"lang": "ha"
+},
+"wen_eighteen": {
+"text": "Eighteen",
+"lang": "en-NG"
+},
+"wha_nineteen": {
+"text": "goma sha tara",
+"lang": "ha"
+},
+"wen_nineteen": {
+"text": "Nineteen",
+"lang": "en-NG"
+},
+"wha_twenty": {
+"text": "ashirin",
+"lang": "ha"
+},
+"wen_twenty": {
+"text": "Twenty",
+"lang": "en-NG"
+},
+"wha_thirty": {
+"text": "talatin",
+"lang": "ha"
+},
+"wen_thirty": {
+"text": "Thirty",
+"lang": "en-NG"
+},
+"wha_forty": {
+"text": "arba'in",
+"lang": "ha"
+},
+"wen_forty": {
+"text": "Forty",
+"lang": "en-NG"
+},
+"wha_fifty": {
+"text": "hamsin",
+"lang": "ha"
+},
+"wen_fifty": {
+"text": "Fifty",
+"lang": "en-NG"
+},
+"wha_sixty": {
+"text": "sittin",
+"lang": "ha"
+},
+"wen_sixty": {
+"text": "Sixty",
+"lang": "en-NG"
+},
+"wha_seventy": {
+"text": "saba'in",
+"lang": "ha"
+},
+"wen_seventy": {
+"text": "Seventy",
+"lang": "en-NG"
+},
+"wha_eighty": {
+"text": "tamanin",
+"lang": "ha"
+},
+"wen_eighty": {
+"text": "Eighty",
+"lang": "en-NG"
+},
+"wha_ninety": {
+"text": "casa'in",
+"lang": "ha"
+},
+"wen_ninety": {
+"text": "Ninety",
+"lang": "en-NG"
+},
+"wha_hundred": {
+"text": "ɗari",
+"lang": "ha"
+},
+"wen_hundred": {
+"text": "Hundred",
+"lang": "en-NG"
+},
+"wha_two_hundred": {
+"text": "ɗari biyu",
+"lang": "ha"
+},
+"wen_two_hundred": {
+"text": "Two hundred",
+"lang": "en-NG"
+},
+"wha_three_hundred": {
+"text": "ɗari uku",
+"lang": "ha"
+},
+"wen_three_hundred": {
+"text": "Three hundred",
+"lang": "en-NG"
+},
+"wha_four_hundred": {
+"text": "ɗari huɗu",
+"lang": "ha"
+},
+"wen_four_hundred": {
+"text": "Four hundred",
+"lang": "en-NG"
+},
+"wha_five_hundred": {
+"text": "ɗari biyar",
+"lang": "ha"
+},
+"wen_five_hundred": {
+"text": "Five hundred",
+"lang": "en-NG"
+},
+"wha_six_hundred": {
+"text": "ɗari shida",
+"lang": "ha"
+},
+"wen_six_hundred": {
+"text": "Six hundred",
+"lang": "en-NG"
+},
+"wha_seven_hundred": {
+"text": "ɗari bakwai",
+"lang": "ha"
+},
+"wen_seven_hundred": {
+"text": "Seven hundred",
+"lang": "en-NG"
+},
+"wha_eight_hundred": {
+"text": "ɗari takwas",
+"lang": "ha"
+},
+"wen_eight_hundred": {
+"text": "Eight hundred",
+"lang": "en-NG"
+},
+"wha_nine_hundred": {
+"text": "ɗari tara",
+"lang": "ha"
+},
+"wen_nine_hundred": {
+"text": "Nine hundred",
+"lang": "en-NG"
+},
+"wha_thousand": {
+"text": "dubu",
+"lang": "ha"
+},
+"wen_thousand": {
+"text": "One thousand",
+"lang": "en-NG"
+},
+"s_qd_q4_m": {
+"text": "Hotuna huɗu. Za a nuna maka hotuna huɗu, a faɗi sunan ɗaya da Turanci, sai ka danna shi.",
+"lang": "ha"
+},
+"s_qd_q4_f": {
+"text": "Hotuna huɗu. Za a nuna miki hotuna huɗu, a faɗi sunan ɗaya da Turanci, sai ki danna shi.",
+"lang": "ha"
+},
+"s_qd_qnum_m": {
+"text": "Lambobi. Za a faɗi lamba da Turanci, sai ka danna alamarta.",
+"lang": "ha"
+},
+"s_qd_qnum_f": {
+"text": "Lambobi. Za a faɗi lamba da Turanci, sai ki danna alamarta.",
+"lang": "ha"
+},
+"s_q_again_m": {
+"text": "Yanzu mu sa ke gwadawa, da sababbi. Ka saurara da kyau.",
+"lang": "ha"
+},
+"s_q_again_f": {
+"text": "Yanzu mu sa ke gwadawa, da sababbi. Ki saurara da kyau.",
+"lang": "ha"
+},
+"s_qn_intro": {
+"text": "Saurara da kyau! Za a faɗi lamba da Turanci, sannan a danna alamarta.",
+"lang": "ha"
+},
+"s_qn_tap": {
+"text": "Danna alamar lambar da aka faɗa.",
+"lang": "ha"
+},
+"s_ear_m": {
+"text": "Don sa ke ji, ka danna wannan kunne.",
+"lang": "ha"
+},
+"s_ear_f": {
+"text": "Don sa ke ji, ki danna wannan kunne.",
+"lang": "ha"
+},
+"s_n_tens": {
+"text": "Yanzu za mu koyi manyan lambobi: talatin, arba'in, hamsin, har ɗari.",
+"lang": "ha"
+},
+"s_n_hundreds": {
+"text": "Yanzu ɗaruruwa: ɗari biyu, ɗari uku, har ɗari tara, sannan dubu.",
+"lang": "ha"
+},
+"s_n_symbols_m": {
+"text": "Yanzu za mu koyi alamun lambobin da kaa koyaa, daga ɗaya har goma.",
+"lang": "ha"
+},
+"s_n_symbols_f": {
+"text": "Yanzu za mu koyi alamun lambobin da kika koyaa, daga ɗaya har goma.",
+"lang": "ha"
+},
+"s_n_sym2": {
+"text": "Yanzu alamun lambobi daga goma sha ɗaya har ashirin.",
+"lang": "ha"
+},
+"s_n_palms": {
+"text": "Ga hannu. A ƙirga yatsun da aka ɗaga.",
+"lang": "ha"
+},
+"s_x_intro_m": {
+"text": "Misali! Ka kalla yadda ake yi.",
+"lang": "ha"
+},
+"s_x_intro_f": {
+"text": "Misali! Ki kalla yadda ake yi.",
+"lang": "ha"
+},
+"s_x_now_m": {
+"text": "Yanzu kai. Ka gwada.",
+"lang": "ha"
+},
+"s_x_now_f": {
+"text": "Yanzu ke. Ki gwada.",
+"lang": "ha"
+},
+"s_x_read": {
+"text": "Haka ake karatu: bayan an faɗi kowane harafi, sai a haɗa su, a faɗi kalmar gaba ɗaya.",
+"lang": "ha"
+},
+"s_x_spell": {
+"text": "Haka ake rubutu: a faɗi harafi ɗaya bayan ɗaya, kowane ya shiga wurinsa.",
+"lang": "ha"
+},
+"s_x_say_m": {
+"text": "Haka ake yi: danna Laila, sai ka faɗi sunansa da Turanci.",
+"lang": "ha"
+},
+"s_x_say_f": {
+"text": "Haka ake yi: danna Laila, sai ki faɗi sunansa da Turanci.",
+"lang": "ha"
+},
+"s_x_tap": {
+"text": "Haka ake yi: a saurara, sai a danna hoton da aka faɗa.",
+"lang": "ha"
+},
+"s_x_letter_m": {
+"text": "Haka ake yi: danna Laila, sai ka faɗi harafin.",
+"lang": "ha"
+},
+"s_x_letter_f": {
+"text": "Haka ake yi: danna Laila, sai ki faɗi harafin.",
+"lang": "ha"
+},
+"retry": {
+"text": "A'a, sa ke gwadawa.",
+"lang": "ha",
+"was": "A'a, sake gwadawa."
+},
+"stage_done": {
+"text": "Madalla! Kaa gama wannan rukuni.",
+"lang": "ha",
+"was": "Madalla! Ka gama wannan rukuni."
+},
+"s_abc_done_m": {
+"text": "Madalla! Yanzu kaa san haruffa duka.",
+"lang": "ha"
+},
+"s_abc_turn_m": {
+"text": "Yanzu kai. Idan kaa san haruffa, danna Laila mu fara.",
+"lang": "ha"
+},
+"s_abc_turn_f": {
+"text": "Yanzu, idan kin san haruffa, danna Laila mu fara.",
+"lang": "ha"
+},
+"s_say_it_m": {
+"text": "Ka faɗi shi yanzu.",
+"lang": "ha"
+},
+"s_say_it_f": {
+"text": "Ki faɗi shi yanzu.",
+"lang": "ha"
+},
+"app_yn_hint_no": {
+"text": "Idan baa haka ba,",
+"lang": "ha"
+},
+"s_l_recall_m": {
+"text": "Yanzu, kai ka faɗi shi da kanka.",
+"lang": "ha"
+},
+"s_l_recall_f": {
+"text": "Yanzu, ke ki faɗi shi da kanki.",
+"lang": "ha"
+},
+"s_l_check_m": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kaa gane haruffan da kaa koyaa.",
+"lang": "ha"
+},
+"s_l_check_f": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kin gane haruffan da kika koyaa.",
+"lang": "ha"
+},
+"s_l_final2_m": {
+"text": "Jarrabawa ta ƙarshe. Za a nuna haruffa a gauraye, ka faɗe su duka.",
+"lang": "ha"
+},
+"s_l_final2_f": {
+"text": "Jarrabawa ta ƙarshe. Za a nuna haruffa a gauraye, ki faɗe su duka.",
+"lang": "ha"
+},
+"s_o_allright_m": {
+"text": "Kaa samu duka daidai! Yanzu za mu ci gaba.",
+"lang": "ha",
+"was": "Ka samu duka daidai! Yanzu za mu ci gaba."
+},
+"s_o_allright_f": {
+"text": "Kin samu dukka daidai! Yanzu za mu ci gaba.",
+"lang": "ha"
+},
+"s_o_test2_m": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kaa gane su. Za a nuna maka hoto, a faɗi sunansa da Hausa, sai kai ka faɗi sunansa da Turanci. Idan kaa manta da sunansa da Turanci,",
+"lang": "ha"
+},
+"s_o_test2_f": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kin gane su. Za a nuna miki hoto, a faɗi sunansa da Hausa, sai ke ki faɗi sunansa da Turanci. Idan kin manta da sunansa da Turanci,",
+"lang": "ha"
+},
+"s_o_next": {
+"text": "Yanzu, mu ci gaba zuwa na gaba.",
+"lang": "ha"
+},
+"s_o_new3": {
+"text": "Yanzu gaa wasu hotuna biyar.",
+"lang": "ha"
+},
+"s_o_turn_m": {
+"text": "Yanzu kai. Ka danna Laila, ka faɗi sunansa da Turanci.",
+"lang": "ha"
+},
+"s_o_turn_f": {
+"text": "Yanzu, ki danna Laila, ki faɗi sunansa da Turanci.",
+"lang": "ha"
+},
+"s_o_go_m": {
+"text": "Za ka iya!",
+"lang": "ha"
+},
+"s_o_go_f": {
+"text": "Kin iyaa!",
+"lang": "ha"
+},
+"s_r_wow_m": {
+"text": "Sannu da aiki!",
+"lang": "ha"
+},
+"s_r_wow_f": {
+"text": "Kin iyaa sosai!",
+"lang": "ha"
+},
+"s_n_big_m": {
+"text": "Yanzu babbar jarrabawa! Za mu gwada dukkan lambobin da kaa koyaa, don mu tabbata kaa gane su. Za a nuna maka lamba, a faɗi sunanta da Hausa, sai kai ka faɗi sunanta da Turanci. Idan kaa manta da sunanta da Turanci,",
+"lang": "ha"
+},
+"s_n_big_f": {
+"text": "Yanzu babbar jarrabawa! Za mu gwada dukkan lambobin da kika koyaa, don mu tabbata kin gane su. Za a nuna miki lamba, a faɗi sunanta da Hausa, sai ke ki faɗi sunanta da Turanci. Idan kin manta da sunanta da Turanci,",
+"lang": "ha"
+},
+"s_n_focus5_m": {
+"text": "Yanzu za mu sa ke koyon waɗanda kaa sha wahala da su, tare da wasu kaɗan da kaa sani, don ƙarin maimaitawa.",
+"lang": "ha"
+},
+"s_n_focus5_f": {
+"text": "Yanzu za mu sa ke koyon waɗanda kika sha wahala da su, tare da wasu kaɗan da kika sani, don ƙarin maimaitawa.",
+"lang": "ha"
+},
+"s_o_focus_m": {
+"text": "Hotunan da za ka gani yanzu, su ne waɗanda kaa sha wahala da su. Za mu sa ke koyon su.",
+"lang": "ha"
+},
+"s_o_focus_f": {
+"text": "Hotunan da za ki gani yanzu, su ne waɗanda kika sha wahala da su. Za mu sa ke koyon su.",
+"lang": "ha"
+},
+"s_o_wrong": {
+"text": "Waɗannan kuma, za mu sa ke koyan su:",
+"lang": "ha"
+},
+"s_o_right_m": {
+"text": "Ga waɗanda kaa samu daidai:",
+"lang": "ha"
+},
+"s_teach_part": {
+"text": "Ba komai. Mu koyi wannan rukuni tukuna.",
+"lang": "ha",
+"unisex": true
+},
+"s_n_intro": {
+"text": "A nan za mu koyi lambobi. Da farko, za mu ƙirga da yatsun hannu, daga ɗaya har goma. Sannan mu koyi alamun lambobi.",
+"lang": "ha",
+"unisex": true
+},
+"s_o_redo": {
+"text": "Da yawa ba daidai ba. Za mu sa ke darasin gaba ɗaya, sannan mu sa ke jarrabawar.",
+"lang": "ha",
+"unisex": true
+},
+"s_o_retake": {
+"text": "Akwai waɗanda ba daidai ba. Za mu sa ke koyan su, sannan mu sa ke jarrabawar.",
+"lang": "ha",
+"unisex": true
+},
+"s_o_three": {
+"text": "Wannan yana da wuya. Yanzu, mu ci gaba zuwa na gaba.",
+"lang": "ha",
+"unisex": true
+},
+"s_o_miss": {
+"text": "Wannan, ba daidai ba ne. Mu ci gaba.",
+"lang": "ha",
+"unisex": true
+},
+"sx_intro_m": {
+"text": "Misali! Ka kalla, ka saurara yadda ake yi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_intro_f": {
+"text": "Misali! Ki kalla, ki saurara yadda ake yi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_laila": {
+"text": "Ga abin da zan faɗa:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_you_m": {
+"text": "Yanzu, ga abin da za ka yi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_you_f": {
+"text": "Yanzu, ga abin da za ki yi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_press_m": {
+"text": "Ka danna Laila.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_press_f": {
+"text": "Ki danna Laila.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_thensay_m": {
+"text": "Sannan za ka ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_thensay_f": {
+"text": "Sannan za ki ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_thenread_m": {
+"text": "Sannan za ka karanta kalmar gaba ɗaya. Za ka ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_thenread_f": {
+"text": "Sannan za ki karanta kalmar gaba ɗaya. Za ki ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_letters_m": {
+"text": "Za ka faɗi haruffan, ɗaya bayan ɗaya. Za ka ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_letters_f": {
+"text": "Za ki faɗi haruffan, ɗaya bayan ɗaya. Za ki ce:",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_tapit_m": {
+"text": "Ka nemo hoton da aka faɗa, ka danna shi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_tapit_f": {
+"text": "Ki nemo hoton da aka faɗa, ki danna shi.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_right": {
+"text": "Haka ne! Daidai.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_now_m": {
+"text": "Yanzu kai. Ka gwada.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_now_f": {
+"text": "Yanzu ke. Ki gwada.",
+"lang": "ha",
+"voice": "laila"
+},
+"s_l_final1_m": {
+"text": "Babbar jarrabawa. Ka faɗi haruffa duka, ɗaya bayan ɗaya.",
+"lang": "ha",
+"was": "Babbar jarrabawa. Ka faɗi haruffa duka, ɗaya bayan ɗaya, daga A zuwa Z. Ka iya!"
+},
+"s_l_final1_f": {
+"text": "Babbar jarrabawa. Ki faɗi haruffa duka, ɗaya bayan ɗaya.",
+"lang": "ha",
+"was": "Babbar jarrabawa. Ki faɗi haruffa duka, ɗaya bayan ɗaya, daga A zuwa Z. Kin iya!"
+},
+"s_k_intro2_m": {
+"text": "Karatu. A nan za mu karanta kalmomi. Zan nuna maka kalma, mu karanta ta harafi bayan harafi, sannan kai ka karanta ta gaba ɗaya.",
+"lang": "ha",
+"was": "(Karatu landing intro)"
+},
+"s_k_intro2_f": {
+"text": "Karatu. A nan za mu karanta kalmomi. Zan nuna miki kalma, mu karanta ta harafi bayan harafi, sannan ke ki karanta ta gaba ɗaya.",
+"lang": "ha",
+"was": "(Karatu landing intro)"
+},
+"s_k_test_m": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kaa iya karanta kalmomin da kaa koyaa. Za a nuna maka kalma, sai ka karanta ta gaba ɗaya.",
+"lang": "ha",
+"was": "(Karatu test announcement)"
+},
+"s_k_test_f": {
+"text": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kin iya karanta kalmomin da kika koyaa. Za a nuna miki kalma, sai ki karanta ta gaba ɗaya.",
+"lang": "ha",
+"was": "(Karatu test announcement)"
+},
+"s_all_done_m": {
+"text": "Madalla sosai! Kaa gama komai.",
+"lang": "ha",
+"was": "Madalla! Ka riga ka ƙware…"
+},
+"s_all_done_f": {
+"text": "Madalla sosai! Kin gama komai.",
+"lang": "ha",
+"was": "Madalla! Kin riga kin ƙware…"
+},
+"s_abc_done2_m": {
+"text": "Madalla! Yanzu kaa iya haruffa duka sosai.",
+"lang": "ha",
+"was": "Yanzu ka iya haruffa duka sosai!"
+},
+"s_p2_m": {
+"text": "Mu nuna maka yaro Musa yana faɗin sunansa.",
+"lang": "ha",
+"was": "Baari mu nuna maka yaro Musa yana faɗin sunansa."
+},
+"s_p2_f": {
+"text": "Ga yarinya Aisha. Tana faɗin sunanta.",
+"lang": "ha"
+},
+"s_verify_m": {
+"text": "Yanzu, ka faɗi sunanka.",
+"lang": "ha",
+"was": "(Lab verify prompt)"
+},
+"s_verify_f": {
+"text": "Yanzu, ki faɗi sunanki.",
+"lang": "ha",
+"was": "(Lab verify prompt)"
+},
+"s_new_m": {
+"text": "Ban san ka ba tukuna. Mu ajiye sunanka.",
+"lang": "ha",
+"was": "(Lab new child)"
+},
+"s_new_f": {
+"text": "Ban san ki ba tukuna. Mu ajiye sunanki.",
+"lang": "ha",
+"was": "(Lab new child)"
+},
+"app_board_intro": {
+"text": "Ga dukkan haruffa. Mu koyi su rukuni-rukuni.",
+"lang": "ha"
+},
+"board_intro": {
+"text": "Ga dukkan haruffa. Mu koyi su rukuni-rukuni.",
+"lang": "ha"
+},
+"sx_w_goat_m": {
+"text": "goat",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_goat_f": {
+"text": "goat",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_five_m": {
+"text": "five",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_five_f": {
+"text": "five",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_cat_m": {
+"text": "cat",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_cat_f": {
+"text": "cat",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_A_m": {
+"text": "A",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_A_f": {
+"text": "A",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_G_m": {
+"text": "G",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_G_f": {
+"text": "G",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_O_m": {
+"text": "O",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_O_f": {
+"text": "O",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"sx_w_T_m": {
+"text": "T",
+"lang": "en",
+"voice": "boy en-NG-AbeoNeural"
+},
+"sx_w_T_f": {
+"text": "T",
+"lang": "en",
+"voice": "girl en-NG-EzinneNeural"
+},
+"s_act_desc_things": {
+"text": "Abubuwa. A nan za mu koyi sunayen abubuwa da Turanci, da hotuna.",
+"lang": "ha"
+},
+"sx_tapit_num_m": {
+"text": "Ka nemo alamar lambar da aka faɗa, ka danna ta.",
+"lang": "ha",
+"voice": "laila"
+},
+"sx_tapit_num_f": {
+"text": "Ki nemo alamar lambar da aka faɗa, ki danna ta.",
+"lang": "ha",
+"voice": "laila"
+},
+"wha_gown": {
+"text": "rigar mata",
+"lang": "ha"
+},
+"wen_gown": {
+"text": "Dress",
+"lang": "en-NG"
+},
+"s_sp_spelt": {
+"text": "Ana rubuta shi haka:",
+"lang": "ha"
+},
+"s_sp_press": {
+"text": "A danna shi.",
+"lang": "ha"
+},
+"s_sp_is_1": {
+"text": "Harafi na farko shi ne:",
+"lang": "ha"
+},
+"s_sp_is_2": {
+"text": "Harafi na biyu shi ne:",
+"lang": "ha"
+},
+"s_sp_is_3": {
+"text": "Harafi na uku shi ne:",
+"lang": "ha"
+},
+"s_sp_is_4": {
+"text": "Harafi na huɗu shi ne:",
+"lang": "ha"
+},
+"s_sp_is_5": {
+"text": "Harafi na biyar shi ne:",
+"lang": "ha"
+},
+"s_sp_is_6": {
+"text": "Harafi na shida shi ne:",
+"lang": "ha"
+},
+"s_sp_is_7": {
+"text": "Harafi na bakwai shi ne:",
+"lang": "ha"
+},
+"s_sp_is_8": {
+"text": "Harafi na takwas shi ne:",
+"lang": "ha"
+},
+"s_sp_is_9": {
+"text": "Harafi na tara shi ne:",
+"lang": "ha"
+},
+"s_leave": {
+"text": "Za a ƙare zaman. Idan an gama, a danna Laila. In ba haka ba, a danna baƙin allo.",
+"lang": "ha"
+},
+"app_read_good_f": {
+"text": "Madalla! Yanzu kin iya karatu!",
+"lang": "ha"
+},
+"s_perm": {
+"text": "Kratu na buƙatar kyamara da makirufo. A danna 'Allow'.",
+"lang": "ha"
+},
+"s_perm_no": {
+"text": "Ba a ba da izini ba. A sake gwadawa, a danna 'Allow'.",
+"lang": "ha"
+},
+"s_loading": {
+"text": "Don Allah a ɗan jira. Ana shirya komai.",
 "lang": "ha"
 }
 }

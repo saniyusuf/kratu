@@ -1,0 +1,317 @@
+<title>Kratu Speech Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+:root{color-scheme:light;--bg:#f6ecd6;--dot:#e2d3b3;--card:#fbf4e3;--card2:#f3e6c9;--ink:#2b2418;--muted:#6b5f4c;--line:#e3d4b4;--red:#e0474b;--orange:#f07a38;--gold:#f2b32c;--green:#4aa552;--teal:#18a39b;--blue:#2c9ee2;--purple:#8657d6;--dark:#2e2418;--dark-ink:#f6ecd6;--shadow:0 1px 0 rgba(90,70,30,.08),0 6px 18px rgba(90,70,30,.06)}
+*{box-sizing:border-box}html{background:#f6ecd6}
+body{margin:0;background:var(--bg);background-image:radial-gradient(var(--dot) 1px,transparent 1.2px);background-size:22px 22px;color:var(--ink);font-family:Nunito,"Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 24px 80px}
+h1,h2,h3,h4,.logo{font-family:Fredoka,Nunito,Arial,sans-serif;text-wrap:balance;letter-spacing:-.01em;color:var(--ink)}
+h1{font-size:clamp(30px,4.6vw,44px);line-height:1.08;margin:8px 0 12px;font-weight:700}
+h2{font-size:clamp(22px,3vw,30px);margin:0 0 6px;font-weight:600}
+h3{font-size:19px;margin:0 0 6px;font-weight:600}
+h4{font-size:14.5px;margin:16px 0 4px;font-weight:600;color:var(--purple);letter-spacing:.02em}
+p{margin:0 0 12px;max-width:74ch}ul,ol{margin:0 0 10px;padding-left:20px;max-width:80ch}li{margin:3px 0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--purple);font-weight:700;margin:0 0 4px}
+.logo{font-weight:700;font-size:30px}.logo span:nth-child(1){color:var(--red)}.logo span:nth-child(2){color:var(--orange)}.logo span:nth-child(3){color:var(--gold)}.logo span:nth-child(4){color:var(--teal)}.logo span:nth-child(5){color:var(--blue)}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:26px}header .meta{color:var(--muted);font-size:14px;text-align:right}
+.lede{font-size:18px;max-width:68ch}
+section{margin-top:46px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px;color:#fff;vertical-align:middle;white-space:nowrap}
+.t-red{background:var(--red)}.t-gold{background:var(--gold);color:#3a2a00}.t-green{background:var(--green)}.t-teal{background:var(--teal)}.t-grey{background:#8d8270}
+.callout{background:var(--dark);color:var(--dark-ink);border-radius:18px;padding:20px 24px;margin:18px 0}.callout h3{color:var(--gold);margin-bottom:6px}.callout p,.callout li{color:var(--dark-ink);max-width:82ch}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.kv div{background:var(--card2);border-radius:12px;padding:10px 12px;font-size:14.5px}.kv b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.tablewrap{overflow-x:auto;border-radius:16px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);margin:8px 0 12px}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14.5px}th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:var(--card2)}tr:last-child td{border-bottom:0}td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.phase{display:grid;grid-template-columns:170px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}.phase:first-of-type{border-top:0}
+.phase .when{font-family:Fredoka,sans-serif;font-weight:600;font-size:17px}.phase .when small{display:block;font-family:Nunito,sans-serif;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}.flow span{background:var(--card2);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700}.flow i{color:var(--muted);font-style:normal}
+.ha{font-family:Fredoka,sans-serif;font-weight:600}
+.note{font-size:13.5px;color:var(--muted)}
+.foot{margin-top:50px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}.toc a{font-size:13.5px;font-weight:700;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;text-decoration:none}.toc a:hover,.toc a:focus-visible{border-color:var(--teal);outline:none}
+code{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:var(--card2);padding:1px 5px;border-radius:5px}
+pre{background:var(--card2);border-radius:12px;padding:12px 14px;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.5;margin:8px 0 12px}
+.steps{counter-reset:s}.steps>li{list-style:none;position:relative;padding-left:34px;margin:8px 0}.steps>li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font:700 13px Fredoka,sans-serif;display:flex;align-items:center;justify-content:center}
+@media (max-width:640px){.phase{grid-template-columns:1fr}header .meta{text-align:left}}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="logo"><span>K</span><span>r</span><span>a</span><span>t</span><span>u</span></div>
+    <p class="eyebrow">Speech plan · working draft, second version</p>
+    <h1>Hearing one child, forgiving an accent, breaking a word into pieces</h1>
+  </div>
+  <div class="meta">12 September 2026<br>For Sani Yusuf · from the Galaxy Tab test</div>
+</header>
+
+<p class="lede">Three things came out of the tablet test. Laila hears everyone in the room, not only the child in front of her. A girl said "shikin" for chicken and was marked wrong for a difference no teacher would punish. And a child who is stuck on a word in the reading lesson gets nothing between "try again" and the answer. The first two are plans to build. The third is a plan only, as you asked. This version expands, as you asked, the sound-skeleton scoring, the near outcome in every module, the voices-page workflow for new lines, and the full design of speech activity detection.</p>
+
+<nav class="toc" aria-label="Sections"><a href="#fixed">Fixed today</a><a href="#isolate">1 · One voice</a><a href="#vad">1b · Speech activity detection, in full</a><a href="#accent">2 · Accents</a><a href="#skeleton">2b · Sound skeleton, in full</a><a href="#near">2c · Near outcome per module</a><a href="#voices">2d · New lines on the voices page</a><a href="#syllables">3 · Syllables</a><a href="#order">Order of work</a></nav>
+
+<section id="fixed">
+  <p class="eyebrow">Before the plans</p>
+  <h2>What was wrong on the live site, fixed today</h2>
+  <div class="grid g2">
+    <div class="card"><h3>The name bank never arrived</h3><p>The console showed the name list returning 404. Without it the login could not match what a child said after "sunana" to a known name, which is the wonky microphone you saw. The file is now shipped with the site.</p></div>
+    <div class="card"><h3>The identity engine never started</h3><p>The face engine's script, its worker, the ONNX runtime and its models were not in the deployed folder, and nothing in the main flow initialised the engine anyway. All of it is deployed now, with the 174 MB face model swapped for the 14 MB one that GitHub allows, and the loader starts the engine before the first screen.</p></div>
+    <div class="card"><h3>A loader that waits for everything</h3><p>The Kratu word fills in letter by letter as five pieces arrive. The speech model now shows its download in megabytes, then "unpacking", because that piece is 41 MB and looked stuck on your first attempt. A failed piece shows why and can be retried; after two failed rounds an adult may continue anyway. Laila says "Don Allah a ɗan jira, ana shirya komai" at the start, immediately where the tablet allows sound before a tap and otherwise on the first touch.</p></div>
+    <div class="card"><h3>Permission screen redesigned</h3><p>One card, no greeting, no wordmark: what is needed, why each permission matters, tap Laila, tap Allow, and a line saying nothing is kept or sent.</p></div>
+  </div>
+</section>
+
+<section id="isolate">
+  <p class="eyebrow">Plan 1 · build</p>
+  <h2>Laila listens to one child</h2>
+  <p>Ten children at ten tablets in one room is the normal case. Today every tablet hears the whole room. The goal is that the tablet accepts only speech from the child who logged in, at the moment Laila asked, and ignores everything else.</p>
+  <h4>What exists today</h4>
+  <div class="kv">
+    <div><b>Mic gate</b>The microphone opens only while the child presses Laila, and Laila is never audible while it is open.</div>
+    <div><b>Browser cleanup</b>The stream asks for echo cancellation and noise suppression, mono, at the device rate (usually 48 kHz). A ScriptProcessor of 4096 samples feeds the recogniser and drives the amplitude ring on Laila.</div>
+    <div><b>Grammar recogniser</b>Vosk runs offline with a small grammar per step, so it only ever returns words from the current lesson. A neighbour saying "goat" during the goat question is still accepted.</div>
+    <div><b>Voice vector</b>Each child's login stores a voice embedding from the "sunana" clip, computed on device by the speaker model. Nothing uses it during lessons yet.</div>
+  </div>
+  <h4>The layers, cheapest first</h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Layer</th><th>What it does</th><th>Cost</th><th>Catches</th></tr></thead>
+    <tbody>
+      <tr><td><b>A · Noise floor and loudness gate</b></td><td>Measure the room in the first 300 ms after the mic opens; accept audio only when it is clearly louder than that floor. The child at the tablet is the loudest voice at that microphone.</td><td>Two days.</td><td>Background chatter, the child two seats away.</td></tr>
+      <tr><td><b>B · Speech activity detection</b></td><td>A small offline model decides where speech starts and ends. Vosk gets one clean utterance and the mic closes itself when the child stops. Designed in full below.</td><td>One week.</td><td>Half-words, chairs, doors, the stream running on after the child finished.</td></tr>
+      <tr><td><b>C · Speaker match</b></td><td>Each utterance is embedded with the speaker model that already runs at login and compared with the logged-in child's stored vector. Below a threshold Laila does not accept the answer and says the "only you" line.</td><td>Two weeks, plus calibration on real children.</td><td>Another child answering, an adult prompting.</td></tr>
+      <tr><td><b>D · Noise suppression model</b></td><td>RNNoise or DTLN in WebAssembly ahead of Vosk, for fans, generators and traffic. Kept only if Vosk's accuracy on child voices improves.</td><td>One week.</td><td>Steady machine noise.</td></tr>
+      <tr><td><b>E · Hardware</b></td><td>A cheap wired headset with a boom microphone per tablet. Beats every software layer in a crowded room.</td><td>Pennies per station.</td><td>Almost everything.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="vad">
+  <p class="eyebrow">Plan 1b · in full</p>
+  <h2>Speech activity detection, from the loader to the judged answer</h2>
+  <p>Speech activity detection, VAD from here on, answers one question thirty times a second: is a person speaking into this microphone right now? Everything else in plan 1 hangs off that answer. Here is the whole design, piece by piece.</p>
+
+  <h4>The model</h4>
+  <div class="kv">
+    <div><b>Silero VAD</b>An open model built for exactly this, about 2 MB as ONNX, trained on many languages and on children's voices among others. It takes 16 kHz audio in frames of 512 samples, which is 32 ms, and returns the probability that the frame contains speech. It keeps a small internal state between frames, which the caller passes back in.</div>
+    <div><b>Runtime</b>ONNX Runtime Web is already shipped for the face engine, so no new library. The WebAssembly backend is enough: one frame costs about a millisecond on a cheap tablet, far below the 32 ms budget.</div>
+    <div><b>Where it lives</b><code>models/vad/silero_vad.onnx</code>, added to the deploy folder and to the deploy checklist, since every missing file today was a file that was never copied.</div>
+  </div>
+
+  <h4>In the loader</h4>
+  <p>The VAD becomes part of the "Murya · voice" piece, not a sixth letter. After the speech model has unpacked, the loader creates the VAD session and runs one silent frame through it to warm the runtime. If the VAD fails to load, the voice piece still succeeds and the app falls back to today's timers; a missing VAD is a degradation, not a stop. The loader records which of the two modes is active so the session log can say it.</p>
+
+  <h4>The audio path, rebuilt</h4>
+  <ol class="steps">
+    <li><b>Capture</b> stays as it is: one mono stream with echo cancellation and noise suppression on.</li>
+    <li><b>An AudioWorklet replaces the ScriptProcessor.</b> A small worklet file, shipped alongside the app, runs on the audio thread, resamples the device rate down to 16 kHz, and posts fixed 512-sample frames to the main thread. ScriptProcessor is deprecated and stutters on cheap tablets; a worklet does not. Where a WebView is too old for worklets, the ScriptProcessor path stays as the fallback.</li>
+    <li><b>Per frame, two numbers.</b> The main thread computes the loudness of the frame and asks the VAD for its speech probability. Both are kept in a short ring buffer of the last 300 ms of frames, the pre-roll.</li>
+    <li><b>The noise floor.</b> During the first 300 ms after the mic opens, and rolling thereafter during non-speech, the 20th percentile of frame loudness is the room's floor. A frame counts as speech only if the VAD says so <i>and</i> it is at least 8 dB above the floor. The second condition is layer A; it is what stops a neighbour's quieter voice from triggering.</li>
+    <li><b>Start.</b> Three consecutive speech frames, about 100 ms, open the utterance. The pre-roll is fed to Vosk first, then live frames, so the first consonant of "goat" is not cut off.</li>
+    <li><b>End.</b> 700 ms of non-speech frames closes it. Vosk is asked for its final result, the mic closes, Laila's ring stops, and the answer is judged. A hard cap of 6 s per utterance guards against a child who keeps talking; 5 s with no start at all takes the existing "I did not hear" path.</li>
+    <li><b>Speaker match hooks here.</b> At end, the 16 kHz samples of the utterance go to the existing voice-embedding call, the result is compared with the logged-in child's vector by cosine similarity, and below the threshold the answer is refused with the "only you" line. The samples are discarded straight after, as at login.</li>
+  </ol>
+
+  <h4>Feeding Vosk</h4>
+  <p>Today Vosk is fed the browser's AudioBuffer at the device rate. With frames already at 16 kHz the recogniser should take them directly; the shipped Vosk build must be checked for its float-input call, and if it lacks one, the AudioBuffer path is kept and the VAD is used only for gating and end-pointing. Either way the result is the same to the child: one clean utterance, no trailing silence, no timer.</p>
+
+  <h4>Thresholds to start with, and how they get fixed</h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Setting</th><th>Start value</th><th>Tuned by</th></tr></thead>
+    <tbody>
+      <tr><td>Speech probability to open</td><td class="num">0.60 for 3 frames</td><td>False starts on chair scrapes in the pilot log</td></tr>
+      <tr><td>Probability to close</td><td class="num">below 0.35 for 700 ms</td><td>Words cut in half, visible as short utterances judged wrong</td></tr>
+      <tr><td>Loudness margin over the floor</td><td class="num">8 dB</td><td>Neighbour false accepts, logged by a facilitator</td></tr>
+      <tr><td>Pre-roll</td><td class="num">300 ms</td><td>Recognised text missing its first letter</td></tr>
+      <tr><td>Utterance cap</td><td class="num">6 s</td><td>Rarely changes</td></tr>
+      <tr><td>Speaker similarity to accept</td><td class="num">0.55, the login value</td><td>Calibrated on the pilot's own children, never on adults</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>What changes for the child</h4>
+  <div class="flow"><span>presses Laila</span><i>→</i><span>room measured, silently</span><i>→</i><span>speaks</span><i>→</i><span>ring stops the moment they stop</span><i>→</i><span>voice checked against their login</span><i>→</i><span>answer judged, or "kai kaɗai · only you"</span></div>
+  <p>The visible difference is speed. Today the mic waits out a timer after the child has finished; with VAD the judgement comes about a second after the last sound. That is also the number to measure: press-to-judgement time before and after.</p>
+
+  <h4>Testing before the pilot</h4>
+  <ul>
+    <li>A local Chrome run with a fake microphone fed from recorded files: a child saying "goat" in silence, the same with room chatter mixed in, and chatter alone. The three files must give one accepted utterance, one accepted utterance, and nothing.</li>
+    <li>On the Galaxy Tab, ten presses in a quiet room and ten in a noisy one, timed.</li>
+    <li>The session log records mode, start and end times, floor, and the speaker score for every utterance, so a bad day can be diagnosed from records rather than by watching.</li>
+  </ul>
+</section>
+
+<section id="accent">
+  <p class="eyebrow">Plan 2 · build</p>
+  <h2>"Shikin" is chicken</h2>
+  <p>A Hausa-speaking child learning English will say certain sounds the Hausa way. Some of those are not mistakes worth marking; they are the accent every Nigerian English speaker has. Laila should accept them, and where it matters, model the standard sound once without a red mark.</p>
+  <h4>What exists today</h4>
+  <div class="kv">
+    <div><b>Exact match</b>The recogniser is given the expected words as its grammar, and the answer is matched by substring and a plain edit distance. "Shikin" is two letters from "chicken", which is treated like any two-letter error.</div>
+    <div><b>Three tries</b>Quizzes allow three attempts and never reveal the answer before the results screen. Accent tolerance fits inside that.</div>
+    <div><b>No record of what was heard</b>Attempts are logged as right or wrong. The recognised text is not kept, so the table below cannot yet be built from data. Logging it is the first task.</div>
+  </div>
+  <h4>The known substitutions</h4>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Standard sound</th><th>Often said</th><th>Example</th><th>Treat as</th></tr></thead>
+    <tbody>
+      <tr><td>ch</td><td>sh</td><td>chicken → shikin, chair → shea</td><td>Accept, model once</td></tr>
+      <tr><td>p</td><td>f</td><td>pepper → fefa, pen → fen</td><td>Accept, model once</td></tr>
+      <tr><td>v</td><td>b</td><td>seven → seben, five → fibe</td><td>Accept, model once</td></tr>
+      <tr><td>th (thin)</td><td>t</td><td>three → tri, tooth → tut</td><td>Accept</td></tr>
+      <tr><td>th (this)</td><td>d</td><td>mother → moda, father → fada</td><td>Accept</td></tr>
+      <tr><td>consonant cluster</td><td>vowel inserted</td><td>school → sukul, bread → beredi</td><td>Accept</td></tr>
+      <tr><td>short i / ee</td><td>merged</td><td>ship → sheep, fish → feesh</td><td>Accept, unless the lesson contrasts them</td></tr>
+      <tr><td>final consonant</td><td>dropped or softened</td><td>goat → goa, cat → ca</td><td>Accept only if the rest matches exactly</td></tr>
+      <tr><td>a different word</td><td>—</td><td>goat → cat</td><td>Wrong, as now</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="skeleton">
+  <p class="eyebrow">Plan 2b · in full</p>
+  <h2>Sound skeleton scoring</h2>
+  <p>Letters are the wrong unit for judging speech. "Chicken" and "shikin" differ in three letters and one sound. The skeleton turns both the expected word and what the recogniser returned into a short string of sound symbols, then measures the distance between the two with costs that know which differences are accent and which are a different word.</p>
+
+  <h4>Step 1 · Clean the recognised text</h4>
+  <p>Lower-case, strip punctuation, collapse spaces. Where the recogniser returned several words, every window of one to three words is tried and the best score wins, so "the goat" still matches "goat".</p>
+
+  <h4>Step 2 · Rewrite to sounds</h4>
+  <p>An ordered list of rewrites, applied to both strings. The order matters: digraphs before single letters, silent letters before vowel classes.</p>
+  <pre>ch→C   sh→S   th→T   ph→f   ck→k   qu→kw   wh→w   x→ks
+ee, ea, ie → i      oo → u      ou, ow → o      ai, ay, ey → e
+final silent e dropped (goose→gus)     doubled letters collapsed (pepper→peper)
+c→k before a,o,u; c→s before e,i,y      y as a vowel → i
+every remaining vowel → one of a e i o u
+chicken → Cikin      shikin → Sikin      school → skul      sukul → sukul
+seven → seven        seben → seben       three → Tri        tri → tri</pre>
+
+  <h4>Step 3 · Distance with accent-aware costs</h4>
+  <p>A standard edit distance, except that the cost of a substitution depends on the pair. The table is the accent table above, written as numbers, and it lives in one JSON file that the app and the test script both read.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Difference</th><th>Cost</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Same symbol</td><td class="num">0</td><td></td></tr>
+      <tr><td>Listed accent pair: C↔S, p↔f, v↔b, T↔t, T↔d, z↔s</td><td class="num">0.15</td><td>The Hausa ear, not an error</td></tr>
+      <tr><td>Vowel for vowel</td><td class="num">0.30</td><td>Vowel quality varies with every accent</td></tr>
+      <tr><td>A vowel inserted between two consonants</td><td class="num">0.20</td><td>Cluster breaking, sukul for skul</td></tr>
+      <tr><td>Final consonant dropped</td><td class="num">0.50</td><td>Common, but "goa" for goat is only just acceptable</td></tr>
+      <tr><td>Any other substitution, insertion or deletion</td><td class="num">1.00</td><td>A different word</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Step 4 · Normalise and decide</h4>
+  <p>The distance is divided by the length of the expected skeleton, with a floor of three so that short words are not judged too harshly. Then three bands.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Score</th><th>Outcome</th><th>Example</th><th>Working</th></tr></thead>
+    <tbody>
+      <tr><td class="num">0, identical strings</td><td><span class="tag t-green">exact</span></td><td>chicken → chicken</td><td>Madalla, as now</td></tr>
+      <tr><td class="num">up to 0.30</td><td><span class="tag t-gold">near</span></td><td>chicken → shikin</td><td>Cikin vs Sikin: one accent pair, 0.15 ÷ 5 = 0.03</td></tr>
+      <tr><td class="num">up to 0.30</td><td><span class="tag t-gold">near</span></td><td>school → sukul</td><td>skul vs sukul: one inserted vowel, 0.20 ÷ 4 = 0.05</td></tr>
+      <tr><td class="num">up to 0.30</td><td><span class="tag t-gold">near</span></td><td>three → tri</td><td>Tri vs tri: T↔t, 0.15 ÷ 3 = 0.05</td></tr>
+      <tr><td class="num">up to 0.30</td><td><span class="tag t-gold">near</span></td><td>goat → goa</td><td>got vs go: final consonant dropped, 0.50 ÷ 3 = 0.17</td></tr>
+      <tr><td class="num">above 0.30</td><td><span class="tag t-red">far</span></td><td>goat → cat</td><td>got vs kat: g↔k 1.00 plus o↔a 0.30 = 1.30 ÷ 3 = 0.43</td></tr>
+      <tr><td class="num">above 0.30</td><td><span class="tag t-red">far</span></td><td>goat → goose</td><td>got vs gus: o↔u 0.30 plus t↔s 1.00 = 1.30 ÷ 3 = 0.43</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Step 5 · The contrast lock</h4>
+  <p>A lesson that is teaching the difference between two words must not forgive the difference it is teaching. Each lesson item may name its contrast pairs. When "ship" is asked and "sheep" is a named contrast, the vowel cost for that item becomes 1.00, and "sheep" is far. Nothing else changes.</p>
+
+  <h4>Step 6 · Help the recogniser hear the variants</h4>
+  <p>Vosk with a grammar can only return words it was told to listen for, so the skeleton alone is not enough: if only "chicken" is in the grammar, "shikin" is either forced to "chicken", which is fine, or to nothing. The table is run backwards to generate spellings of each expected word as a Hausa speaker would say it, at most eight per word, and those are added to the grammar. Variants that are not in the model's own vocabulary are dropped, because the recogniser cannot produce them anyway. The child's word then comes back as the variant it actually was, the skeleton scores it near, and the log records the true form.</p>
+
+  <h4>Step 7 · Log, then rebuild the table from the pilot</h4>
+  <p>Every attempt stores the expected word, the recognised text, the skeleton score and the outcome, in the child's record alongside right or wrong. After a month the recognised forms of every word are counted, and the substitutions the children actually make replace the guesses above. The thresholds move with them. A facilitator listens to twenty near cases to confirm nothing wrong has crept in.</p>
+
+  <h4>Where the code goes</h4>
+  <ul>
+    <li>One JSON file with the rewrites, costs and thresholds, read by the app and by a Python test script that runs the worked examples above and fails if any band changes.</li>
+    <li>One scoring function used by every module in place of the current substring-plus-edit-distance match.</li>
+    <li>The grammar builder in the speech engine gains the variant generator.</li>
+    <li>The attempt log gains the recognised text and score.</li>
+  </ul>
+</section>
+
+<section id="near">
+  <p class="eyebrow">Plan 2c · in full</p>
+  <h2>The near outcome in every module</h2>
+  <p>Near means: accepted and counted right, the green tick appears, no red mark, no extra try consumed, and in a lesson Laila models the standard sound once. What that looks like differs by module because the modules judge different things.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Module</th><th>What is judged</th><th>Near behaviour in a lesson</th><th>In a test</th></tr></thead>
+    <tbody>
+      <tr><td><b>Abubuwa</b> words</td><td>The English word after Laila says it in Hausa</td><td>Tick. Laila: "Daidai ne. Saurara:" then the existing word clip once, then on to the next item. The dot goes green.</td><td>Tick, silently. No modelling, because no teaching happens in a test.</td></tr>
+      <tr><td><b>Karatu</b> reading</td><td>The word read from the screen</td><td>Same as Abubuwa.</td><td>Same.</td></tr>
+      <tr><td><b>Lambobi</b> numbers</td><td>The number name in English</td><td>Same, with the number table: tri, fo, fibe, seben, ten and the teens, which are the most accented set of all.</td><td>Same.</td></tr>
+      <tr><td><b>Haruffa</b> letters</td><td>The letter name repeated after Laila</td><td>Letter names have their own variants: ef and if, aitch and hech, zed and zee, dabul-yu. Near is accepted silently, because letters go fast and a modelling line would slow the rhythm.</td><td>Same.</td></tr>
+      <tr><td><b>Rubutu</b> spelling by voice</td><td>Letter names one after another</td><td>As Haruffa. Typing is untouched.</td><td>Same.</td></tr>
+      <tr><td><b>Nemo hoto</b></td><td>A tap on a picture</td><td>No speech, no change.</td><td>No change.</td></tr>
+      <tr><td><b>Login</b> name</td><td>The words after "sunana"</td><td>The name bank match already uses an edit distance; the skeleton replaces it so that Hausa names said fast still match. Never a modelling line at login.</td><td>—</td></tr>
+      <tr><td><b>Misali</b> samples</td><td>The demo child's turn</td><td>Same rules, so the sample never contradicts the lesson.</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Rules that hold everywhere</h4>
+  <ul>
+    <li>A child never passes a lesson and fails a test for the same accent. One table, one threshold, both places.</li>
+    <li>The results screen does not distinguish near from exact. A child who said "shikin" was right.</li>
+    <li>The modelling line plays at most once per word per session. The second near on the same word is a silent tick.</li>
+    <li>Near never applies while a contrast lock is active for that item.</li>
+    <li>The carry list is untouched: near is not a miss, so nothing returns.</li>
+  </ul>
+</section>
+
+<section id="voices">
+  <p class="eyebrow">Plan 2d · in full</p>
+  <h2>New Laila lines: recording, review, release</h2>
+  <p>Every plan above adds lines, and every line follows the same path that the existing 640 clips took, so nothing reaches a child before you have heard it.</p>
+  <ol class="steps">
+    <li><b>Draft.</b> The lines below, boy and girl forms, with an English caption for the subtitles. A north-east Hausa speaker corrects the wording before anything is recorded. "Saurara" and "saurari" are the imperative to a boy and to a girl; the two forms are not optional.</li>
+    <li><b>Takes.</b> Two or three takes per line from the voice pipeline, each normalised to the same loudness as the rest of the app and encoded the same way, so a new line never sounds louder or thinner than its neighbours.</li>
+    <li><b>Review round.</b> A new round on the voices page: one row per line, the takes side by side with play buttons, the text under each, accept or reject per take, and a note field. The round also carries the clip that plays after the modelling line, so you hear the join: "Daidai ne. Saurara:" then "chicken", with the 350 ms gap the app will use.</li>
+    <li><b>Release.</b> The accepted take is written into the app's audio map, the manifest, the Hausa text file and the English caption file in one step, and a transcript audit confirms the recorded audio says what the text says. Lines with no accepted take stay out of the build; the code path plays nothing rather than a rejected take.</li>
+    <li><b>Where they play.</b> Near modelling: the line, a short gap, then the existing word clip; never in tests. Only-you: after a speaker mismatch, once, then the mic reopens. Break and whole: the syllable flow, when built.</li>
+  </ol>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Key</th><th>To a boy</th><th>To a girl</th><th>English caption</th><th>Used by</th></tr></thead>
+    <tbody>
+      <tr><td><code>s_onlyyou_m/f</code></td><td class="ha">Kai kaɗai ka faɗa.</td><td class="ha">Ke kaɗai ki faɗa.</td><td>Only you, say it.</td><td>Plan 1, speaker mismatch</td></tr>
+      <tr><td><code>s_near_m/f</code></td><td class="ha">Daidai ne. Saurara:</td><td class="ha">Daidai ne. Saurari:</td><td>Right. Listen:</td><td>Plan 2, then the word clip</td></tr>
+      <tr><td><code>s_break_m/f</code></td><td class="ha">Mu raba shi. Faɗa bayana.</td><td class="ha">Mu raba shi. Faɗi bayana.</td><td>Let's break it. Say it after me.</td><td>Plan 3</td></tr>
+      <tr><td><code>s_whole_m/f</code></td><td class="ha">Yanzu duka.</td><td class="ha">Yanzu duka.</td><td>Now all of it.</td><td>Plan 3, neutral wording, still recorded as two keys for consistency</td></tr>
+      <tr><td><code>s_loading</code></td><td colspan="2" class="ha">Don Allah a ɗan jira. Ana shirya komai.</td><td>Please wait a little. Everything is getting ready.</td><td>Loader, already live, impersonal so it needs no gender</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="syllables">
+  <p class="eyebrow">Plan 3 · plan only, nothing built</p>
+  <h2>Breaking a word into pieces</h2>
+  <p>In the reading lesson, when a child cannot say a word after two tries, Laila breaks it into syllables, says each one, has the child say each one back, then the whole word. It is how a teacher does it at a desk.</p>
+  <div class="flow"><span>misses "camel" twice</span><i>→</i><span>Laila: "mu raba shi · let's break it"</span><i>→</i><span><b>ca</b>·mel, first piece lit</span><i>→</i><span>Laila says "ca", child says "ca"</span><i>→</i><span>ca·<b>mel</b>, again</span><i>→</i><span>"yanzu duka · now all of it"</span><i>→</i><span>child says "camel", Madalla</span></div>
+  <p>The whole-word attempt at the end counts as the third try. If it fails, the word goes to the carry list as today. It only runs inside the reading lesson, never in a test.</p>
+  <div class="kv">
+    <div><b>Syllable splits</b>Hand-written into the word file for the fixed English set; Hausa words split by rule and checked by hand in an hour.</div>
+    <div><b>Audio per piece</b>Each syllable in Laila's voice and the two child voices, same pipeline, same loudness. Roughly 300 short clips.</div>
+    <div><b>Screen</b>The Rubutu slate already draws a word as slots; the active piece in colour, the rest grey, the pointing hand under it.</div>
+    <div><b>Recognition</b>Single syllables are checked with the loudness gate and the skeleton, not exact recognition; the whole word at the end as now.</div>
+  </div>
+  <h4>Open decisions for you</h4>
+  <ul>
+    <li>Two misses before breaking, or one?</li>
+    <li>Reading lesson only, or also Abubuwa?</li>
+    <li>Does a syllable step count for progress, or only the whole word? This note assumes only the whole word.</li>
+  </ul>
+</section>
+
+<section id="order">
+  <p class="eyebrow">Sequence</p>
+  <h2>Order of work</h2>
+  <div class="card">
+    <div class="phase"><div class="when">This week<small>no new models</small></div><ul><li>Log the recognised text and score with every attempt.</li><li>Loudness gate and noise floor.</li><li>Accent JSON, skeleton function, variant generator in the grammar, Python test of the worked examples.</li><li>Headsets in the centre kit list.</li></ul></div>
+    <div class="phase"><div class="when">Weeks 2–3<small>accents complete, VAD in</small></div><ul><li>Near outcome wired per module as in the table; contrast locks on the minimal-pair lessons.</li><li>Lines drafted, corrected, recorded, reviewed on the voices page, released.</li><li>VAD model in the loader, worklet capture, start and end logic, timers retired where VAD is active.</li></ul></div>
+    <div class="phase"><div class="when">Weeks 4–5<small>one voice</small></div><ul><li>Speaker match at utterance end, calibrated on the pilot's own clips.</li><li>Noise suppression trialled and kept only if Vosk improves.</li></ul></div>
+    <div class="phase"><div class="when">Later<small>after your decisions</small></div><ul><li>Syllables in the reading lesson.</li><li>Accent table rebuilt from a month of logged attempts.</li></ul></div>
+  </div>
+</section>
+
+<div class="foot">Plans 1 and 2 are for building; plan 3 is for discussion only. Effort estimates assume one developer and the existing content pipeline. Hausa lines are drafts for a native speaker to correct. Threshold values are starting points, to be moved by the pilot's records.</div>
+</div>
