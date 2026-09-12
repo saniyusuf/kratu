@@ -19,6 +19,12 @@ async function create(path, eps) {
 }
 async function init(opts) {
   const eps = (opts && opts.webgpu && self.navigator && navigator.gpu) ? ['webgpu', 'wasm'] : ['wasm'];
+  if (opts && opts.blobs && opts.blobs.det && opts.blobs.rec && opts.blobs.spk) {   /* Kratu: model bytes already downloaded (and cached) by the page — no fetch here, nothing to unpack, sessions are built straight from memory */
+    const recName = opts.recName || 'w600k_r50';
+    det = await create(new Uint8Array(opts.blobs.det), eps); rec = await create(new Uint8Array(opts.blobs.rec), eps); spk = await create(new Uint8Array(opts.blobs.spk), ['wasm']);
+    ep = eps[0]; await runDet(new Float32Array(3 * DET * DET)); await rec.run({ 'input.1': new ort.Tensor('float32', new Float32Array(3 * 112 * 112), [1, 3, 112, 112]) });
+    return { ep, rec: recName, version: 'scrfd500m+' + recName + '+campplus' };
+  }
   if (opts && opts.rec === 'r50') M.rec = 'models/insightface/w600k_r50.onnx';
   if (M.rec.endsWith('w600k_r50.onnx')) { try { const h = await fetch(M.rec, { method: 'HEAD' }); if (!h.ok) M.rec = 'models/insightface/w600k_mbf.onnx'; } catch (e) { M.rec = 'models/insightface/w600k_mbf.onnx'; } }   // the 174 MB r50 model is not shipped on GitHub Pages (100 MB file limit): fall back to the 14 MB mbf model
   det = await create(M.det, eps); rec = await create(M.rec, eps); spk = await create(M.spk, ['wasm']);
@@ -26,7 +32,7 @@ async function init(opts) {
   // warm-up
   await runDet(new Float32Array(3 * DET * DET));
   await rec.run({ 'input.1': new ort.Tensor('float32', new Float32Array(3 * 112 * 112), [1, 3, 112, 112]) });
-  return { ep, version: 'scrfd500m+' + M.rec.split('/').pop().replace('.onnx','') + '+campplus' };
+  return { ep, rec: M.rec.split('/').pop().replace('.onnx',''), version: 'scrfd500m+' + M.rec.split('/').pop().replace('.onnx','') + '+campplus' };
 }
 async function runDet(chw) { return det.run({ 'input.1': new ort.Tensor('float32', chw, [1, 3, DET, DET]) }); }
 

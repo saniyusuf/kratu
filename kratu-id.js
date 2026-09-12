@@ -10,7 +10,8 @@
   function call(type, payload, transfer) { return new Promise((res, rej) => { const id = ++seq; pend.set(id, { res, rej }); W.postMessage(Object.assign({ id, type }, payload || {}), transfer || []); }); }
 
   const K = { cfg, isReady: false, ep: null, ready: null, version: cfg.modelVer };
-  K.init = function () { if (K.ready) return K.ready; K.ready = call('init', { opts: { webgpu: cfg.webgpu, rec: cfg.rec } }).then(r => { K.isReady = true; K.ep = r.ep; return r; }).catch(e => { K.ready = null; throw e; }); return K.ready; };   // a failed init may be retried
+  K.init = function (o) { if (K.ready) return K.ready; o = o || {}; const opts = { webgpu: cfg.webgpu, rec: cfg.rec }; const transfer = []; if (o.blobs) { opts.blobs = o.blobs; opts.recName = o.recName; Object.keys(o.blobs).forEach(n => { const b = o.blobs[n]; if (b && b.byteLength) transfer.push(b); }); }
+    K.ready = call('init', { opts }, transfer).then(r => { K.isReady = true; K.ep = r.ep; K.version = r.version; K.recName = r.rec || (r.version || '').split('+')[1] || ''; return r; }).catch(e => { K.ready = null; throw e; }); return K.ready; };   // a failed init may be retried; model bytes handed in by the page are transferred, not copied
 
   /* ---- frame pump: one frame in flight, ~cfg.fps ---- */
   let watching = null;
@@ -65,11 +66,12 @@
   async function enc(rec) { const iv = crypto.getRandomValues(new Uint8Array(12)); const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, ser(rec)); return { id: rec.id, iv, ct }; }
   async function dec(row) { return deser(new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: row.iv }, key, row.ct))); }
   K.store = {
-    load: async function () { if (loaded) return loaded; loaded = (async () => { db = await openDB(); key = await getKey(); const rows = await tx('people', 'readonly', s => s.getAll()); people.length = 0; for (const r of rows) { try { const p = await dec(r); if (p.avatar || p.still) { delete p.avatar; delete p.still; try { const row = await enc(p); await tx('people', 'readwrite', s => s.put(row)); } catch (e) {} } people.push(p); } catch (e) { console.warn('KratuID: could not decrypt record', r.id); } } return people; })(); return loaded; },   /* no photos at rest — vectors, name, key, gender and the child's own short 'sunana …' clip for the greeting (Sani 2026-09-11); older photo fields are stripped on load */
+    load: async function () { if (loaded) return loaded; loaded = (async () => { db = await openDB(); key = await getKey(); const rows = await tx('people', 'readonly', s => s.getAll()); people.length = 0; for (const r of rows) { try { const p = await dec(r); let dirty = false; if (p.avatar || p.still) { delete p.avatar; delete p.still; dirty = true; } if (K.version && p.modelVer !== K.version && (p.faceVecs || []).length) { p.faceVecs = []; p.modelVer = K.version; dirty = true; }   /* face vectors from a different recogniser cannot be compared: drop them, keep name, voice and clip, and the next 'sunana' merges fresh vectors into the same record */
+          if (dirty) { try { const row = await enc(p); await tx('people', 'readwrite', s => s.put(row)); } catch (e) {} } people.push(p); } catch (e) { console.warn('KratuID: could not decrypt record', r.id); } } return people; })(); return loaded; },   /* no photos at rest — vectors, name, key, gender and the child's own short 'sunana …' clip for the greeting (Sani 2026-09-11); older photo fields are stripped on load */
     all: function () { return people.slice(); },
     upsert: async function (rec) { await K.store.load(); let ex = people.find(p => p.name.toLowerCase() === rec.name.toLowerCase());
-      if (ex) { ex.faceVecs = ex.faceVecs.concat(rec.faceVecs || []).slice(-12); if (rec.voiceVec) ex.voiceVec = rec.voiceVec; ['key', 'gender', 'clip'].forEach(k => { if (rec[k]) ex[k] = rec[k]; }); ex.modelVer = cfg.modelVer; }
-      else { ex = Object.assign({ id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: Date.now(), modelVer: cfg.modelVer }, rec); ex.faceVecs = (rec.faceVecs || []).slice(-12); people.push(ex); }
+      if (ex) { ex.faceVecs = ex.faceVecs.concat(rec.faceVecs || []).slice(-12); if (rec.voiceVec) ex.voiceVec = rec.voiceVec; ['key', 'gender', 'clip'].forEach(k => { if (rec[k]) ex[k] = rec[k]; }); ex.modelVer = K.version || cfg.modelVer; }
+      else { ex = Object.assign({ id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: Date.now(), modelVer: K.version || cfg.modelVer }, rec); ex.faceVecs = (rec.faceVecs || []).slice(-12); people.push(ex); }
       const row = await enc(ex); await tx('people', 'readwrite', s => s.put(row)); return ex; },
     remove: async function (id) { await K.store.load(); const i = people.findIndex(p => p.id === id); if (i >= 0) people.splice(i, 1); await tx('people', 'readwrite', s => s.delete(id)); },
     clear: async function () { await K.store.load(); people.length = 0; await tx('people', 'readwrite', s => s.clear()); }
