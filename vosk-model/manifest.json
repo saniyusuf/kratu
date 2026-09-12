@@ -3,59 +3,87 @@
 "files": [
 {
 "path": "graph/Gr.fst",
-"size": 24013795
+"size": 24013795,
+"gz": "graph/Gr.fst.gz",
+"gzsize": 13648357
 },
 {
 "path": "graph/HCLr.fst",
-"size": 22416994
+"size": 22416994,
+"gz": "graph/HCLr.fst.gz",
+"gzsize": 4683075
 },
 {
 "path": "am/final.mdl",
-"size": 15962575
+"size": 15962575,
+"gz": "am/final.mdl.gz",
+"gzsize": 14643088
 },
 {
 "path": "ivector/final.ie",
-"size": 8288887
+"size": 8288887,
+"gz": "ivector/final.ie.gz",
+"gzsize": 7941859
 },
 {
 "path": "ivector/final.dubm",
-"size": 168048
+"size": 168048,
+"gz": "ivector/final.dubm.gz",
+"gzsize": 153760
 },
 {
 "path": "ivector/final.mat",
-"size": 44975
+"size": 44975,
+"gz": "ivector/final.mat.gz",
+"gzsize": 42948
 },
 {
 "path": "graph/phones/word_boundary.int",
-"size": 1761
+"size": 1761,
+"gz": "graph/phones/word_boundary.int.gz",
+"gzsize": 451
 },
 {
 "path": "ivector/global_cmvn.stats",
-"size": 1080
+"size": 1080,
+"gz": "ivector/global_cmvn.stats.gz",
+"gzsize": 490
 },
 {
 "path": "conf/model.conf",
-"size": 290
+"size": 290,
+"gz": "conf/model.conf.gz",
+"gzsize": 182
 },
 {
 "path": "README",
-"size": 199
+"size": 199,
+"gz": "README.gz",
+"gzsize": 189
 },
 {
 "path": "conf/mfcc.conf",
-"size": 131
+"size": 131,
+"gz": "conf/mfcc.conf.gz",
+"gzsize": 123
 },
 {
 "path": "graph/disambig_tid.int",
-"size": 102
+"size": 102,
+"gz": "graph/disambig_tid.int.gz",
+"gzsize": 79
 },
 {
 "path": "ivector/online_cmvn.conf",
-"size": 95
+"size": 95,
+"gz": "ivector/online_cmvn.conf.gz",
+"gzsize": 117
 },
 {
 "path": "ivector/splice.conf",
-"size": 35
+"size": 35,
+"gz": "ivector/splice.conf.gz",
+"gzsize": 57
 }
 ]
 }
