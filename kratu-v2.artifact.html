@@ -1301,10 +1301,11 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
     function finish(){ if(finished) return; finished=true; T('finish'); el.classList.add('out'); setTimeout(function(){ try{ el.remove(); }catch(e){} },500); resolveAll(); }
     var bgStarted=false;
     function runBg(){ if(bgStarted) return; bgStarted=true; ST.filter(function(st){ return st.bg; }).forEach(function(st){ var tries=0; (function go(){ tries++; runDl(st).then(function(){ return runPrep(st); }, function(){ if(tries<3){ prog(st.id,'sake gwadawa · retrying'); setTimeout(go,3000); } }); })(); }); }   /* never waited for, never blocks, never shows the retry screen; failures are logged and the engines' own fallbacks cover them */
-    function run(){ el.classList.remove('failed'); msg.textContent='Ana shirya Kratu…'; sub.textContent='Getting ready · after this it works without internet'; note(); runBg();
+    function run(){ el.classList.remove('failed'); msg.textContent='Ana shirya Kratu…'; sub.textContent='Getting ready · after this it works without internet'; note();
       var todo=ST.filter(function(st){ return !st.bg&&!dlDone(st); }), preps=[];
       var dls=todo.map(function(st){ return runDl(st).then(function(){ preps.push(runPrep(st)); }, function(){}); });
       Promise.all(dls).then(function(){ var bad=ST.filter(function(st){ return !st.bg&&dl[st.id]==='fail'; }); if(bad.length){ fails++; el.classList.add('failed'); msg.textContent='Wani abu bai zo ba'; sub.textContent='Something did not load: '+bad.map(function(st){ return st.en+' ('+(errs[st.id]||'?')+')'; }).join(', ')+' · check the connection, then try again'; if(fails>=2) skip.hidden=false; return; }
+        runBg();   /* the big engines start downloading only now, so they never compete with the small files the login needs */
         var timer=setTimeout(finish, PREP_MAX); Promise.all(preps).then(function(){ clearTimeout(timer); setTimeout(finish,300); }); }); }
     retry.addEventListener('click', run); skip.addEventListener('click', finish);
     window.kratuLoader={state:function(){ return {download:JSON.parse(JSON.stringify(dl)), prepare:JSON.parse(JSON.stringify(prep)), errors:JSON.parse(JSON.stringify(errs)), times:JSON.parse(JSON.stringify(times))}; }, retry:run};
