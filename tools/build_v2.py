@@ -1,0 +1,325 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Kratu v2 — the Agreed screens (0–15) and the six Misali samples stitched into ONE app, end to end.
+Reads kratu-login.artifact.html (the spec), keeps its styles, data and engines untouched, drops the design
+chrome (tabs, notes, demo bars), shows one screen at a time and routes every hand-off the engines already
+make (scrollIntoView) through a tiny router. Writes kratu-v2.html (local, full word sets) and
+kratu-v2.artifact.html (publishable, embedded subset)."""
+import pathlib, re, json
+R=pathlib.Path(__file__).resolve().parent.parent
+h=(R/'kratu-login.artifact.html').read_text(encoding='utf-8')
+style_end=h.index('</style>')+len('</style>')
+head=h[:style_end]
+lab=h.index('<div class="tabpanel" id="tab-lab"'); sc=h.index('<script>',lab)
+scripts=h[sc:]
+# ---- screens: every .frame in the Agreed pane + the six Misali frames (Working pane)
+def frames(pane):
+    out=[]; i=0
+    while True:
+        b=pane.find('<div class="block"',i)
+        if b<0: break
+        f=pane.find('<div class="frame">',b); e=pane.find('\n    <div class="say">',f)
+        if f<0 or e<0 or (pane.find('<div class="block"',b+1)>0 and f>pane.find('<div class="block"',b+1)): i=b+1; continue
+        fr=pane[f:e]; cls=re.search(r'<div class="frame"><div class="(s [^"]*)"',fr).group(1)
+        kind=re.search(r'data-kind="([^"]*)"',fr[:400]); out.append((cls,kind.group(1) if kind else None,fr)); i=e
+    return out
+agreed=h[h.index('<div class="tabpanel" id="tab-agreed"'):lab]
+working=h[h.index('<div class="tabpanel" id="tab-working"'):h.index('<div class="tabpanel" id="tab-agreed"')]
+NAME={'s perm':'perm','s genderred':'gender','s meetlaila':'meetlaila','s facecap':'facecap','s lesson home':'home','s lesson abc':'abc','s lesson learn':'learn','s lesson cats':'cats','s lesson word obj':'obj','s lesson spell':'spell','s lesson word obj lambobi':'lambobi','s lesson quiz':'quiz','s lesson read karatu':'karatu'}
+ag_blocks=[]
+for cls,kind,fr in frames(agreed):
+    assert cls in NAME, cls; ag_blocks.append('<div class="block" data-name="%s">%s</div>'%(NAME[cls],fr))
+mi_blocks=['<div class="block" data-name="misali-%s">%s</div>'%(kind,fr) for cls,kind,fr in frames(working) if kind]
+assert len(ag_blocks)==13 and len(mi_blocks)==7, (len(ag_blocks),len(mi_blocks))
+# ---- engine patches (exact strings; the artifact itself is not touched)
+def rep(old,new,count=1):
+    global scripts
+    n=scripts.count(old); assert n==count,(n,old[:90]); scripts=scripts.replace(old,new)
+# the design's tab switcher is gone
+i=scripts.index('(function(){var P={working:"tab-working"'); j=scripts.index('sel("working");})();',i)+len('sel("working");})();'); scripts=scripts[:i]+scripts[j:]
+# after the face capture and the greeting: to the chooser, not to the next design block
+rep("var nx=document.querySelector('#tab-working .block'); if(nx){ var tb=document.getElementById('tb-working'); if(tb) tb.click(); nx.scrollIntoView({behavior:'smooth',block:'start'}); }",
+    "var nx=document.querySelector('#tab-agreed .s.lesson.home'); if(nx) nx.scrollIntoView({behavior:'smooth',block:'start'});")
+# a sample that ends hands over to its lesson
+rep("function done(){ phase='idle'; running=false; if(lb) lb.classList.remove('cue'); }",
+    "function done(){ phase='idle'; running=false; if(lb) lb.classList.remove('cue'); if(window.kratuSampleDone) window.kratuSampleDone(kind); }")
+# the child's own turn in a sample listens for real (falls back to the simulation where there is no mic)
+rep("if(voice) play(voice, after); else wait(1400, after); }); }",
+    "if(voice) play(voice, after); else if(window.kratuWordHear) window.kratuWordHear(lb, fb, heard, function(ok,raw){ s.__miss=(ok||!raw)?0:((s.__miss||0)+1); if(ok||!raw||s.__miss>=3){ s.__miss=0; after(); } else { recOff(); fb.className='fb bad'; fb.textContent='Sake gwadawa'; play('app_retry', function(){ phase='turn'; lb.classList.add('cue'); }); } }); else wait(1400, after); }); }")
+old_rub="else if(kind==='rubutu'){ var w=RW||word('cat'), i=0; recOn(); (function n(){"
+assert scripts.count(old_rub)==1
+rep(old_rub, "else if(kind==='rubutu'){ var w=RW||word('cat'), i=0; recOn(); var spoken=null; if(window.kratuSpellHear){ window.kratuSpellHear(lb, fb, W.rubutu, function(got){ s.__miss=(got>=W.rubutu.length)?0:((s.__miss||0)+1); if(s.__miss>=3){ s.__miss=0; got=W.rubutu.length; } spoken=got; go(); }); } else go(); function go(){ (function n(){ if(spoken!==null && i>=spoken){ recOff(); if(spoken<W.rubutu.length){ fb.className='fb bad'; fb.textContent='Sake gwadawa'; turnSlots.forEach(function(x,k){ if(k>=spoken){ x.textContent='_'; x.classList.remove('on','done'); } }); play('app_retry', function(){ phase='turn'; lb.classList.add('cue'); }); return; } }")
+# close the extra function go(){ … } we opened: the original loop ends with  "})(); } }"  for the rubutu branch
+old_tail="turnSlots[i].classList.add('on'); wait(650, function(){ fly(lb.querySelector('.lm'), turnSlots[i], L, function(){ i++; wait(250,n); }); }); })(); } }"
+rep(old_tail, "turnSlots[i].classList.add('on'); wait(650, function(){ fly(lb.querySelector('.lm'), turnSlots[i], L, function(){ i++; wait(250,n); }); }); })(); } } }")
+# viewport units in the design would scale twice under zoom: make them relative to the screen box instead (container units)
+head=re.sub(r'(\d)vw\b',r'\1cqw',head); head=re.sub(r'(\d)vh\b',r'\1cqh',head); head=re.sub(r'(\d)vmin\b',r'\1cqmin',head)
+def cq_inline(html): return re.sub(r'style="([^"]*)"', lambda m:'style="'+re.sub(r'(\d)vw\b',r'\1cqw',re.sub(r'(\d)vh\b',r'\1cqh',re.sub(r'(\d)vmin\b',r'\1cqmin',m.group(1))))+'"', html)
+ag_blocks=[cq_inline(b) for b in ag_blocks]; mi_blocks=[cq_inline(b) for b in mi_blocks]
+# ---- the app shell
+css='''<style id="v2">
+html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden}
+#app{position:fixed;inset:0;padding:6px;background:var(--bg,#F1E9D6)}
+#app .tabs{display:none}#app .block{display:none}#app .block.active{display:block;height:100%}
+#app .tabpanel{display:contents}
+/* the frame is the zoomed, full-screen paper; the screen itself keeps the design's 16:10 inside it (centered), so nothing designed for that shape overflows */
+#app .frame{zoom:var(--z,1);width:100%;height:100%;padding:0;border:0;border-radius:18px;container-type:size;display:flex;align-items:center;justify-content:center;background:var(--paper);background-image:radial-gradient(rgba(150,120,70,.10) 1.6px,transparent 1.6px);background-size:20px 20px}
+#app .frame>.s{width:min(100%,calc(100cqh * 1.6));height:min(100%,calc(100cqw / 1.6));aspect-ratio:auto;border-radius:0;min-height:0;background:transparent;overflow:hidden}
+/* the listening vignette (the design paints it on the 16:10 screen) covers the whole frame here */
+#app .frame>.s::after{display:none}
+#app .frame::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:60;box-shadow:inset 0 0 70px 14px rgba(47,143,91,.5);opacity:0;transition:opacity .35s ease}
+#app .frame:has(.s.hearing)::after{opacity:1}
+#app .frame{position:relative}
+/* the door carries a back arrow beside it (white, rounded, pointing into the door) so "back" reads at a glance */
+#app .block.active .s>.backdoor::after{content:"";position:absolute;left:52px;top:17px;width:26px;height:22px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 22'%3E%3Cpath d='M24 11 H5 M12 3 L4 11 L12 19' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35));animation:doorarrow 1.3s ease-in-out infinite}
+@keyframes doorarrow{0%,100%{transform:translateX(0)}50%{transform:translateX(-5px)}}
+@media (prefers-reduced-motion: reduce){#app .block.active .s>.backdoor::after{animation:none}}
+/* door and ear sit in the true corners of the screen, whatever the shape */
+#app .block.active .s>.backdoor{position:fixed;left:6px;top:6px;border-radius:18px 0 100% 0}
+#app .block.active .s>.helpdome{position:fixed;right:6px;top:6px;left:auto;border-radius:0 18px 0 100%}
+/* the child cannot read: written prompts ("Danna kan Laila, ka faɗa da Turanci.") are never shown — Laila says them; only marks and the heard word remain */
+#app .fb.wait{visibility:hidden}
+/* the heard-word box only makes sense where a word is spelt or read (Rubutu, Karatu); elsewhere the marks, the row and Laila's voice say it all */
+#app .s:not(.spell):not(.karatu) .fb{display:none}
+#app .demobar{display:none}body.debug #app .demobar{display:flex;position:absolute;left:12px;bottom:10px;z-index:50}
+#app .spothand{z-index:80}
+#rotate{display:none;position:fixed;inset:0;z-index:300;background:#FBF3DE;align-items:center;justify-content:center;flex-direction:column;gap:18px;font-family:var(--disp,sans-serif);color:#3B2E1E;text-align:center;padding:24px}
+#rotate svg{width:120px;height:120px;fill:none;stroke:#3B2E1E;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:rot 2.2s ease-in-out infinite}
+@keyframes rot{0%,20%{transform:rotate(0)}55%,80%{transform:rotate(-90deg)}100%{transform:rotate(-90deg)}}
+#rotate b{font-size:28px}#rotate small{font:600 16px var(--body,sans-serif);color:#8a7a5c}
+@media (orientation:portrait){#rotate{display:flex}}
+#admingear{position:fixed;left:6px;bottom:6px;width:calc(66px * var(--z,1));height:calc(66px * var(--z,1));border:0;border-radius:0 100% 0 18px;background:#2FAE9E;cursor:pointer;z-index:70;padding:0;display:none;-webkit-user-select:none;user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+#admingear:active{background:#26907F}
+#admingear.show{display:block}
+#admingear svg{position:absolute;left:14%;bottom:14%;width:44%;height:44%;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#admin{position:fixed;inset:0;background:rgba(59,46,30,.55);z-index:80;display:none;align-items:center;justify-content:center;font-family:var(--body,sans-serif)}
+#admin.open{display:flex}
+#admin .box{background:#FBF6EA;border:2px solid #DCCBA3;border-radius:22px;padding:22px 24px;min-width:320px;max-width:92vw;max-height:92vh;overflow:auto;box-sizing:border-box;color:#3B2E1E;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+#admin h3{font-family:var(--disp,sans-serif);font-size:22px;margin:0 0 6px}
+#admin .sub{font-size:13px;color:#8a7a5c;margin-bottom:14px}
+#admin .code{font-family:ui-monospace,monospace;font-size:26px;letter-spacing:.3em;min-height:38px;border:2px solid #DCCBA3;border-radius:12px;background:#fff;padding:4px 10px;margin-bottom:12px}
+#admin .code.bad{border-color:#E63946;color:#E63946}
+#admin .pad{display:grid;grid-template-columns:repeat(3,72px);gap:8px;justify-content:center}
+#admin .pad button,#admin .who button,#admin .close{font:800 20px var(--disp,sans-serif);border:2px solid #DCCBA3;background:#fff;color:#3B2E1E;border-radius:14px;padding:12px 0;cursor:pointer}
+#admin .pad button:active{background:#F2C11C}
+#admin .who{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+#admin .pcard{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px;border-width:4px;border-style:solid;border-radius:20px;font-size:22px;cursor:pointer}
+#admin .pcard .gph{width:120px;height:120px;object-fit:cover;border-radius:14px;display:block}
+#admin .pcard .nm{font:800 22px var(--disp,sans-serif)}
+#admin .pcard.girl{background:#fff;border-color:#fff;box-shadow:0 0 0 2px #DCCBA3}#admin .pcard.girl .nm{color:#3B2E1E}
+#admin .pcard.boy{background:#E63946;border-color:#E63946}#admin .pcard.boy .nm,#admin .pcard.boy small{color:#fff}
+#admin .pcard small{display:block;font:700 13px var(--body,sans-serif);color:#8a7a5c}#admin .pcard .phand{display:none}
+#admin .confirm-stage .cwho{display:flex;justify-content:center;margin:0 0 6px}#admin .confirm-stage .cwho .pcard{pointer-events:none;padding:8px}#admin .confirm-stage .cwho .pcard .gph{width:84px;height:84px;object-fit:cover}#admin .confirm-stage .cwho .pcard .nm{font-size:18px}#admin .confirm-stage .cwho .pcard small{display:none}
+#admin .confirm-stage h4{font:800 20px var(--disp,sans-serif);margin:0 0 8px}#admin .confirm-stage p{font-size:14px;line-height:1.5;color:#5c4d38;margin:0 0 4px;text-align:left}
+#admin .cyes{flex:1;font:800 16px var(--disp,sans-serif);border:2px solid #2FAE9E;background:#2FAE9E;color:#fff;border-radius:14px;padding:10px 18px;cursor:pointer}
+#admin .close{margin-top:14px;font-size:15px;padding:8px 18px}
+#admin .restart{margin-top:14px;font:800 15px var(--disp,sans-serif);border:2px solid #E63946;background:#fff;color:#E63946;border-radius:14px;padding:10px 18px;cursor:pointer;width:100%}
+#admin .restart:active{background:#E63946;color:#fff}
+#admin .row2{display:flex;gap:10px;margin-top:14px}#admin .row2 .close{margin:0;flex:1}
+#leave{position:fixed;inset:0;background:rgba(59,46,30,.55);z-index:85;display:flex;align-items:center;justify-content:center}#leave[hidden]{display:none}
+#leave .lbox{background:#FBF6EA;border:2px solid #DCCBA3;border-radius:22px;padding:22px 30px 18px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}#leave .ltitle{font:800 22px var(--disp,sans-serif);color:#3B2E1E;margin-bottom:14px}
+#leave .lpair{display:flex;gap:44px;align-items:flex-end;justify-content:center}#leave .yn{border:0;background:none;padding:6px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font:800 16px var(--disp,sans-serif);color:#3B2E1E}#leave .lm{display:block}#leave .lm svg{width:100%;height:100%}#leave .allo{width:64px;height:80px;display:block;filter:drop-shadow(0 4px 6px rgba(20,25,45,.28))}#leave .yn:active{transform:scale(.96)}
+#admin .ico{width:20px;height:20px;vertical-align:-4px;margin-right:6px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}#admin .flag .ico{width:15px;height:15px;vertical-align:-3px;margin-right:4px}
+#admin .whocard{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #DCCBA3;border-radius:14px;padding:10px 14px;margin-bottom:12px;text-align:left}#admin .whocard .wpic{width:52px;height:52px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 0 0 2px #DCCBA3}#admin .whocard .wico{width:52px;height:52px;border-radius:50%;background:#F1E9D6;display:flex;align-items:center;justify-content:center}#admin .whocard .wico .ico{width:28px;height:28px;margin:0;stroke:#8a7a5c}#admin .whocard .wico[hidden]{display:none}#admin .whocard .wico.girl{background:#fff;box-shadow:0 0 0 3px #DCCBA3}#admin .whocard .wico.girl .ico{stroke:#3B2E1E}#admin .whocard .wico.boy{background:#E63946}#admin .whocard .wico.boy .ico{stroke:#fff}#admin .whocard b{display:block;font:800 18px var(--disp,sans-serif)}#admin .whocard small{display:block;font:600 13px var(--body,sans-serif);color:#8a7a5c;margin-top:2px}#admin .whocard.demo .wpic{border-radius:12px}
+#admin .permnote{background:#FDECEC;border:2px solid #E63946;border-radius:14px;padding:10px 14px;margin:0 0 12px;text-align:left}#admin .permnote b{display:block;font:800 15px var(--disp,sans-serif);color:#E63946}#admin .permnote small{display:block;font:600 13px var(--body,sans-serif);color:#5c4d38;margin:4px 0 8px}#admin .permnote .toperm{font:800 14px var(--disp,sans-serif);border:2px solid #E63946;background:#fff;color:#E63946;border-radius:12px;padding:8px 14px;cursor:pointer}
+#admin .locked{opacity:.4;pointer-events:none;filter:grayscale(.6)}
+#admin .students-open{margin-top:10px;width:100%;font:800 15px var(--disp,sans-serif);border:2px solid #2FAE9E;background:#fff;color:#1E8073;border-radius:14px;padding:10px 18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}#admin .students-open .lock{margin-left:auto;font:700 12px var(--body,sans-serif);color:#8a7a5c;display:flex;align-items:center;gap:2px}#admin .students-open .lock .ico{width:15px;height:15px;margin:0}
+#admin .stitle{font:800 20px var(--disp,sans-serif);margin:0 0 10px}#admin .slist{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;text-align:left}#admin .srow{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid #DCCBA3;border-radius:14px;padding:8px 12px}#admin .srow .wico{flex:0 0 44px;width:44px;height:44px}#admin .srow .wico .ico{width:24px;height:24px}#admin .srow .sname{flex:1;min-width:0}#admin .srow .sname b{display:block;font:800 17px var(--disp,sans-serif)}#admin .srow .sname small{display:block;font:600 12.5px var(--body,sans-serif);color:#8a7a5c}#admin .srow button{font:800 13px var(--disp,sans-serif);border:2px solid #DCCBA3;background:#fff;color:#3B2E1E;border-radius:10px;padding:7px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}#admin .srow button .ico{width:16px;height:16px;margin:0}#admin .srow .ssim{border-color:#2FAE9E;color:#1E8073}#admin .srow .sdel{border-color:#E63946;color:#E63946}#admin .srow .sdel.sure{background:#E63946;color:#fff}#admin .sempty{color:#8a7a5c;font-size:14px;padding:10px}#admin .cback{margin-top:12px}
+#admin .flag{display:inline-block;background:#FBEFC2;color:#7A5300;font:800 12px var(--body,sans-serif);border-radius:999px;padding:3px 10px;margin-bottom:10px}
+#subs{position:fixed;right:14px;bottom:14px;max-width:min(46vw,600px);background:rgba(59,46,30,.86);color:#F1E9D6;border-radius:14px;padding:10px 16px;font-family:var(--body,sans-serif);z-index:69;display:none;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+#subs.show{display:block}#subs .ha{font-size:12px;opacity:.7;margin-bottom:3px}#subs .en{font-size:17px;font-weight:700;line-height:1.4}
+#subs .en span{opacity:.22;transition:opacity .18s}#subs .en span.lit{opacity:1}
+#admin .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:2px solid #DCCBA3;border-radius:14px;padding:10px 14px;margin-bottom:14px;font:700 14px var(--body,sans-serif);text-align:left}
+#admin .switch b{display:block;font-family:var(--disp,sans-serif);font-size:15px}#admin .switch small{color:#8a7a5c;font-weight:600}
+#admin .switch .knob{width:52px;height:30px;border-radius:999px;background:#DCCBA3;position:relative;flex:0 0 auto;transition:background .2s}
+#admin .switch .knob::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+#admin .switch.on .knob{background:#2FAE9E}#admin .switch.on .knob::after{left:25px}
+#v2tag{position:fixed;right:10px;bottom:6px;font:700 11px/1 var(--body,sans-serif);color:#8a7a5c;opacity:.55;pointer-events:none;letter-spacing:.08em}
+</style>'''
+router='''<script>
+/* v2 router: the engines navigate with scrollIntoView (that is how the design hands screens over) — here that shows one screen at a time */
+(function(){
+  var SAMPLE={abc:'haruffa',obj:'abubuwa',lambobi:'lambobi'};   // screens whose sample plays on entry
+  var SUB={quiz:{q4:'nemo',qnum:'nemonum'}, spell:{r3:'rubutu',r4:'rubutu',r5:'rubutu',rlong:'rubutu',rnum:'rubutu'}, karatu:{k3:'karatu',k45:'karatu',klong:'karatu',knum:'karatu'}};   // the number lessons get the sample too, with ONE
+  window.KRATU_SAMPLE={rubutu:'CAT',karatu:'CAT'};   // screens with sub-topics: the sample plays when the sub-topic's Laila is pressed, the first time
+  var pendingResume=null;
+  var ACT={letters:'abc',things:'cats',spell:'spell',numbers:'lambobi',quiz:'quiz',read:'karatu'};
+  var by={}; document.querySelectorAll('#app .block').forEach(function(b){ by[b.dataset.name]=b; });
+  var seen={}, pending=null, current=null, sampleFrom=null;
+  function G(){ return (window.KRATU_GENDER||'m')==='f'?'f':'m'; }
+  function showBlock(name){ if(window.kratuStopAll) window.kratuStopAll(); if(window.__kratuSubsHide) window.__kratuSubsHide(); Object.keys(by).forEach(function(k){ by[k].classList.toggle('active',k===name); }); current=name; try{ history.replaceState(null,'','#'+name); }catch(e){} setTimeout(function(){ if(window.__kratuFit) window.__kratuFit(); },30); }
+  // what each screen does the moment it appears — the design's own entry line and cue, not a demo
+  function gk(k){ return KRATU_AUDIO[k+'_'+G()]?k+'_'+G():k; }
+  function say(k,cb){ try{ var a=new Audio(KRATU_AUDIO[k]); a.onended=function(){ if(cb) cb(); }; a.onerror=function(){ if(cb) cb(); }; a.play().catch(function(){ if(cb) cb(); }); }catch(e){ if(cb) cb(); } }
+  var ENTER={
+    perm:function(b){ /* nothing can play before the first tap — Laila just glows */ },
+    gender:function(b){ say('s0'); },
+    meetlaila:function(b){ var sl=b.querySelector('.startlaila'); sl&&sl.classList.add('cue'); say(gk('s_laila2'), function(){}); },   // Laila is pressable while she introduces herself — a press cuts her off and goes on
+    facecap:function(b){ var sw=b.querySelector('.startwrap'); if(window.kratuRunInstruction){ window.kratuRunInstruction(); return; } say(gk('s_face'), function(){ sw&&sw.classList.add('cue'); }); },   // the design's full sequence: s_p1 (we'll take a video…) -> s_p2 (here is Musa/Aisha saying their name) -> the example VIDEO -> s_p3 (now you: press Laila) + cue
+    home:function(b){ say('app_act_pick'); },
+    abc:function(b){ if(b.__entered) return; b.__entered=true; var lb=b.querySelector('.abc-start'); lb&&lb.click(); },   // Laila's intro over A B C D, then "your turn"
+    cats:function(b){ say('app_w_menu_intro'); },
+    learn:'real', obj:'real', lambobi:'real',            // straight into the lesson (real mic)
+    spell:'landing', karatu:'landing', quiz:'landing'     // Laila explains over the tiles, then the child picks
+  };
+  // the new screen is painted first; its first sound starts on the frame after (still inside the tap's activation window)
+  function afterPaint(fn){ requestAnimationFrame(function(){ requestAnimationFrame(fn); }); }
+  function realStart(blk){ var e=ENTER[blk.dataset.name]; if(!e) return; afterPaint(function(){ if(!blk.classList.contains('active')) return; if(typeof e==='string'){ var b=blk.querySelector('.demo[data-demo="'+e+'"]'); if(b) b.click(); } else e(blk); }); }
+  function activate(name,opts){ var blk=by[name]; if(!blk) return; var kind=SAMPLE[name]; var pre=opts&&opts.preface;   // preface: a line said on the NEW screen before it starts (the category's start line)
+    if(kind && !seen[kind] && !(opts&&opts.noSample)){ seen[kind]=true; pending=name; sampleFrom=current; showBlock('misali-'+kind); var d=by['misali-'+kind].querySelector('.demo[data-demo="misali_'+G()+'"]'); if(d) afterPaint(function(){ if(!by['misali-'+kind].classList.contains('active')) return; if(pre&&KRATU_AUDIO[pre]) say(pre, function(){ if(by['misali-'+kind].classList.contains('active')) d.click(); }); else d.click(); }); return; }
+    showBlock(name); if(pre&&KRATU_AUDIO[pre]){ afterPaint(function(){ if(!blk.classList.contains('active')) return; say(pre, function(){ if(blk.classList.contains('active')) realStart(blk); }); }); } else realStart(blk); }
+  window.kratuGo=activate;
+  window.kratuSampleDone=function(kind){ var next=pending, resume=pendingResume; pending=null; pendingResume=null; if(resume) setTimeout(resume,500); else if(next) setTimeout(function(){ activate(next,{noSample:true}); },500); };
+  function startSample(kind, resume){ seen[kind]=true; pendingResume=resume; sampleFrom=current; showBlock('misali-'+kind); var d=by['misali-'+kind].querySelector('.demo[data-demo="misali_'+G()+'"]'); if(d) afterPaint(function(){ if(by['misali-'+kind].classList.contains('active')) d.click(); }); }
+  Object.keys(SUB).forEach(function(name){ var blk=by[name]; if(!blk) return; var go=blk.querySelector('.q-go, .sp-go'); if(!go) return;
+    go.addEventListener('click', function(e){ if(e.__pass) return; var picked=blk.querySelector('.catcard.picked'); if(!picked) return; var kind=SUB[name][picked.dataset.key]; if(!kind||seen[kind]) return; e.stopImmediatePropagation(); e.preventDefault(); window.KRATU_SAMPLE[kind]=(/num/.test(picked.dataset.key)?'ONE':'CAT');
+      startSample(kind, function(){ showBlock(name); afterPaint(function(){ var ev=new MouseEvent('click',{bubbles:true,cancelable:true}); ev.__pass=true; go.dispatchEvent(ev); }); }); }, true); });
+  // under zoom the browser reports rectangles in screen pixels while the engines position hands, spots and flying letters in the screen's own (zoomed) pixels — hand back layout units for anything inside the frame so every pointer lands where it should
+  var rectOrig=Element.prototype.getBoundingClientRect; window.__kratuRectOrig=rectOrig;
+  Element.prototype.getBoundingClientRect=function(){ var r=rectOrig.call(this); var z=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1; if(z===1||!this.closest||!this.closest('#app .frame')) return r; return new DOMRect(r.x/z, r.y/z, r.width/z, r.height/z); };
+  var orig=Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView=function(){ var b=this.closest&&this.closest('#app .block'); if(b){ if(b.dataset.name==='gender'&&window.__pendingDemo&&window.kratuStartSample){ var d=window.__pendingDemo; window.__pendingDemo=null; window.kratuStartSample(d.g,d.name); return; } activate(b.dataset.name); return; } try{ orig.apply(this,arguments); }catch(e){} };
+  // gender chosen → meet Laila
+  document.querySelectorAll('#app .genderred .pcard').forEach(function(c){ c.addEventListener('click',function(){ setTimeout(function(){ if(current==='gender') activate('meetlaila'); },900); }); });
+  // home: a tile picked, then Laila pressed → that lesson
+  var home=by.home, grid=home&&home.querySelector('.homegrid'), hl=home&&home.querySelector('.lbtn');
+  home&&home.querySelectorAll('.htile').forEach(function(t){ t.addEventListener('click',function(){ setTimeout(function(){ if(grid.classList.contains('has-sel')&&hl) hl.classList.add('cue'); },0); }); });
+  hl&&hl.addEventListener('click',function(){ if(!grid||!grid.classList.contains('has-sel')) return; var hot=home.querySelector('.htile.hot'); if(!hot) return; var act=hot.dataset.act; activate(ACT[act]||'home'); }, true);
+  // category screen: pressing Laila moves to the lesson AT ONCE; the category's start line is said on the lesson screen (the design said it here first)
+  var cats=by.cats; cats&&cats.querySelector('.cat-go')&&cats.querySelector('.cat-go').addEventListener('click',function(e){ var picked=cats.querySelector('.catcard.picked'); if(!picked) return; e.stopImmediatePropagation(); e.preventDefault(); var key=picked.dataset.key; window.KRATU_CAT=key; var pre=KRATU_AUDIO['app_cat_start_'+key]?'app_cat_start_'+key:(KRATU_AUDIO['s_cat_start_'+key]?'s_cat_start_'+key:null); activate('obj',{preface:pre}); }, true);
+  // the door on a sample: back to the chooser, sample counts as seen
+  document.querySelectorAll('#app .misali .backdoor').forEach(function(d){ d.addEventListener('click',function(e){ e.stopImmediatePropagation(); if(window.kratuStopAll) window.kratuStopAll(); pending=null; pendingResume=null; var back=sampleFrom||'home'; sampleFrom=null; if(back==='home'||!by[back]) activate('home',{noSample:true}); else showBlock(back); }, true); });
+  // face screen: after two 'try again' rounds with no name caught, the child goes on as a new learner (welcome) instead of looping
+  (function(){ var retries=0; document.addEventListener('click', function(e){ var g=e.target&&e.target.closest&&e.target.closest('.capmodal .capnext'); if(!g) return; var hint=(g.querySelector('.hint')||{}).textContent||''; if(hint.indexOf('sake gwadawa')<0){ retries=0; return; } retries++; if(retries<3) return; e.stopImmediatePropagation(); e.preventDefault(); retries=0; var m=document.querySelector('.capmodal'); try{ m.hidden=true; document.body.classList.remove('capmodal-open'); }catch(err){} if(window.kratuStopAll) window.kratuStopAll(); say('s_sannu', function(){ say('s_welcome', function(){ activate('home',{noSample:true}); }); }); }, true); })();
+  // face screen watchdog: a capture that never reaches Laila's gate (no camera, no speech, nothing heard) is closed after 45 s and the child goes on to the chooser
+  (function(){ var t0=null; setInterval(function(){ var m=document.querySelector('.capmodal'); var open=m&&!m.hidden; if(!open){ t0=null; return; } if(m.querySelector('.capnext')&&!m.querySelector('.capnext').hidden){ t0=null; return; } if(!t0) t0=Date.now(); if(Date.now()-t0>45000){ t0=null; try{ m.hidden=true; document.body.classList.remove('capmodal-open'); }catch(e){} if(window.kratuStopAll) window.kratuStopAll(); say('s_welcome', function(){}); activate('home',{noSample:true}); } },1000); })();
+  // scale: a 960×600 layout is the base; every screen scales it to fit, up or down, so touch targets grow with the screen
+  // …then each screen measures its in-flow content (decorations and corner buttons excluded) and eases the zoom back just enough to fit (floor 0.8); measured from the base every time so a roomier screen grows back
+  var fitT=null, root=document.documentElement.style;
+  function measure(){ var s=document.querySelector('#app .block.active .s'); if(!s) return 1; var z=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1; var sr=s.getBoundingClientRect(); var top=Infinity,bot=-Infinity;
+    Array.prototype.forEach.call(s.children,function(k){ if(k.classList.contains('backdoor')||k.classList.contains('helpdome')||k.hidden) return; var cs=getComputedStyle(k); if(cs.display==='none'||cs.position==='absolute'||cs.position==='fixed') return; var r=k.getBoundingClientRect(); if(r.height<=0) return; top=Math.min(top,r.top); bot=Math.max(bot,r.bottom); });
+    if(!isFinite(top)) return 1; var content=bot-top, avail=sr.height-(top-sr.top)-12; return Math.min(1, avail/Math.max(1,content)); }   // where the content starts is the screen's own choice; it just has to end above the bottom
+  function fit(){ var base=Math.min(innerWidth/960, innerHeight/600); /* any screen: the 960×600 layout scales to whatever viewport there is, smaller screens included (Sani 2026-09-12, Galaxy Tab was refused) */ root.setProperty('--z', base.toFixed(3)); void document.body.offsetHeight; var z=base*measure(); var floor=base*0.8; root.setProperty('--z', Math.max(floor,z).toFixed(3)); void document.body.offsetHeight; z=z*measure(); root.setProperty('--z', Math.max(floor,z).toFixed(3)); }
+  window.__kratuFit=fit;
+  // pointing hands aimed at the corner domes (door, ear) land outside the 16:10 screen box and were clipped — they are lifted onto a fixed layer above everything, in screen pixels (Sani 2026-09-11)
+  (function(){ var R=window.__kratuRectOrig||Element.prototype.getBoundingClientRect; function lift(hand){ var sEl=hand.closest('.s'); if(!sEl) return; var sr=R.call(sEl), z=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1; var lx=parseFloat(hand.style.left)||0, ly=parseFloat(hand.style.top)||0; var inside=lx>=-4&&ly>=-4&&lx+60<=sr.width/z+4&&ly+60<=sr.height/z+4; if(inside) return;   /* the whole hand (about 60 layout px) must fit, not just its corner */ var fs=parseFloat(getComputedStyle(hand).fontSize)||44; document.body.appendChild(hand); hand.style.position='fixed'; hand.style.left=(sr.left+lx*z)+'px'; hand.style.top=(sr.top+ly*z)+'px'; hand.style.fontSize=(fs*z)+'px'; hand.style.zIndex='95'; }
+    new MutationObserver(function(ms){ ms.forEach(function(m){ Array.prototype.forEach.call(m.addedNodes,function(n){ if(n.nodeType===1&&n.classList.contains('spothand')&&!n.classList.contains('typing')) lift(n); }); }); }).observe(document.getElementById('app'),{subtree:true,childList:true}); })();
+  function refit(){ clearTimeout(fitT); fitT=setTimeout(fit,120); }
+  fit(); addEventListener('resize', refit); addEventListener('orientationchange', function(){ setTimeout(fit,200); });
+  new MutationObserver(refit).observe(document.getElementById('app'),{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','style']});
+  var GPH_F_SRC=__GPH_F__, GPH_M_SRC=__GPH_M__;
+  // ---- after a refresh the browser refuses to play sound until the first tap: remember that it refused, and on the first tap say the screen's own line again (Sani 2026-09-11)
+  (function(){ var op=HTMLMediaElement.prototype.play; window.__audioOK=false; window.__audioBlocked=false; HTMLMediaElement.prototype.play=function(){ var p=op.apply(this,arguments); if(p&&p.then){ p.then(function(){ window.__audioOK=true; }, function(e){ if(e&&e.name==='NotAllowedError') window.__audioBlocked=true; }); } return p; }; })();
+  // ---- a start link for adults: …#musa or …#aisha (also ?demo=musa) → straight into that demo session, subtitles on (append -nocc to keep them off) (Sani 2026-09-11)
+  var DEMO_LINK=(function(){ var m=((location.hash||'').slice(1)+' '+(location.search||'')).match(/\\b(musa|aisha)(-nocc)?\\b/i); if(!m) return null; try{ localStorage.setItem('kratu_subs', m[2]?'0':'1'); }catch(e){} return {name:m[1].charAt(0).toUpperCase()+m[1].slice(1).toLowerCase(), g:/^a/i.test(m[1])?'f':'m'}; })();
+  // ---- settings: a teal gear bottom-left on every screen → subtitles switch, Musa / Aisha sample sessions (never recorded), hard restart. No code in v2 (the code gates the admin data view in the Angular build).
+  (function(){ var gear=document.getElementById('admingear'), panel=document.getElementById('admin'); var NAMES=null;
+    function refreshGear(){ gear.classList.add('show'); }   // always there, bottom-left, on every screen
+    setInterval(refreshGear,300);
+    gear.addEventListener('click',function(){ open(); });
+    function whoNow(){ var card=panel.querySelector('.whocard'), pic=card.querySelector('.wpic'), ico=card.querySelector('.wico'), nm=card.querySelector('.wname'), md=card.querySelector('.wmode'); var ss=window.KRATU_SESSION, per=window.KRATU_PERSON; card.classList.remove('demo');
+      if(ss&&ss.mode==='simulated'&&per&&per.name){ var g2=(per.gender||window.KRATU_GENDER)==='f'; pic.hidden=true; ico.hidden=false; ico.classList.toggle('girl',g2); ico.classList.toggle('boy',!g2); nm.textContent=per.name+' · '+(g2?'yarinya':'yaro'); md.textContent='Zaman gwaji · simulated as this student, not recorded'; }
+      else if(ss&&ss.mode==='simulated'){ var girl=window.KRATU_GENDER==='f'; pic.src=girl?GPH_F_SRC:GPH_M_SRC; pic.hidden=false; ico.hidden=true; card.classList.add('demo'); nm.textContent=ss.name+' · '+(girl?'yarinya':'yaro'); md.textContent='Zaman gwaji · demo session, not recorded'; }
+      else if(per&&per.name){ pic.hidden=true; ico.hidden=false; ico.classList.toggle('girl',(per.gender||window.KRATU_GENDER)==='f'); ico.classList.toggle('boy',(per.gender||window.KRATU_GENDER)!=='f'); nm.textContent=per.name+' · '+((per.gender||window.KRATU_GENDER)==='f'?'yarinya':'yaro'); md.textContent=(ss&&ss.known===false?'Sabon yaro · new child, enrolled today · this session is recorded':'Yaro na gaske · real child · this session is recorded'); }
+      else { pic.hidden=true; ico.hidden=false; ico.classList.remove('girl','boy'); nm.textContent='Babu kowa tukuna · no one yet'; md.textContent='Sign in on the first screens, or start a demo below'; } }
+    function permsOK(){ var pm=window.KRATU_PERMS; return !!(pm&&pm.mic); }
+    function lockByPerms(){ var ok=permsOK(); var note=panel.querySelector('.permnote'); if(note) note.hidden=ok; panel.querySelectorAll('.who button, .students-open').forEach(function(b){ b.classList.toggle('locked',!ok); }); }   // no microphone permission yet → the demo cards and the students are off (Sani 2026-09-11)
+    function open(){ if(window.kratuStopAll) window.kratuStopAll(); whoNow(); lockByPerms(); panel.classList.add('open'); }
+    var tp=panel.querySelector('.toperm'); tp&&tp.addEventListener('click',function(){ close(); activate('perm',{noSample:true}); });
+    panel.addEventListener('click',function(e){ if(e.target===panel) close(); });   // a tap outside the box closes it
+    function close(){ panel.classList.remove('open'); }
+    panel.querySelector('.row2 > .close:not(.cno):not(.cback)').addEventListener('click',close);
+    panel.querySelector('.restart').addEventListener('click',function(){ if(window.kratuStopAll) window.kratuStopAll(); try{ localStorage.clear(); sessionStorage.clear(); }catch(e){} try{ if(window.indexedDB&&indexedDB.databases){ indexedDB.databases().then(function(dbs){ dbs.forEach(function(d){ try{ indexedDB.deleteDatabase(d.name); }catch(e){} }); }); } }catch(e){} try{ if(window.kratuPeople&&window.kratuPeople.clear) window.kratuPeople.clear(); }catch(e){} window.KRATU_GENDER='m'; window.KRATU_NAME=null; window.KRATU_SESSION=null; setTimeout(function(){ location.replace(location.pathname+'#gender'); location.reload(); },50); });
+    function nameClip(key,cb){ if(NAMES){ cb(NAMES[key]||null); return; } fetch('names_audio.json').then(function(r){ return r.json(); }).then(function(j){ NAMES=j||{}; cb(NAMES[key]||null); }).catch(function(){ NAMES={}; cb(null); }); }
+    var whoStage=panel.querySelector('.who-stage'), confirmStage=panel.querySelector('.confirm-stage'), pendingWho=null;
+    window.kratuStartSample=function(g,name){ startSample(g,name); };
+    function startSample(g,name,person){ window.KRATU_GENDER=g; if(window.setGender) window.setGender(g); window.KRATU_NAME=name; window.KRATU_PERSON=person||null; window.KRATU_SESSION={mode:'simulated',recorded:false,name:name,startedAt:new Date().toISOString()}; Object.keys(seen).forEach(function(k){ delete seen[k]; }); if(window.kratuHintsReset) window.kratuHintsReset(); close(); showBlock('home');
+      // "Sannu, Musa! Barka da zuwa!" then the chooser's own line
+      afterPaint(function(){ say('s_sannu', function(){ nameClip(name.toLowerCase(), function(src){ src=src||(person&&person.clip)||null; var tail=function(){ say('s_welcome', function(){ realStart(by.home); }); }; if(src){ try{ var a=new Audio(src); a.onended=tail; a.onerror=tail; a.play().catch(tail); }catch(e){ tail(); } } else tail(); }); }); }); }
+    panel.querySelectorAll('.who button').forEach(function(b){ b.addEventListener('click',function(){ pendingWho={g:b.dataset.g, name:b.dataset.name}; var girl=b.dataset.g==='f'; confirmStage.querySelector('.cwho').innerHTML=b.outerHTML; confirmStage.querySelector('.ctitle').textContent='Fara zaman gwaji a matsayin '+b.dataset.name+'? · Start a sample session as '+b.dataset.name+'?'; confirmStage.querySelector('.ctext').textContent='A test session for adults. The app runs exactly as it does for a '+(girl?'girl':'boy')+' named '+b.dataset.name+': the '+(girl?'girl':'boy')+' voice lines, the greeting, every lesson and test. Nothing is recorded or saved, no face or voice is enrolled, and the examples and hints play again from the start.'; whoStage.hidden=true; confirmStage.hidden=false; }); });
+    // ---- the students (adults only, code 064662118): list, simulate any of them, delete (Sani 2026-09-11)
+    var CODE='064662118', typed='', codeStage=panel.querySelector('.code-stage'), stuStage=panel.querySelector('.students-stage'), codeEl=panel.querySelector('#admincode'), slist=panel.querySelector('.slist');
+    function loadPeople(cb){ var local=[]; try{ local=window.kratuPeople?window.kratuPeople.load():[]; }catch(e){} var fin=function(kid){ var out=kid.slice(); local.forEach(function(p){ if(!out.some(function(q){ return (q.name||'').toLowerCase()===(p.name||'').toLowerCase(); })) out.push(p); }); cb(out); }; try{ if(window.KratuID&&window.KratuID.store){ window.KratuID.store.load().then(function(){ fin(window.KratuID.store.all()); }).catch(function(){ fin([]); }); return; } }catch(e){} fin([]); }   /* both identity stores: the encrypted IndexedDB one (tablet) and the local one (web page) */
+    function removePerson(p,cb){ var nm=(p.name||'').toLowerCase(); try{ var ps=window.kratuPeople.load().filter(function(x){ return (x.name||'').toLowerCase()!==nm; }); window.kratuPeople.save(ps); }catch(e){} if(window.KRATU_PERSON&&(window.KRATU_PERSON.name||'').toLowerCase()===nm){ window.KRATU_PERSON=null; } var done=function(){ cb(); }; try{ if(window.KratuID&&window.KratuID.store){ var rec=window.KratuID.store.all().find(function(x){ return (x.name||'').toLowerCase()===nm; }); if(rec&&rec.id){ window.KratuID.store.remove(rec.id).then(done,done); return; } } }catch(e){} done(); }   /* removed from both stores */
+    function renderStudents(){ loadPeople(function(ps){ slist.innerHTML=''; if(!ps.length){ slist.innerHTML='<div class="sempty">Babu yara tukuna · no students enrolled on this tablet yet.</div>'; return; } ps.slice().sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); }).forEach(function(p){ var girl=(p.gender||'m')==='f'; var row=document.createElement('div'); row.className='srow'; var when=p.at?new Date(p.at):null; row.innerHTML='<span class="wico '+(girl?'girl':'boy')+'"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><div class="sname"><b></b><small>'+(girl?'yarinya · girl':'yaro · boy')+(when?' · enrolled '+when.toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'')+((p.faceVecs&&p.faceVecs.length)||(p.descs&&p.descs.length)?' · face known':'')+'</small></div><button class="ssim"><svg class="ico" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg>simulate</button><button class="sdel"><svg class="ico" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>delete</button>'; row.querySelector('.sname b').textContent=p.name||'?';
+        row.querySelector('.ssim').addEventListener('click',function(){ stuStage.hidden=true; whoStage.hidden=false; startSample(girl?'f':'m', p.name, p); });
+        var del=row.querySelector('.sdel'), sure=false; del.addEventListener('click',function(){ if(!sure){ sure=true; del.classList.add('sure'); del.innerHTML='<svg class="ico" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>delete '+(p.name||'')+'?'; setTimeout(function(){ if(sure){ sure=false; del.classList.remove('sure'); del.innerHTML='<svg class="ico" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>delete'; } },4000); return; } removePerson(p, renderStudents); });
+        slist.appendChild(row); }); }); }
+    panel.querySelector('.students-open').addEventListener('click',function(){ typed=''; codeEl.textContent=''; codeEl.classList.remove('bad'); whoStage.hidden=true; codeStage.hidden=false; });
+    panel.querySelectorAll('.pad button').forEach(function(b){ b.addEventListener('click',function(){ var d=b.dataset.d; if(d==='del') typed=typed.slice(0,-1); else if(d==='ok'){ if(typed===CODE){ codeStage.hidden=true; stuStage.hidden=false; renderStudents(); } else { codeEl.classList.add('bad'); setTimeout(function(){ codeEl.classList.remove('bad'); typed=''; codeEl.textContent=''; },600); } return; } else if(typed.length<12) typed+=d; codeEl.textContent=typed.replace(/./g,'•'); }); });
+    panel.querStudentsBack=panel.querySelectorAll('.cback').forEach(function(b){ b.addEventListener('click',function(e){ e.stopImmediatePropagation(); codeStage.hidden=true; stuStage.hidden=true; whoStage.hidden=false; }); });
+    panel.querySelector('.cyes').addEventListener('click',function(){ if(!pendingWho) return; var w=pendingWho; pendingWho=null; confirmStage.hidden=true; whoStage.hidden=false; startSample(w.g, w.name); });
+    panel.querySelector('.cno').addEventListener('click',function(e){ e.stopImmediatePropagation(); pendingWho=null; confirmStage.hidden=true; whoStage.hidden=false; });
+  })();
+  // ---- the door on the chooser: 'the session will end' — Laila = done (another child can use it), the black slate = reset; a tap outside keeps the session (Sani 2026-09-11)
+  (function(){ var lv=document.getElementById('leave'); if(!lv) return; function endSession(reset){ if(window.kratuStopAll) window.kratuStopAll(); lv.hidden=true; window.KRATU_PERSON=null; window.KRATU_NAME=null; window.KRATU_SESSION=null; Object.keys(seen).forEach(function(k){ delete seen[k]; }); if(window.kratuHintsReset) window.kratuHintsReset(); if(reset){ try{ sessionStorage.clear(); }catch(e){} } activate('gender',{noSample:true}); }
+    document.addEventListener('click', function(e){ var d=e.target&&e.target.closest&&e.target.closest('#app .block.active[data-name="home"] .backdoor'); if(!d) return; e.stopImmediatePropagation(); e.preventDefault(); if(window.kratuStopAll) window.kratuStopAll(); lv.hidden=false; say('s_leave', function(){}); }, true);
+    lv.querySelector('.lv-laila').addEventListener('click', function(){ endSession(false); });
+    lv.querySelector('.lv-slate').addEventListener('click', function(){ endSession(true); });
+    lv.addEventListener('click', function(e){ if(e.target===lv){ if(window.kratuStopAll) window.kratuStopAll(); lv.hidden=true; } });
+  })();
+  // ---- subtitles for English speakers: a teleprompter strip bottom-right; the English lights up word by word in time with the clip (switch in settings, any time)
+  (function(){ var EN=__EN__, HA=__HA__; var sw=document.getElementById('subswitch'), box=document.getElementById('subs'), haEl=box.querySelector('.ha'), enEl=box.querySelector('.en'); var on=false; try{ on=localStorage.getItem('kratu_subs')==='1'; }catch(e){}
+    function setOn(v){ on=v; sw.classList.toggle('on',on); if(!on) box.classList.remove('show'); try{ localStorage.setItem('kratu_subs',on?'1':'0'); }catch(e){} } setOn(on);
+    sw.addEventListener('click',function(){ setOn(!on); });
+    var rev={}, indexed=false; function index(){ if(indexed||typeof KRATU_AUDIO==='undefined') return; indexed=true; Object.keys(KRATU_AUDIO).forEach(function(k){ var v=KRATU_AUDIO[k]; rev[v.slice(-60)+v.length]=k; }); Object.keys(window.KRATU_WORDS||{}).forEach(function(c){ (window.KRATU_WORDS[c]||[]).forEach(function(w){ if(w.wha) rev[w.wha.slice(-60)+w.wha.length]={ha:w.ha,en:w.en}; if(w.wen) rev[w.wen.slice(-60)+w.wen.length]={ha:w.ha,en:w.en}; }); }); }   // the clip data loads after this script: index on first play
+    function base(k){ return k.replace(/_(m|f)$/,''); }
+    function textFor(k){ if(typeof k==='object') return {ha:k.ha||'', en:k.en||''}; var b=base(k); var m=k.match(/^app_en_([A-Z])$/); if(m) return {ha:'', en:'the letter '+m[1]}; var w=k.match(/^app_(wha|wen)_(.+)$/); if(w) return {ha:'', en:w[2]}; var x=k.match(/^sx_w_(.+?)_(m|f)$/); if(x) return {ha:'', en:'(the child says) '+x[1]}; return {ha:HA[k]||HA[b]||'', en:EN[k]||EN[b]||''}; }
+    var hideT=null, cur=null; var origPlay=HTMLMediaElement.prototype.play;
+    function show(el,t){ haEl.textContent=t.ha; enEl.innerHTML=''; var words=t.en.split(/\s+/).filter(Boolean); words.forEach(function(w,i){ var sp=document.createElement('span'); sp.textContent=(i?' ':'')+w; enEl.appendChild(sp); }); box.classList.add('show'); clearTimeout(hideT); cur=el;
+      var spans=enEl.querySelectorAll('span'); function tick(){ if(cur!==el) return; var d=el.duration||0, p=d?Math.min(1,el.currentTime/d):0; var n=Math.ceil(p*spans.length); for(var i=0;i<spans.length;i++) spans[i].classList.toggle('lit', i<n); }
+      el.addEventListener('timeupdate',tick); el.addEventListener('ended',function(){ for(var i=0;i<spans.length;i++) spans[i].classList.add('lit'); clearTimeout(hideT); hideT=setTimeout(function(){ if(cur===el) box.classList.remove('show'); },1200); },{once:true});
+      el.addEventListener('pause',function(){ if(cur===el&&!el.ended){ clearTimeout(hideT); box.classList.remove('show'); cur=null; } });   // stopped mid-way (a tap, a screen change): the strip goes with it — it only ever shows what is being said right now
+    }
+    window.__kratuSubsHide=function(){ clearTimeout(hideT); box.classList.remove('show'); cur=null; };
+    HTMLMediaElement.prototype.play=function(){ var el=this; try{ if(on){ index(); var src=el.src||''; var k=rev[src.slice(-60)+src.length]; if(k){ var t=textFor(k); if(t.en||t.ha) show(el,t); } } }catch(e){} return origPlay.apply(this,arguments); };
+  })();
+  document.addEventListener('click', function(){ try{ if(screen.orientation&&screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){}); }catch(e){} }, {once:true, capture:true});   // landscape only: locks where the platform allows, the overlay covers the rest
+  if(location.search.indexOf('debug')>=0) document.body.classList.add('debug');
+  var first=(location.hash||'').slice(1); if(first==='nosample'){ Object.keys(SAMPLE).forEach(function(k){ seen[SAMPLE[k]]=true; }); first='home'; }
+  // already granted on this device (a previous visit) → no permission screen, straight on (Sani 2026-09-11)
+  function permsGranted(cb){ var stored=false; try{ stored=localStorage.getItem('kratu_perms')==='1'; }catch(e){} try{ if(navigator.permissions&&navigator.permissions.query){ Promise.all([navigator.permissions.query({name:'camera'}),navigator.permissions.query({name:'microphone'})]).then(function(r){ cb(r[0].state==='granted'&&r[1].state==='granted'); }).catch(function(){ cb(stored); }); return; } }catch(e){} cb(stored); }
+  permsGranted(function(ok){ if(ok) window.KRATU_PERMS={camera:true,mic:true,at:Date.now()};
+    if(DEMO_LINK&&window.kratuStartSample){ try{ history.replaceState(null,'',location.pathname+location.search.replace(/[?&]demo=[^&]*/,'')); }catch(e){} if(ok){ window.kratuStartSample(DEMO_LINK.g, DEMO_LINK.name); } else { window.__pendingDemo={g:DEMO_LINK.g,name:DEMO_LINK.name}; activate(by.perm?'perm':'gender',{noSample:true}); } }   // permission first (unless already granted), then the demo
+    else activate(by[first]?first:((by.perm&&!ok)?'perm':'gender'), {noSample:true}); });   // the permissions screen only when it is still needed
+  document.addEventListener('pointerdown', function h(e){ document.removeEventListener('pointerdown',h,true); if(!window.__audioBlocked||window.__audioOK) return; window.__audioBlocked=false; setTimeout(function(){ if(window.__audioOK) return; if(window.kratuStopAll) window.kratuStopAll(); var blk=by[current]; if(blk) realStart(blk); },0); }, true);   /* the first tap after a silent load replays the screen's line */
+})();
+/* real listening for the samples' "your turn": a whole word, or letters one after another (multi) — browser speech recognition, simulated where there is none */
+window.kratuWordHear=function(lb,fb,expected,cb){ var want=String(expected).toLowerCase(); var isLetter=want.length===1;
+  if(!window.kratuLetterMic){ setTimeout(function(){ cb(true); },1400); return; }
+  if(isLetter){ window.kratuLetterMic.hear(lb,{target:expected.toUpperCase(), fb:fb, cb:function(L,raw){ cb(L===expected.toUpperCase(), raw||''); }}); return; }
+  window.kratuLetterMic.hear(lb,{target:want, fb:fb, match:function(raw){ var r=String(raw||'').toLowerCase().trim(); return (r===want||r.split(/\s+/).indexOf(want)>=0)?want:null; }, cb:function(w,raw){ if(fb&&raw){ fb.className='fb heard'; fb.textContent='“'+raw+'”'; } cb(w===want, raw||''); }}); };
+window.kratuSpellHear=function(lb,fb,word,cb){ var L=word.split(''); if(!window.kratuLetterMic){ setTimeout(function(){ cb(L.length); },1200); return; }
+  window.kratuLetterMic.hear(lb,{multi:true, say:L, fb:fb, cb:function(letters,raw){ if(!raw&&!(letters&&letters.length)){ cb(L.length); return; } var n=0; (letters||[]).forEach(function(x){ if(n<L.length && x===L[n]) n++; }); cb(n); }}); };
+</script>'''
+tpl=''.join(h[m.start():h.index('</template>',m.start())+len('</template>')] for m in re.finditer(r'<template id="(lailaTpl|kratuEar|kratuDoor)"',h))   # Laila, the ear and the door are stamped from templates
+_gi=h.index('id="b3"'); _gs=h.rfind('<svg',0,_gi); _ge=h.index('</svg>',_gi)+len('</svg>'); tpl=h[_gs:_ge]+tpl   # Laila's colours: the shared SVG gradients (b3, be3, w3, c3, e3)
+speech="<script>\n/* v2 speech: version one's OFFLINE recogniser (Vosk, grammar per step) behind the design's own hear() contract.\n   Every engine keeps calling kratuLetterMic.hear(lb, {target|multi|match, fb, cb…}); when the model is on this device\n   the answer comes from Vosk, otherwise the design's path (browser recogniser, then a simulated answer) is used. */\n(function(){\n  var NAMES={A:'a',B:'bee',C:'see',D:'dee',E:'e',F:'ef',G:'gee',H:'aitch',I:'i',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'o',P:'pee',Q:'cue',R:'ar',S:'es',T:'tee',U:'you',V:'vee',W:'double u',X:'ex',Y:'why',Z:'zee'};\n  var ALL='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');\n  var model=null, loading=false, failed=false, ctx=null, stream=null, proc=null, feeding=false, rec=null, seq=0, ampEl=null;\n  function loadModel(){ if(model||loading||failed||typeof Vosk==='undefined') return; loading=true; window.KRATU_SPEECH='loading';\n    Vosk.createModel(new URL('vosk-model.tar.gz',document.baseURI).href).then(function(m){ model=m; loading=false; window.KRATU_SPEECH='vosk'; }).catch(function(e){ loading=false; failed=true; window.KRATU_SPEECH='none'; }); }\n  function ensureAudio(){ return new Promise(function(res){ if(ctx&&stream){ if(ctx.state==='suspended'){ try{ ctx.resume(); }catch(e){} } res(true); return; }\n    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ res(false); return; }\n    navigator.mediaDevices.getUserMedia({video:false,audio:{echoCancellation:true,noiseSuppression:true,channelCount:1}}).then(function(st){ stream=st; ctx=new (window.AudioContext||window.webkitAudioContext)(); proc=ctx.createScriptProcessor(4096,1,1);\n      proc.onaudioprocess=function(e){ if(!feeding||!rec) return; try{ rec.acceptWaveform(e.inputBuffer); }catch(err){} try{ var d=e.inputBuffer.getChannelData(0),sum=0,n=0; for(var i=0;i<d.length;i+=32){ sum+=d[i]*d[i]; n++; } var amp=Math.min(1,Math.sqrt(sum/n)*7); if(ampEl) ampEl.style.setProperty('--amp',amp.toFixed(3)); }catch(_){} };\n      ctx.createMediaStreamSource(stream).connect(proc); proc.connect(ctx.destination); res(true); }).catch(function(){ res(false); }); }); }\n  function vocab(){ var out={}; try{ Object.keys(window.KRATU_WORDS||{}).forEach(function(c){ (window.KRATU_WORDS[c]||[]).forEach(function(w){ if(w.en) String(w.en).toLowerCase().split(/\\s+/).forEach(function(t){ t=t.replace(/[^a-z]/g,''); if(t) out[t]=1; }); }); }); }catch(e){} return Object.keys(out); }\n  var VOCAB=null;\n  function classify(t){ t=(t||'').toLowerCase().replace(/[^a-z]/g,''); if(!t) return null; for(var k=0;k<ALL.length;k++){ var L=ALL[k]; if(t===L.toLowerCase()||t===NAMES[L].replace(/ /g,'')) return L; } return null; }\n  function classifyPhrase(text){ var toks=(text||'').toLowerCase().split(/\\s+/); for(var i=0;i<toks.length;i++){ var c=classify(toks[i]); if(c) return c; } return null; }\n  var orig=window.kratuLetterMic&&window.kratuLetterMic.hear; if(!orig) return;\n  window.kratuLetterMic.hear=function(lb,o){\n    if(o.auto||typeof Vosk==='undefined'||failed) return orig(lb,o);            // demos, or no offline model on this host → the design's path\n    var handle={stop:function(){}}, my=++seq, done=false, tmo=null, quiet=null, letters=[], lastRaw='';\n    function setFb(t){ if(o.fb){ o.fb.className='fb wait'; o.fb.textContent=t; } }\n    function fin(L,raw){ if(done||my!==seq) return; done=true; clearTimeout(tmo); clearTimeout(quiet); feeding=false; try{ rec&&rec.remove(); }catch(e){} rec=null; lb.classList.remove('rec','prep'); lb.style.setProperty('--amp','0'); window.kratuMic&&window.kratuMic(-1); if(o.multi) o.cb(letters,raw); else o.cb(L,raw); }\n    handle.stop=function(){ if(done) return; done=true; seq++; clearTimeout(tmo); clearTimeout(quiet); feeding=false; try{ rec&&rec.remove(); }catch(e){} rec=null; lb.classList.remove('rec','prep'); lb.style.setProperty('--amp','0'); window.kratuMic&&window.kratuMic(-1); };\n    if(!model){ loadModel(); lb.classList.add('prep'); setFb('Ana shirya murya…'); var t0=Date.now(); (function wait(){ if(done||my!==seq) return; if(model){ lb.classList.remove('prep'); go(); } else if(failed||Date.now()-t0>90000){ lb.classList.remove('prep'); done=true; orig(lb,o); } else setTimeout(wait,250); })(); return handle; }\n    go(); return handle;\n    function go(){ (window.kratuMicReady?window.kratuMicReady():Promise.resolve()).then(ensureAudio).then(function(ok){ if(done||my!==seq) return; if(!ok){ done=true; orig(lb,o); return; }   // mic refused → the design's simulation\n      var gram; if(o.match){ if(!VOCAB) VOCAB=vocab(); gram=VOCAB.slice(); if(o.target) String(o.target).toLowerCase().split(/\\s+/).forEach(function(t){ if(t&&gram.indexOf(t)<0) gram.push(t); }); gram.push('[unk]'); }\n      else { gram=ALL.map(function(L){ return L.toLowerCase(); }).concat(ALL.map(function(L){ return NAMES[L]; })).concat(['[unk]']); }\n      try{ rec=new model.KaldiRecognizer(ctx.sampleRate, JSON.stringify(gram)); }catch(e){ rec=new model.KaldiRecognizer(ctx.sampleRate); }\n      rec.on('partialresult', function(m){ if(done||my!==seq) return; var p=(m.result&&m.result.partial)||''; if(p&&p!=='[unk]'){ lastRaw=p; setFb('“'+p+'”'); } });\n      rec.on('result', function(m){ if(done||my!==seq) return; var t=((m.result&&m.result.text)||'').replace(/\\[unk\\]/g,'').trim(); if(!t) return; lastRaw=t;\n        if(o.multi){ t.toLowerCase().split(/\\s+/).forEach(function(tok){ var c=classify(tok); if(c) letters.push(c); }); clearTimeout(quiet); quiet=setTimeout(function(){ fin(null,lastRaw); },900); return; }\n        var L=o.match?o.match(t):classifyPhrase(t); fin(L,t); });\n      ampEl=lb; feeding=true; window.kratuMic&&window.kratuMic(1); lb.classList.add('rec'); setFb('Ina saurara…');\n      tmo=setTimeout(function(){ fin(null,lastRaw); }, o.multi?10000:8000); }); }\n  };\n  window.kratuSpeech={loadModel:loadModel, ready:function(){ return !!model; }};\n  document.addEventListener('click', function(){ loadModel(); }, {once:true, capture:true});   // the first tap (the gender card) starts the download\n})();\n</script>"
+SLATE=re.search(r'<svg class="allo"[\s\S]*?</svg>',h).group(0)
+GPH_F=re.search(r'<button class="pcard girl"><img class="gph" alt="Mace" src="([^"]+)"',h).group(1); GPH_M=re.search(r'<button class="pcard boy"><img class="gph" alt="Namiji" src="([^"]+)"',h).group(1)
+app=(tpl+'<div id="app"><div class="tabs"><button id="tb-working"></button><button id="tb-agreed"></button><button id="tb-lab"></button></div>'
+     '<div class="tabpanel" id="tab-agreed">'+'\n'.join(ag_blocks)+'</div>'
+     '<div class="tabpanel" id="tab-working">'+'\n'.join(mi_blocks)+'</div></div>'
+     '<div id="rotate"><svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="6"/><circle cx="32" cy="51" r="2"/><path d="M22 12h20"/></svg><b>Juya allon · Turn the tablet sideways</b><small>Kratu works in landscape only</small></div><button id="admingear" aria-label="Saituna"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div id="subs"><div class="ha"></div><div class="en"></div></div>'
+     '<div id="admin"><div class="box"><h3>Saituna · settings</h3><div class="whocard"><img class="wpic" alt="" hidden><span class="wico"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><div class="wtxt"><b class="wname"></b><small class="wmode"></small></div></div><div class="switch" id="subswitch"><div><b><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg>English subtitles</b><small>a teleprompter strip, bottom right, that lights up as Laila speaks</small></div><div class="knob"></div></div><div class="permnote" hidden><b>Izini · permission first</b><small>The demo sessions and the students need the microphone. Grant the camera and microphone on the first screen before using them.</small><button class="toperm">Go to the permission screen</button></div><div class="flag"><svg class="ico" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-6 11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1L14 9V3"/></svg>GWAJI · sample sessions, not recorded</div><div class="sub">Start a sample session as Aisha (girl) or Musa (boy) to test every screen in the female or male voice.</div>'
+     '<div class="stage who-stage"><div class="who"><button class="pcard girl" data-name="Aisha" data-g="f"><img class="gph" alt="Aisha" src="'+GPH_F+'"><div class="nm">Aisha</div><small>yarinya · girl</small></button><button class="pcard boy" data-name="Musa" data-g="m"><img class="gph" alt="Musa" src="'+GPH_M+'"><div class="nm">Musa</div><small>yaro · boy</small></button></div><button class="restart"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Sake farawa gaba ɗaya · hard restart (clears everything)</button><button class="students-open"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Yara · students <span class="lock"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>code</span></button></div>'
+     '<div class="stage code-stage" hidden><div class="sub">Adults only · enter the code to see the students</div><div class="code" id="admincode"></div><div class="pad">'+''.join('<button data-d="%d">%d</button>'%(i,i) for i in [1,2,3,4,5,6,7,8,9])+'<button data-d="del">⌫</button><button data-d="0">0</button><button data-d="ok">✓</button></div><button class="close cback"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>'
+     '<div class="stage students-stage" hidden><h4 class="stitle">Yara · students</h4><div class="slist"></div><button class="close cback"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>'
+     '<div class="stage confirm-stage" hidden><div class="cwho"></div><h4 class="ctitle"></h4><p class="ctext"></p><div class="row2"><button class="close cno"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>A\'a · cancel</button><button class="cyes"><svg class="ico" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg>Fara · start</button></div></div>'
+     '<div class="row2"><button class="close"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Rufe · close</button></div></div></div>'
+     '<div id="leave" hidden><div class="lbox"><div class="ltitle">Ƙare zaman? · End the session?</div><div class="lpair"><button class="yn yes lv-laila" aria-label="Na gama"><span class="lm" style="width:112px;height:112px"></span><small>Na gama · done</small></button><button class="yn no board lv-slate" aria-label="Sake farawa">'+SLATE+'<small>Sake farawa · reset</small></button></div></div></div>')
+body=head.replace('<title>','<title>Kratu</title><!--',1).replace('</title>','-->',1)  # keep the design's <title> out; ours goes first
+body='<title>Kratu</title>'+body[body.index('<style'):]
+EN=json.load(open(R/'tools'/'clip_en.json',encoding='utf-8')); HA=json.load(open(R/'tools'/'live_texts.json',encoding='utf-8'))
+router=router.replace('__GPH_F__',json.dumps(GPH_F)).replace('__GPH_M__',json.dumps(GPH_M)).replace('__EN__',json.dumps(EN,ensure_ascii=False)).replace('__HA__',json.dumps({k:v for k,v in HA.items() if v},ensure_ascii=False))
+page=body+css+app+router+scripts+speech
+# artifact variant (embedded word subset as the artifact has) and the local full version
+(R/'kratu-v2.artifact.html').write_text(page,encoding='utf-8')
+full=(R/'tools'/'kratu_words_all.json').read_text(encoding='utf-8')
+a=page.index('window.KRATU_WORDS='); b=page.index(';\nwindow.KRATU_SPELL_CATS=',a)
+local=page[:a]+'window.KRATU_WORDS='+full+page[b:]
+doc=('<!doctype html><html lang="ha"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+     '<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>\n<script src="kratu-id.js"></script>\n<script src="vosk.js"></script>\n'+local+'\n</body></html>')
+doc=doc.replace('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js','models/faceapi/face-api.min.js')
+(R/'kratu-v2.html').write_text(doc,encoding='utf-8')
+print('kratu-v2.html MB',round(len(doc)/1e6,2),'| kratu-v2.artifact.html MB',round(len(page)/1e6,2),'| screens',len(ag_blocks)+len(mi_blocks))
