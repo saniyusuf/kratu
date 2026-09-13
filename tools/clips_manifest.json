@@ -4903,7 +4903,7 @@
 "lang": "ha"
 },
 "s_perm": {
-"text": "Kratu na buƙatar kyamara da makirufo. A danna 'Allow'.",
+"text": "Muna buƙatar kyamara da makirufo domin aiki. A danna 'Allow'.",
 "lang": "ha"
 },
 "s_perm_no": {
@@ -4912,6 +4912,22 @@
 },
 "s_loading": {
 "text": "Don Allah a ɗan jira. Ana shirya komai.",
+"lang": "ha"
+},
+"s_retry_face_m": {
+"text": "Ba na ganin ka sosai. Mu sake gwadawa. Ka danna kan Laila.",
+"lang": "ha"
+},
+"s_retry_face_f": {
+"text": "Ba na ganin ki sosai. Mu sake gwadawa. Ki danna kan Laila.",
+"lang": "ha"
+},
+"s_retry_name_m": {
+"text": "Ban ji sunan ka sosai ba. Mu sake gwadawa. Ka danna kan Laila.",
+"lang": "ha"
+},
+"s_retry_name_f": {
+"text": "Ban ji sunan ki sosai ba. Mu sake gwadawa. Ki danna kan Laila.",
 "lang": "ha"
 }
 }
