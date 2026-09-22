@@ -1,0 +1,16 @@
+/* Kratu app shell. The design's stylesheet (design.css) and the app stylesheet (app.css) load before this file. */
+/* the old build's page head carried these three rules; every `hidden` attribute in the design relies on the third */
+body { margin: 0 } img { max-width: 100% } [hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; overflow: hidden; background: #efe6d0; }
+#app { position: fixed; inset: 0; }
+#app .block.active { display: block; height: 100%; }
+#app .block .tags, #app .block .say { display: none; }
+
+/* A tablet for children: no focus rings after a tap, no blue tap flash, no long-press menus, callouts, text selection or
+   image dragging, and no double-tap zoom. (Sani 2026-09-13) */
+* { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
+*:focus, *:focus-visible { outline: none !important; box-shadow: none; }
+button, [role="button"], a, .htile, .catcard, .abckey, .pcard, .yn { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+img, svg, video { -webkit-user-drag: none; user-drag: none; pointer-events: inherit; }
+html, body, #app { touch-action: manipulation; overscroll-behavior: none; }
+input, select, textarea { user-select: text; -webkit-user-select: text; }

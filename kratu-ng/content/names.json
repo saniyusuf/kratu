@@ -1,0 +1,4602 @@
+[
+{
+"name": "a'isha",
+"gender": "f"
+},
+{
+"name": "a'ishatu",
+"gender": "f"
+},
+{
+"name": "abba",
+"gender": "m"
+},
+{
+"name": "abdul",
+"gender": "m"
+},
+{
+"name": "abdulafeez",
+"gender": "m"
+},
+{
+"name": "abdulazeem",
+"gender": "m"
+},
+{
+"name": "abdulazeez",
+"gender": "m"
+},
+{
+"name": "abdulaziz",
+"gender": "m"
+},
+{
+"name": "abdulbaki",
+"gender": "m"
+},
+{
+"name": "abdulbasit",
+"gender": "m"
+},
+{
+"name": "abdulfatah",
+"gender": "m"
+},
+{
+"name": "abdulganiyu",
+"gender": "m"
+},
+{
+"name": "abdulhadi",
+"gender": "m"
+},
+{
+"name": "abdulhakim",
+"gender": "m"
+},
+{
+"name": "abdulhamid",
+"gender": "m"
+},
+{
+"name": "abdulhaq",
+"gender": "m"
+},
+{
+"name": "abduljabbar",
+"gender": "m"
+},
+{
+"name": "abduljalal",
+"gender": "m"
+},
+{
+"name": "abdulkabir",
+"gender": "m"
+},
+{
+"name": "abdulkadir",
+"gender": "m"
+},
+{
+"name": "abdulkareem",
+"gender": "m"
+},
+{
+"name": "abdulkarim",
+"gender": "m"
+},
+{
+"name": "abdulkhalik",
+"gender": "m"
+},
+{
+"name": "abdullah",
+"gender": "m"
+},
+{
+"name": "abdullahi",
+"gender": "m"
+},
+{
+"name": "abdullateef",
+"gender": "m"
+},
+{
+"name": "abdullatif",
+"gender": "m"
+},
+{
+"name": "abdulmajeed",
+"gender": "m"
+},
+{
+"name": "abdulmajid",
+"gender": "m"
+},
+{
+"name": "abdulmalik",
+"gender": "m"
+},
+{
+"name": "abdulmatin",
+"gender": "m"
+},
+{
+"name": "abdulmuhsin",
+"gender": "m"
+},
+{
+"name": "abdulmuiz",
+"gender": "m"
+},
+{
+"name": "abdulmumin",
+"gender": "m"
+},
+{
+"name": "abdulmumini",
+"gender": "m"
+},
+{
+"name": "abdulmuminu",
+"gender": "m"
+},
+{
+"name": "abdulmusawwir",
+"gender": "m"
+},
+{
+"name": "abdulnasir",
+"gender": "m"
+},
+{
+"name": "abdulqadir",
+"gender": "m"
+},
+{
+"name": "abdulraheem",
+"gender": "m"
+},
+{
+"name": "abdulrahim",
+"gender": "m"
+},
+{
+"name": "abdulrahman",
+"gender": "m"
+},
+{
+"name": "abdulrasheed",
+"gender": "m"
+},
+{
+"name": "abdulrashid",
+"gender": "m"
+},
+{
+"name": "abdulrazak",
+"gender": "m"
+},
+{
+"name": "abdulsabur",
+"gender": "m"
+},
+{
+"name": "abdulsalam",
+"gender": "m"
+},
+{
+"name": "abdulsamad",
+"gender": "m"
+},
+{
+"name": "abdulshakur",
+"gender": "m"
+},
+{
+"name": "abdulwadud",
+"gender": "m"
+},
+{
+"name": "abdulwahab",
+"gender": "m"
+},
+{
+"name": "abdulwahid",
+"gender": "m"
+},
+{
+"name": "abdulwakil",
+"gender": "m"
+},
+{
+"name": "abdulwasiu",
+"gender": "m"
+},
+{
+"name": "abdulyekini",
+"gender": "m"
+},
+{
+"name": "abdulzahir",
+"gender": "m"
+},
+{
+"name": "abdurrahman",
+"gender": "m"
+},
+{
+"name": "abdussalam",
+"gender": "m"
+},
+{
+"name": "abiba",
+"gender": "f"
+},
+{
+"name": "aboki",
+"gender": "m"
+},
+{
+"name": "abubakar",
+"gender": "m"
+},
+{
+"name": "abubakr",
+"gender": "m"
+},
+{
+"name": "adam",
+"gender": "m"
+},
+{
+"name": "adama",
+"gender": "m"
+},
+{
+"name": "adamatu",
+"gender": "f"
+},
+{
+"name": "adamu",
+"gender": "m"
+},
+{
+"name": "adiza",
+"gender": "f"
+},
+{
+"name": "adoh",
+"gender": "m"
+},
+{
+"name": "afsat",
+"gender": "f"
+},
+{
+"name": "ahmad",
+"gender": "m"
+},
+{
+"name": "ahmadu",
+"gender": "m"
+},
+{
+"name": "ahmed",
+"gender": "m"
+},
+{
+"name": "ahuwa",
+"gender": "f"
+},
+{
+"name": "aida",
+"gender": "f"
+},
+{
+"name": "aina",
+"gender": "f"
+},
+{
+"name": "aisami",
+"gender": "f"
+},
+{
+"name": "aisatu",
+"gender": "f"
+},
+{
+"name": "aisha",
+"gender": "f"
+},
+{
+"name": "aishat",
+"gender": "f"
+},
+{
+"name": "aishatu",
+"gender": "f"
+},
+{
+"name": "ajara",
+"gender": "f"
+},
+{
+"name": "ajuma",
+"gender": "f"
+},
+{
+"name": "akilu",
+"gender": "m"
+},
+{
+"name": "alhaji",
+"gender": "m"
+},
+{
+"name": "alhasan",
+"gender": "m"
+},
+{
+"name": "alhassan",
+"gender": "m"
+},
+{
+"name": "alheri",
+"gender": "f"
+},
+{
+"name": "ali",
+"gender": "m"
+},
+{
+"name": "aliya",
+"gender": "f"
+},
+{
+"name": "aliyatu",
+"gender": "f"
+},
+{
+"name": "aliyu",
+"gender": "m"
+},
+{
+"name": "aliyya",
+"gender": "f"
+},
+{
+"name": "aliyyu",
+"gender": "m"
+},
+{
+"name": "alkali",
+"gender": "m"
+},
+{
+"name": "alkasim",
+"gender": "m"
+},
+{
+"name": "allo",
+"gender": "f"
+},
+{
+"name": "amadu",
+"gender": "m"
+},
+{
+"name": "amamatu",
+"gender": "f"
+},
+{
+"name": "amaratu",
+"gender": "f"
+},
+{
+"name": "ameer",
+"gender": "m"
+},
+{
+"name": "amina",
+"gender": "f"
+},
+{
+"name": "aminah",
+"gender": "f"
+},
+{
+"name": "aminatu",
+"gender": "f"
+},
+{
+"name": "aminu",
+"gender": "m"
+},
+{
+"name": "aminullah",
+"gender": "m"
+},
+{
+"name": "aminullahi",
+"gender": "m"
+},
+{
+"name": "amir",
+"gender": "m"
+},
+{
+"name": "amira",
+"gender": "f"
+},
+{
+"name": "amiratu",
+"gender": "f"
+},
+{
+"name": "amiru",
+"gender": "m"
+},
+{
+"name": "ammar",
+"gender": "m"
+},
+{
+"name": "ammaru",
+"gender": "m"
+},
+{
+"name": "amsa",
+"gender": "f"
+},
+{
+"name": "amsatou",
+"gender": "f"
+},
+{
+"name": "anas",
+"gender": "m"
+},
+{
+"name": "anasu",
+"gender": "m"
+},
+{
+"name": "anisa",
+"gender": "f"
+},
+{
+"name": "anisat",
+"gender": "f"
+},
+{
+"name": "anwar",
+"gender": "m"
+},
+{
+"name": "arafat",
+"gender": "m"
+},
+{
+"name": "aremu",
+"gender": "m"
+},
+{
+"name": "ari",
+"gender": "m"
+},
+{
+"name": "arziki",
+"gender": "m"
+},
+{
+"name": "asabe",
+"gender": "f"
+},
+{
+"name": "asad",
+"gender": "m"
+},
+{
+"name": "asadu",
+"gender": "m"
+},
+{
+"name": "asama'u",
+"gender": "f"
+},
+{
+"name": "asha",
+"gender": "f"
+},
+{
+"name": "ashe",
+"gender": "f"
+},
+{
+"name": "ashee",
+"gender": "f"
+},
+{
+"name": "asheikh",
+"gender": "m"
+},
+{
+"name": "ashiru",
+"gender": "m"
+},
+{
+"name": "ashraf",
+"gender": "m"
+},
+{
+"name": "ashrafu",
+"gender": "m"
+},
+{
+"name": "asiat",
+"gender": "f"
+},
+{
+"name": "asiya",
+"gender": "f"
+},
+{
+"name": "asiyatu",
+"gender": "f"
+},
+{
+"name": "asma",
+"gender": "f"
+},
+{
+"name": "asma'u",
+"gender": "f"
+},
+{
+"name": "asmau",
+"gender": "f"
+},
+{
+"name": "atif",
+"gender": "m"
+},
+{
+"name": "atika",
+"gender": "f"
+},
+{
+"name": "atikatu",
+"gender": "f"
+},
+{
+"name": "atiku",
+"gender": "m"
+},
+{
+"name": "attahiru",
+"gender": "m"
+},
+{
+"name": "audu",
+"gender": "m"
+},
+{
+"name": "auta",
+"gender": "f"
+},
+{
+"name": "auwa",
+"gender": "f"
+},
+{
+"name": "auwal",
+"gender": "m"
+},
+{
+"name": "auwalu",
+"gender": "m"
+},
+{
+"name": "awa",
+"gender": "f"
+},
+{
+"name": "awal",
+"gender": "m"
+},
+{
+"name": "aweis",
+"gender": "m"
+},
+{
+"name": "awwal",
+"gender": "m"
+},
+{
+"name": "awwalu",
+"gender": "m"
+},
+{
+"name": "ayana",
+"gender": "f"
+},
+{
+"name": "ayesha",
+"gender": "f"
+},
+{
+"name": "ayman",
+"gender": "m"
+},
+{
+"name": "ayub",
+"gender": "m"
+},
+{
+"name": "ayuba",
+"gender": "m"
+},
+{
+"name": "ayyub",
+"gender": "m"
+},
+{
+"name": "ayyuba",
+"gender": "m"
+},
+{
+"name": "azeez",
+"gender": "m"
+},
+{
+"name": "aziz",
+"gender": "m"
+},
+{
+"name": "aziza",
+"gender": "f"
+},
+{
+"name": "azizatu",
+"gender": "f"
+},
+{
+"name": "azizu",
+"gender": "m"
+},
+{
+"name": "baba",
+"gender": "m"
+},
+{
+"name": "babagana",
+"gender": "m"
+},
+{
+"name": "babale",
+"gender": "m"
+},
+{
+"name": "babangida",
+"gender": "m"
+},
+{
+"name": "babuga",
+"gender": "m"
+},
+{
+"name": "badamasi",
+"gender": "m"
+},
+{
+"name": "badiya",
+"gender": "f"
+},
+{
+"name": "baffa",
+"gender": "m"
+},
+{
+"name": "bagudu",
+"gender": "m"
+},
+{
+"name": "bahago",
+"gender": "m"
+},
+{
+"name": "bako",
+"gender": "m"
+},
+{
+"name": "bakura",
+"gender": "m"
+},
+{
+"name": "bakwai",
+"gender": "m"
+},
+{
+"name": "bala",
+"gender": "m"
+},
+{
+"name": "balaraba",
+"gender": "f"
+},
+{
+"name": "balarabe",
+"gender": "m"
+},
+{
+"name": "balkisu",
+"gender": "f"
+},
+{
+"name": "bappa",
+"gender": "m"
+},
+{
+"name": "bara'u",
+"gender": "m"
+},
+{
+"name": "baraka",
+"gender": "f"
+},
+{
+"name": "barakat",
+"gender": "f"
+},
+{
+"name": "barau",
+"gender": "m"
+},
+{
+"name": "barde",
+"gender": "m"
+},
+{
+"name": "barira",
+"gender": "f"
+},
+{
+"name": "bashar",
+"gender": "m"
+},
+{
+"name": "bashari",
+"gender": "m"
+},
+{
+"name": "bashir",
+"gender": "m"
+},
+{
+"name": "bashira",
+"gender": "f"
+},
+{
+"name": "bashiru",
+"gender": "m"
+},
+{
+"name": "basir",
+"gender": "m"
+},
+{
+"name": "basira",
+"gender": "f"
+},
+{
+"name": "basirat",
+"gender": "f"
+},
+{
+"name": "basiru",
+"gender": "m"
+},
+{
+"name": "batsira",
+"gender": "f"
+},
+{
+"name": "batula",
+"gender": "f"
+},
+{
+"name": "bature",
+"gender": "m"
+},
+{
+"name": "bawa",
+"gender": "m"
+},
+{
+"name": "bayero",
+"gender": "m"
+},
+{
+"name": "bello",
+"gender": "m"
+},
+{
+"name": "bilal",
+"gender": "m"
+},
+{
+"name": "bilki",
+"gender": "f"
+},
+{
+"name": "bilkis",
+"gender": "f"
+},
+{
+"name": "bilkisu",
+"gender": "f"
+},
+{
+"name": "bilyamin",
+"gender": "m"
+},
+{
+"name": "bilyaminu",
+"gender": "m"
+},
+{
+"name": "binta",
+"gender": "f"
+},
+{
+"name": "binte",
+"gender": "f"
+},
+{
+"name": "bintou",
+"gender": "f"
+},
+{
+"name": "bintu",
+"gender": "f"
+},
+{
+"name": "binyamin",
+"gender": "m"
+},
+{
+"name": "bitrus",
+"gender": "m"
+},
+{
+"name": "boyi",
+"gender": "m"
+},
+{
+"name": "buba",
+"gender": "m"
+},
+{
+"name": "buhari",
+"gender": "m"
+},
+{
+"name": "bukar",
+"gender": "m"
+},
+{
+"name": "bulama",
+"gender": "m"
+},
+{
+"name": "bulus",
+"gender": "m"
+},
+{
+"name": "bunu",
+"gender": "m"
+},
+{
+"name": "burhan",
+"gender": "m"
+},
+{
+"name": "chadi",
+"gender": "f"
+},
+{
+"name": "dabo",
+"gender": "f"
+},
+{
+"name": "dada",
+"gender": "f"
+},
+{
+"name": "dahir",
+"gender": "m"
+},
+{
+"name": "dahiru",
+"gender": "m"
+},
+{
+"name": "dahuwa",
+"gender": "f"
+},
+{
+"name": "dalha",
+"gender": "m"
+},
+{
+"name": "dalhatu",
+"gender": "m"
+},
+{
+"name": "dan",
+"gender": "m"
+},
+{
+"name": "dan-azumi",
+"gender": "m"
+},
+{
+"name": "danazumi",
+"gender": "m"
+},
+{
+"name": "danbaba",
+"gender": "m"
+},
+{
+"name": "danbala",
+"gender": "m"
+},
+{
+"name": "danbappa",
+"gender": "m"
+},
+{
+"name": "dangana",
+"gender": "m"
+},
+{
+"name": "dangiwa",
+"gender": "m"
+},
+{
+"name": "daniel",
+"gender": "m"
+},
+{
+"name": "danjuma",
+"gender": "m"
+},
+{
+"name": "dankaka",
+"gender": "m"
+},
+{
+"name": "dankano",
+"gender": "m"
+},
+{
+"name": "dankwambo",
+"gender": "m"
+},
+{
+"name": "danladi",
+"gender": "m"
+},
+{
+"name": "danlami",
+"gender": "m"
+},
+{
+"name": "danmaraya",
+"gender": "m"
+},
+{
+"name": "dantala",
+"gender": "m"
+},
+{
+"name": "dantani",
+"gender": "m"
+},
+{
+"name": "danyaro",
+"gender": "m"
+},
+{
+"name": "danyaya",
+"gender": "m"
+},
+{
+"name": "daso",
+"gender": "f"
+},
+{
+"name": "daud",
+"gender": "m"
+},
+{
+"name": "dauda",
+"gender": "m"
+},
+{
+"name": "daura",
+"gender": "m"
+},
+{
+"name": "dazumi",
+"gender": "m"
+},
+{
+"name": "deborah",
+"gender": "f"
+},
+{
+"name": "delu",
+"gender": "f"
+},
+{
+"name": "dije",
+"gender": "f"
+},
+{
+"name": "dikko",
+"gender": "m"
+},
+{
+"name": "dikkon",
+"gender": "m"
+},
+{
+"name": "dinatu",
+"gender": "f"
+},
+{
+"name": "diza",
+"gender": "f"
+},
+{
+"name": "dogara",
+"gender": "m"
+},
+{
+"name": "dogo",
+"gender": "m"
+},
+{
+"name": "dorcas",
+"gender": "f"
+},
+{
+"name": "dutse",
+"gender": "m"
+},
+{
+"name": "eli",
+"gender": "f"
+},
+{
+"name": "emmanuel",
+"gender": "m"
+},
+{
+"name": "esther",
+"gender": "f"
+},
+{
+"name": "etsu",
+"gender": "m"
+},
+{
+"name": "ezekiel",
+"gender": "m"
+},
+{
+"name": "fa'iza",
+"gender": "f"
+},
+{
+"name": "fadila",
+"gender": "f"
+},
+{
+"name": "fadilatu",
+"gender": "f"
+},
+{
+"name": "fadima",
+"gender": "f"
+},
+{
+"name": "fadimatu",
+"gender": "f"
+},
+{
+"name": "fahad",
+"gender": "m"
+},
+{
+"name": "fahadu",
+"gender": "m"
+},
+{
+"name": "fahima",
+"gender": "f"
+},
+{
+"name": "faisal",
+"gender": "m"
+},
+{
+"name": "faisalu",
+"gender": "m"
+},
+{
+"name": "faiza",
+"gender": "f"
+},
+{
+"name": "faizatu",
+"gender": "f"
+},
+{
+"name": "falmata",
+"gender": "f"
+},
+{
+"name": "falta",
+"gender": "f"
+},
+{
+"name": "fana",
+"gender": "f"
+},
+{
+"name": "fanna",
+"gender": "f"
+},
+{
+"name": "fanta",
+"gender": "f"
+},
+{
+"name": "fantah",
+"gender": "f"
+},
+{
+"name": "fantami",
+"gender": "f"
+},
+{
+"name": "farida",
+"gender": "f"
+},
+{
+"name": "faridatu",
+"gender": "f"
+},
+{
+"name": "farouk",
+"gender": "m"
+},
+{
+"name": "faruk",
+"gender": "m"
+},
+{
+"name": "faruku",
+"gender": "m"
+},
+{
+"name": "faruq",
+"gender": "m"
+},
+{
+"name": "fati",
+"gender": "f"
+},
+{
+"name": "fati'u",
+"gender": "m"
+},
+{
+"name": "fatihu",
+"gender": "m"
+},
+{
+"name": "fatima",
+"gender": "f"
+},
+{
+"name": "fatimah",
+"gender": "f"
+},
+{
+"name": "fatimatu",
+"gender": "f"
+},
+{
+"name": "fatimoh",
+"gender": "f"
+},
+{
+"name": "fatsuma",
+"gender": "f"
+},
+{
+"name": "fatuma",
+"gender": "f"
+},
+{
+"name": "fauzi",
+"gender": "m"
+},
+{
+"name": "fauzia",
+"gender": "f"
+},
+{
+"name": "fauziya",
+"gender": "f"
+},
+{
+"name": "fauziyya",
+"gender": "f"
+},
+{
+"name": "fawaz",
+"gender": "m"
+},
+{
+"name": "fikru",
+"gender": "m"
+},
+{
+"name": "filibus",
+"gender": "m"
+},
+{
+"name": "firdaus",
+"gender": "f"
+},
+{
+"name": "firdausa",
+"gender": "f"
+},
+{
+"name": "firdausi",
+"gender": "m"
+},
+{
+"name": "friday",
+"gender": "m"
+},
+{
+"name": "furera",
+"gender": "f"
+},
+{
+"name": "gaddafi",
+"gender": "m"
+},
+{
+"name": "gaddo",
+"gender": "f"
+},
+{
+"name": "gaji",
+"gender": "f"
+},
+{
+"name": "galadima",
+"gender": "m"
+},
+{
+"name": "gali",
+"gender": "m"
+},
+{
+"name": "gambo",
+"gender": "m"
+},
+{
+"name": "gamsa",
+"gender": "f"
+},
+{
+"name": "gana",
+"gender": "f"
+},
+{
+"name": "garba",
+"gender": "m"
+},
+{
+"name": "garzali",
+"gender": "m"
+},
+{
+"name": "ghali",
+"gender": "m"
+},
+{
+"name": "gidado",
+"gender": "m"
+},
+{
+"name": "gideon",
+"gender": "m"
+},
+{
+"name": "gimba",
+"gender": "f"
+},
+{
+"name": "gimbiya",
+"gender": "f"
+},
+{
+"name": "gizo",
+"gender": "f"
+},
+{
+"name": "goggo",
+"gender": "f"
+},
+{
+"name": "gogo",
+"gender": "f"
+},
+{
+"name": "goni",
+"gender": "m"
+},
+{
+"name": "grace",
+"gender": "f"
+},
+{
+"name": "grema",
+"gender": "m"
+},
+{
+"name": "gude",
+"gender": "f"
+},
+{
+"name": "gwaggo",
+"gender": "f"
+},
+{
+"name": "gwamna",
+"gender": "m"
+},
+{
+"name": "gwani",
+"gender": "m"
+},
+{
+"name": "gwarzo",
+"gender": "m"
+},
+{
+"name": "habakkuk",
+"gender": "m"
+},
+{
+"name": "habib",
+"gender": "m"
+},
+{
+"name": "habiba",
+"gender": "f"
+},
+{
+"name": "habibat",
+"gender": "f"
+},
+{
+"name": "habibatu",
+"gender": "f"
+},
+{
+"name": "habibu",
+"gender": "m"
+},
+{
+"name": "habila",
+"gender": "m"
+},
+{
+"name": "habsatu",
+"gender": "f"
+},
+{
+"name": "habu",
+"gender": "m"
+},
+{
+"name": "hadassah",
+"gender": "f"
+},
+{
+"name": "hadejia",
+"gender": "m"
+},
+{
+"name": "hadi",
+"gender": "m"
+},
+{
+"name": "hadiru",
+"gender": "m"
+},
+{
+"name": "hadiza",
+"gender": "f"
+},
+{
+"name": "hadizatu",
+"gender": "f"
+},
+{
+"name": "hafiz",
+"gender": "m"
+},
+{
+"name": "hafizat",
+"gender": "f"
+},
+{
+"name": "hafizu",
+"gender": "m"
+},
+{
+"name": "hafsa",
+"gender": "f"
+},
+{
+"name": "hafsat",
+"gender": "f"
+},
+{
+"name": "hafsatu",
+"gender": "f"
+},
+{
+"name": "hafsoh",
+"gender": "f"
+},
+{
+"name": "haida",
+"gender": "f"
+},
+{
+"name": "hajara",
+"gender": "f"
+},
+{
+"name": "hajaratu",
+"gender": "f"
+},
+{
+"name": "hajia",
+"gender": "f"
+},
+{
+"name": "hajiya",
+"gender": "f"
+},
+{
+"name": "hakima",
+"gender": "f"
+},
+{
+"name": "haladu",
+"gender": "m"
+},
+{
+"name": "halid",
+"gender": "m"
+},
+{
+"name": "halidu",
+"gender": "m"
+},
+{
+"name": "halil",
+"gender": "m"
+},
+{
+"name": "halilu",
+"gender": "m"
+},
+{
+"name": "halima",
+"gender": "f"
+},
+{
+"name": "halimah",
+"gender": "f"
+},
+{
+"name": "halimat",
+"gender": "f"
+},
+{
+"name": "halimatu",
+"gender": "f"
+},
+{
+"name": "hamdan",
+"gender": "m"
+},
+{
+"name": "hamdanu",
+"gender": "m"
+},
+{
+"name": "hamdiya",
+"gender": "f"
+},
+{
+"name": "hamdiyya",
+"gender": "f"
+},
+{
+"name": "hameed",
+"gender": "m"
+},
+{
+"name": "hamid",
+"gender": "m"
+},
+{
+"name": "hamida",
+"gender": "f"
+},
+{
+"name": "hamidatu",
+"gender": "f"
+},
+{
+"name": "hamidu",
+"gender": "m"
+},
+{
+"name": "hamis",
+"gender": "m"
+},
+{
+"name": "hamisu",
+"gender": "m"
+},
+{
+"name": "hamma",
+"gender": "m"
+},
+{
+"name": "hammadu",
+"gender": "m"
+},
+{
+"name": "hamsatu",
+"gender": "f"
+},
+{
+"name": "hamza",
+"gender": "m"
+},
+{
+"name": "hamzat",
+"gender": "m"
+},
+{
+"name": "hana",
+"gender": "f"
+},
+{
+"name": "hanafi",
+"gender": "m"
+},
+{
+"name": "hanan",
+"gender": "m"
+},
+{
+"name": "hanatu",
+"gender": "f"
+},
+{
+"name": "haneef",
+"gender": "m"
+},
+{
+"name": "hanif",
+"gender": "m"
+},
+{
+"name": "hanifa",
+"gender": "f"
+},
+{
+"name": "hanifatu",
+"gender": "f"
+},
+{
+"name": "hanifu",
+"gender": "m"
+},
+{
+"name": "hanna",
+"gender": "f"
+},
+{
+"name": "hannatu",
+"gender": "f"
+},
+{
+"name": "hansu",
+"gender": "f"
+},
+{
+"name": "haris",
+"gender": "m"
+},
+{
+"name": "harisu",
+"gender": "m"
+},
+{
+"name": "harun",
+"gender": "m"
+},
+{
+"name": "haruna",
+"gender": "m"
+},
+{
+"name": "hasan",
+"gender": "m"
+},
+{
+"name": "hasana",
+"gender": "f"
+},
+{
+"name": "hashim",
+"gender": "m"
+},
+{
+"name": "hashimu",
+"gender": "m"
+},
+{
+"name": "hasiya",
+"gender": "f"
+},
+{
+"name": "hasiyatu",
+"gender": "f"
+},
+{
+"name": "hassan",
+"gender": "m"
+},
+{
+"name": "hassana",
+"gender": "f"
+},
+{
+"name": "hasseina",
+"gender": "f"
+},
+{
+"name": "hauwa",
+"gender": "f"
+},
+{
+"name": "hauwa'u",
+"gender": "f"
+},
+{
+"name": "hauwau",
+"gender": "f"
+},
+{
+"name": "hawa",
+"gender": "f"
+},
+{
+"name": "hawau",
+"gender": "f"
+},
+{
+"name": "hawwa",
+"gender": "f"
+},
+{
+"name": "hawwa'u",
+"gender": "f"
+},
+{
+"name": "hayatu",
+"gender": "m"
+},
+{
+"name": "hayatuddeen",
+"gender": "m"
+},
+{
+"name": "helen",
+"gender": "f"
+},
+{
+"name": "hikima",
+"gender": "f"
+},
+{
+"name": "hinda",
+"gender": "f"
+},
+{
+"name": "hindatu",
+"gender": "f"
+},
+{
+"name": "hindu",
+"gender": "f"
+},
+{
+"name": "huda",
+"gender": "f"
+},
+{
+"name": "hudu",
+"gender": "m"
+},
+{
+"name": "humaira",
+"gender": "f"
+},
+{
+"name": "humairat",
+"gender": "f"
+},
+{
+"name": "hurera",
+"gender": "f"
+},
+{
+"name": "husain",
+"gender": "m"
+},
+{
+"name": "husaina",
+"gender": "f"
+},
+{
+"name": "husaini",
+"gender": "m"
+},
+{
+"name": "husna",
+"gender": "f"
+},
+{
+"name": "hussain",
+"gender": "m"
+},
+{
+"name": "hussaina",
+"gender": "f"
+},
+{
+"name": "hussaini",
+"gender": "m"
+},
+{
+"name": "husseina",
+"gender": "f"
+},
+{
+"name": "ibrahim",
+"gender": "m"
+},
+{
+"name": "ibro",
+"gender": "m"
+},
+{
+"name": "ibtihaj",
+"gender": "f"
+},
+{
+"name": "ibtisam",
+"gender": "f"
+},
+{
+"name": "idayat",
+"gender": "f"
+},
+{
+"name": "idi",
+"gender": "m"
+},
+{
+"name": "idiris",
+"gender": "m"
+},
+{
+"name": "idris",
+"gender": "m"
+},
+{
+"name": "idrisu",
+"gender": "m"
+},
+{
+"name": "ikilima",
+"gender": "f"
+},
+{
+"name": "iklima",
+"gender": "f"
+},
+{
+"name": "ikram",
+"gender": "f"
+},
+{
+"name": "iliya",
+"gender": "m"
+},
+{
+"name": "iliyasu",
+"gender": "m"
+},
+{
+"name": "ilyas",
+"gender": "m"
+},
+{
+"name": "ilyasu",
+"gender": "m"
+},
+{
+"name": "imam",
+"gender": "m"
+},
+{
+"name": "imamu",
+"gender": "m"
+},
+{
+"name": "iman",
+"gender": "f"
+},
+{
+"name": "imani",
+"gender": "f"
+},
+{
+"name": "imran",
+"gender": "m"
+},
+{
+"name": "imrana",
+"gender": "m"
+},
+{
+"name": "indo",
+"gender": "f"
+},
+{
+"name": "inna",
+"gender": "f"
+},
+{
+"name": "innah",
+"gender": "f"
+},
+{
+"name": "innocent",
+"gender": "f"
+},
+{
+"name": "inusa",
+"gender": "m"
+},
+{
+"name": "inuwa",
+"gender": "m"
+},
+{
+"name": "irfan",
+"gender": "m"
+},
+{
+"name": "isa",
+"gender": "m"
+},
+{
+"name": "isah",
+"gender": "m"
+},
+{
+"name": "isha",
+"gender": "f"
+},
+{
+"name": "ishaka",
+"gender": "m"
+},
+{
+"name": "ishaku",
+"gender": "m"
+},
+{
+"name": "ishaq",
+"gender": "m"
+},
+{
+"name": "ishaya",
+"gender": "m"
+},
+{
+"name": "isiaka",
+"gender": "m"
+},
+{
+"name": "isiyaka",
+"gender": "m"
+},
+{
+"name": "isma'il",
+"gender": "m"
+},
+{
+"name": "ismail",
+"gender": "m"
+},
+{
+"name": "ismaila",
+"gender": "m"
+},
+{
+"name": "istifanus",
+"gender": "m"
+},
+{
+"name": "isyaku",
+"gender": "m"
+},
+{
+"name": "iyabo",
+"gender": "f"
+},
+{
+"name": "ja'afar",
+"gender": "m"
+},
+{
+"name": "ja'afaru",
+"gender": "m"
+},
+{
+"name": "jaafar",
+"gender": "m"
+},
+{
+"name": "jabir",
+"gender": "m"
+},
+{
+"name": "jabiru",
+"gender": "m"
+},
+{
+"name": "jafar",
+"gender": "m"
+},
+{
+"name": "jafaru",
+"gender": "m"
+},
+{
+"name": "jalal",
+"gender": "m"
+},
+{
+"name": "jalaluddeen",
+"gender": "m"
+},
+{
+"name": "jamal",
+"gender": "m"
+},
+{
+"name": "jamil",
+"gender": "m"
+},
+{
+"name": "jamila",
+"gender": "f"
+},
+{
+"name": "jamilat",
+"gender": "f"
+},
+{
+"name": "jamilatu",
+"gender": "f"
+},
+{
+"name": "jamilu",
+"gender": "m"
+},
+{
+"name": "jauharat",
+"gender": "f"
+},
+{
+"name": "jauro",
+"gender": "m"
+},
+{
+"name": "jemila",
+"gender": "f"
+},
+{
+"name": "jemimah",
+"gender": "f"
+},
+{
+"name": "jibril",
+"gender": "m"
+},
+{
+"name": "jibrin",
+"gender": "m"
+},
+{
+"name": "jidda",
+"gender": "m"
+},
+{
+"name": "jiddah",
+"gender": "f"
+},
+{
+"name": "jonathan",
+"gender": "m"
+},
+{
+"name": "joseph",
+"gender": "m"
+},
+{
+"name": "jubril",
+"gender": "m"
+},
+{
+"name": "juma",
+"gender": "f"
+},
+{
+"name": "jumai",
+"gender": "f"
+},
+{
+"name": "jumma",
+"gender": "f"
+},
+{
+"name": "jummai",
+"gender": "f"
+},
+{
+"name": "junaid",
+"gender": "m"
+},
+{
+"name": "junaidu",
+"gender": "m"
+},
+{
+"name": "juwairiya",
+"gender": "f"
+},
+{
+"name": "juwairiyya",
+"gender": "f"
+},
+{
+"name": "kabir",
+"gender": "m"
+},
+{
+"name": "kabira",
+"gender": "f"
+},
+{
+"name": "kabiratu",
+"gender": "f"
+},
+{
+"name": "kabiru",
+"gender": "m"
+},
+{
+"name": "kachalla",
+"gender": "m"
+},
+{
+"name": "kachella",
+"gender": "m"
+},
+{
+"name": "kadija",
+"gender": "f"
+},
+{
+"name": "kadijat",
+"gender": "f"
+},
+{
+"name": "kaigama",
+"gender": "m"
+},
+{
+"name": "kaka",
+"gender": "m"
+},
+{
+"name": "kaku",
+"gender": "m"
+},
+{
+"name": "kalthum",
+"gender": "f"
+},
+{
+"name": "kaltum",
+"gender": "f"
+},
+{
+"name": "kaltume",
+"gender": "f"
+},
+{
+"name": "kaltumi",
+"gender": "f"
+},
+{
+"name": "kamal",
+"gender": "m"
+},
+{
+"name": "kamalu",
+"gender": "m"
+},
+{
+"name": "kamaluddeen",
+"gender": "m"
+},
+{
+"name": "kamaludeen",
+"gender": "m"
+},
+{
+"name": "kamil",
+"gender": "m"
+},
+{
+"name": "kamila",
+"gender": "f"
+},
+{
+"name": "kamilatu",
+"gender": "f"
+},
+{
+"name": "kamilu",
+"gender": "m"
+},
+{
+"name": "kamsiya",
+"gender": "f"
+},
+{
+"name": "kande",
+"gender": "f"
+},
+{
+"name": "kandi",
+"gender": "f"
+},
+{
+"name": "kanu",
+"gender": "m"
+},
+{
+"name": "karami",
+"gender": "m"
+},
+{
+"name": "kareema",
+"gender": "f"
+},
+{
+"name": "karim",
+"gender": "m"
+},
+{
+"name": "karima",
+"gender": "f"
+},
+{
+"name": "karimatu",
+"gender": "f"
+},
+{
+"name": "kasim",
+"gender": "m"
+},
+{
+"name": "kasimu",
+"gender": "m"
+},
+{
+"name": "kassim",
+"gender": "m"
+},
+{
+"name": "katsina",
+"gender": "m"
+},
+{
+"name": "kausar",
+"gender": "f"
+},
+{
+"name": "kausara",
+"gender": "f"
+},
+{
+"name": "kauthar",
+"gender": "f"
+},
+{
+"name": "kawsar",
+"gender": "f"
+},
+{
+"name": "kawu",
+"gender": "m"
+},
+{
+"name": "kellu",
+"gender": "m"
+},
+{
+"name": "khadeejah",
+"gender": "f"
+},
+{
+"name": "khadija",
+"gender": "f"
+},
+{
+"name": "khadijah",
+"gender": "f"
+},
+{
+"name": "khairat",
+"gender": "f"
+},
+{
+"name": "khairiya",
+"gender": "f"
+},
+{
+"name": "khairiyya",
+"gender": "f"
+},
+{
+"name": "khalid",
+"gender": "m"
+},
+{
+"name": "khalidu",
+"gender": "m"
+},
+{
+"name": "khalifa",
+"gender": "m"
+},
+{
+"name": "khalil",
+"gender": "m"
+},
+{
+"name": "kilishi",
+"gender": "m"
+},
+{
+"name": "kolo",
+"gender": "m"
+},
+{
+"name": "kore",
+"gender": "m"
+},
+{
+"name": "kubra",
+"gender": "f"
+},
+{
+"name": "kubrat",
+"gender": "f"
+},
+{
+"name": "kudu",
+"gender": "m"
+},
+{
+"name": "kulsum",
+"gender": "f"
+},
+{
+"name": "kulsumi",
+"gender": "f"
+},
+{
+"name": "kulu",
+"gender": "f"
+},
+{
+"name": "kuluwa",
+"gender": "f"
+},
+{
+"name": "kwace",
+"gender": "f"
+},
+{
+"name": "kwairanga",
+"gender": "m"
+},
+{
+"name": "kyari",
+"gender": "m"
+},
+{
+"name": "labaran",
+"gender": "m"
+},
+{
+"name": "ladan",
+"gender": "m"
+},
+{
+"name": "ladi",
+"gender": "f"
+},
+{
+"name": "ladidi",
+"gender": "f"
+},
+{
+"name": "lado",
+"gender": "m"
+},
+{
+"name": "laila",
+"gender": "f"
+},
+{
+"name": "lami",
+"gender": "f"
+},
+{
+"name": "lamido",
+"gender": "m"
+},
+{
+"name": "lamin",
+"gender": "m"
+},
+{
+"name": "laminu",
+"gender": "f"
+},
+{
+"name": "laraba",
+"gender": "f"
+},
+{
+"name": "larai",
+"gender": "f"
+},
+{
+"name": "lateefat",
+"gender": "f"
+},
+{
+"name": "latifa",
+"gender": "f"
+},
+{
+"name": "latifat",
+"gender": "f"
+},
+{
+"name": "latifatu",
+"gender": "f"
+},
+{
+"name": "lauratu",
+"gender": "f"
+},
+{
+"name": "laure",
+"gender": "f"
+},
+{
+"name": "lawal",
+"gender": "m"
+},
+{
+"name": "lawali",
+"gender": "m"
+},
+{
+"name": "lawan",
+"gender": "m"
+},
+{
+"name": "layla",
+"gender": "f"
+},
+{
+"name": "legbo",
+"gender": "m"
+},
+{
+"name": "leila",
+"gender": "f"
+},
+{
+"name": "liman",
+"gender": "m"
+},
+{
+"name": "limanu",
+"gender": "m"
+},
+{
+"name": "lubaba",
+"gender": "f"
+},
+{
+"name": "lubabatu",
+"gender": "f"
+},
+{
+"name": "lubna",
+"gender": "f"
+},
+{
+"name": "luka",
+"gender": "m"
+},
+{
+"name": "lukman",
+"gender": "m"
+},
+{
+"name": "luqman",
+"gender": "m"
+},
+{
+"name": "lydia",
+"gender": "f"
+},
+{
+"name": "ma'aruf",
+"gender": "f"
+},
+{
+"name": "ma'ude",
+"gender": "f"
+},
+{
+"name": "madaki",
+"gender": "m"
+},
+{
+"name": "madina",
+"gender": "f"
+},
+{
+"name": "madu",
+"gender": "m"
+},
+{
+"name": "magaji",
+"gender": "m"
+},
+{
+"name": "magajiya",
+"gender": "f"
+},
+{
+"name": "mahadi",
+"gender": "m"
+},
+{
+"name": "mahdi",
+"gender": "m"
+},
+{
+"name": "mahmood",
+"gender": "m"
+},
+{
+"name": "mahmoud",
+"gender": "m"
+},
+{
+"name": "mahmud",
+"gender": "m"
+},
+{
+"name": "mahmuda",
+"gender": "f"
+},
+{
+"name": "mai",
+"gender": "m"
+},
+{
+"name": "maidoki",
+"gender": "m"
+},
+{
+"name": "maigari",
+"gender": "m"
+},
+{
+"name": "maijidda",
+"gender": "f"
+},
+{
+"name": "maikano",
+"gender": "m"
+},
+{
+"name": "maikudi",
+"gender": "m"
+},
+{
+"name": "maimuna",
+"gender": "f"
+},
+{
+"name": "maimunat",
+"gender": "f"
+},
+{
+"name": "maimunatu",
+"gender": "f"
+},
+{
+"name": "mainasara",
+"gender": "m"
+},
+{
+"name": "maira",
+"gender": "f"
+},
+{
+"name": "mairam",
+"gender": "f"
+},
+{
+"name": "mairama",
+"gender": "f"
+},
+{
+"name": "mairamu",
+"gender": "f"
+},
+{
+"name": "mairo",
+"gender": "f"
+},
+{
+"name": "maisamari",
+"gender": "m"
+},
+{
+"name": "maisara",
+"gender": "f"
+},
+{
+"name": "maisaratu",
+"gender": "f"
+},
+{
+"name": "maiwada",
+"gender": "m"
+},
+{
+"name": "maka",
+"gender": "f"
+},
+{
+"name": "makama",
+"gender": "m"
+},
+{
+"name": "makera",
+"gender": "m"
+},
+{
+"name": "makinta",
+"gender": "m"
+},
+{
+"name": "mala",
+"gender": "m"
+},
+{
+"name": "malam",
+"gender": "m"
+},
+{
+"name": "malama",
+"gender": "f"
+},
+{
+"name": "malami",
+"gender": "m"
+},
+{
+"name": "mallam",
+"gender": "m"
+},
+{
+"name": "mama",
+"gender": "f"
+},
+{
+"name": "mamma",
+"gender": "f"
+},
+{
+"name": "mammadu",
+"gender": "m"
+},
+{
+"name": "mamman",
+"gender": "m"
+},
+{
+"name": "mamuda",
+"gender": "m"
+},
+{
+"name": "manir",
+"gender": "m"
+},
+{
+"name": "maniru",
+"gender": "m"
+},
+{
+"name": "manko",
+"gender": "m"
+},
+{
+"name": "mansir",
+"gender": "m"
+},
+{
+"name": "mansur",
+"gender": "m"
+},
+{
+"name": "mansura",
+"gender": "f"
+},
+{
+"name": "mansuru",
+"gender": "m"
+},
+{
+"name": "marafa",
+"gender": "m"
+},
+{
+"name": "mariam",
+"gender": "f"
+},
+{
+"name": "mariama",
+"gender": "f"
+},
+{
+"name": "mariya",
+"gender": "f"
+},
+{
+"name": "mariyamu",
+"gender": "f"
+},
+{
+"name": "markus",
+"gender": "m"
+},
+{
+"name": "martha",
+"gender": "f"
+},
+{
+"name": "marwan",
+"gender": "m"
+},
+{
+"name": "mary",
+"gender": "f"
+},
+{
+"name": "maryam",
+"gender": "m"
+},
+{
+"name": "maryama",
+"gender": "f"
+},
+{
+"name": "maryamu",
+"gender": "f"
+},
+{
+"name": "mas'ud",
+"gender": "m"
+},
+{
+"name": "mastura",
+"gender": "f"
+},
+{
+"name": "masturah",
+"gender": "f"
+},
+{
+"name": "masud",
+"gender": "m"
+},
+{
+"name": "masudu",
+"gender": "m"
+},
+{
+"name": "maude",
+"gender": "f"
+},
+{
+"name": "maza",
+"gender": "f"
+},
+{
+"name": "mercy",
+"gender": "f"
+},
+{
+"name": "mero",
+"gender": "f"
+},
+{
+"name": "mika'il",
+"gender": "m"
+},
+{
+"name": "mikail",
+"gender": "m"
+},
+{
+"name": "mimuna",
+"gender": "f"
+},
+{
+"name": "miriam",
+"gender": "f"
+},
+{
+"name": "misbahu",
+"gender": "m"
+},
+{
+"name": "modibbo",
+"gender": "m"
+},
+{
+"name": "modibo",
+"gender": "m"
+},
+{
+"name": "modu",
+"gender": "m"
+},
+{
+"name": "mohammad",
+"gender": "m"
+},
+{
+"name": "mohammed",
+"gender": "m"
+},
+{
+"name": "monday",
+"gender": "m"
+},
+{
+"name": "moses",
+"gender": "m"
+},
+{
+"name": "mu'allim",
+"gender": "m"
+},
+{
+"name": "mu'azu",
+"gender": "m"
+},
+{
+"name": "muaz",
+"gender": "m"
+},
+{
+"name": "muazu",
+"gender": "m"
+},
+{
+"name": "mubarak",
+"gender": "m"
+},
+{
+"name": "mubaraka",
+"gender": "f"
+},
+{
+"name": "mubarakat",
+"gender": "f"
+},
+{
+"name": "mudassir",
+"gender": "m"
+},
+{
+"name": "mudathir",
+"gender": "m"
+},
+{
+"name": "mudi",
+"gender": "m"
+},
+{
+"name": "mudiyya",
+"gender": "f"
+},
+{
+"name": "muhammad",
+"gender": "m"
+},
+{
+"name": "muhammadu",
+"gender": "m"
+},
+{
+"name": "muhammed",
+"gender": "m"
+},
+{
+"name": "muhsin",
+"gender": "m"
+},
+{
+"name": "muhsina",
+"gender": "f"
+},
+{
+"name": "muinat",
+"gender": "f"
+},
+{
+"name": "mujahid",
+"gender": "m"
+},
+{
+"name": "mukhtar",
+"gender": "m"
+},
+{
+"name": "mukhtara",
+"gender": "f"
+},
+{
+"name": "mukhtari",
+"gender": "m"
+},
+{
+"name": "muktar",
+"gender": "m"
+},
+{
+"name": "mukthar",
+"gender": "m"
+},
+{
+"name": "mumina",
+"gender": "f"
+},
+{
+"name": "munir",
+"gender": "m"
+},
+{
+"name": "munira",
+"gender": "f"
+},
+{
+"name": "muniratu",
+"gender": "f"
+},
+{
+"name": "muniru",
+"gender": "m"
+},
+{
+"name": "munkaila",
+"gender": "m"
+},
+{
+"name": "munkailu",
+"gender": "m"
+},
+{
+"name": "murja",
+"gender": "f"
+},
+{
+"name": "murjanatu",
+"gender": "f"
+},
+{
+"name": "murtada",
+"gender": "m"
+},
+{
+"name": "murtala",
+"gender": "m"
+},
+{
+"name": "musa",
+"gender": "m"
+},
+{
+"name": "musbahu",
+"gender": "m"
+},
+{
+"name": "muslim",
+"gender": "m"
+},
+{
+"name": "muslima",
+"gender": "f"
+},
+{
+"name": "mustafa",
+"gender": "m"
+},
+{
+"name": "mustapha",
+"gender": "m"
+},
+{
+"name": "mutari",
+"gender": "m"
+},
+{
+"name": "muttaka",
+"gender": "m"
+},
+{
+"name": "nabila",
+"gender": "f"
+},
+{
+"name": "nabilat",
+"gender": "f"
+},
+{
+"name": "nafi'u",
+"gender": "m"
+},
+{
+"name": "nafisa",
+"gender": "f"
+},
+{
+"name": "nafisat",
+"gender": "f"
+},
+{
+"name": "nafisatu",
+"gender": "f"
+},
+{
+"name": "nafiu",
+"gender": "m"
+},
+{
+"name": "nagode",
+"gender": "f"
+},
+{
+"name": "naibi",
+"gender": "m"
+},
+{
+"name": "naima",
+"gender": "f"
+},
+{
+"name": "naimatu",
+"gender": "f"
+},
+{
+"name": "naja'atu",
+"gender": "f"
+},
+{
+"name": "najaatu",
+"gender": "f"
+},
+{
+"name": "najat",
+"gender": "f"
+},
+{
+"name": "najib",
+"gender": "m"
+},
+{
+"name": "najibu",
+"gender": "m"
+},
+{
+"name": "najma",
+"gender": "f"
+},
+{
+"name": "nana",
+"gender": "f"
+},
+{
+"name": "naomi",
+"gender": "f"
+},
+{
+"name": "naseer",
+"gender": "m"
+},
+{
+"name": "nasiba",
+"gender": "f"
+},
+{
+"name": "nasidi",
+"gender": "m"
+},
+{
+"name": "nasidu",
+"gender": "m"
+},
+{
+"name": "nasir",
+"gender": "m"
+},
+{
+"name": "nasira",
+"gender": "f"
+},
+{
+"name": "nasirat",
+"gender": "f"
+},
+{
+"name": "nasiru",
+"gender": "m"
+},
+{
+"name": "nawal",
+"gender": "f"
+},
+{
+"name": "nazif",
+"gender": "m"
+},
+{
+"name": "nazifa",
+"gender": "f"
+},
+{
+"name": "nazifatu",
+"gender": "f"
+},
+{
+"name": "nazifi",
+"gender": "m"
+},
+{
+"name": "nazir",
+"gender": "m"
+},
+{
+"name": "naziru",
+"gender": "m"
+},
+{
+"name": "ndagi",
+"gender": "m"
+},
+{
+"name": "ndako",
+"gender": "m"
+},
+{
+"name": "ndakotsu",
+"gender": "m"
+},
+{
+"name": "ndanusa",
+"gender": "m"
+},
+{
+"name": "nimat",
+"gender": "f"
+},
+{
+"name": "nimota",
+"gender": "f"
+},
+{
+"name": "nuhu",
+"gender": "m"
+},
+{
+"name": "nura",
+"gender": "m"
+},
+{
+"name": "nuraddeen",
+"gender": "m"
+},
+{
+"name": "nuradeen",
+"gender": "m"
+},
+{
+"name": "nuraina",
+"gender": "f"
+},
+{
+"name": "nuriya",
+"gender": "f"
+},
+{
+"name": "nurudeen",
+"gender": "m"
+},
+{
+"name": "nusaiba",
+"gender": "f"
+},
+{
+"name": "nusaibatu",
+"gender": "f"
+},
+{
+"name": "qasim",
+"gender": "m"
+},
+{
+"name": "rabi",
+"gender": "f"
+},
+{
+"name": "rabi'atu",
+"gender": "f"
+},
+{
+"name": "rabi'u",
+"gender": "m"
+},
+{
+"name": "rabia",
+"gender": "f"
+},
+{
+"name": "rabiat",
+"gender": "f"
+},
+{
+"name": "rabiatu",
+"gender": "f"
+},
+{
+"name": "rabiu",
+"gender": "m"
+},
+{
+"name": "radiya",
+"gender": "f"
+},
+{
+"name": "radiyatu",
+"gender": "f"
+},
+{
+"name": "rafi'u",
+"gender": "m"
+},
+{
+"name": "rafiu",
+"gender": "m"
+},
+{
+"name": "rafiya",
+"gender": "f"
+},
+{
+"name": "rafiyatu",
+"gender": "f"
+},
+{
+"name": "rahama",
+"gender": "f"
+},
+{
+"name": "rahila",
+"gender": "f"
+},
+{
+"name": "rahina",
+"gender": "f"
+},
+{
+"name": "rahinat",
+"gender": "f"
+},
+{
+"name": "rahinatu",
+"gender": "f"
+},
+{
+"name": "rahma",
+"gender": "f"
+},
+{
+"name": "rahmatu",
+"gender": "f"
+},
+{
+"name": "raihana",
+"gender": "f"
+},
+{
+"name": "raihanat",
+"gender": "f"
+},
+{
+"name": "rakiya",
+"gender": "f"
+},
+{
+"name": "rakiyat",
+"gender": "f"
+},
+{
+"name": "rakiyya",
+"gender": "f"
+},
+{
+"name": "ramadan",
+"gender": "m"
+},
+{
+"name": "ramalan",
+"gender": "m"
+},
+{
+"name": "ramatu",
+"gender": "m"
+},
+{
+"name": "ramla",
+"gender": "f"
+},
+{
+"name": "ramlat",
+"gender": "f"
+},
+{
+"name": "ramota",
+"gender": "f"
+},
+{
+"name": "rasheedah",
+"gender": "f"
+},
+{
+"name": "rasheedat",
+"gender": "f"
+},
+{
+"name": "rashida",
+"gender": "f"
+},
+{
+"name": "rashidatu",
+"gender": "f"
+},
+{
+"name": "rauda",
+"gender": "f"
+},
+{
+"name": "raudha",
+"gender": "f"
+},
+{
+"name": "rebecca",
+"gender": "f"
+},
+{
+"name": "rhoda",
+"gender": "f"
+},
+{
+"name": "ridwan",
+"gender": "m"
+},
+{
+"name": "ridwanu",
+"gender": "m"
+},
+{
+"name": "rifka",
+"gender": "f"
+},
+{
+"name": "rifkatu",
+"gender": "f"
+},
+{
+"name": "rilwan",
+"gender": "m"
+},
+{
+"name": "rilwanu",
+"gender": "m"
+},
+{
+"name": "risikat",
+"gender": "f"
+},
+{
+"name": "rubaba",
+"gender": "f"
+},
+{
+"name": "rufa'i",
+"gender": "m"
+},
+{
+"name": "rufai",
+"gender": "m"
+},
+{
+"name": "rufaida",
+"gender": "f"
+},
+{
+"name": "rufaidatu",
+"gender": "f"
+},
+{
+"name": "ruhullah",
+"gender": "m"
+},
+{
+"name": "rukaiya",
+"gender": "f"
+},
+{
+"name": "rukaiyatu",
+"gender": "f"
+},
+{
+"name": "rukayya",
+"gender": "f"
+},
+{
+"name": "rukayyat",
+"gender": "f"
+},
+{
+"name": "rukayyatu",
+"gender": "f"
+},
+{
+"name": "rumaisa",
+"gender": "f"
+},
+{
+"name": "rumaisat",
+"gender": "f"
+},
+{
+"name": "ruqaiya",
+"gender": "f"
+},
+{
+"name": "ruqayya",
+"gender": "f"
+},
+{
+"name": "ruqayyah",
+"gender": "f"
+},
+{
+"name": "ruth",
+"gender": "f"
+},
+{
+"name": "sa'a",
+"gender": "f"
+},
+{
+"name": "sa'ad",
+"gender": "m"
+},
+{
+"name": "sa'adatu",
+"gender": "f"
+},
+{
+"name": "sa'adiya",
+"gender": "f"
+},
+{
+"name": "sa'adu",
+"gender": "m"
+},
+{
+"name": "sa'id",
+"gender": "m"
+},
+{
+"name": "sa'ida",
+"gender": "f"
+},
+{
+"name": "sa'idu",
+"gender": "m"
+},
+{
+"name": "saa",
+"gender": "f"
+},
+{
+"name": "saad",
+"gender": "m"
+},
+{
+"name": "saadat",
+"gender": "f"
+},
+{
+"name": "saadatu",
+"gender": "f"
+},
+{
+"name": "saadiya",
+"gender": "f"
+},
+{
+"name": "saadiyya",
+"gender": "f"
+},
+{
+"name": "saadu",
+"gender": "m"
+},
+{
+"name": "saba",
+"gender": "f"
+},
+{
+"name": "sabira",
+"gender": "f"
+},
+{
+"name": "sabiratu",
+"gender": "f"
+},
+{
+"name": "sabo",
+"gender": "f"
+},
+{
+"name": "sadau",
+"gender": "f"
+},
+{
+"name": "sadiat",
+"gender": "f"
+},
+{
+"name": "sadik",
+"gender": "m"
+},
+{
+"name": "sadiq",
+"gender": "m"
+},
+{
+"name": "sadiqu",
+"gender": "m"
+},
+{
+"name": "sadiya",
+"gender": "f"
+},
+{
+"name": "sadiyya",
+"gender": "f"
+},
+{
+"name": "saeed",
+"gender": "m"
+},
+{
+"name": "safara'u",
+"gender": "f"
+},
+{
+"name": "safarau",
+"gender": "f"
+},
+{
+"name": "safinatu",
+"gender": "f"
+},
+{
+"name": "safiya",
+"gender": "f"
+},
+{
+"name": "safiyan",
+"gender": "m"
+},
+{
+"name": "safiyanu",
+"gender": "m"
+},
+{
+"name": "safiyatu",
+"gender": "f"
+},
+{
+"name": "safiyya",
+"gender": "f"
+},
+{
+"name": "sagir",
+"gender": "m"
+},
+{
+"name": "sagiru",
+"gender": "m"
+},
+{
+"name": "sahura",
+"gender": "f"
+},
+{
+"name": "said",
+"gender": "m"
+},
+{
+"name": "saida",
+"gender": "f"
+},
+{
+"name": "saidatu",
+"gender": "f"
+},
+{
+"name": "saidu",
+"gender": "m"
+},
+{
+"name": "saifuddeen",
+"gender": "m"
+},
+{
+"name": "saifullah",
+"gender": "m"
+},
+{
+"name": "saifullahi",
+"gender": "m"
+},
+{
+"name": "sakina",
+"gender": "f"
+},
+{
+"name": "sakinat",
+"gender": "f"
+},
+{
+"name": "sakinatu",
+"gender": "f"
+},
+{
+"name": "salam",
+"gender": "m"
+},
+{
+"name": "salamat",
+"gender": "f"
+},
+{
+"name": "salamatu",
+"gender": "f"
+},
+{
+"name": "salami",
+"gender": "m"
+},
+{
+"name": "salamu",
+"gender": "m"
+},
+{
+"name": "saleh",
+"gender": "m"
+},
+{
+"name": "salih",
+"gender": "m"
+},
+{
+"name": "salihu",
+"gender": "m"
+},
+{
+"name": "salim",
+"gender": "m"
+},
+{
+"name": "salima",
+"gender": "f"
+},
+{
+"name": "salimatu",
+"gender": "f"
+},
+{
+"name": "salimu",
+"gender": "m"
+},
+{
+"name": "salisu",
+"gender": "m"
+},
+{
+"name": "salma",
+"gender": "f"
+},
+{
+"name": "salmat",
+"gender": "f"
+},
+{
+"name": "salmatu",
+"gender": "f"
+},
+{
+"name": "samaila",
+"gender": "m"
+},
+{
+"name": "sambo",
+"gender": "m"
+},
+{
+"name": "samiat",
+"gender": "f"
+},
+{
+"name": "samira",
+"gender": "f"
+},
+{
+"name": "samirah",
+"gender": "f"
+},
+{
+"name": "samiratu",
+"gender": "f"
+},
+{
+"name": "samuel",
+"gender": "m"
+},
+{
+"name": "sanda",
+"gender": "m"
+},
+{
+"name": "sani",
+"gender": "m"
+},
+{
+"name": "sanusi",
+"gender": "m"
+},
+{
+"name": "sara",
+"gender": "f"
+},
+{
+"name": "sarah",
+"gender": "f"
+},
+{
+"name": "saratu",
+"gender": "f"
+},
+{
+"name": "sarauniya",
+"gender": "f"
+},
+{
+"name": "sarki",
+"gender": "m"
+},
+{
+"name": "sarkin",
+"gender": "m"
+},
+{
+"name": "saturday",
+"gender": "m"
+},
+{
+"name": "sauda",
+"gender": "f"
+},
+{
+"name": "saudat",
+"gender": "f"
+},
+{
+"name": "saudatu",
+"gender": "f"
+},
+{
+"name": "saude",
+"gender": "f"
+},
+{
+"name": "sayyadi",
+"gender": "m"
+},
+{
+"name": "sefiya",
+"gender": "f"
+},
+{
+"name": "sha'aban",
+"gender": "m"
+},
+{
+"name": "sha'awa",
+"gender": "f"
+},
+{
+"name": "sha'ayau",
+"gender": "m"
+},
+{
+"name": "shaaban",
+"gender": "m"
+},
+{
+"name": "shaba",
+"gender": "m"
+},
+{
+"name": "shafa",
+"gender": "f"
+},
+{
+"name": "shafa'atu",
+"gender": "f"
+},
+{
+"name": "shafaatu",
+"gender": "f"
+},
+{
+"name": "shafi'i",
+"gender": "m"
+},
+{
+"name": "shafi'u",
+"gender": "m"
+},
+{
+"name": "shafiu",
+"gender": "m"
+},
+{
+"name": "shafiya",
+"gender": "f"
+},
+{
+"name": "shaibu",
+"gender": "m"
+},
+{
+"name": "shamsiya",
+"gender": "f"
+},
+{
+"name": "shamsiyat",
+"gender": "f"
+},
+{
+"name": "shamsiyya",
+"gender": "f"
+},
+{
+"name": "shamsu",
+"gender": "m"
+},
+{
+"name": "shamsuddeen",
+"gender": "m"
+},
+{
+"name": "shamsudeen",
+"gender": "m"
+},
+{
+"name": "sharif",
+"gender": "m"
+},
+{
+"name": "sharifa",
+"gender": "f"
+},
+{
+"name": "sharifah",
+"gender": "f"
+},
+{
+"name": "sharifatu",
+"gender": "f"
+},
+{
+"name": "shariff",
+"gender": "m"
+},
+{
+"name": "sharifu",
+"gender": "m"
+},
+{
+"name": "shehu",
+"gender": "m"
+},
+{
+"name": "sherifat",
+"gender": "f"
+},
+{
+"name": "sheshi",
+"gender": "m"
+},
+{
+"name": "shettima",
+"gender": "m"
+},
+{
+"name": "shu'aibu",
+"gender": "m"
+},
+{
+"name": "shuaib",
+"gender": "m"
+},
+{
+"name": "shuaibu",
+"gender": "m"
+},
+{
+"name": "shukura",
+"gender": "f"
+},
+{
+"name": "shukurat",
+"gender": "f"
+},
+{
+"name": "siddiq",
+"gender": "m"
+},
+{
+"name": "sidi",
+"gender": "m"
+},
+{
+"name": "sidika",
+"gender": "f"
+},
+{
+"name": "sidikat",
+"gender": "f"
+},
+{
+"name": "sidiku",
+"gender": "m"
+},
+{
+"name": "simbiat",
+"gender": "f"
+},
+{
+"name": "sitta",
+"gender": "f"
+},
+{
+"name": "sulaiman",
+"gender": "m"
+},
+{
+"name": "sulaimanu",
+"gender": "m"
+},
+{
+"name": "sulaimon",
+"gender": "m"
+},
+{
+"name": "sule",
+"gender": "m"
+},
+{
+"name": "suleiman",
+"gender": "m"
+},
+{
+"name": "sumaila",
+"gender": "m"
+},
+{
+"name": "sumaiya",
+"gender": "f"
+},
+{
+"name": "sumayya",
+"gender": "f"
+},
+{
+"name": "sumayyah",
+"gender": "f"
+},
+{
+"name": "sunday",
+"gender": "m"
+},
+{
+"name": "suraj",
+"gender": "m"
+},
+{
+"name": "surajo",
+"gender": "m"
+},
+{
+"name": "suraju",
+"gender": "m"
+},
+{
+"name": "suwaiba",
+"gender": "f"
+},
+{
+"name": "suwaibat",
+"gender": "f"
+},
+{
+"name": "suwaibatu",
+"gender": "f"
+},
+{
+"name": "ta'awa",
+"gender": "f"
+},
+{
+"name": "tabawa",
+"gender": "f"
+},
+{
+"name": "tabitha",
+"gender": "f"
+},
+{
+"name": "tabitu",
+"gender": "f"
+},
+{
+"name": "tahir",
+"gender": "m"
+},
+{
+"name": "tahiru",
+"gender": "m"
+},
+{
+"name": "talata",
+"gender": "f"
+},
+{
+"name": "talatu",
+"gender": "f"
+},
+{
+"name": "tani",
+"gender": "f"
+},
+{
+"name": "tanimu",
+"gender": "m"
+},
+{
+"name": "tanko",
+"gender": "m"
+},
+{
+"name": "taofiq",
+"gender": "m"
+},
+{
+"name": "tasalla",
+"gender": "f"
+},
+{
+"name": "tasallah",
+"gender": "f"
+},
+{
+"name": "tasi'u",
+"gender": "m"
+},
+{
+"name": "tasiu",
+"gender": "m"
+},
+{
+"name": "tasneem",
+"gender": "f"
+},
+{
+"name": "tasnim",
+"gender": "f"
+},
+{
+"name": "tawakalt",
+"gender": "f"
+},
+{
+"name": "tawakaltu",
+"gender": "f"
+},
+{
+"name": "tawfiq",
+"gender": "m"
+},
+{
+"name": "tayyiba",
+"gender": "f"
+},
+{
+"name": "tayyibat",
+"gender": "f"
+},
+{
+"name": "tijani",
+"gender": "m"
+},
+{
+"name": "tijjani",
+"gender": "m"
+},
+{
+"name": "tsado",
+"gender": "m"
+},
+{
+"name": "tukur",
+"gender": "m"
+},
+{
+"name": "tukura",
+"gender": "m"
+},
+{
+"name": "tunau",
+"gender": "m"
+},
+{
+"name": "turai",
+"gender": "f"
+},
+{
+"name": "turaki",
+"gender": "m"
+},
+{
+"name": "uba",
+"gender": "m"
+},
+{
+"name": "ubaida",
+"gender": "f"
+},
+{
+"name": "ubaidu",
+"gender": "m"
+},
+{
+"name": "ubaidullah",
+"gender": "m"
+},
+{
+"name": "ubale",
+"gender": "m"
+},
+{
+"name": "umar",
+"gender": "m"
+},
+{
+"name": "umara",
+"gender": "m"
+},
+{
+"name": "umaru",
+"gender": "m"
+},
+{
+"name": "umma",
+"gender": "f"
+},
+{
+"name": "ummaru",
+"gender": "m"
+},
+{
+"name": "ummi",
+"gender": "f"
+},
+{
+"name": "ummu",
+"gender": "f"
+},
+{
+"name": "ummukulsum",
+"gender": "f"
+},
+{
+"name": "ummulkhair",
+"gender": "f"
+},
+{
+"name": "usaini",
+"gender": "m"
+},
+{
+"name": "usman",
+"gender": "m"
+},
+{
+"name": "usmanu",
+"gender": "m"
+},
+{
+"name": "uwaisu",
+"gender": "f"
+},
+{
+"name": "uwani",
+"gender": "f"
+},
+{
+"name": "wada",
+"gender": "m"
+},
+{
+"name": "wakil",
+"gender": "m"
+},
+{
+"name": "wakili",
+"gender": "m"
+},
+{
+"name": "wasila",
+"gender": "f"
+},
+{
+"name": "wasilat",
+"gender": "f"
+},
+{
+"name": "wasilatu",
+"gender": "f"
+},
+{
+"name": "waziri",
+"gender": "m"
+},
+{
+"name": "ya'u",
+"gender": "m"
+},
+{
+"name": "yagana",
+"gender": "f"
+},
+{
+"name": "yahanasu",
+"gender": "f"
+},
+{
+"name": "yahaya",
+"gender": "m"
+},
+{
+"name": "yahuza",
+"gender": "m"
+},
+{
+"name": "yahya",
+"gender": "m"
+},
+{
+"name": "yakaka",
+"gender": "f"
+},
+{
+"name": "yakub",
+"gender": "m"
+},
+{
+"name": "yakubu",
+"gender": "m"
+},
+{
+"name": "yakura",
+"gender": "f"
+},
+{
+"name": "yalwa",
+"gender": "f"
+},
+{
+"name": "yar'adua",
+"gender": "f"
+},
+{
+"name": "yasmeen",
+"gender": "f"
+},
+{
+"name": "yasmin",
+"gender": "f"
+},
+{
+"name": "yasmina",
+"gender": "f"
+},
+{
+"name": "yau",
+"gender": "m"
+},
+{
+"name": "yawale",
+"gender": "m"
+},
+{
+"name": "yaya",
+"gender": "f"
+},
+{
+"name": "yelwa",
+"gender": "f"
+},
+{
+"name": "yerima",
+"gender": "m"
+},
+{
+"name": "yisa",
+"gender": "m"
+},
+{
+"name": "yohanna",
+"gender": "m"
+},
+{
+"name": "yunana",
+"gender": "m"
+},
+{
+"name": "yunus",
+"gender": "m"
+},
+{
+"name": "yunusa",
+"gender": "m"
+},
+{
+"name": "yusha'u",
+"gender": "m"
+},
+{
+"name": "yushau",
+"gender": "m"
+},
+{
+"name": "yusuf",
+"gender": "m"
+},
+{
+"name": "yusuff",
+"gender": "m"
+},
+{
+"name": "zahara",
+"gender": "f"
+},
+{
+"name": "zaharaddeen",
+"gender": "m"
+},
+{
+"name": "zaharadeen",
+"gender": "m"
+},
+{
+"name": "zaharau",
+"gender": "f"
+},
+{
+"name": "zahra",
+"gender": "f"
+},
+{
+"name": "zahra'u",
+"gender": "f"
+},
+{
+"name": "zahradeen",
+"gender": "m"
+},
+{
+"name": "zahrah",
+"gender": "f"
+},
+{
+"name": "zaid",
+"gender": "m"
+},
+{
+"name": "zaidu",
+"gender": "m"
+},
+{
+"name": "zainab",
+"gender": "f"
+},
+{
+"name": "zainaba",
+"gender": "f"
+},
+{
+"name": "zainabu",
+"gender": "f"
+},
+{
+"name": "zakari",
+"gender": "m"
+},
+{
+"name": "zakariya",
+"gender": "m"
+},
+{
+"name": "zakariyya",
+"gender": "m"
+},
+{
+"name": "zaki",
+"gender": "m"
+},
+{
+"name": "zakir",
+"gender": "m"
+},
+{
+"name": "zakiya",
+"gender": "f"
+},
+{
+"name": "zakiyah",
+"gender": "f"
+},
+{
+"name": "zakiyya",
+"gender": "f"
+},
+{
+"name": "zaliha",
+"gender": "f"
+},
+{
+"name": "zaliya",
+"gender": "f"
+},
+{
+"name": "zanna",
+"gender": "m"
+},
+{
+"name": "zara",
+"gender": "f"
+},
+{
+"name": "zara'u",
+"gender": "f"
+},
+{
+"name": "zarah",
+"gender": "f"
+},
+{
+"name": "zarau",
+"gender": "f"
+},
+{
+"name": "zaynab",
+"gender": "f"
+},
+{
+"name": "zayyad",
+"gender": "m"
+},
+{
+"name": "zayyan",
+"gender": "m"
+},
+{
+"name": "zeenat",
+"gender": "f"
+},
+{
+"name": "zenab",
+"gender": "f"
+},
+{
+"name": "zinat",
+"gender": "f"
+},
+{
+"name": "ziyad",
+"gender": "m"
+},
+{
+"name": "zubaida",
+"gender": "f"
+},
+{
+"name": "zubaidatu",
+"gender": "f"
+},
+{
+"name": "zubair",
+"gender": "m"
+},
+{
+"name": "zubairu",
+"gender": "m"
+},
+{
+"name": "zulai",
+"gender": "f"
+},
+{
+"name": "zulaiha",
+"gender": "f"
+},
+{
+"name": "zulaihat",
+"gender": "f"
+},
+{
+"name": "zulaihatu",
+"gender": "f"
+},
+{
+"name": "zulaikha",
+"gender": "f"
+},
+{
+"name": "zuleiha",
+"gender": "f"
+},
+{
+"name": "zulfa",
+"gender": "f"
+},
+{
+"name": "zulfat",
+"gender": "f"
+},
+{
+"name": "zumunta",
+"gender": "m"
+},
+{
+"name": "zuwaira",
+"gender": "f"
+},
+{
+"name": "zuwairah",
+"gender": "f"
+},
+{
+"name": "zuwairatu",
+"gender": "f"
+}
+]

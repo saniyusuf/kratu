@@ -1,0 +1,4737 @@
+{
+ "groups": [
+  "animals",
+  "food",
+  "home",
+  "body",
+  "nature",
+  "vehicles",
+  "people",
+  "actions",
+  "clothing",
+  "school",
+  "numbers",
+  "lambobi_palms",
+  "lambobi_symbols",
+  "lambobi_tens",
+  "lambobi_hundreds"
+ ],
+ "words": [
+  {
+   "key": "goat",
+   "groups": [
+    "animals"
+   ],
+   "ha": "akuya",
+   "en": "Goat",
+   "picture": "pictures/goat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chicken",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kaza",
+   "en": "Chicken",
+   "picture": "pictures/chicken.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cow",
+   "groups": [
+    "animals"
+   ],
+   "ha": "saniya",
+   "en": "Cow",
+   "picture": "pictures/cow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sheep",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tunkiya",
+   "en": "Sheep",
+   "picture": "pictures/sheep.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "dog",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kare",
+   "en": "Dog",
+   "picture": "pictures/dog.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cat",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kyanwa",
+   "en": "Cat",
+   "picture": "pictures/cat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "donkey",
+   "groups": [
+    "animals"
+   ],
+   "ha": "jaki",
+   "en": "Donkey",
+   "picture": "pictures/donkey.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "horse",
+   "groups": [
+    "animals"
+   ],
+   "ha": "doki",
+   "en": "Horse",
+   "picture": "pictures/horse.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ram",
+   "groups": [
+    "animals"
+   ],
+   "ha": "rago",
+   "en": "Ram",
+   "picture": "pictures/ram.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "camel",
+   "groups": [
+    "animals"
+   ],
+   "ha": "raƙumi",
+   "en": "Camel",
+   "picture": "pictures/camel.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "duck",
+   "groups": [
+    "animals"
+   ],
+   "ha": "agwagwa",
+   "en": "Duck",
+   "picture": "pictures/duck.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rabbit",
+   "groups": [
+    "animals"
+   ],
+   "ha": "zomo",
+   "en": "Rabbit",
+   "picture": "pictures/rabbit.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rat",
+   "groups": [
+    "animals"
+   ],
+   "ha": "ɓera",
+   "en": "Rat",
+   "picture": "pictures/rat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bird",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tsuntsu",
+   "en": "Bird",
+   "picture": "pictures/bird.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fish",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kifi",
+   "en": "Fish",
+   "picture": "pictures/fish.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lizard",
+   "groups": [
+    "animals"
+   ],
+   "ha": "ƙadangare",
+   "en": "Lizard",
+   "picture": "pictures/lizard.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "frog",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kwaɗo",
+   "en": "Frog",
+   "picture": "pictures/frog.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ant",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tururuwa",
+   "en": "Ant",
+   "picture": "pictures/ant.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bee",
+   "groups": [
+    "animals"
+   ],
+   "ha": "ƙudan zuma",
+   "en": "Bee",
+   "picture": "pictures/bee.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "butterfly",
+   "groups": [
+    "animals"
+   ],
+   "ha": "malam buɗe littafi",
+   "en": "Butterfly",
+   "picture": "pictures/butterfly.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mosquito",
+   "groups": [
+    "animals"
+   ],
+   "ha": "sauro",
+   "en": "Mosquito",
+   "picture": "pictures/mosquito.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "grasshopper",
+   "groups": [
+    "animals"
+   ],
+   "ha": "fara",
+   "en": "Grasshopper",
+   "picture": "pictures/grasshopper.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "termite",
+   "groups": [
+    "animals"
+   ],
+   "ha": "gara",
+   "en": "Termite",
+   "picture": "pictures/termite.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "spider",
+   "groups": [
+    "animals"
+   ],
+   "ha": "gizo-gizo",
+   "en": "Spider",
+   "picture": "pictures/spider.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "scorpion",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kunama",
+   "en": "Scorpion",
+   "picture": "pictures/scorpion.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "gecko",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tsaka",
+   "en": "Gecko",
+   "picture": "pictures/gecko.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chameleon",
+   "groups": [
+    "animals"
+   ],
+   "ha": "hawainiya",
+   "en": "Chameleon",
+   "picture": "pictures/chameleon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "snake",
+   "groups": [
+    "animals"
+   ],
+   "ha": "maciji",
+   "en": "Snake",
+   "picture": "pictures/snake.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tortoise",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kunkuru",
+   "en": "Tortoise",
+   "picture": "pictures/tortoise.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "crocodile",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kada",
+   "en": "Crocodile",
+   "picture": "pictures/crocodile.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "monkey",
+   "groups": [
+    "animals"
+   ],
+   "ha": "biri",
+   "en": "Monkey",
+   "picture": "pictures/monkey.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "baboon",
+   "groups": [
+    "animals"
+   ],
+   "ha": "gwaggo",
+   "en": "Baboon",
+   "picture": "pictures/baboon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hyena",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kura",
+   "en": "Hyena",
+   "picture": "pictures/hyena.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lion",
+   "groups": [
+    "animals"
+   ],
+   "ha": "zaki",
+   "en": "Lion",
+   "picture": "pictures/lion.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "elephant",
+   "groups": [
+    "animals"
+   ],
+   "ha": "giwa",
+   "en": "Elephant",
+   "picture": "pictures/elephant.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "giraffe",
+   "groups": [
+    "animals"
+   ],
+   "ha": "raƙumin dawa",
+   "en": "Giraffe",
+   "picture": "pictures/giraffe.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "gazelle",
+   "groups": [
+    "animals"
+   ],
+   "ha": "barewa",
+   "en": "Gazelle",
+   "picture": "pictures/gazelle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "buffalo",
+   "groups": [
+    "animals"
+   ],
+   "ha": "ɓauna",
+   "en": "Buffalo",
+   "picture": "pictures/buffalo.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "leopard",
+   "groups": [
+    "animals"
+   ],
+   "ha": "damisa",
+   "en": "Leopard",
+   "picture": "pictures/leopard.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hippo",
+   "groups": [
+    "animals"
+   ],
+   "ha": "dorina",
+   "en": "Hippo",
+   "picture": "pictures/hippo.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ostrich",
+   "groups": [
+    "animals"
+   ],
+   "ha": "jimina",
+   "en": "Ostrich",
+   "picture": "pictures/ostrich.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "vulture",
+   "groups": [
+    "animals"
+   ],
+   "ha": "ungulu",
+   "en": "Vulture",
+   "picture": "pictures/vulture.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "dove",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tantabara",
+   "en": "Dove",
+   "picture": "pictures/dove.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "guineafowl",
+   "groups": [
+    "animals"
+   ],
+   "ha": "zabo",
+   "en": "Guinea fowl",
+   "picture": "pictures/guineafowl.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "turkey",
+   "groups": [
+    "animals"
+   ],
+   "ha": "talotalo",
+   "en": "Turkey",
+   "picture": "pictures/turkey.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pig",
+   "groups": [
+    "animals"
+   ],
+   "ha": "alade",
+   "en": "Pig",
+   "picture": "pictures/pig.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "squirrel",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kurege",
+   "en": "Squirrel",
+   "picture": "pictures/squirrel.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bat",
+   "groups": [
+    "animals"
+   ],
+   "ha": "jemage",
+   "en": "Bat",
+   "picture": "pictures/bat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "owl",
+   "groups": [
+    "animals"
+   ],
+   "ha": "mujiya",
+   "en": "Owl",
+   "picture": "pictures/owl.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eagle",
+   "groups": [
+    "animals"
+   ],
+   "ha": "gaggafa",
+   "en": "Eagle",
+   "picture": "pictures/eagle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hawk",
+   "groups": [
+    "animals"
+   ],
+   "ha": "shaho",
+   "en": "Hawk",
+   "picture": "pictures/hawk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "parrot",
+   "groups": [
+    "animals"
+   ],
+   "ha": "aku",
+   "en": "Parrot",
+   "picture": "pictures/parrot.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "crow",
+   "groups": [
+    "animals"
+   ],
+   "ha": "hankaka",
+   "en": "Crow",
+   "picture": "pictures/crow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "earthworm",
+   "groups": [
+    "animals"
+   ],
+   "ha": "tsutsa",
+   "en": "Earthworm",
+   "picture": "pictures/earthworm.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "crab",
+   "groups": [
+    "animals"
+   ],
+   "ha": "kaguwa",
+   "en": "Crab",
+   "picture": "pictures/crab.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "apple",
+   "groups": [
+    "food"
+   ],
+   "ha": "aful",
+   "en": "Apple",
+   "picture": "pictures/apple.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "banana",
+   "groups": [
+    "food"
+   ],
+   "ha": "ayaba",
+   "en": "Banana",
+   "picture": "pictures/banana.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "orange",
+   "groups": [
+    "food"
+   ],
+   "ha": "lemu",
+   "en": "Orange",
+   "picture": "pictures/orange.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mango",
+   "groups": [
+    "food"
+   ],
+   "ha": "mangwaro",
+   "en": "Mango",
+   "picture": "pictures/mango.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pineapple",
+   "groups": [
+    "food"
+   ],
+   "ha": "abarba",
+   "en": "Pineapple",
+   "picture": "pictures/pineapple.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "yam",
+   "groups": [
+    "food"
+   ],
+   "ha": "doya",
+   "en": "Yam",
+   "picture": "pictures/yam.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "corn",
+   "groups": [
+    "food"
+   ],
+   "ha": "masara",
+   "en": "Corn",
+   "picture": "pictures/corn.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rice",
+   "groups": [
+    "food"
+   ],
+   "ha": "shinkafa",
+   "en": "Rice",
+   "picture": "pictures/rice.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "beans",
+   "groups": [
+    "food"
+   ],
+   "ha": "wake",
+   "en": "Beans",
+   "picture": "pictures/beans.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bread",
+   "groups": [
+    "food"
+   ],
+   "ha": "burodi",
+   "en": "Bread",
+   "picture": "pictures/bread.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "egg",
+   "groups": [
+    "food"
+   ],
+   "ha": "kwai",
+   "en": "Egg",
+   "picture": "pictures/egg.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "groundnut",
+   "groups": [
+    "food"
+   ],
+   "ha": "gyaɗa",
+   "en": "Groundnut",
+   "picture": "pictures/groundnut.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "onion",
+   "groups": [
+    "food"
+   ],
+   "ha": "albasa",
+   "en": "Onion",
+   "picture": "pictures/onion.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tomato",
+   "groups": [
+    "food"
+   ],
+   "ha": "tumatir",
+   "en": "Tomato",
+   "picture": "pictures/tomato.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pepper",
+   "groups": [
+    "food"
+   ],
+   "ha": "barkono",
+   "en": "Pepper",
+   "picture": "pictures/pepper.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "watermelon",
+   "groups": [
+    "food"
+   ],
+   "ha": "kankana",
+   "en": "Watermelon",
+   "picture": "pictures/watermelon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pawpaw",
+   "groups": [
+    "food"
+   ],
+   "ha": "gwanda",
+   "en": "Pawpaw",
+   "picture": "pictures/pawpaw.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "carrot",
+   "groups": [
+    "food"
+   ],
+   "ha": "karas",
+   "en": "Carrot",
+   "picture": "pictures/carrot.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "okra",
+   "groups": [
+    "food"
+   ],
+   "ha": "kuɓewa",
+   "en": "Okra",
+   "picture": "pictures/okra.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sugarcane",
+   "groups": [
+    "food"
+   ],
+   "ha": "rake",
+   "en": "Sugarcane",
+   "picture": "pictures/sugarcane.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "salt",
+   "groups": [
+    "food"
+   ],
+   "ha": "gishiri",
+   "en": "Salt",
+   "picture": "pictures/salt.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sugar",
+   "groups": [
+    "food"
+   ],
+   "ha": "sukari",
+   "en": "Sugar",
+   "picture": "pictures/sugar.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "guava",
+   "groups": [
+    "food"
+   ],
+   "ha": "gwaiba",
+   "en": "Guava",
+   "picture": "pictures/guava.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "coconut",
+   "groups": [
+    "food"
+   ],
+   "ha": "kwakwa",
+   "en": "Coconut",
+   "picture": "pictures/coconut.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "date",
+   "groups": [
+    "food"
+   ],
+   "ha": "dabino",
+   "en": "Date",
+   "picture": "pictures/date.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tamarind",
+   "groups": [
+    "food"
+   ],
+   "ha": "tsamiya",
+   "en": "Tamarind",
+   "picture": "pictures/tamarind.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "millet",
+   "groups": [
+    "food"
+   ],
+   "ha": "gero",
+   "en": "Millet",
+   "picture": "pictures/millet.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sorghum",
+   "groups": [
+    "food"
+   ],
+   "ha": "dawa",
+   "en": "Guinea corn",
+   "picture": "pictures/sorghum.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cassava",
+   "groups": [
+    "food"
+   ],
+   "ha": "rogo",
+   "en": "Cassava",
+   "picture": "pictures/cassava.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "potato",
+   "groups": [
+    "food"
+   ],
+   "ha": "dankalin turawa",
+   "en": "Potato",
+   "picture": "pictures/potato.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cabbage",
+   "groups": [
+    "food"
+   ],
+   "ha": "kabeji",
+   "en": "Cabbage",
+   "picture": "pictures/cabbage.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cucumber",
+   "groups": [
+    "food"
+   ],
+   "ha": "kokwamba",
+   "en": "Cucumber",
+   "picture": "pictures/cucumber.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "garden_egg",
+   "groups": [
+    "food"
+   ],
+   "ha": "gauta",
+   "en": "Garden egg",
+   "picture": "pictures/garden_egg.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "spinach",
+   "groups": [
+    "food"
+   ],
+   "ha": "alayyahu",
+   "en": "Spinach",
+   "picture": "pictures/spinach.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pumpkin",
+   "groups": [
+    "food"
+   ],
+   "ha": "kabewa",
+   "en": "Pumpkin",
+   "picture": "pictures/pumpkin.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lemon",
+   "groups": [
+    "food"
+   ],
+   "ha": "lemon tsami",
+   "en": "Lemon",
+   "picture": "pictures/lemon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cashew",
+   "groups": [
+    "food"
+   ],
+   "ha": "kanju",
+   "en": "Cashew",
+   "picture": "pictures/cashew.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "meat",
+   "groups": [
+    "food"
+   ],
+   "ha": "nama",
+   "en": "Meat",
+   "picture": "pictures/meat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "milk",
+   "groups": [
+    "food"
+   ],
+   "ha": "madara",
+   "en": "Milk",
+   "picture": "pictures/milk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "water",
+   "groups": [
+    "food"
+   ],
+   "ha": "ruwa",
+   "en": "Water",
+   "picture": "pictures/water.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tea",
+   "groups": [
+    "food"
+   ],
+   "ha": "shayi",
+   "en": "Tea",
+   "picture": "pictures/tea.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "honey",
+   "groups": [
+    "food"
+   ],
+   "ha": "zuma",
+   "en": "Honey",
+   "picture": "pictures/honey.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "miya",
+   "groups": [
+    "food"
+   ],
+   "ha": "miya",
+   "en": "Soup",
+   "picture": "pictures/miya.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sweet",
+   "groups": [
+    "food"
+   ],
+   "ha": "alewa",
+   "en": "Sweet",
+   "picture": "pictures/sweet.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chair",
+   "groups": [
+    "home",
+    "school"
+   ],
+   "ha": "kujera",
+   "en": "Chair",
+   "picture": "pictures/chair.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "table",
+   "groups": [
+    "home"
+   ],
+   "ha": "tebur",
+   "en": "Table",
+   "picture": "pictures/table.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bed",
+   "groups": [
+    "home"
+   ],
+   "ha": "gado",
+   "en": "Bed",
+   "picture": "pictures/bed.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "door",
+   "groups": [
+    "home"
+   ],
+   "ha": "ƙofa",
+   "en": "Door",
+   "picture": "pictures/door.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cup",
+   "groups": [
+    "home"
+   ],
+   "ha": "koko",
+   "en": "Cup",
+   "picture": "pictures/cup.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "plate",
+   "groups": [
+    "home"
+   ],
+   "ha": "faranti",
+   "en": "Plate",
+   "picture": "pictures/plate.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "spoon",
+   "groups": [
+    "home"
+   ],
+   "ha": "cokali",
+   "en": "Spoon",
+   "picture": "pictures/spoon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "knife",
+   "groups": [
+    "home"
+   ],
+   "ha": "wuƙa",
+   "en": "Knife",
+   "picture": "pictures/knife.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pot",
+   "groups": [
+    "home"
+   ],
+   "ha": "tukunya",
+   "en": "Pot",
+   "picture": "pictures/pot.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bucket",
+   "groups": [
+    "home"
+   ],
+   "ha": "guga",
+   "en": "Bucket",
+   "picture": "pictures/bucket.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "broom",
+   "groups": [
+    "home"
+   ],
+   "ha": "tsintsiya",
+   "en": "Broom",
+   "picture": "pictures/broom.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "clock",
+   "groups": [
+    "home",
+    "school"
+   ],
+   "ha": "agogo",
+   "en": "Clock",
+   "picture": "pictures/clock.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "key",
+   "groups": [
+    "home"
+   ],
+   "ha": "makulli",
+   "en": "Key",
+   "picture": "pictures/key.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "book",
+   "groups": [
+    "home"
+   ],
+   "ha": "littafi",
+   "en": "Book",
+   "picture": "pictures/book.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "umbrella",
+   "groups": [
+    "home"
+   ],
+   "ha": "laima",
+   "en": "Umbrella",
+   "picture": "pictures/umbrella.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "iron",
+   "groups": [
+    "home"
+   ],
+   "ha": "ayron",
+   "en": "Iron",
+   "picture": "pictures/iron.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cap",
+   "groups": [
+    "home",
+    "clothing"
+   ],
+   "ha": "hula",
+   "en": "Cap",
+   "picture": "pictures/cap.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "shoe",
+   "groups": [
+    "home",
+    "clothing"
+   ],
+   "ha": "takalmi",
+   "en": "Shoe",
+   "picture": "pictures/shoe.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bag",
+   "groups": [
+    "home",
+    "school"
+   ],
+   "ha": "jaka",
+   "en": "Bag",
+   "picture": "pictures/bag.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mat",
+   "groups": [
+    "home"
+   ],
+   "ha": "tabarma",
+   "en": "Mat",
+   "picture": "pictures/mat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lamp",
+   "groups": [
+    "home"
+   ],
+   "ha": "fitila",
+   "en": "Lamp",
+   "picture": "pictures/lamp.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "phone",
+   "groups": [
+    "home"
+   ],
+   "ha": "waya",
+   "en": "Phone",
+   "picture": "pictures/phone.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "soap",
+   "groups": [
+    "home"
+   ],
+   "ha": "sabulu",
+   "en": "Soap",
+   "picture": "pictures/soap.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "comb",
+   "groups": [
+    "home",
+    "actions"
+   ],
+   "ha": "matsefi",
+   "en": "Comb",
+   "picture": "pictures/comb.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pillow",
+   "groups": [
+    "home"
+   ],
+   "ha": "matashin kai",
+   "en": "Pillow",
+   "picture": "pictures/pillow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "blanket",
+   "groups": [
+    "home"
+   ],
+   "ha": "bargo",
+   "en": "Blanket",
+   "picture": "pictures/blanket.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mattress",
+   "groups": [
+    "home"
+   ],
+   "ha": "katifa",
+   "en": "Mattress",
+   "picture": "pictures/mattress.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fan",
+   "groups": [
+    "home"
+   ],
+   "ha": "fanka",
+   "en": "Fan",
+   "picture": "pictures/fan.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "television",
+   "groups": [
+    "home"
+   ],
+   "ha": "talabijin",
+   "en": "Television",
+   "picture": "pictures/television.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "radio",
+   "groups": [
+    "home"
+   ],
+   "ha": "rediyo",
+   "en": "Radio",
+   "picture": "pictures/radio.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fridge",
+   "groups": [
+    "home"
+   ],
+   "ha": "firiji",
+   "en": "Fridge",
+   "picture": "pictures/fridge.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "kettle",
+   "groups": [
+    "home"
+   ],
+   "ha": "buta",
+   "en": "Kettle",
+   "picture": "pictures/kettle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "calabash",
+   "groups": [
+    "home"
+   ],
+   "ha": "ƙwarya",
+   "en": "Calabash",
+   "picture": "pictures/calabash.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mortar",
+   "groups": [
+    "home"
+   ],
+   "ha": "turmi",
+   "en": "Mortar",
+   "picture": "pictures/mortar.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pestle",
+   "groups": [
+    "home"
+   ],
+   "ha": "taɓarya",
+   "en": "Pestle",
+   "picture": "pictures/pestle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "prayer_mat",
+   "groups": [
+    "home"
+   ],
+   "ha": "sallaya",
+   "en": "Prayer mat",
+   "picture": "pictures/prayer_mat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "jerrycan",
+   "groups": [
+    "home"
+   ],
+   "ha": "jarkan",
+   "en": "Jerrycan",
+   "picture": "pictures/jerrycan.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fork",
+   "groups": [
+    "home"
+   ],
+   "ha": "cokali mai yatsa",
+   "en": "Fork",
+   "picture": "pictures/fork.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "torch",
+   "groups": [
+    "home"
+   ],
+   "ha": "tocila",
+   "en": "Torch",
+   "picture": "pictures/torch.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "candle",
+   "groups": [
+    "home"
+   ],
+   "ha": "kyandir",
+   "en": "Candle",
+   "picture": "pictures/candle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "matches",
+   "groups": [
+    "home"
+   ],
+   "ha": "ashana",
+   "en": "Matches",
+   "picture": "pictures/matches.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rope",
+   "groups": [
+    "home"
+   ],
+   "ha": "igiya",
+   "en": "Rope",
+   "picture": "pictures/rope.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "needle",
+   "groups": [
+    "home"
+   ],
+   "ha": "allura",
+   "en": "Needle",
+   "picture": "pictures/needle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "thread",
+   "groups": [
+    "home"
+   ],
+   "ha": "zare",
+   "en": "Thread",
+   "picture": "pictures/thread.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "scissors",
+   "groups": [
+    "home"
+   ],
+   "ha": "almakashi",
+   "en": "Scissors",
+   "picture": "pictures/scissors.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mirror",
+   "groups": [
+    "home"
+   ],
+   "ha": "madubi",
+   "en": "Mirror",
+   "picture": "pictures/mirror.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "window",
+   "groups": [
+    "home"
+   ],
+   "ha": "taga",
+   "en": "Window",
+   "picture": "pictures/window.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bench",
+   "groups": [
+    "home"
+   ],
+   "ha": "benci",
+   "en": "Bench",
+   "picture": "pictures/bench.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cupboard",
+   "groups": [
+    "home"
+   ],
+   "ha": "kabad",
+   "en": "Cupboard",
+   "picture": "pictures/cupboard.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "box",
+   "groups": [
+    "home"
+   ],
+   "ha": "akwati",
+   "en": "Trunk",
+   "picture": "pictures/box.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "basket",
+   "groups": [
+    "home"
+   ],
+   "ha": "kwando",
+   "en": "Basket",
+   "picture": "pictures/basket.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "curtain",
+   "groups": [
+    "home"
+   ],
+   "ha": "labule",
+   "en": "Curtain",
+   "picture": "pictures/curtain.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "toothbrush",
+   "groups": [
+    "home"
+   ],
+   "ha": "buroshi",
+   "en": "Toothbrush",
+   "picture": "pictures/toothbrush.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "towel",
+   "groups": [
+    "home"
+   ],
+   "ha": "tawul",
+   "en": "Towel",
+   "picture": "pictures/towel.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tap",
+   "groups": [
+    "home"
+   ],
+   "ha": "famfo",
+   "en": "Tap",
+   "picture": "pictures/tap.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eye",
+   "groups": [
+    "body"
+   ],
+   "ha": "ido",
+   "en": "Eye",
+   "picture": "pictures/eye.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ear",
+   "groups": [
+    "body"
+   ],
+   "ha": "kunne",
+   "en": "Ear",
+   "picture": "pictures/ear.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "nose",
+   "groups": [
+    "body"
+   ],
+   "ha": "hanci",
+   "en": "Nose",
+   "picture": "pictures/nose.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mouth",
+   "groups": [
+    "body"
+   ],
+   "ha": "baki",
+   "en": "Mouth",
+   "picture": "pictures/mouth.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hand",
+   "groups": [
+    "body"
+   ],
+   "ha": "hannu",
+   "en": "Hand",
+   "picture": "pictures/hand.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "leg",
+   "groups": [
+    "body"
+   ],
+   "ha": "ƙafa",
+   "en": "Leg",
+   "picture": "pictures/leg.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "head",
+   "groups": [
+    "body"
+   ],
+   "ha": "kai",
+   "en": "Head",
+   "picture": "pictures/head.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tooth",
+   "groups": [
+    "body"
+   ],
+   "ha": "haƙori",
+   "en": "Tooth",
+   "picture": "pictures/tooth.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hair",
+   "groups": [
+    "body"
+   ],
+   "ha": "gashi",
+   "en": "Hair",
+   "picture": "pictures/hair.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "finger",
+   "groups": [
+    "body"
+   ],
+   "ha": "yatsa",
+   "en": "Finger",
+   "picture": "pictures/finger.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "shoulder",
+   "groups": [
+    "body"
+   ],
+   "ha": "kafaɗa",
+   "en": "Shoulder",
+   "picture": "pictures/shoulder.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "arm",
+   "groups": [
+    "body"
+   ],
+   "ha": "hannu",
+   "en": "Arm",
+   "picture": "pictures/arm.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "knee",
+   "groups": [
+    "body"
+   ],
+   "ha": "gwiwa",
+   "en": "Knee",
+   "picture": "pictures/knee.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "foot",
+   "groups": [
+    "body"
+   ],
+   "ha": "ƙafa",
+   "en": "Foot",
+   "picture": "pictures/foot.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "toe",
+   "groups": [
+    "body"
+   ],
+   "ha": "ɗan yatsan ƙafa",
+   "en": "Toe",
+   "picture": "pictures/toe.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "stomach",
+   "groups": [
+    "body"
+   ],
+   "ha": "ciki",
+   "en": "Stomach",
+   "picture": "pictures/stomach.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "back",
+   "groups": [
+    "body"
+   ],
+   "ha": "baya",
+   "en": "Back",
+   "picture": "pictures/back.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "neck",
+   "groups": [
+    "body"
+   ],
+   "ha": "wuya",
+   "en": "Neck",
+   "picture": "pictures/neck.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chest",
+   "groups": [
+    "body"
+   ],
+   "ha": "ƙirji",
+   "en": "Chest",
+   "picture": "pictures/chest.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "face",
+   "groups": [
+    "body"
+   ],
+   "ha": "fuska",
+   "en": "Face",
+   "picture": "pictures/face.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cheek",
+   "groups": [
+    "body"
+   ],
+   "ha": "kunci",
+   "en": "Cheek",
+   "picture": "pictures/cheek.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chin",
+   "groups": [
+    "body"
+   ],
+   "ha": "haɓa",
+   "en": "Chin",
+   "picture": "pictures/chin.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lip",
+   "groups": [
+    "body"
+   ],
+   "ha": "leɓe",
+   "en": "Lip",
+   "picture": "pictures/lip.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tongue",
+   "groups": [
+    "body"
+   ],
+   "ha": "harshe",
+   "en": "Tongue",
+   "picture": "pictures/tongue.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eyebrow",
+   "groups": [
+    "body"
+   ],
+   "ha": "gira",
+   "en": "Eyebrow",
+   "picture": "pictures/eyebrow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "forehead",
+   "groups": [
+    "body"
+   ],
+   "ha": "goshi",
+   "en": "Forehead",
+   "picture": "pictures/forehead.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "elbow",
+   "groups": [
+    "body"
+   ],
+   "ha": "gwiwar hannu",
+   "en": "Elbow",
+   "picture": "pictures/elbow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "nail",
+   "groups": [
+    "body"
+   ],
+   "ha": "farce",
+   "en": "Nail",
+   "picture": "pictures/nail.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "skin",
+   "groups": [
+    "body"
+   ],
+   "ha": "fata",
+   "en": "Skin",
+   "picture": "pictures/skin.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bone",
+   "groups": [
+    "body"
+   ],
+   "ha": "ƙashi",
+   "en": "Bone",
+   "picture": "pictures/bone.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "heart",
+   "groups": [
+    "body"
+   ],
+   "ha": "zuciya",
+   "en": "Heart",
+   "picture": "pictures/heart.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "beard",
+   "groups": [
+    "body"
+   ],
+   "ha": "gemu",
+   "en": "Beard",
+   "picture": "pictures/beard.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "palm",
+   "groups": [
+    "body"
+   ],
+   "ha": "tafin hannu",
+   "en": "Palm",
+   "picture": "pictures/palm.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "heel",
+   "groups": [
+    "body"
+   ],
+   "ha": "diddige",
+   "en": "Heel",
+   "picture": "pictures/heel.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "waist",
+   "groups": [
+    "body"
+   ],
+   "ha": "kugu",
+   "en": "Waist",
+   "picture": "pictures/waist.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sun",
+   "groups": [
+    "nature"
+   ],
+   "ha": "rana",
+   "en": "Sun",
+   "picture": "pictures/sun.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "moon",
+   "groups": [
+    "nature"
+   ],
+   "ha": "wata",
+   "en": "Moon",
+   "picture": "pictures/moon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "star",
+   "groups": [
+    "nature"
+   ],
+   "ha": "tauraro",
+   "en": "Star",
+   "picture": "pictures/star.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tree",
+   "groups": [
+    "nature"
+   ],
+   "ha": "itace",
+   "en": "Tree",
+   "picture": "pictures/tree.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fire",
+   "groups": [
+    "nature"
+   ],
+   "ha": "wuta",
+   "en": "Fire",
+   "picture": "pictures/fire.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rain",
+   "groups": [
+    "nature"
+   ],
+   "ha": "ruwan sama",
+   "en": "Rain",
+   "picture": "pictures/rain.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "stone",
+   "groups": [
+    "nature"
+   ],
+   "ha": "dutse",
+   "en": "Stone",
+   "picture": "pictures/stone.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "flower",
+   "groups": [
+    "nature"
+   ],
+   "ha": "fure",
+   "en": "Flower",
+   "picture": "pictures/flower.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "river",
+   "groups": [
+    "nature"
+   ],
+   "ha": "kogi",
+   "en": "River",
+   "picture": "pictures/river.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cloud",
+   "groups": [
+    "nature"
+   ],
+   "ha": "girgije",
+   "en": "Cloud",
+   "picture": "pictures/cloud.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sand",
+   "groups": [
+    "nature"
+   ],
+   "ha": "yashi",
+   "en": "Sand",
+   "picture": "pictures/sand.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "road",
+   "groups": [
+    "nature"
+   ],
+   "ha": "hanya",
+   "en": "Road",
+   "picture": "pictures/road.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "day",
+   "groups": [
+    "nature"
+   ],
+   "ha": "Yini",
+   "en": "Day",
+   "picture": "pictures/day.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "night",
+   "groups": [
+    "nature"
+   ],
+   "ha": "Dare",
+   "en": "Night",
+   "picture": "pictures/night.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "morning",
+   "groups": [
+    "nature"
+   ],
+   "ha": "Safiya",
+   "en": "Morning",
+   "picture": "pictures/morning.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hot",
+   "groups": [
+    "nature"
+   ],
+   "ha": "Zafi",
+   "en": "Hot",
+   "picture": "pictures/hot.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cold",
+   "groups": [
+    "nature"
+   ],
+   "ha": "Sanyi",
+   "en": "Cold",
+   "picture": "pictures/cold.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sky",
+   "groups": [
+    "nature"
+   ],
+   "ha": "sama",
+   "en": "Sky",
+   "picture": "pictures/sky.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "wind",
+   "groups": [
+    "nature"
+   ],
+   "ha": "iska",
+   "en": "Wind",
+   "picture": "pictures/wind.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lightning",
+   "groups": [
+    "nature"
+   ],
+   "ha": "walƙiya",
+   "en": "Lightning",
+   "picture": "pictures/lightning.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "rainbow",
+   "groups": [
+    "nature"
+   ],
+   "ha": "bakan gizo",
+   "en": "Rainbow",
+   "picture": "pictures/rainbow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "grass",
+   "groups": [
+    "nature"
+   ],
+   "ha": "ciyawa",
+   "en": "Grass",
+   "picture": "pictures/grass.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "leaf",
+   "groups": [
+    "nature"
+   ],
+   "ha": "ganye",
+   "en": "Leaf",
+   "picture": "pictures/leaf.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "seed",
+   "groups": [
+    "nature"
+   ],
+   "ha": "iri",
+   "en": "Seed",
+   "picture": "pictures/seed.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "forest",
+   "groups": [
+    "nature"
+   ],
+   "ha": "daji",
+   "en": "Forest",
+   "picture": "pictures/forest.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "farm",
+   "groups": [
+    "nature"
+   ],
+   "ha": "gona",
+   "en": "Farm",
+   "picture": "pictures/farm.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "dust",
+   "groups": [
+    "nature"
+   ],
+   "ha": "ƙura",
+   "en": "Dust",
+   "picture": "pictures/dust.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mud",
+   "groups": [
+    "nature"
+   ],
+   "ha": "laka",
+   "en": "Mud",
+   "picture": "pictures/mud.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "well",
+   "groups": [
+    "nature"
+   ],
+   "ha": "rijiya",
+   "en": "Well",
+   "picture": "pictures/well.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sea",
+   "groups": [
+    "nature"
+   ],
+   "ha": "teku",
+   "en": "Sea",
+   "picture": "pictures/sea.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "smoke",
+   "groups": [
+    "nature"
+   ],
+   "ha": "hayaƙi",
+   "en": "Smoke",
+   "picture": "pictures/smoke.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "shade",
+   "groups": [
+    "nature"
+   ],
+   "ha": "inuwa",
+   "en": "Shade",
+   "picture": "pictures/shade.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "evening",
+   "groups": [
+    "nature"
+   ],
+   "ha": "yamma",
+   "en": "Evening",
+   "picture": "pictures/evening.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "afternoon",
+   "groups": [
+    "nature"
+   ],
+   "ha": "rana tsaka",
+   "en": "Afternoon",
+   "picture": "pictures/afternoon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "car",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "mota",
+   "en": "Car",
+   "picture": "pictures/car.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bicycle",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "keke",
+   "en": "Bicycle",
+   "picture": "pictures/bicycle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "motorcycle",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "babur",
+   "en": "Motorcycle",
+   "picture": "pictures/motorcycle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "airplane",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "jirgin sama",
+   "en": "Airplane",
+   "picture": "pictures/airplane.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "boat",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "jirgin ruwa",
+   "en": "Boat",
+   "picture": "pictures/boat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bus",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "bas",
+   "en": "Bus",
+   "picture": "pictures/bus.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "truck",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "babbar mota",
+   "en": "Truck",
+   "picture": "pictures/truck.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tricycle",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "keke napep",
+   "en": "Tricycle",
+   "picture": "pictures/tricycle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "keke",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "keke napep",
+   "en": "Keke (tricycle taxi)",
+   "picture": "pictures/keke.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "train",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "jirgin ƙasa",
+   "en": "Train",
+   "picture": "pictures/train.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "helicopter",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "helikofta",
+   "en": "Helicopter",
+   "picture": "pictures/helicopter.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "wheelbarrow",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "amalanke",
+   "en": "Wheelbarrow",
+   "picture": "pictures/wheelbarrow.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ambulance",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "motar asibiti",
+   "en": "Ambulance",
+   "picture": "pictures/ambulance.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tractor",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "tarakta",
+   "en": "Tractor",
+   "picture": "pictures/tractor.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ship",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "jirgin ruwa",
+   "en": "Ship",
+   "picture": "pictures/ship.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "taxi",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "tasi",
+   "en": "Taxi",
+   "picture": "pictures/taxi.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tanker",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "tanka",
+   "en": "Tanker",
+   "picture": "pictures/tanker.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "police_car",
+   "groups": [
+    "vehicles"
+   ],
+   "ha": "motar ’yan sanda",
+   "en": "Police car",
+   "picture": "pictures/police_car.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mama",
+   "groups": [
+    "people"
+   ],
+   "ha": "Mama",
+   "en": "Mother",
+   "picture": "pictures/mama.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "baba",
+   "groups": [
+    "people"
+   ],
+   "ha": "Baba",
+   "en": "Father",
+   "picture": "pictures/baba.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "boy",
+   "groups": [
+    "people"
+   ],
+   "ha": "Yaro",
+   "en": "Boy",
+   "picture": "pictures/boy.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "girl",
+   "groups": [
+    "people"
+   ],
+   "ha": "Yarinya",
+   "en": "Girl",
+   "picture": "pictures/girl.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "teacher",
+   "groups": [
+    "people",
+    "school"
+   ],
+   "ha": "Malam",
+   "en": "Teacher",
+   "picture": "pictures/teacher.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "friend",
+   "groups": [
+    "people"
+   ],
+   "ha": "Aboki",
+   "en": "Friend",
+   "picture": "pictures/friend.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "grandmother",
+   "groups": [
+    "people"
+   ],
+   "ha": "kaka",
+   "en": "Grandmother",
+   "picture": "pictures/grandmother.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "grandfather",
+   "groups": [
+    "people"
+   ],
+   "ha": "kaka",
+   "en": "Grandfather",
+   "picture": "pictures/grandfather.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "baby",
+   "groups": [
+    "people"
+   ],
+   "ha": "jariri",
+   "en": "Baby",
+   "picture": "pictures/baby.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "brother",
+   "groups": [
+    "people"
+   ],
+   "ha": "ɗan’uwa",
+   "en": "Brother",
+   "picture": "pictures/brother.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sister",
+   "groups": [
+    "people"
+   ],
+   "ha": "’yar’uwa",
+   "en": "Sister",
+   "picture": "pictures/sister.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "uncle",
+   "groups": [
+    "people"
+   ],
+   "ha": "kawu",
+   "en": "Uncle",
+   "picture": "pictures/uncle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "aunt",
+   "groups": [
+    "people"
+   ],
+   "ha": "goggo",
+   "en": "Aunt",
+   "picture": "pictures/aunt.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "doctor",
+   "groups": [
+    "people"
+   ],
+   "ha": "likita",
+   "en": "Doctor",
+   "picture": "pictures/doctor.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "nurse",
+   "groups": [
+    "people"
+   ],
+   "ha": "nas",
+   "en": "Nurse",
+   "picture": "pictures/nurse.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "farmer",
+   "groups": [
+    "people"
+   ],
+   "ha": "manomi",
+   "en": "Farmer",
+   "picture": "pictures/farmer.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "trader",
+   "groups": [
+    "people"
+   ],
+   "ha": "ɗan kasuwa",
+   "en": "Trader",
+   "picture": "pictures/trader.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "soldier",
+   "groups": [
+    "people"
+   ],
+   "ha": "soja",
+   "en": "Soldier",
+   "picture": "pictures/soldier.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "policeman",
+   "groups": [
+    "people"
+   ],
+   "ha": "ɗan sanda",
+   "en": "Policeman",
+   "picture": "pictures/policeman.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "driver",
+   "groups": [
+    "people"
+   ],
+   "ha": "direba",
+   "en": "Driver",
+   "picture": "pictures/driver.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "tailor",
+   "groups": [
+    "people"
+   ],
+   "ha": "maɗinki",
+   "en": "Tailor",
+   "picture": "pictures/tailor.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "imam",
+   "groups": [
+    "people"
+   ],
+   "ha": "limami",
+   "en": "Imam",
+   "picture": "pictures/imam.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "emir",
+   "groups": [
+    "people"
+   ],
+   "ha": "sarki",
+   "en": "Emir",
+   "picture": "pictures/emir.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "student",
+   "groups": [
+    "people"
+   ],
+   "ha": "ɗalibi",
+   "en": "Student",
+   "picture": "pictures/student.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "neighbour",
+   "groups": [
+    "people"
+   ],
+   "ha": "maƙwabci",
+   "en": "Neighbour",
+   "picture": "pictures/neighbour.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "man",
+   "groups": [
+    "people"
+   ],
+   "ha": "namiji",
+   "en": "Man",
+   "picture": "pictures/man.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "woman",
+   "groups": [
+    "people"
+   ],
+   "ha": "mace",
+   "en": "Woman",
+   "picture": "pictures/woman.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "child",
+   "groups": [
+    "people"
+   ],
+   "ha": "yaro",
+   "en": "Child",
+   "picture": "pictures/child.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "old_man",
+   "groups": [
+    "people"
+   ],
+   "ha": "dattijo",
+   "en": "Old man",
+   "picture": "pictures/old_man.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "herder",
+   "groups": [
+    "people"
+   ],
+   "ha": "makiyayi",
+   "en": "Herder",
+   "picture": "pictures/herder.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fisherman",
+   "groups": [
+    "people"
+   ],
+   "ha": "masunci",
+   "en": "Fisherman",
+   "picture": "pictures/fisherman.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "blacksmith",
+   "groups": [
+    "people"
+   ],
+   "ha": "maƙeri",
+   "en": "Blacksmith",
+   "picture": "pictures/blacksmith.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "barber",
+   "groups": [
+    "people"
+   ],
+   "ha": "wanzami",
+   "en": "Barber",
+   "picture": "pictures/barber.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "mechanic",
+   "groups": [
+    "people"
+   ],
+   "ha": "makaniki",
+   "en": "Mechanic",
+   "picture": "pictures/mechanic.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "carpenter",
+   "groups": [
+    "people"
+   ],
+   "ha": "kafinta",
+   "en": "Carpenter",
+   "picture": "pictures/carpenter.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "butcher",
+   "groups": [
+    "people"
+   ],
+   "ha": "mahauci",
+   "en": "Butcher",
+   "picture": "pictures/butcher.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eat",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Ci",
+   "en": "Eat",
+   "picture": "pictures/eat.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "drink",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Sha",
+   "en": "Drink",
+   "picture": "pictures/drink.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "run",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Gudu",
+   "en": "Run",
+   "picture": "pictures/run.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sit",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Zauna",
+   "en": "Sit",
+   "picture": "pictures/sit.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sleep",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Barci",
+   "en": "Sleep",
+   "picture": "pictures/sleep.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "wash",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Wanka",
+   "en": "Wash",
+   "picture": "pictures/wash.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "play",
+   "groups": [
+    "actions"
+   ],
+   "ha": "Wasa",
+   "en": "Play",
+   "picture": "pictures/play.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "walk",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tafiya",
+   "en": "Walk",
+   "picture": "pictures/walk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "jump",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tsalle",
+   "en": "Jump",
+   "picture": "pictures/jump.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "stand",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tsayawa",
+   "en": "Stand",
+   "picture": "pictures/stand.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cry",
+   "groups": [
+    "actions"
+   ],
+   "ha": "kuka",
+   "en": "Cry",
+   "picture": "pictures/cry.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "laugh",
+   "groups": [
+    "actions"
+   ],
+   "ha": "dariya",
+   "en": "Laugh",
+   "picture": "pictures/laugh.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sing",
+   "groups": [
+    "actions"
+   ],
+   "ha": "waƙa",
+   "en": "Sing",
+   "picture": "pictures/sing.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "dance",
+   "groups": [
+    "actions"
+   ],
+   "ha": "rawa",
+   "en": "Dance",
+   "picture": "pictures/dance.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "read",
+   "groups": [
+    "actions"
+   ],
+   "ha": "karatu",
+   "en": "Read",
+   "picture": "pictures/read.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "write",
+   "groups": [
+    "actions"
+   ],
+   "ha": "rubutu",
+   "en": "Write",
+   "picture": "pictures/write.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "draw",
+   "groups": [
+    "actions"
+   ],
+   "ha": "zane",
+   "en": "Draw",
+   "picture": "pictures/draw.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "cook",
+   "groups": [
+    "actions"
+   ],
+   "ha": "girki",
+   "en": "Cook",
+   "picture": "pictures/cook.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sweep",
+   "groups": [
+    "actions"
+   ],
+   "ha": "share",
+   "en": "Sweep",
+   "picture": "pictures/sweep.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pray",
+   "groups": [
+    "actions"
+   ],
+   "ha": "sallah",
+   "en": "Pray",
+   "picture": "pictures/pray.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "climb",
+   "groups": [
+    "actions"
+   ],
+   "ha": "hawa",
+   "en": "Climb",
+   "picture": "pictures/climb.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "swim",
+   "groups": [
+    "actions"
+   ],
+   "ha": "iyo",
+   "en": "Swim",
+   "picture": "pictures/swim.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "clap",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tafi",
+   "en": "Clap",
+   "picture": "pictures/clap.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "talk",
+   "groups": [
+    "actions"
+   ],
+   "ha": "magana",
+   "en": "Talk",
+   "picture": "pictures/talk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "listen",
+   "groups": [
+    "actions"
+   ],
+   "ha": "saurara",
+   "en": "Listen",
+   "picture": "pictures/listen.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "look",
+   "groups": [
+    "actions"
+   ],
+   "ha": "kallo",
+   "en": "Look",
+   "picture": "pictures/look.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "open",
+   "groups": [
+    "actions"
+   ],
+   "ha": "buɗe",
+   "en": "Open",
+   "picture": "pictures/open.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "close",
+   "groups": [
+    "actions"
+   ],
+   "ha": "rufe",
+   "en": "Close",
+   "picture": "pictures/close.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "give",
+   "groups": [
+    "actions"
+   ],
+   "ha": "bayarwa",
+   "en": "Give",
+   "picture": "pictures/give.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "carry",
+   "groups": [
+    "actions"
+   ],
+   "ha": "ɗauka",
+   "en": "Carry",
+   "picture": "pictures/carry.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "push",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tura",
+   "en": "Push",
+   "picture": "pictures/push.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pull",
+   "groups": [
+    "actions"
+   ],
+   "ha": "ja",
+   "en": "Pull",
+   "picture": "pictures/pull.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "kick",
+   "groups": [
+    "actions"
+   ],
+   "ha": "shura",
+   "en": "Kick",
+   "picture": "pictures/kick.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "throw",
+   "groups": [
+    "actions"
+   ],
+   "ha": "jefa",
+   "en": "Throw",
+   "picture": "pictures/throw.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "catch",
+   "groups": [
+    "actions"
+   ],
+   "ha": "kamawa",
+   "en": "Catch",
+   "picture": "pictures/catch.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ride",
+   "groups": [
+    "actions"
+   ],
+   "ha": "hawan keke",
+   "en": "Ride a bicycle",
+   "picture": "pictures/ride.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "drive",
+   "groups": [
+    "actions"
+   ],
+   "ha": "tuƙi",
+   "en": "Drive",
+   "picture": "pictures/drive.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "wake",
+   "groups": [
+    "actions"
+   ],
+   "ha": "farkawa",
+   "en": "Wake up",
+   "picture": "pictures/wake.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bathe",
+   "groups": [
+    "actions"
+   ],
+   "ha": "wanka",
+   "en": "Bathe",
+   "picture": "pictures/bathe.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "brush_teeth",
+   "groups": [
+    "actions"
+   ],
+   "ha": "goge haƙori",
+   "en": "Brush teeth",
+   "picture": "pictures/brush_teeth.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "dress",
+   "groups": [
+    "actions"
+   ],
+   "ha": "sa kaya",
+   "en": "Get dressed",
+   "picture": "pictures/dress.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "farm_work",
+   "groups": [
+    "actions"
+   ],
+   "ha": "noma",
+   "en": "Farm",
+   "picture": "pictures/farm_work.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "fetch_water",
+   "groups": [
+    "actions"
+   ],
+   "ha": "ɗiban ruwa",
+   "en": "Fetch water",
+   "picture": "pictures/fetch_water.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sell",
+   "groups": [
+    "actions"
+   ],
+   "ha": "sayarwa",
+   "en": "Sell",
+   "picture": "pictures/sell.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "buy",
+   "groups": [
+    "actions"
+   ],
+   "ha": "saya",
+   "en": "Buy",
+   "picture": "pictures/buy.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "help",
+   "groups": [
+    "actions"
+   ],
+   "ha": "taimako",
+   "en": "Help",
+   "picture": "pictures/help.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "kaftan",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "Kaftani",
+   "en": "Kaftan",
+   "picture": "pictures/kaftan.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "hijab",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "Hijabi",
+   "en": "Hijab",
+   "picture": "pictures/hijab.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "wrapper",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "Zane",
+   "en": "Wrapper",
+   "picture": "pictures/wrapper.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "shirt",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "riga",
+   "en": "Shirt",
+   "picture": "pictures/shirt.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "trousers",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "wando",
+   "en": "Trousers",
+   "picture": "pictures/trousers.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "skirt",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "siket",
+   "en": "Skirt",
+   "picture": "pictures/skirt.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "gown",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "rigar mata",
+   "en": "Dress",
+   "picture": "pictures/gown.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "scarf",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "ɗankwali",
+   "en": "Headscarf",
+   "picture": "pictures/scarf.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "turban",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "rawani",
+   "en": "Turban",
+   "picture": "pictures/turban.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "socks",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "safa",
+   "en": "Socks",
+   "picture": "pictures/socks.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "belt",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "bel",
+   "en": "Belt",
+   "picture": "pictures/belt.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "button",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "maɓalli",
+   "en": "Button",
+   "picture": "pictures/button.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pocket",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "aljihu",
+   "en": "Pocket",
+   "picture": "pictures/pocket.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "glasses",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "gilashin ido",
+   "en": "Glasses",
+   "picture": "pictures/glasses.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "watch",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "agogon hannu",
+   "en": "Watch",
+   "picture": "pictures/watch.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ring",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "zobe",
+   "en": "Ring",
+   "picture": "pictures/ring.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "earring",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "’yan kunne",
+   "en": "Earring",
+   "picture": "pictures/earring.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "necklace",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "sarƙa",
+   "en": "Necklace",
+   "picture": "pictures/necklace.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sweater",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "suwaita",
+   "en": "Sweater",
+   "picture": "pictures/sweater.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "jacket",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "jaket",
+   "en": "Jacket",
+   "picture": "pictures/jacket.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "uniform",
+   "groups": [
+    "clothing"
+   ],
+   "ha": "yunifom",
+   "en": "School uniform",
+   "picture": "pictures/uniform.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pencil",
+   "groups": [
+    "school"
+   ],
+   "ha": "Fensir",
+   "en": "Pencil",
+   "picture": "pictures/pencil.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "slate",
+   "groups": [
+    "school"
+   ],
+   "ha": "Allo",
+   "en": "Slate",
+   "picture": "pictures/slate.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "chalk",
+   "groups": [
+    "school"
+   ],
+   "ha": "Alli",
+   "en": "Chalk",
+   "picture": "pictures/chalk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "board",
+   "groups": [
+    "school"
+   ],
+   "ha": "Allon aji",
+   "en": "Board",
+   "picture": "pictures/board.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "pen",
+   "groups": [
+    "school"
+   ],
+   "ha": "biro",
+   "en": "Pen",
+   "picture": "pictures/pen.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ruler",
+   "groups": [
+    "school"
+   ],
+   "ha": "rula",
+   "en": "Ruler",
+   "picture": "pictures/ruler.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eraser",
+   "groups": [
+    "school"
+   ],
+   "ha": "roba",
+   "en": "Eraser",
+   "picture": "pictures/eraser.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "sharpener",
+   "groups": [
+    "school"
+   ],
+   "ha": "feɗa",
+   "en": "Sharpener",
+   "picture": "pictures/sharpener.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "crayon",
+   "groups": [
+    "school"
+   ],
+   "ha": "kala",
+   "en": "Crayon",
+   "picture": "pictures/crayon.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "paper",
+   "groups": [
+    "school"
+   ],
+   "ha": "takarda",
+   "en": "Paper",
+   "picture": "pictures/paper.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "notebook",
+   "groups": [
+    "school"
+   ],
+   "ha": "littafin rubutu",
+   "en": "Notebook",
+   "picture": "pictures/notebook.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "desk",
+   "groups": [
+    "school"
+   ],
+   "ha": "tebur",
+   "en": "Desk",
+   "picture": "pictures/desk.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "bell",
+   "groups": [
+    "school"
+   ],
+   "ha": "ƙararrawa",
+   "en": "Bell",
+   "picture": "pictures/bell.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "school",
+   "groups": [
+    "school"
+   ],
+   "ha": "makaranta",
+   "en": "School",
+   "picture": "pictures/school.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "classroom",
+   "groups": [
+    "school"
+   ],
+   "ha": "aji",
+   "en": "Classroom",
+   "picture": "pictures/classroom.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "lunch_box",
+   "groups": [
+    "school"
+   ],
+   "ha": "akwatin abinci",
+   "en": "Lunch box",
+   "picture": "pictures/lunch_box.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "water_bottle",
+   "groups": [
+    "school"
+   ],
+   "ha": "kwalbar ruwa",
+   "en": "Water bottle",
+   "picture": "pictures/water_bottle.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "flag",
+   "groups": [
+    "school"
+   ],
+   "ha": "tuta",
+   "en": "Flag",
+   "picture": "pictures/flag.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "globe",
+   "groups": [
+    "school"
+   ],
+   "ha": "duniya",
+   "en": "Globe",
+   "picture": "pictures/globe.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "computer",
+   "groups": [
+    "school"
+   ],
+   "ha": "kwamfuta",
+   "en": "Computer",
+   "picture": "pictures/computer.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "calculator",
+   "groups": [
+    "school"
+   ],
+   "ha": "kalkuleta",
+   "en": "Calculator",
+   "picture": "pictures/calculator.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "glue",
+   "groups": [
+    "school"
+   ],
+   "ha": "gam",
+   "en": "Glue",
+   "picture": "pictures/glue.webp",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "one",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "ɗaya",
+   "en": "One",
+   "picture": "pictures/one.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "two",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "biyu",
+   "en": "Two",
+   "picture": "pictures/two.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "three",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "uku",
+   "en": "Three",
+   "picture": "pictures/three.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "four",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "huɗu",
+   "en": "Four",
+   "picture": "pictures/four.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "five",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "biyar",
+   "en": "Five",
+   "picture": "pictures/five.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "six",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "shida",
+   "en": "Six",
+   "picture": "pictures/six.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "seven",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "bakwai",
+   "en": "Seven",
+   "picture": "pictures/seven.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "eight",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "takwas",
+   "en": "Eight",
+   "picture": "pictures/eight.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "nine",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "tara",
+   "en": "Nine",
+   "picture": "pictures/nine.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "ten",
+   "groups": [
+    "numbers"
+   ],
+   "ha": "goma",
+   "en": "Ten",
+   "picture": "pictures/ten.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "p1",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "ɗaya",
+   "en": "One",
+   "picture": "pictures/p1.svg",
+   "ha_clip": {
+    "of": "one"
+   },
+   "en_clip": {
+    "of": "one"
+   }
+  },
+  {
+   "key": "p2",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "biyu",
+   "en": "Two",
+   "picture": "pictures/p2.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "p3",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "uku",
+   "en": "Three",
+   "picture": "pictures/p3.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "p4",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "huɗu",
+   "en": "Four",
+   "picture": "pictures/p4.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "p5",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "biyar",
+   "en": "Five",
+   "picture": "pictures/p5.svg",
+   "ha_clip": {
+    "of": "five"
+   },
+   "en_clip": {
+    "of": "five"
+   }
+  },
+  {
+   "key": "p6",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "shida",
+   "en": "Six",
+   "picture": "pictures/p6.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "p7",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "bakwai",
+   "en": "Seven",
+   "picture": "pictures/p7.svg",
+   "ha_clip": {
+    "of": "seven"
+   },
+   "en_clip": true
+  },
+  {
+   "key": "p8",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "takwas",
+   "en": "Eight",
+   "picture": "pictures/p8.svg",
+   "ha_clip": true,
+   "en_clip": {
+    "of": "eight"
+   }
+  },
+  {
+   "key": "p9",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "tara",
+   "en": "Nine",
+   "picture": "pictures/p9.svg",
+   "ha_clip": {
+    "of": "nine"
+   },
+   "en_clip": {
+    "of": "nine"
+   }
+  },
+  {
+   "key": "p10",
+   "groups": [
+    "lambobi_palms"
+   ],
+   "ha": "goma",
+   "en": "Ten",
+   "picture": "pictures/p10.svg",
+   "ha_clip": {
+    "of": "ten"
+   },
+   "en_clip": true
+  },
+  {
+   "key": "n1",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "ɗaya",
+   "en": "One",
+   "picture": {
+    "of": "one"
+   },
+   "ha_clip": {
+    "of": "one"
+   },
+   "en_clip": {
+    "of": "one"
+   }
+  },
+  {
+   "key": "n2",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "biyu",
+   "en": "Two",
+   "picture": {
+    "of": "two"
+   },
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n3",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "uku",
+   "en": "Three",
+   "picture": {
+    "of": "three"
+   },
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n4",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "huɗu",
+   "en": "Four",
+   "picture": {
+    "of": "four"
+   },
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n5",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "biyar",
+   "en": "Five",
+   "picture": {
+    "of": "five"
+   },
+   "ha_clip": {
+    "of": "five"
+   },
+   "en_clip": {
+    "of": "five"
+   }
+  },
+  {
+   "key": "n6",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "shida",
+   "en": "Six",
+   "picture": {
+    "of": "six"
+   },
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n7",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "bakwai",
+   "en": "Seven",
+   "picture": {
+    "of": "seven"
+   },
+   "ha_clip": {
+    "of": "seven"
+   },
+   "en_clip": true
+  },
+  {
+   "key": "n8",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "takwas",
+   "en": "Eight",
+   "picture": {
+    "of": "eight"
+   },
+   "ha_clip": true,
+   "en_clip": {
+    "of": "eight"
+   }
+  },
+  {
+   "key": "n9",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "tara",
+   "en": "Nine",
+   "picture": {
+    "of": "nine"
+   },
+   "ha_clip": {
+    "of": "nine"
+   },
+   "en_clip": {
+    "of": "nine"
+   }
+  },
+  {
+   "key": "n10",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma",
+   "en": "Ten",
+   "picture": {
+    "of": "ten"
+   },
+   "ha_clip": {
+    "of": "ten"
+   },
+   "en_clip": true
+  },
+  {
+   "key": "n11",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha ɗaya",
+   "en": "Eleven",
+   "picture": "pictures/n11.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n12",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha biyu",
+   "en": "Twelve",
+   "picture": "pictures/n12.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n13",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha uku",
+   "en": "Thirteen",
+   "picture": "pictures/n13.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n14",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha huɗu",
+   "en": "Fourteen",
+   "picture": "pictures/n14.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n15",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha biyar",
+   "en": "Fifteen",
+   "picture": "pictures/n15.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n16",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha shida",
+   "en": "Sixteen",
+   "picture": "pictures/n16.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n17",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha bakwai",
+   "en": "Seventeen",
+   "picture": "pictures/n17.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n18",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha takwas",
+   "en": "Eighteen",
+   "picture": "pictures/n18.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n19",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "goma sha tara",
+   "en": "Nineteen",
+   "picture": "pictures/n19.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n20",
+   "groups": [
+    "lambobi_symbols"
+   ],
+   "ha": "ashirin",
+   "en": "Twenty",
+   "picture": "pictures/n20.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n30",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "talatin",
+   "en": "Thirty",
+   "picture": "pictures/n30.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n40",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "arba'in",
+   "en": "Forty",
+   "picture": "pictures/n40.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n50",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "hamsin",
+   "en": "Fifty",
+   "picture": "pictures/n50.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n60",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "sittin",
+   "en": "Sixty",
+   "picture": "pictures/n60.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n70",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "saba'in",
+   "en": "Seventy",
+   "picture": "pictures/n70.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n80",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "tamanin",
+   "en": "Eighty",
+   "picture": "pictures/n80.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n90",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "casa'in",
+   "en": "Ninety",
+   "picture": "pictures/n90.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n100",
+   "groups": [
+    "lambobi_tens"
+   ],
+   "ha": "ɗari",
+   "en": "Hundred",
+   "picture": "pictures/n100.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n200",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari biyu",
+   "en": "Two hundred",
+   "picture": "pictures/n200.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n300",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari uku",
+   "en": "Three hundred",
+   "picture": "pictures/n300.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n400",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari huɗu",
+   "en": "Four hundred",
+   "picture": "pictures/n400.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n500",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari biyar",
+   "en": "Five hundred",
+   "picture": "pictures/n500.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n600",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari shida",
+   "en": "Six hundred",
+   "picture": "pictures/n600.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n700",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari bakwai",
+   "en": "Seven hundred",
+   "picture": "pictures/n700.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n800",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari takwas",
+   "en": "Eight hundred",
+   "picture": "pictures/n800.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n900",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "ɗari tara",
+   "en": "Nine hundred",
+   "picture": "pictures/n900.svg",
+   "ha_clip": true,
+   "en_clip": true
+  },
+  {
+   "key": "n1000",
+   "groups": [
+    "lambobi_hundreds"
+   ],
+   "ha": "dubu",
+   "en": "One thousand",
+   "picture": "pictures/n1000.svg",
+   "ha_clip": true,
+   "en_clip": true
+  }
+ ]
+}
