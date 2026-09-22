@@ -15,6 +15,10 @@ type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
 const MAXMS = 10000, HARDMS = 20000;
+/** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
+ *  microphone away from the recording, so there the recording alone carries the name (Sani 2026-09-22). iPadOS reports
+ *  itself as a Mac, hence the touch check. */
+const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /**
  * Screen 3 · Bari mu ga wa kake. The tablet looks and listens at once: ten seconds of one face in the frame while the child
@@ -206,7 +210,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   // ---- the name: the browser's recogniser (Hausa, then English), as the design does ----
   private startSR(lang = 'ha-NG'): void {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SR) { this.note.set('No speech recognition in this browser — try Chrome'); this.srLive = true; this.armCheck(); return; }
+    if (!SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
     try {
       const sr = new SR(); this.sr = sr; sr.lang = lang; sr.interimResults = true; sr.continuous = true; sr.maxAlternatives = 3;
       sr.onresult = (ev: any) => { let s = '', fin = false; for (let i = 0; i < ev.results.length; i++) { s += ev.results[i][0].transcript + ' '; if (ev.results[i].isFinal) fin = true; } this.transcript = s.trim(); this.heardText.set('“' + this.transcript + '”'); this.interim.set(!fin); this.speechCb?.(this.transcript, fin); };
@@ -341,6 +345,15 @@ export class FaceScreen implements OnInit, OnDestroy {
         this.doneText.set('Madalla! Sannu, ' + heardName + '! Barka da zuwa!'); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own?.url); this.confetti(); this.enter(); return;
       }
+      if (!heardName && own?.url && this.faceVecs.length) {
+        // No words came back (an iPad, whose recogniser is Siri and has no Hausa; Chrome with no internet) but the child was
+        // seen and their own "Sunana …" was recorded: they are enrolled anyway. An unknown name is never a blocker (Sani
+        // 2026-09-17). Their recording is kept with the record; greet() says only "Barka da zuwa" (it may hold "sunana"),
+        // and the students list shows "?" for the written name.
+        this.pending = { name: '', gender: this.session.g(), faceVecs: this.faceVecs.slice(), voiceVec, clip: own.url };
+        this.doneText.set('Madalla! Barka da zuwa!'); this.still.set(this.bestStill);
+        await this.greet({ id: 'new', ...this.pending } as Person, false, own.url); this.confetti(); this.enter(); return;
+      }
       if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? 'Ba na ganin ki sosai' : 'Ba na ganin ka sosai')); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
     } else if (heardName) {
       // no face engine on this device: the name alone opens the session, nothing is stored
@@ -349,7 +362,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.missText.set('🤔 ' + (this.session.g() === 'f' ? 'Ban ji sunan ki sosai ba' : 'Ban ji sunan ka sosai ba')); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
   private async welcome(p: Person, back: boolean, ownUrl?: string): Promise<void> {
-    this.doneText.set('Sannu, ' + p.name + '! ' + (back ? 'Barka da dawowa!' : 'Barka da zuwa!')); this.still.set(this.bestStill);
+    this.doneText.set('Sannu' + (p.name ? ', ' + p.name : '') + '! ' + (back ? 'Barka da dawowa!' : 'Barka da zuwa!')); this.still.set(this.bestStill);
     await this.greet(p, back, ownUrl); if (!back) this.confetti(); this.enter();
   }
   /**
@@ -368,8 +381,12 @@ export class FaceScreen implements OnInit, OnDestroy {
   private async greet(p: Person, back: boolean, ownUrl?: string): Promise<void> {
     this.session.name.set(p.name); this.session.personId.set(p.id); this.session.known.set(back); this.session.simulated.set(null);
     const bank = (window as any).KRATU_BANK as Record<string, string> | null;
-    const nameSrc = p.key && bank?.[p.key] ? bank[p.key] : (p.clip || ownUrl || null);
-    await this.bus.play('s_sannu'); if (nameSrc) await this.bus.playRaw(nameSrc); await this.bus.play(back ? 's_back' : 's_welcome');
+    // A name is said only when it is surely the name alone: a bank recording, or the child's own clip cut where the recogniser
+    // heard the name. With no written name (an iPad, no internet) the clip may still hold "sunana …", so Laila just says
+    // welcome (Sani 2026-09-22).
+    const nameSrc = p.key && bank?.[p.key] ? bank[p.key] : (p.name ? (p.clip || ownUrl || null) : null);
+    if (nameSrc) { await this.bus.play('s_sannu'); await this.bus.playRaw(nameSrc); }
+    await this.bus.play(back ? 's_back' : 's_welcome');
   }
   /** Only ever 'retry' now: a recognised child goes straight on instead of being asked to press again. */
   /** Laila explains the miss, then lights Laila while she says "click Laila", then the door while she says "or the door". A tap on either cuts her off. */
