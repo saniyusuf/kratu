@@ -15,6 +15,8 @@ type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
 const MAXMS = 10000, HARDMS = 20000;
+/** The online recogniser may help but never holds a child up: not listening within this, the ring starts without it. */
+const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
  *  microphone away from the recording, so there the recording alone carries the name (Sani 2026-09-22). iPadOS reports
  *  itself as a Mac, hence the touch check. */
@@ -107,7 +109,7 @@ export class FaceScreen implements OnInit, OnDestroy {
 
   private stream: MediaStream | null = null; private rec: MediaRecorder | null = null; private chunks: Blob[] = []; private recBlob: Blob | null = null;
   private recHeld = false; private micHolds = 0; private recT0 = 0; private nameAt = -1; private nameClipP: Promise<{ url: string } | null> | null = null;
-  private sr: any = null; private transcript = ''; private recLive = false; private srLive = false; private speechCb: ((t: string, fin: boolean) => void) | null = null;
+  private sr: any = null; private srWait: ReturnType<typeof setTimeout> | null = null; private transcript = ''; private recLive = false; private srLive = false; private speechCb: ((t: string, fin: boolean) => void) | null = null;
   private faceVecs: Float32Array[] = []; private bestSc = 0; private bestStill: string | null = null; private lastMs = 0;
   /** One face, right now: the guide follows it. */
   readonly faceOK = signal(true);
@@ -211,15 +213,20 @@ export class FaceScreen implements OnInit, OnDestroy {
   private startSR(lang = 'ha-NG'): void {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
+    // Kept where it works (Chrome with internet), but on a leash (Sani 2026-09-22): if it is not listening within
+    // SR_START_WAIT the ring starts anyway, and whatever it has not heard by the end of the 10 s capture, the recording carries.
+    this.clearSrWait();
+    this.srWait = setTimeout(() => { this.srWait = null; if (!this.srLive && !this.paused() && !this.capEnded) { this.srLive = true; this.armCheck(); } }, SR_START_WAIT);
     try {
       const sr = new SR(); this.sr = sr; sr.lang = lang; sr.interimResults = true; sr.continuous = true; sr.maxAlternatives = 3;
       sr.onresult = (ev: any) => { let s = '', fin = false; for (let i = 0; i < ev.results.length; i++) { s += ev.results[i][0].transcript + ' '; if (ev.results[i].isFinal) fin = true; } this.transcript = s.trim(); this.heardText.set('“' + this.transcript + '”'); this.interim.set(!fin); this.speechCb?.(this.transcript, fin); };
       sr.onerror = (e: any) => { if (e?.error === 'language-not-supported' && sr.lang !== 'en-US') { try { sr.abort(); } catch { /* ignore */ } if (sr.__mic) { sr.__mic = false; this.holdMic(false); } this.startSR('en-US'); return; } if (e && e.error !== 'aborted' && e.error !== 'no-speech') { this.note.set('Speech: ' + e.error); this.srLive = true; this.armCheck(); } };
-      sr.onstart = () => { this.srLive = true; this.armCheck(); };
+      sr.onstart = () => { this.clearSrWait(); this.srLive = true; this.armCheck(); };
       sr.start(); this.holdMic(true); sr.__mic = true; this.heardText.set('Ana shirya… · getting ready'); this.interim.set(true);
     } catch { this.note.set('Speech recognition failed to start'); }
   }
-  private stopSR(): void { try { if (this.sr) { this.sr.stop(); if (this.sr.__mic) { this.sr.__mic = false; this.holdMic(false); } } } catch { /* ignore */ } }
+  private clearSrWait(): void { if (this.srWait) { clearTimeout(this.srWait); this.srWait = null; } }
+  private stopSR(): void { this.clearSrWait(); try { if (this.sr) { this.sr.stop(); if (this.sr.__mic) { this.sr.__mic = false; this.holdMic(false); } } } catch { /* ignore */ } }
 
   // ---- faces: one face, always; two faces drop everything ----
   private startFaceMon(): void {
