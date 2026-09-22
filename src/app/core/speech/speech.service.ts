@@ -35,6 +35,9 @@ export class SpeechService {
   private model: any = null; private loading = false; private failed = false; private lastErr = '';
   private saved = false; private saveT: ReturnType<typeof setInterval> | null = null; private strikes = 0; private feedErr = 0;
   private ctx: AudioContext | null = null; private stream: MediaStream | null = null; private proc: ScriptProcessorNode | null = null;
+  /** Sound heard while the mic is open but nobody is listening yet: the last 1.5 s, so an answer given the instant Laila
+   *  is pressed is not lost while the recogniser starts (Sani 2026-09-22). */
+  private preroll: { t: number; d: Float32Array }[] = [];
   private feeding = false; private rec: any = null; private seq = 0; private peak = 0; private vocabCache: string[] | null = null;
   /** The loader hands over the model's files; a restart fetches them again through this. */
   filesProvider: (() => Promise<Record<string, ArrayBuffer> | null>) | null = null;
@@ -88,7 +91,8 @@ export class SpeechService {
     let resolve!: (v: { value: string | string[] | null; raw: string }) => void;
     const done = new Promise<{ value: string | string[] | null; raw: string }>((r) => { resolve = r; });
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
-    const letters: string[] = []; let lastRaw = '';
+    const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
+    const askedAt = Date.now();
     const handle: HearHandle = { done, stop: () => { if (finished) return; finished = true; this.seq++; this.closeMic(); } };
     if (o.auto || typeof Vosk === 'undefined' || this.failed) { this.simulate(o, my).then((r) => { if (!finished) { finished = true; resolve(r); } }); return handle; }
     const fin = (L: string | string[] | null, raw: string) => {
@@ -106,17 +110,24 @@ export class SpeechService {
       if (o.match) { if (!this.vocabCache) this.vocabCache = this.words.vocab(); gram = this.vocabCache.slice(); if (o.target) String(o.target).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]'); }
       else { gram = this.ALL.map((L) => L.toLowerCase()).concat(this.ALL.map((L) => this.NAMES[L])); if (o.word) String(o.word).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]'); }
       try { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate, JSON.stringify(gram)); } catch { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate); }
-      this.rec.on('partialresult', (m: any) => { if (finished || my !== this.seq) return; const p = m?.result?.partial || ''; if (p && p !== '[unk]') { lastRaw = p; this.fb.set('“' + p + '”'); } });
+      this.rec.on('partialresult', (m: any) => { if (finished || my !== this.seq) return; const p = m?.result?.partial || ''; if (p && p !== '[unk]') { lastRaw = p; pend = p; this.fb.set('“' + p + '”'); } });
       this.rec.on('result', (m: any) => {
         if (finished || my !== this.seq) return;
-        let t = String(m?.result?.text || '').replace(/\[unk\]/g, '').trim(); if (!t) return; lastRaw = t;
+        let t = String(m?.result?.text || '').replace(/\[unk\]/g, '').trim();
+        // letters are a closed set: when the final answer comes back unsure, the letter Vosk had already heard counts; the lesson
+        // still judges it right or wrong (Sani 2026-09-22). Words keep the stricter rule.
+        if (!t && !o.match && pend) t = pend;
+        pend = ''; if (!t) return; lastRaw = t;
         if (o.multi) { t.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); if (quiet) clearTimeout(quiet); quiet = setTimeout(() => fin(null, lastRaw), 900); return; }
         if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
         fin(L, t);
       });
+      const from = Math.max(askedAt, this.bus.engine.lastSound) + 200;   // after the press AND after Laila's last sound: her voice never reaches the recogniser
+      for (const b of this.preroll) if (b.t - (b.d.length / (this.ctx?.sampleRate || 48000)) * 1000 >= from) { try { this.rec.acceptWaveformFloat(b.d, this.ctx!.sampleRate); } catch { this.feedErr++; } }
+      this.preroll = [];
       this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set('Ina saurara…');
-      tmo = setTimeout(() => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; fin(null, lastRaw); }, o.multi ? 10000 : 8000);
+      tmo = setTimeout(() => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); }, o.multi ? 10000 : 8000);
     };
     // the multi result: letters are the value
     const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw } : r); };
@@ -165,7 +176,7 @@ export class SpeechService {
         const proc = ctx.createScriptProcessor(4096, 1, 1); this.proc = proc;
         try { const tr = st.getAudioTracks()[0]; this.audioInfo = { device: tr?.label || '?', muted: !!tr?.muted, ctx: ctx.state, rate: ctx.sampleRate }; ctx.onstatechange = () => { this.audioInfo.ctx = ctx.state; }; } catch { /* ignore */ }
         proc.onaudioprocess = (e) => {
-          if (!this.feeding || !this.rec) return;
+          if (!this.feeding || !this.rec) { const now = Date.now(); this.preroll.push({ t: now, d: new Float32Array(e.inputBuffer.getChannelData(0)) }); while (this.preroll.length && now - this.preroll[0].t > 1500) this.preroll.shift(); return; }
           if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
           try { this.rec.acceptWaveform(e.inputBuffer); } catch { this.feedErr++; }
           try { const d = e.inputBuffer.getChannelData(0); let sum = 0, n = 0; for (let i = 0; i < d.length; i += 32) { sum += d[i] * d[i]; n++; } const amp = Math.min(1, Math.sqrt(sum / n) * 7); if (amp > this.peak) this.peak = amp; this.amp.set(+amp.toFixed(3)); } catch { /* ignore */ }

@@ -104,7 +104,11 @@ export class MisaliScreen implements OnInit, OnDestroy {
     if (voice) await this.play(voice);
     else {
       // the child's own turn: the real microphone
-      const h = this.speech.hear({ target: heard, match: (raw) => { const r = raw.toLowerCase().trim(); return r === heard || r.split(/\s+/).includes(heard) ? heard : null; } });
+      // a letter is heard as a letter (the 26 letters and their names), a word as a word; never compared case-sensitively —
+      // 'a' against 'A' never matched, so the alphabet example waited out its 8 s instead of hearing the child (Sani 2026-09-22)
+      const w = heard.toLowerCase();
+      const h = /^[A-Z]$/.test(heard) ? this.speech.hear({ target: heard })
+        : this.speech.hear({ target: heard, match: (raw) => { const r = raw.toLowerCase().trim(); return r === w || r.split(/\s+/).includes(w) ? heard : null; } });
       this.hearHandle = h; const r = await h.done; this.hearHandle = null; if (r.raw) heard = r.value ? heard : heard;
     }
     this.fb('heard', '“' + heard + '”'); await wait(350); this.recOff();
