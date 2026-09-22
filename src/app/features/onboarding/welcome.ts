@@ -23,15 +23,17 @@ interface Beat {
   cue?: boolean;      // the hint fades in, Ci gaba glows
 }
 
-/** Where each named lesson sits: one even arc over her head, and which way she points at it. */
+/** Where each named lesson sits: one even arc over her head, and which way she points at it. The arc runs clockwise in
+ *  the order she names them — alphabet, reading and writing, counting, things — so her wing only ever moves one way
+ *  (Sani 2026-09-22). */
 const ARC: Record<string, { x: number; y: number; r: number; dir: string }> = {
   letters: { x: 12.4, y: 36.4, r: -10, dir: 'l' },
   read:    { x: 27.1, y: 23.1, r: -6,  dir: 'u' },
   spell:   { x: 50.0, y: 18.0, r: 0,   dir: 'u' },
-  things:  { x: 72.9, y: 23.1, r: 6,   dir: 'r' },
-  numbers: { x: 87.6, y: 36.4, r: 10,  dir: 'r' },
+  numbers: { x: 72.9, y: 23.1, r: 6,   dir: 'r' },
+  things:  { x: 87.6, y: 36.4, r: 10,  dir: 'r' },
 };
-const ARC_ORDER = ['letters', 'read', 'spell', 'things', 'numbers'];
+const ARC_ORDER = ['letters', 'read', 'spell', 'numbers', 'things'];
 
 /** The first day: who she is, what the two of you will learn, and what to press. Once in a child's life. */
 const INTRO: Beat[] = [
