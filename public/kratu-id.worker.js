@@ -10,9 +10,11 @@ ort.env.wasm.numThreads = (self.crossOriginIsolated && typeof SharedArrayBuffer 
 ort.env.logLevel = 'error';                        // SCRFD declares 640-px output shapes; we run it at 320 → harmless size warnings
 
 /* One recogniser, everywhere: w600k_r50. The small MobileFaceNet build is gone, so there is no second mode to reason
-   about and every child's vectors are comparable on every device (Sani 2026-09-19). The model ships as three parts
-   because a single 174 MB file cannot be pushed to GitHub; the page joins them and hands over the bytes. */
-const M = { det: 'models/insightface/det_500m.onnx', recParts: ['models/insightface/w600k_r50.onnx.part0', 'models/insightface/w600k_r50.onnx.part1', 'models/insightface/w600k_r50.onnx.part2'], spk: 'models/speaker/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx' };
+   about and every child's vectors are comparable on every device (Sani 2026-09-19). It ships in half precision: the
+   embeddings match the full-precision original to six decimal places (the app calls two faces the same above 0.4), at
+   half the download and half the memory, and it is one file rather than three parts (Sani 2026-09-23).
+*/
+const M = { det: 'models/insightface/det_500m.onnx', recParts: ['models/insightface/w600k_r50_fp16.onnx'], spk: 'models/speaker/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx' };
 const REC_NAME = 'w600k_r50';
 const DET = 320;                                   // detector input (square letterbox)
 const ARC = [[38.2946, 51.6963], [73.5318, 51.5014], [56.0252, 71.7366], [41.5493, 92.3655], [70.7299, 92.2041]];

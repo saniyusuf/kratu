@@ -8,22 +8,10 @@
   "size": 29596978
  },
  "rec": {
-  "parts": [
-   {
-    "path": "models/insightface/w600k_r50.onnx.part0",
-    "size": 62914560
-   },
-   {
-    "path": "models/insightface/w600k_r50.onnx.part1",
-    "size": 62914560
-   },
-   {
-    "path": "models/insightface/w600k_r50.onnx.part2",
-    "size": 48554740
-   }
-  ],
-  "size": 174383860,
-  "sha256": "4c06341c33c2ca1f86781dab0e829f88ad5b64be9fba56e56bc9ebdefc619e43"
+  "path": "models/insightface/w600k_r50_fp16.onnx",
+  "size": 87206789,
+  "sha256": "3a728e738b4c0c802d3f2315ca877e76387f4fee9f240d4ae49e8da371dab25c",
+  "note": "half precision: same embeddings as the fp32 original to six decimal places, half the download"
  },
  "wasm": {
   "path": "models/ort/ort-wasm-simd-threaded.jsep.wasm.gz",
