@@ -13,7 +13,7 @@ import { Laila } from '../../shared/laila/laila';
   <div class="ld-top"><div class="ld-laila"><app-laila [size]="150" /></div>
     <div class="ld-bubble"><span>{{ L.bubbleHa() }}</span><small>{{ L.bubbleEn() }}</small></div></div>
   <div class="ld-word">
-    @for (on of L.letters(); track $index) {<span [class]="'krtau'[$index] + (on ? ' on' : '')">{{ 'Kratu'[$index] }}</span>}
+    @for (on of L.letters(); track $index) {<span [class]="'kratu'[$index] + (on ? ' on' : '')">{{ 'Kratu'[$index] }}</span>}
   </div>
   <div class="ld-step">@if (L.step()) {Mataki {{ L.step() }} / 4 · Step {{ L.step() }} of 4}</div>
   <div class="ld-msg"><b>{{ L.headHa() }}</b><small>{{ L.headEn() }}</small></div>

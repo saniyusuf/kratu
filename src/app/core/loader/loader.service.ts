@@ -100,7 +100,7 @@ export class LoaderService {
   private paint(): void {
     let got = 0, total = 0, frac = 0, n = 0;
     const letters = this.pieces.map((p) => { const b = this.bytes[p.id]; if (b?.total) { got += Math.min(b.got, b.total); total += b.total; } const f = this.dlDone(p) ? 1 : (b?.total ? Math.min(0.98, b.got / b.total) : 0); n++; frac += f; return this.dlDone(p); });
-    this.letters.set(letters);
+    this.letters.set([...letters, this.finished()]);   // four pieces light K R A T; the U lights when everything is ready — the word was stuck at "Krat" (Sani 2026-09-23)
     this.chips.update((cs) => cs.map((c) => { const d = this.dl[c.id] || 'wait', p = this.prep[c.id] || 'wait'; const done = d === 'ok' || d === 'skip'; return { ...c, state: done ? (p === 'fail' ? 'fail' : 'ok') : (d === 'fail' ? 'fail' : d === 'busy' ? 'busy' : 'wait') }; }));
     const prepsAll = this.pieces.filter((p) => p.prep), prepsDone = prepsAll.filter((p) => this.prep[p.id] === 'ok').length;
     const dlPart = total ? got / total : (n ? frac / n : 0), allDl = this.pieces.every((p) => this.dlDone(p));
