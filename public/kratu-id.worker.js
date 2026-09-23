@@ -3,8 +3,11 @@
    Voice: kaldi-style 80-bin log-mel fbank → 3D-Speaker CAM++ 512-d.  All on-device via ONNX Runtime Web (WebGPU when available, else WASM). */
 import * as ort from './models/ort/ort.webgpu.min.mjs';
 ort.env.wasm.wasmPaths = new URL('./models/ort/', import.meta.url).href;
-ort.env.wasm.numThreads = 1;
-ort.env.logLevel = 'error';                        // SCRFD declares 640-px output shapes; we run it at 320 → harmless size warnings                       // plain http.server has no COOP/COEP → single-thread wasm
+/* Threads when the page is cross-origin isolated (the hosting sends COOP/COEP), one otherwise — a plain static server,
+   a file:// page or an old browser. The threaded runtime is the one we ship either way (Sani 2026-09-23). */
+ort.env.wasm.numThreads = (self.crossOriginIsolated && typeof SharedArrayBuffer !== 'undefined')
+  ? Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 2) - 1)) : 1;
+ort.env.logLevel = 'error';                        // SCRFD declares 640-px output shapes; we run it at 320 → harmless size warnings
 
 /* One recogniser, everywhere: w600k_r50. The small MobileFaceNet build is gone, so there is no second mode to reason
    about and every child's vectors are comparable on every device (Sani 2026-09-19). The model ships as three parts
