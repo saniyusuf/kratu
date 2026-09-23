@@ -53,6 +53,7 @@ export class LoaderService {
     { id: 'names', ha: 'Sunaye', en: 'names', heavy: false,
       dl: async () => { await this.clips.load(); await this.words.load(); const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
     { id: 'pictures', ha: 'Hotuna', en: 'pictures', heavy: false,
+      dl: () => this.fetchMedia(),
       prep: async () => { await (document.fonts?.ready ?? Promise.resolve()); const first = Object.values(this.words.cats()).slice(0, 4).flatMap((c) => c.slice(0, 2)); await Promise.all(first.filter((w) => w.img).map((w) => new Promise<void>((res) => { const im = new Image(); im.onload = im.onerror = () => res(); im.src = w.img!; }))); } },
   ];
 
@@ -172,6 +173,58 @@ export class LoaderService {
       await new Promise<void>((res, rej) => { const start = Date.now(); const w = () => { if (this.speech.ready()) { res(); return; } const st = this.speech.state(); if (st === 'failed') { lastWhy = this.speech.error(); if (kicked) { rej(new Error(lastWhy || 'failed')); return; } kicked = true; this.speech.retry(this.speechFiles); this.speechFiles = null; } else if (st === 'idle') { this.speech.loadModel(this.speechFiles); this.speechFiles = null; } if (Date.now() - start > 600000) { rej(new Error('timeout')); return; } setTimeout(w, 250); }; w(); });
       this.prog('speech', 'a shirye · ready');
     } finally { clearInterval(tick); }
+  }
+  /**
+   * Every clip, picture and film, counted while the child watches the bar (Sani 2026-09-23). The service worker fetches
+   * them (its prefetch is retried across launches and survives a half-finished install); the loader just watches its cache
+   * fill, so nothing is downloaded twice and the app only says it is ready when the tablet really holds the lot.
+   * No worker (a dev build, or one that never takes over): the files are fetched here instead so the app still works.
+   */
+  private async fetchMedia(): Promise<'skip' | void> {
+    const man = await this.getJSON('assets/media.json');
+    if (!man?.files?.length) return 'skip';
+    const total: number = man.total, size = new Map<string, number>(man.files.map((f: any) => [new URL(f.path, document.baseURI).href, f.size]));
+    let got = 0;
+    const show = () => { this.bytes['pictures'] = { got, total }; this.prog('pictures', Math.round(got / 1048576) + ' / ' + Math.round(total / 1048576) + ' MB'); this.paint(); };
+    show();
+    const held = async (): Promise<number> => {
+      if (typeof caches === 'undefined') return -1;
+      const names = (await caches.keys()).filter((n) => /assets:media:cache/.test(n));
+      if (!names.length) return -1;
+      const seen = new Set<string>();
+      for (const n of names) for (const r of await (await caches.open(n)).keys()) if (size.has(r.url)) seen.add(r.url);
+      let bytes = 0; seen.forEach((u) => { bytes += size.get(u) || 0; });
+      return bytes;
+    };
+    const t0 = Date.now(); let stuck = 0, last = -1;
+    for (;;) {
+      const bytes = await this.swDriving() ? await held() : -1;
+      if (bytes < 0) break;                                   // no worker: fall through and fetch them here
+      got = bytes; show();
+      if (got >= total * 0.999) return;                       // the tablet holds every file
+      stuck = bytes === last ? stuck + 1 : 0; last = bytes;
+      if (Date.now() - t0 > 240000 || stuck > 40) break;      // it is not coming: fetch the rest ourselves
+      await new Promise((r) => setTimeout(r, 300));
+    }
+    const queue: { path: string; size: number }[] = man.files.slice(); got = 0; show();
+    await Promise.all(Array.from({ length: 6 }, async () => {
+      for (;;) {
+        const f = queue.shift(); if (!f) return;
+        try { await (await fetch(f.path)).arrayBuffer(); } catch { /* one missing file must not stop the install */ }
+        got += f.size; show();
+      }
+    }));
+    this.prog('pictures', 'a shirye · ready');
+  }
+  /** Resolves true once the service worker controls this page, false if it does not take over. */
+  private swDriving(): Promise<boolean> {
+    const sw = navigator.serviceWorker;
+    if (!sw) return Promise.resolve(false);
+    if (sw.controller) return Promise.resolve(true);
+    return Promise.race([
+      sw.ready.then(() => sw.controller ? true : new Promise<boolean>((r) => sw.addEventListener('controllerchange', () => r(true), { once: true }))),
+      new Promise<boolean>((r) => setTimeout(() => r(!!sw.controller), 10000)),
+    ]).catch(() => false);
   }
   private async fetchFaceModels(): Promise<void> {
     const man = await this.getJSON('models/manifest.json');
