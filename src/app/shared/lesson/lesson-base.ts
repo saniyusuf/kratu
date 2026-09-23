@@ -5,6 +5,7 @@ import { Word, WordsService } from '../../core/clips/words.service';
 import { LessonFlow } from '../../core/state/flow.service';
 import { SessionService } from '../../core/state/session.service';
 import { SpeechService } from '../../core/speech/speech.service';
+import { ImageWarm } from '../../core/clips/warm.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter } from './helpers';
 
@@ -24,6 +25,7 @@ export abstract class LessonBase implements OnDestroy {
   readonly speech = inject(SpeechService);
   protected readonly bus = inject(AudioBus);
   protected readonly words = inject(WordsService);
+  protected readonly warm = inject(ImageWarm);
   protected readonly session = inject(SessionService);
   protected readonly flow = inject(LessonFlow);
   protected readonly zoom = inject(ZoomService);

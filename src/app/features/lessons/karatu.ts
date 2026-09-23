@@ -65,7 +65,8 @@ export class KaratuScreen extends TopicLessonBase {
 
   /** One word: (lesson) the letters lit as Laila reads them → "now read the whole word" → the child reads → the photo is the reward. */
   private async readWord(it: Item, testMode: boolean): Promise<boolean> {
-    const word = it.en; this.curWord = it; this.picSrc.set(null); this.mkSlots(word); let tries = 0;
+    // the picture is decoded now, so the reveal at the end of the word is instant
+    const word = it.en; this.curWord = it; this.warm.soon([it.w.img]); this.picSrc.set(null); this.mkSlots(word); let tries = 0;
     if (!testMode) { if (this.firstWord) { this.firstWord = false; this.speak.set(true); await this.play('app_read_intro'); this.speak.set(false); } await this.walk(word); }
     this.setAll('');
     const first = this.waitAnswer();   // armed at once: a press cuts the clips off

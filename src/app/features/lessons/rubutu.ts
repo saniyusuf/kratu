@@ -64,6 +64,8 @@ export class RubutuScreen extends TopicLessonBase {
   private mark(L: string, m: KeyMark | null): void { this.keyMarks.update((a) => { const b = { ...a }; if (m) b[L] = m; else delete b[L]; return b; }); }
   private clearBad(): void { this.keyMarks.update((a) => Object.fromEntries(Object.entries(a).filter(([, v]) => v !== 'bad'))); }
   private showPic(it: Item | null): void { this.picSrc.set(it?.w.img || null); }
+  /** The next words' pictures, decoded while the child is still spelling this one. */
+  private warmAhead(list: Item[], from: number): void { this.warm.soon(list.slice(from, from + 3).map((i) => i.w.img)); }
   /** A letter flies from a key or from Laila and lands in its place; the lesson goes on meanwhile. */
   private fly(from: Element | null, i: number, L: string): Promise<void> { const el = this.slotEl(i); const land = () => this.setSlot(i, { text: L, st: 'done' }); if (!el || !from) { land(); return Promise.resolve(); } return flyLetter(this.zoom, this.s, from, el, L).then(land); }
 
@@ -131,7 +133,7 @@ export class RubutuScreen extends TopicLessonBase {
     }
   }
   private async spellWord(it: Item): Promise<boolean> {
-    const word = it.en; this.curWord = word; this.buildSlots(word); this.showPic(it); this.kbLocked.set(false); this.dkHidden.set(false); let misses = 0;
+    const word = it.en; this.curWord = word; this.buildSlots(word); this.warm.soon([it.w.img]); this.showPic(it); this.kbLocked.set(false); this.dkHidden.set(false); let misses = 0;
     this.speak.set(true); await this.seq(['app_wannan', this.ha(it), 's_o_inen', this.en(it)]); this.speak.set(false);
     await this.spellOut(word); await this.ways(word);
     let pre: Clip[] | null = null;
@@ -140,7 +142,7 @@ export class RubutuScreen extends TopicLessonBase {
   }
   // ---- the test: the whole word freely; checked only when complete; two tries (three for words longer than four letters) ----
   private async examWord(it: Item, maxTries: number, pre: Clip[] | null): Promise<boolean> {
-    const word = it.en; this.curWord = word; this.curLetter = null; this.buildSlots(word); this.showPic(it); this.kbLocked.set(false); this.dkHidden.set(true); let tries = 0, typed: string[] = [];
+    const word = it.en; this.curWord = word; this.curLetter = null; this.buildSlots(word); this.warm.soon([it.w.img]); this.showPic(it); this.kbLocked.set(false); this.dkHidden.set(true); let tries = 0, typed: string[] = [];
     const render = () => this.slots.set(word.split('').map((L, i) => ({ L, text: typed[i] || '_', st: i === typed.length ? 'on' : '' })));
     const put = (L: string) => { if (typed.length >= word.length) return; typed.push(L); render(); };
     render(); this.later(500, (pre || []).concat([this.ha(it), this.bus.gk('app_w_spell_go')]), true);
@@ -169,6 +171,7 @@ export class RubutuScreen extends TopicLessonBase {
     const queue = list.slice(), passed: Item[] = []; let carry: Item[] = [], setNo = 0; const maxTries = (w: Item) => w.en.length <= 4 ? 2 : 3; const name = this.def().ha;
     for (;;) {
       this.check(); const set = carry.slice(); carry = []; while (set.length < 5 && queue.length) set.push(queue.shift()!);
+      this.warmAhead(set, 0);   // the whole set's pictures, decoded before the first word is shown
       if (set.length && set.length < 5) { const pool = shuffle(passed.filter((it) => !set.includes(it))); while (set.length < 5 && pool.length) set.push(pool.shift()!); }
       if (!set.length) return; setNo++;
       if (setNo > 1) { this.speak.set(true); await this.play('s_o_new3'); this.speak.set(false); }

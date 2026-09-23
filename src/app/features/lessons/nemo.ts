@@ -65,7 +65,7 @@ export class NemoScreen extends TopicLessonBase {
 
   /** One puzzle: the name, N pictures, tap. The grid is live at once; an early tap cuts Laila off and counts. */
   private async puzzle(it: Item, idx: number): Promise<void> {
-    const N = this.N; this.curItem = it; this.choices.set(shuffle([it].concat(this.distractors(it, N - 1)))); this.placeholders.set([]); this.masks.set({}); this.dotOn.set(idx); this.fb('', '');
+    const N = this.N; this.curItem = it; const choices = shuffle([it].concat(this.distractors(it, N - 1))); this.warm.soon(choices.map((c) => c.w.img)); this.choices.set(choices); this.placeholders.set([]); this.masks.set({}); this.dotOn.set(idx); this.fb('', '');
     let ask: Clip[] = [this.en(it), this.tapKey()];
     for (let tries = 0; ;) {
       this.check(); const tapP = new Promise<string>((res) => { this.tapRes = res; });   // live before Laila speaks: a tap cuts her off and counts

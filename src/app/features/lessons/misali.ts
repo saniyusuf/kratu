@@ -5,6 +5,7 @@ import { AudioBus } from '../../core/audio/audio-bus.service';
 import { WordsService, Word } from '../../core/clips/words.service';
 import { SpeechService } from '../../core/speech/speech.service';
 import { LessonFlow, SampleKind } from '../../core/state/flow.service';
+import { ImageWarm } from '../../core/clips/warm.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
@@ -39,6 +40,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   readonly speech = inject(SpeechService);
   private readonly bus = inject(AudioBus);
   private readonly words = inject(WordsService);
+  private readonly warm = inject(ImageWarm);
   private readonly session = inject(SessionService);
   private readonly flow = inject(LessonFlow);
   private readonly zoom = inject(ZoomService);
@@ -92,6 +94,8 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private recOn(): void { this.rec.set(true); this.hearing.set(true); }
   private recOff(): void { this.rec.set(false); this.hearing.set(false); }
   private showPic(src?: string | null): void { this.picSrc.set(src || null); }
+  /** The example's own pictures, decoded before the film starts. */
+  private warmExample(): void { this.warm.soon([this.AW?.img, this.RW?.img, this.KW?.img, this.word('goat')?.img, this.word('cat')?.img, ...this.gridItems().map((w) => w.img)]); }
   private reveal(): void { const im = this.picRef()?.nativeElement.querySelector('img'); if (!im?.animate) return; try { const an = im.animate([{ clipPath: 'inset(0 100% 0 0 round 30px)' }, { clipPath: 'inset(0 0 0 0 round 30px)' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }); const fin = () => { try { an.cancel(); } catch { /* ignore */ } }; an.onfinish = fin; setTimeout(fin, 1300); } catch { /* ignore */ } }
   private mkSlots(w: string, blank = false): void { this.slotLetters.set(w.split('')); this.slotText.set(w.split('').map((L) => blank ? '_' : L)); this.slotState.set(w.split('').map(() => '')); this.allDone.set(false); }
   private slotEl(i: number): HTMLElement | null { return (this.slotsRef()?.nativeElement.children[i] as HTMLElement) || null; }
@@ -229,6 +233,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   // ---- the films ----
   private async start(): Promise<void> {
     if (this.running) return; this.bus.stopAll(); this.reset(); this.running = true; this.movie.set(true); this.phase = 'movie';
+    this.warmExample();
     const runs: Record<string, () => Promise<void>> = { karatu: () => this.runKaratu(), rubutu: () => this.runRubutu(), abubuwa: () => this.runAbubuwa(), lambobi: () => this.runLambobi(), nemo: () => this.runNemo(false), nemonum: () => this.runNemo(true), haruffa: () => this.runHaruffa() };
     await runs[this.kind]?.();
   }

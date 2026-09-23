@@ -62,7 +62,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   private catName(): string { return this.mode === 'numbers' ? 'Lambobi · ' + this.stageHa : (CAT_NAME[this.cat] || this.cat); }
   private showPic(it: Item): void { this.curItem = it; this.picSrc.set(it.w.img || null); this.onItem.set(it.k); }
   private hidePic(): void { this.picSrc.set(null); this.onItem.set(''); }
-  private markActive(list: Item[]): void { this.rowItems.set(list.slice()); this.marks.update((m) => { const n: Record<string, Mark> = {}; list.forEach((it) => { n[it.k] = m[it.k] || ''; }); return n; }); }
+  private markActive(list: Item[]): void { this.warm.soon(list.map((i) => i.w.img)); this.rowItems.set(list.slice()); this.marks.update((m) => { const n: Record<string, Mark> = {}; list.forEach((it) => { n[it.k] = m[it.k] || ''; }); return n; }); }
   private clearMarks(list: Item[]): void { this.marks.update((m) => { const n = { ...m }; list.forEach((it) => { n[it.k] = ''; }); return n; }); }
   private mark(it: Item, v: Mark): void { this.marks.update((m) => ({ ...m, [it.k]: v })); }
   private reset(): void { this.presenting.set(false); this.rowItems.set([]); this.marks.set({}); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.nohand.set(false); this.resultsOn.set(false); this.awaiting = false; this.pend = null; this.inTest = false; this.hidePic(); this.spotter.unspot(); }
