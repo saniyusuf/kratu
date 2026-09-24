@@ -11,6 +11,9 @@ import { Spotter, firstHints, flyText, wait } from '../../shared/lesson/helpers'
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
 const YAY = 'assets/audio/sfx/yay.ogg';
+/** The alphabet is stricter than the rest of the app: two wrong letters and Laila says the letter herself, rather than
+ *  three (Sani 2026-09-24). A letter is one sound — a child who misses twice is guessing, not thinking. */
+const WRONG = 2;
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -77,7 +80,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async press(): Promise<void> {
     if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
     // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
-    this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
+    this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L, maxWrong: WRONG }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     c.res({ ok: r.value === c.L, heard: (r.value as string | null), tries: r.tries || 0 });
   }
   /** The letter is on the board; prompt, then the child says it. Three wrong → help: "listen, this is …" + the letter, then ask again. */
@@ -87,8 +90,8 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       if (this.stopped) return;
       if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, (n) => (misses += n))) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, (n) => (misses += n))) return; }
       else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, (n) => (misses += n))) return; }
-      // three wrong letters since the last help, however they arrived — three in one breath or one at a time
-      if (misses - helped >= 3) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
+      // two wrong letters since the last help, however they arrived — both in one breath or one at a time
+      if (misses - helped >= WRONG) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
       else { await this.play('app_retry'); this.setSt(L, 'on'); }
     }
   }
