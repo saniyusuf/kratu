@@ -11,7 +11,7 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AbcKeyboard, KeyMark } from '../../shared/lesson/abc-keyboard';
-import { Spotter, flyLetter, flyText, wait } from '../../shared/lesson/helpers';
+import { Spotter, flyLetter, flyText, wait, matchWord } from '../../shared/lesson/helpers';
 
 /**
  * Misali · the sample. Laila shows one press-and-say (or spell, read, find) with the boy's or girl's voice, locked like a
@@ -114,7 +114,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
       // 'a' against 'A' never matched, so the alphabet example waited out its 8 s instead of hearing the child (Sani 2026-09-22)
       const w = heard.toLowerCase();
       const h = /^[A-Z]$/.test(heard) ? this.speech.hear({ target: heard, until: heard })
-        : this.speech.hear({ target: heard, match: (raw) => { const r = raw.toLowerCase().trim(); return r === w || r.split(/\s+/).includes(w) ? heard : null; } });
+        : this.speech.hear({ target: heard, match: (raw) => (matchWord(raw, w) ? heard : null) });   // the lessons' own matcher, p/f and all
       this.hearHandle = h; const r = await h.done; this.hearHandle = null; if (r.raw) heard = r.value ? heard : heard;
     }
     this.fb('heard', '“' + heard + '”'); await wait(350); this.recOff();

@@ -5,12 +5,21 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 export const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 export const shuffle = <T,>(a: T[]): T[] => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 /** Does what the recogniser heard count as this word? The word inside the text, a plural, or one letter off for words of four or more. */
+/**
+ * Hausa has no /p/: a Hausa child saying an English word may put an f where the spelling has a p, and sometimes the other
+ * way round — "feeful" for people, "bap" for bath's neighbours. That is an accent, not a mistake, so a word is matched
+ * with p and f treated as the same sound (Sani 2026-09-24). Letters are NOT folded this way: the alphabet is where a
+ * child is taught to say P and F apart, so there the recogniser stays strict.
+ */
+const accent = (w: string) => w.replace(/ph/g, 'f').replace(/p/g, 'f');
+
 export function matchWord(raw: string, target: string): string | null {
   const txt = (raw || '').toLowerCase().replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim(); target = target.toLowerCase();
   if (txt.includes(target)) return target;
+  if (accent(txt).includes(accent(target))) return target;
   if (target.includes(' ')) target = target.split(' ').pop()!;   // "paw paw": the last word is enough
   const ed = (a: string, b: string) => { const m = a.length, n = b.length, d: number[][] = []; for (let x = 0; x <= m; x++) d[x] = [x]; for (let y = 0; y <= n; y++) d[0][y] = y; for (let x = 1; x <= m; x++) for (let y = 1; y <= n; y++) d[x][y] = Math.min(d[x - 1][y] + 1, d[x][y - 1] + 1, d[x - 1][y - 1] + (a[x - 1] === b[y - 1] ? 0 : 1)); return d[m][n]; };
-  for (const tok of txt.split(' ')) { const t = tok.replace(/s$/, ''); if (t === target || (target.length >= 4 && ed(t, target) <= 1)) return target; }
+  for (const tok of txt.split(' ')) { const t = tok.replace(/s$/, ''); if (t === target || accent(t) === accent(target) || (target.length >= 4 && ed(t, target) <= 1)) return target; }
   return null;
 }
 

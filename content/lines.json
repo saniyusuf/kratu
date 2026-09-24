@@ -2728,8 +2728,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ga hotuna uku. Ka saurara, ka kalla.",
-   "f": "Ga hotuna uku. Ki saurara, ki kalla."
+   "m": "Ga hotuna. Ka saurara, ka kalla.",
+   "f": "Ga hotuna. Ki saurara, ki kalla."
   },
   "en": "Here are three pictures. Listen and look.",
   "screens": [
@@ -2738,9 +2738,10 @@
   "said_when": "",
   "status": "live",
   "recorded": {
-   "m": "63700c1941",
-   "f": "088a17c8e8"
-  }
+   "m": "4c25206f46",
+   "f": "8e875e6854"
+  },
+  "note": "no count: the lesson shows five, the line said three (Sani 2026-09-24)"
  },
  {
   "key": "s_o_miss",
