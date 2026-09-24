@@ -10,9 +10,10 @@ export interface PlanCard {
 export interface Placement { hits: number; wrong: number; asked: number; start: string; at: number; }
 
 const CARDS: Record<string, PlanCard> = {
-  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Fashe haruffa', sub: 'pop the letter Laila says', ico: '🎈', colour: 'var(--red)', route: 'fashe' },
+  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Fashe haruffa', sub: 'pop the letters from A to Z, in order', ico: '🎈', colour: 'var(--red)', route: 'fashe' },
   haruffa_ah: { key: 'haruffa_ah', eyebrow: 'NA GABA · NEXT', title: 'Haruffa A–H', sub: 'the first eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo' },
   haruffa_ip: { key: 'haruffa_ip', eyebrow: 'NA GABA · NEXT', title: 'Haruffa I–P', sub: 'the next eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '2' } },
+  haruffa_qz: { key: 'haruffa_qz', eyebrow: 'NA GABA · NEXT', title: 'Haruffa Q–Z', sub: 'the last ten letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '4' } },
   dabbobi: { key: 'dabbobi', eyebrow: 'NA GABA · NEXT', title: 'Dabbobi', sub: 'animals · their names in English', ico: '🐐', colour: 'var(--blue)', route: 'abubuwa/koyo', category: 'animals' },
 };
 
@@ -38,10 +39,16 @@ export class PlanService {
     this.rev();
     try { const raw = localStorage.getItem(this.key()); return raw ? (JSON.parse(raw) as Placement) : null; } catch { return null; }
   }
-  /** The game's verdict. Two numbers decide it, not one: hits alone can be guessed, hits with few wrong taps cannot. */
-  static decide(hits: number, wrong: number): string {
-    if (hits >= 10 && wrong <= 3) return 'dabbobi';
-    if (hits >= 6 && hits <= 9 && wrong <= 10) return 'haruffa_ip';
+  /**
+   * The game's verdict. `reached` is how far into the alphabet the child got on their own, popping B after A and so on
+   * to Z — 25 letters, since Laila pops A as the example. Where they stopped is where the teaching starts, and the
+   * count of wrong pops is what separates knowing from hunting: a child who reached Z by bursting half the sky did not
+   * read it, so they only skip as far as their clean stretch (Sani 2026-09-25).
+   */
+  static decide(reached: number, wrong: number): string {
+    if (reached >= 25 && wrong <= 3) return 'dabbobi';      // A–Z, cleanly: the alphabet is behind them
+    if (reached >= 15) return 'haruffa_qz';                 // they knew it through P
+    if (reached >= 7) return 'haruffa_ip';                  // they knew it through H
     return 'haruffa_ah';
   }
   save(p: Placement): void {

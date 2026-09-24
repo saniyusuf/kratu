@@ -399,6 +399,8 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vmin,40px);color:#fff;cursor:pointer;
   background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.6),rgba(255,255,255,0) 48%),var(--c);
   box-shadow:0 4px 0 rgba(59,46,30,.16);animation:bubrise var(--dur) linear forwards;will-change:transform}
+/* still, while she explains: the popped one still bursts */
+#app .s.fashe .sky.hold .bub:not(.pop):not(.burst){animation-play-state:paused}
 #app .s.fashe .bub::after{content:"";position:absolute;bottom:-9px;left:50%;margin-left:-3px;width:6px;height:10px;border-radius:0 0 3px 3px;background:rgba(59,46,30,.3)}
 @keyframes bubrise{from{transform:translateY(0)}to{transform:translateY(calc(-1 * var(--travel,720px)))}}
 /* the right one: it bursts open and is gone, while its letter flies to the strip */

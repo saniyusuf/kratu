@@ -4043,38 +4043,18 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Mu yi wasa. Idan na faɗi harafi, ka fashe shi.",
-   "f": "Mu yi wasa. Idan na faɗi harafi, ki fashe shi."
+   "m": "Mu yi wasa. Ka nemo harafi na farko na Turanci, ka fashe shi. Sannan na biye da shi, bi da bi.",
+   "f": "Mu yi wasa. Ki nemo harafi na farko na Turanci, ki fashe shi. Sannan na biye da shi, bi da bi."
   },
-  "en": "Let's play a game. When I say a letter, pop it.",
+  "en": "Let's play. Find the first letter of English and pop it, then the one after it, in order.",
   "screens": [
    "Fashe haruffa"
   ],
   "said_when": "",
   "status": "live",
   "recorded": {
-   "m": "db49c42c31",
-   "f": "ecdc4a12ed"
-  }
- },
- {
-  "key": "s_pop_say",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka fashe",
-   "f": "Ki fashe"
-  },
-  "en": "Pop",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "before each letter",
-  "status": "live",
-  "recorded": {
-   "m": "2dd56c6c71",
-   "f": "dc6ee1c4e8"
+   "m": "0e3fe337f3",
+   "f": "d0b111a3bd"
   }
  },
  {
@@ -4090,5 +4070,45 @@
   "said_when": "",
   "status": "live",
   "recorded": "c19a27e75c"
+ },
+ {
+  "key": "s_pop_demo",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga misali. Zan fashe na farko.",
+   "f": "Ga misali. Zan fashe na farko."
+  },
+  "en": "Here is an example. I'll pop the first one.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "before Laila pops A herself",
+  "status": "live",
+  "recorded": {
+   "m": "20b890fb75",
+   "f": "20b890fb75"
+  }
+ },
+ {
+  "key": "s_pop_go",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai. Ka nemo na biye.",
+   "f": "Yanzu ke. Ki nemo na biye."
+  },
+  "en": "Now you. Find the next one.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "after the example, and when a child stalls",
+  "status": "live",
+  "recorded": {
+   "m": "070de56dcd",
+   "f": "b4f5026438"
+  }
  }
 ]
