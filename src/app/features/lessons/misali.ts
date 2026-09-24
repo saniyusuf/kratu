@@ -34,7 +34,7 @@ import { Spotter, flyLetter, flyText, wait } from '../../shared/lesson/helpers';
 @if (kind === 'karatu' || kind === 'rubutu') {<div #slots class="wslots">@for (l of slotLetters(); track $index) {<span class="wslot show" [class.on]="slotState()[$index] === 'on'" [class.done]="slotState()[$index] === 'done'" [class.all]="allDone()">{{ slotText()[$index] }}</span>}</div>}
 @if (kind === 'rubutu') {<app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />}
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
-<div class="yesno ynpair objq"><app-laila-btn #lb [label]="kind === 'karatu' ? 'Karanta' : 'Faɗa'" [size]="kind === 'karatu' || kind === 'rubutu' ? 96 : 112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [amp]="rec() ? 0.7 : speech.amp()" (pressed)="lailaPressed()" /></div>}`,
+<div class="yesno ynpair objq"><app-laila-btn #lb [label]="kind === 'karatu' ? 'Karanta' : 'Faɗa'" [size]="kind === 'karatu' || kind === 'rubutu' ? 96 : 112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [amp]="rec() ? 0.7 : speech.amp()" (pressed)="lailaPressed()" [yay]="yay()" /></div>}`,
 })
 export class MisaliScreen implements OnInit, OnDestroy {
   readonly speech = inject(SpeechService);
@@ -62,7 +62,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   readonly title = ({ karatu: 'Karatu · misali', rubutu: 'Rubutu · misali', abubuwa: 'Abubuwa · misali', lambobi: 'Lambobi · misali', nemo: 'Nemo hoto · misali', nemonum: 'Nemo hoto · Lambobi · misali', haruffa: 'Haruffa · misali' } as Record<string, string>)[this.kind];
   readonly five = [0, 1, 2, 3, 4]; readonly ten = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   readonly movie = signal(false); readonly hearing = signal(false);
-  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false);
+  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false);
   readonly fbCls = signal(''); readonly fbText = signal('');
   readonly picSrc = signal<string | null>(null); readonly bigLetter = signal('');
   readonly slotLetters = signal<string[]>([]); readonly slotText = signal<string[]>([]); readonly slotState = signal<('' | 'on' | 'done')[]>([]); readonly allDone = signal(false);
@@ -94,6 +94,8 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private recOn(): void { this.rec.set(true); this.hearing.set(true); }
   private recOff(): void { this.rec.set(false); this.hearing.set(false); }
   private showPic(src?: string | null): void { this.picSrc.set(src || null); }
+  /** Right answer: the kalangu sounds and Laila hops (Sani 2026-09-24). */
+  private celebrate(): void { this.bus.playRaw('assets/audio/sfx/yay.ogg').catch(() => undefined); this.yay.set(true); setTimeout(() => this.yay.set(false), 760); }
   /** The example's own pictures, decoded before the film starts. */
   private warmExample(): void { this.warm.soon([this.AW?.img, this.RW?.img, this.KW?.img, this.word('goat')?.img, this.word('cat')?.img, ...this.gridItems().map((w) => w.img)]); }
   private reveal(): void { const im = this.picRef()?.nativeElement.querySelector('img'); if (!im?.animate) return; try { const an = im.animate([{ clipPath: 'inset(0 100% 0 0 round 30px)' }, { clipPath: 'inset(0 0 0 0 round 30px)' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }); const fin = () => { try { an.cancel(); } catch { /* ignore */ } }; an.onfinish = fin; setTimeout(fin, 1300); } catch { /* ignore */ } }
@@ -111,7 +113,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
       // a letter is heard as a letter (the 26 letters and their names), a word as a word; never compared case-sensitively —
       // 'a' against 'A' never matched, so the alphabet example waited out its 8 s instead of hearing the child (Sani 2026-09-22)
       const w = heard.toLowerCase();
-      const h = /^[A-Z]$/.test(heard) ? this.speech.hear({ target: heard })
+      const h = /^[A-Z]$/.test(heard) ? this.speech.hear({ target: heard, until: heard })
         : this.speech.hear({ target: heard, match: (raw) => { const r = raw.toLowerCase().trim(); return r === w || r.split(/\s+/).includes(w) ? heard : null; } });
       this.hearHandle = h; const r = await h.done; this.hearHandle = null; if (r.raw) heard = r.value ? heard : heard;
     }
@@ -119,7 +121,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
     // the written word flying out of Laila is for reading and the alphabet: elsewhere the child says a word and that is
     // the whole answer, so nothing is written for them to read (Sani 2026-09-20)
     if (target !== false && (this.kind === 'karatu' || this.kind === 'haruffa')) await flyText(this.zoom, this.s(), this.head(), target, heard);
-    this.fb('good', 'Madalla! ✓'); if (!noKudos) await this.play('app_kudos');
+    this.fb('good', 'Madalla! ✓'); this.celebrate(); if (!noKudos) await this.play('app_kudos');
   }
   private reset(): void { this.running = false; this.phase = 'idle'; this.movie.set(false); this.cue.set(false); this.handOff(); this.fb('', ''); this.speak.set(false); this.armed.set(false); this.recOff(); this.showPic(null); this.mkSlots(''); this.bigLetter.set(''); this.gridItems.set([]); this.gridDone.set(''); }
   /**

@@ -9,6 +9,12 @@ export interface HearOptions {
   match?: (raw: string) => string | null;
   /** A burst of letters ("D O G"): every letter heard, in order. */
   multi?: boolean;
+  /**
+   * Keep listening until this answer is heard, instead of judging the first thing said (Sani 2026-09-24). A child may
+   * try as often as they like — B, D, no, A! — and the microphone closes the moment the right one lands, or when the
+   * time runs out. Only the alphabet uses it: one letter, a closed set, and nothing lost by hearing more tries.
+   */
+  until?: string;
   /** The word being spelled; a child may say it too and it is ignored. */
   word?: string;
   /** Demo mode: nothing is heard, the expected answer is simulated after the sample clips. */
@@ -38,6 +44,8 @@ export class SpeechService {
   /** Sound heard while the mic is open but nobody is listening yet: the last 1.5 s, so an answer given the instant Laila
    *  is pressed is not lost while the recogniser starts (Sani 2026-09-22). */
   private preroll: { t: number; d: Float32Array }[] = [];
+  /** How many wrong tries the child made while the microphone stayed open for the right one. */
+  tries = 0;
   private feeding = false; private rec: any = null; private seq = 0; private peak = 0; private vocabCache: string[] | null = null;
   /** The loader hands over the model's files; a restart fetches them again through this. */
   filesProvider: (() => Promise<Record<string, ArrayBuffer> | null>) | null = null;
@@ -101,6 +109,7 @@ export class SpeechService {
       this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
       this.closeMic(); resolve({ value: L, raw: raw || '' });
     };
+    this.tries = 0;
     const go = async () => {
       await this.bus.micReady(); const ok = await this.ensureAudio();
       if (finished || my !== this.seq) return;
@@ -121,13 +130,15 @@ export class SpeechService {
         if (o.multi) { t.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); if (quiet) clearTimeout(quiet); quiet = setTimeout(() => fin(null, lastRaw), 900); return; }
         if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
+        // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
+        if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) { this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”'); return; }
         fin(L, t);
       });
       const from = Math.max(askedAt, this.bus.engine.lastSound) + 200;   // after the press AND after Laila's last sound: her voice never reaches the recogniser
       for (const b of this.preroll) if (b.t - (b.d.length / (this.ctx?.sampleRate || 48000)) * 1000 >= from) { try { this.rec.acceptWaveformFloat(b.d, this.ctx!.sampleRate); } catch { this.feedErr++; } }
       this.preroll = [];
       this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set('Ina saurara…');
-      tmo = setTimeout(() => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); }, o.multi ? 10000 : 8000);
+      tmo = setTimeout(() => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); }, o.multi ? 10000 : o.until ? 14000 : 8000);
     };
     // the multi result: letters are the value
     const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw } : r); };

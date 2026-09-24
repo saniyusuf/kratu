@@ -350,3 +350,21 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
    child who cannot read nothing they could use, and in the examples it claimed to have heard Laila. It is hidden
    everywhere rather than deleted, so its space is still held and no screen shifts (Sani 2026-09-20). */
 #app .fb.heard{visibility:hidden}
+
+/* A correct answer: Laila hops once and her glow flares, while the kalangu sounds (Sani 2026-09-24). Transform and
+   opacity only, so it costs nothing on a cheap tablet, and it is over in 700 ms — a nod, not a fanfare. */
+#app .x-laila.yay .lm { animation: lailayay .7s cubic-bezier(.22,1.2,.36,1) 1; }
+#app .x-laila.yay .lglow { animation: yayglow .7s ease-out 1; }
+@keyframes lailayay {
+  0% { transform: translateY(0) scale(1) rotate(0); }
+  30% { transform: translateY(-14%) scale(1.06) rotate(-4deg); }
+  55% { transform: translateY(0) scale(1) rotate(3deg); }
+  75% { transform: translateY(-5%) scale(1.02) rotate(-1deg); }
+  100% { transform: translateY(0) scale(1) rotate(0); }
+}
+@keyframes yayglow {
+  0% { opacity: .35; transform: translate(-50%,-50%) scale(1); }
+  35% { opacity: .95; transform: translate(-50%,-50%) scale(1.22); }
+  100% { opacity: .35; transform: translate(-50%,-50%) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { #app .x-laila.yay .lm, #app .x-laila.yay .lglow { animation: none; } }

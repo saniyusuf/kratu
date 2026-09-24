@@ -10,6 +10,7 @@ import { LailaButton } from '../../shared/laila/laila-button';
 import { Spotter, firstHints, flyText, wait } from '../../shared/lesson/helpers';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
+const YAY = 'assets/audio/sfx/yay.ogg';
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -26,7 +27,7 @@ const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 
 <div class="abcshow" [class.off]="!big()"><span class="abcbig" [style.--c]="bigColor()">{{ big() }}</span></div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [attr.data-l]="L" [style.--c]="color($index)" [class.active]="active()[$index]" [class.on]="st()[$index] === 'on'" [class.done]="st()[$index] === 'done'" [class.bad]="st()[$index] === 'bad'">{{ st()[$index] === 'done' ? L : '' }}</span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
-<div class="yesno ynpair abcq lone"><app-laila-btn #lb label="Laila" [size]="132" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>`,
+<div class="yesno ynpair abcq lone"><app-laila-btn #lb label="Laila" [size]="132" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>`,
 })
 export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly speech = inject(SpeechService);
@@ -43,7 +44,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly st = signal<('' | 'on' | 'done' | 'bad')[]>(ALL.map(() => '')); readonly active = signal<boolean[]>(ALL.map(() => false));
   readonly big = signal(''); readonly bigColor = signal('var(--red)');
   readonly fbCls = signal(''); readonly fbText = signal('');
-  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false);
+  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false);
   private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null }) => void } | null = null;
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
@@ -63,6 +64,11 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private reset(): void { this.st.set(ALL.map(() => '')); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.awaiting = false; this.cur = null; this.hideLetter(); this.spotter.unspot(); }
   private setDoneUpTo(n: number): void { this.st.update((a) => a.map((x, k) => k < n ? 'done' : x)); }
   private async play(k: string): Promise<boolean> { return this.stopped ? false : this.bus.play(k); }
+  /** Right answer: the kalangu sounds and Laila hops, while the letter flies to its place. */
+  private celebrate(): void {
+    this.bus.playRaw(YAY).catch(() => undefined);
+    this.yay.set(true); setTimeout(() => this.yay.set(false), 760);
+  }
   private async seq(ks: string[]): Promise<boolean> { for (const k of ks) if (!(await this.play(k))) return false; return true; }
   private async playIntro(k: string): Promise<void> { await this.play(k); if (!this.hinted) { this.hinted = true; await firstHints(this.bus, this.session, this.spotter, this.host.nativeElement, null); } }
 
@@ -70,7 +76,8 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private arm(L: string): Promise<{ ok: boolean; heard: string | null }> { return new Promise((res) => { this.awaiting = true; this.cur = { L, res }; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.'); }); }
   private async press(): Promise<void> {
     if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
-    this.rec.set(true); const h = this.speech.hear({ target: c.L }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
+    // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
+    this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     c.res({ ok: r.value === c.L, heard: (r.value as string | null) });
   }
   /** The letter is on the board; prompt, then the child says it. Three wrong → help: "listen, this is …" + the letter, then ask again. */
@@ -85,7 +92,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     }
   }
   private async judge(L: string, r: { ok: boolean; heard: string | null }, noKudos: boolean, miss: () => void): Promise<boolean> {
-    if (r.ok) { await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
+    if (r.ok) { this.celebrate(); await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
     miss(); this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
   }
   // ---- the four steps of a group ----
