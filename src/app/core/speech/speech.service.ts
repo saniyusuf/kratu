@@ -11,8 +11,9 @@ export interface HearOptions {
   multi?: boolean;
   /**
    * Keep listening until this answer is heard, instead of judging the first thing said (Sani 2026-09-24). A child may
-   * try as often as they like — B, D, no, A! — and the microphone closes the moment the right one lands, or when the
-   * time runs out. Only the alphabet uses it: one letter, a closed set, and nothing lost by hearing more tries.
+   * try as often as they like — B, D, no, A! — and the microphone closes the moment the right one lands. Quiet closes
+   * it after UNTIL_QUIET; each try winds that clock back, and UNTIL_CAP stops it running away. Only the alphabet uses
+   * it: one letter, a closed set, and nothing lost by hearing more tries.
    */
   until?: string;
   /** The word being spelled; a child may say it too and it is ignored. */
@@ -26,6 +27,12 @@ export interface HearHandle { done: Promise<{ value: string | string[] | null; r
 export interface HeardEntry { t: number; target: string; heard: string; ok: boolean; peak: number; rate?: number; ctx?: string; device?: string; }
 
 declare const Vosk: any;
+
+/** Waiting for one particular answer: quiet for this long closes the microphone — the same 8 s a single answer
+ *  always had (Sani 2026-09-24: keep the original timing). */
+const UNTIL_QUIET = 8000;
+/** …and however many tries the child makes, it never stays open longer than this. */
+const UNTIL_CAP = 15000;
 
 /**
  * The offline recogniser (Vosk) behind one door. Every lesson calls hear(): the microphone opens, the child speaks,
@@ -100,6 +107,7 @@ export class SpeechService {
     const done = new Promise<{ value: string | string[] | null; raw: string }>((r) => { resolve = r; });
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
+    const opened = Date.now(); let again = () => undefined as void;
     const askedAt = Date.now();
     const handle: HearHandle = { done, stop: () => { if (finished) return; finished = true; this.seq++; this.closeMic(); } };
     if (o.auto || typeof Vosk === 'undefined' || this.failed) { this.simulate(o, my).then((r) => { if (!finished) { finished = true; resolve(r); } }); return handle; }
@@ -131,14 +139,16 @@ export class SpeechService {
         if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
         // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
-        if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) { this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”'); return; }
+        if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) { this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”'); again(); return; }
         fin(L, t);
       });
       const from = Math.max(askedAt, this.bus.engine.lastSound) + 200;   // after the press AND after Laila's last sound: her voice never reaches the recogniser
       for (const b of this.preroll) if (b.t - (b.d.length / (this.ctx?.sampleRate || 48000)) * 1000 >= from) { try { this.rec.acceptWaveformFloat(b.d, this.ctx!.sampleRate); } catch { this.feedErr++; } }
       this.preroll = [];
       this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set('Ina saurara…');
-      tmo = setTimeout(() => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); }, o.multi ? 10000 : o.until ? 14000 : 8000);
+      again = () => { if (tmo) clearTimeout(tmo); if (Date.now() - opened > UNTIL_CAP) { end(); return; } tmo = setTimeout(end, UNTIL_QUIET); };
+      const end = () => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); };
+      tmo = setTimeout(end, o.multi ? 10000 : o.until ? UNTIL_QUIET : 8000);
     };
     // the multi result: letters are the value
     const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw } : r); };
