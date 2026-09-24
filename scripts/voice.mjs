@@ -12,8 +12,15 @@ const env = existsSync('.env') ? Object.fromEntries(readFileSync('.env', 'utf8')
 const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google', TARGET_DB = -18.5;
 const args = process.argv.slice(2), only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
+/**
+ * Which voice reads a language. The clips live in audio/ha and audio/en; English is asked for as en-NG so the children
+ * hear Nigerian English rather than American — the only accent difference this recorder honours (Sani 2026-09-24).
+ */
+const VOICE = { ha: 'ha', en: 'en-NG' };
+export const ttsLang = (lang) => VOICE[lang] || lang;
+
 async function synth(text, lang) {
-  if (PROVIDER === 'google') { const r = await fetch('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + lang + '&q=' + encodeURIComponent(text), { headers: { 'User-Agent': 'Mozilla/5.0' } }); if (!r.ok) throw new Error('tts ' + r.status); return Buffer.from(await r.arrayBuffer()); }
+  if (PROVIDER === 'google') { const r = await fetch('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + ttsLang(lang) + '&q=' + encodeURIComponent(text), { headers: { 'User-Agent': 'Mozilla/5.0' } }); if (!r.ok) throw new Error('tts ' + r.status); return Buffer.from(await r.arrayBuffer()); }
   throw new Error('unknown provider ' + PROVIDER);
 }
 function chunks(text) { const parts = text.split(/(?<=[.!?,:])\s+/).map((t) => t.trim()).filter(Boolean), out = []; let cur = ''; for (const t of parts) { if (cur.length + t.length + 1 > 180 && cur) { out.push(cur); cur = t; } else cur = (cur + ' ' + t).trim(); } if (cur) out.push(cur); return out; }
