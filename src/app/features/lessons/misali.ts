@@ -333,7 +333,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private async runHaruffa(): Promise<void> {
     if (!(await this.say([this.gk('sx_intro'), 'sx_laila']))) return; this.bigLetter.set('A');
     if (!(await this.say(['app_wannan', 'app_en_A']))) return;
-    await wait(300); if (!(await this.say(['app_en_A']))) return;   // every taught letter is said twice (Sani 2026-09-24)
+    await wait(300); if (!(await this.say([this.gk('app_remind'), 'app_en_A']))) return;   // said twice, and introduced both times (Sani 2026-09-24)
     // the same instruction every other example gives; the only A they hear after it is the child's own (Sani 18 Sep)
     if (!(await this.sayDo('sx_do_say'))) return;
     await this.listen('A', this.gk('sx_w_A'), this.s().querySelector('.abcbig')); this.session.markExample('haruffa', 'A'); this.handOff(); await this.finish();

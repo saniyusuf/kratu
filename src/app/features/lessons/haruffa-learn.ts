@@ -74,11 +74,13 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private celebrate(): void { joy(this.bus, this.yay); }
   /**
    * Teaching voice: every letter is said twice, with a beat between, because once goes past a child who is still
-   * settling into the screen (Sani 2026-09-24). Only teaching says it twice; the child's own turn is unchanged.
+   * settling into the screen (Sani 2026-09-24). The second time is introduced too — "Wannan shi ne A. Ka saurara,
+   * wannan shi ne A" — never the bare letter twice over. Only teaching repeats; the child's own turn is unchanged.
    */
   private async sayLetter(intro: string, L: string): Promise<void> {
+    const again = intro.startsWith('app_remind') ? 'app_wannan' : this.bus.gk('app_remind');
     this.speak.set(true);
-    if (await this.seq([intro, 'app_en_' + L])) { await wait(300); await this.play('app_en_' + L); }
+    if (await this.seq([intro, 'app_en_' + L])) { await wait(300); await this.seq([again, 'app_en_' + L]); }
     this.speak.set(false);
   }
   private async seq(ks: string[]): Promise<boolean> { for (const k of ks) if (!(await this.play(k))) return false; return true; }
