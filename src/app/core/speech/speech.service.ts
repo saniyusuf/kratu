@@ -25,7 +25,7 @@ export interface HearOptions {
   /** For demo mode: the letters or word the sample child "says". */
   say?: string | string[];
 }
-export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string; tries?: number }>; stop(): void; }
+export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string }>; stop(): void; }
 export interface HeardEntry { t: number; target: string; heard: string; ok: boolean; peak: number; rate?: number; ctx?: string; device?: string; }
 
 declare const Vosk: any;
@@ -105,8 +105,9 @@ export class SpeechService {
 
   /** Open the mic for one answer. The handle's stop() closes it early (a tap on a key, leaving the screen). */
   hear(o: HearOptions): HearHandle {
-    let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number }) => void;
-    const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number }>((r) => { resolve = r; });
+    let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number; wrong?: string }) => void;
+    const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string }>((r) => { resolve = r; });
+    let wrong = '';
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
     const opened = Date.now(); let again = () => undefined as void;
@@ -117,7 +118,7 @@ export class SpeechService {
       if (finished || my !== this.seq) return;
       finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
       this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
-      this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries });
+      this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong });
     };
     this.tries = 0;
     const go = async () => {
@@ -142,7 +143,7 @@ export class SpeechService {
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
         // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
         if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) {
-          this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
+          this.tries++; if (L) wrong = String(L); this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
           if (this.tries >= (o.maxWrong ?? 3)) { fin(null, lastRaw); return; }   // enough tries: the lesson takes over and helps
           again(); return;
         }

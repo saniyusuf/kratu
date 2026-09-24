@@ -11,9 +11,12 @@ import { Spotter, firstHints, flyText, wait } from '../../shared/lesson/helpers'
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
 const YAY = 'assets/audio/sfx/yay.ogg';
-/** The alphabet is stricter than the rest of the app: two wrong letters and Laila says the letter herself, rather than
- *  three (Sani 2026-09-24). A letter is one sound — a child who misses twice is guessing, not thinking. */
-const WRONG = 2;
+/**
+ * One press, one entry. Inside it the child may try twice; a second wrong letter ends the entry as wrong rather than
+ * letting them guess their way to the answer (Sani 2026-09-24). Laila only says the letter herself after HELP failed
+ * entries — being told the answer is teaching, and it should not arrive the moment a child guesses twice.
+ */
+const WRONG = 2, HELP = 3;
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -81,7 +84,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
     // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
     this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L, maxWrong: WRONG }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
-    c.res({ ok: r.value === c.L, heard: (r.value as string | null), tries: r.tries || 0 });
+    c.res({ ok: r.value === c.L, heard: (r.value as string | null) || r.wrong || null, tries: r.tries || 0 });
   }
   /** The letter is on the board; prompt, then the child says it. Three wrong → help: "listen, this is …" + the letter, then ask again. */
   private async askSay(L: string, prompt: string[], noKudos = false): Promise<void> {
@@ -91,13 +94,13 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, (n) => (misses += n))) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, (n) => (misses += n))) return; }
       else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, (n) => (misses += n))) return; }
       // two wrong letters since the last help, however they arrived — both in one breath or one at a time
-      if (misses - helped >= WRONG) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
+      if (misses - helped >= HELP) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
       else { await this.play('app_retry'); this.setSt(L, 'on'); }
     }
   }
   private async judge(L: string, r: { ok: boolean; heard: string | null; tries: number }, noKudos: boolean, miss: (n: number) => void): Promise<boolean> {
     if (r.ok) { this.celebrate(); await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
-    miss(Math.max(1, r.tries));   // each wrong letter counts, not each time the microphone opened
+    miss(1);   // one failed entry is one miss, however many tries it held
     this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
   }
   // ---- the four steps of a group ----
