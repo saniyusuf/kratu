@@ -14,9 +14,10 @@ const YAY = 'assets/audio/sfx/yay.ogg';
 /**
  * One press, one entry. Inside it the child may try twice; a second wrong letter ends the entry as wrong rather than
  * letting them guess their way to the answer (Sani 2026-09-24). Laila only says the letter herself after HELP failed
- * entries — being told the answer is teaching, and it should not arrive the moment a child guesses twice.
+ * entries — being told the answer is teaching, and it should not arrive the moment a child guesses twice. After GIVE
+ * she writes it in and moves on, so no child is ever stuck on one letter.
  */
-const WRONG = 2, HELP = 3;
+const WRONG = 2, HELP = 3, GIVE = 5;
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -93,9 +94,17 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       if (this.stopped) return;
       if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, (n) => (misses += n))) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, (n) => (misses += n))) return; }
       else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, (n) => (misses += n))) return; }
-      // two wrong letters since the last help, however they arrived — both in one breath or one at a time
+      // HELP failed entries: Laila says the letter herself, as a lesson rather than a buzzer
       if (misses - helped >= HELP) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
       else { await this.play('app_retry'); this.setSt(L, 'on'); }
+      // GIVE failed entries: she writes it in and the group moves on. Nothing here ever ends a child's turn, so a letter
+      // the microphone cannot hear from this child — F and S sound alike to it — would otherwise hold them forever
+      // (Sani 2026-09-24, found running A–Z). It counts as missed, so the recall and the scatter ask again.
+      if (misses >= GIVE) {
+        this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false);
+        await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L);
+        this.fb('wait', L + ' ✓'); await wait(500); return;
+      }
     }
   }
   private async judge(L: string, r: { ok: boolean; heard: string | null; tries: number }, noKudos: boolean, miss: (n: number) => void): Promise<boolean> {
