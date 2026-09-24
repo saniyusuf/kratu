@@ -10,7 +10,7 @@ export interface PlanCard {
 export interface Placement { hits: number; wrong: number; asked: number; start: string; at: number; }
 
 const CARDS: Record<string, PlanCard> = {
-  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Fashe haruffa', sub: 'pop the letters from A to Z, in order', ico: '🎈', colour: 'var(--red)', route: 'fashe' },
+  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Fasa haruffa', sub: 'pop the letters from A to Z, in order', ico: '🎈', colour: 'var(--red)', route: 'fashe' },
   haruffa_ah: { key: 'haruffa_ah', eyebrow: 'NA GABA · NEXT', title: 'Haruffa A–H', sub: 'the first eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo' },
   haruffa_ip: { key: 'haruffa_ip', eyebrow: 'NA GABA · NEXT', title: 'Haruffa I–P', sub: 'the next eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '2' } },
   haruffa_qz: { key: 'haruffa_qz', eyebrow: 'NA GABA · NEXT', title: 'Haruffa Q–Z', sub: 'the last ten letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '4' } },

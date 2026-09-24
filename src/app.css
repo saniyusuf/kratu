@@ -415,6 +415,9 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   22%{transform:translateY(var(--y0,0)) scale(.78) rotate(5deg)}
   100%{transform:translateY(0) scale(.7) rotate(-16deg);opacity:.25}
 }
+/* the example's pointing hand, riding the balloon it points at */
+#app .s.fashe .pophand{position:absolute;left:0;top:0;font-size:34px;line-height:1;z-index:4;pointer-events:none;
+  filter:drop-shadow(0 3px 3px rgba(59,46,30,.25));animation:handbob .8s ease-in-out infinite}
 #app .s.fashe .abcslots{width:min(680px,96%)}
 #app .s.fashe .aslot{height:30px;font-size:16px}
 #app .s.fashe .aslot.on{border-color:var(--yellow);border-style:solid}

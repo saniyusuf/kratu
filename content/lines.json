@@ -4043,8 +4043,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Mu yi wasa. Ka nemo harafi na farko na Turanci, ka fashe shi. Sannan na biye da shi, bi da bi.",
-   "f": "Mu yi wasa. Ki nemo harafi na farko na Turanci, ki fashe shi. Sannan na biye da shi, bi da bi."
+   "m": "Mu yi wasa. Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan na biye da shi, bi da bi.",
+   "f": "Mu yi wasa. Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan na biye da shi, bi da bi."
   },
   "en": "Let's play. Find the first letter of English and pop it, then the one after it, in order.",
   "screens": [
@@ -4053,8 +4053,8 @@
   "said_when": "",
   "status": "live",
   "recorded": {
-   "m": "0e3fe337f3",
-   "f": "d0b111a3bd"
+   "m": "c53e70fce0",
+   "f": "a3c3358f39"
   }
  },
  {
@@ -4077,18 +4077,18 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ga misali. Zan fashe na farko.",
-   "f": "Ga misali. Zan fashe na farko."
+   "m": "Ga misali. Zan fasa na farko:",
+   "f": "Ga misali. Zan fasa na farko:"
   },
-  "en": "Here is an example. I'll pop the first one.",
+  "en": "Here is an example. I'll pop the first one:",
   "screens": [
    "Fashe haruffa"
   ],
-  "said_when": "before Laila pops A herself",
+  "said_when": "before Laila points at A and pops it; the letter itself is said next",
   "status": "live",
   "recorded": {
-   "m": "20b890fb75",
-   "f": "20b890fb75"
+   "m": "d1600e46ad",
+   "f": "d1600e46ad"
   }
  },
  {
@@ -4097,18 +4097,388 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Yanzu kai. Ka nemo na biye.",
-   "f": "Yanzu ke. Ki nemo na biye."
+   "m": "Yanzu kai.",
+   "f": "Yanzu ke."
   },
-  "en": "Now you. Find the next one.",
+  "en": "Now you.",
   "screens": [
    "Fashe haruffa"
   ],
   "said_when": "after the example, and when a child stalls",
   "status": "live",
   "recorded": {
-   "m": "070de56dcd",
-   "f": "b4f5026438"
+   "m": "263e421bf0",
+   "f": "6dcc5f7497"
   }
+ },
+ {
+  "key": "s_pop_nth",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fasa",
+   "f": "Ki fasa"
+  },
+  "en": "Pop the",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "before each letter, with its place — never its name",
+  "status": "live",
+  "recorded": {
+   "m": "87ff4ea2b1",
+   "f": "ae9f0c8128"
+  }
+ },
+ {
+  "key": "app_ord_02",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na biyu",
+  "en": "the second",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "b05372cc9f"
+ },
+ {
+  "key": "app_ord_03",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na uku",
+  "en": "the third",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "12524f7f8f"
+ },
+ {
+  "key": "app_ord_04",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na huɗu",
+  "en": "the fourth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "19cf7ebd00"
+ },
+ {
+  "key": "app_ord_05",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na biyar",
+  "en": "the fifth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "0a215cf49d"
+ },
+ {
+  "key": "app_ord_06",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na shida",
+  "en": "the sixth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "c78a3a0e7f"
+ },
+ {
+  "key": "app_ord_07",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na bakwai",
+  "en": "the seventh",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "7d560e41f2"
+ },
+ {
+  "key": "app_ord_08",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na takwas",
+  "en": "the eighth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "c5e9e32555"
+ },
+ {
+  "key": "app_ord_09",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na tara",
+  "en": "the ninth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "c3950d408a"
+ },
+ {
+  "key": "app_ord_10",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na goma",
+  "en": "the tenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "6252dc976f"
+ },
+ {
+  "key": "app_ord_11",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha ɗaya",
+  "en": "the eleventh",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "d0840b4557"
+ },
+ {
+  "key": "app_ord_12",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha biyu",
+  "en": "the twelfth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "cd80b800f7"
+ },
+ {
+  "key": "app_ord_13",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha uku",
+  "en": "the thirteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "4e08545518"
+ },
+ {
+  "key": "app_ord_14",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha huɗu",
+  "en": "the fourteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "29fab6f825"
+ },
+ {
+  "key": "app_ord_15",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha biyar",
+  "en": "the fifteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "c1f3839de9"
+ },
+ {
+  "key": "app_ord_16",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha shida",
+  "en": "the sixteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "3935b585b1"
+ },
+ {
+  "key": "app_ord_17",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha bakwai",
+  "en": "the seventeenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "41f0fb8086"
+ },
+ {
+  "key": "app_ord_18",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha takwas",
+  "en": "the eighteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "37c642d1ac"
+ },
+ {
+  "key": "app_ord_19",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na sha tara",
+  "en": "the nineteenth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "cbfe0906ad"
+ },
+ {
+  "key": "app_ord_20",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin",
+  "en": "the twentieth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "5bf292d253"
+ },
+ {
+  "key": "app_ord_21",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da ɗaya",
+  "en": "the twenty-first",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "96d76432fe"
+ },
+ {
+  "key": "app_ord_22",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da biyu",
+  "en": "the twenty-second",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "ed8e75cb79"
+ },
+ {
+  "key": "app_ord_23",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da uku",
+  "en": "the twenty-third",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "ba2f91a49e"
+ },
+ {
+  "key": "app_ord_24",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da huɗu",
+  "en": "the twenty-fourth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "0dc2804178"
+ },
+ {
+  "key": "app_ord_25",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da biyar",
+  "en": "the twenty-fifth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "39e86fa8d3"
+ },
+ {
+  "key": "app_ord_26",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "na ashirin da shida",
+  "en": "the twenty-sixth",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "122da58ee1"
  }
 ]

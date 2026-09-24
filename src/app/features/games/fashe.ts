@@ -85,7 +85,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.stopped = true; this.bus.stopAll(); document.removeEventListener('keydown', this.onKey);
-    this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.answer?.(null);
+    this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.unpoint(); this.answer?.(null);
   }
 
   /** The balloons rise by a measured distance rather than a guessed one, so they always clear the top of the sky. */
@@ -198,44 +198,83 @@ export class FasheScreen implements OnInit, OnDestroy {
   // ---- the run: A to Z, in order, with nobody saying which letter is next ----
   /** The letter now due. Keeping it in the sky is this screen's one duty; naming it would end the test. */
   private want(): string { return ALL[this.at] || ''; }
+  /**
+   * What Laila says before each letter: its **place**, never its name — "ka fasa na biyu", pop the second one. A child
+   * who knows the alphabet knows which letter that is; one who does not cannot be handed it (Sani 2026-09-25).
+   */
+  private async askNth(first = false): Promise<void> {
+    const n = this.at + 1; if (n < 2 || n > 26) return;
+    this.speak.set(true);
+    // one chain, awaited end to end: every bus.play stops whatever is sounding, so a second line started alongside
+    // this one swallows it — that is how "ka fasa" went missing under "yanzu kai" (Sani 2026-09-25)
+    if (first) await this.bus.play(this.bus.gk('s_pop_go'));
+    await this.bus.play(this.bus.gk('s_pop_nth'));
+    await this.bus.play('app_ord_' + String(n).padStart(2, '0'));
+    this.speak.set(false);
+  }
   private wait(): Promise<boolean | null> {
     return new Promise((res) => {
       const L = this.want();
+      this.sweep();                                   // nothing in the sky that is already on the strip, whatever raced what
       this.answer = res; this.target.set(L); this.roundWrong = 0; this.bad.set(false);
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
       if (!this.inSky().includes(L)) { const old = [...this.bubs()].sort((a, b) => b.in - a.in)[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }
       this.fb('wait', '');
+      this.askNth(this.at === 1).catch(() => undefined);   // she names the place while they play: a pop mid-sentence counts
       this.later(NUDGE_AT, () => { if (this.answer === res) this.again(); });
       this.later(GIVE_AT, () => { if (this.answer === res) { this.answer = null; res(false); } });   // they have stopped playing
     });
   }
-  /** The ear, and Laila herself: the instruction again, never the letter. */
+  /** The ear, and Laila herself: which place is due, said again. Never the letter. */
   async again(): Promise<void> {
     if (!this.target()) return;
-    this.bus.stopAll(); this.speak.set(true);
-    await this.bus.play(this.bus.gk('s_pop_go')); this.speak.set(false);
+    this.bus.stopAll(); await this.askNth();
   }
-  /** Laila pops A herself, so a child who has never held a tablet sees what popping is before anything is counted. */
+  /**
+   * Laila does the first one herself, in full view: the balloons are drifting, a hand travels up to the A balloon and
+   * rides along with it, she says "here is an example, I'll pop the first one", names it — **A** — and only then does
+   * it burst. A child who has never held a tablet has now seen the whole move (Sani 2026-09-25).
+   */
   private async example(): Promise<void> {
-    this.speak.set(true); await this.bus.play(this.bus.gk('s_pop_demo')); this.speak.set(false);
+    if (this.done()[0]) { this.at = Math.max(this.at, 1); this.hold.set(false); return; }   // an eager child got there first
+    this.hold.set(false);                                   // they move while she demonstrates
     const b = this.bubs().find((x) => x.L === 'A') ?? (() => { const old = [...this.bubs()].sort((a, c) => c.in - a.in)[0]; const n = this.mk('A', old.lane); this.bubs.update((a) => a.map((x) => x.id === old.id ? n : x)); return n; })();
-    await wait(500);
+    await wait(80);
     const el = this.el(b.id);
+    if (el) this.pointAt(el);
+    this.speak.set(true);
+    await this.bus.play(this.bus.gk('s_pop_demo'));          // "Ga misali. Zan fasa na farko:"
+    await this.bus.play('app_en_A');                         // …and its name, so the move is unambiguous
+    this.speak.set(false);
+    if (this.stopped) { this.unpoint(); return; }
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
-    joy(this.bus, this.yay);
+    joy(this.bus, this.yay); this.unpoint();
     if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot('A'), 'A', 'var(--green)');
     this.done.update((a) => a.map((v, i) => i === 0 ? true : v));
     this.at = 1;                                            // A is shown, not scored: the child's own run starts at B
-    this.later(60, () => this.recycle(b.id));
-    await this.bus.play('app_en_A');
+    this.later(60, () => { this.recycle(b.id); this.sweep(); });
   }
+  /** The pointing hand rides the balloon it is pointing at, because the balloon is moving while she talks. */
+  private hand: HTMLElement | null = null; private handRaf = 0;
+  private pointAt(el: HTMLElement): void {
+    const sky = this.skyRef().nativeElement;
+    const h = document.createElement('span'); h.className = 'pophand'; h.textContent = '👆🏾'; h.setAttribute('aria-hidden', 'true');
+    sky.appendChild(h); this.hand = h;
+    const follow = () => {
+      if (!this.hand || !el.isConnected) return;
+      const r = el.getBoundingClientRect(), s = sky.getBoundingClientRect();
+      // left/top, not transform: the hand's bob animation owns its transform and would throw any translate away
+      h.style.left = (r.left - s.left + r.width / 2 - 30) + 'px'; h.style.top = (r.bottom - s.top - 6) + 'px';
+      this.handRaf = requestAnimationFrame(follow);
+    };
+    follow();
+  }
+  private unpoint(): void { cancelAnimationFrame(this.handRaf); this.hand?.remove(); this.hand = null; }
   private async start(): Promise<void> {
     this.fill(); this.eye.set('Mu gani · A → Z');
     if (!(await this.bus.play(this.bus.gk('s_pop_intro')))) return;
     await this.example();
     if (this.stopped) return;
-    this.hold.set(false);                                            // now they drift
-    this.bus.play(this.bus.gk('s_pop_go')).catch(() => undefined);   // she talks while they play: a pop during "now you" still counts
     for (; this.at < ALL.length; ) {
       if (this.stopped) return;
       const ok = await this.wait();
