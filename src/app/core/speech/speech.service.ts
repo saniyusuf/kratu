@@ -16,6 +16,8 @@ export interface HearOptions {
    * it: one letter, a closed set, and nothing lost by hearing more tries.
    */
   until?: string;
+  /** With `until`: how many wrong tries close the microphone anyway. Three, like every other lesson in the app. */
+  maxWrong?: number;
   /** The word being spelled; a child may say it too and it is ignored. */
   word?: string;
   /** Demo mode: nothing is heard, the expected answer is simulated after the sample clips. */
@@ -23,7 +25,7 @@ export interface HearOptions {
   /** For demo mode: the letters or word the sample child "says". */
   say?: string | string[];
 }
-export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string }>; stop(): void; }
+export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string; tries?: number }>; stop(): void; }
 export interface HeardEntry { t: number; target: string; heard: string; ok: boolean; peak: number; rate?: number; ctx?: string; device?: string; }
 
 declare const Vosk: any;
@@ -103,8 +105,8 @@ export class SpeechService {
 
   /** Open the mic for one answer. The handle's stop() closes it early (a tap on a key, leaving the screen). */
   hear(o: HearOptions): HearHandle {
-    let resolve!: (v: { value: string | string[] | null; raw: string }) => void;
-    const done = new Promise<{ value: string | string[] | null; raw: string }>((r) => { resolve = r; });
+    let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number }) => void;
+    const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number }>((r) => { resolve = r; });
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
     const opened = Date.now(); let again = () => undefined as void;
@@ -115,7 +117,7 @@ export class SpeechService {
       if (finished || my !== this.seq) return;
       finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
       this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
-      this.closeMic(); resolve({ value: L, raw: raw || '' });
+      this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries });
     };
     this.tries = 0;
     const go = async () => {
@@ -139,7 +141,11 @@ export class SpeechService {
         if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
         // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
-        if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) { this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”'); again(); return; }
+        if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) {
+          this.tries++; this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
+          if (this.tries >= (o.maxWrong ?? 3)) { fin(null, lastRaw); return; }   // enough tries: the lesson takes over and helps
+          again(); return;
+        }
         fin(L, t);
       });
       const from = Math.max(askedAt, this.bus.engine.lastSound) + 200;   // after the press AND after Laila's last sound: her voice never reaches the recogniser
@@ -151,7 +157,7 @@ export class SpeechService {
       tmo = setTimeout(end, o.multi ? 10000 : o.until ? UNTIL_QUIET : 8000);
     };
     // the multi result: letters are the value
-    const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw } : r); };
+    const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw, tries: r.tries } : r); };
     if (!this.model) {
       this.loadModel(); this.preparing.set(true); this.fb.set('Ana shirya murya…'); const t0 = Date.now();
       const wait = () => { if (finished || my !== this.seq) { this.preparing.set(false); return; } if (this.model) { this.preparing.set(false); go(); } else if (this.failed || Date.now() - t0 > 90000) { this.preparing.set(false); finished = true; this.simulate(o, my).then(resolve); } else setTimeout(wait, 250); };

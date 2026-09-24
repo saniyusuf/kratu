@@ -45,7 +45,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly big = signal(''); readonly bigColor = signal('var(--red)');
   readonly fbCls = signal(''); readonly fbText = signal('');
   readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false);
-  private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null }) => void } | null = null;
+  private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null; tries: number }) => void } | null = null;
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
   ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = +(q.get('from') || 0); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
@@ -73,27 +73,29 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async playIntro(k: string): Promise<void> { await this.play(k); if (!this.hinted) { this.hinted = true; await firstHints(this.bus, this.session, this.spotter, this.host.nativeElement, null); } }
 
   // ---- the child speaks: Laila armed → pressed → listening → result ----
-  private arm(L: string): Promise<{ ok: boolean; heard: string | null }> { return new Promise((res) => { this.awaiting = true; this.cur = { L, res }; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.'); }); }
+  private arm(L: string): Promise<{ ok: boolean; heard: string | null; tries: number }> { return new Promise((res) => { this.awaiting = true; this.cur = { L, res }; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.'); }); }
   private async press(): Promise<void> {
     if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
     // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
     this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
-    c.res({ ok: r.value === c.L, heard: (r.value as string | null) });
+    c.res({ ok: r.value === c.L, heard: (r.value as string | null), tries: r.tries || 0 });
   }
   /** The letter is on the board; prompt, then the child says it. Three wrong → help: "listen, this is …" + the letter, then ask again. */
   private async askSay(L: string, prompt: string[], noKudos = false): Promise<void> {
-    let misses = 0; this.showLetter(L);
+    let misses = 0, helped = 0; this.showLetter(L);
     for (;;) {
       if (this.stopped) return;
-      if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, () => misses++)) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, () => misses++)) return; }
-      else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, () => misses++)) return; }
-      if (misses % 3 === 0) { await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
+      if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, (n) => (misses += n))) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, (n) => (misses += n))) return; }
+      else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, (n) => (misses += n))) return; }
+      // three wrong letters since the last help, however they arrived — three in one breath or one at a time
+      if (misses - helped >= 3) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
       else { await this.play('app_retry'); this.setSt(L, 'on'); }
     }
   }
-  private async judge(L: string, r: { ok: boolean; heard: string | null }, noKudos: boolean, miss: () => void): Promise<boolean> {
+  private async judge(L: string, r: { ok: boolean; heard: string | null; tries: number }, noKudos: boolean, miss: (n: number) => void): Promise<boolean> {
     if (r.ok) { this.celebrate(); await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
-    miss(); this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
+    miss(Math.max(1, r.tries));   // each wrong letter counts, not each time the microphone opened
+    this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
   }
   // ---- the four steps of a group ----
   private async present(group: string[]): Promise<void> { for (const L of group) { if (this.stopped) return; this.showLetter(L); this.speak.set(true); await this.seq(['app_wannan', 'app_en_' + L]); this.speak.set(false); await wait(500); } this.hideLetter(); }
