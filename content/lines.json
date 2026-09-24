@@ -4036,5 +4036,59 @@
   "said_when": "",
   "status": "live",
   "recorded": "44d676d01f"
+ },
+ {
+  "key": "s_pop_intro",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mu yi wasa. Idan na faɗi harafi, ka fashe shi.",
+   "f": "Mu yi wasa. Idan na faɗi harafi, ki fashe shi."
+  },
+  "en": "Let's play a game. When I say a letter, pop it.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": {
+   "m": "db49c42c31",
+   "f": "ecdc4a12ed"
+  }
+ },
+ {
+  "key": "s_pop_say",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fashe",
+   "f": "Ki fashe"
+  },
+  "en": "Pop",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "before each letter",
+  "status": "live",
+  "recorded": {
+   "m": "2dd56c6c71",
+   "f": "dc6ee1c4e8"
+  }
+ },
+ {
+  "key": "s_pop_done",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Madalla, mun gama wasan!",
+  "en": "Well done, we've finished the game!",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "",
+  "status": "live",
+  "recorded": "c19a27e75c"
  }
 ]

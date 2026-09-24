@@ -387,3 +387,52 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   82% { transform: translateX(-4px) rotate(-8deg); }
 }
 @media (prefers-reduced-motion: reduce) { #app .x-laila.nope .lm, #app .x-laila.nope .lhand { animation: none; } }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Fashe haruffa · the placement game (Sani 2026-09-24). Letters drift up in balloons; the child pops the one Laila
+   says, with a finger or with a keyboard. Everything here moves on transform and opacity only — eight balloons on a
+   cheap tablet must cost nothing — and the A–Z strip below is the board's own, so a popped letter flies into exactly
+   the place it will live in when the lessons teach it.
+--------------------------------------------------------------------------------------------------------------- */
+#app .s.fashe .sky{position:relative;width:min(760px,96%);flex:1 1 auto;min-height:38vh;margin-bottom:6px;overflow:hidden;touch-action:manipulation}
+#app .s.fashe .bub{position:absolute;left:var(--x);top:100%;width:clamp(58px,9.4vmin,86px);aspect-ratio:1;border:0;padding:0;margin-left:calc(clamp(58px,9.4vmin,86px) / -2);
+  border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:clamp(26px,4.4vmin,40px);color:#fff;cursor:pointer;
+  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.6),rgba(255,255,255,0) 48%),var(--c);
+  box-shadow:0 4px 0 rgba(59,46,30,.16);animation:bubrise var(--dur) linear forwards;will-change:transform}
+#app .s.fashe .bub::after{content:"";position:absolute;bottom:-9px;left:50%;margin-left:-3px;width:6px;height:10px;border-radius:0 0 3px 3px;background:rgba(59,46,30,.3)}
+@keyframes bubrise{from{transform:translateY(0)}to{transform:translateY(calc(-1 * var(--travel,720px)))}}
+/* the right one: it bursts open and is gone, while its letter flies to the strip */
+#app .s.fashe .bub.pop{animation:bubpop .3s ease-out forwards;pointer-events:none}
+@keyframes bubpop{0%{transform:translateY(var(--y0,0)) scale(1);opacity:1}45%{transform:translateY(var(--y0,0)) scale(1.28);opacity:.9}100%{transform:translateY(var(--y0,0)) scale(.2);opacity:0}}
+/* the wrong one: it bursts too, and the skin falls back down to fill again (Sani 2026-09-24) */
+#app .s.fashe .bub.burst{animation:bubburst .95s cubic-bezier(.4,0,.8,1) forwards;pointer-events:none;
+  background:rgba(230,57,70,.24);border:3px dashed rgba(230,57,70,.7);box-shadow:none;color:var(--red)}
+@keyframes bubburst{
+  0%{transform:translateY(var(--y0,0)) scale(1) rotate(0)}
+  14%{transform:translateY(var(--y0,0)) scale(1.22) rotate(-6deg)}
+  22%{transform:translateY(var(--y0,0)) scale(.78) rotate(5deg)}
+  100%{transform:translateY(0) scale(.7) rotate(-16deg);opacity:.25}
+}
+#app .s.fashe .abcslots{width:min(680px,96%)}
+#app .s.fashe .aslot{height:30px;font-size:16px}
+#app .s.fashe .aslot.on{border-color:var(--yellow);border-style:solid}
+#app .s.fashe .popask{display:flex;align-items:center;gap:14px;justify-content:center}
+#app .s.fashe .popask .ask{background:var(--paper2);border:2px solid rgba(59,46,30,.16);border-radius:999px;padding:6px 18px;
+  font-family:var(--disp);font-weight:800;font-size:clamp(17px,2.6vmin,22px);color:var(--ink);display:inline-flex;align-items:baseline;gap:9px}
+#app .s.fashe .popask .ask b{font-size:clamp(24px,4vmin,34px);color:var(--red)}
+#app .s.fashe .popask .ask.bad{border-color:var(--red)}
+#app .s.fashe .popask .x-laila small,#app .s.fashe .popask .lhand{display:none}
+@media (prefers-reduced-motion:reduce){
+  #app .s.fashe .bub{animation-duration:calc(var(--dur) * 2)}
+  #app .s.fashe .bub.pop,#app .s.fashe .bub.burst{animation-duration:.01s}
+}
+
+/* The chooser's plan card: the next step, already chosen, above the six tiles. Pressing Laila opens it, so a child
+   who wants nothing else chooses nothing at all (Sani 2026-09-24). */
+#app .s.home .plancard{display:flex;align-items:center;gap:14px;background:var(--c);color:#fff;border:0;border-radius:18px;
+  padding:9px 22px 9px 14px;box-shadow:0 5px 0 rgba(59,46,30,.18);width:min(560px,92%);text-align:left;cursor:pointer}
+#app .s.home .plancard .pico{font-size:38px;line-height:1}
+#app .s.home .plancard small{display:block;font-size:11px;letter-spacing:.12em;font-weight:800;opacity:.88}
+#app .s.home .plancard b{display:block;font-family:var(--disp);font-weight:800;font-size:25px;line-height:1.1}
+#app .s.home .plancard span{font-size:13px;opacity:.92}
+#app .s.home .plancard.hot{outline:4px solid rgba(255,255,255,.85);outline-offset:-4px}
