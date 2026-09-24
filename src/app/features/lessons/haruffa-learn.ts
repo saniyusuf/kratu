@@ -8,7 +8,7 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { Spotter, firstHints, flyText, wait } from '../../shared/lesson/helpers';
-import { ALL, LETTER_COLOR } from './haruffa';
+import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -47,7 +47,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null }) => void } | null = null;
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
-  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = +(q.get('from') || 0); afterPaint().then(() => this.start(from, q.get('intro') === '1')); }
+  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = +(q.get('from') || 0); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
   ngOnDestroy(): void { this.stopped = true; this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
 
   private idx(L: string): number { return ALL.indexOf(L); }

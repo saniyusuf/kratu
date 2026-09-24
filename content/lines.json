@@ -1746,11 +1746,12 @@
    "Haruffa · landing"
   ],
   "said_when": "",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "4e54c07c44",
    "f": "e4b48b3a58"
-  }
+  },
+  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
  },
  {
   "key": "s_abc_done2",
@@ -1780,11 +1781,12 @@
    "Haruffa · landing"
   ],
   "said_when": "",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "a0739a1cc9",
    "f": "a929470f14"
-  }
+  },
+  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
  },
  {
   "key": "s_abc_say",
@@ -1821,11 +1823,12 @@
    "Haruffa · landing"
   ],
   "said_when": "",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "38affb63fa",
    "f": "359c8a7225"
-  }
+  },
+  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
  },
  {
   "key": "s_act_desc_things",
@@ -3519,8 +3522,9 @@
    "Haruffa · landing"
   ],
   "said_when": "",
-  "status": "live",
-  "recorded": "fa0b020f3d"
+  "status": "unused",
+  "recorded": "fa0b020f3d",
+  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
  },
  {
   "key": "s_verify",

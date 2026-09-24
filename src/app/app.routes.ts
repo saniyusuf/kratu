@@ -7,7 +7,6 @@ import { BlankScreen } from './shared/blank';
 import { FaceScreen } from './features/onboarding/face';
 import { WelcomeScreen } from './features/onboarding/welcome';
 import { MisaliScreen } from './features/lessons/misali';
-import { HaruffaScreen } from './features/lessons/haruffa';
 import { HaruffaLearnScreen } from './features/lessons/haruffa-learn';
 import { CatsScreen } from './features/lessons/cats';
 import { ObjLessonScreen } from './features/lessons/obj';
@@ -24,7 +23,6 @@ export const routes: Routes = [
   { path: 'welcome', component: WelcomeScreen },
   { path: 'home', component: HomeScreen },
   { path: 'misali/:kind', component: MisaliScreen },
-  { path: 'haruffa', component: HaruffaScreen },
   { path: 'haruffa/koyo', component: HaruffaLearnScreen },
   { path: 'abubuwa', component: CatsScreen },
   { path: 'abubuwa/koyo', component: ObjLessonScreen, data: { mode: 'words' } },

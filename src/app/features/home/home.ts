@@ -9,7 +9,7 @@ import { HOMEGRID_HTML } from './homegrid';
 import { Leave } from './leave';
 import { SessionService } from '../../core/state/session.service';
 
-const ROUTE: Record<string, string> = { letters: 'haruffa', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
+const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
 
 /** Screen 4 · Zaɓi darasi. Six tiles; a tap lifts one and Laila describes it; press her to start. */

@@ -4,7 +4,7 @@ import { SessionService } from './session.service';
 
 export type SampleKind = 'haruffa' | 'abubuwa' | 'lambobi' | 'rubutu' | 'karatu' | 'nemo' | 'nemonum';
 /** Screens whose sample plays on entry, and the sub-topics whose sample plays when their Laila is pressed the first time. */
-export const SAMPLE_ON_ENTER: Record<string, SampleKind> = { haruffa: 'haruffa', 'abubuwa/koyo': 'abubuwa', lambobi: 'lambobi' };
+export const SAMPLE_ON_ENTER: Record<string, SampleKind> = { 'haruffa/koyo': 'haruffa', 'abubuwa/koyo': 'abubuwa', lambobi: 'lambobi' };
 export const SAMPLE_OF_SUB: Record<string, Record<string, SampleKind>> = {
   nemo: { q4: 'nemo', qnum: 'nemonum' },
   rubutu: { r3: 'rubutu', r4: 'rubutu', r5: 'rubutu', rlong: 'rubutu', rnum: 'rubutu' },
