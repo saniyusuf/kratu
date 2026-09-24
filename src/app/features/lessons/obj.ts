@@ -6,7 +6,7 @@ import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
 import { Item, LessonBase, Stopped } from '../../shared/lesson/lesson-base';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
-import { firstHints, matchWord, shuffle, wait } from '../../shared/lesson/helpers';
+import { firstHints, joy, matchWord, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
 import { CAT_NAME } from './cats';
 
 type Mark = '' | 'done' | 'miss';
@@ -29,7 +29,7 @@ const STAGES = [
 <div class="objrow" [class.many]="rowItems().length > 5">@for (it of rowItems(); track it.k) {<span class="oslot active" [class.on]="onItem() === it.k" [class.done]="marks()[it.k] === 'done'" [class.miss]="marks()[it.k] === 'miss'" [attr.data-item]="it.k"></span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
 <div class="yesno ynpair objq" [hidden]="resultsOn()" [class.nohand]="nohand()">
-  <app-laila-btn #lb label="Faɗa" [size]="112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" />
+  <app-laila-btn #lb label="Faɗa" [size]="112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [nope]="nope()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" />
   <app-allo-btn #dk (pressed)="pressDk()" />
 </div>`,
 })
@@ -45,7 +45,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   readonly rowItems = signal<Item[]>([]); readonly marks = signal<Record<string, Mark>>({}); readonly onItem = signal('');
   readonly resultsOn = signal(false); readonly resultItems = signal<Item[]>([]); readonly resultMiss = signal<string[]>([]); readonly saying = signal('');
   readonly nohand = signal(false);
-  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false);
+  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false); readonly nope = signal(false);
 
   private items: Item[] = []; private cat = 'animals'; private stageHa = 'yatsu'; private big = false;
   private running = false; private inTest = false; private curItem: Item | null = null;
@@ -92,9 +92,9 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     }
   }
   private async settlePractice(it: Item, r: { kind: 'say'; ok: boolean; heard: string | null } | { kind: 'dk' } | { kind: 'skip' }, miss: () => number): Promise<boolean> {
-    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
+    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); joy(this.bus, this.yay); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
     if (r.kind === 'dk') { this.fb('wait', 'Ba komai — ' + this.KA() + ' saurara.'); await this.remind(it); return false; }
-    if (r.kind === 'say') { const m = miss(); this.fb('bad', r.heard ? ('“' + r.heard + '” — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); await this.play('app_retry'); if (m % 3 === 0) await this.remind(it); }
+    if (r.kind === 'say') { const m = miss(); shakeNo(this.nope); this.fb('bad', r.heard ? ('“' + r.heard + '” — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); await this.play('app_retry'); if (m % 3 === 0) await this.remind(it); }
     return false;
   }
   private rowSlot(it: Item): Element | null { return this.s.querySelector('.oslot[data-item="' + it.k + '"]'); }
@@ -164,8 +164,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
       this.check(); const it = order[i], dot = list[i]; let tries = 0; this.showPic(it); this.onItem.set(dot.k);
       this.speak.set(true); await this.seq(['app_wannan', this.ha(it)]); this.speak.set(false);
       const armP = this.arm(it); this.play(this.bus.gk('s_o_say')).catch(() => undefined); let r = await armP; let ok = false, why: 'three' | 'dk' = 'three';
-      for (;;) { if (r.kind === 'say' && r.ok) { ok = true; break; } if (r.kind === 'dk') { why = 'dk'; break; } tries++; this.fb('bad', r.kind === 'say' && r.heard ? ('“' + r.heard + '”') : 'Ban ji ba'); if (tries >= 3) break; await this.play('app_retry'); r = await this.arm(it); }
-      if (ok) { this.mark(dot, 'done'); this.right.push(it); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); await wait(300); }
+      for (;;) { if (r.kind === 'say' && r.ok) { ok = true; break; } if (r.kind === 'dk') { why = 'dk'; break; } tries++; shakeNo(this.nope); this.fb('bad', r.kind === 'say' && r.heard ? ('“' + r.heard + '”') : 'Ban ji ba'); if (tries >= 3) break; await this.play('app_retry'); r = await this.arm(it); }
+      if (ok) { this.mark(dot, 'done'); this.right.push(it); joy(this.bus, this.yay); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); await wait(300); }
       else { this.mark(dot, 'miss'); this.wrongs.push(it); this.fb('wait', why === 'dk' ? 'Ban sani ba' : 'Sau uku'); this.speak.set(true); await this.seq([this.bus.gk(why === 'three' ? 's_o_three' : 's_o_miss'), 's_o_inen', this.en(it), 's_o_next']); this.speak.set(false); await wait(300); }
       this.onItem.set('');
     }

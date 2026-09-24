@@ -11,7 +11,7 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AbcKeyboard, KeyMark } from '../../shared/lesson/abc-keyboard';
-import { Spotter, flyLetter, flyText, wait, matchWord } from '../../shared/lesson/helpers';
+import { Spotter, flyLetter, flyText, joy, wait, matchWord } from '../../shared/lesson/helpers';
 
 /**
  * Misali · the sample. Laila shows one press-and-say (or spell, read, find) with the boy's or girl's voice, locked like a
@@ -95,7 +95,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private recOff(): void { this.rec.set(false); this.hearing.set(false); }
   private showPic(src?: string | null): void { this.picSrc.set(src || null); }
   /** Right answer: the kalangu sounds and Laila hops (Sani 2026-09-24). */
-  private celebrate(): void { this.bus.playRaw('assets/audio/sfx/yay.ogg').catch(() => undefined); this.yay.set(true); setTimeout(() => this.yay.set(false), 760); }
+  private celebrate(): void { joy(this.bus, this.yay); }
   /** The example's own pictures, decoded before the film starts. */
   private warmExample(): void { this.warm.soon([this.AW?.img, this.RW?.img, this.KW?.img, this.word('goat')?.img, this.word('cat')?.img, ...this.gridItems().map((w) => w.img)]); }
   private reveal(): void { const im = this.picRef()?.nativeElement.querySelector('img'); if (!im?.animate) return; try { const an = im.animate([{ clipPath: 'inset(0 100% 0 0 round 30px)' }, { clipPath: 'inset(0 0 0 0 round 30px)' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }); const fin = () => { try { an.cancel(); } catch { /* ignore */ } }; an.onfinish = fin; setTimeout(fin, 1300); } catch { /* ignore */ } }
@@ -333,6 +333,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private async runHaruffa(): Promise<void> {
     if (!(await this.say([this.gk('sx_intro'), 'sx_laila']))) return; this.bigLetter.set('A');
     if (!(await this.say(['app_wannan', 'app_en_A']))) return;
+    await wait(300); if (!(await this.say(['app_en_A']))) return;   // every taught letter is said twice (Sani 2026-09-24)
     // the same instruction every other example gives; the only A they hear after it is the child's own (Sani 18 Sep)
     if (!(await this.sayDo('sx_do_say'))) return;
     await this.listen('A', this.gk('sx_w_A'), this.s().querySelector('.abcbig')); this.session.markExample('haruffa', 'A'); this.handOff(); await this.finish();

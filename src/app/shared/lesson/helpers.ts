@@ -1,8 +1,20 @@
+import { WritableSignal } from '@angular/core';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 
 export const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+/**
+ * The two answers a child gets back, the same in every lesson (Sani 2026-09-24). Right: the kalangu sounds and Laila
+ * hops. Wrong: she shakes her head and wags a hand — a "no" a child who cannot read still understands. Both are short
+ * and drive one class on Laila's button, so they cost a cheap tablet nothing.
+ */
+const YAY_SFX = 'assets/audio/sfx/yay.ogg';
+export function joy(bus: AudioBus, flag: WritableSignal<boolean>): void {
+  bus.playRaw(YAY_SFX).catch(() => undefined); flag.set(true); setTimeout(() => flag.set(false), 760);
+}
+export function shakeNo(flag: WritableSignal<boolean>): void { flag.set(true); setTimeout(() => flag.set(false), 700); }
 export const shuffle = <T,>(a: T[]): T[] => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 /** Does what the recogniser heard count as this word? The word inside the text, a plural, or one letter off for words of four or more. */
 /**

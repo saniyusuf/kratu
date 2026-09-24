@@ -7,10 +7,9 @@ import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
-import { Spotter, firstHints, flyText, wait } from '../../shared/lesson/helpers';
+import { Spotter, firstHints, flyText, joy, shakeNo, wait } from '../../shared/lesson/helpers';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
-const YAY = 'assets/audio/sfx/yay.ogg';
 /**
  * One press, one entry. Inside it the child may try twice; a second wrong letter ends the entry as wrong rather than
  * letting them guess their way to the answer (Sani 2026-09-24). Laila only says the letter herself after HELP failed
@@ -34,7 +33,7 @@ const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 
 <div class="abcshow" [class.off]="!big()"><span class="abcbig" [style.--c]="bigColor()">{{ big() }}</span></div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [attr.data-l]="L" [style.--c]="color($index)" [class.active]="active()[$index]" [class.on]="st()[$index] === 'on'" [class.done]="st()[$index] === 'done'" [class.bad]="st()[$index] === 'bad'">{{ st()[$index] === 'done' ? L : '' }}</span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
-<div class="yesno ynpair abcq lone"><app-laila-btn #lb label="Laila" [size]="132" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>`,
+<div class="yesno ynpair abcq lone"><app-laila-btn #lb label="Laila" [size]="132" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [nope]="nope()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>`,
 })
 export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly speech = inject(SpeechService);
@@ -51,7 +50,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly st = signal<('' | 'on' | 'done' | 'bad')[]>(ALL.map(() => '')); readonly active = signal<boolean[]>(ALL.map(() => false));
   readonly big = signal(''); readonly bigColor = signal('var(--red)');
   readonly fbCls = signal(''); readonly fbText = signal('');
-  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false);
+  readonly cue = signal(false); readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false); readonly yay = signal(false); readonly nope = signal(false);
   private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null; tries: number }) => void } | null = null;
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
@@ -72,9 +71,15 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private setDoneUpTo(n: number): void { this.st.update((a) => a.map((x, k) => k < n ? 'done' : x)); }
   private async play(k: string): Promise<boolean> { return this.stopped ? false : this.bus.play(k); }
   /** Right answer: the kalangu sounds and Laila hops, while the letter flies to its place. */
-  private celebrate(): void {
-    this.bus.playRaw(YAY).catch(() => undefined);
-    this.yay.set(true); setTimeout(() => this.yay.set(false), 760);
+  private celebrate(): void { joy(this.bus, this.yay); }
+  /**
+   * Teaching voice: every letter is said twice, with a beat between, because once goes past a child who is still
+   * settling into the screen (Sani 2026-09-24). Only teaching says it twice; the child's own turn is unchanged.
+   */
+  private async sayLetter(intro: string, L: string): Promise<void> {
+    this.speak.set(true);
+    if (await this.seq([intro, 'app_en_' + L])) { await wait(300); await this.play('app_en_' + L); }
+    this.speak.set(false);
   }
   private async seq(ks: string[]): Promise<boolean> { for (const k of ks) if (!(await this.play(k))) return false; return true; }
   private async playIntro(k: string): Promise<void> { await this.play(k); if (!this.hinted) { this.hinted = true; await firstHints(this.bus, this.session, this.spotter, this.host.nativeElement, null); } }
@@ -95,13 +100,13 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       if (prompt.length) { const p = prompt; prompt = []; const armP = this.arm(L); const said = this.seq(p); const r = await Promise.race([armP.then((x) => ({ r: x })), said.then(() => null)]); if (r) { if (await this.judge(L, r.r, noKudos, (n) => (misses += n))) return; continue; } const rr = await armP; if (await this.judge(L, rr, noKudos, (n) => (misses += n))) return; }
       else { const r = await this.arm(L); if (await this.judge(L, r, noKudos, (n) => (misses += n))) return; }
       // HELP failed entries: Laila says the letter herself, as a lesson rather than a buzzer
-      if (misses - helped >= HELP) { helped = misses; await this.play('app_retry'); this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false); this.setSt(L, 'on'); }
+      if (misses - helped >= HELP) { helped = misses; await this.play('app_retry'); await this.sayLetter(this.bus.gk('app_remind'), L); this.setSt(L, 'on'); }
       else { await this.play('app_retry'); this.setSt(L, 'on'); }
       // GIVE failed entries: she writes it in and the group moves on. Nothing here ever ends a child's turn, so a letter
       // the microphone cannot hear from this child — F and S sound alike to it — would otherwise hold them forever
       // (Sani 2026-09-24, found running A–Z). It counts as missed, so the recall and the scatter ask again.
       if (misses >= GIVE) {
-        this.speak.set(true); await this.seq([this.bus.gk('app_remind'), 'app_en_' + L]); this.speak.set(false);
+        await this.sayLetter(this.bus.gk('app_remind'), L);
         await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L);
         this.fb('wait', L + ' ✓'); await wait(500); return;
       }
@@ -110,10 +115,10 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async judge(L: string, r: { ok: boolean; heard: string | null; tries: number }, noKudos: boolean, miss: (n: number) => void): Promise<boolean> {
     if (r.ok) { this.celebrate(); await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
     miss(1);   // one failed entry is one miss, however many tries it held
-    this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
+    shakeNo(this.nope); this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
   }
   // ---- the four steps of a group ----
-  private async present(group: string[]): Promise<void> { for (const L of group) { if (this.stopped) return; this.showLetter(L); this.speak.set(true); await this.seq(['app_wannan', 'app_en_' + L]); this.speak.set(false); await wait(500); } this.hideLetter(); }
+  private async present(group: string[]): Promise<void> { for (const L of group) { if (this.stopped) return; this.showLetter(L); await this.sayLetter('app_wannan', L); await wait(500); } this.hideLetter(); }
   /**
    * A letter the child already said correctly in the example is not taught again: it is shown as done and the group
    * starts at the next one. They still meet it in the recall, where remembering it is the point (Sani 2026-09-18).
@@ -124,7 +129,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     for (const L of group) {
       if (this.stopped) return;
       if (L === this.exampleLetter) { this.setSt(L, 'done'); continue; }
-      this.showLetter(L); this.speak.set(true); await this.seq(['app_wannan', 'app_en_' + L]); this.speak.set(false);
+      this.showLetter(L); await this.sayLetter('app_wannan', L);
       await this.askSay(L, [this.bus.gk('s_abc_say')]); await wait(400);
     }
   }
@@ -153,6 +158,6 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     if (this.stopped) return; await this.finals(); this.running = false; this.router.navigate(['/home']);
   }
   lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) return; this.bus.stopAll(); this.start(0); }
-  async ear(): Promise<void> { this.bus.stopAll(); if (this.cur?.L) { this.speak.set(true); await this.seq(['app_wannan', 'app_en_' + this.cur.L]); this.speak.set(false); } else await this.play(this.bus.gk('s_l_look')); }
+  async ear(): Promise<void> { this.bus.stopAll(); if (this.cur?.L) { await this.sayLetter('app_wannan', this.cur.L); } else await this.play(this.bus.gk('s_l_look')); }
   leave(): void { this.stopped = true; this.bus.stopAll(); this.hearHandle?.stop(); this.router.navigate(['/home']); }
 }
