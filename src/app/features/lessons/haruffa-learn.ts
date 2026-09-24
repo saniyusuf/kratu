@@ -119,7 +119,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       await this.askSay(L, [this.bus.gk('s_abc_say')]); await wait(400);
     }
   }
-  private async recall(list: string[], lastNoKudos = false): Promise<void> { for (let i = 0; i < list.length; i++) { if (this.stopped) return; await this.askSay(list[i], [this.bus.gk('s_say_it')], lastNoKudos && i === list.length - 1); await wait(400); } }
+  private async recall(list: string[], lastNoKudos = false): Promise<void> { for (let i = 0; i < list.length; i++) { if (this.stopped) return; await this.askSay(list[i], [this.bus.gk('s_abc_say')], lastNoKudos && i === list.length - 1); await wait(400); } }
   private async runGroup(gi: number): Promise<void> {
     const group = GROUPS[gi]; this.markActive(group); this.unfill(group); this.eye.set('Haruffa · koyo · rukuni ' + (gi + 1));
     await this.playIntro(gi === 0 ? this.bus.gk('s_l_look') : this.bus.gk(group.length < 4 ? 's_l_new2' : 's_l_new4'));
