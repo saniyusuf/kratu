@@ -16,7 +16,7 @@ const SKY = 8, GUESSES = 4;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
 const NUDGE_AT = 14000, GIVE_AT = 40000;
 
-interface Bub { id: number; L: string; lane: number; way: 'a' | 'b'; x: number; y: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
+interface Bub { id: number; L: string; lane: number; x: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
 
 /**
  * Fashe haruffa · the placement game. Letters drift up in balloons and the child pops them **in alphabetical order**,
@@ -39,8 +39,8 @@ interface Bub { id: number; L: string; lane: number; way: 'a' | 'b'; x: number; 
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
 <div #sky class="sky" (click)="tapped($event)">
   @for (b of bubs(); track b.id) {
-    <button class="bub" [class]="'bub way-' + b.way" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
-      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--y.%]="b.y" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
+    <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
+      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
   }
 </div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [style.--c]="colour(L)" [class.active]="true" [class.on]="target() === L" [class.done]="done()[$index]">{{ done()[$index] ? L : '' }}</span>}</div>
@@ -71,20 +71,26 @@ export class FasheScreen implements OnInit, OnDestroy {
 
   private seq = 0; private at = 0; private reached = 0; private wrong = 0; private roundWrong = 0;
   private answer: ((ok: boolean | null) => void) | null = null;
-  private stopped = false; private timers: number[] = [];
+  private stopped = false; private timers: number[] = []; private ro?: ResizeObserver;
   private readonly onKey = (e: KeyboardEvent) => this.key(e);
 
   colour(L: string): string { return LETTER_COLOR(ALL.indexOf(L)); }
 
   ngOnInit(): void {
     document.addEventListener('keydown', this.onKey);
-    afterPaint().then(() => this.start());
+    afterPaint().then(() => { this.measure(); this.start(); });
   }
   ngOnDestroy(): void {
     this.stopped = true; this.bus.stopAll(); document.removeEventListener('keydown', this.onKey);
-    this.timers.forEach((t) => clearTimeout(t)); this.unpoint(); this.answer?.(null);
+    this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.unpoint(); this.answer?.(null);
   }
 
+  /** How far a balloon climbs: enough to cross the sky, short enough that it is never half off the top or bottom. */
+  private measure(): void {
+    const el = this.skyRef().nativeElement;
+    const set = () => el.style.setProperty('--travel', Math.round(el.clientHeight * 0.72) + 'px');
+    set(); try { this.ro = new ResizeObserver(set); this.ro.observe(el); } catch { /* older webviews keep the first measure */ }
+  }
   private slot(L: string): HTMLElement { return this.slotsRef().nativeElement.children[ALL.indexOf(L)] as HTMLElement; }
   private fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }
   private later(ms: number, f: () => void): number { const t = window.setTimeout(f, ms); this.timers.push(t); return t; }
@@ -107,18 +113,14 @@ export class FasheScreen implements OnInit, OnDestroy {
    * after that enters from the bottom, as a new one should.
    */
   /**
-   * A balloon keeps its own place in the sky and bobs there. Nothing floats off the top any more: a letter a child is
-   * hunting for must still be there when they find it, and a screen where things leave punishes a slow child twice
-   * (Sani 2026-09-25). Four across, two down, with a little jitter so the grid does not read as a grid.
+   * A balloon rises up its own lane and, at the top, comes round again **carrying the same letter** — it never trades
+   * it for another. That is what keeps both promises at once: they drift upward the way balloons do, and a letter a
+   * child is hunting for cannot vanish on them (Sani 2026-09-25). The climb is measured so the whole balloon stays
+   * inside the sky from the bottom of the rise to the top of it.
    */
   private mk(L: string, lane: number): Bub {
-    const col = lane % 4, row = Math.floor(lane / 4), dur = 11000 + Math.random() * 7000;
-    return {
-      id: ++this.seq, L, lane, way: lane % 2 === 0 ? 'a' : 'b',
-      x: 15 + col * 23.5 + (Math.random() * 5 - 2.5),
-      y: 30 + row * 40 + (Math.random() * 6 - 3),
-      dur, phase: Math.random() * dur, state: '',
-    };
+    const dur = 19000 + Math.random() * 9000;
+    return { id: ++this.seq, L, lane, x: 7 + lane * (86 / (SKY - 1)) + (Math.random() * 4 - 2), dur, phase: Math.random() * dur, state: '' };
   }
   /** One balloon per place, all eight different letters. */
   private fill(): void {
@@ -171,8 +173,18 @@ export class FasheScreen implements OnInit, OnDestroy {
   }
   private el(id: number): HTMLElement | null { return this.skyRef().nativeElement.querySelector('[data-b="' + id + '"]'); }
 
+  /**
+   * A balloon that is bursting leaves its climb behind: its own animation replaces the rise, which would snap it back
+   * down to the foot of its lane first. So the height it has reached is frozen into --y0 and the burst starts there
+   * (Sani 2026-09-25). The computed matrix carries the centring -50% too, which is why the half-height goes back on.
+   */
+  private freeze(el: HTMLElement | null): void {
+    if (!el) return;
+    try { const m = new DOMMatrixReadOnly(getComputedStyle(el).transform); el.style.setProperty('--y0', (m.m42 + el.getBoundingClientRect().height / 2) + 'px'); } catch { /* it bursts from its lane's foot */ }
+  }
   private async right(b: Bub): Promise<void> {
     const el = this.el(b.id), res = this.answer; this.answer = null;
+    this.freeze(el);
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
     joy(this.bus, this.yay); this.bad.set(false); this.fb('good', 'Madalla! ✓');
     if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot(b.L), b.L, 'var(--green)');
@@ -184,7 +196,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   /** Wrong: it bursts on a low note and the skin falls back down to fill again, so the sky never empties of chances. */
   private miss(b: Bub): void {
     const el = this.el(b.id);
-    if (el) { try { const m = new DOMMatrixReadOnly(getComputedStyle(el).transform); el.style.setProperty('--y0', m.m42 + 'px'); } catch { /* no matrix: it still falls from its lane */ } }
+    this.freeze(el);
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'burst' } : x));
     this.bus.playRaw(NOPE).catch(() => undefined); shakeNo(this.nope);
     this.wrong++; this.roundWrong++;
@@ -247,6 +259,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     await this.bus.play('app_en_A');                         // …and its name, so the move is unambiguous
     this.speak.set(false);
     if (this.stopped) { this.unpoint(); return; }
+    this.freeze(el);
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
     joy(this.bus, this.yay); this.unpoint();
     if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot('A'), 'A', 'var(--green)');
