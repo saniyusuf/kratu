@@ -4117,18 +4117,18 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka fasa wanda ke bayan",
-   "f": "Ki fasa wanda ke bayan"
+   "m": "Ka fasa harafin bayan",
+   "f": "Ki fasa harafin bayan"
   },
-  "en": "Pop the one that comes after",
+  "en": "Pop the letter after",
   "screens": [
    "Fasa haruffa"
   ],
   "said_when": "before each letter, followed by the letter just popped, in Nigerian English",
   "status": "live",
   "recorded": {
-   "m": "019451d719",
-   "f": "7f9a408813"
+   "m": "70d8bd1712",
+   "f": "58bf78405a"
   }
  }
 ]
