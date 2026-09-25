@@ -38,10 +38,12 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; pha
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
 <div #sky class="sky" (click)="tapped($event)">
+  <span class="stage" aria-hidden="true"></span>
   @for (b of bubs(); track b.id) {
     <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
       [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
   }
+  <span class="curtain" aria-hidden="true"></span>
 </div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [style.--c]="colour(L)" [class.active]="true" [class.on]="target() === L" [class.done]="done()[$index]">{{ done()[$index] ? L : '' }}</span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
@@ -85,11 +87,20 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.unpoint(); this.answer?.(null);
   }
 
-  /** How far a balloon climbs: enough to cross the sky, short enough that it is never half off the top or bottom. */
+  /**
+   * The climb: a balloon starts wholly below the stage floor and ends wholly above the curtain, so it is never seen to
+   * appear or vanish — it rises out from behind the boards and goes up behind the pelmet, the way it would on a real
+   * stage (Sani 2026-09-25).
+   */
   private measure(): void {
     const el = this.skyRef().nativeElement;
-    const set = () => el.style.setProperty('--travel', Math.round(el.clientHeight * 0.72) + 'px');
-    set(); try { this.ro = new ResizeObserver(set); this.ro.observe(el); } catch { /* older webviews keep the first measure */ }
+    const set = () => {
+      const bh = (el.querySelector('.bub') as HTMLElement | null)?.offsetHeight || 70;
+      el.style.setProperty('--bh', bh + 'px');
+
+    };
+    set(); afterPaint().then(set);                          // again once the balloons have a size
+    try { this.ro = new ResizeObserver(set); this.ro.observe(el); } catch { /* older webviews keep the first measure */ }
   }
   private slot(L: string): HTMLElement { return this.slotsRef().nativeElement.children[ALL.indexOf(L)] as HTMLElement; }
   private fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }

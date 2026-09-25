@@ -397,22 +397,29 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.fashe .sky{position:relative;width:min(760px,96%);flex:1 1 auto;min-height:40vh;margin-bottom:6px;overflow:hidden;touch-action:manipulation}
 /* Every balloon keeps a place of its own and bobs in it. Nothing leaves the sky: a letter a child is hunting for has
    to still be there when they find it, and the whole board must sit inside the screen at any size (Sani 2026-09-25). */
-#app .s.fashe .bub{position:absolute;left:var(--x);top:86%;width:clamp(52px,8.6vmin,84px);aspect-ratio:1;border:0;padding:0;
+#app .s.fashe .bub{position:absolute;left:var(--x);top:100%;z-index:1;width:clamp(52px,8.6vmin,84px);aspect-ratio:1;border:0;padding:0;
   border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:clamp(24px,4.1vmin,38px);color:#fff;cursor:pointer;
   background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.6),rgba(255,255,255,0) 48%),var(--c);
   box-shadow:0 4px 0 rgba(59,46,30,.16);animation:bubrise var(--dur) linear var(--phase) infinite;will-change:transform,opacity}
 #app .s.fashe .bub::after{content:"";position:absolute;bottom:-9px;left:50%;margin-left:-3px;width:6px;height:10px;border-radius:0 0 3px 3px;background:rgba(59,46,30,.3)}
-/* Up its own lane and round again, always with the same letter. The climb is a measured 72% of the sky, so the whole
-   balloon is inside it from the bottom of the rise to the top; it only fades at the very ends, where it turns over
-   (Sani 2026-09-25). */
+/* Up its own lane and round again, always with the same letter, and never seen to appear or vanish: it slides out
+   from behind the boards and leaves behind the pelmet. The two hidden stretches are crossed in a sixteenth of the
+   climb between them, so a letter a child is hunting for is in view for the other seven eighths (Sani 2026-09-25). */
 @keyframes bubrise{
-  0%{transform:translate(-50%,-50%) translateY(0) rotate(-2deg);opacity:0}
-  5%{opacity:1}
-  30%{transform:translate(-50%,-50%) translateY(calc(var(--travel,220px) * -.3)) rotate(2deg)}
-  65%{transform:translate(-50%,-50%) translateY(calc(var(--travel,220px) * -.65)) rotate(-2deg)}
-  95%{opacity:1}
-  100%{transform:translate(-50%,-50%) translateY(calc(var(--travel,220px) * -1)) rotate(2deg);opacity:0}
+  0%{transform:translate(-50%,-50%) translateY(calc(var(--bh,70px) / 2 + var(--stage,14px))) rotate(-2deg)}
+  8%{transform:translate(-50%,-50%) translateY(calc(-1 * (var(--stage,14px) + var(--bh,70px) / 2))) rotate(-1.5deg)}
+  92%{transform:translate(-50%,-50%) translateY(calc(var(--cur,20px) + var(--bh,70px) / 2 - var(--sky,300px))) rotate(1.5deg)}
+  100%{transform:translate(-50%,-50%) translateY(calc(-1 * (var(--sky,300px) + var(--bh,70px) / 2))) rotate(2deg)}
 }
+/* The stage tells a child where the balloons live: they come up from behind the boards and go away behind the pelmet,
+   so the top and the bottom of the game are things you can see rather than rules you have to learn. */
+#app .s.fashe .curtain{position:absolute;left:0;right:0;top:0;height:clamp(14px,3.4vmin,26px);z-index:3;pointer-events:none;
+  background:linear-gradient(#C1272D,#8E1722);box-shadow:0 3px 8px rgba(59,46,30,.18)}
+#app .s.fashe .curtain::after{content:"";position:absolute;left:0;right:0;top:100%;height:clamp(9px,2.2vmin,16px);
+  background:radial-gradient(circle at 50% 0,#8E1722 97%,transparent 98%) repeat-x;background-size:clamp(20px,4.6vmin,34px) 100%}
+#app .s.fashe .stage{position:absolute;left:0;right:0;bottom:0;height:clamp(10px,2.4vmin,18px);z-index:3;pointer-events:none;
+  background:linear-gradient(#A86A33,#6B3F1D);box-shadow:0 -4px 10px rgba(59,46,30,.16)}
+#app .s.fashe .stage::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:rgba(255,255,255,.28)}
 /* the right one: it bursts open and is gone, while its letter flies to the strip */
 #app .s.fashe .bub.pop{animation:bubpop .3s ease-out forwards;pointer-events:none}
 @keyframes bubpop{
@@ -430,7 +437,7 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   100%{transform:translate(-50%,-50%) translateY(calc(var(--y0,0px) + 52px)) scale(.66) rotate(-18deg);opacity:0}
 }
 /* the example's pointing hand, riding the balloon it points at */
-#app .s.fashe .pophand{position:absolute;left:0;top:0;font-size:34px;line-height:1;z-index:4;pointer-events:none;
+#app .s.fashe .pophand{position:absolute;left:0;top:0;font-size:34px;line-height:1;z-index:5;pointer-events:none;
   filter:drop-shadow(0 3px 3px rgba(59,46,30,.25));animation:handbob .8s ease-in-out infinite}
 #app .s.fashe .abcslots{width:min(680px,96%)}
 #app .s.fashe .aslot{height:30px;font-size:16px}
