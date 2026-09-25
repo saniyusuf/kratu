@@ -199,17 +199,20 @@ export class FasheScreen implements OnInit, OnDestroy {
   /** The letter now due. Keeping it in the sky is this screen's one duty; naming it would end the test. */
   private want(): string { return ALL[this.at] || ''; }
   /**
-   * What Laila says before each letter: its **place**, never its name — "ka fasa na biyu", pop the second one. A child
-   * who knows the alphabet knows which letter that is; one who does not cannot be handed it (Sani 2026-09-25).
+   * What Laila says before each letter: the one **just popped**, and never the one due — "ka fasa wanda ke bayan A",
+   * pop the one after A; then after B, then after C, as the child works down the strip. The letter she names is the
+   * app's Nigerian English recording, the same voice the lessons teach in, so a child hears "A" said the way they will
+   * be asked to say it (Sani 2026-09-25). A child who knows the alphabet knows what follows A; one who does not
+   * cannot be handed it, which is what this game is for.
    */
-  private async askNth(first = false): Promise<void> {
-    const n = this.at + 1; if (n < 2 || n > 26) return;
+  private async askNext(first = false): Promise<void> {
+    const prev = ALL[this.at - 1]; if (!prev) return;
     this.speak.set(true);
     // one chain, awaited end to end: every bus.play stops whatever is sounding, so a second line started alongside
     // this one swallows it — that is how "ka fasa" went missing under "yanzu kai" (Sani 2026-09-25)
     if (first) await this.bus.play(this.bus.gk('s_pop_go'));
-    await this.bus.play(this.bus.gk('s_pop_nth'));
-    await this.bus.play('app_ord_' + String(n).padStart(2, '0'));
+    await this.bus.play(this.bus.gk('s_pop_after'));
+    await this.bus.play('app_en_' + prev);
     this.speak.set(false);
   }
   private wait(): Promise<boolean | null> {
@@ -220,15 +223,15 @@ export class FasheScreen implements OnInit, OnDestroy {
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
       if (!this.inSky().includes(L)) { const old = [...this.bubs()].sort((a, b) => b.in - a.in)[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }
       this.fb('wait', '');
-      this.askNth(this.at === 1).catch(() => undefined);   // she names the place while they play: a pop mid-sentence counts
+      this.askNext(this.at === 1).catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
       this.later(NUDGE_AT, () => { if (this.answer === res) this.again(); });
       this.later(GIVE_AT, () => { if (this.answer === res) { this.answer = null; res(false); } });   // they have stopped playing
     });
   }
-  /** The ear, and Laila herself: which place is due, said again. Never the letter. */
+  /** The ear, and Laila herself: the same prompt again — the letter behind, never the one due. */
   async again(): Promise<void> {
     if (!this.target()) return;
-    this.bus.stopAll(); await this.askNth();
+    this.bus.stopAll(); await this.askNext();
   }
   /**
    * Laila does the first one herself, in full view: the balloons are drifting, a hand travels up to the A balloon and
