@@ -16,7 +16,7 @@ const SKY = 8, GUESSES = 4;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
 const NUDGE_AT = 14000, GIVE_AT = 40000;
 
-interface Bub { id: number; L: string; lane: number; x: number; y: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
+interface Bub { id: number; L: string; lane: number; way: 'a' | 'b'; x: number; y: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
 
 /**
  * Fashe haruffa · the placement game. Letters drift up in balloons and the child pops them **in alphabetical order**,
@@ -37,9 +37,9 @@ interface Bub { id: number; L: string; lane: number; x: number; y: number; dur: 
   host: { class: 's lesson fashe' },
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
-<div #sky class="sky" [class.hold]="hold()" (click)="tapped($event)">
+<div #sky class="sky" (click)="tapped($event)">
   @for (b of bubs(); track b.id) {
-    <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
+    <button class="bub" [class]="'bub way-' + b.way" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
       [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--y.%]="b.y" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
   }
 </div>
@@ -68,8 +68,6 @@ export class FasheScreen implements OnInit, OnDestroy {
   readonly target = signal(''); readonly gone = signal('0 / 25');
   readonly fbCls = signal(''); readonly fbText = signal('');
   readonly speak = signal(false); readonly yay = signal(false); readonly nope = signal(false); readonly bad = signal(false);
-  /** The balloons hold still while Laila explains, then bob in their places for the rest of the game. */
-  readonly hold = signal(true);
 
   private seq = 0; private at = 0; private reached = 0; private wrong = 0; private roundWrong = 0;
   private answer: ((ok: boolean | null) => void) | null = null;
@@ -114,12 +112,12 @@ export class FasheScreen implements OnInit, OnDestroy {
    * (Sani 2026-09-25). Four across, two down, with a little jitter so the grid does not read as a grid.
    */
   private mk(L: string, lane: number): Bub {
-    const col = lane % 4, row = Math.floor(lane / 4);
+    const col = lane % 4, row = Math.floor(lane / 4), dur = 11000 + Math.random() * 7000;
     return {
-      id: ++this.seq, L, lane,
-      x: 14 + col * 24 + (Math.random() * 6 - 3),
-      y: 27 + row * 42 + (Math.random() * 8 - 4),
-      dur: 3200 + Math.random() * 1800, phase: Math.random() * 4000, state: '',
+      id: ++this.seq, L, lane, way: lane % 2 === 0 ? 'a' : 'b',
+      x: 15 + col * 23.5 + (Math.random() * 5 - 2.5),
+      y: 30 + row * 40 + (Math.random() * 6 - 3),
+      dur, phase: Math.random() * dur, state: '',
     };
   }
   /** One balloon per place, all eight different letters. */
@@ -239,12 +237,11 @@ export class FasheScreen implements OnInit, OnDestroy {
    * it burst. A child who has never held a tablet has now seen the whole move (Sani 2026-09-25).
    */
   private async example(): Promise<void> {
-    if (this.done()[0]) { this.at = Math.max(this.at, 1); this.hold.set(false); return; }   // an eager child got there first
-    this.hold.set(false);                                   // they move while she demonstrates
+    if (this.done()[0]) { this.at = Math.max(this.at, 1); return; }   // an eager child got there first
     const b = this.bubs().find((x) => x.L === 'A') ?? (() => { const old = shuffle(this.bubs())[0]; const n = this.mk('A', old.lane); this.bubs.update((a) => a.map((x) => x.id === old.id ? n : x)); return n; })();
     await wait(80);
     const el = this.el(b.id);
-    if (el) this.pointAt(el);
+    if (el) this.pointAt(el);                               // it walks across to the one she is about to burst
     this.speak.set(true);
     await this.bus.play(this.bus.gk('s_pop_demo'));          // "Ga misali. Zan fasa na farko:"
     await this.bus.play('app_en_A');                         // …and its name, so the move is unambiguous
@@ -258,24 +255,35 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.later(60, () => { this.recycle(b.id); this.sweep(); });
   }
   /** The pointing hand rides the balloon it is pointing at, because the balloon is moving while she talks. */
-  private hand: HTMLElement | null = null; private handRaf = 0;
+  private hand: HTMLElement | null = null; private handRaf = 0; private handOn: HTMLElement | null = null;
   private pointAt(el: HTMLElement): void {
     const sky = this.skyRef().nativeElement;
-    const h = document.createElement('span'); h.className = 'pophand'; h.textContent = '👆🏾'; h.setAttribute('aria-hidden', 'true');
-    sky.appendChild(h); this.hand = h;
+    this.handOn = el;
+    if (!this.hand) {
+      const h = document.createElement('span'); h.className = 'pophand'; h.textContent = '👆🏾'; h.setAttribute('aria-hidden', 'true');
+      sky.appendChild(h); this.hand = h;
+    }
+    cancelAnimationFrame(this.handRaf);
     const follow = () => {
-      if (!this.hand || !el.isConnected) return;
-      const r = el.getBoundingClientRect(), s = sky.getBoundingClientRect();
+      const h = this.hand, on = this.handOn;
+      if (!h || !on || !on.isConnected) return;
+      const r = on.getBoundingClientRect(), s = sky.getBoundingClientRect();
       // left/top, not transform: the hand's bob animation owns its transform and would throw any translate away
       h.style.left = (r.left - s.left + r.width / 2 - 30) + 'px'; h.style.top = (r.bottom - s.top - 6) + 'px';
       this.handRaf = requestAnimationFrame(follow);
     };
     follow();
   }
-  private unpoint(): void { cancelAnimationFrame(this.handRaf); this.hand?.remove(); this.hand = null; }
+  private unpoint(): void { cancelAnimationFrame(this.handRaf); this.hand?.remove(); this.hand = null; this.handOn = null; }
   private async start(): Promise<void> {
     this.fill(); this.eye.set('Mu gani · A → Z');
-    if (!(await this.bus.play(this.bus.gk('s_pop_intro')))) return;
+    await afterPaint();
+    // "here are balloons with letters — press one with your finger and it bursts", with the hand on a balloon as she
+    // says it, so the move is shown before it is asked for (Sani 2026-09-25)
+    const first = this.skyRef().nativeElement.querySelector('.bub') as HTMLElement | null;
+    if (first) this.pointAt(first);
+    if (!(await this.bus.play(this.bus.gk('s_pop_intro')))) { this.unpoint(); return; }
+    if (!(await this.bus.play(this.bus.gk('s_pop_task')))) { this.unpoint(); return; }
     await this.example();
     if (this.stopped) return;
     for (; this.at < ALL.length; ) {

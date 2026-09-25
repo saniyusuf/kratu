@@ -4043,18 +4043,18 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Mu yi wasa. Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan na biye da shi, bi da bi.",
-   "f": "Mu yi wasa. Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan na biye da shi, bi da bi."
+   "m": "Ga balan-balan masu haruffa. Ka danna balan-balan da yatsanka, sai ya fashe.",
+   "f": "Ga balan-balan masu haruffa. Ki danna balan-balan da yatsanki, sai ya fashe."
   },
-  "en": "Let's play. Find the first letter of English and pop it, then the one after it, in order.",
+  "en": "Here are balloons with letters. Press a balloon with your finger and it bursts.",
   "screens": [
    "Fashe haruffa"
   ],
   "said_when": "",
   "status": "live",
   "recorded": {
-   "m": "c53e70fce0",
-   "f": "a3c3358f39"
+   "m": "a6d4c3bcec",
+   "f": "da564ae393"
   }
  },
  {
@@ -4129,6 +4129,26 @@
   "recorded": {
    "m": "70d8bd1712",
    "f": "58bf78405a"
+  }
+ },
+ {
+  "key": "s_pop_task",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan harafin bayan sa, bi da bi.",
+   "f": "Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan harafin bayan sa, bi da bi."
+  },
+  "en": "Find the first letter of English and pop it. Then the letter after it, in order.",
+  "screens": [
+   "Fasa haruffa"
+  ],
+  "said_when": "after the balloons are introduced",
+  "status": "live",
+  "recorded": {
+   "m": "3110c359f3",
+   "f": "0a4448ff9a"
   }
  }
 ]
