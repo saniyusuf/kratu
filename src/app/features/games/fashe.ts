@@ -16,7 +16,7 @@ const SKY = 8, GUESSES = 4;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
 const NUDGE_AT = 14000, GIVE_AT = 40000;
 
-interface Bub { id: number; L: string; lane: number; x: number; dur: number; in: number; state: '' | 'pop' | 'burst'; }
+interface Bub { id: number; L: string; lane: number; x: number; y: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
 
 /**
  * Fashe haruffa · the placement game. Letters drift up in balloons and the child pops them **in alphabetical order**,
@@ -40,7 +40,7 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; in:
 <div #sky class="sky" [class.hold]="hold()" (click)="tapped($event)">
   @for (b of bubs(); track b.id) {
     <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
-      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--dur.ms]="b.dur" [style.animation-delay.ms]="-b.in" [attr.aria-label]="b.L" (animationend)="ended(b, $event)">{{ b.L }}</button>
+      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--y.%]="b.y" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
   }
 </div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [style.--c]="colour(L)" [class.active]="true" [class.on]="target() === L" [class.done]="done()[$index]">{{ done()[$index] ? L : '' }}</span>}</div>
@@ -68,32 +68,25 @@ export class FasheScreen implements OnInit, OnDestroy {
   readonly target = signal(''); readonly gone = signal('0 / 25');
   readonly fbCls = signal(''); readonly fbText = signal('');
   readonly speak = signal(false); readonly yay = signal(false); readonly nope = signal(false); readonly bad = signal(false);
-  /** The balloons hang still while Laila explains: her instruction takes long enough that a whole skyful would
-   *  otherwise drift past before the child's turn even began (Sani 2026-09-25). */
+  /** The balloons hold still while Laila explains, then bob in their places for the rest of the game. */
   readonly hold = signal(true);
 
   private seq = 0; private at = 0; private reached = 0; private wrong = 0; private roundWrong = 0;
   private answer: ((ok: boolean | null) => void) | null = null;
-  private stopped = false; private timers: number[] = []; private ro?: ResizeObserver;
+  private stopped = false; private timers: number[] = [];
   private readonly onKey = (e: KeyboardEvent) => this.key(e);
 
   colour(L: string): string { return LETTER_COLOR(ALL.indexOf(L)); }
 
   ngOnInit(): void {
     document.addEventListener('keydown', this.onKey);
-    afterPaint().then(() => { this.measure(); this.start(); });
+    afterPaint().then(() => this.start());
   }
   ngOnDestroy(): void {
     this.stopped = true; this.bus.stopAll(); document.removeEventListener('keydown', this.onKey);
-    this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.unpoint(); this.answer?.(null);
+    this.timers.forEach((t) => clearTimeout(t)); this.unpoint(); this.answer?.(null);
   }
 
-  /** The balloons rise by a measured distance rather than a guessed one, so they always clear the top of the sky. */
-  private measure(): void {
-    const el = this.skyRef().nativeElement;
-    const set = () => el.style.setProperty('--travel', (el.clientHeight + 120) + 'px');
-    set(); try { this.ro = new ResizeObserver(set); this.ro.observe(el); } catch { /* older webviews keep the first measure */ }
-  }
   private slot(L: string): HTMLElement { return this.slotsRef().nativeElement.children[ALL.indexOf(L)] as HTMLElement; }
   private fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }
   private later(ms: number, f: () => void): number { const t = window.setTimeout(f, ms); this.timers.push(t); return t; }
@@ -115,17 +108,27 @@ export class FasheScreen implements OnInit, OnDestroy {
    * climb, or all eight would rise as one clump and leave the sky empty between waves (Sani 2026-09-24). Every balloon
    * after that enters from the bottom, as a new one should.
    */
-  private mk(L: string, lane: number, spread = false): Bub {
-    const dur = 24000 + Math.random() * 10000;   // a slow drift: a child must have time to look for the letter
-    return { id: ++this.seq, L, lane, x: 6 + lane * (88 / (SKY - 1)) + (Math.random() * 6 - 3), dur, in: spread ? Math.random() * dur * 0.55 : 0, state: '' };
+  /**
+   * A balloon keeps its own place in the sky and bobs there. Nothing floats off the top any more: a letter a child is
+   * hunting for must still be there when they find it, and a screen where things leave punishes a slow child twice
+   * (Sani 2026-09-25). Four across, two down, with a little jitter so the grid does not read as a grid.
+   */
+  private mk(L: string, lane: number): Bub {
+    const col = lane % 4, row = Math.floor(lane / 4);
+    return {
+      id: ++this.seq, L, lane,
+      x: 14 + col * 24 + (Math.random() * 6 - 3),
+      y: 27 + row * 42 + (Math.random() * 8 - 4),
+      dur: 3200 + Math.random() * 1800, phase: Math.random() * 4000, state: '',
+    };
   }
-  /** One balloon per lane, the first skyful spread through the climb so they do not rise as one clump. */
+  /** One balloon per place, all eight different letters. */
   private fill(): void {
     const out: Bub[] = [];
     for (let lane = 0; lane < SKY; lane++) {
       const taken = new Set(out.map((b) => b.L));
       const pool = ALL.filter((L) => !taken.has(L));
-      out.push(this.mk(pool[Math.floor(Math.random() * pool.length)], lane, true));
+      out.push(this.mk(pool[Math.floor(Math.random() * pool.length)], lane));
     }
     this.bubs.set(out);
   }
@@ -149,9 +152,6 @@ export class FasheScreen implements OnInit, OnDestroy {
     if (this.bubs().filter((b) => !this.done()[ALL.indexOf(b.L)]).length < 2) return;   // near Z there is nothing else to show
     stale.forEach((b) => this.recycle(b.id));
   }
-  /** A balloon reaching the top is not an answer: it is replaced, quietly. Popped and burst ones are recycled by
-   *  their own timers, so only the drift counts here. */
-  ended(b: Bub, e: AnimationEvent): void { if (e.animationName === 'bubrise' && !b.state) this.recycle(b.id); }
 
   // ---- answering, by finger or by key ----
   tapped(e: Event): void {
@@ -221,7 +221,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       this.sweep();                                   // nothing in the sky that is already on the strip, whatever raced what
       this.answer = res; this.target.set(L); this.roundWrong = 0; this.bad.set(false);
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
-      if (!this.inSky().includes(L)) { const old = [...this.bubs()].sort((a, b) => b.in - a.in)[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }
+      if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }
       this.fb('wait', '');
       this.askNext(this.at === 1).catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
       this.later(NUDGE_AT, () => { if (this.answer === res) this.again(); });
@@ -241,7 +241,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   private async example(): Promise<void> {
     if (this.done()[0]) { this.at = Math.max(this.at, 1); this.hold.set(false); return; }   // an eager child got there first
     this.hold.set(false);                                   // they move while she demonstrates
-    const b = this.bubs().find((x) => x.L === 'A') ?? (() => { const old = [...this.bubs()].sort((a, c) => c.in - a.in)[0]; const n = this.mk('A', old.lane); this.bubs.update((a) => a.map((x) => x.id === old.id ? n : x)); return n; })();
+    const b = this.bubs().find((x) => x.L === 'A') ?? (() => { const old = shuffle(this.bubs())[0]; const n = this.mk('A', old.lane); this.bubs.update((a) => a.map((x) => x.id === old.id ? n : x)); return n; })();
     await wait(80);
     const el = this.el(b.id);
     if (el) this.pointAt(el);
