@@ -16,7 +16,7 @@ const SKY = 8, GUESSES = 4;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
 const NUDGE_AT = 14000, GIVE_AT = 40000;
 
-interface Bub { id: number; L: string; lane: number; x: number; dur: number; phase: number; state: '' | 'pop' | 'burst'; }
+interface Bub { id: number; L: string; lane: number; x: number; dur: number; wait: number; state: '' | 'pop' | 'burst'; }
 
 /**
  * Fashe haruffa · the placement game. Letters drift up in balloons and the child pops them **in alphabetical order**,
@@ -41,7 +41,7 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; pha
   <span class="stage" aria-hidden="true"></span>
   @for (b of bubs(); track b.id) {
     <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [attr.data-b]="b.id" [attr.data-l]="b.L"
-      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--dur.ms]="b.dur" [style.--phase.ms]="-b.phase" [attr.aria-label]="b.L">{{ b.L }}</button>
+      [style.--c]="colour(b.L)" [style.--x.%]="b.x" [style.--dur.ms]="b.dur" [style.--wait.ms]="b.wait" [attr.aria-label]="b.L">{{ b.L }}</button>
   }
   <span class="curtain" aria-hidden="true"></span>
 </div>
@@ -129,17 +129,21 @@ export class FasheScreen implements OnInit, OnDestroy {
    * child is hunting for cannot vanish on them (Sani 2026-09-25). The climb is measured so the whole balloon stays
    * inside the sky from the bottom of the rise to the top of it.
    */
-  private mk(L: string, lane: number): Bub {
+  private mk(L: string, lane: number, wait = 0): Bub {
     const dur = 19000 + Math.random() * 9000;
-    return { id: ++this.seq, L, lane, x: 7 + lane * (86 / (SKY - 1)) + (Math.random() * 4 - 2), dur, phase: Math.random() * dur, state: '' };
+    return { id: ++this.seq, L, lane, x: 7 + lane * (86 / (SKY - 1)) + (Math.random() * 4 - 2), dur, wait, state: '' };
   }
-  /** One balloon per place, all eight different letters. */
+  /**
+   * The first skyful, all eight letters different, rising one after another while Laila explains. Nothing is ever put
+   * on the screen already in the air: a balloon's only way in is up from behind the boards, whether it is the first of
+   * the game or the one replacing a letter just burst (Sani 2026-09-25).
+   */
   private fill(): void {
     const out: Bub[] = [];
     for (let lane = 0; lane < SKY; lane++) {
       const taken = new Set(out.map((b) => b.L));
       const pool = ALL.filter((L) => !taken.has(L));
-      out.push(this.mk(pool[Math.floor(Math.random() * pool.length)], lane));
+      out.push(this.mk(pool[Math.floor(Math.random() * pool.length)], lane, lane * 900));
     }
     this.bubs.set(out);
   }
@@ -242,7 +246,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       this.sweep();                                   // nothing in the sky that is already on the strip, whatever raced what
       this.answer = res; this.target.set(L); this.roundWrong = 0; this.bad.set(false);
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
-      if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }
+      if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.bubs.update((a) => a.map((b) => b.id === old.id ? this.mk(L, old.lane) : b)); }   // it rises in like any other
       this.fb('wait', '');
       this.askNext(this.at === 1).catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
       this.later(NUDGE_AT, () => { if (this.answer === res) this.again(); });

@@ -394,13 +394,14 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
    cheap tablet must cost nothing — and the A–Z strip below is the board's own, so a popped letter flies into exactly
    the place it will live in when the lessons teach it.
 --------------------------------------------------------------------------------------------------------------- */
-#app .s.fashe .sky{position:relative;width:min(760px,96%);flex:1 1 auto;min-height:40vh;margin-bottom:6px;overflow:hidden;touch-action:manipulation}
+#app .s.fashe .sky{position:relative;width:min(760px,96%);flex:1 1 auto;min-height:40vh;margin-bottom:8px;overflow:hidden;touch-action:manipulation;
+  background:var(--paper2);border-radius:20px;box-shadow:inset 0 0 0 2px rgba(59,46,30,.07),0 2px 0 rgba(255,255,255,.5)}
 /* Every balloon keeps a place of its own and bobs in it. Nothing leaves the sky: a letter a child is hunting for has
    to still be there when they find it, and the whole board must sit inside the screen at any size (Sani 2026-09-25). */
 #app .s.fashe .bub{position:absolute;left:var(--x);top:100%;z-index:1;width:clamp(52px,8.6vmin,84px);aspect-ratio:1;border:0;padding:0;
   border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:clamp(24px,4.1vmin,38px);color:#fff;cursor:pointer;
   background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.6),rgba(255,255,255,0) 48%),var(--c);
-  box-shadow:0 4px 0 rgba(59,46,30,.16);animation:bubrise var(--dur) linear var(--phase) infinite;will-change:transform,opacity}
+  box-shadow:0 4px 0 rgba(59,46,30,.16);animation:bubrise var(--dur) linear var(--wait,0ms) infinite backwards;will-change:transform}
 #app .s.fashe .bub::after{content:"";position:absolute;bottom:-9px;left:50%;margin-left:-3px;width:6px;height:10px;border-radius:0 0 3px 3px;background:rgba(59,46,30,.3)}
 /* Up its own lane and round again, always with the same letter, and never seen to appear or vanish: it slides out
    from behind the boards and leaves behind the pelmet. The two hidden stretches are crossed in a sixteenth of the
@@ -413,13 +414,14 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 }
 /* The stage tells a child where the balloons live: they come up from behind the boards and go away behind the pelmet,
    so the top and the bottom of the game are things you can see rather than rules you have to learn. */
-#app .s.fashe .curtain{position:absolute;left:0;right:0;top:0;height:clamp(14px,3.4vmin,26px);z-index:3;pointer-events:none;
-  background:linear-gradient(#C1272D,#8E1722);box-shadow:0 3px 8px rgba(59,46,30,.18)}
-#app .s.fashe .curtain::after{content:"";position:absolute;left:0;right:0;top:100%;height:clamp(9px,2.2vmin,16px);
-  background:radial-gradient(circle at 50% 0,#8E1722 97%,transparent 98%) repeat-x;background-size:clamp(20px,4.6vmin,34px) 100%}
-#app .s.fashe .stage{position:absolute;left:0;right:0;bottom:0;height:clamp(10px,2.4vmin,18px);z-index:3;pointer-events:none;
-  background:linear-gradient(#A86A33,#6B3F1D);box-shadow:0 -4px 10px rgba(59,46,30,.16)}
-#app .s.fashe .stage::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:rgba(255,255,255,.28)}
+#app .s.fashe .curtain{position:absolute;left:0;right:0;top:0;height:clamp(12px,2.8vmin,22px);z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,var(--red),#CC2F3C)}
+#app .s.fashe .curtain::after{content:"";position:absolute;left:0;right:0;top:100%;height:clamp(8px,1.9vmin,14px);
+  background:radial-gradient(circle at 50% 0,#CC2F3C 96%,rgba(0,0,0,0) 97%) repeat-x;background-size:clamp(18px,4.2vmin,30px) 100%;
+  filter:drop-shadow(0 2px 2px rgba(59,46,30,.12))}
+#app .s.fashe .stage{position:absolute;left:0;right:0;bottom:0;height:clamp(9px,2.2vmin,16px);z-index:3;pointer-events:none;
+  background:linear-gradient(180deg,var(--teal),#279083);box-shadow:0 -3px 10px rgba(59,46,30,.10)}
+#app .s.fashe .stage::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.4)}
 /* the right one: it bursts open and is gone, while its letter flies to the strip */
 #app .s.fashe .bub.pop{animation:bubpop .3s ease-out forwards;pointer-events:none}
 @keyframes bubpop{
