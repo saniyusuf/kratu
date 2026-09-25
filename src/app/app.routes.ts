@@ -13,7 +13,6 @@ import { ObjLessonScreen } from './features/lessons/obj';
 import { NemoScreen } from './features/lessons/nemo';
 import { RubutuScreen } from './features/lessons/rubutu';
 import { KaratuScreen } from './features/lessons/karatu';
-import { FasheScreen } from './features/games/fashe';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'blank' },   // nothing renders (or speaks) under the loader; app.ts picks the first screen once everything is ready
@@ -25,7 +24,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeScreen },
   { path: 'misali/:kind', component: MisaliScreen },
   { path: 'haruffa/koyo', component: HaruffaLearnScreen },
-  { path: 'fashe', component: FasheScreen },
   { path: 'abubuwa', component: CatsScreen },
   { path: 'abubuwa/koyo', component: ObjLessonScreen, data: { mode: 'words' } },
   { path: 'rubutu', component: RubutuScreen },
