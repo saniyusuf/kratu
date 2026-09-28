@@ -95,7 +95,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private recOff(): void { this.rec.set(false); this.hearing.set(false); }
   private showPic(src?: string | null): void { this.picSrc.set(src || null); }
   /** Right answer: the kalangu sounds and Laila hops (Sani 2026-09-24). */
-  private celebrate(): void { joy(this.bus, this.yay); }
+  private celebrate(): Promise<boolean> { return joy(this.bus, this.yay); }
   /** The example's own pictures, decoded before the film starts. */
   private warmExample(): void { this.warm.soon([this.AW?.img, this.RW?.img, this.KW?.img, this.word('goat')?.img, this.word('cat')?.img, ...this.gridItems().map((w) => w.img)]); }
   private reveal(): void { const im = this.picRef()?.nativeElement.querySelector('img'); if (!im?.animate) return; try { const an = im.animate([{ clipPath: 'inset(0 100% 0 0 round 30px)' }, { clipPath: 'inset(0 0 0 0 round 30px)' }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }); const fin = () => { try { an.cancel(); } catch { /* ignore */ } }; an.onfinish = fin; setTimeout(fin, 1300); } catch { /* ignore */ } }
@@ -121,7 +121,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
     // the written word flying out of Laila is for reading and the alphabet: elsewhere the child says a word and that is
     // the whole answer, so nothing is written for them to read (Sani 2026-09-20)
     if (target !== false && (this.kind === 'karatu' || this.kind === 'haruffa')) await flyText(this.zoom, this.s(), this.head(), target, heard);
-    this.fb('good', 'Madalla! ✓'); this.celebrate(); if (!noKudos) await this.play('app_kudos');
+    this.fb('good', 'Madalla! ✓'); await this.celebrate(); if (!noKudos) await this.play('app_kudos');
   }
   private reset(): void { this.running = false; this.phase = 'idle'; this.movie.set(false); this.cue.set(false); this.handOff(); this.fb('', ''); this.speak.set(false); this.armed.set(false); this.recOff(); this.showPic(null); this.mkSlots(''); this.bigLetter.set(''); this.gridItems.set([]); this.gridDone.set(''); }
   /**

@@ -71,7 +71,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private setDoneUpTo(n: number): void { this.st.update((a) => a.map((x, k) => k < n ? 'done' : x)); }
   private async play(k: string): Promise<boolean> { return this.stopped ? false : this.bus.play(k); }
   /** Right answer: the kalangu sounds and Laila hops, while the letter flies to its place. */
-  private celebrate(): void { joy(this.bus, this.yay); }
+  private celebrate(): Promise<boolean> { return joy(this.bus, this.yay); }
   /**
    * Teaching voice: every letter is said twice, with a beat between, because once goes past a child who is still
    * settling into the screen (Sani 2026-09-24). The second time is introduced too — "Wannan shi ne A. Ka saurara,
@@ -115,7 +115,15 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     }
   }
   private async judge(L: string, r: { ok: boolean; heard: string | null; tries: number }, noKudos: boolean, miss: (n: number) => void): Promise<boolean> {
-    if (r.ok) { this.celebrate(); await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓'); if (noKudos) await wait(350); else await this.play('app_kudos'); return true; }
+    // the drum and the letter fly together, but "Madalla" waits for the drum to finish: starting both at once let
+    // them cut each other off (Sani 2026-09-28)
+    if (r.ok) {
+      const cel = this.celebrate();
+      await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓');
+      await cel;
+      if (noKudos) await wait(350); else await this.play('app_kudos');
+      return true;
+    }
     miss(1);   // one failed entry is one miss, however many tries it held
     shakeNo(this.nope); this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
   }

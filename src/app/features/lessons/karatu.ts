@@ -43,7 +43,7 @@ export class KaratuScreen extends TopicLessonBase {
   readonly picSrc = signal<string | null>(null); readonly slots = signal<Slot[]>([]);
   readonly armed = signal(false); readonly rec = signal(false); readonly speak = signal(false);
   readonly resultsOn = signal(false); readonly resultItems = signal<Item[]>([]); readonly resultMiss = signal<string[]>([]); readonly saying = signal('');
-  private WORDS: Item[] = []; private curWord: Item | null = null; private firstWord = true; private needLaila = true;
+  private WORDS: Item[] = []; private block: Item[] = []; private curWord: Item | null = null; private firstWord = true; private needLaila = true;
   private awaiting = false; private pend: ((r: { got: string | null; raw: string }) => void) | null = null; private hearHandle: HearHandle | null = null; private round = 0;
 
   private mkSlots(word: string): void { this.slots.set(word.split('').map((L) => ({ L, st: '' }))); }
@@ -58,7 +58,7 @@ export class KaratuScreen extends TopicLessonBase {
   private stopMic(): void { this.round++; this.hearHandle?.stop(); this.hearHandle = null; this.rec.set(false); }
   lailaPressed(): void {
     if (!this.awaiting || this.hearHandle) return; const it = this.curWord; if (!it) return; this.bus.stopAll(); this.spotter.unspot(); this.speak.set(false); this.armed.set(false); this.rec.set(true);
-    const word = it.en.toLowerCase(), my = ++this.round, h = this.speech.hear({ target: word, match: (raw) => matchWord(raw, word) }); this.hearHandle = h;
+    const word = it.en.toLowerCase(), my = ++this.round, h = this.speech.hear({ target: word, among: (this.block.length ? this.block : this.WORDS).map((w) => String(w.en)), match: (raw) => matchWord(raw, word) }); this.hearHandle = h;
     h.done.then((r) => { if (my !== this.round || this.hearHandle !== h) return; this.hearHandle = null; this.rec.set(false); const p = this.pend; this.pend = null; this.awaiting = false; p?.({ got: (r.value as string | null), raw: r.raw }); });
   }
   protected override onLeave(): void { this.stopMic(); this.pend = null; }
@@ -112,9 +112,9 @@ export class KaratuScreen extends TopicLessonBase {
     if (ex) this.WORDS = this.WORDS.filter((w) => String(w.en).toUpperCase() !== ex.toUpperCase());
     const blocks: Item[][] = []; for (let i = 0; i < this.WORDS.length; i += 5) blocks.push(this.WORDS.slice(i, i + 5));
     await firstHints(this.bus, this.session, this.spotter, this.s, null);
-    for (let b = 0; b < blocks.length; b++) await this.runBlock(blocks[b], b === blocks.length - 1);
+    for (let b = 0; b < blocks.length; b++) { this.block = blocks[b]; await this.runBlock(blocks[b], b === blocks.length - 1); }
     await this.play(this.bus.gk('app_stage_done'));
   }
-  protected clear(): void { this.stopMic(); this.pend = null; this.awaiting = false; this.curWord = null; this.firstWord = true; this.needLaila = true; this.slots.set([]); this.fb('', ''); this.picSrc.set(null); this.resultsOn.set(false); this.resultItems.set([]); this.armed.set(false); this.rec.set(false); this.speak.set(false); }
+  protected clear(): void { this.stopMic(); this.block = []; this.pend = null; this.awaiting = false; this.curWord = null; this.firstWord = true; this.needLaila = true; this.slots.set([]); this.fb('', ''); this.picSrc.set(null); this.resultsOn.set(false); this.resultItems.set([]); this.armed.set(false); this.rec.set(false); this.speak.set(false); }
   protected earInLesson(): void { const it = this.curWord; if (it && this.slots().length) this.walk(it.en).then(() => this.play('app_read_word')).catch(() => undefined); else this.play('s_k_lesson').catch(() => undefined); }
 }

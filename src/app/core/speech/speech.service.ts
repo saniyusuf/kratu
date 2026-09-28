@@ -7,6 +7,12 @@ export interface HearOptions {
   target?: string;
   /** Free matcher for word screens: recognised text → the word it counts as, or null. */
   match?: (raw: string) => string | null;
+  /**
+   * The words that could sensibly be said here — the set being taught or tested. The recogniser then chooses between
+   * those and nothing else, instead of the app's whole 423-word vocabulary, which is what made short words nearly
+   * impossible: a child saying "cap" was competing with cup, tap, cab and gap, and lost (Sani 2026-09-28).
+   */
+  among?: string[];
   /** A burst of letters ("D O G"): every letter heard, in order. */
   multi?: boolean;
   /**
@@ -127,7 +133,11 @@ export class SpeechService {
       if (!ok) { finished = true; resolve(await this.simulate(o, my)); return; }
       let gram: string[];
       const addWord = (t: string) => { t = t.toLowerCase(); if (t && gram.indexOf(t) < 0) gram.push(t); const al = this.ALIAS[t]; if (al) al.forEach((a) => a.split(/\s+/).forEach((x) => { if (x && gram.indexOf(x) < 0) gram.push(x); })); };
-      if (o.match) { if (!this.vocabCache) this.vocabCache = this.words.vocab(); gram = this.vocabCache.slice(); if (o.target) String(o.target).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]'); }
+      if (o.match) {
+        if (o.among?.length) { gram = []; o.among.forEach((w) => String(w).toLowerCase().split(/\s+/).forEach(addWord)); }
+        else { if (!this.vocabCache) this.vocabCache = this.words.vocab(); gram = this.vocabCache.slice(); }
+        if (o.target) String(o.target).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]');
+      }
       else { gram = this.ALL.map((L) => L.toLowerCase()).concat(this.ALL.map((L) => this.NAMES[L])); if (o.word) String(o.word).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]'); }
       try { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate, JSON.stringify(gram)); } catch { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate); }
       this.rec.on('partialresult', (m: any) => { if (finished || my !== this.seq) return; const p = m?.result?.partial || ''; if (p && p !== '[unk]') { lastRaw = p; pend = p; this.fb.set('“' + p + '”'); } });

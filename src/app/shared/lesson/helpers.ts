@@ -11,8 +11,14 @@ export const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
  * and drive one class on Laila's button, so they cost a cheap tablet nothing.
  */
 const YAY_SFX = 'assets/audio/sfx/yay.ogg';
-export function joy(bus: AudioBus, flag: WritableSignal<boolean>): void {
-  bus.playRaw(YAY_SFX).catch(() => undefined); flag.set(true); setTimeout(() => flag.set(false), 760);
+/**
+ * Right: the kalangu sounds and Laila hops. It returns the sound's promise and the caller must wait for it before
+ * saying anything else — two plays started in the same tick race each other, and whichever resolved second cut the
+ * first off. That is why "Madalla" kept being clipped (Sani 2026-09-28).
+ */
+export function joy(bus: AudioBus, flag: WritableSignal<boolean>): Promise<boolean> {
+  flag.set(true); setTimeout(() => flag.set(false), 760);
+  return bus.playRaw(YAY_SFX).catch(() => false);
 }
 export function shakeNo(flag: WritableSignal<boolean>): void { flag.set(true); setTimeout(() => flag.set(false), 700); }
 export const shuffle = <T,>(a: T[]): T[] => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };

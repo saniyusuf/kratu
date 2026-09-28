@@ -77,7 +77,10 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   private async press(): Promise<void> {
     if (!this.awaiting || !this.pend) return; const p = this.pend as any; this.awaiting = false; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false);
     if (p.skippable) { this.pend = null; p.res({ kind: 'skip' }); return; }
-    const it: Item = p.it; this.rec.set(true); const h = this.speech.hear({ target: it.en, match: (raw) => matchWord(raw, it.en) }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
+    // the recogniser chooses between the things on this row and nothing else: with the whole vocabulary in the grammar
+    // a child saying "cap" was up against cup, tap and cab, and lost every time (Sani 2026-09-28)
+    const it: Item = p.it; this.rec.set(true);
+    const h = this.speech.hear({ target: it.en, among: this.rowItems().map((x) => x.en), match: (raw) => matchWord(raw, it.en) }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     this.pend = null; p.res({ kind: 'say', ok: r.value === it.en, heard: r.raw || null });
   }
   pressDk(): void { if (!this.awaiting || !this.pend || (this.pend as any).skippable) return; const p = this.pend; this.awaiting = false; this.pend = null; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false); p.res({ kind: 'dk' }); }
@@ -92,7 +95,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     }
   }
   private async settlePractice(it: Item, r: { kind: 'say'; ok: boolean; heard: string | null } | { kind: 'dk' } | { kind: 'skip' }, miss: () => number): Promise<boolean> {
-    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); joy(this.bus, this.yay); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
+    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); this.fb('good', 'Madalla! ✓'); await joy(this.bus, this.yay); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
     if (r.kind === 'dk') { this.fb('wait', 'Ba komai — ' + this.KA() + ' saurara.'); await this.remind(it); return false; }
     if (r.kind === 'say') { const m = miss(); shakeNo(this.nope); this.fb('bad', r.heard ? ('“' + r.heard + '” — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); await this.play('app_retry'); if (m % 3 === 0) await this.remind(it); }
     return false;
@@ -165,7 +168,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
       this.speak.set(true); await this.seq(['app_wannan', this.ha(it)]); this.speak.set(false);
       const armP = this.arm(it); this.play(this.bus.gk('s_o_say')).catch(() => undefined); let r = await armP; let ok = false, why: 'three' | 'dk' = 'three';
       for (;;) { if (r.kind === 'say' && r.ok) { ok = true; break; } if (r.kind === 'dk') { why = 'dk'; break; } tries++; shakeNo(this.nope); this.fb('bad', r.kind === 'say' && r.heard ? ('“' + r.heard + '”') : 'Ban ji ba'); if (tries >= 3) break; await this.play('app_retry'); r = await this.arm(it); }
-      if (ok) { this.mark(dot, 'done'); this.right.push(it); joy(this.bus, this.yay); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); await wait(300); }
+      if (ok) { this.mark(dot, 'done'); this.right.push(it); this.fb('good', 'Madalla! ✓'); await joy(this.bus, this.yay); await this.play('app_kudos'); await wait(300); }
       else { this.mark(dot, 'miss'); this.wrongs.push(it); this.fb('wait', why === 'dk' ? 'Ban sani ba' : 'Sau uku'); this.speak.set(true); await this.seq([this.bus.gk(why === 'three' ? 's_o_three' : 's_o_miss'), 's_o_inen', this.en(it), 's_o_next']); this.speak.set(false); await wait(300); }
       this.onItem.set('');
     }

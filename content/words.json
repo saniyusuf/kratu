@@ -1287,7 +1287,6 @@
   {
    "key": "cap",
    "groups": [
-    "home",
     "clothing"
    ],
    "ha": "hula",
@@ -1299,7 +1298,6 @@
   {
    "key": "shoe",
    "groups": [
-    "home",
     "clothing"
    ],
    "ha": "takalmi",
@@ -3633,13 +3631,13 @@
    "en_clip": true
   },
   {
-   "key": "skirt",
+   "key": "turban",
    "groups": [
     "clothing"
    ],
-   "ha": "siket",
-   "en": "Skirt",
-   "picture": "pictures/skirt.webp",
+   "ha": "rawani",
+   "en": "Turban",
+   "picture": "pictures/turban.webp",
    "ha_clip": true,
    "en_clip": true
   },
@@ -3666,13 +3664,13 @@
    "en_clip": true
   },
   {
-   "key": "turban",
+   "key": "skirt",
    "groups": [
     "clothing"
    ],
-   "ha": "rawani",
-   "en": "Turban",
-   "picture": "pictures/turban.webp",
+   "ha": "siket",
+   "en": "Skirt",
+   "picture": "pictures/skirt.webp",
    "ha_clip": true,
    "en_clip": true
   },
