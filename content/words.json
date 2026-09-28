@@ -1837,17 +1837,6 @@
    "en_clip": true
   },
   {
-   "key": "arm",
-   "groups": [
-    "body"
-   ],
-   "ha": "hannu",
-   "en": "Arm",
-   "picture": "pictures/arm.webp",
-   "ha_clip": true,
-   "en_clip": true
-  },
-  {
    "key": "knee",
    "groups": [
     "body"
@@ -3602,7 +3591,7 @@
    "groups": [
     "clothing"
    ],
-   "ha": "Zane",
+   "ha": "Zani",
    "en": "Wrapper",
    "picture": "pictures/wrapper.webp",
    "ha_clip": true,
