@@ -1848,17 +1848,6 @@
    "en_clip": true
   },
   {
-   "key": "foot",
-   "groups": [
-    "body"
-   ],
-   "ha": "ƙafa",
-   "en": "Foot",
-   "picture": "pictures/foot.webp",
-   "ha_clip": true,
-   "en_clip": true
-  },
-  {
    "key": "toe",
    "groups": [
     "body"
@@ -2552,17 +2541,6 @@
    "en_clip": true
   },
   {
-   "key": "keke",
-   "groups": [
-    "vehicles"
-   ],
-   "ha": "keke napep",
-   "en": "Keke (tricycle taxi)",
-   "picture": "pictures/keke.webp",
-   "ha_clip": true,
-   "en_clip": true
-  },
-  {
    "key": "train",
    "groups": [
     "vehicles"
@@ -2960,17 +2938,6 @@
    "en_clip": true
   },
   {
-   "key": "child",
-   "groups": [
-    "people"
-   ],
-   "ha": "yaro",
-   "en": "Child",
-   "picture": "pictures/child.webp",
-   "ha_clip": true,
-   "en_clip": true
-  },
-  {
    "key": "old_man",
    "groups": [
     "people"
@@ -3118,7 +3085,7 @@
    "groups": [
     "actions"
    ],
-   "ha": "Wanka",
+   "ha": "Wanki",
    "en": "Wash",
    "picture": "pictures/wash.webp",
    "ha_clip": true,
@@ -3913,17 +3880,6 @@
    "ha": "littafin rubutu",
    "en": "Notebook",
    "picture": "pictures/notebook.webp",
-   "ha_clip": true,
-   "en_clip": true
-  },
-  {
-   "key": "desk",
-   "groups": [
-    "school"
-   ],
-   "ha": "tebur",
-   "en": "Desk",
-   "picture": "pictures/desk.webp",
    "ha_clip": true,
    "en_clip": true
   },
