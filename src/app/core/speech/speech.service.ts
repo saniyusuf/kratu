@@ -72,7 +72,7 @@ export class SpeechService {
   readonly fb = signal('');
   readonly isSaved = signal(false);
   readonly heard: HeardEntry[] = [];
-  audioInfo: { device?: string; muted?: boolean; ctx?: string; rate?: number } = {};
+  audioInfo: { device?: string; muted?: boolean; ctx?: string; rate?: number; dsp?: string } = {};
 
   ready(): boolean { return !!this.model; }
   error(): string { return this.lastErr; }
@@ -207,12 +207,22 @@ export class SpeechService {
     return new Promise((res) => {
       if (this.ctx && this.stream) { if (this.ctx.state === 'suspended') { try { this.ctx.resume(); } catch { /* ignore */ } } res(true); return; }
       if (!navigator.mediaDevices?.getUserMedia) { res(false); return; }
-      const want: MediaTrackConstraints = { echoCancellation: true, noiseSuppression: true, channelCount: 1 };
+      /**
+       * Every piece of the browser's telephony DSP is off. Chrome's noise suppression is tuned for speech on a call:
+       * it attenuates quiet high-frequency energy, which is exactly the cue that separates /f/ from /s/ — the confusion
+       * this app keeps making. Automatic gain control pumps and distorts a child's short, quiet answer, and echo
+       * cancellation has nothing to do here because the app never plays a sound while the microphone is open
+       * (Sani's "f should never pass S", 2026-09-29).
+       */
+      const dsp = (() => { try { return localStorage.getItem('kratu_mic_dsp') === '1'; } catch { return false; } })();   // set kratu_mic_dsp=1 to put the old processing back, for an A/B on a real tablet
+      const want: MediaTrackConstraints = { echoCancellation: dsp, noiseSuppression: dsp, autoGainControl: dsp, channelCount: 1 };
       try { const dev = localStorage.getItem('kratu_mic'); if (dev) want.deviceId = { exact: dev }; } catch { /* ignore */ }
-      navigator.mediaDevices.getUserMedia({ video: false, audio: want }).catch(() => navigator.mediaDevices.getUserMedia({ video: false, audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 } })).then((st) => {
+      navigator.mediaDevices.getUserMedia({ video: false, audio: want }).catch(() => navigator.mediaDevices.getUserMedia({ video: false, audio: { echoCancellation: dsp, noiseSuppression: dsp, autoGainControl: dsp, channelCount: 1 } })).then((st) => {
         this.stream = st; const ctx = new AudioContext(); this.ctx = ctx; try { ctx.resume(); } catch { /* ignore */ }
         const proc = ctx.createScriptProcessor(4096, 1, 1); this.proc = proc;
-        try { const tr = st.getAudioTracks()[0]; this.audioInfo = { device: tr?.label || '?', muted: !!tr?.muted, ctx: ctx.state, rate: ctx.sampleRate }; ctx.onstatechange = () => { this.audioInfo.ctx = ctx.state; }; } catch { /* ignore */ }
+        try { const tr = st.getAudioTracks()[0]; const got = tr?.getSettings?.() || {} as MediaTrackSettings;
+          this.audioInfo = { device: tr?.label || '?', muted: !!tr?.muted, ctx: ctx.state, rate: ctx.sampleRate,
+            dsp: [got.echoCancellation ? 'ec' : '', got.noiseSuppression ? 'ns' : '', got.autoGainControl ? 'agc' : ''].filter(Boolean).join('+') || 'none' }; ctx.onstatechange = () => { this.audioInfo.ctx = ctx.state; }; } catch { /* ignore */ }
         proc.onaudioprocess = (e) => {
           if (!this.feeding || !this.rec) { const now = Date.now(); this.preroll.push({ t: now, d: new Float32Array(e.inputBuffer.getChannelData(0)) }); while (this.preroll.length && now - this.preroll[0].t > 1500) this.preroll.shift(); return; }
           if (ctx.state === 'suspended') { try { ctx.resume(); } catch { /* ignore */ } }
