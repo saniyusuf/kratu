@@ -58,7 +58,7 @@ export class KaratuScreen extends TopicLessonBase {
   private stopMic(): void { this.round++; this.hearHandle?.stop(); this.hearHandle = null; this.rec.set(false); }
   lailaPressed(): void {
     if (!this.awaiting || this.hearHandle) return; const it = this.curWord; if (!it) return; this.bus.stopAll(); this.spotter.unspot(); this.speak.set(false); this.armed.set(false); this.rec.set(true);
-    const word = it.en.toLowerCase(), my = ++this.round, h = this.speech.hear({ target: word, among: (this.block.length ? this.block : this.WORDS).map((w) => String(w.en)), match: (raw) => matchWord(raw, word) }); this.hearHandle = h;
+    const word = it.en.toLowerCase(), my = ++this.round, h = this.speech.hear({ target: word, among: (this.block.length ? this.block : this.WORDS).map((w) => String(w.en)), match: (raw) => matchWord(raw, word, (this.block.length ? this.block : []).map((w) => String(w.en).toLowerCase())) }); this.hearHandle = h;
     h.done.then((r) => { if (my !== this.round || this.hearHandle !== h) return; this.hearHandle = null; this.rec.set(false); const p = this.pend; this.pend = null; this.awaiting = false; p?.({ got: (r.value as string | null), raw: r.raw }); });
   }
   protected override onLeave(): void { this.stopMic(); this.pend = null; }

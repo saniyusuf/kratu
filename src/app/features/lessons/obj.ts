@@ -80,7 +80,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     // the recogniser chooses between the things on this row and nothing else: with the whole vocabulary in the grammar
     // a child saying "cap" was up against cup, tap and cab, and lost every time (Sani 2026-09-28)
     const it: Item = p.it; this.rec.set(true);
-    const h = this.speech.hear({ target: it.en, among: this.rowItems().map((x) => x.en), match: (raw) => matchWord(raw, it.en) }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
+    const h = this.speech.hear({ target: it.en, among: this.rowItems().map((x) => x.en), match: (raw) => matchWord(raw, it.en, this.rowItems().map((x) => x.en)) }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     this.pend = null; p.res({ kind: 'say', ok: r.value === it.en, heard: r.raw || null });
   }
   pressDk(): void { if (!this.awaiting || !this.pend || (this.pend as any).skippable) return; const p = this.pend; this.awaiting = false; this.pend = null; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false); p.res({ kind: 'dk' }); }

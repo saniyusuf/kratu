@@ -31,13 +31,28 @@ export const shuffle = <T,>(a: T[]): T[] => { a = a.slice(); for (let i = a.leng
  */
 const accent = (w: string) => w.replace(/ph/g, 'f').replace(/p/g, 'f');
 
-export function matchWord(raw: string, target: string): string | null {
+/**
+ * Does what the recogniser heard count as this word? `rivals` are the other answers on the row: a near-miss is only
+ * forgiven when it is not exactly one of them.
+ *
+ * Whole words only. A plain substring test marked a child right for saying "eighteen" when the answer was eight —
+ * and fourteen for four, nineteen for nine, "one thousand" for one — which the numbers test puts side by side in the
+ * same round (Sani 2026-09-29).
+ */
+export function matchWord(raw: string, target: string, rivals: string[] = []): string | null {
   const txt = (raw || '').toLowerCase().replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim(); target = target.toLowerCase();
-  if (txt.includes(target)) return target;
-  if (accent(txt).includes(accent(target))) return target;
+  const rival = new Set(rivals.map((r) => String(r).toLowerCase()).filter((r) => r && r !== target));
+  if (rival.has(txt)) return null;                           // they said another answer on the row, whole: "one thousand" is not "one"
+  const whole = (hay: string, ndl: string) => new RegExp('(^| )' + ndl.replace(/[^a-z ]/g, '') + '( |$)').test(hay);
+  if (whole(txt, target)) return target;
+  if (whole(accent(txt), accent(target))) return target;
   if (target.includes(' ')) target = target.split(' ').pop()!;   // "paw paw": the last word is enough
   const ed = (a: string, b: string) => { const m = a.length, n = b.length, d: number[][] = []; for (let x = 0; x <= m; x++) d[x] = [x]; for (let y = 0; y <= n; y++) d[0][y] = y; for (let x = 1; x <= m; x++) for (let y = 1; y <= n; y++) d[x][y] = Math.min(d[x - 1][y] + 1, d[x][y - 1] + 1, d[x - 1][y - 1] + (a[x - 1] === b[y - 1] ? 0 : 1)); return d[m][n]; };
-  for (const tok of txt.split(' ')) { const t = tok.replace(/s$/, ''); if (t === target || accent(t) === accent(target) || (target.length >= 4 && ed(t, target) <= 1)) return target; }
+  for (const tok of txt.split(' ')) {
+    const t = tok.replace(/s$/, '');
+    if (rival.has(t) || rival.has(tok)) continue;            // they named another answer on the row: that is that answer, not a near-miss
+    if (t === target || accent(t) === accent(target) || (target.length >= 4 && ed(t, target) <= 1)) return target;
+  }
   return null;
 }
 
