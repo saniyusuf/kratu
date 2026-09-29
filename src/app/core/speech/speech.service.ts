@@ -24,6 +24,12 @@ export interface HearOptions {
   until?: string;
   /** With `until`: how many wrong tries close the microphone anyway. Three, like every other lesson in the app. */
   maxWrong?: number;
+  /**
+   * Answers that are the target in this child's accent, and so must not cost them a try: Hausa has no /p/ or /v/, so
+   * V comes out as B and P as F. The lesson still does not accept them — letters are where correct pronunciation is
+   * taught — but it asks again instead of counting a mistake (Sani 2026-09-30).
+   */
+  soft?: string[];
   /** The word being spelled; a child may say it too and it is ignored. */
   word?: string;
   /** Demo mode: nothing is heard, the expected answer is simulated after the sample clips. */
@@ -31,8 +37,8 @@ export interface HearOptions {
   /** For demo mode: the letters or word the sample child "says". */
   say?: string | string[];
 }
-export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string }>; stop(): void; }
-export interface HeardEntry { t: number; target: string; heard: string; ok: boolean; peak: number; rate?: number; ctx?: string; device?: string; }
+export interface HearHandle { done: Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }>; stop(): void; }
+export interface HeardEntry { t: number; target: string; heard: string; ok: boolean; peak: number; conf?: number; rate?: number; ctx?: string; device?: string; }
 
 declare const Vosk: any;
 
@@ -41,6 +47,16 @@ declare const Vosk: any;
 const UNTIL_QUIET = 8000;
 /** …and however many tries the child makes, it never stays open longer than this. */
 const UNTIL_CAP = 15000;
+/**
+ * Below this, Vosk is telling us it did not really hear anything rather than that the child said the wrong thing, and
+ * a mishear must not cost a child one of their two tries.
+ *
+ * Measured on the board rather than guessed, because the first guess was wrong and silently broke the two-wrong rule:
+ * with a closed grammar Vosk answers 1.0 when the letter matches and 0.5 when it substitutes another letter from the
+ * grammar. A substitution is a real wrong answer — the child said something that sounded like M — so the line has to
+ * sit below it. Only the genuinely poor hears are excused (Sani 2026-09-30).
+ */
+const UNSURE = 0.35;
 
 /**
  * The offline recogniser (Vosk) behind one door. Every lesson calls hear(): the microphone opens, the child speaks,
@@ -111,9 +127,9 @@ export class SpeechService {
 
   /** Open the mic for one answer. The handle's stop() closes it early (a tap on a key, leaving the screen). */
   hear(o: HearOptions): HearHandle {
-    let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number; wrong?: string }) => void;
-    const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string }>((r) => { resolve = r; });
-    let wrong = '';
+    let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }) => void;
+    const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }>((r) => { resolve = r; });
+    let wrong = ''; let conf = 1;
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
     const opened = Date.now(); let again = () => undefined as void;
@@ -123,8 +139,8 @@ export class SpeechService {
     const fin = (L: string | string[] | null, raw: string) => {
       if (finished || my !== this.seq) return;
       finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
-      this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
-      this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong });
+      this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
+      this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong, conf });
     };
     this.tries = 0;
     const go = async () => {
@@ -140,9 +156,14 @@ export class SpeechService {
       }
       else { gram = this.ALL.map((L) => L.toLowerCase()).concat(this.ALL.map((L) => this.NAMES[L])); if (o.word) String(o.word).toLowerCase().split(/\s+/).forEach(addWord); gram.push('[unk]'); }
       try { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate, JSON.stringify(gram)); } catch { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate); }
+      // per-word confidence: the difference between "you said the wrong letter" and "I did not really hear that"
+      try { this.rec.setWords(true); } catch { /* an older build: everything below simply sees no confidence */ }
       this.rec.on('partialresult', (m: any) => { if (finished || my !== this.seq) return; const p = m?.result?.partial || ''; if (p && p !== '[unk]') { lastRaw = p; pend = p; this.fb.set('“' + p + '”'); } });
       this.rec.on('result', (m: any) => {
         if (finished || my !== this.seq) return;
+        // how sure Vosk is about the words it just gave back — the lowest word wins, since one shaky word spoils the answer
+        const cs: number[] = (m?.result?.result || []).map((w: any) => typeof w?.conf === 'number' ? w.conf : 1);
+        conf = cs.length ? Math.min(...cs) : 1;
         let t = String(m?.result?.text || '').replace(/\[unk\]/g, '').trim();
         // letters are a closed set: when the final answer comes back unsure, the letter Vosk had already heard counts; the lesson
         // still judges it right or wrong (Sani 2026-09-22). Words keep the stricter rule.
@@ -153,7 +174,16 @@ export class SpeechService {
         const L = o.match ? o.match(t) : this.classifyPhrase(t);
         // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
         if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) {
-          this.tries++; if (L) wrong = String(L); this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
+          const heard = String(L || '').toUpperCase();
+          // an answer that is the target in this child's accent, or one the recogniser is plainly unsure of, is not a
+          // mistake: keep listening and let them try again without spending a try (Sani 2026-09-30)
+          const accent = !!heard && (o.soft || []).some((x) => x.toUpperCase() === heard);
+          const unsure = conf < UNSURE;
+          // every try is recorded, not only the answer the entry ends on: this is the data that says whether the
+          // thresholds are right, and it is the only record of what a child actually said (Sani 2026-09-30)
+          this.heard.push({ t: Date.now(), target: String(o.target || ''), heard: t, ok: false, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), ctx: accent ? 'accent' : unsure ? 'unsure' : 'try' });
+          if (!accent && !unsure) { this.tries++; if (L) wrong = String(L); }
+          this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
           if (this.tries >= (o.maxWrong ?? 3)) { fin(null, lastRaw); return; }   // enough tries: the lesson takes over and helps
           again(); return;
         }

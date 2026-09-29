@@ -17,6 +17,12 @@ import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
  * she writes it in and moves on, so no child is ever stuck on one letter.
  */
 const WRONG = 2, HELP = 3, GIVE = 5;
+/**
+ * Letters a Hausa-speaking child's mouth makes identical. Hausa has no /p/ or /v/: V comes out as B, and P and F both
+ * land on the same sound. The board does not accept the twin — the alphabet is where saying them apart is taught — but
+ * it does not count it as a mistake either, or a child is failed for their accent (Sani 2026-09-30).
+ */
+const TWIN: Record<string, string> = { V: 'B', B: 'V', P: 'F', F: 'P' };
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -91,7 +97,8 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async press(): Promise<void> {
     if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
     // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
-    this.rec.set(true); const h = this.speech.hear({ target: c.L, until: c.L, maxWrong: WRONG }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
+    this.rec.set(true);
+    const h = this.speech.hear({ target: c.L, until: c.L, maxWrong: WRONG, soft: TWIN[c.L] ? [TWIN[c.L]] : [] }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     c.res({ ok: r.value === c.L, heard: (r.value as string | null) || r.wrong || null, tries: r.tries || 0 });
   }
   /** The letter is on the board; prompt, then the child says it. Three wrong → help: "listen, this is …" + the letter, then ask again. */

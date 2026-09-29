@@ -15,7 +15,8 @@
  },
  "wasm": {
   "path": "models/ort/ort-wasm-simd-threaded.jsep.wasm.gz",
-  "size": 21663894,
-  "gzsize": 5171570
+  "size": 28312028,
+  "gzsize": 6624663,
+  "note": "onnxruntime-web 1.30.0"
  }
 }
