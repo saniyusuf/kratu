@@ -57,6 +57,11 @@ const UNTIL_CAP = 15000;
  * sit below it. Only the genuinely poor hears are excused (Sani 2026-09-30).
  */
 const UNSURE = 0.35;
+/**
+ * However many answers an entry is excused, it closes after this many: a child hearing nothing back is worse than a
+ * child told the letter. Two real mistakes still end it sooner (Sani 2026-09-30).
+ */
+const ANSWER_CAP = 4;
 
 /**
  * The offline recogniser (Vosk) behind one door. Every lesson calls hear(): the microphone opens, the child speaks,
@@ -129,7 +134,7 @@ export class SpeechService {
   hear(o: HearOptions): HearHandle {
     let resolve!: (v: { value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }) => void;
     const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }>((r) => { resolve = r; });
-    let wrong = ''; let conf = 1;
+    let wrong = ''; let conf = 1; let answers = 0;
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
     const opened = Date.now(); let again = () => undefined as void;
@@ -183,8 +188,13 @@ export class SpeechService {
           // thresholds are right, and it is the only record of what a child actually said (Sani 2026-09-30)
           this.log({ t: Date.now(), target: String(o.target || ''), heard: t, ok: false, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), ctx: accent ? 'accent' : unsure ? 'unsure' : 'try' });
           if (!accent && !unsure) { this.tries++; if (L) wrong = String(L); }
+          answers++;
           this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
           if (this.tries >= (o.maxWrong ?? 3)) { fin(null, lastRaw); return; }   // enough tries: the lesson takes over and helps
+          // Excused answers spend no try, so on their own they would hold the microphone open to UNTIL_CAP and leave a
+          // child who says B for V waiting fifteen silent seconds per entry before Laila helps. Every answer still
+          // counts towards a ceiling, so the entry closes at about the pace it always did (Sani 2026-09-30).
+          if (answers >= ANSWER_CAP) { fin(null, lastRaw); return; }
           again(); return;
         }
         fin(L, t);
