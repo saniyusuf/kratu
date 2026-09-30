@@ -66,7 +66,8 @@ export class RubutuScreen extends TopicLessonBase {
   private clearBad(): void { this.keyMarks.update((a) => Object.fromEntries(Object.entries(a).filter(([, v]) => v !== 'bad'))); }
   private showPic(it: Item | null): void { this.picSrc.set(it?.w.img || null); }
   /** The next words' pictures, decoded while the child is still spelling this one. */
-  private warmAhead(list: Item[], from: number): void { this.warm.soon(list.slice(from, from + 3).map((i) => i.w.img)); }
+  /** A set is five words, and a child who spells a whole word in one breath reaches the fifth picture fast: warm them all. */
+  private warmAhead(list: Item[], from: number): void { this.warm.soon(list.slice(from).map((i) => i.w.img)); }
   /** A letter flies from a key or from Laila and lands in its place; the lesson goes on meanwhile. */
   private fly(from: Element | null, i: number, L: string): Promise<void> { const el = this.slotEl(i); const land = () => this.setSlot(i, { text: L, st: 'done' }); if (!el || !from) { land(); return Promise.resolve(); } return flyLetter(this.zoom, this.s, from, el, L).then(land); }
 
