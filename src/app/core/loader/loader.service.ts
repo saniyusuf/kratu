@@ -226,9 +226,23 @@ export class LoaderService {
       new Promise<boolean>((r) => setTimeout(() => r(!!sw.controller), 10000)),
     ]).catch(() => false);
   }
+  /**
+   * A runtime we have stopped shipping would otherwise sit in Cache Storage for good. The tablets already in the field
+   * hold the old 5 MB WebGPU build, so without this the upgrade costs them 8.8 MB of storage instead of saving 1.5:
+   * they download the new runtime and keep the old one beside it. Swept before the download, not after, so a tablet
+   * near its quota has the room free when it needs it (Sani 2026-09-30).
+   */
+  private async sweepRuntimes(keep: string): Promise<void> {
+    try {
+      if (typeof caches === 'undefined') return;
+      const c = await caches.open(this.CACHE), want = new URL(keep, document.baseURI).href;
+      for (const r of await c.keys()) if (r.url.indexOf('/models/ort/') >= 0 && r.url !== want) await c.delete(r);
+    } catch { /* no Cache Storage, or it would not open: there is nothing to sweep */ }
+  }
   private async fetchFaceModels(): Promise<void> {
     const man = await this.getJSON('models/manifest.json');
-    const wasmUrl = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads (WebGPU or plain wasm backend); shipped gzipped (21 → 5 MB), inflated here, handed to the worker as bytes
+    const wasmUrl = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads; shipped gzipped (13.6 → 3.5 MB), inflated here, handed to the worker as bytes
+    await this.sweepRuntimes(wasmUrl);
     if (!man?.rec) { await this.cachedFetch(wasmUrl, () => undefined, true); return; }
     const R = man.rec;   // one recogniser everywhere: w600k_r50, in three parts (Sani 2026-09-19)
     const recParts: { path: string; size: number }[] = R.parts ? R.parts : [{ path: R.path, size: R.size }];
