@@ -139,7 +139,7 @@ export class SpeechService {
     const fin = (L: string | string[] | null, raw: string) => {
       if (finished || my !== this.seq) return;
       finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
-      this.log({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
+      this.log({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device });
       this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong, conf });
     };
     this.tries = 0;
