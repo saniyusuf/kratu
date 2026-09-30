@@ -9,7 +9,7 @@ import { Clip, Item } from '../../shared/lesson/lesson-base';
 import { TopicLessonBase } from '../../shared/lesson/topic-lesson-base';
 import { TopicMenu } from '../../shared/lesson/topic-menu';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
-import { firstHints, flyLetter, shuffle, wait } from '../../shared/lesson/helpers';
+import { firstHints, flyLetter, retryPic, shuffle, wait } from '../../shared/lesson/helpers';
 
 const SPELL_CATS = [
   { key: 'r3', ha: 'Haruffa uku', ico: 'r3', c: 'var(--red)', min: 3, max: 3 }, { key: 'r4', ha: 'Haruffa huɗu', ico: 'r4', c: 'var(--blue)', min: 4, max: 4 }, { key: 'r5', ha: 'Haruffa biyar', ico: 'r5', c: 'var(--yellow)', min: 5, max: 5 },
@@ -31,7 +31,7 @@ type Ev = { kind: 'tap'; L: string } | { kind: 'heard'; letters: string[] | null
 <app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="splesson" [hidden]="!inLesson()">
-  <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
+  <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div #slotsEl class="wslots">@for (sl of slots(); track $index) {<span class="wslot" [attr.data-l]="sl.L" [class.on]="sl.st === 'on'" [class.done]="sl.st === 'done'" [class.bad]="sl.st === 'bad'">{{ sl.text }}</span>}</div>
   <app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />
   <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
@@ -42,6 +42,7 @@ type Ev = { kind: 'tap'; L: string } | { kind: 'heard'; letters: string[] | null
 </div>`,
 })
 export class RubutuScreen extends TopicLessonBase {
+  protected readonly retryPic = retryPic;
   readonly cats = SPELL_CATS;
   protected readonly lesson = 'rubutu'; protected readonly title = 'Rubutu'; protected readonly introKey = 's_r_intro2'; protected readonly descPrefix = 's_rd_';
   private readonly showRef = viewChild.required<ElementRef<HTMLElement>>('show');

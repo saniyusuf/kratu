@@ -6,7 +6,7 @@ import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
 import { Item, LessonBase, Stopped } from '../../shared/lesson/lesson-base';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
-import { firstHints, joy, matchWord, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
+import { firstHints, joy, matchWord, retryPic, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
 import { CAT_NAME } from './cats';
 
 type Mark = '' | 'done' | 'miss';
@@ -25,7 +25,7 @@ const STAGES = [
   host: { class: 's lesson word obj', '[class.lambobi]': "mode === 'numbers'", '[class.hearing]': 'rec() || armed()', '[class.presenting]': 'presenting()' },
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
-<div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
+<div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
 <div class="objrow" [class.many]="rowItems().length > 5">@for (it of rowItems(); track it.k) {<span class="oslot active" [class.on]="onItem() === it.k" [class.done]="marks()[it.k] === 'done'" [class.miss]="marks()[it.k] === 'miss'" [attr.data-item]="it.k"></span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
 <div class="yesno ynpair objq" [hidden]="resultsOn()" [class.nohand]="nohand()">
@@ -34,6 +34,7 @@ const STAGES = [
 </div>`,
 })
 export class ObjLessonScreen extends LessonBase implements OnInit {
+  protected readonly retryPic = retryPic;
   private readonly route = inject(ActivatedRoute);
   private readonly lb = viewChild.required<LailaButton>('lb');
   private readonly dk = viewChild.required(AlloButton);

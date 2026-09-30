@@ -1,13 +1,15 @@
 import { Component, ElementRef, effect, inject, input } from '@angular/core';
+import { retryPic } from './helpers';
 import { Item } from './lesson-base';
 
 /** The results slider inside the picture box: every word of the block as a card, the missed ones marked, the one being named lit. */
 @Component({
   selector: 'app-results',
   host: { class: 'objresults oslider', '[hidden]': '!on()' },
-  template: `<div class="oslider"><div class="ogrid">@for (it of items(); track it.k) {<div class="oc" [class.miss]="miss().includes(it.k)" [class.say]="saying() === it.k" [attr.data-item]="it.k"><img alt="" [src]="it.w.img"></div>}</div></div>`,
+  template: `<div class="oslider"><div class="ogrid">@for (it of items(); track it.k) {<div class="oc" [class.miss]="miss().includes(it.k)" [class.say]="saying() === it.k" [attr.data-item]="it.k"><img alt="" [src]="it.w.img" (error)="retryPic($event)"></div>}</div></div>`,
 })
 export class ResultsGrid {
+  protected readonly retryPic = retryPic;
   readonly el = inject(ElementRef<HTMLElement>);
   readonly on = input(false);
   readonly items = input<Item[]>([]);

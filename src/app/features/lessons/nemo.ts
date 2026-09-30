@@ -5,7 +5,7 @@ import { Clip, Item } from '../../shared/lesson/lesson-base';
 import { TopicLessonBase } from '../../shared/lesson/topic-lesson-base';
 import { TopicMenu } from '../../shared/lesson/topic-menu';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
-import { shuffle, wait } from '../../shared/lesson/helpers';
+import { retryPic, shuffle, wait } from '../../shared/lesson/helpers';
 
 const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)', n: 4 }, { key: 'qnum', ha: 'Lambobi', ico: 'qnum', c: 'var(--green)', n: 6, set: 'lambobi_symbols' }];
 
@@ -23,7 +23,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
 <div class="qlesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!resultsOn()" [hidden]="!resultsOn()"><span class="kimg objpic"></span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div [class]="'qgrid n' + n()">
-    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><img alt="" [src]="c.w.img">@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m">{{ m === 'good' ? '✓' : '✗' }}</div>}</button>}
+    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><img alt="" [src]="c.w.img" (error)="retryPic($event)">@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m">{{ m === 'good' ? '✓' : '✗' }}</div>}</button>}
     @for (p of placeholders(); track $index) {<div class="qph"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="8" width="36" height="32" rx="6"/><circle cx="17" cy="18" r="3.5"/><path d="M8 36l11-11 7 7 6-6 8 8"/></svg></div>}
   </div>
   <div class="objrow" [class.many]="dots().length > 5">@for (d of dots(); track $index) {<span class="oslot active" [class.on]="dotOn() === $index" [class.done]="d === 'done'" [class.miss]="d === 'miss'"></span>}</div>
@@ -31,6 +31,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
 </div>`,
 })
 export class NemoScreen extends TopicLessonBase {
+  protected readonly retryPic = retryPic;
   readonly cats = QUIZ_CATS;
   protected readonly lesson = 'nemo'; protected readonly title = 'Nemo hoto'; protected readonly introKey = 'app_act_desc_quiz'; protected readonly descPrefix = 's_qd_';
   private readonly showRef = viewChild.required<ElementRef<HTMLElement>>('show');

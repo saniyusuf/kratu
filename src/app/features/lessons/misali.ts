@@ -11,7 +11,7 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AbcKeyboard, KeyMark } from '../../shared/lesson/abc-keyboard';
-import { Spotter, flyLetter, flyText, joy, wait, matchWord } from '../../shared/lesson/helpers';
+import { Spotter, flyLetter, flyText, joy, matchWord, retryPic, wait } from '../../shared/lesson/helpers';
 
 /**
  * Misali · the sample. Laila shows one press-and-say (or spell, read, find) with the boy's or girl's voice, locked like a
@@ -26,10 +26,10 @@ import { Spotter, flyLetter, flyText, joy, wait, matchWord } from '../../shared/
 @if (kind === 'haruffa') {<div class="abcshow" [class.off]="!bigLetter()"><span class="abcbig" style="--c:var(--red)">{{ bigLetter() }}</span><span class="abcex">example</span></div>}
 @if (kind === 'nemo' || kind === 'nemonum') {
 <div class="qlesson"><div #qgrid class="qgrid" [class.n4]="kind === 'nemo'" [class.n6]="kind === 'nemonum'">
-  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img">@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
+  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img" (error)="retryPic($event)">@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
 </div><div class="objrow">@for (i of ten; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div><div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div></div>}
 @else {
-@if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()">}</span></div>}
+@if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span></div>}
 @if (kind === 'abubuwa' || kind === 'lambobi') {<div class="objrow">@for (i of five; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div>}
 @if (kind === 'karatu' || kind === 'rubutu') {<div #slots class="wslots">@for (l of slotLetters(); track $index) {<span class="wslot show" [class.on]="slotState()[$index] === 'on'" [class.done]="slotState()[$index] === 'done'" [class.all]="allDone()">{{ slotText()[$index] }}</span>}</div>}
 @if (kind === 'rubutu') {<app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />}
@@ -37,6 +37,7 @@ import { Spotter, flyLetter, flyText, joy, wait, matchWord } from '../../shared/
 <div class="yesno ynpair objq"><app-laila-btn #lb [label]="kind === 'karatu' ? 'Karanta' : 'Faɗa'" [size]="kind === 'karatu' || kind === 'rubutu' ? 96 : 112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [amp]="rec() ? 0.7 : speech.amp()" (pressed)="lailaPressed()" [yay]="yay()" /></div>}`,
 })
 export class MisaliScreen implements OnInit, OnDestroy {
+  protected readonly retryPic = retryPic;
   readonly speech = inject(SpeechService);
   private readonly bus = inject(AudioBus);
   private readonly words = inject(WordsService);

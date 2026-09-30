@@ -131,3 +131,19 @@ export async function firstHints(bus: AudioBus, session: SessionService, spotter
 }
 
 /** The results cards all fit inside the picture box: up to five in a row, two rows for ten. */
+
+/**
+ * A picture that fails to load is fetched once more, straight from the network rather than through the service worker.
+ *
+ * Every picture is prefetched and the loader will not call the app ready until the tablet holds the lot, so this should
+ * never fire. It does fire in one window: a new version has been deployed, the service worker is still filling that
+ * version's cache, and a lesson asks for a picture it has not copied over yet. A blank box in the middle of Abubuwa or
+ * Rubutu reads to a child as a broken app, and to us as a missing photo (Sani 2026-09-30).
+ */
+export function retryPic(ev: Event): void {
+  const im = ev.target as HTMLImageElement | null;
+  if (!im || im.dataset['retried']) return;
+  im.dataset['retried'] = '1';
+  const src = im.getAttribute('src') || '';
+  if (src) im.src = src + (src.indexOf('?') >= 0 ? '&' : '?') + 'again=1';
+}
