@@ -228,7 +228,7 @@ export class LoaderService {
   }
   private async fetchFaceModels(): Promise<void> {
     const man = await this.getJSON('models/manifest.json');
-    const wasmUrl = 'models/ort/ort-wasm-simd-threaded.jsep.wasm.gz';   // the one runtime the ORT glue loads (WebGPU or plain wasm backend); shipped gzipped (21 → 5 MB), inflated here, handed to the worker as bytes
+    const wasmUrl = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads (WebGPU or plain wasm backend); shipped gzipped (21 → 5 MB), inflated here, handed to the worker as bytes
     if (!man?.rec) { await this.cachedFetch(wasmUrl, () => undefined, true); return; }
     const R = man.rec;   // one recogniser everywhere: w600k_r50, in three parts (Sani 2026-09-19)
     const recParts: { path: string; size: number }[] = R.parts ? R.parts : [{ path: R.path, size: R.size }];

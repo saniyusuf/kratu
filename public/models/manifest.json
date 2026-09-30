@@ -14,9 +14,9 @@
   "note": "half precision: same embeddings as the fp32 original to six decimal places, half the download"
  },
  "wasm": {
-  "path": "models/ort/ort-wasm-simd-threaded.jsep.wasm.gz",
-  "size": 28312028,
-  "gzsize": 6624663,
-  "note": "onnxruntime-web 1.30.0"
+  "path": "models/ort/ort-wasm-simd-threaded.wasm.gz",
+  "size": 14239897,
+  "gzsize": 3652793,
+  "note": "onnxruntime-web 1.30.0, plain threaded WASM \u2014 no WebGPU"
  }
 }

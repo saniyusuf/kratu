@@ -139,7 +139,7 @@ export class SpeechService {
     const fin = (L: string | string[] | null, raw: string) => {
       if (finished || my !== this.seq) return;
       finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
-      this.heard.push({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
+      this.log({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device }); if (this.heard.length > 30) this.heard.shift();
       this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong, conf });
     };
     this.tries = 0;
@@ -181,7 +181,7 @@ export class SpeechService {
           const unsure = conf < UNSURE;
           // every try is recorded, not only the answer the entry ends on: this is the data that says whether the
           // thresholds are right, and it is the only record of what a child actually said (Sani 2026-09-30)
-          this.heard.push({ t: Date.now(), target: String(o.target || ''), heard: t, ok: false, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), ctx: accent ? 'accent' : unsure ? 'unsure' : 'try' });
+          this.log({ t: Date.now(), target: String(o.target || ''), heard: t, ok: false, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), ctx: accent ? 'accent' : unsure ? 'unsure' : 'try' });
           if (!accent && !unsure) { this.tries++; if (L) wrong = String(L); }
           this.fb.set(L ? '“' + L + '”' : '“' + t + '”');
           if (this.tries >= (o.maxWrong ?? 3)) { fin(null, lastRaw); return; }   // enough tries: the lesson takes over and helps
@@ -226,7 +226,13 @@ export class SpeechService {
     return null;
   }
   private classifyPhrase(text: string): string | null { for (const tok of (text || '').toLowerCase().split(/\s+/)) { const c = this.classify(tok); if (c) return c; } return null; }
-  private note(target: string, text: string): void { this.heard.push({ t: Date.now(), target, heard: text, ok: true, peak: 0 }); if (this.heard.length > 30) this.heard.shift(); }
+  /**
+   * The last sixty things the microphone heard, kept for the settings screen and for working out whether the
+   * thresholds are right. Bounded, because every try is recorded now and an afternoon of lessons would otherwise
+   * grow this list without limit (Sani 2026-09-30).
+   */
+  private log(e: HeardEntry): void { this.heard.push(e); while (this.heard.length > 60) this.heard.shift(); }
+  private note(target: string, text: string): void { this.log({ t: Date.now(), target, heard: text, ok: true, peak: 0 }); }
   /** The copy of the model into storage happens only while nobody is speaking: the worker is single-threaded. */
   private scheduleSave(): void {
     if (this.saved || this.saveT) return;

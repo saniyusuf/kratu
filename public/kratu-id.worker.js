@@ -1,10 +1,14 @@
 /* Kratu identity engine v2 — worker side.
    SCRFD-500m face detection (5 keypoints) → quality gate → 5-point similarity alignment (112×112) → ArcFace MobileFaceNet (w600k) 512-d
    Voice: kaldi-style 80-bin log-mel fbank → 3D-Speaker CAM++ 512-d.  All on-device via ONNX Runtime Web (WebGPU when available, else WASM). */
-import * as ort from './models/ort/ort.webgpu.min.mjs';
+import * as ort from './models/ort/ort.wasm.min.mjs';
 ort.env.wasm.wasmPaths = new URL('./models/ort/', import.meta.url).href;
 /* Threads when the page is cross-origin isolated (the hosting sends COOP/COEP), one otherwise — a plain static server,
-   a file:// page or an old browser. The threaded runtime is the one we ship either way (Sani 2026-09-23). */
+   a file:// page or an old browser. The threaded runtime is the one we ship either way (Sani 2026-09-23).
+   No WebGPU build: this backbone has fifty PRelu nodes and ORT-Web's WebGPU backend implements none of them, so a GPU
+   run would be cut into fifty fragments with a copy back to the CPU at each seam — slower than plain WASM even where
+   a cheap tablet has WebGPU at all. Dropping it also drops a documented class of silent wrong-answer bugs on ARM
+   GPUs, which is the worst possible failure in a face matcher, and halves the runtime's memory (Sani 2026-09-30). */
 ort.env.wasm.numThreads = (self.crossOriginIsolated && typeof SharedArrayBuffer !== 'undefined')
   ? Math.max(1, Math.min(4, (navigator.hardwareConcurrency || 2) - 1)) : 1;
 ort.env.logLevel = 'error';                        // SCRFD declares 640-px output shapes; we run it at 320 → harmless size warnings
@@ -27,7 +31,7 @@ async function create(path, eps) {
   catch (e) { if (eps[0] !== 'wasm') return ort.InferenceSession.create(path, { executionProviders: ['wasm'], logSeverityLevel: 3 }); throw e; }
 }
 async function init(opts) {
-  const eps = (opts && opts.webgpu && self.navigator && navigator.gpu) ? ['webgpu', 'wasm'] : ['wasm'];
+  const eps = ['wasm'];
   /* the page may hand the recogniser over in parts: join here, on the worker's thread, never on the UI's */
   if (opts && opts.blobs && Array.isArray(opts.blobs.recParts) && opts.blobs.recParts.length) {
     const ps = opts.blobs.recParts; let n = 0; ps.forEach((b) => { n += b.byteLength; });
