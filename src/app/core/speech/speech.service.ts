@@ -41,6 +41,16 @@ declare const Vosk: any;
 const UNTIL_QUIET = 8000;
 /** …and however many tries the child makes, it never stays open longer than this. */
 const UNTIL_CAP = 15000;
+/**
+ * Vosk hands back a final answer only once it decides the child has stopped talking, which is half a second to a second
+ * after they actually finished. Its running guess is right long before that, so a guess that already IS the answer is
+ * taken after this long instead of waiting for the endpoint — the child says A and the drum comes straight back.
+ *
+ * Only ever used to accept the right answer, never to reject: a guess that does not match waits for the final word.
+ * The pause is here because a running guess can still change under us — "a" while the mouth is on its way to "em" —
+ * and a wrong Madalla costs a child more than a fifth of a second does (Sani 2026-09-30).
+ */
+const QUICK = 200;
 
 /**
  * The offline recogniser (Vosk) behind one door. Every lesson calls hear(): the microphone opens, the child speaks,
@@ -115,6 +125,7 @@ export class SpeechService {
     const done = new Promise<{ value: string | string[] | null; raw: string; tries?: number; wrong?: string; conf?: number }>((r) => { resolve = r; });
     let wrong = ''; let conf = 1;
     const my = ++this.seq; let finished = false; let tmo: ReturnType<typeof setTimeout> | null = null; let quiet: ReturnType<typeof setTimeout> | null = null;
+    let snap: ReturnType<typeof setTimeout> | null = null;   // the running guess is already right: accept it shortly
     const letters: string[] = []; let lastRaw = ''; let pend = '';   // pend: Vosk's guess since its last final answer
     const opened = Date.now(); let again = () => undefined as void;
     const askedAt = Date.now();
@@ -122,7 +133,7 @@ export class SpeechService {
     if (o.auto || typeof Vosk === 'undefined' || this.failed) { this.simulate(o, my).then((r) => { if (!finished) { finished = true; resolve(r); } }); return handle; }
     const fin = (L: string | string[] | null, raw: string) => {
       if (finished || my !== this.seq) return;
-      finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet);
+      finished = true; if (tmo) clearTimeout(tmo); if (quiet) clearTimeout(quiet); if (snap) clearTimeout(snap);
       this.log({ t: Date.now(), target: o.target || (o.multi ? 'letters' : 'word'), heard: raw || '', ok: !!L, peak: +this.peak.toFixed(2), conf: +conf.toFixed(3), rate: this.ctx?.sampleRate, ctx: this.ctx?.state, device: this.audioInfo.device });
       this.closeMic(); resolve({ value: L, raw: raw || '', tries: this.tries, wrong, conf });
     };
@@ -142,7 +153,28 @@ export class SpeechService {
       try { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate, JSON.stringify(gram)); } catch { this.rec = new this.model.KaldiRecognizer(this.ctx!.sampleRate); }
       // per-word confidence: the difference between "you said the wrong letter" and "I did not really hear that"
       try { this.rec.setWords(true); } catch { /* an older build: everything below simply sees no confidence */ }
-      this.rec.on('partialresult', (m: any) => { if (finished || my !== this.seq) return; const p = m?.result?.partial || ''; if (p && p !== '[unk]') { lastRaw = p; pend = p; this.fb.set('“' + p + '”'); } });
+      // One reading of a text, used for the running guess and for the final answer alike, so the two can never disagree.
+      const read = (txt: string): { t: string; L: string | null } => {
+        let t = txt;
+        if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
+        return { t, L: o.match ? o.match(t) : this.classifyPhrase(t) };
+      };
+      /** Is this the answer the lesson is waiting for? The alphabet names it in `until`, the word lessons in `target`. */
+      const want = (L: string | null): boolean => !!L && (o.until
+        ? String(L).toUpperCase() === o.until.toUpperCase()
+        : !!o.target && String(L).toLowerCase() === String(o.target).toLowerCase());
+      this.rec.on('partialresult', (m: any) => {
+        if (finished || my !== this.seq) return;
+        const p = m?.result?.partial || '';
+        if (!p || p === '[unk]') return;
+        lastRaw = p; pend = p; this.fb.set('“' + p + '”');
+        // the guess is already the right answer: take it after a breath rather than waiting for Vosk to call the end of
+        // the utterance. A guess that stops matching cancels the countdown, so only a settled answer is taken early.
+        if (o.multi) return;
+        const r = read(p);
+        if (want(r.L)) { if (!snap) snap = setTimeout(() => { snap = null; if (!finished && my === this.seq) { this.log({ t: Date.now(), target: String(o.target || ''), heard: r.t, ok: true, peak: +this.peak.toFixed(2), ctx: 'quick' }); fin(r.L, r.t); } }, QUICK); }
+        else if (snap) { clearTimeout(snap); snap = null; }
+      });
       this.rec.on('result', (m: any) => {
         if (finished || my !== this.seq) return;
         // how sure Vosk is about the words it just gave back — the lowest word wins, since one shaky word spoils the answer
@@ -154,8 +186,7 @@ export class SpeechService {
         if (!t && !o.match && pend) t = pend;
         pend = ''; if (!t) return; lastRaw = t;
         if (o.multi) { t.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); if (quiet) clearTimeout(quiet); quiet = setTimeout(() => fin(null, lastRaw), 900); return; }
-        if (o.target) { const tg = String(o.target).toLowerCase(); (this.ALIAS[tg] || []).forEach((a) => { if (t.toLowerCase().indexOf(a) >= 0) t = tg; }); }
-        const L = o.match ? o.match(t) : this.classifyPhrase(t);
+        const rd = read(t); t = rd.t; const L = rd.L;
         // waiting for one answer: anything else was a try, not a mistake — show it and keep the microphone open
         if (o.until && String(L || '').toUpperCase() !== o.until.toUpperCase()) {
           // every try is recorded, not only the answer the entry ends on: this is the data that says whether excusing
