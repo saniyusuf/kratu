@@ -54,7 +54,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   private hearHandle: { stop(): void } | null = null;
 
   ngOnInit(): void { afterPaint().then(() => this.start().catch(() => undefined)); }
-  protected override onLeave(): void { this.hearHandle?.stop(); }
+  protected override onLeave(): void { this.stopAuto(); this.hearHandle?.stop(); }
 
   // ---- data ----
   private loadCat(c: string): void { this.cat = c; this.items = this.words.list(c).map((w) => ({ ...this.item(w, c), en: String(w.en).toLowerCase() })); this.rowItems.set([]); this.marks.set({}); }
@@ -66,17 +66,42 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   private markActive(list: Item[]): void { this.warm.soon(list.map((i) => i.w.img)); this.rowItems.set(list.slice()); this.marks.update((m) => { const n: Record<string, Mark> = {}; list.forEach((it) => { n[it.k] = m[it.k] || ''; }); return n; }); }
   private clearMarks(list: Item[]): void { this.marks.update((m) => { const n = { ...m }; list.forEach((it) => { n[it.k] = ''; }); return n; }); }
   private mark(it: Item, v: Mark): void { this.marks.update((m) => ({ ...m, [it.k]: v })); }
-  private reset(): void { this.presenting.set(false); this.rowItems.set([]); this.marks.set({}); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.nohand.set(false); this.resultsOn.set(false); this.awaiting = false; this.pend = null; this.inTest = false; this.hidePic(); this.spotter.unspot(); }
+  private reset(): void { this.stopAuto(); this.autoOn = false; this.presenting.set(false); this.rowItems.set([]); this.marks.set({}); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.nohand.set(false); this.resultsOn.set(false); this.awaiting = false; this.pend = null; this.inTest = false; this.hidePic(); this.spotter.unspot(); }
   /** "Wannan shi ne akuya" · "Da Turanci, shi ne:" goat · "Ka saurara kuma…" goat */
   private async say(it: Item): Promise<void> { this.speak.set(true); await this.seq(['app_wannan', this.ha(it), 's_o_inen', this.en(it), this.bus.gk('s_o_again2'), this.en(it)]); this.speak.set(false); }
   private async remind(it: Item): Promise<void> { this.speak.set(true); await this.seq([this.bus.gk('app_remind'), this.ha(it), 's_o_inen', this.en(it)]); this.speak.set(false); }
 
   // ---- the child answers: Laila armed (+ the allo = I don't know) → pressed → listening → result ----
+  /**
+   * After the child has pressed Laila once, each picture after it opens the microphone by itself as soon as she stops
+   * talking. Pressing her head before every single word was the part children found most tiring, and after the first
+   * time the press taught them nothing. She stays pressable, for hearing it again (Sani 2026-10-04).
+   */
+  private autoOn = false; private autoT: ReturnType<typeof setTimeout> | null = null;
   private arm(it: Item, skippable = false): Promise<{ kind: 'say'; ok: boolean; heard: string | null } | { kind: 'dk' } | { kind: 'skip' }> {
-    return new Promise((res) => { this.awaiting = true; this.pend = { res }; this.armed.set(true); if (!skippable) this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' faɗa da Turanci.'); (this.pend as any).it = it; (this.pend as any).skippable = skippable; });
+    return new Promise((res) => {
+      this.awaiting = true; this.pend = { res }; this.armed.set(true);
+      if (!skippable) this.fb('wait', this.autoOn ? (this.KA() === 'ka' ? 'Ka faɗa da Turanci.' : 'Ki faɗa da Turanci.') : 'Danna kan Laila, ' + this.KA() + ' faɗa da Turanci.');
+      (this.pend as any).it = it; (this.pend as any).skippable = skippable;
+      if (this.autoOn && !skippable) this.listenSoon();
+    });
   }
+  /** Open the microphone the moment Laila goes quiet, so her own voice never reaches it. */
+  private listenSoon(): void {
+    if (this.autoT) clearTimeout(this.autoT);
+    const tick = () => {
+      this.autoT = null;
+      if (!this.awaiting || !this.pend || (this.pend as any).skippable) return;
+      // 'timeupdate' refreshes lastSound about four times a second while a clip runs, so the quiet window has to
+      // clear that interval comfortably — and the engine's own playing flag settles it either way.
+      if (!this.bus.engine.playing() && Date.now() - this.bus.engine.lastSound >= 450) { this.press(); return; }
+      this.autoT = setTimeout(tick, 140);
+    };
+    this.autoT = setTimeout(tick, 450);
+  }
+  private stopAuto(): void { if (this.autoT) { clearTimeout(this.autoT); this.autoT = null; } }
   private async press(): Promise<void> {
-    if (!this.awaiting || !this.pend) return; const p = this.pend as any; this.awaiting = false; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false);
+    if (!this.awaiting || !this.pend) return; const p = this.pend as any; this.awaiting = false; this.armed.set(false); this.stopAuto(); if (!p.skippable) this.autoOn = true; this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false);
     if (p.skippable) { this.pend = null; p.res({ kind: 'skip' }); return; }
     // the recogniser chooses between the things on this row and nothing else: with the whole vocabulary in the grammar
     // a child saying "cap" was up against cup, tap and cab, and lost every time (Sani 2026-09-28)

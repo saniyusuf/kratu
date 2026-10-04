@@ -16,7 +16,11 @@ import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
  * entries — being told the answer is teaching, and it should not arrive the moment a child guesses twice. After GIVE
  * she writes it in and moves on, so no child is ever stuck on one letter.
  */
-const WRONG = 2, HELP = 3, GIVE = 5;
+/**
+ * Three wrong answers before Laila steps in, not two: a child saying a letter into a cheap tablet microphone in a noisy
+ * room deserves a third go before being told the answer (Sani 2026-10-04).
+ */
+const WRONG = 3, HELP = 3, GIVE = 5;
 const GROUPS: string[][] = []; for (let g = 0; g < 26; g += 4) GROUPS.push(ALL.slice(g, g + 4));
 const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -55,7 +59,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
   ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = +(q.get('from') || 0); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
-  ngOnDestroy(): void { this.stopped = true; this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
+  ngOnDestroy(): void { this.stopped = true; this.stopAuto(); this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
 
   private idx(L: string): number { return ALL.indexOf(L); }
   private slot(L: string): HTMLElement { return this.slotsRef().nativeElement.children[this.idx(L)] as HTMLElement; }
@@ -67,7 +71,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private fill(L: string): void { this.setSt(L, 'done'); }
   private fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }
   private KA(): string { return this.session.g() === 'f' ? 'ki' : 'ka'; }
-  private reset(): void { this.st.set(ALL.map(() => '')); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.awaiting = false; this.cur = null; this.hideLetter(); this.spotter.unspot(); }
+  private reset(): void { this.stopAuto(); this.autoOn = false; this.st.set(ALL.map(() => '')); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.awaiting = false; this.cur = null; this.hideLetter(); this.spotter.unspot(); }
   private setDoneUpTo(n: number): void { this.st.update((a) => a.map((x, k) => k < n ? 'done' : x)); }
   private async play(k: string): Promise<boolean> { return this.stopped ? false : this.bus.play(k); }
   /** Right answer: the kalangu sounds and Laila hops, while the letter flies to its place. */
@@ -87,9 +91,36 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async playIntro(k: string): Promise<void> { await this.play(k); if (!this.hinted) { this.hinted = true; await firstHints(this.bus, this.session, this.spotter, this.host.nativeElement, null); } }
 
   // ---- the child speaks: Laila armed → pressed → listening → result ----
-  private arm(L: string): Promise<{ ok: boolean; heard: string | null; tries: number }> { return new Promise((res) => { this.awaiting = true; this.cur = { L, res }; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.'); }); }
+  /**
+   * After the child has pressed Laila once, every letter after it opens the microphone by itself as soon as she stops
+   * talking. Pressing her head before each of twenty-six letters is the thing children found most tiring, and the press
+   * taught them nothing after the first time. She is still there to press whenever they want to hear it again
+   * (Sani 2026-10-04).
+   */
+  private autoOn = false; private autoT: ReturnType<typeof setTimeout> | null = null;
+  private arm(L: string): Promise<{ ok: boolean; heard: string | null; tries: number }> {
+    return new Promise((res) => {
+      this.awaiting = true; this.cur = { L, res }; this.armed.set(true);
+      this.fb('wait', this.autoOn ? (this.KA() === 'ka' ? 'Ka faɗi harafin.' : 'Ki faɗi harafin.') : 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.');
+      if (this.autoOn) this.listenSoon();
+    });
+  }
+  /** Open the microphone the moment Laila goes quiet, so her own voice never reaches it. */
+  private listenSoon(): void {
+    if (this.autoT) clearTimeout(this.autoT);
+    const tick = () => {
+      this.autoT = null;
+      if (!this.awaiting || this.stopped) return;
+      // 'timeupdate' refreshes lastSound about four times a second while a clip runs, so the quiet window has to
+      // clear that interval comfortably — and the engine's own playing flag settles it either way.
+      if (!this.bus.engine.playing() && Date.now() - this.bus.engine.lastSound >= 450) { this.press(); return; }
+      this.autoT = setTimeout(tick, 140);
+    };
+    this.autoT = setTimeout(tick, 450);
+  }
+  private stopAuto(): void { if (this.autoT) { clearTimeout(this.autoT); this.autoT = null; } }
   private async press(): Promise<void> {
-    if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
+    if (!this.awaiting || !this.cur) return; this.awaiting = false; this.armed.set(false); this.stopAuto(); this.autoOn = true; const c = this.cur; this.bus.stopAll(); this.spotter.unspot(); if (this.st()[this.idx(c.L)] === 'bad') this.setSt(c.L, 'on');
     // as many tries as the child likes: the microphone closes on the right letter, or when the time runs out
     this.rec.set(true);
     const h = this.speech.hear({ target: c.L, until: c.L, maxWrong: WRONG }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);

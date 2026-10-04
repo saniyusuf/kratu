@@ -17,6 +17,9 @@ import { Spotter, flyLetter, flyText, joy, matchWord, retryPic, wait } from '../
  * Misali · the sample. Laila shows one press-and-say (or spell, read, find) with the boy's or girl's voice, locked like a
  * short film; then "now you": the child repeats the same item with the real microphone. Every lesson opens with its sample once.
  */
+/** The example asks this many times, then Laila answers for the child and it moves on. */
+const EG_TRIES = 3;
+
 @Component({
   selector: 'app-misali',
   imports: [Door, Ear, LailaButton, AbcKeyboard],
@@ -108,20 +111,37 @@ export class MisaliScreen implements OnInit, OnDestroy {
   /** The recorder "listens" while the sample child's voice speaks (or the real child, in their turn), then the heard word flies to its place. */
   private async listen(heard: string, voice: string | null, target: Element | null | false, noKudos = false): Promise<void> {
     this.armed.set(true); await wait(400); this.armed.set(false); this.recOn(); this.fb('wait', '…');
+    let got = true;
     if (voice) await this.play(voice);
     else {
       // the child's own turn: the real microphone
       // a letter is heard as a letter (the 26 letters and their names), a word as a word; never compared case-sensitively —
       // 'a' against 'A' never matched, so the alphabet example waited out its 8 s instead of hearing the child (Sani 2026-09-22)
-      const w = heard.toLowerCase();
-      const h = /^[A-Z]$/.test(heard) ? this.speech.hear({ target: heard, until: heard })
-        : this.speech.hear({ target: heard, match: (raw) => (matchWord(raw, w) ? heard : null) });   // the lessons' own matcher, p/f and all
-      this.hearHandle = h; const r = await h.done; this.hearHandle = null; if (r.raw) heard = r.value ? heard : heard;
+      const w = heard.toLowerCase(), isLetter = /^[A-Z]$/.test(heard);
+      const ask = () => isLetter ? this.speech.hear({ target: heard, until: heard })
+                                 : this.speech.hear({ target: heard, match: (raw) => (matchWord(raw, w) ? heard : null) });   // the lessons' own matcher, p/f and all
+      // The example asks for the right answer, as the lesson does: it used to accept absolutely anything and still say
+      // "Madalla". But it is an example, not a test — after three goes Laila says it herself and the child is carried
+      // forward, never stuck on the very first thing they are shown (Sani 2026-10-04).
+      got = false;
+      for (let go = 1; go <= EG_TRIES; go++) {
+        const h = ask(); this.hearHandle = h; const r = await h.done; this.hearHandle = null;
+        if (this.phase === 'idle') return;
+        if (r.value) { got = true; break; }
+        if (go < EG_TRIES) { this.fb('bad', r.raw ? '“' + r.raw + '” — sake gwadawa.' : 'Sake gwadawa.'); await this.play('app_retry'); this.recOn(); this.fb('wait', '…'); }
+      }
+      if (!got) {
+        this.fb('wait', '…'); this.speak.set(true);
+        await this.seq([this.gk('app_remind'), isLetter ? 'app_en_' + heard : null]);
+        this.speak.set(false);
+      }
     }
     this.fb('heard', '“' + heard + '”'); await wait(350); this.recOff();
     // the written word flying out of Laila is for reading and the alphabet: elsewhere the child says a word and that is
     // the whole answer, so nothing is written for them to read (Sani 2026-09-20)
     if (target !== false && (this.kind === 'karatu' || this.kind === 'haruffa')) await flyText(this.zoom, this.s(), this.head(), target, heard);
+    // praise is for getting it; being shown the answer moves on quietly
+    if (!got) { this.fb('wait', heard + ' ✓'); await wait(450); return; }
     this.fb('good', 'Madalla! ✓'); await this.celebrate(); if (!noKudos) await this.play('app_kudos');
   }
   private reset(): void { this.running = false; this.phase = 'idle'; this.movie.set(false); this.cue.set(false); this.handOff(); this.fb('', ''); this.speak.set(false); this.armed.set(false); this.recOff(); this.showPic(null); this.mkSlots(''); this.bigLetter.set(''); this.gridItems.set([]); this.gridDone.set(''); }
