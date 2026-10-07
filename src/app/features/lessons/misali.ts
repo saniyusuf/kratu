@@ -88,6 +88,8 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private async say(ks: (string | { src: string } | null)[]): Promise<boolean> { this.speak.set(true); const ok = await this.seq(ks); this.speak.set(false); return ok; }
   private fb(cls: string, text: string): void { this.fbCls.set(cls); this.fbText.set(text); }
   private gk(k: string): string { return this.bus.gk(k); }
+  /** A line that is written but not yet recorded: the screen still says it, the speaker just stays quiet. */
+  private maybe(k: string): string | null { const g = this.bus.gk(k); return this.bus.has(g) ? g : null; }
   private async handTo(el: Element, dx = 0, dy = 0): Promise<void> {
     const sR = this.zoom.rect(this.s()), r = this.zoom.rect(el);
     const x0 = r.left + r.width / 2 - sR.left, y0 = r.top + r.height / 2 - sR.top;
@@ -128,10 +130,14 @@ export class MisaliScreen implements OnInit, OnDestroy {
         const h = ask(); this.hearHandle = h; const r = await h.done; this.hearHandle = null;
         if (this.phase === 'idle') return;
         if (r.value) { got = true; break; }
-        if (go < EG_TRIES) { this.fb('bad', r.raw ? '“' + r.raw + '” — sake gwadawa.' : 'Sake gwadawa.'); await this.play('app_retry'); this.recOn(); this.fb('wait', '…'); }
+        if (go < EG_TRIES) { this.fb('bad', r.raw ? 'A’a — “' + r.raw + '”' : 'A’a'); await this.play('app_retry'); this.recOn(); this.fb('wait', '…'); }
       }
       if (!got) {
-        this.fb('wait', '…'); this.speak.set(true);
+        // Three wrong and she takes over. She says she is going to show it again and asks for their
+        // attention first, so the child knows to watch rather than being talked at (Sani 2026-10-07).
+        this.fb('bad', 'A’a'); this.speak.set(true);
+        await this.seq([this.maybe('s_eg_watch')]);
+        this.fb('wait', '…');
         await this.seq([this.gk('app_remind'), isLetter ? 'app_en_' + heard : null]);
         this.speak.set(false);
       }
@@ -140,8 +146,13 @@ export class MisaliScreen implements OnInit, OnDestroy {
     // the written word flying out of Laila is for reading and the alphabet: elsewhere the child says a word and that is
     // the whole answer, so nothing is written for them to read (Sani 2026-09-20)
     if (target !== false && (this.kind === 'karatu' || this.kind === 'haruffa')) await flyText(this.zoom, this.s(), this.head(), target, heard);
-    // praise is for getting it; being shown the answer moves on quietly
-    if (!got) { this.fb('wait', heard + ' ✓'); await wait(450); return; }
+    // Praise is for getting it. Being shown the answer is acknowledged for what it was — not right — and
+    // then let go of, because an example is not a test and the item comes round again (Sani 2026-10-07).
+    if (!got) {
+      this.fb('wait', heard + ' ✓'); await wait(450);
+      this.speak.set(true); await this.seq([this.maybe('s_eg_ok')]); this.speak.set(false);
+      return;
+    }
     this.fb('good', 'Madalla! ✓'); await this.celebrate(); if (!noKudos) await this.play('app_kudos');
   }
   private reset(): void { this.running = false; this.phase = 'idle'; this.movie.set(false); this.cue.set(false); this.handOff(); this.fb('', ''); this.speak.set(false); this.armed.set(false); this.recOff(); this.showPic(null); this.mkSlots(''); this.bigLetter.set(''); this.gridItems.set([]); this.gridDone.set(''); }

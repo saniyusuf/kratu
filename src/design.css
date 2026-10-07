@@ -440,7 +440,7 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson .letterwrap{position:relative;display:flex;flex-direction:column;align-items:center}
 .s.lesson .lhand2{font-size:40px;line-height:1;animation:handbob .8s ease-in-out infinite;margin-top:-10px}
 .s.lesson .aiwave{display:flex;gap:5px;align-items:center;height:26px;margin-top:6px}.s.lesson .aiwave i{width:6px;height:10px;border-radius:3px;background:var(--blue);animation:wv2 .7s ease-in-out infinite}.s.lesson .aiwave i:nth-child(2){animation-delay:.1s}.s.lesson .aiwave i:nth-child(3){animation-delay:.2s}.s.lesson .aiwave i:nth-child(4){animation-delay:.3s}.s.lesson .aiwave i:nth-child(5){animation-delay:.4s}
-.s.lesson .fb{font-family:var(--body);font-weight:800;font-size:18px;min-height:26px;color:var(--ink);flex-shrink:0}.s.lesson .fb.wait{color:var(--blue)}.s.lesson .fb.good{color:var(--green)}
+.s.lesson .fb{font-family:var(--body);font-weight:800;font-size:18px;min-height:26px;color:var(--ink);flex-shrink:0}.s.lesson .fb.wait{color:var(--blue)}.s.lesson .fb.good{color:var(--green)}.s.lesson .fb.bad{color:var(--red)}
 .s.lesson .ctrls{display:flex;gap:10px;margin-top:-6px}.s.lesson .gbtn{font-family:var(--disp);font-weight:800;font-size:14px;color:var(--muted);background:#fff;border:2px solid #E6D6AE;border-radius:999px;padding:6px 14px}
 .s.lesson .lbtn.mic .lm{filter:drop-shadow(0 0 22px rgba(47,174,158,.9))}.s.lesson .lbtn.armed::after{content:"● REC";position:absolute;top:-6px;right:-14px;font-family:var(--body);font-weight:800;font-size:11px;color:#fff;background:var(--red);border-radius:99px;padding:3px 9px}
 .s.lesson .lbtn.demoglow .lm{filter:drop-shadow(0 0 30px rgba(255,201,60,1))}

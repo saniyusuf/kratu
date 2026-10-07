@@ -4150,5 +4150,39 @@
    "m": "3110c359f3",
    "f": "0a4448ff9a"
   }
+ },
+ {
+  "key": "s_eg_watch",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Zan nuna maka kuma. Ka kula.",
+   "f": "Zan nuna miki kuma. Ki kula."
+  },
+  "en": "I will show you again. Pay attention.",
+  "screens": [
+   "Misali · samples"
+  ],
+  "said_when": "Third wrong answer in an example, just before Laila gives the answer herself.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_eg_ok",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Ba daidai ba ne, amma za ka koya.",
+   "f": "Ba daidai ba ne, amma za ki koya."
+  },
+  "en": "That was not right, but you will learn.",
+  "screens": [
+   "Misali · samples"
+  ],
+  "said_when": "After Laila has given the answer herself, instead of praise.",
+  "status": "planned",
+  "recorded": ""
  }
 ]
