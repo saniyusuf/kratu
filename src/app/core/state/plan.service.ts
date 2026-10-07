@@ -10,7 +10,9 @@ export interface PlanCard {
 export interface Placement { hits: number; wrong: number; asked: number; start: string; at: number; }
 
 const CARDS: Record<string, PlanCard> = {
-  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Fasa haruffa', sub: 'pop the letters from A to Z, in order', ico: '🎈', colour: 'var(--red)', route: 'fashe' },
+  // The first step is the question, not the game: the gate asks whether they know the letters and sends
+  // them to the game or to the lesson accordingly (Sani 2026-10-07).
+  mugani: { key: 'mugani', eyebrow: 'NA FARKO · FIRST', title: 'Ka san haruffa?', sub: 'do you know the letters? let us see', ico: '🎈', colour: 'var(--red)', route: 'haruffa/gwada' },
   haruffa_ah: { key: 'haruffa_ah', eyebrow: 'NA GABA · NEXT', title: 'Haruffa A–H', sub: 'the first eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo' },
   haruffa_ip: { key: 'haruffa_ip', eyebrow: 'NA GABA · NEXT', title: 'Haruffa I–P', sub: 'the next eight letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '2' } },
   haruffa_qz: { key: 'haruffa_qz', eyebrow: 'NA GABA · NEXT', title: 'Haruffa Q–Z', sub: 'the last ten letters', ico: '🔤', colour: 'var(--red)', route: 'haruffa/koyo', query: { from: '4' } },
