@@ -4331,5 +4331,19 @@
   "said_when": "They tapped the slate; straight into Haruffa.",
   "status": "planned",
   "recorded": ""
+ },
+ {
+  "key": "s_gate_play",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu yi ɗan wasa.",
+  "en": "We are going to play a little game.",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "The invitation, before the question.",
+  "status": "planned",
+  "recorded": ""
  }
 ]

@@ -4,6 +4,7 @@ import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
+import { Laila } from '../../shared/laila/laila';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
 import { wait } from '../../shared/lesson/helpers';
@@ -26,24 +27,35 @@ const SHOWN = ['A', 'B', 'C', 'D'];
  */
 @Component({
   selector: 'app-gate',
-  imports: [Door, Ear, LailaButton, AlloButton],
+  imports: [Door, Ear, Laila, LailaButton, AlloButton],
   host: { class: 's lesson gate' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="ask()" />
+<app-door (pressed)="leave()" /><app-ear (pressed)="repeat()" />
 <div class="eyebrow">Mu gani · haruffa</div>
-<div class="pr">Ka san dukan haruffa?<span class="sm">Do you know all the letters?</span></div>
-<div class="gateabc" aria-hidden="true">
-  @for (L of shown; track L) {
-    <b [style.--c]="colour(L)" [class.lit]="lit() === L" [class.said]="saidAt() > $index">{{ L }}</b>
-  }
-  <span class="gdots">…</span>
-  <b [style.--c]="colour('Z')" [class.lit]="lit() === 'Z'" [class.said]="saidAt() > 4">Z</b>
-</div>
-<div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
-<div class="yesno ynpair gateq" [class.nohand]="!cue()">
-  <app-laila-btn #lb label="Na sani" [size]="132" [cue]="cue()" [speak]="speak()" (pressed)="yes()" />
-  <app-allo-btn label="Ban sani ba" (pressed)="no()" />
-</div>`,
+
+@if (phase() === 'invite') {
+  <button class="startlaila gatestart" [class.talking]="speak()" [class.cue]="ready()"
+          aria-label="Danna Laila mu fara" (click)="begin()">
+    <span class="meethalo"></span><app-laila [size]="190" cls="meet-lm" />
+    @if (ready()) {<span class="meet-hand">👆🏾</span>}
+  </button>
+  <div class="pr">Za mu yi ɗan wasa<span class="sm">We are going to play a little game</span></div>
+  <div class="starthint" [class.show]="ready()">Danna kan Laila mu fara<br><small>tap Laila to begin</small></div>
+} @else {
+  <div class="pr">Ka san dukan haruffa?<span class="sm">Do you know all the letters?</span></div>
+  <div class="gateabc" aria-hidden="true">
+    @for (L of shown; track L) {
+      <b [style.--c]="colour(L)" [class.lit]="lit() === L" [class.said]="saidAt() > $index">{{ L }}</b>
+    }
+    <span class="gdots">…</span>
+    <b [style.--c]="colour('Z')" [class.lit]="lit() === 'Z'" [class.said]="saidAt() > 4">Z</b>
+  </div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="yesno ynpair gateq" [class.nohand]="!cue()">
+    <app-laila-btn #lb label="Na sani" [size]="132" [cue]="cue()" [speak]="speak()" (pressed)="yes()" />
+    <app-allo-btn label="Ban sani ba" (pressed)="no()" />
+  </div>
+}`,
 })
 export class GateScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
@@ -54,12 +66,37 @@ export class GateScreen implements OnInit, OnDestroy {
   readonly lit = signal(''); readonly saidAt = signal(0);
   readonly speak = signal(false); readonly cue = signal(false);
   readonly fbCls = signal(''); readonly fbText = signal('');
+  /**
+   * Two beats on one screen, the way Meet Laila does it. She invites them first and waits to be pressed —
+   * which is also what unlocks sound, since a browser refuses the first clip of a fresh load until a
+   * finger has touched the page. Only then does she ask the question (Sani 2026-10-07).
+   */
+  readonly phase = signal<'invite' | 'ask'>('invite');
+  readonly ready = signal(false);
   private seq = 0; private stopped = false;
 
   colour(L: string): string { return LETTER_COLOR(ALL.indexOf(L)); }
 
-  ngOnInit(): void { afterPaint().then(() => this.ask()); }
+  ngOnInit(): void { afterPaint().then(() => this.invite()); }
   ngOnDestroy(): void { this.stopped = true; this.seq++; this.bus.stopAll(); }
+
+  /** "Za mu yi ɗan wasa." Then she glows and waits for a finger. */
+  async invite(): Promise<void> {
+    const my = ++this.seq;
+    this.ready.set(false); this.speak.set(true);
+    const g = this.bus.gk('s_gate_play');
+    if (this.bus.has(g)) await this.bus.play(g); else await wait(700);
+    if (my !== this.seq || this.stopped) return;
+    this.speak.set(false); this.ready.set(true);
+  }
+  /** The press: sound is unlocked, and the question follows. */
+  begin(): void {
+    if (!this.ready()) return;
+    this.seq++; this.bus.stopAll(); this.phase.set('ask');
+    afterPaint().then(() => this.ask());
+  }
+  /** The ear repeats whichever beat the screen is on. */
+  repeat(): void { if (this.phase() === 'invite') this.invite(); else this.ask(); }
 
   /**
    * The question, then the letters one at a time so the child can hear what is being asked of them, then the

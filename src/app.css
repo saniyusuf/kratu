@@ -520,3 +520,9 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.gate .pr .sm{display:block;font-weight:600;font-size:15px;color:var(--muted);margin-top:2px}
 #app .s.gate .ynpair.gateq{gap:52px}
 @media (prefers-reduced-motion:reduce){#app .s.gate .gateabc b{transition:none}}
+#app .s.gate .startlaila{position:relative;background:none;border:none;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;z-index:3}
+#app .s.gate .starthint{position:relative;z-index:2;opacity:0;min-height:2.6em;font-family:var(--disp);
+  font-weight:700;color:var(--muted);transition:opacity .3s}
+#app .s.gate .starthint.show{opacity:1}
+#app .s.gate .starthint small{color:#9A8A68}
