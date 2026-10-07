@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, computed, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
@@ -11,8 +11,18 @@ import { flyLetter, joy, shakeNo, shuffle, wait } from '../../shared/lesson/help
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
 const NOPE = 'assets/audio/sfx/nope.ogg';
-/** Eight in the sky, and four wrong pops looking for one letter ends it — that child is guessing (Sani 2026-09-24). */
-const SKY = 8, GUESSES = 4;
+const SKY = 8;
+/**
+ * The clock is the test (Sani 2026-10-07). A round is about five seconds — she names the letter just
+ * popped, the child finds the next one and taps it — so twenty-six of them is roughly 130s of work and
+ * two minutes is about fifteen seconds more than the job takes.
+ *
+ * The penalty is not aimed at a child who is guessing: a guesser never reaches Z anyway, because they
+ * cannot find the next letter. It is aimed at brute force — tapping every balloon until one bursts,
+ * the only way to beat this without knowing the alphabet. At +4 against -8 that costs about 16s a
+ * letter and dies around the eighth, while a child who knows the order finishes with ~45s in hand.
+ */
+const CLOCK = 120_000, GAIN = 4_000, LOSS = 8_000;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
 const NUDGE_AT = 14000, GIVE_AT = 40000;
 
@@ -37,6 +47,10 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; wai
   host: { class: 's lesson fashe' },
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
+<div class="poptime" [class.low]="low()" [class.off]="!ticking()">
+  <span class="ptbar"><i [style.width.%]="pct()"></i></span><b>{{ clock() }}</b>
+  @if (bump()) {<span class="ptbump" [class.minus]="bump()!.startsWith('−')">{{ bump() }}</span>}
+</div>
 <div #sky class="sky" (click)="tapped($event)">
   <span class="stage" aria-hidden="true"></span>
   @for (b of bubs(); track b.id) {
@@ -69,6 +83,16 @@ export class FasheScreen implements OnInit, OnDestroy {
   /** The letter the child should pop next. It is never written on the screen — that is the test. */
   readonly target = signal(''); readonly gone = signal('0 / 25');
   readonly fbCls = signal(''); readonly fbText = signal('');
+  /** Milliseconds left, the bar, and the little +4 / −8 that flies off the clock when it changes. */
+  readonly left = signal(CLOCK); readonly ticking = signal(false); readonly bump = signal<string | null>(null);
+  readonly pct = computed(() => Math.max(0, Math.min(100, (this.left() / CLOCK) * 100)));
+  readonly low = computed(() => this.left() <= 20_000);
+  readonly clock = computed(() => {
+    const s = Math.max(0, Math.ceil(this.left() / 1000));
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  });
+  private tickId = 0; private tickAt = 0; private bumpT: ReturnType<typeof setTimeout> | null = null;
+  private outOfTime = false;
   readonly speak = signal(false); readonly yay = signal(false); readonly nope = signal(false); readonly bad = signal(false);
 
   private seq = 0; private at = 0; private reached = 0; private wrong = 0; private roundWrong = 0;
@@ -83,7 +107,8 @@ export class FasheScreen implements OnInit, OnDestroy {
     afterPaint().then(() => { this.measure(); this.start(); });
   }
   ngOnDestroy(): void {
-    this.stopped = true; this.bus.stopAll(); document.removeEventListener('keydown', this.onKey);
+    this.stopped = true; this.stopClock(); if (this.bumpT) clearTimeout(this.bumpT);
+    this.bus.stopAll(); document.removeEventListener('keydown', this.onKey);
     this.timers.forEach((t) => clearTimeout(t)); this.ro?.disconnect(); this.unpoint(); this.answer?.(null);
   }
 
@@ -104,6 +129,38 @@ export class FasheScreen implements OnInit, OnDestroy {
   }
   private slot(L: string): HTMLElement { return this.slotsRef().nativeElement.children[ALL.indexOf(L)] as HTMLElement; }
   private fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }
+  /**
+   * Wall-clock, not a counter of ticks: a cheap tablet drops frames and a tab can be backgrounded, and
+   * a child must never gain time because the device stuttered.
+   */
+  private runClock(): void {
+    if (this.tickId) return;
+    this.tickAt = Date.now(); this.ticking.set(true);
+    this.tickId = window.setInterval(() => {
+      const now = Date.now(); const d = now - this.tickAt; this.tickAt = now;
+      const left = Math.max(0, this.left() - d);
+      this.left.set(left);
+      if (left <= 0) { this.stopClock(); this.timeUp(); }
+    }, 200);
+  }
+  private stopClock(): void { if (this.tickId) { clearInterval(this.tickId); this.tickId = 0; } this.ticking.set(false); }
+  /** +4 or −8, shown on the clock for a beat so the child sees what their tap cost or earned. */
+  private adjust(ms: number): void {
+    this.tickAt = Date.now();                                   // do not let the adjustment be eaten by the next tick
+    this.left.set(Math.max(0, Math.min(CLOCK, this.left() + ms)));
+    this.bump.set((ms > 0 ? '+' : '−') + Math.abs(ms) / 1000);
+    if (this.bumpT) clearTimeout(this.bumpT);
+    this.bumpT = setTimeout(() => this.bump.set(null), 900);
+    if (this.left() <= 0) { this.stopClock(); this.timeUp(); }
+  }
+  /** The clock ran out. Not a failure screen: the same sentence and the same destination as saying "I don't know". */
+  private timeUp(): void {
+    if (this.outOfTime || this.stopped) return;
+    this.outOfTime = true;
+    const res = this.answer; this.answer = null; this.target.set('');
+    this.timers.forEach((t) => clearTimeout(t)); this.timers = [];
+    res?.(false);
+  }
   private later(ms: number, f: () => void): number { const t = window.setTimeout(f, ms); this.timers.push(t); return t; }
 
   // ---- the sky ----
@@ -215,7 +272,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     const el = this.el(b.id), res = this.answer; this.answer = null;
     this.freeze(el);
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
-    joy(this.bus, this.yay); this.bad.set(false); this.fb('good', 'Madalla! ✓');
+    joy(this.bus, this.yay); this.bad.set(false); this.fb('good', 'Madalla! ✓'); this.adjust(GAIN);
     if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot(b.L), b.L, 'var(--green)');
     this.done.update((a) => a.map((v, i) => i === ALL.indexOf(b.L) ? true : v));
     this.later(60, () => { this.recycle(b.id); this.sweep(); });
@@ -230,8 +287,8 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.bus.playRaw(NOPE).catch(() => undefined); shakeNo(this.nope);
     this.wrong++; this.roundWrong++;
     this.bad.set(true); this.fb('bad', 'A’a');   // never the answer: the order is what is being tested
+    this.adjust(-LOSS);                          // the clock is the only punishment, and it is visible
     this.later(950, () => this.recycle(b.id));
-    if (this.roundWrong >= GUESSES) { const res = this.answer; this.answer = null; res?.(false); }   // hunting, not reading
   }
 
   // ---- the run: A to Z, in order, with nobody saying which letter is next ----
@@ -327,25 +384,55 @@ export class FasheScreen implements OnInit, OnDestroy {
     if (first) this.pointAt(first);
     if (!(await this.bus.play(this.bus.gk('s_pop_intro')))) { this.unpoint(); return; }
     if (!(await this.bus.play(this.bus.gk('s_pop_task')))) { this.unpoint(); return; }
+    // The clock is explained while it is on screen and full, so the warning is attached to the thing it
+    // is about. Each of these plays only once recorded; until then the bar says it on its own.
+    for (const k of ['s_pop_clock', 's_pop_scoring', 's_pop_luck']) {
+      const g = this.bus.gk(k);
+      if (this.bus.has(g) && !(await this.bus.play(g))) { this.unpoint(); return; }
+    }
     await this.example();
     if (this.stopped) return;
+    this.runClock();                                        // her demonstration is free; the child's run is not
     for (; this.at < ALL.length; ) {
       if (this.stopped) return;
       const ok = await this.wait();
       if (ok === null || this.stopped) return;              // the screen was left
-      if (!ok) { await this.finish(true); return; }         // four wrong pops, or they stopped playing
+      if (!ok) { await this.finish(true); return; }         // the clock ran out, or they stopped playing
       this.reached++; this.at++; this.gone.set(this.reached + ' / 25');
       await wait(220);
     }
     await this.finish(false);
   }
+  /**
+   * Two endings, and only one of them is a win. Running out of time says the same sentence a child hears
+   * for tapping the slate at the gate — "let us learn the letters first" — and goes to the same place, so
+   * claiming to know the alphabet and being wrong costs nothing but the detour (Sani 2026-10-07).
+   */
   private async finish(stopped: boolean): Promise<void> {
-    this.target.set(''); this.answer = null;
+    this.target.set(''); this.answer = null; this.stopClock();
     const start = PlanService.decide(this.reached, this.wrong);
     this.plan.save({ hits: this.reached, wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now() });
-    this.fb('good', 'Madalla! ' + this.reached + ' / 25');
-    await this.bus.play('s_pop_done'); await wait(400);
-    if (!this.stopped) this.router.navigate(['/home']);
+    const won = !stopped && this.reached >= ALL.length - 1;
+    if (won) {
+      this.eye.set('Mu gani · A → Z');
+      this.fb('good', 'Madalla! ' + this.reached + ' / 25');
+      await this.bus.play('s_pop_done');
+      await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
+      await wait(400);
+      if (!this.stopped) this.router.navigate(['/home']);
+      return;
+    }
+    this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
+    if (this.outOfTime) await this.sayMaybe('s_pop_timeup');   // "Lokaci ya ƙare. Mu koyi haruffa tukuna."
+    await wait(400);
+    if (this.stopped) return;
+    // whatever they reached is kept; the lesson is where they go, not back to a grid to choose again
+    this.router.navigate([this.outOfTime ? '/haruffa/koyo' : '/home']);
+  }
+  /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
+  private async sayMaybe(k: string): Promise<void> {
+    const g = this.bus.gk(k);
+    if (this.bus.has(g)) await this.bus.play(g);
   }
   leave(): void { this.stopped = true; this.bus.stopAll(); this.router.navigate(['/home']); }
 }

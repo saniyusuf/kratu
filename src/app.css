@@ -483,3 +483,26 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.home .plancard b{display:block;font-family:var(--disp);font-weight:800;font-size:25px;line-height:1.1}
 #app .s.home .plancard span{font-size:13px;opacity:.92}
 #app .s.home .plancard.hot{outline:4px solid rgba(255,255,255,.85);outline-offset:-4px}
+
+/* ---------------------------------------------------------------------------------------------------------------
+   The clock (Sani 2026-10-07). A child who cannot read a clock face can still read a bar emptying, so the bar is
+   the real display and the digits are for the adult watching. It turns red under twenty seconds, and every change
+   throws a +4 or a −8 off the end of it, because a penalty nobody sees is not a penalty.                        */
+#app .s.fashe .poptime{display:flex;align-items:center;gap:10px;width:76%;max-width:560px;position:relative;
+  flex-shrink:0;margin:2px auto 0;transition:opacity .3s}
+#app .s.fashe .poptime.off{opacity:.45}
+#app .s.fashe .poptime .ptbar{flex:1;height:14px;border-radius:999px;background:#E3D3AC;border:2px solid #D6C398;
+  overflow:hidden}
+#app .s.fashe .poptime .ptbar i{display:block;height:100%;border-radius:999px;background:var(--teal);
+  transition:width .2s linear,background .3s}
+#app .s.fashe .poptime.low .ptbar i{background:var(--red)}
+#app .s.fashe .poptime b{font-family:var(--disp);font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;
+  min-width:52px;text-align:right}
+#app .s.fashe .poptime.low b{color:var(--red)}
+#app .s.fashe .poptime .ptbump{position:absolute;right:-6px;top:-26px;font-family:var(--disp);font-weight:800;
+  font-size:21px;color:var(--green);pointer-events:none;animation:ptfly .9s ease-out forwards}
+#app .s.fashe .poptime .ptbump.minus{color:var(--red)}
+@keyframes ptfly{0%{opacity:0;transform:translateY(10px) scale(.8)}
+                 25%{opacity:1;transform:translateY(0) scale(1.1)}
+                 100%{opacity:0;transform:translateY(-18px) scale(1)}}
+@media (prefers-reduced-motion:reduce){#app .s.fashe .poptime .ptbump{animation:none;opacity:1}}

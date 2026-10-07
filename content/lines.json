@@ -4184,5 +4184,87 @@
   "said_when": "After Laila has given the answer herself, instead of praise.",
   "status": "planned",
   "recorded": ""
+ },
+ {
+  "key": "s_pop_clock",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Kana da lokaci ka gama dukan haruffa, A zuwa Z.",
+   "f": "Kina da lokaci ki gama dukan haruffa, A zuwa Z."
+  },
+  "en": "You have time to finish all the letters, A to Z.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "The rules, once, before the child's own run.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_pop_scoring",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "In ka samu daidai, lokaci zai ƙaru. In ka kuskure, lokaci zai ragu.",
+   "f": "In kin samu daidai, lokaci zai ƙaru. In kin kuskure, lokaci zai ragu."
+  },
+  "en": "Get it right and time goes up. Get it wrong and time goes down.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "The rules, once, before the child's own run.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_pop_luck",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "In lokaci ya ƙare, ba ka ci wasan ba. Sa'a!",
+   "f": "In lokaci ya ƙare, ba ki ci wasan ba. Sa'a!"
+  },
+  "en": "If the time runs out, you have not won. Good luck!",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "The last thing she says before the clock starts.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_pop_timeup",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lokaci ya ƙare. Mu koyi haruffa tukuna.",
+  "en": "Time is up. Let us learn the letters first.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "The clock reached zero; the child goes to Haruffa.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_pop_know",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Ka san haruffa.",
+   "f": "Kin san haruffa."
+  },
+  "en": "You know your letters.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "Finished the whole alphabet inside the time.",
+  "status": "planned",
+  "recorded": ""
  }
 ]
