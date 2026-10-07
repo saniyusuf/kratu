@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { FasheScreen } from './features/games/fashe';
 import { PermScreen } from './features/onboarding/perm';
 import { GenderScreen } from './features/onboarding/gender';
 import { MeetLailaScreen } from './features/onboarding/meet-laila';
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: 'lambobi', component: ObjLessonScreen, data: { mode: 'numbers' } },
   { path: 'nemo', component: NemoScreen },
   { path: 'karatu', component: KaratuScreen },
+  { path: 'fashe', component: FasheScreen },
   { path: 'blank', component: BlankScreen },
   { path: '**', redirectTo: 'gender' },
 ];
