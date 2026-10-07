@@ -419,6 +419,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       await this.bus.play('s_pop_done');
       await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
+      this.session.owedGame.set(false);
       if (!this.stopped) this.router.navigate(['/home']);
       return;
     }
@@ -427,6 +428,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     await wait(400);
     if (this.stopped) return;
     // whatever they reached is kept; the lesson is where they go, not back to a grid to choose again
+    this.session.owedGame.set(this.outOfTime);
     this.router.navigate([this.outOfTime ? '/haruffa/koyo' : '/home']);
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */

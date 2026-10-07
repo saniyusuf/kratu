@@ -506,3 +506,17 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
                  25%{opacity:1;transform:translateY(0) scale(1.1)}
                  100%{opacity:0;transform:translateY(-18px) scale(1)}}
 @media (prefers-reduced-motion:reduce){#app .s.fashe .poptime .ptbump{animation:none;opacity:1}}
+
+/* ---------------------------------------------------------------------------------------------------------------
+   The gate (Sani 2026-10-07). She names A, B, C, D and each tile lifts as she says it, so the question is asked in
+   the only way a child who cannot read can answer it: by hearing the letters themselves.                        */
+#app .s.gate .gateabc{display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;margin:2px 0 4px}
+#app .s.gate .gateabc b{font-family:var(--disp);font-weight:800;font-size:clamp(30px,5.4cqw,46px);line-height:1;
+  color:var(--c);opacity:.32;transform:translateY(0) scale(1);
+  transition:opacity .22s,transform .28s cubic-bezier(.2,1.5,.4,1)}
+#app .s.gate .gateabc b.said{opacity:1}
+#app .s.gate .gateabc b.lit{opacity:1;transform:translateY(-8px) scale(1.18)}
+#app .s.gate .gateabc .gdots{font-family:var(--disp);font-weight:800;font-size:28px;color:var(--muted);opacity:.7}
+#app .s.gate .pr .sm{display:block;font-weight:600;font-size:15px;color:var(--muted);margin-top:2px}
+#app .s.gate .ynpair.gateq{gap:52px}
+@media (prefers-reduced-motion:reduce){#app .s.gate .gateabc b{transition:none}}

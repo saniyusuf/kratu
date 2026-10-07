@@ -4266,5 +4266,70 @@
   "said_when": "Finished the whole alphabet inside the time.",
   "status": "planned",
   "recorded": ""
+ },
+ {
+  "key": "s_gate_q",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Ka san dukan haruffa?",
+   "f": "Kin san dukan haruffa?"
+  },
+  "en": "Do you know all the letters?",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "The gate, before she names them.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_gate_z",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "…har zuwa Z?",
+  "en": "…all the way to Z?",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "After A B C D, to make the question the whole alphabet.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_gate_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "In ka sani, ka danna Laila. In ba ka sani ba, ka danna allo.",
+   "f": "In kin sani, ki danna Laila. In ba ki sani ba, ki danna allo."
+  },
+  "en": "If you know them, tap Laila. If you do not, tap the slate.",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "The two choices, named.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "s_gate_calm",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Kada ka damu. Mu koyi su tukuna.",
+   "f": "Kada ki damu. Mu koyi su tukuna."
+  },
+  "en": "Don't worry. Let us learn them first.",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "They tapped the slate; straight into Haruffa.",
+  "status": "planned",
+  "recorded": ""
  }
 ]

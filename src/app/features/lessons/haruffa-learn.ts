@@ -197,7 +197,10 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(fromGroup * 4);
     if (intro) { await this.play('app_board_intro'); if (this.stopped) return; }   // said here, not on the screen that sent them (Sani 2026-09-21)
     for (let gi = fromGroup; gi < GROUPS.length; gi++) { if (this.stopped) return; await this.runGroup(gi); }
-    if (this.stopped) return; await this.finals(); this.running = false; this.router.navigate(['/home']);
+    if (this.stopped) return; await this.finals(); this.running = false;
+    // A child who came here from the gate, or from running the clock down, is owed the game they were
+    // promised: they go to it rather than back to a grid to choose for themselves (Sani 2026-10-07).
+    this.router.navigate([this.session.owedGame() ? '/fashe' : '/home']);
   }
   lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) return; this.bus.stopAll(); this.start(0); }
   async ear(): Promise<void> { this.bus.stopAll(); if (this.cur?.L) { await this.sayLetter('app_wannan', this.cur.L); } else await this.play(this.bus.gk('s_l_look')); }

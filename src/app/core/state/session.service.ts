@@ -17,6 +17,12 @@ export class SessionService {
   readonly simulated = signal<{ name: string; g: Gender; personId?: string | null } | null>(null);
   /** After a real login: true = a child already enrolled, false = enrolled today. */
   readonly known = signal<boolean | null>(null);
+  /**
+   * Set when a child is sent to Haruffa by the gate, or by the clock running out in the placement game:
+   * the lesson hands them back to the game instead of to the home grid, so the thing they were promised
+   * actually happens (Sani 2026-10-07). Cleared once the game has had them.
+   */
+  readonly owedGame = signal(false);
   /** A greeting the chooser owes on arrival ("Sannu, Musa! Barka da zuwa!"), set by the settings' sample sessions. */
   readonly greet = signal<{ name: string; src: string | null } | null>(null);
   readonly debug = /[?&]debug/.test(location.search);

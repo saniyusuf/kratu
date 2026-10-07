@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { FasheScreen } from './features/games/fashe';
+import { GateScreen } from './features/games/gate';
 import { PermScreen } from './features/onboarding/perm';
 import { GenderScreen } from './features/onboarding/gender';
 import { MeetLailaScreen } from './features/onboarding/meet-laila';
@@ -31,6 +32,7 @@ export const routes: Routes = [
   { path: 'lambobi', component: ObjLessonScreen, data: { mode: 'numbers' } },
   { path: 'nemo', component: NemoScreen },
   { path: 'karatu', component: KaratuScreen },
+  { path: 'haruffa/gwada', component: GateScreen },   // the gate: do you know them all?
   { path: 'fashe', component: FasheScreen },
   { path: 'blank', component: BlankScreen },
   { path: '**', redirectTo: 'gender' },
