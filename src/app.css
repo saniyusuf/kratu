@@ -455,7 +455,7 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 }
 
 /* the example's pointing hand, riding the balloon it points at */
-#app .s.fashe .pophand{position:absolute;left:0;top:0;font-size:34px;line-height:1;z-index:5;pointer-events:none;
+#app .s.fashe .pophand{position:absolute;left:0;top:0;font-size:34px;line-height:1;z-index:90;pointer-events:none;
   filter:drop-shadow(0 3px 3px rgba(59,46,30,.25));animation:handbob .8s ease-in-out infinite}
 #app .s.fashe .abcslots{width:min(680px,96%)}
 #app .s.fashe .aslot{height:30px;font-size:16px}
@@ -526,3 +526,12 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   font-weight:700;color:var(--muted);transition:opacity .3s}
 #app .s.gate .starthint.show{opacity:1}
 #app .s.gate .starthint small{color:#9A8A68}
+
+/* ---------------------------------------------------------------------------------------------------------------
+   The pointing hand goes above everything it can point at (Sani 2026-10-08). It sat at z5 in the game and z9 in the
+   examples, under .helpdome (z10) and .backdoor (z50) — so the one moment the hand exists to explain the two corners
+   was the one moment the corners covered it, and in the game a picture at z6 sat on top of it too. Every hand is
+   pointer-events:none, so raising it cannot steal a tap.                                                         */
+#app .s.lesson.misali .misalihand,
+#app .s.fashe .pophand,
+#app .spothand{z-index:90}
