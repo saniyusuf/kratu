@@ -20,6 +20,17 @@ function edge(text, voice, dest, enc = {}) {
   encode(tmp, dest, enc); rmSync(tmp, { force: true });
 }
 
+/** Spitch (paid, Nigerian voices): the key is SPITCH_API_KEY in .env, read here and never printed. */
+const spitchKey = () => { const m = existsSync('.env') ? /^SPITCH_API_KEY=(.+)$/m.exec(readFileSync('.env', 'utf8')) : null; if (!m) throw new Error('no SPITCH_API_KEY in .env'); return m[1].trim(); };
+async function spitch(text, lang, voice, dest, enc = {}) {
+  for (let i = 0; ; i++) {
+    const r = await fetch('https://api.spitch.app/v1/speech', { method: 'POST', headers: { Authorization: 'Bearer ' + spitchKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ language: lang, voice, text, format: 'mp3' }) });
+    if (r.ok) { const tmp = join(tmpdir(), 'kratu-spitch-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.mp3'); writeFileSync(tmp, Buffer.from(await r.arrayBuffer())); encode(tmp, dest, enc); rmSync(tmp, { force: true }); return; }
+    if (r.status === 402 || r.status === 401 || i >= 3) throw new Error('spitch ' + r.status);   // no credit or a bad key: retrying will not help
+    await new Promise((res) => setTimeout(res, 2000 * (i + 1)));
+  }
+}
+
 async function google(text, voice, dest, enc = {}) {
   // Google reads at most ~200 characters at a time: cut at the punctuation and join the pieces
   const parts = text.split(/(?<=[.!?,:;])\s+/).map((t) => t.trim()).filter(Boolean), chunks = []; let cur = '';
@@ -71,13 +82,13 @@ export async function voiceLang(code, args) {
     execFileSync('tools/.venv-tts/bin/python', ['tools/tts_mms.py', '--model', tts.model, '--jobs', join(tmp, 'jobs.json')].concat(tts.rate ? ['--rate', String(tts.rate)] : []), { stdio: ['ignore', 'ignore', 'inherit'] });
     for (const p of todo) { try { encode(same.get(p.text), dir + '/' + p.key + '.ogg', enc); rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
     rmSync(tmp, { recursive: true, force: true });
-  } else if (tts.provider === 'google' || tts.provider === 'edge') {
+  } else if (tts.provider === 'google' || tts.provider === 'edge' || tts.provider === 'spitch') {
     for (const p of todo) {
       const dest = dir + '/' + p.key + '.ogg';
-      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
+      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else if (tts.provider === 'spitch') await spitch(p.text, tts.lang || code, tts.voice, dest, enc); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
       catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
     }
-  } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge or mms');
+  } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge, spitch or mms');
   for (const p of enTodo) { try { if (pack.english.provider !== 'edge') throw new Error('english.provider must be edge'); edge(p.text, pack.english.voice, p.dest, encEn); rec[p.rk] = H(p.text); made++; console.log('made  ' + p.rk); if (made % 20 === 0) save(); } catch (e) { failed++; console.log('FAIL  ' + p.rk + ' ' + (e.message || e)); } }
   save();
   console.log(`voice[${code}]: ${made} made, ${failed} failed`); return failed;

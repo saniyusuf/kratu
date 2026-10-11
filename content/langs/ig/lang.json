@@ -18,8 +18,8 @@
  "namesBank": false,
  "muteFilms": true,
  "tts": {
-  "provider": "mms",
-  "model": "Shinzmann/soro-tts-ibo",
+  "provider": "spitch",
+  "voice": "amara",
   "lufs": -17.7
  },
  "status": "draft",
