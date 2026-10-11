@@ -968,12 +968,13 @@
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child who has not finished anything yet. Draft wording by Claude (2026-10-11), to be checked by Sani.",
+  "said_when": "on the chooser, to a child who has not finished anything yet. Unreviewed: Claude draft (2026-10-11), awaiting Sani.",
   "status": "live",
   "recorded": {
    "m": "a7c7e40118",
    "f": "c6e6c3fb30"
-  }
+  },
+  "review": "unreviewed: Claude draft, awaiting Sani"
  },
  {
   "key": "app_book_more",
@@ -988,12 +989,13 @@
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child coming back with lessons under way. Draft wording by Claude (2026-10-11), to be checked by Sani.",
+  "said_when": "on the chooser, to a child coming back with lessons under way. Unreviewed: Claude draft (2026-10-11), awaiting Sani.",
   "status": "live",
   "recorded": {
    "m": "d343c0737a",
    "f": "e44f9ab375"
-  }
+  },
+  "review": "unreviewed: Claude draft, awaiting Sani"
  },
  {
   "key": "app_board_intro",
