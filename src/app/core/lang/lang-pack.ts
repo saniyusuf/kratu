@@ -1,10 +1,10 @@
 /**
- * The language Laila speaks in this build. Hausa is the app; Swahili, Yoruba and Igbo are demo builds of the same
- * curriculum, chosen at build time (angular.json configurations sw / yo / ig swap lang.ts for lang.<code>.ts, which
+ * The language Laila speaks in this build. Hausa is the app; Swahili and Yoruba are demo builds of the same
+ * curriculum, chosen at build time (angular.json configurations sw / yo swap lang.ts for lang.<code>.ts, which
  * build-content writes from content/langs/<code>/lang.json). Everything the child answers stays English.
  */
 export interface LangPack {
-  /** ha, sw, yo, ig — the folder under assets/audio/ that holds this language's clips. */
+  /** ha, sw, yo — the folder under assets/audio/ that holds this language's clips. */
   code: string;
   /** The language's own name for itself, for adults (settings, debug). */
   name: string;
