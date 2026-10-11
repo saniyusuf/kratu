@@ -29,11 +29,28 @@ def pieces(text):
         out.append((words, max([REST.get(c, 0.0) for c in punct] or [0.0])))
     return out or [(text, 0.0)]
 
+def tighten(wav, gap=0.3):
+    """These models pad a phrase with up to a second of silence at each end and sometimes stop for two or three seconds
+    inside it: the ends are cut and any pause longer than `gap` is shortened to it, so only the rests we add remain."""
+    if not len(wav): return wav
+    F = int(SR * 0.02); n = len(wav) // F
+    if n < 2: return wav
+    rms = np.sqrt((wav[:n * F].reshape(n, F) ** 2).mean(1)); th = max(rms.max() * 0.03, 1e-4)
+    on = np.where(rms > th)[0]
+    if not len(on): return np.zeros(0, dtype=np.float32)
+    out, keep = [], int(gap * SR / F)
+    start = prev = on[0]
+    for i in on[1:]:
+        if i - prev > keep: out.append(wav[max(0, start - 2) * F:(prev + 3) * F]); out.append(np.zeros(int(gap * SR), dtype=np.float32)); start = i
+        prev = i
+    out.append(wav[max(0, start - 2) * F:(prev + 3) * F])
+    return np.concatenate(out).astype(np.float32)
+
 def say(words):
     torch.manual_seed(a.seed)
     ids = tok(words, return_tensors='pt')
     if ids['input_ids'].shape[-1] < 2: return np.zeros(0, dtype=np.float32)
-    with torch.no_grad(): return model(**ids).waveform[0].numpy()
+    with torch.no_grad(): return tighten(model(**ids).waveform[0].numpy())
 
 for j in json.load(open(a.jobs)):
     text = unicodedata.normalize('NFC', j['text'])
