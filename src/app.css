@@ -474,16 +474,6 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   #app .s.fashe .bub.pop,#app .s.fashe .bub.burst{animation-duration:.01s}
 }
 
-/* The chooser's plan card: the next step, already chosen, above the six tiles. Pressing Laila opens it, so a child
-   who wants nothing else chooses nothing at all (Sani 2026-09-24). */
-#app .s.home .plancard{display:flex;align-items:center;gap:14px;background:var(--c);color:#fff;border:0;border-radius:18px;
-  padding:9px 22px 9px 14px;box-shadow:0 5px 0 rgba(59,46,30,.18);width:min(560px,92%);text-align:left;cursor:pointer}
-#app .s.home .plancard .pico{font-size:38px;line-height:1}
-#app .s.home .plancard small{display:block;font-size:11px;letter-spacing:.12em;font-weight:800;opacity:.88}
-#app .s.home .plancard b{display:block;font-family:var(--disp);font-weight:800;font-size:25px;line-height:1.1}
-#app .s.home .plancard span{font-size:13px;opacity:.92}
-#app .s.home .plancard.hot{outline:4px solid rgba(255,255,255,.85);outline-offset:-4px}
-
 /* ---------------------------------------------------------------------------------------------------------------
    The clock (Sani 2026-10-07). A child who cannot read a clock face can still read a bar emptying, so the bar is
    the real display and the digits are for the adult watching. It turns red under twenty seconds, and every change

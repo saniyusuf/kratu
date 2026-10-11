@@ -15,7 +15,6 @@ import { CourseBook } from '../../shared/book/book';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
-const BOOK_ROUTE: Record<LessonId, string> = { haruffa: 'haruffa/koyo', abubuwa: 'abubuwa', nemo: 'nemo', lambobi: 'lambobi', karatu: 'karatu', rubutu: 'rubutu' };
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
 
 /**
@@ -31,9 +30,6 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
 <app-door (pressed)="leave()" />
 <app-ear (pressed)="pick()" />
 <app-course-book (pressed)="book()" />
-<button class="plancard" [class.hot]="!act()" [style.--c]="card().colour" (click)="start()">
-  <span class="pico">{{ card().ico }}</span><span class="ptxt"><small>{{ card().eyebrow }}</small><b>{{ card().title }}</b><span>{{ card().sub }}</span></span>
-</button>
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
 <div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" /><span class="lhand">👆🏾</span><span class="lhint">Fara</span></button></div>
 <app-leave />`,
@@ -43,8 +39,8 @@ export class HomeScreen implements OnInit, OnDestroy {
   private readonly flow = inject(LessonFlow);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);
-  /** What the plan says comes next: the card sits above the tiles and is what Laila opens when no tile is picked. */
-  readonly card = signal(inject(PlanService).next());
+  /** What the plan says comes next: the book opens it, and so does Laila when no tile is picked. */
+  private readonly step = inject(PlanService).next();
   private readonly progress = inject(ProgressService);
   private readonly leaveBox = viewChild.required(Leave);
   readonly grid = inject(DomSanitizer).bypassSecurityTrustHtml(HOMEGRID_HTML);
@@ -81,10 +77,16 @@ export class HomeScreen implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void { clearTimeout(this.leaving); this.bus.stopAll(); }
   pick(): void { this.bus.play(this.invite()); }
-  /** The book opens the next lesson on the path: the first one open and not finished. */
+  /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
-    this.bus.stopAll(); this.cue.set(false); const to = BOOK_ROUTE[this.progress.next()];
-    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.flow.open(to), 700);   // the pictures jump first
+    this.bus.stopAll(); this.cue.set(false);
+    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 700);   // the pictures jump first
+  }
+  private next(): void {
+    const c = this.step;
+    if (c.category) this.session.category.set(c.category);
+    if (c.query) { this.router.navigate(['/' + c.route], { queryParams: c.query }); return; }
+    this.flow.open(c.route);
   }
   private leaving = 0;
 
@@ -99,12 +101,7 @@ export class HomeScreen implements OnInit, OnDestroy {
     // A tapped tile still wins — free play is one tap — but with nothing tapped she opens the plan's own
     // next step instead of doing nothing, so a child who chooses nothing is still learning.
     const act = this.act();
-    if (!act) {
-      const c = this.card();
-      if (c.category) this.session.category.set(c.category);
-      if (c.query) { this.router.navigate(['/' + c.route], { queryParams: c.query }); return; }
-      this.flow.open(c.route); return;
-    }
+    if (!act) { this.next(); return; }
     this.bus.stopAll(); this.cue.set(false);
     this.flow.open(ROUTE[act] || 'home');
   }
