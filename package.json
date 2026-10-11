@@ -20,7 +20,12 @@
     "lint:yo": "node scripts/lint.mjs --lang yo",
     "voice:yo": "node scripts/voice.mjs --lang yo",
     "start:yo": "npm run content:yo && ng serve --configuration yo --port 4202",
-    "build:yo": "npm run content:yo && npm run lint:yo && ng build --configuration production,yo"
+    "build:yo": "npm run content:yo && npm run lint:yo && ng build --configuration production,yo",
+    "content:ig": "node scripts/build-content.mjs --lang ig",
+    "lint:ig": "node scripts/lint.mjs --lang ig",
+    "voice:ig": "node scripts/voice.mjs --lang ig",
+    "start:ig": "npm run content:ig && ng serve --configuration ig --port 4203",
+    "build:ig": "npm run content:ig && npm run lint:ig && ng build --configuration production,ig"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
