@@ -18,13 +18,15 @@
  "namesBank": false,
  "muteFilms": true,
  "tts": {
-  "provider": "google",
-  "voice": "sw"
+  "provider": "edge",
+  "voice": "sw-KE-ZuriNeural",
+  "lufs": -17.7
  },
  "english": {
   "provider": "edge",
   "voice": "en-KE-AsiliaNeural",
-  "dir": "en-ke"
+  "dir": "en-ke",
+  "lufs": -17.7
  },
  "status": "draft",
  "ui": {
