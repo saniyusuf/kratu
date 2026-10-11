@@ -12,6 +12,8 @@ import { SessionService } from '../../core/state/session.service';
 import { PlanService } from '../../core/state/plan.service';
 import { LessonId, ProgressService } from '../../core/state/progress.service';
 import { CourseBook } from '../../shared/book/book';
+import { ZoomService } from '../../core/zoom/zoom.service';
+import { Spotter } from '../../shared/lesson/helpers';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
@@ -29,7 +31,7 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
   template: `
 <app-door (pressed)="leave()" />
 <app-ear (pressed)="pick()" />
-<app-course-book (pressed)="book()" />
+<app-course-book (pressed)="book()" (settled)="respot()" />
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
 <div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" /><span class="lhand">👆🏾</span><span class="lhint">Fara</span></button></div>
 <app-leave />`,
@@ -42,6 +44,9 @@ export class HomeScreen implements OnInit, OnDestroy {
   /** What the plan says comes next: the book opens it, and so does Laila when no tile is picked. */
   private readonly step = inject(PlanService).next();
   private readonly progress = inject(ProgressService);
+  private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
+  private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));
+  private pointing = false; private asks = 0;
   private readonly leaveBox = viewChild.required(Leave);
   readonly grid = inject(DomSanitizer).bypassSecurityTrustHtml(HOMEGRID_HTML);
   private readonly gridHost = viewChild.required<ElementRef<HTMLElement>>('gridHost');
@@ -67,19 +72,29 @@ export class HomeScreen implements OnInit, OnDestroy {
       if (g.src && !(await this.bus.playRaw(g.src, { ha: g.name, en: g.name }))) return;
       if (!(await this.bus.play('s_welcome'))) return;
     }
-    await this.bus.play(this.invite());
+    await this.invite();
   }
-  /** A new child is told to press the book to start, a returning one to press it to continue; until those lines are
-   *  recorded, the old "pick a lesson". */
-  private invite(): string {
+  /** The book comes first (Sani 2026-10-11): the hand points at it and it glows while Laila invites the child to press it —
+   *  to start for a new child, to continue for a returning one; until those lines are recorded, the old "pick a lesson". */
+  private async invite(): Promise<boolean> {
     const k = this.bus.gk(this.progress.started() ? 'app_book_more' : 'app_book_start');
-    return this.bus.has(k) ? k : 'app_act_pick';
+    const mine = ++this.asks; this.pointAtBook(true);
+    const ok = await this.bus.play(this.bus.has(k) ? k : 'app_act_pick');
+    // the ear may have asked again meanwhile; and a browser that refused the sound still gets shown the book
+    if (mine === this.asks && !this.bus.blocked()) this.pointAtBook(false);
+    return ok;
   }
-  ngOnDestroy(): void { clearTimeout(this.leaving); this.bus.stopAll(); }
-  pick(): void { this.bus.play(this.invite()); }
+  private pointAtBook(on: boolean): void {
+    this.pointing = on;
+    if (on) this.spotter.spot(this.hostEl.nativeElement.querySelector('.cbook'), 'right'); else this.spotter.unspot();
+  }
+  /** The book slides to the middle as its cover opens; the hand follows it there. */
+  respot(): void { if (this.pointing) this.pointAtBook(true); }
+  ngOnDestroy(): void { clearTimeout(this.leaving); this.spotter.unspot(); this.bus.stopAll(); }
+  pick(): void { this.bus.stopAll(); this.invite(); }
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
-    this.bus.stopAll(); this.cue.set(false);
+    this.bus.stopAll(); this.pointAtBook(false); this.cue.set(false);
     clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 700);   // the pictures jump first
   }
   private next(): void {
@@ -93,7 +108,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   tile(e: Event): void {
     const t = (e.target as HTMLElement).closest('.htile') as HTMLElement | null; if (!t) return;
     const host = this.gridHost().nativeElement; host.querySelectorAll('.htile').forEach((x) => x.classList.toggle('hot', x === t)); host.querySelector('.homegrid')?.classList.add('has-sel');
-    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false);
+    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.pointAtBook(false);
     let k = 'app_act_desc_' + act; if (!this.bus.has(k)) k = FALLBACK[act] || k;
     this.bus.play(k).then((ok) => { if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white'); });
   }

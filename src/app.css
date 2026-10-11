@@ -525,6 +525,8 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.lesson.misali .misalihand,
 #app .s.fashe .pophand,
 #app .spothand{z-index:90}
+/* On the chooser the hand follows the book as its cover opens and it slides to the middle (Sani 2026-10-11). */
+#app .s.home .spothand{transition:left .45s ease,top .45s ease}
 
 /* Chooser progress (Sani 2026-10-11): a see-through wave filled to the share of the lesson done (--p), a padlock until the
    curriculum reaches the lesson (it still opens when pressed), and once finished no wave but a swaying medal and a shine. */

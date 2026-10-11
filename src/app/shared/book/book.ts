@@ -62,12 +62,14 @@ const T = { enter: 2.0, open: 2.6, rest: 1.4, turn: 4.7, wait: 3.8 };
   <span #hand class="cbhand" [innerHTML]="handSvg"></span>
 </button>`,
   styles: [`
-:host{display:flex;justify-content:center;width:100%;margin:4px 0 22px}
+:host{display:flex;justify-content:center;width:100%;margin:4px 0 40px}
 .cbook{--c:1;position:relative;width:184px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:900px;translate:calc(var(--c) * -25%) 0;-webkit-tap-highlight-color:transparent}
 .cbook.breath{animation:cbbreath 4.4s ease-in-out infinite}
 @keyframes cbbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .cbook::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(251,192,45,.45),rgba(251,192,45,0) 65%);z-index:-1;translate:calc(var(--c) * 18.4%) 0;animation:cbglow 3.2s ease-in-out infinite}
 @keyframes cbglow{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
+.cbook.spot2::before{inset:-34%;background:radial-gradient(circle,rgba(251,192,45,.8),rgba(251,192,45,0) 66%);animation-duration:1.3s}
+.cbook.spot2 .cbback::before{animation-duration:1.1s}
 .cbback{position:absolute;inset:-6px -7px -8px;border-radius:12px 18px 18px 12px;background:linear-gradient(135deg,#A63A22,#7A2616);box-shadow:0 8px 0 rgba(59,46,30,.16),inset 0 0 0 2px #5E1C10;opacity:0}
 .cbback::after{content:"";position:absolute;inset:3px;border-radius:9px 15px 15px 9px;border:1.4px dashed #F1D9A8;opacity:.8}
 .cbback::before{content:"";position:absolute;inset:-5px;border-radius:15px 21px 21px 15px;box-shadow:0 0 0 2.5px var(--glow,#FBC02D),0 0 18px 6px var(--glow,#FBC02D);opacity:.35;animation:cbedge 2.8s ease-in-out infinite;pointer-events:none}
@@ -86,6 +88,8 @@ const T = { enter: 2.0, open: 2.6, rest: 1.4, turn: 4.7, wait: 3.8 };
 export class CourseBook implements AfterViewInit, OnDestroy {
   /** The book was pressed: open the next lesson. */
   readonly pressed = output<void>();
+  /** The cover is open and the book has slid to its resting place, so anything pointing at it can find it. */
+  readonly settled = output<void>();
   private readonly san = inject(DomSanitizer);
   readonly coverSvg = this.san.bypassSecurityTrustHtml(BOOK_COVER_SVG);
   readonly handSvg = this.san.bypassSecurityTrustHtml(BOOK_HAND_SVG);
@@ -210,6 +214,7 @@ export class CourseBook implements AfterViewInit, OnDestroy {
 
   private opened(): void {
     this.setCover(178); this.cover.style.visibility = 'hidden'; this.el.style.setProperty('--c', '0'); this.back.style.opacity = '1'; this.leftOn = true; this.el.classList.remove('breath');
+    this.settled.emit();
   }
   private go(name: string): void { this.phase = name; this.t0 = performance.now(); this.turned = false; }
   private reset(): void {
