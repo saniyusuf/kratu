@@ -13,14 +13,14 @@ import { encode } from './encode.mjs';
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
 
 /** Microsoft's online neural voices (the edge-tts reader), for accents Google does not have — East African English. */
-function edge(text, voice, dest) {
+function edge(text, voice, dest, enc = {}) {
   const tmp = join(tmpdir(), 'kratu-edge-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.mp3');
   // the service drops requests now and then (a plain word one minute, fine the next): a few tries, further apart each time
   for (let i = 0; ; i++) { try { execFileSync('tools/.venv-tts/bin/edge-tts', ['--voice', voice, '--text', text, '--write-media', tmp], { stdio: ['ignore', 'ignore', 'pipe'] }); break; } catch (e) { if (i >= 4) throw e; execFileSync('sleep', [String(2 * (i + 1))]); } }
-  encode(tmp, dest); rmSync(tmp, { force: true });
+  encode(tmp, dest, enc); rmSync(tmp, { force: true });
 }
 
-async function google(text, voice, dest) {
+async function google(text, voice, dest, enc = {}) {
   // Google reads at most ~200 characters at a time: cut at the punctuation and join the pieces
   const parts = text.split(/(?<=[.!?,:;])\s+/).map((t) => t.trim()).filter(Boolean), chunks = []; let cur = '';
   for (const t of parts) { if (cur.length + t.length + 1 > 180 && cur) { chunks.push(cur); cur = t; } else cur = (cur + ' ' + t).trim(); } if (cur) chunks.push(cur);
@@ -32,7 +32,7 @@ async function google(text, voice, dest) {
   }
   writeFileSync(join(tmp, 'list.txt'), files.map((f) => `file '${f}'\n`).join(''));
   const raw = join(tmp, 'all.wav'); execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), raw]);
-  encode(raw, dest); rmSync(tmp, { recursive: true, force: true });
+  encode(raw, dest, enc); rmSync(tmp, { recursive: true, force: true });
 }
 
 export async function voiceLang(code, args) {
@@ -63,22 +63,22 @@ export async function voiceLang(code, args) {
   console.log(todo.concat(enTodo).length ? todo.concat(enTodo).map((p) => `${p.rk || p.key}  ← “${p.text}”`).join('\n') : 'nothing to record'); if (dry || !todo.concat(enTodo).length) return 0;
   let made = 0, failed = 0; const save = () => writeFileSync(recFile, JSON.stringify(Object.fromEntries(Object.entries(rec).sort()), null, 1) + '\n');
   const same = new Map();   // one recording per distinct text: a boy's and a girl's line that read the same share it
-  const tts = pack.tts || {};
+  const tts = pack.tts || {}, enc = { tempo: tts.tempo, lufs: tts.lufs }, encEn = { lufs: pack.english?.lufs };
   if (tts.provider === 'mms' && todo.length) {
     const tmp = join(tmpdir(), 'kratu-mms-' + Date.now()); mkdirSync(tmp, { recursive: true });
     const jobs = []; for (const p of todo) { if (same.has(p.text)) continue; const out = join(tmp, jobs.length + '.wav'); same.set(p.text, out); jobs.push({ text: p.text, out }); }
     writeFileSync(join(tmp, 'jobs.json'), JSON.stringify(jobs));
     execFileSync('tools/.venv-tts/bin/python', ['tools/tts_mms.py', '--model', tts.model, '--jobs', join(tmp, 'jobs.json')].concat(tts.rate ? ['--rate', String(tts.rate)] : []), { stdio: ['ignore', 'ignore', 'inherit'] });
-    for (const p of todo) { try { encode(same.get(p.text), dir + '/' + p.key + '.ogg'); rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
+    for (const p of todo) { try { encode(same.get(p.text), dir + '/' + p.key + '.ogg', enc); rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
     rmSync(tmp, { recursive: true, force: true });
-  } else if (tts.provider === 'google') {
+  } else if (tts.provider === 'google' || tts.provider === 'edge') {
     for (const p of todo) {
       const dest = dir + '/' + p.key + '.ogg';
-      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { await google(p.text, tts.voice, dest); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
+      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
       catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
     }
-  } else if (todo.length) throw new Error('lang.json tts.provider must be google or mms');
-  for (const p of enTodo) { try { if (pack.english.provider !== 'edge') throw new Error('english.provider must be edge'); edge(p.text, pack.english.voice, p.dest); rec[p.rk] = H(p.text); made++; console.log('made  ' + p.rk); if (made % 20 === 0) save(); } catch (e) { failed++; console.log('FAIL  ' + p.rk + ' ' + (e.message || e)); } }
+  } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge or mms');
+  for (const p of enTodo) { try { if (pack.english.provider !== 'edge') throw new Error('english.provider must be edge'); edge(p.text, pack.english.voice, p.dest, encEn); rec[p.rk] = H(p.text); made++; console.log('made  ' + p.rk); if (made % 20 === 0) save(); } catch (e) { failed++; console.log('FAIL  ' + p.rk + ' ' + (e.message || e)); } }
   save();
   console.log(`voice[${code}]: ${made} made, ${failed} failed`); return failed;
 }
