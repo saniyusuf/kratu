@@ -961,15 +961,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka danna wannan littafi, mu fara koyo.",
+   "f": "Ki danna wannan littafi, mu fara koyo."
   },
   "en": "Press the book to start learning.",
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child who has not finished anything yet. Hausa wording needed from Sani (boy and girl forms); until it is recorded the chooser says app_act_pick.",
-  "status": "planned"
+  "said_when": "on the chooser, to a child who has not finished anything yet. Draft wording by Claude (2026-10-11), to be checked by Sani.",
+  "status": "live",
+  "recorded": {
+   "m": "a7c7e40118",
+   "f": "c6e6c3fb30"
+  }
  },
  {
   "key": "app_book_more",
@@ -977,15 +981,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka danna wannan littafi, mu ci gaba da koyo.",
+   "f": "Ki danna wannan littafi, mu ci gaba da koyo."
   },
   "en": "Press the book to continue learning.",
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child coming back with lessons under way. Hausa wording needed from Sani (boy and girl forms); until it is recorded the chooser says app_act_pick.",
-  "status": "planned"
+  "said_when": "on the chooser, to a child coming back with lessons under way. Draft wording by Claude (2026-10-11), to be checked by Sani.",
+  "status": "live",
+  "recorded": {
+   "m": "d343c0737a",
+   "f": "e44f9ab375"
+  }
  },
  {
   "key": "app_board_intro",
