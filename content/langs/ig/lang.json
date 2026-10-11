@@ -19,7 +19,8 @@
  "muteFilms": true,
  "tts": {
   "provider": "mms",
-  "model": "Shinzmann/soro-tts-ibo"
+  "model": "Shinzmann/soro-tts-ibo",
+  "lufs": -17.7
  },
  "status": "draft",
  "ui": {
