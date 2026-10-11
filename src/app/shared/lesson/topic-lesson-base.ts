@@ -47,6 +47,8 @@ export abstract class TopicLessonBase extends LessonBase implements OnInit {
   private begin(key: string): void { this.inLesson.set(true); this.running = true; this.run(() => this.start(key)).then(() => { if (!this.stopped && this.inLesson()) this.toMenu(); }); }
   /** The lesson itself, from its first clip to app_stage_done. */
   protected abstract start(key: string): Promise<void>;
+  /** The sub-topic just played out to its app_stage_done: one unit of this lesson is finished. */
+  protected finished(): void { const k = this.cat(); if (k) this.progress.mark(this.lesson as 'nemo' | 'karatu' | 'rubutu', k); }
   /** Everything a lesson leaves behind (slots, picture, marks). */
   protected abstract clear(): void;
   toMenu(): void { this.stopped = true; this.bus.stopAll(); this.spotter.unspot(); this.running = false; this.clear(); this.inLesson.set(false); this.cat.set(null); this.cue.set(false); this.nohand.set(false); this.eye.set(this.title + ' · zaɓi darasi'); this.stopped = false; }

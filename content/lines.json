@@ -956,6 +956,38 @@
   "recorded": "d097b2d042"
  },
  {
+  "key": "app_book_start",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Press the book to start learning.",
+  "screens": [
+   "Zaɓi darasi · chooser"
+  ],
+  "said_when": "on the chooser, to a child who has not finished anything yet. Hausa wording needed from Sani (boy and girl forms); until it is recorded the chooser says app_act_pick.",
+  "status": "planned"
+ },
+ {
+  "key": "app_book_more",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Press the book to continue learning.",
+  "screens": [
+   "Zaɓi darasi · chooser"
+  ],
+  "said_when": "on the chooser, to a child coming back with lessons under way. Hausa wording needed from Sani (boy and girl forms); until it is recorded the chooser says app_act_pick.",
+  "status": "planned"
+ },
+ {
   "key": "app_board_intro",
   "lang": "ha",
   "voice": "laila",

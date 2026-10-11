@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { Word, WordsService } from '../../core/clips/words.service';
 import { LessonFlow } from '../../core/state/flow.service';
+import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { SpeechService } from '../../core/speech/speech.service';
 import { ImageWarm } from '../../core/clips/warm.service';
@@ -28,6 +29,7 @@ export abstract class LessonBase implements OnDestroy {
   protected readonly warm = inject(ImageWarm);
   protected readonly session = inject(SessionService);
   protected readonly flow = inject(LessonFlow);
+  protected readonly progress = inject(ProgressService);
   protected readonly zoom = inject(ZoomService);
   protected readonly router = inject(Router);
   protected readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
