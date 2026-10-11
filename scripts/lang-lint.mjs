@@ -2,7 +2,7 @@
 // and every fixed text the screens pass through t() has its translation.  →  node scripts/lint.mjs --lang sw
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { loadLang, outDir, spoken, forms, clipOwner } from './lang-build.mjs';
+import { loadLang, outDir, spoken, forms, clipOwner, ownEnglish, enOwner } from './lang-build.mjs';
 
 export function lintLang(code) {
   const { pack, lines: L, words: names } = loadLang(code);
@@ -24,6 +24,10 @@ export function lintLang(code) {
     }
   }
   const hk = new Set(ha.map((r) => r.key)); for (const x of L) if (!hk.has(x.key)) warns.push(`${x.key}: not a Hausa key`);
+  // its own English voice: Laila's English lines and every English word name
+  const en = ownEnglish(pack);
+  if (en) { for (const r of ha) if (r.status === 'live' && r.lang === 'en' && r.voice === 'laila' && !existsSync(`${out}/audio/${en}/${r.key}.ogg`)) errors.push(`${r.key}: no ${en} clip`);
+    for (const w of W.words) if (w.en_clip && !existsSync(`${out}/audio/${en}/word_${enOwner(w)}.ogg`)) errors.push(`word ${w.key}: no ${en} clip`); }
   // words
   for (const w of W.words) {
     if (!names[w.key]) { errors.push(`word ${w.key}: no ${code} name`); continue; }

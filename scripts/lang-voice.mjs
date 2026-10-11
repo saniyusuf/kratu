@@ -7,10 +7,18 @@ import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { loadLang, outDir, forms, clipOwner, langDir } from './lang-build.mjs';
+import { loadLang, outDir, forms, clipOwner, langDir, ownEnglish, enOwner } from './lang-build.mjs';
 import { encode } from './encode.mjs';
 
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
+
+/** Microsoft's online neural voices (the edge-tts reader), for accents Google does not have — East African English. */
+function edge(text, voice, dest) {
+  const tmp = join(tmpdir(), 'kratu-edge-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.mp3');
+  // the service drops requests now and then (a plain word one minute, fine the next): a few tries, further apart each time
+  for (let i = 0; ; i++) { try { execFileSync('tools/.venv-tts/bin/edge-tts', ['--voice', voice, '--text', text, '--write-media', tmp], { stdio: ['ignore', 'ignore', 'pipe'] }); break; } catch (e) { if (i >= 4) throw e; execFileSync('sleep', [String(2 * (i + 1))]); } }
+  encode(tmp, dest); rmSync(tmp, { force: true });
+}
 
 async function google(text, voice, dest) {
   // Google reads at most ~200 characters at a time: cut at the punctuation and join the pieces
@@ -42,12 +50,21 @@ export async function voiceLang(code, args) {
     const name = names[w.key]; if (!name || clipOwner(w, names) !== w.key) continue; if (only && w.key !== only && 'word_' + w.key !== only) continue;
     plan.push({ key: 'word_' + w.key, text: name });
   }
+  // a build with its own English voice: Laila's English lines and the English word names, in that voice
+  const en = ownEnglish(pack), enTodo = [];
+  if (en && !args.includes('--lines-only') && !args.includes('--words-only')) {
+    const enDir = outDir(code) + '/audio/' + en; mkdirSync(enDir, { recursive: true });
+    const ha = JSON.parse(readFileSync('content/lines.json', 'utf8'));
+    const want = ha.filter((r) => r.status === 'live' && r.lang === 'en' && r.voice === 'laila').map((r) => ({ key: r.key, text: String(r.text) }))
+      .concat(W.words.filter((w) => w.en_clip === true).map((w) => ({ key: 'word_' + w.key, text: String(w.en) })));
+    for (const p of want) { if (only && p.key !== only) continue; const rk = en + '/' + p.key; if (force || !existsSync(enDir + '/' + p.key + '.ogg') || rec[rk] !== H(p.text)) enTodo.push({ ...p, rk, dest: enDir + '/' + p.key + '.ogg' }); }
+  }
   const todo = plan.filter((p) => force || !existsSync(dir + '/' + p.key + '.ogg') || rec[p.key] !== H(p.text));
-  console.log(todo.length ? todo.map((p) => `${p.key}  ← “${p.text}”`).join('\n') : 'nothing to record'); if (dry || !todo.length) return 0;
+  console.log(todo.concat(enTodo).length ? todo.concat(enTodo).map((p) => `${p.rk || p.key}  ← “${p.text}”`).join('\n') : 'nothing to record'); if (dry || !todo.concat(enTodo).length) return 0;
   let made = 0, failed = 0; const save = () => writeFileSync(recFile, JSON.stringify(Object.fromEntries(Object.entries(rec).sort()), null, 1) + '\n');
   const same = new Map();   // one recording per distinct text: a boy's and a girl's line that read the same share it
   const tts = pack.tts || {};
-  if (tts.provider === 'mms') {
+  if (tts.provider === 'mms' && todo.length) {
     const tmp = join(tmpdir(), 'kratu-mms-' + Date.now()); mkdirSync(tmp, { recursive: true });
     const jobs = []; for (const p of todo) { if (same.has(p.text)) continue; const out = join(tmp, jobs.length + '.wav'); same.set(p.text, out); jobs.push({ text: p.text, out }); }
     writeFileSync(join(tmp, 'jobs.json'), JSON.stringify(jobs));
@@ -60,7 +77,8 @@ export async function voiceLang(code, args) {
       try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { await google(p.text, tts.voice, dest); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
       catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
     }
-  } else throw new Error('lang.json tts.provider must be google or mms');
+  } else if (todo.length) throw new Error('lang.json tts.provider must be google or mms');
+  for (const p of enTodo) { try { if (pack.english.provider !== 'edge') throw new Error('english.provider must be edge'); edge(p.text, pack.english.voice, p.dest); rec[p.rk] = H(p.text); made++; console.log('made  ' + p.rk); if (made % 20 === 0) save(); } catch (e) { failed++; console.log('FAIL  ' + p.rk + ' ' + (e.message || e)); } }
   save();
   console.log(`voice[${code}]: ${made} made, ${failed} failed`); return failed;
 }

@@ -92,7 +92,9 @@
                     "assets/words.json",
                     "assets/media.json",
                     "assets/audio/ha/**",
-                    "names_bank_expanded.json"
+                    "names_bank_expanded.json",
+                    "assets/audio/en/app_*",
+                    "assets/audio/en/word_*"
                   ]
                 },
                 {
