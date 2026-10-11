@@ -75,12 +75,18 @@ export class HomeScreen implements OnInit, OnDestroy {
     await this.invite();
   }
   /** The book comes first (Sani 2026-10-11): the hand points at it and it glows while Laila invites the child to press it —
-   *  to start for a new child, to continue for a returning one; until those lines are recorded, the old "pick a lesson". */
+   *  to start for a new child, to continue for a returning one — and then she says the tiles can be picked too. */
   private async invite(): Promise<boolean> {
     const k = this.bus.gk(this.progress.started() ? 'app_book_more' : 'app_book_start');
     const mine = ++this.asks; this.pointAtBook(true);
-    const ok = await this.bus.play(this.bus.has(k) ? k : 'app_act_pick');
-    // the ear may have asked again meanwhile; and a browser that refused the sound still gets shown the book
+    if (this.bus.has(k)) {
+      const ok = await this.bus.play(k);
+      // the ear may have asked again meanwhile, or a tap cut her off; a browser that refused the sound keeps the hand on the book
+      if (!ok || mine !== this.asks) return false;
+      // then the tiles: "you can also pick a lesson to hear about it", with the hand on the first one (Sani 2026-10-12)
+      this.pointAtBook(false); this.spotter.spot(this.hostEl.nativeElement.querySelector('.htile'), 'above');
+    }
+    const ok = await this.bus.play('app_act_pick');
     if (mine === this.asks && !this.bus.blocked()) this.pointAtBook(false);
     return ok;
   }
