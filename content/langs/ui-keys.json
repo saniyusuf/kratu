@@ -1,0 +1,22 @@
+{
+ "_note": "Screen texts that reach t() / tx() from data rather than as a fixed t('…') in the code (the lint finds those by itself). Keep in step with the code: every demo language must translate each of these.",
+ "keys": [
+  "Faɗa", "Karanta", "Na sani", "Ban sani ba",
+  "Murya", "Fuska", "Sunaye", "Hotuna",
+  "An shirya! · Ready", "Ana ɗaukar sunaye da hotuna…", "Ana ɗaukar muryar Laila…", "Ana ɗaukar idanun Laila…", "Ana tada Laila…",
+  "Mu fara!", "Ina koyon magana…", "Ina koyon gani…", "Ina zuwa!",
+  "NA FARKO · FIRST", "NA GABA · NEXT", "Ka san haruffa?", "Haruffa A–H", "Haruffa I–P", "Haruffa Q–Z", "Dabbobi",
+  "Abinci", "Kayan gida", "Jiki", "Yanayi", "Motoci", "Mutane", "Ayyuka", "Tufafi", "Makaranta",
+  "Kalmomi gajeru", "Kalmomi matsakaita", "Kalmomi dogaye", "Hotuna huɗu", "Haruffa uku", "Haruffa huɗu", "Haruffa biyar",
+  "zaɓi darasi", "karatu", "sakamako", "gwaji", "wasa", "koyo", "saiti", "ƙaramin jarrabawa", "sake koyo", "rubutu",
+  "yatsu", "alamu", "manyan lambobi", "ɗaruruwa", "misali", "Mu gani", "fashe haruffa", "rukuni", "Ƙaramin jarrabawa",
+  "haruffa", "Babbar jarrabawa", "Jarrabawa ta ƙarshe", "a gauraye",
+  "Madalla! ✓", "Madalla!", "Lokaci ya ƙare", "Kada ka damu",
+  "Ka faɗi harafin.", "Ki faɗi harafin.", "Danna kan Laila, ka faɗi harafin.", "Danna kan Laila, ki faɗi harafin.",
+  "Ban ji ba — sake gwadawa.", "Danna kan Laila, ka karanta kalmar.", "Danna kan Laila, ki karanta kalmar.",
+  "Danna alamar lambar da aka faɗa.", "Danna hoton abin da aka faɗa.",
+  "Ka faɗa da Turanci.", "Ki faɗa da Turanci.", "Danna kan Laila, ka faɗa da Turanci.", "Danna kan Laila, ki faɗa da Turanci.",
+  "Ba komai — ka saurara.", "Ba komai — ki saurara.", "Ban ji ba", "Sau uku",
+  "Danna harafi, ko ka faɗa wa Laila.", "Danna harafi, ko ki faɗa wa Laila.", "Ban ji harafi ba — sake.", "Sake", "A’a"
+ ]
+}
