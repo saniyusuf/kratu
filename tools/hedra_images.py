@@ -50,8 +50,8 @@ def run_one(model, k, prompt, dst):
     if s!='COMPLETED' or not url: return (k, False, json.dumps(res)[:300])
     urllib.request.urlretrieve(url, dst); return (k, True, os.path.getsize(dst))
 if __name__=='__main__':
-    ap=argparse.ArgumentParser(); ap.add_argument('--keys',required=True); ap.add_argument('--model',default='flux-dev'); ap.add_argument('--estimate',action='store_true'); ap.add_argument('--force',action='store_true'); ap.add_argument('--suffix',default=''); ap.add_argument('--workers',type=int,default=4)
-    a=ap.parse_args(); prompts=json.load(open(PROMPTS)); keys=[k for k in a.keys.split(',') if k in prompts]
+    ap=argparse.ArgumentParser(); ap.add_argument('--keys',required=True); ap.add_argument('--model',default='flux-dev'); ap.add_argument('--estimate',action='store_true'); ap.add_argument('--force',action='store_true'); ap.add_argument('--suffix',default=''); ap.add_argument('--workers',type=int,default=4); ap.add_argument('--prompts',default=PROMPTS,help='another prompt file, e.g. a demo language\'s own (content/langs/<code>/image_prompts.json)'); ap.add_argument('--out',default=OUT)
+    a=ap.parse_args(); prompts=json.load(open(a.prompts)); OUT=a.out; keys=[k for k in a.keys.split(',') if k in prompts]
     if a.estimate:
         est=call('POST','/models/%s/estimate'%a.model,{'input':inp(a.model,prompts[keys[0]],1)}); print(a.model,'estimate per image:',est); sys.exit()
     os.makedirs(OUT,exist_ok=True)

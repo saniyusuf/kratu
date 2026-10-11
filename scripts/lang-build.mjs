@@ -36,7 +36,11 @@ export function buildLang(code) {
   }
   writeFileSync(out + '/clips.json', JSON.stringify(clips));
   const wByKey = Object.fromEntries(W.words.map((w) => [w.key, w]));
-  const pic = (w) => !w.picture ? undefined : typeof w.picture === 'string' ? w.picture : pic(wByKey[w.picture.of]);
+  // a picture of this language's own (langs/<code>/public/assets/pictures-<code>/<key>.webp) wins over the shared one in this
+  // build only: the people, dress and dishes a Yoruba, Igbo or Kenyan child would recognise; animals and objects stay shared
+  const ownPic = (k) => existsSync(out + '/pictures-' + code + '/' + k + '.webp') ? 'pictures-' + code + '/' + k + '.webp' : null;
+  const pic = (w) => !w.picture ? undefined : typeof w.picture === 'string' ? (ownPic(w.key) || w.picture) : pic(wByKey[w.picture.of]);
+  const replaced = new Set(W.words.filter((w) => ownPic(w.key) && typeof w.picture === 'string').map((w) => 'assets/' + w.picture));
   const enClip = (w) => { const v = w.en_clip; if (!v) return undefined; return typeof v === 'object' ? enClip(wByKey[v.of]) : 'audio/' + (en || 'en') + '/word_' + w.key + '.ogg'; };
   const groups = Object.fromEntries(W.groups.map((g) => [g, []]));
   for (const w of W.words) for (const g of w.groups) groups[g].push({ k: w.key, img: pic(w), haClip: names[w.key] ? 'audio/' + code + '/word_' + clipOwner(w, names) + '.ogg' : undefined, enClip: enClip(w), ha: names[w.key] || '', en: w.en });
@@ -44,7 +48,7 @@ export function buildLang(code) {
   // every media file this build ships: the shared ones (pictures, films, English) and this language's clips
   const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(dir + '/' + e.name) : [dir + '/' + e.name]);
   const SKIP = en ? /^assets\/(clips\.json|words\.json|media\.json|audio\/ha\/|audio\/en\/(app_|word_))/ : /^assets\/(clips\.json|words\.json|media\.json|audio\/ha\/)/;
-  const shared = walk('public/assets').map((f) => ({ path: 'assets/' + f.slice('public/assets/'.length), size: statSync(f).size })).filter((f) => !SKIP.test(f.path));
+  const shared = walk('public/assets').map((f) => ({ path: 'assets/' + f.slice('public/assets/'.length), size: statSync(f).size })).filter((f) => !SKIP.test(f.path) && !replaced.has(f.path));
   const own = walk(out).filter((f) => !/\/media\.json$/.test(f)).map((f) => ({ path: 'assets/' + f.slice(out.length + 1), size: statSync(f).size }));
   const media = shared.concat(own).sort((a, b) => a.path.localeCompare(b.path)), total = media.reduce((a, f) => a + f.size, 0);
   writeFileSync(out + '/media.json', JSON.stringify({ total, files: media }));
