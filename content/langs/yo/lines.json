@@ -346,8 +346,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ Ọlá, kí o sì sọ lẹ́tà náà.",
-  "en": "Press Ola and say the letter.",
+  "text": "Tẹ̀ Fúnkẹ́, kí o sì sọ lẹ́tà náà.",
+  "en": "Press Fúnkẹ́ and say the letter.",
   "status": "draft"
  },
  {
@@ -400,8 +400,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ Ọlá láti bẹ̀rẹ̀.",
-  "en": "Press Ola to start.",
+  "text": "Tẹ̀ Fúnkẹ́ láti bẹ̀rẹ̀.",
+  "en": "Press Fúnkẹ́ to start.",
   "status": "draft"
  },
  {
@@ -427,8 +427,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Nígbàkígbà tí o bá fẹ́ sọ̀rọ̀, tẹ̀ Ọlá. Màá fetí sílẹ̀ dáadáa!",
-  "en": "Whenever you want to speak, press Ola. I'll listen carefully!",
+  "text": "Nígbàkígbà tí o bá fẹ́ sọ̀rọ̀, tẹ̀ Fúnkẹ́. Màá fetí sílẹ̀ dáadáa!",
+  "en": "Whenever you want to speak, press Fúnkẹ́. I'll listen carefully!",
   "status": "draft"
  },
  {
@@ -445,8 +445,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ Ọlá, lẹ́yìn náà, sọ lẹ́tà tí o rí.",
-  "en": "Press Ola, then say the letter you see.",
+  "text": "Tẹ̀ Fúnkẹ́, lẹ́yìn náà, sọ lẹ́tà tí o rí.",
+  "en": "Press Fúnkẹ́, then say the letter you see.",
   "status": "draft"
  },
  {
@@ -584,8 +584,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Báyìí, tẹ̀ Ọlá, ká bẹ̀rẹ̀.",
-  "en": "Now press Ola and we'll start.",
+  "text": "Báyìí, tẹ̀ Fúnkẹ́, ká bẹ̀rẹ̀.",
+  "en": "Now press Fúnkẹ́ and we'll start.",
   "status": "draft"
  },
  {
@@ -719,8 +719,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Orúkọ mi ni Ọlá. Èmi ni ọ̀rẹ́ ẹ̀kọ́ rẹ. Báyìí, tẹ̀ orí mi, ká bẹ̀rẹ̀.",
-  "en": "My name is Ola. I'm your learning friend. Now press my head and we'll start.",
+  "text": "Orúkọ mi ni Fúnkẹ́. Èmi ni ọ̀rẹ́ ẹ̀kọ́ rẹ. Báyìí, tẹ̀ orí mi, ká bẹ̀rẹ̀.",
+  "en": "My name is Fúnkẹ́. I'm your learning friend. Now press my head and we'll start.",
   "status": "draft"
  },
  {
@@ -728,8 +728,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "A fẹ́ parí ẹ̀kọ́ yìí. Bí o bá ti parí, tẹ̀ Ọlá. Bí bẹ́ẹ̀ kọ́, tẹ̀ pátákó dúdú.",
-  "en": "The session will end. If you are done, press Ola. If not, press the black slate.",
+  "text": "A fẹ́ parí ẹ̀kọ́ yìí. Bí o bá ti parí, tẹ̀ Fúnkẹ́. Bí bẹ́ẹ̀ kọ́, tẹ̀ pátákó dúdú.",
+  "en": "The session will end. If you are done, press Fúnkẹ́. If not, press the black slate.",
   "status": "draft"
  },
  {
@@ -966,8 +966,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ó kàn ọ́. Tẹ̀ Ọlá, kí o sì sọ orúkọ rẹ̀ ní èdè Gẹ̀ẹ́sì.",
-  "en": "Your turn. Press Ola and say its name in English.",
+  "text": "Ó kàn ọ́. Tẹ̀ Fúnkẹ́, kí o sì sọ orúkọ rẹ̀ ní èdè Gẹ̀ẹ́sì.",
+  "en": "Your turn. Press Fúnkẹ́ and say its name in English.",
   "status": "draft"
  },
  {
@@ -1008,8 +1008,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Báyìí, ìwọ ni. Sọ orúkọ rẹ fún wa. Tẹ̀ Ọlá, lẹ́yìn náà, sọ orúkọ rẹ fún wa.",
-  "en": "Now you: press Ola, then say your name.",
+  "text": "Báyìí, ìwọ ni. Sọ orúkọ rẹ fún wa. Tẹ̀ Fúnkẹ́, lẹ́yìn náà, sọ orúkọ rẹ fún wa.",
+  "en": "Now you: press Fúnkẹ́, then say your name.",
   "status": "draft"
  },
  {
@@ -1161,8 +1161,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ Ọlá láti tún gbìyànjú.",
-  "en": "Click Ola to try again.",
+  "text": "Tẹ̀ Fúnkẹ́ láti tún gbìyànjú.",
+  "en": "Click Fúnkẹ́ to try again.",
   "status": "draft"
  },
  {
@@ -1350,8 +1350,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Orúkọ mi ni Ọlá. Èmi ni ọ̀rẹ́ ẹ̀kọ́ rẹ.",
-  "en": "My name is Ola. I am your learning friend.",
+  "text": "Orúkọ mi ni Fúnkẹ́. Èmi ni ọ̀rẹ́ ẹ̀kọ́ rẹ.",
+  "en": "My name is Fúnkẹ́. I am your learning friend.",
   "status": "draft"
  },
  {
@@ -1449,8 +1449,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ohun tí wàá ṣe láti sọ ọ́ ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Ọlá, lẹ́yìn náà, wàá sọ pé:",
-  "en": "Here is what you will do to say it in English. You will press Ola, then you will say:",
+  "text": "Ohun tí wàá ṣe láti sọ ọ́ ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Fúnkẹ́, lẹ́yìn náà, wàá sọ pé:",
+  "en": "Here is what you will do to say it in English. You will press Fúnkẹ́, then you will say:",
   "status": "draft"
  },
  {
@@ -1458,8 +1458,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ohun tí wàá ṣe láti kà á ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Ọlá, lẹ́yìn náà, wàá kà ọ̀rọ̀ náà:",
-  "en": "Here is what you will do to read it in English. You will press Ola, then you will read the word:",
+  "text": "Ohun tí wàá ṣe láti kà á ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Fúnkẹ́, lẹ́yìn náà, wàá kà ọ̀rọ̀ náà:",
+  "en": "Here is what you will do to read it in English. You will press Fúnkẹ́, then you will read the word:",
   "status": "draft"
  },
  {
@@ -1467,8 +1467,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ohun tí wàá ṣe láti kọ ọ́ ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Ọlá, lẹ́yìn náà, wàá sọ àwọn lẹ́tà náà:",
-  "en": "Here is what you will do to write it in English. You will press Ola, then you will say the letters:",
+  "text": "Ohun tí wàá ṣe láti kọ ọ́ ní èdè Gẹ̀ẹ́sì nìyí. Wàá tẹ̀ Fúnkẹ́, lẹ́yìn náà, wàá sọ àwọn lẹ́tà náà:",
+  "en": "Here is what you will do to write it in English. You will press Fúnkẹ́, then you will say the letters:",
   "status": "draft"
  },
  {
@@ -1701,8 +1701,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Bí o bá mọ̀ wọ́n, tẹ̀ Ọlá. Bí o kò bá mọ̀ wọ́n, tẹ̀ pátákó dúdú.",
-  "en": "If you know them, tap Ola. If you do not, tap the slate.",
+  "text": "Bí o bá mọ̀ wọ́n, tẹ̀ Fúnkẹ́. Bí o kò bá mọ̀ wọ́n, tẹ̀ pátákó dúdú.",
+  "en": "If you know them, tap Fúnkẹ́. If you do not, tap the slate.",
   "status": "planned"
  },
  {

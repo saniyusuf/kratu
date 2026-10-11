@@ -15,7 +15,7 @@ Commands (from the project root): `npm run content` (generate), `npm run lint:co
 (record missing or changed lines), `npm run words` (pictures and word clips). `npm run build` runs the first two first.
 
 ## Demo languages (`content/langs/<code>/`, branch demo-languages)
-The same curriculum with Laila speaking Swahili (`sw`), Yoruba (`yo`, the bird is Ola — Ọlá) or Igbo (`ig`, the bird is
+The same curriculum with Laila speaking Swahili (`sw`), Yoruba (`yo`, the bird is Fúnkẹ́) or Igbo (`ig`, the bird is
 Chioma). Each folder has `lines.json` (the Hausa keys, in that language, status `draft`), `words.json` (key → name),
 `lang.json` (bird, voices, recogniser locale, the "my name is" carrier, the screen texts keyed by today's Hausa) and
 `recorded.json`. `ui-keys.json` lists screen texts the code passes to `t()` from data; the lint finds the fixed ones.

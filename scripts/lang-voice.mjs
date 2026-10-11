@@ -22,9 +22,9 @@ function edge(text, voice, dest, enc = {}) {
 
 /** Spitch (paid, Nigerian voices): the key is SPITCH_API_KEY in .env, read here and never printed. */
 const spitchKey = () => { const m = existsSync('.env') ? /^SPITCH_API_KEY=(.+)$/m.exec(readFileSync('.env', 'utf8')) : null; if (!m) throw new Error('no SPITCH_API_KEY in .env'); return m[1].trim(); };
-async function spitch(text, lang, voice, dest, enc = {}) {
+async function spitch(text, lang, voice, dest, enc = {}, speed) {
   for (let i = 0; ; i++) {
-    const r = await fetch('https://api.spitch.app/v1/speech', { method: 'POST', headers: { Authorization: 'Bearer ' + spitchKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ language: lang, voice, text, format: 'mp3' }) });
+    const r = await fetch('https://api.spitch.app/v1/speech', { method: 'POST', headers: { Authorization: 'Bearer ' + spitchKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ language: lang, voice, text, format: 'mp3', ...(speed ? { speed } : {}) }) });
     if (r.ok) { const tmp = join(tmpdir(), 'kratu-spitch-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.mp3'); writeFileSync(tmp, Buffer.from(await r.arrayBuffer())); encode(tmp, dest, enc); rmSync(tmp, { force: true }); return; }
     if (r.status === 402 || r.status === 401 || i >= 3) throw new Error('spitch ' + r.status);   // no credit or a bad key: retrying will not help
     await new Promise((res) => setTimeout(res, 2000 * (i + 1)));
@@ -85,7 +85,7 @@ export async function voiceLang(code, args) {
   } else if (tts.provider === 'google' || tts.provider === 'edge' || tts.provider === 'spitch') {
     for (const p of todo) {
       const dest = dir + '/' + p.key + '.ogg';
-      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else if (tts.provider === 'spitch') await spitch(p.text, tts.lang || code, tts.voice, dest, enc); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
+      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else if (tts.provider === 'spitch') await spitch(p.text, tts.lang || code, tts.voice, dest, enc, tts.speed); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
       catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
     }
   } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge, spitch or mms');
