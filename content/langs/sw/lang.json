@@ -21,6 +21,11 @@
   "provider": "google",
   "voice": "sw"
  },
+ "english": {
+  "provider": "edge",
+  "voice": "en-KE-AsiliaNeural",
+  "dir": "en-ke"
+ },
  "status": "draft",
  "ui": {
   "Juya allon": "Geuza skrini",
