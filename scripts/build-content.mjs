@@ -1,6 +1,9 @@
 // Generates what the app reads (public/assets/clips.json, words.json) from the catalogue in content/.
 // The catalogue is the truth; these outputs are never edited by hand.  →  npm run content
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { buildLang } from './lang-build.mjs';
+const LANG_ARG = process.argv.indexOf('--lang');
+if (LANG_ARG > 0) { buildLang(process.argv[LANG_ARG + 1]); process.exit(0); }   // a demo language: its own overlay, Hausa untouched
 const lines = JSON.parse(readFileSync('content/lines.json', 'utf8'));
 const W = JSON.parse(readFileSync('content/words.json', 'utf8'));
 const clips = {};

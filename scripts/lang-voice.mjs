@@ -1,0 +1,66 @@
+// Records a demo language: every line and every word name whose clip is missing or whose text changed.
+//   node scripts/voice.mjs --lang sw [--dry-run] [--only key] [--force] [--lines-only | --words-only]
+// The voice is set in content/langs/<code>/lang.json → tts: Google's free voice where it speaks the language, else a
+// local MMS-family model (tools/tts_mms.py in tools/.venv-tts). What each clip was made from is kept in recorded.json.
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, copyFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { loadLang, outDir, forms, clipOwner, langDir } from './lang-build.mjs';
+import { encode } from './encode.mjs';
+
+const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
+
+async function google(text, voice, dest) {
+  // Google reads at most ~200 characters at a time: cut at the punctuation and join the pieces
+  const parts = text.split(/(?<=[.!?,:;])\s+/).map((t) => t.trim()).filter(Boolean), chunks = []; let cur = '';
+  for (const t of parts) { if (cur.length + t.length + 1 > 180 && cur) { chunks.push(cur); cur = t; } else cur = (cur + ' ' + t).trim(); } if (cur) chunks.push(cur);
+  const tmp = join(tmpdir(), 'kratu-lv-' + Date.now() + '-' + Math.random().toString(36).slice(2)); mkdirSync(tmp, { recursive: true });
+  const files = [];
+  for (const [i, c] of chunks.entries()) {
+    const r = await fetch('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + voice + '&q=' + encodeURIComponent(c), { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    if (!r.ok) throw new Error('tts ' + r.status); const f = join(tmp, 'p' + i + '.mp3'); writeFileSync(f, Buffer.from(await r.arrayBuffer())); files.push(f);
+  }
+  writeFileSync(join(tmp, 'list.txt'), files.map((f) => `file '${f}'\n`).join(''));
+  const raw = join(tmp, 'all.wav'); execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), raw]);
+  encode(raw, dest); rmSync(tmp, { recursive: true, force: true });
+}
+
+export async function voiceLang(code, args) {
+  const { pack, lines, words: names } = loadLang(code);
+  const W = JSON.parse(readFileSync('content/words.json', 'utf8'));
+  const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');
+  const recFile = langDir(code) + '/recorded.json', rec = existsSync(recFile) ? JSON.parse(readFileSync(recFile, 'utf8')) : {};
+  const dir = outDir(code) + '/audio/' + code; mkdirSync(dir, { recursive: true });
+  const plan = [];
+  if (!args.includes('--words-only')) for (const r of lines) {
+    if (r.status !== 'draft' && r.status !== 'live') continue; if (only && r.key !== only) continue;
+    for (const [g, text] of Object.entries(forms(r.text))) { const key = g === 'any' ? r.key : r.key + '_' + g; plan.push({ key, text }); }
+  }
+  if (!args.includes('--lines-only')) for (const w of W.words) {
+    const name = names[w.key]; if (!name || clipOwner(w, names) !== w.key) continue; if (only && w.key !== only && 'word_' + w.key !== only) continue;
+    plan.push({ key: 'word_' + w.key, text: name });
+  }
+  const todo = plan.filter((p) => force || !existsSync(dir + '/' + p.key + '.ogg') || rec[p.key] !== H(p.text));
+  console.log(todo.length ? todo.map((p) => `${p.key}  ← “${p.text}”`).join('\n') : 'nothing to record'); if (dry || !todo.length) return 0;
+  let made = 0, failed = 0; const save = () => writeFileSync(recFile, JSON.stringify(Object.fromEntries(Object.entries(rec).sort()), null, 1) + '\n');
+  const same = new Map();   // one recording per distinct text: a boy's and a girl's line that read the same share it
+  const tts = pack.tts || {};
+  if (tts.provider === 'mms') {
+    const tmp = join(tmpdir(), 'kratu-mms-' + Date.now()); mkdirSync(tmp, { recursive: true });
+    const jobs = []; for (const p of todo) { if (same.has(p.text)) continue; const out = join(tmp, jobs.length + '.wav'); same.set(p.text, out); jobs.push({ text: p.text, out }); }
+    writeFileSync(join(tmp, 'jobs.json'), JSON.stringify(jobs));
+    execFileSync('tools/.venv-tts/bin/python', ['tools/tts_mms.py', '--model', tts.model, '--jobs', join(tmp, 'jobs.json')].concat(tts.rate ? ['--rate', String(tts.rate)] : []), { stdio: ['ignore', 'ignore', 'inherit'] });
+    for (const p of todo) { try { encode(same.get(p.text), dir + '/' + p.key + '.ogg'); rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
+    rmSync(tmp, { recursive: true, force: true });
+  } else if (tts.provider === 'google') {
+    for (const p of todo) {
+      const dest = dir + '/' + p.key + '.ogg';
+      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { await google(p.text, tts.voice, dest); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
+      catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
+    }
+  } else throw new Error('lang.json tts.provider must be google or mms');
+  save();
+  console.log(`voice[${code}]: ${made} made, ${failed} failed`); return failed;
+}

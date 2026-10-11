@@ -74,6 +74,84 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "sw": {
+              "outputPath": "dist/kratu-sw",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/lang/lang.ts",
+                  "with": "src/app/core/lang/lang.sw.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "assets/clips.json",
+                    "assets/words.json",
+                    "assets/media.json",
+                    "assets/audio/ha/**",
+                    "names_bank_expanded.json"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "langs/sw/public"
+                }
+              ]
+            },
+            "yo": {
+              "outputPath": "dist/kratu-yo",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/lang/lang.ts",
+                  "with": "src/app/core/lang/lang.yo.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "assets/clips.json",
+                    "assets/words.json",
+                    "assets/media.json",
+                    "assets/audio/ha/**",
+                    "names_bank_expanded.json"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "langs/yo/public"
+                }
+              ]
+            },
+            "ig": {
+              "outputPath": "dist/kratu-ig",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/lang/lang.ts",
+                  "with": "src/app/core/lang/lang.ig.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "assets/clips.json",
+                    "assets/words.json",
+                    "assets/media.json",
+                    "assets/audio/ha/**",
+                    "names_bank_expanded.json"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "langs/ig/public"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -86,6 +164,24 @@
             },
             "development": {
               "buildTarget": "kratu:build:development"
+            },
+            "sw": {
+              "buildTarget": "kratu:build:development,sw"
+            },
+            "sw-production": {
+              "buildTarget": "kratu:build:production,sw"
+            },
+            "yo": {
+              "buildTarget": "kratu:build:development,yo"
+            },
+            "yo-production": {
+              "buildTarget": "kratu:build:production,yo"
+            },
+            "ig": {
+              "buildTarget": "kratu:build:development,ig"
+            },
+            "ig-production": {
+              "buildTarget": "kratu:build:production,ig"
             }
           },
           "defaultConfiguration": "development",
