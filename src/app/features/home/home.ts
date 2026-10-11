@@ -31,9 +31,9 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
   template: `
 <app-door (pressed)="leave()" />
 <app-ear (pressed)="pick()" />
-<app-course-book (pressed)="book()" (settled)="respot()" />
+<app-course-book [hold]="true" (pressed)="book()" (settled)="respot()" />
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
-<div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" /><span class="lhand">👆🏾</span><span class="lhint">Fara</span></button></div>
+<div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" />@if (cue()) {<span class="lhand">👆🏾</span>}<span class="lhint">Fara</span></button></div>
 <app-leave />`,
 })
 export class HomeScreen implements OnInit, OnDestroy {
@@ -48,12 +48,20 @@ export class HomeScreen implements OnInit, OnDestroy {
   private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));
   private pointing = false; private asks = 0;
   private readonly leaveBox = viewChild.required(Leave);
+  private readonly courseBook = viewChild.required(CourseBook);
   readonly grid = inject(DomSanitizer).bypassSecurityTrustHtml(HOMEGRID_HTML);
   private readonly gridHost = viewChild.required<ElementRef<HTMLElement>>('gridHost');
   readonly act = signal<string | null>(null);
   readonly cue = signal(false);
 
-  ngOnInit(): void { afterPaint().then(() => { this.marks(); this.arrive(); }); }
+  ngOnInit(): void { afterPaint().then(() => { this.marks(); this.arrive().finally(() => this.openBook()); }); }
+  /** The book stays shut while she talks about it and opens once she has finished (Sani 2026-10-12); if the browser
+   *  refused the sound, it waits a while before opening anyway. */
+  private openBook(): void {
+    clearTimeout(this.bookTimer);
+    if (this.bus.blocked()) this.bookTimer = window.setTimeout(() => this.courseBook().begin(), 10000); else this.courseBook().begin();
+  }
+  private bookTimer = 0;
   /** Each tile's progress: the wave's height, the padlock, the medal. Locked tiles still open when pressed, for now. */
   private marks(): void {
     this.gridHost().nativeElement.querySelectorAll<HTMLElement>('.htile').forEach((t) => {
@@ -100,7 +108,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   }
   /** The book slides to the middle as its cover opens; the hand follows it there. */
   respot(): void { if (this.pointing) this.pointAtBook(true); }
-  ngOnDestroy(): void { clearTimeout(this.leaving); this.spotter.unspot(); this.bus.stopAll(); }
+  ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.spotter.unspot(); this.bus.stopAll(); }
   pick(): void { this.bus.stopAll(); this.invite(); }
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {

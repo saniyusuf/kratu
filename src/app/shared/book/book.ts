@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, inject, output, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, inject, input, output, viewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ICONS } from '../icons';
 import { BOOK_COVER_SVG, BOOK_HAND_SVG } from './book-svg';
@@ -43,6 +43,8 @@ function clipPoly(poly: P[], M: P, nx: number, ny: number, sg: number): P[] {
   return o;
 }
 const T = { enter: 2.0, open: 2.6, rest: 1.4, turn: 4.7, wait: 3.8 };
+/** Everything the book does runs this many times slower than the timings above (Sani 2026-10-12: slow it all down). */
+const SLOW = 1.5;
 
 /**
  * The course book at the top of the chooser (Sani 2026-10-11): red Kano leather with the Arewa knot. A hand opens the
@@ -64,15 +66,15 @@ const T = { enter: 2.0, open: 2.6, rest: 1.4, turn: 4.7, wait: 3.8 };
   styles: [`
 :host{display:flex;justify-content:center;width:100%;margin:4px 0 40px}
 .cbook{--c:1;position:relative;width:184px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:900px;translate:calc(var(--c) * -25%) 0;-webkit-tap-highlight-color:transparent}
-.cbook.breath{animation:cbbreath 4.4s ease-in-out infinite}
+.cbook.breath{animation:cbbreath 6.6s ease-in-out infinite}
 @keyframes cbbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.cbook::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(251,192,45,.45),rgba(251,192,45,0) 65%);z-index:-1;translate:calc(var(--c) * 18.4%) 0;animation:cbglow 3.2s ease-in-out infinite}
+.cbook::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(251,192,45,.45),rgba(251,192,45,0) 65%);z-index:-1;translate:calc(var(--c) * 18.4%) 0;animation:cbglow 4.8s ease-in-out infinite}
 @keyframes cbglow{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
 .cbook.spot2::before{inset:-34%;background:radial-gradient(circle,rgba(251,192,45,.8),rgba(251,192,45,0) 66%);animation-duration:1.3s}
 .cbook.spot2 .cbback::before{animation-duration:1.1s}
 .cbback{position:absolute;inset:-6px -7px -8px;border-radius:12px 18px 18px 12px;background:linear-gradient(135deg,#A63A22,#7A2616);box-shadow:0 8px 0 rgba(59,46,30,.16),inset 0 0 0 2px #5E1C10;opacity:0}
 .cbback::after{content:"";position:absolute;inset:3px;border-radius:9px 15px 15px 9px;border:1.4px dashed #F1D9A8;opacity:.8}
-.cbback::before{content:"";position:absolute;inset:-5px;border-radius:15px 21px 21px 15px;box-shadow:0 0 0 2.5px var(--glow,#FBC02D),0 0 18px 6px var(--glow,#FBC02D);opacity:.35;animation:cbedge 2.8s ease-in-out infinite;pointer-events:none}
+.cbback::before{content:"";position:absolute;inset:-5px;border-radius:15px 21px 21px 15px;box-shadow:0 0 0 2.5px var(--glow,#FBC02D),0 0 18px 6px var(--glow,#FBC02D);opacity:.35;animation:cbedge 4.2s ease-in-out infinite;pointer-events:none}
 @keyframes cbedge{0%,100%{opacity:.3}50%{opacity:.9}}
 .cbpages{position:absolute;left:-10%;top:-50%;width:120%;height:200%;z-index:4;pointer-events:none}
 .cbcover{position:absolute;top:-3px;bottom:-3px;right:-3px;width:calc(50% + 3px);transform-origin:left center;transform-style:preserve-3d;z-index:5;will-change:transform}
@@ -90,6 +92,8 @@ export class CourseBook implements AfterViewInit, OnDestroy {
   readonly pressed = output<void>();
   /** The cover is open and the book has slid to its resting place, so anything pointing at it can find it. */
   readonly settled = output<void>();
+  /** Stay shut and still, with no hand of its own, until begin(): the chooser shows the closed book while Laila talks about it. */
+  readonly hold = input(false);
   private readonly san = inject(DomSanitizer);
   readonly coverSvg = this.san.bypassSecurityTrustHtml(BOOK_COVER_SVG);
   readonly handSvg = this.san.bypassSecurityTrustHtml(BOOK_HAND_SVG);
@@ -131,7 +135,7 @@ export class CourseBook implements AfterViewInit, OnDestroy {
     if (this.phase === 'turn' && !this.turned) this.idx++;
     if (this.idx === 0) this.idx = 1;
     this.opened(); this.setHand(0, 0, 0, 1, 0); this.el.style.setProperty('--glow', spread(this.idx).edge);
-    this.boostAt = performance.now() / 1000; this.el.classList.add('go'); this.goUntil = performance.now() + 1200;
+    this.boostAt = performance.now() / 1000 / SLOW; this.el.classList.add('go'); this.goUntil = performance.now() + 1200;
     clearTimeout(this.goTimer); this.goTimer = window.setTimeout(() => { this.el.classList.remove('go'); this.go('wait'); this.schedule(); }, 1200);
     this.schedule(); this.pressed.emit();
   }
@@ -221,16 +225,20 @@ export class CourseBook implements AfterViewInit, OnDestroy {
     this.idx = 0; this.leftOn = false; this.back.style.opacity = '0'; this.cover.style.visibility = ''; this.setCover(0); this.el.style.setProperty('--c', '1');
     this.el.classList.add('breath'); this.setHand(0, 0, 0, 1, 0); this.goUntil = 0;
     if (this.reduce) { this.idx = 1; this.opened(); this.el.style.setProperty('--glow', spread(1).edge); this.draw(null); return; }
+    if (this.hold()) { this.go('hold'); this.draw(null); return; }
     this.go('enter'); this.schedule();
   }
+  /** The instructions are over: the hand comes and opens the cover. Does nothing once it has begun or been pressed. */
+  begin(): void { if (this.phase === 'hold' && !this.dead) { this.go('enter'); this.schedule(); } }
   /** A picture arrived while nothing was moving: draw it in. */
   private idle(): void { if (this.phase && this.phase !== 'turn') this.draw(null); }
   private schedule(): void { if (!this.raf && this.visible && !this.reduce && !this.dead) this.raf = requestAnimationFrame((n) => this.frame(n)); }
 
   private frame(now: number): void {
-    this.raf = 0; if (!this.visible || this.dead) return; this.wob = now / 1000;
-    const t = (now - this.t0) / 1000, { W, H, S, w, h } = this;
+    this.raf = 0; if (!this.visible || this.dead) return; this.wob = now / 1000 / SLOW;
+    const t = (now - this.t0) / 1000 / SLOW, { W, H, S, w, h } = this;
     if (now < this.goUntil) { this.draw(null); this.schedule(); return; }
+    if (this.phase === 'hold') return;   // shut and still: nothing to draw until begin()
     if (this.phase === 'enter') {   // closed, breathing; the hand comes to the cover's edge
       const k = out3((t - .7) / 1.2); this.setHand(W * 1.05 - W * .05 * k + W * .15 * (1 - k), h * .64 + H * .5 * (1 - k), -16, 1, k); this.draw(null);
       if (t >= T.enter) this.go('open');

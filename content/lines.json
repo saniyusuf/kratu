@@ -961,20 +961,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka danna littafi don mu fara koyo.",
-   "f": "Ki danna littafi don mu fara koyo."
+   "m": "Ka danna littafin nan da yake sama don mu fara koyo.",
+   "f": "Ki danna littafin nan da yake sama don mu fara koyo."
   },
-  "en": "To start, tap the book to begin learning.",
+  "en": "To start, tap the book up here to begin learning.",
   "screens": [
    "Zaɓi darasi · chooser"
   ],
   "said_when": "on the chooser, to a child who has not finished anything yet. Wording per Sani 12 Oct.",
   "status": "live",
   "recorded": {
-   "m": "863bcad73d",
-   "f": "06e41b0cd4"
+   "m": "7c082cefae",
+   "f": "b729b1c17a"
   },
-  "review": "Sani 11 Oct 23:30 wording"
+  "review": "Sani 11 Oct 23:49"
  },
  {
   "key": "app_book_more",
@@ -982,8 +982,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka danna littafi don mu ci gaba da koyo.",
-   "f": "Ki danna littafi don mu ci gaba da koyo."
+   "m": "Ka danna littafin nan da yake sama don mu ci gaba da koyo.",
+   "f": "Ki danna littafin nan da yake sama don mu ci gaba da koyo."
   },
   "en": "Tap the book to continue learning.",
   "screens": [
@@ -992,10 +992,10 @@
   "said_when": "on the chooser, to a child coming back with lessons under way. Wording follows Sani's app_book_start (12 Oct).",
   "status": "live",
   "recorded": {
-   "m": "820204b9b6",
-   "f": "1ed0bbabd7"
+   "m": "4dcfae498d",
+   "f": "24e1f09b64"
   },
-  "review": "Sani 11 Oct 23:30 wording"
+  "review": "Sani 11 Oct 23:49"
  },
  {
   "key": "app_book_or",
