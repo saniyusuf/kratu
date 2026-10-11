@@ -18,7 +18,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
   imports: [Door, Ear, TopicMenu, ResultsGrid],
   host: { class: 's lesson quiz' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" goClass="q-go" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="qlesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!resultsOn()" [hidden]="!resultsOn()"><span class="kimg objpic"></span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
@@ -27,7 +27,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
     @for (p of placeholders(); track $index) {<div class="qph"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="8" width="36" height="32" rx="6"/><circle cx="17" cy="18" r="3.5"/><path d="M8 36l11-11 7 7 6-6 8 8"/></svg></div>}
   </div>
   <div class="objrow" [class.many]="dots().length > 5">@for (d of dots(); track $index) {<span class="oslot active" [class.on]="dotOn() === $index" [class.done]="d === 'done'" [class.miss]="d === 'miss'"></span>}</div>
-  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
 </div>`,
 })
 export class NemoScreen extends TopicLessonBase {

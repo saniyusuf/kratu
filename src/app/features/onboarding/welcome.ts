@@ -7,6 +7,7 @@ import { SessionService } from '../../core/state/session.service';
 import { Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { HOMEGRID_HTML } from '../../features/home/homegrid';
+import { t } from '../../core/lang/t';
 
 /** One line of the welcome: what she says, what lights up, and how she stands while she says it. */
 interface Beat {
@@ -82,9 +83,9 @@ const BACK: Beat[] = [
 }
 @if (orbit()) { <div class="worb">@for (c of ORB; track c.ch) { <b [style.transform]="c.t" [style.color]="c.col">{{ c.ch }}</b> }</div> }
 @if (stars()) { <span class="wstars">@for (p of STARS; track p.l) { <b [style.left.%]="p.l" [style.top.%]="p.t" [style.animation-delay]="p.d">✨</b> }</span> }
-@if (ribbon()) { <div class="wribbon">Barka da dawowa!</div> }
+@if (ribbon()) { <div class="wribbon">{{ t('Barka da dawowa!') }}</div> }
 
-<button class="startlaila" [class.talking]="talking()" [class.cue]="cue()" aria-label="Danna Laila mu fara" (click)="go()">
+<button class="startlaila" [class.talking]="talking()" [class.cue]="cue()" [attr.aria-label]="t('Danna Laila mu fara')" (click)="go()">
   <span class="meethalo"></span><span class="tapring"></span>
   @if (mic()) { <span class="wmic">🎙️</span>
     <span class="wwords">@for (w of WORDS; track w.t) { <b [style.--dx.cqw]="w.dx" [style.animation-delay]="w.d">{{ w.t }}</b> }</span> }
@@ -92,11 +93,12 @@ const BACK: Beat[] = [
   <span class="meet-hand" [class.now]="cue()">👆🏾</span>
 </button>
 
-<div class="pr" style="font-size:clamp(22px,3vw,30px)">Sunana Laila</div>
-<div class="starthint" [class.show]="cue()">{{ session.g() === 'f' ? 'Ki danna kan Laila mu fara' : 'Ka danna kan Laila mu fara' }}<br><small>click Laila to start</small></div>
-<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> Ci gaba</button>`,
+<div class="pr" style="font-size:clamp(22px,3vw,30px)">{{ t('Sunana Laila') }}</div>
+<div class="starthint" [class.show]="cue()">{{ session.g() === 'f' ? t('Ki danna kan Laila mu fara') : t('Ka danna kan Laila mu fara') }}<br><small>{{ t('click Laila to start') }}</small></div>
+<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}</button>`,
 })
 export class WelcomeScreen implements OnInit, OnDestroy {
+  readonly t = t;
   readonly session = inject(SessionService);
   private readonly bus = inject(AudioBus);
   private readonly router = inject(Router);
@@ -110,7 +112,7 @@ export class WelcomeScreen implements OnInit, OnDestroy {
   });
   readonly STARS = [[14, 20], [30, 10], [50, 8], [70, 12], [86, 22], [92, 54], [24, 62], [76, 68], [10, 42], [62, 26]]
     .map((p, i) => ({ l: p[0], t: p[1], d: (i % 5) * 0.22 + 's' }));
-  readonly WORDS = [{ t: 'Sannu', dx: 7, d: '0s' }, { t: 'A', dx: -6, d: '.7s' }, { t: 'Akuya', dx: 12, d: '1.4s' }];
+  readonly WORDS = [{ t: t('Sannu'), dx: 7, d: '0s' }, { t: 'A', dx: -6, d: '.7s' }, { t: t('Akuya'), dx: 12, d: '1.4s' }];
 
   readonly beat = signal(-1);
   readonly talking = signal(false);

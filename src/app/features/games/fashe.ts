@@ -9,6 +9,7 @@ import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { flyLetter, joy, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
+import { t, tx } from '../../core/lang/t';
 
 const NOPE = 'assets/audio/sfx/nope.ogg';
 const SKY = 8;
@@ -46,7 +47,7 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; wai
   imports: [Door, Ear, LailaButton],
   host: { class: 's lesson fashe' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="poptime" [class.low]="low()" [class.off]="!ticking()">
   <span class="ptbar"><i [style.width.%]="pct()"></i></span><b>{{ clock() }}</b>
   @if (bump()) {<span class="ptbump" [class.minus]="bump()!.startsWith('−')">{{ bump() }}</span>}
@@ -60,7 +61,7 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; wai
   <span class="curtain" aria-hidden="true"></span>
 </div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [style.--c]="colour(L)" [class.active]="true" [class.on]="target() === L" [class.done]="done()[$index]">{{ done()[$index] ? L : '' }}</span>}</div>
-<div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+<div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
 <div class="yesno ynpair abcq lone popask">
   <app-laila-btn #lb label="Laila" [size]="96" [speak]="speak()" [yay]="yay()" [nope]="nope()" (pressed)="again()" />
   <span class="ask" [class.bad]="bad()">A → Z <b>{{ gone() }}</b></span>
@@ -77,6 +78,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   private readonly skyRef = viewChild.required<ElementRef<HTMLElement>>('sky');
   private readonly slotsRef = viewChild.required<ElementRef<HTMLElement>>('slots');
   readonly all = ALL;
+  readonly t = t; readonly tx = tx;
   readonly eye = signal('Mu gani · fashe haruffa');
   readonly bubs = signal<Bub[]>([]);
   readonly done = signal<boolean[]>(ALL.map(() => false));

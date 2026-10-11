@@ -10,6 +10,7 @@ import { HOMEGRID_HTML } from './homegrid';
 import { Leave } from './leave';
 import { SessionService } from '../../core/state/session.service';
 import { PlanService } from '../../core/state/plan.service';
+import { t } from '../../core/lang/t';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
@@ -22,15 +23,16 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
   template: `
 <app-door (pressed)="leave()" />
 <app-ear (pressed)="pick()" />
-<div class="ltitle">Zaɓi darasi</div>
+<div class="ltitle">{{ t('Zaɓi darasi') }}</div>
 <button class="plancard" [class.hot]="!act()" [style.--c]="card().colour" (click)="start()">
-  <span class="pico">{{ card().ico }}</span><span class="ptxt"><small>{{ card().eyebrow }}</small><b>{{ card().title }}</b><span>{{ card().sub }}</span></span>
+  <span class="pico">{{ card().ico }}</span><span class="ptxt"><small>{{ t(card().eyebrow) }}</small><b>{{ t(card().title) }}</b><span>{{ card().sub }}</span></span>
 </button>
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
-<div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" /><span class="lhand">👆🏾</span><span class="lhint">Fara</span></button></div>
+<div class="lrow"><button class="lbtn" [class.cue]="cue()" [attr.aria-label]="t('Danna kan Laila')" (click)="start()"><span class="lglow"></span><app-laila [size]="110" /><span class="lhand">👆🏾</span><span class="lhint">{{ t('Fara') }}</span></button></div>
 <app-leave />`,
 })
 export class HomeScreen implements OnInit, OnDestroy {
+  readonly t = t;
   private readonly bus = inject(AudioBus);
   private readonly flow = inject(LessonFlow);
   private readonly session = inject(SessionService);

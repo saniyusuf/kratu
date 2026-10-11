@@ -28,13 +28,13 @@ type Ev = { kind: 'tap'; L: string } | { kind: 'heard'; letters: string[] | null
   imports: [Door, Ear, TopicMenu, ResultsGrid, LailaButton, AlloButton, AbcKeyboard],
   host: { class: 's lesson spell', '[class.hearing]': 'rec() || armed()' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="splesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div #slotsEl class="wslots">@for (sl of slots(); track $index) {<span class="wslot" [attr.data-l]="sl.L" [class.on]="sl.st === 'on'" [class.done]="sl.st === 'done'" [class.bad]="sl.st === 'bad'">{{ sl.text }}</span>}</div>
   <app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />
-  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
   <div class="yesno ynpair spq" [class.nohand]="pairNohand()">
     <app-laila-btn #lb label="Faɗa" [size]="96" [armed]="armed()" [rec]="rec()" [speak]="speak()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" />
     <app-allo-btn #dk [hidden]="dkHidden()" (pressed)="pressDk()" />

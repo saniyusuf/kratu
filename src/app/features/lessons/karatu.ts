@@ -25,12 +25,12 @@ type Slot = { L: string; st: '' | 'on' | 'done' };
   imports: [Door, Ear, TopicMenu, ResultsGrid, LailaButton],
   host: { class: 's lesson read karatu', '[class.hearing]': 'rec() || armed()' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="splesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img #pic alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div class="wslots">@for (sl of slots(); track $index) {<span class="wslot show" [class.on]="sl.st === 'on'" [class.done]="sl.st === 'done'">{{ sl.L }}</span>}</div>
-  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
   <div class="yesno ynpair spq"><app-laila-btn #lb label="Karanta" [size]="96" [armed]="armed()" [rec]="rec()" [speak]="speak()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>
 </div>`,
 })

@@ -9,6 +9,7 @@ import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
 import { wait } from '../../shared/lesson/helpers';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
+import { t, tx } from '../../core/lang/t';
 
 /** The four she names out loud, and the one she stops at. */
 const SHOWN = ['A', 'B', 'C', 'D'];
@@ -31,18 +32,18 @@ const SHOWN = ['A', 'B', 'C', 'D'];
   host: { class: 's lesson gate' },
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="repeat()" />
-<div class="eyebrow">Mu gani · haruffa</div>
+<div class="eyebrow">{{ tx('Mu gani · haruffa') }}</div>
 
 @if (phase() === 'invite') {
   <button class="startlaila gatestart" [class.talking]="speak()" [class.cue]="ready()"
-          aria-label="Danna Laila mu fara" (click)="begin()">
+          [attr.aria-label]="t('Danna Laila mu fara')" (click)="begin()">
     <span class="meethalo"></span><app-laila [size]="190" cls="meet-lm" />
     @if (ready()) {<span class="meet-hand">👆🏾</span>}
   </button>
-  <div class="pr">Za mu yi ɗan wasa<span class="sm">We are going to play a little game</span></div>
-  <div class="starthint" [class.show]="ready()">Danna kan Laila mu fara<br><small>tap Laila to begin</small></div>
+  <div class="pr">{{ t('Za mu yi ɗan wasa') }}<span class="sm">We are going to play a little game</span></div>
+  <div class="starthint" [class.show]="ready()">{{ t('Danna kan Laila mu fara') }}<br><small>{{ t('tap Laila to begin') }}</small></div>
 } @else {
-  <div class="pr">Ka san dukan haruffa?<span class="sm">Do you know all the letters?</span></div>
+  <div class="pr">{{ t('Ka san dukan haruffa?') }}<span class="sm">Do you know all the letters?</span></div>
   <div class="gateabc" aria-hidden="true">
     @for (L of shown; track L) {
       <b [style.--c]="colour(L)" [class.lit]="lit() === L" [class.said]="saidAt() > $index">{{ L }}</b>
@@ -50,7 +51,7 @@ const SHOWN = ['A', 'B', 'C', 'D'];
     <span class="gdots">…</span>
     <b [style.--c]="colour('Z')" [class.lit]="lit() === 'Z'" [class.said]="saidAt() > 4">Z</b>
   </div>
-  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
   <div class="yesno ynpair gateq" [class.nohand]="!cue()">
     <app-laila-btn #lb label="Na sani" [size]="132" [cue]="cue()" [speak]="speak()" (pressed)="yes()" />
     <app-allo-btn label="Ban sani ba" (pressed)="no()" />
@@ -63,6 +64,7 @@ export class GateScreen implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   readonly shown = SHOWN;
   /** Which letter she is saying right now, and how many she has got through. */
+  readonly t = t; readonly tx = tx;
   readonly lit = signal(''); readonly saidAt = signal(0);
   readonly speak = signal(false); readonly cue = signal(false);
   readonly fbCls = signal(''); readonly fbText = signal('');

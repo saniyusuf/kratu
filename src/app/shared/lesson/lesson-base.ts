@@ -8,6 +8,7 @@ import { SpeechService } from '../../core/speech/speech.service';
 import { ImageWarm } from '../../core/clips/warm.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter } from './helpers';
+import { t, tx } from '../../core/lang/t';
 
 /** A word as the lessons carry it: the key, the English (cased as the lesson wants it), the Hausa and the record itself. */
 export interface Item { k: string; en: string; ha: string; w: Word; cat?: string; }
@@ -34,6 +35,8 @@ export abstract class LessonBase implements OnDestroy {
   protected readonly spotter = new Spotter(this.hostEl.nativeElement, this.zoom);
   protected stopped = false;
   readonly eye = signal('');
+  /** Text on screen in this build's language (identity for Hausa). */
+  readonly t = t; readonly tx = tx;
   readonly fbCls = signal(''); readonly fbText = signal('');
 
   ngOnDestroy(): void { this.stopped = true; this.bus.stopAll(); this.spotter.unspot(); this.onLeave(); }

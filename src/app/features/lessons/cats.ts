@@ -17,7 +17,7 @@ export const CAT_NAME: Record<string, string> = Object.fromEntries(CATS.map((c) 
   imports: [Door, Ear, TopicMenu],
   host: { class: 's lesson cats', '[class.haspick]': '!!cur()' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">Zaɓi darasi</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ t('Zaɓi darasi') }}</div>
 <app-topic-menu [cats]="cats" goClass="cat-go" [picked]="cur()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" />`,
 })
 export class CatsScreen extends LessonBase implements OnInit {

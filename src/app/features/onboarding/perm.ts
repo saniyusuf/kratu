@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
 import { Laila } from '../../shared/laila/laila';
+import { t } from '../../core/lang/t';
 
 /** Screen 00 · Izini. Camera and microphone permission, the tap that starts everything. */
 @Component({
@@ -11,17 +12,18 @@ import { Laila } from '../../shared/laila/laila';
   host: { class: 's perm' },
   template: `
 <div class="pcard">
-  <div class="ptop"><div class="ptitle">Izini · Permission</div><div class="phead">Ana buƙatar izinin kyamara da makirufo<span>Camera and microphone permission is needed before we start</span></div></div>
+  <div class="ptop"><div class="ptitle">{{ t('Izini') }} · Permission</div><div class="phead">{{ t('Ana buƙatar izinin kyamara da makirufo') }}<span>Camera and microphone permission is needed before we start</span></div></div>
   <div class="permrow">
-    <span class="pchip cam" [class.ok]="cam() === 'ok'" [class.no]="cam() === 'no'"><i class="ptile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></i><b>Kyamara · Camera</b><small>Domin Laila ta gani · so Laila can see</small></span>
-    <button class="permgo" [class.busy]="busy()" aria-label="Danna kan Laila · Tap Laila" (click)="ask()"><app-laila [size]="170" /><span class="phand">👆🏾</span><div class="plabel">Danna kan Laila · Tap Laila</div></button>
-    <span class="pchip mic" [class.ok]="mic() === 'ok'" [class.no]="mic() === 'no'"><i class="ptile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></i><b>Makirufo · Microphone</b><small>Domin Laila ta ji · so Laila can hear</small></span>
+    <span class="pchip cam" [class.ok]="cam() === 'ok'" [class.no]="cam() === 'no'"><i class="ptile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></i><b>{{ t('Kyamara') }} · Camera</b><small>{{ t('Domin Laila ta gani') }} · {{ t('so Laila can see') }}</small></span>
+    <button class="permgo" [class.busy]="busy()" [attr.aria-label]="t('Danna kan Laila') + ' · ' + t('Tap Laila')" (click)="ask()"><app-laila [size]="170" /><span class="phand">👆🏾</span><div class="plabel">{{ t('Danna kan Laila') }} · {{ t('Tap Laila') }}</div></button>
+    <span class="pchip mic" [class.ok]="mic() === 'ok'" [class.no]="mic() === 'no'"><i class="ptile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></i><b>{{ t('Makirufo') }} · Microphone</b><small>{{ t('Domin Laila ta ji') }} · {{ t('so Laila can hear') }}</small></span>
   </div>
-  <div class="pnote"><b>A danna kan Laila, sannan a danna “Allow”.</b><span>Tap Laila, then tap “Allow” when the device asks. No photo or recording is kept, and nothing is sent anywhere.</span></div>
+  <div class="pnote"><b>{{ t('A danna kan Laila, sannan a danna “Allow”.') }}</b><span>{{ t('Tap Laila') }}, then tap “Allow” when the device asks. No photo or recording is kept, and nothing is sent anywhere.</span></div>
   <div class="pstatus" aria-live="polite">{{ status() }}</div>
 </div>`,
 })
 export class PermScreen {
+  readonly t = t;
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);

@@ -5,6 +5,7 @@ import { IdentityService, Person } from '../../core/identity/identity.service';
 import { LoaderService } from '../../core/loader/loader.service';
 import { SessionService } from '../../core/state/session.service';
 import { SpeechService } from '../../core/speech/speech.service';
+import { t } from '../../core/lang/t';
 
 type Stage = 'who' | 'confirm' | 'code' | 'students';
 const CODE = '064662118';
@@ -24,36 +25,37 @@ const ICO = {
   selector: 'app-settings',
   host: { style: 'display:contents' },
   template: `
-<button id="admingear" class="show" aria-label="Saituna" (click)="open()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+<button id="admingear" class="show" [attr.aria-label]="t('Saituna')" (click)="open()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <div id="admin" [class.open]="isOpen()" (click)="backdrop($event)"><div class="box">
-  <h3>Saituna · settings</h3>
+  <h3>{{ t('Saituna') }} · settings</h3>
   @if (session.debug) {
     <div class="ldstat" [innerHTML]="status()"></div>
-    <div class="mictest"><button class="mtgo" [class.rec]="micRec()" (click)="micTest()">🎤 Gwada makirufo · Test the mic</button><select class="mtdev" title="Makirufo · microphone" (change)="pickMic($event)">@for (d of devices(); track d.id) {<option [value]="d.id" [selected]="d.id === micId()">{{ d.label }}</option>}</select><span class="mtout">{{ micOut() }}</span><button class="mtreset" title="Wipe every stored engine copy and reload" (click)="resetEngines()">↻ Sabunta injin · Reset engines</button></div>
+    <div class="mictest"><button class="mtgo" [class.rec]="micRec()" (click)="micTest()">🎤 {{ t('Gwada makirufo') }} · Test the mic</button><select class="mtdev" [title]="t('Makirufo') + ' · microphone'" (change)="pickMic($event)">@for (d of devices(); track d.id) {<option [value]="d.id" [selected]="d.id === micId()">{{ d.label }}</option>}</select><span class="mtout">{{ micOut() }}</span><button class="mtreset" title="Wipe every stored engine copy and reload" (click)="resetEngines()">↻ {{ t('Sabunta injin') }} · Reset engines</button></div>
   }
   <div class="whocard" [class.demo]="who().demo"><img class="wpic" alt="" [hidden]="!who().pic" [src]="who().pic || ''"><span class="wico" [class.girl]="who().g === 'f'" [class.boy]="who().g === 'm'" [hidden]="!!who().pic" [innerHTML]="ico.person"></span><div class="wtxt"><b class="wname">{{ who().name }}</b><small class="wmode">{{ who().mode }}</small></div></div>
-  <div class="switch" id="subswitch" [class.on]="session.captions()" (click)="session.setCaptions(!session.captions())"><div><b><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg>English subtitles</b><small>a teleprompter strip, bottom right, that lights up as Laila speaks</small></div><div class="knob"></div></div>
-  <div class="permnote" [hidden]="permsOK()"><b>Izini · permission first</b><small>The demo sessions and the students need the microphone. Grant the camera and microphone on the first screen before using them.</small><button class="toperm" (click)="toPerm()">Go to the permission screen</button></div>
-  <div class="flag"><svg class="ico" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-6 11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1L14 9V3"/></svg>GWAJI · sample sessions, not recorded</div>
+  <div class="switch" id="subswitch" [class.on]="session.captions()" (click)="session.setCaptions(!session.captions())"><div><b><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.5 10.2a2.2 2.2 0 1 0 0 3.6M16.5 10.2a2.2 2.2 0 1 0 0 3.6"/></svg>English subtitles</b><small>{{ t('a teleprompter strip, bottom right, that lights up as Laila speaks') }}</small></div><div class="knob"></div></div>
+  <div class="permnote" [hidden]="permsOK()"><b>{{ t('Izini') }} · permission first</b><small>The demo sessions and the students need the microphone. Grant the camera and microphone on the first screen before using them.</small><button class="toperm" (click)="toPerm()">Go to the permission screen</button></div>
+  <div class="flag"><svg class="ico" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-6 11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1L14 9V3"/></svg>{{ t('GWAJI') }} · sample sessions, not recorded</div>
   <div class="sub">Start a sample session as Aisha (girl) or Musa (boy) to test every screen in the female or male voice.</div>
   <div class="stage who-stage" [hidden]="stage() !== 'who'"><div class="who">
-      <button class="pcard girl" [class.locked]="!permsOK()" (click)="ask('f', 'Aisha')"><img class="gph" alt="Aisha" src="assets/gender-girl.webp"><div class="nm">Aisha</div><small>yarinya · girl</small></button>
-      <button class="pcard boy" [class.locked]="!permsOK()" (click)="ask('m', 'Musa')"><img class="gph" alt="Musa" src="assets/gender-boy.webp"><div class="nm">Musa</div><small>yaro · boy</small></button></div>
-    <button class="restart" (click)="hardRestart()"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Sake farawa gaba ɗaya · hard restart (clears everything)</button>
-    <button class="students-open" [class.locked]="!permsOK()" (click)="openCode()"><span [innerHTML]="ico.person"></span>Yara · students <span class="lock"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>code</span></button></div>
-  <div class="stage code-stage" [hidden]="stage() !== 'code'"><div class="sub">Adults only · enter the code to see the students</div><div class="code" id="admincode" [class.bad]="codeBad()">{{ dots() }}</div><div class="pad">@for (d of pad; track d) {<button (click)="key(d)">{{ d === 'del' ? '⌫' : d === 'ok' ? '✓' : d }}</button>}</div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
-  <div class="stage students-stage" [hidden]="stage() !== 'students'"><h4 class="stitle">Yara · students</h4><div class="slist">
-      @if (!students().length) {<div class="sempty">Babu yara tukuna · no students enrolled on this tablet yet.</div>}
-      @for (p of students(); track p.id) {<div class="srow"><span class="wico" [class.girl]="p.gender === 'f'" [class.boy]="p.gender !== 'f'" [innerHTML]="ico.person"></span><div class="sname"><b>{{ p.name || '?' }}</b><small>{{ p.gender === 'f' ? 'yarinya · girl' : 'yaro · boy' }}{{ enrolled(p) }}{{ p.faceVecs?.length ? ' · face known' : '' }}</small></div><button class="ssim" (click)="simulate(p)"><span [innerHTML]="ico.play"></span>simulate</button><button class="sdel" [class.sure]="sure() === p.id" (click)="del(p)"><span [innerHTML]="ico.bin"></span>{{ sure() === p.id ? 'delete ' + p.name + '?' : 'delete' }}</button></div>}
-    </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
-  <div class="stage confirm-stage" [hidden]="stage() !== 'confirm'"><div class="cwho">@if (pending(); as w) {<button class="pcard" [class.girl]="w.g === 'f'" [class.boy]="w.g === 'm'"><img class="gph" [alt]="w.name" [src]="w.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"><div class="nm">{{ w.name }}</div><small>{{ w.g === 'f' ? 'yarinya · girl' : 'yaro · boy' }}</small></button>}</div>
-    <h4 class="ctitle">Fara zaman gwaji a matsayin {{ pending()?.name }}? · Start a sample session as {{ pending()?.name }}?</h4>
+      <button class="pcard girl" [class.locked]="!permsOK()" (click)="ask('f', 'Aisha')"><img class="gph" alt="Aisha" src="assets/gender-girl.webp"><div class="nm">Aisha</div><small>{{ t('yarinya') }} · girl</small></button>
+      <button class="pcard boy" [class.locked]="!permsOK()" (click)="ask('m', 'Musa')"><img class="gph" alt="Musa" src="assets/gender-boy.webp"><div class="nm">Musa</div><small>{{ t('yaro') }} · boy</small></button></div>
+    <button class="restart" (click)="hardRestart()"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>{{ t('Sake farawa gaba ɗaya') }} · hard restart (clears everything)</button>
+    <button class="students-open" [class.locked]="!permsOK()" (click)="openCode()"><span [innerHTML]="ico.person"></span>{{ t('Yara') }} · students <span class="lock"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>code</span></button></div>
+  <div class="stage code-stage" [hidden]="stage() !== 'code'"><div class="sub">Adults only · enter the code to see the students</div><div class="code" id="admincode" [class.bad]="codeBad()">{{ dots() }}</div><div class="pad">@for (d of pad; track d) {<button (click)="key(d)">{{ d === 'del' ? '⌫' : d === 'ok' ? '✓' : d }}</button>}</div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>{{ t('Koma') }} · back</button></div>
+  <div class="stage students-stage" [hidden]="stage() !== 'students'"><h4 class="stitle">{{ t('Yara') }} · students</h4><div class="slist">
+      @if (!students().length) {<div class="sempty">{{ t('Babu yara tukuna') }} · no students enrolled on this tablet yet.</div>}
+      @for (p of students(); track p.id) {<div class="srow"><span class="wico" [class.girl]="p.gender === 'f'" [class.boy]="p.gender !== 'f'" [innerHTML]="ico.person"></span><div class="sname"><b>{{ p.name || '?' }}</b><small>{{ p.gender === 'f' ? t('yarinya') + ' · girl' : t('yaro') + ' · boy' }}{{ enrolled(p) }}{{ p.faceVecs?.length ? ' · face known' : '' }}</small></div><button class="ssim" (click)="simulate(p)"><span [innerHTML]="ico.play"></span>simulate</button><button class="sdel" [class.sure]="sure() === p.id" (click)="del(p)"><span [innerHTML]="ico.bin"></span>{{ sure() === p.id ? 'delete ' + p.name + '?' : 'delete' }}</button></div>}
+    </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>{{ t('Koma') }} · back</button></div>
+  <div class="stage confirm-stage" [hidden]="stage() !== 'confirm'"><div class="cwho">@if (pending(); as w) {<button class="pcard" [class.girl]="w.g === 'f'" [class.boy]="w.g === 'm'"><img class="gph" [alt]="w.name" [src]="w.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"><div class="nm">{{ w.name }}</div><small>{{ w.g === 'f' ? t('yarinya') + ' · girl' : t('yaro') + ' · boy' }}</small></button>}</div>
+    <h4 class="ctitle">{{ t('Fara zaman gwaji a matsayin') }} {{ pending()?.name }}? · Start a sample session as {{ pending()?.name }}?</h4>
     <p class="ctext">A test session for adults. The app runs exactly as it does for a {{ pending()?.g === 'f' ? 'girl' : 'boy' }} named {{ pending()?.name }}: the {{ pending()?.g === 'f' ? 'girl' : 'boy' }} voice lines, the greeting, every lesson and test. Nothing is recorded or saved, no face or voice is enrolled, and the examples and hints play again from the start.</p>
-    <div class="row2"><button class="close cno" (click)="pending.set(null); stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>A'a · cancel</button><button class="cyes" (click)="confirm()"><svg class="ico" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg>Fara · start</button></div></div>
-  <div class="row2"><button class="close" (click)="close()"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Rufe · close</button></div>
+    <div class="row2"><button class="close cno" (click)="pending.set(null); stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>{{ t('A\'a') }} · cancel</button><button class="cyes" (click)="confirm()"><svg class="ico" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></svg>{{ t('Fara') }} · start</button></div></div>
+  <div class="row2"><button class="close" (click)="close()"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>{{ t('Rufe') }} · close</button></div>
 </div></div>`,
 })
 export class Settings {
+  readonly t = t;
   readonly session = inject(SessionService);
   private readonly bus = inject(AudioBus);
   private readonly identity = inject(IdentityService);
@@ -72,9 +74,9 @@ export class Settings {
   /** The card at the top: who the tablet is running for right now. */
   readonly who = computed(() => {
     const sim = this.session.simulated(), name = this.session.name(), g = this.session.g(), girl = g === 'f';
-    if (sim && sim.personId) return { name: sim.name + ' · ' + (girl ? 'yarinya' : 'yaro'), mode: 'Zaman gwaji · simulated as this student, not recorded', g, pic: null, demo: false };
-    if (sim || (this.session.demo() && name)) return { name: (sim?.name || name) + ' · ' + (girl ? 'yarinya' : 'yaro'), mode: 'Zaman gwaji · demo session, not recorded', g, pic: girl ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp', demo: true };
-    if (name) return { name: name + ' · ' + (girl ? 'yarinya' : 'yaro'), mode: this.session.known() === false ? 'Sabon yaro · new child, enrolled today · this session is recorded' : 'Yaro na gaske · real child · this session is recorded', g, pic: null, demo: false };
+    if (sim && sim.personId) return { name: sim.name + ' · ' + t(girl ? 'yarinya' : 'yaro'), mode: t('Zaman gwaji') + ' · simulated as this student, not recorded', g, pic: null, demo: false };
+    if (sim || (this.session.demo() && name)) return { name: (sim?.name || name) + ' · ' + t(girl ? 'yarinya' : 'yaro'), mode: t('Zaman gwaji') + ' · demo session, not recorded', g, pic: girl ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp', demo: true };
+    if (name) return { name: name + ' · ' + t(girl ? 'yarinya' : 'yaro'), mode: this.session.known() === false ? t('Sabon yaro') + ' · new child, enrolled today · this session is recorded' : t('Yaro na gaske') + ' · real child · this session is recorded', g, pic: null, demo: false };
     return { name: 'Babu kowa tukuna · no one yet', mode: 'Sign in on the first screens, or start a demo below', g: null, pic: null, demo: false };
   });
   permsOK(): boolean { return !!this.session.perms()?.mic; }
@@ -130,7 +132,7 @@ export class Settings {
   }
   pickMic(e: Event): void { const v = (e.target as HTMLSelectElement).value; this.micId.set(v); try { if (v) localStorage.setItem('kratu_mic', v); else localStorage.removeItem('kratu_mic'); } catch { /* ignore */ } this.speech.resetAudio(); this.micOut.set('microphone changed · press the test'); }
   async micTest(): Promise<void> {
-    if (this.micRec()) return; this.micRec.set(true); this.micOut.set('Ina saurara… say “goat”'); const t0 = Date.now();
+    if (this.micRec()) return; this.micRec.set(true); this.micOut.set(t('Ina saurara…') + ' say “goat”'); const t0 = Date.now();
     const r = await this.speech.hear({ target: 'goat', match: (raw) => raw || null }).done; this.micRec.set(false); const h = this.speech.heard.slice(-1)[0];
     this.micOut.set((r.raw ? 'heard “' + r.raw + '”' : 'heard nothing') + ' · ' + Math.round((Date.now() - t0) / 1000) + ' s · mic ' + Math.round((h?.peak || 0) * 100) + '%' + (h?.rate ? ' · ' + h.rate + ' Hz' : '') + ' · audio ' + (this.speech.audioInfo.ctx || '?') + (this.speech.audioInfo.muted ? ' · track MUTED' : '') + ' · device: ' + (this.speech.audioInfo.device || '?')); this.refreshStatus();
   }

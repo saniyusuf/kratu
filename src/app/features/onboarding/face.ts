@@ -9,6 +9,8 @@ import { SessionService } from '../../core/state/session.service';
 import { Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { DOOR_SVG } from '../../shared/svg';
+import { LANG } from '../../core/lang/lang';
+import { t } from '../../core/lang/t';
 
 type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 /** How long the capture will wait for the child to be alone again before it gives up and offers a fresh try. */
@@ -33,27 +35,27 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
   host: { class: 's facecap', '[attr.data-gender]': 'session.g()' },   // the design hides the other gender's example through this attribute
   template: `
 <app-ear (pressed)="intro()" />
-<div class="pr">{{ session.g() === 'f' ? 'Bari mu ga wa kike' : 'Bari mu ga wa kake' }}<span class="sm">{{ session.g() === 'f' ? 'Bidiyo kina faɗin sunanki' : 'Bidiyo kana faɗin sunanka' }} · a video of you saying your name</span></div>
+<div class="pr">{{ session.g() === 'f' ? t('Bari mu ga wa kike') : t('Bari mu ga wa kake') }}<span class="sm">{{ session.g() === 'f' ? t('Bidiyo kina faɗin sunanki') : t('Bidiyo kana faɗin sunanka') }} · a video of you saying your name</span></div>
 <div class="examples" [hidden]="capturing()">
-  <div class="exlabel">Misali · the example</div>
-  <div class="gtoggle"><button [class.on]="exG() === 'm'" (click)="exG.set('m')">Namiji</button><button [class.on]="exG() === 'f'" (click)="exG.set('f')">Mace</button></div>
+  <div class="exlabel">{{ t('Misali') }} · the example</div>
+  <div class="gtoggle"><button [class.on]="exG() === 'm'" (click)="exG.set('m')">{{ t('Namiji') }}</button><button [class.on]="exG() === 'f'" (click)="exG.set('f')">{{ t('Mace') }}</button></div>
   <div class="exrow">
     @for (g of ['m','f']; track g) {
     <button class="exvid" [class.m]="g === 'm'" [class.f]="g === 'f'" [class.talking]="talking() === g" (click)="example(g)">
       <span class="exframe"><video #ex class="exphoto exvideo" playsinline preload="auto" disablepictureinpicture [poster]="'assets/example-' + g + '.webp'"><source [src]="'assets/example-' + g + '.mp4'" type="video/mp4"><source [src]="'assets/example-' + g + '.webm'" type="video/webm"></video><i class="vfc"></i><span class="vfbar"><span class="exrec">● REC</span><span class="vftime">00:02</span></span></span>
-      <span class="exsub">{{ g === 'm' ? '“Sunana Musa”' : '“Sunana Aisha”' }}</span><span class="exwave"><i></i><i></i><i></i><i></i><i></i></span><span class="exhand">👆🏾</span>
+      <span class="exsub">{{ g === 'm' ? t('“Sunana Musa”') : t('“Sunana Aisha”') }}</span><span class="exwave"><i></i><i></i><i></i><i></i><i></i></span><span class="exhand">👆🏾</span>
     </button>}
   </div>
 </div>
 <div class="facestage">
-  <button class="startwrap" [class.cue]="cue()" [hidden]="capturing()" aria-label="Danna Laila don farawa" (click)="start()">
+  <button class="startwrap" [class.cue]="cue()" [hidden]="capturing()" [attr.aria-label]="t('Danna Laila don farawa')" (click)="start()">
     <span class="startring"></span><app-laila [size]="110" cls="start-lm" /><span class="start-hand">👆🏾</span>
-    <span class="starthint">Danna kan Laila don farawa<br><small>click Laila to start</small></span>
+    <span class="starthint">{{ t('Danna kan Laila don farawa') }}<br><small>{{ t('click Laila to start') }}</small></span>
   </button>
 </div>
 @if (capturing()) {
 <div #modal class="capmodal"><div class="capmodal-inner facecap" [attr.data-gender]="session.g()">
-  <div class="capmodal-title">Bari mu ga wa kake · let’s see who you are</div>
+  <div class="capmodal-title">{{ t('Bari mu ga wa kake') }} · let’s see who you are</div>
   <div class="camview">
     <div class="camwrap" [class.armed]="armed()" [class.paused]="!!paused()" [class.glow]="glow()" [class.done]="!!still()" [style.--p]="progress() + '%'">
       <div class="cam"><i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
@@ -65,16 +67,16 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
         <img class="feed" alt="" [src]="still() || 'assets/gender-girl.webp'" [hidden]="liveOn() && !still()"><div class="ov"></div></div>
       <div class="vfprog"><i></i></div>
       <div class="startwrap capnext" [class.cue]="gate() !== null" [hidden]="gate() === null">
-        <button type="button" class="gatepick gatelaila" [class.lit]="gateFocus() === 'laila'" [class.dim]="gateFocus() === 'door'" aria-label="Danna Laila · sake gwadawa" (click)="gatePress()"><app-laila [size]="150" cls="start-lm" /><span class="start-hand" [hidden]="gateFocus() === 'door'">👆🏾</span><div class="hint">{{ gateHint() }}<small>click Laila to try again</small></div></button>
-        <button type="button" class="gatepick gatedoor" [class.lit]="gateFocus() === 'door'" [class.dim]="gateFocus() === 'laila'" aria-label="Koma farko" (click)="startOver($event)"><span style="display:contents" [innerHTML]="door"></span><span class="start-hand" [hidden]="gateFocus() !== 'door'">👆🏾</span><div class="hint">Koma farko<small>click the door to start again</small></div></button></div>
+        <button type="button" class="gatepick gatelaila" [class.lit]="gateFocus() === 'laila'" [class.dim]="gateFocus() === 'door'" [attr.aria-label]="t('Danna Laila · sake gwadawa')" (click)="gatePress()"><app-laila [size]="150" cls="start-lm" /><span class="start-hand" [hidden]="gateFocus() === 'door'">👆🏾</span><div class="hint">{{ gateHint() }}<small>{{ t('click Laila to try again') }}</small></div></button>
+        <button type="button" class="gatepick gatedoor" [class.lit]="gateFocus() === 'door'" [class.dim]="gateFocus() === 'laila'" [attr.aria-label]="t('Koma farko')" (click)="startOver($event)"><span style="display:contents" [innerHTML]="door"></span><span class="start-hand" [hidden]="gateFocus() !== 'door'">👆🏾</span><div class="hint">{{ t('Koma farko') }}<small>click the door to start again</small></div></button></div>
     </div>
     <span class="cam-hand" [style.display]="glow() ? 'block' : 'none'">👆🏾</span>
-    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? 'Ki ce' : 'Ka ce' }}: “Sunana…” · say your name</div>
+    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? t('Ki ce') : t('Ka ce') }}: {{ t('“Sunana…”') }} · say your name</div>
     <div class="heard" [hidden]="!heardText()" [class.interim]="interim()">{{ heardText() }}</div>
     <div class="camnote" [hidden]="!note()">{{ note() }}</div>
     <div class="capdone" [hidden]="!doneText()"><span class="bigcheck">✓</span> <span class="donetext">{{ doneText() }}</span></div>
     <div class="capmiss" [hidden]="!missText()">{{ missText() }}</div>
-    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ Sake gwada · try again</button>
+    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ {{ t('Sake gwada') }} · try again</button>
   </div>
 
   <canvas #confetti class="confetti" [hidden]="!confettiOn()"></canvas>
@@ -91,6 +93,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly confettiRef = viewChild<ElementRef<HTMLCanvasElement>>('confetti');
 
+  readonly t = t;
   readonly exG = signal<'m' | 'f'>('m');
   readonly door = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_SVG);
   readonly talking = signal<'' | 'm' | 'f'>('');
@@ -158,6 +161,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     const v = this.exVideo(g); if (!v) return 'blocked';
     const my = ++this.exSeq;
     this.talking.set(g);
+    if (LANG.muteFilms) v.muted = true;   // the child in the film speaks Hausa: another language's build shows the film silent
     const how = await this.bus.engine.claim(v);
     if (my !== this.exSeq) return how;   // a newer press owns the film now, and will reset it itself
     this.talking.set('');
@@ -206,11 +210,11 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.rec = null; const live = this.liveRef()?.nativeElement; try { live?.pause(); } catch { /* ignore */ }
     if (this.stream) { this.stream.getTracks().forEach((t) => t.stop()); this.stream = null; }
   }
-  private armCheck(): void { if (this.armed()) return; if (this.recLive && this.srLive) { this.armed.set(true); this.heardText.set('Ina saurara… · listening'); this.interim.set(true); } }
+  private armCheck(): void { if (this.armed()) return; if (this.recLive && this.srLive) { this.armed.set(true); this.heardText.set(t('Ina saurara…') + ' · listening'); this.interim.set(true); } }
   private disarm(): void { this.armed.set(false); this.recLive = false; this.srLive = false; }
 
   // ---- the name: the browser's recogniser (Hausa, then English), as the design does ----
-  private startSR(lang = 'ha-NG'): void {
+  private startSR(lang = LANG.sr): void {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
     // Kept where it works (Chrome with internet), but on a leash (Sani 2026-09-22): if it is not listening within
@@ -222,7 +226,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       sr.onresult = (ev: any) => { let s = '', fin = false; for (let i = 0; i < ev.results.length; i++) { s += ev.results[i][0].transcript + ' '; if (ev.results[i].isFinal) fin = true; } this.transcript = s.trim(); this.heardText.set('“' + this.transcript + '”'); this.interim.set(!fin); this.speechCb?.(this.transcript, fin); };
       sr.onerror = (e: any) => { if (e?.error === 'language-not-supported' && sr.lang !== 'en-US') { try { sr.abort(); } catch { /* ignore */ } if (sr.__mic) { sr.__mic = false; this.holdMic(false); } this.startSR('en-US'); return; } if (e && e.error !== 'aborted' && e.error !== 'no-speech') { this.note.set('Speech: ' + e.error); this.srLive = true; this.armCheck(); } };
       sr.onstart = () => { this.clearSrWait(); this.srLive = true; this.armCheck(); };
-      sr.start(); this.holdMic(true); sr.__mic = true; this.heardText.set('Ana shirya… · getting ready'); this.interim.set(true);
+      sr.start(); this.holdMic(true); sr.__mic = true; this.heardText.set(t('Ana shirya…') + ' · getting ready'); this.interim.set(true);
     } catch { this.note.set('Speech recognition failed to start'); }
   }
   private clearSrWait(): void { if (this.srWait) { clearTimeout(this.srWait); this.srWait = null; } }
@@ -270,7 +274,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       : cy < 35 ? 'down' : cy > 61 ? 'up' : '');
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
-  private hintFor(reasons: string[]): string { const r = reasons || []; if (r.includes('small')) return 'Matso kusa · come closer'; if (r.includes('blurry')) return 'Tsaya cak · hold still'; if (r.includes('dark') || r.includes('bright')) return 'Nemi haske · find better light'; return 'Duba kyamara · look at the camera'; }
+  private hintFor(reasons: string[]): string { const r = reasons || []; if (r.includes('small')) return t('Matso kusa') + ' · come closer'; if (r.includes('blurry')) return t('Tsaya cak') + ' · hold still'; if (r.includes('dark') || r.includes('bright')) return t('Nemi haske') + ' · find better light'; return t('Duba kyamara') + ' · look at the camera'; }
   private setFaces(n: number): void {
     const many = n > 1; this.faceOK.set(n === 1);
     if (many) {
@@ -283,7 +287,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     }
     else if (n === 0) { this.cnt.none++; this.cnt.many = 0; this.cnt.one = 0; if (this.cnt.none >= 4) this.pauseCapture('noface', 's_look_'); }
     else { this.cnt.one++; this.cnt.many = 0; this.cnt.none = 0; this.crowdSince = 0; const need = this.paused() === 'alone' ? 5 : 2; const p = this.paused(); if (this.cnt.one >= need && p && !['small', 'blurry', 'dark', 'turned'].includes(p)) this.resumeCapture(); }
-    if (n === 1) { this.aloneText.set(''); } else { this.aloneSoft.set(n === 0); this.aloneText.set(many ? '👥 ' + (this.session.g() === 'f' ? 'Ki zauna ke kaɗai' : 'Ka zauna kai kaɗai') + ' · please be alone in the frame' : '🙈 Duba kyamara · look at the camera'); }
+    if (n === 1) { this.aloneText.set(''); } else { this.aloneSoft.set(n === 0); this.aloneText.set(many ? '👥 ' + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame' : '🙈 ' + t('Duba kyamara') + ' · look at the camera'); }
   }
   private discardCapture(): void { this.faceVecs = []; this.transcript = ''; this.bestSc = 0; this.bestStill = null; }
   private showPict(kind: string): void { const pr = PICT[kind] || PICT['noface']; this.pictA.set(pr[0]); this.pictB.set(pr[1]); this.pict.set(kind); }
@@ -329,7 +333,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   }
   private crowdAbort(force = false): void {
     if (this.ended && !force) return; this.crowdSince = 0; this.ended = true; this.capEnded = true; this.stopAllCapture(); this.discardCapture();
-    this.missText.set('👥 ' + (this.session.g() === 'f' ? 'Ki zauna ke kaɗai' : 'Ka zauna kai kaɗai') + ' · please be alone in the frame'); this.aloneText.set(''); this.lastManyAt = 0;
+    this.missText.set('👥 ' + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame'); this.aloneText.set(''); this.lastManyAt = 0;
     this.bus.play(this.bus.gk('s_alone2')).then(() => this.showGate('retry'));
   }
 
@@ -349,7 +353,7 @@ export class FaceScreen implements OnInit, OnDestroy {
         // held, not written: a child who walks away, presses the door or tries again leaves nothing behind. It is saved
         // in enter(), the moment the session actually opens (Sani 2026-09-17).
         this.pending = { name: heardName, key: key || undefined, gender: this.session.g(), faceVecs: this.faceVecs.slice(), voiceVec, clip: own?.url };
-        this.doneText.set('Madalla! Sannu, ' + heardName + '! Barka da zuwa!'); this.still.set(this.bestStill);
+        this.doneText.set(t('Madalla! Sannu, ') + heardName + t('! Barka da zuwa!')); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own?.url); this.confetti(); this.enter(); return;
       }
       if (!heardName && own?.url && this.faceVecs.length) {
@@ -358,18 +362,18 @@ export class FaceScreen implements OnInit, OnDestroy {
         // 2026-09-17). Their recording is kept with the record; greet() says only "Barka da zuwa" (it may hold "sunana"),
         // and the students list shows "?" for the written name.
         this.pending = { name: '', gender: this.session.g(), faceVecs: this.faceVecs.slice(), voiceVec, clip: own.url };
-        this.doneText.set('Madalla! Barka da zuwa!'); this.still.set(this.bestStill);
+        this.doneText.set(t('Madalla! Barka da zuwa!')); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own.url); this.confetti(); this.enter(); return;
       }
-      if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? 'Ba na ganin ki sosai' : 'Ba na ganin ka sosai')); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
+      if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? t('Ba na ganin ki sosai') : t('Ba na ganin ka sosai'))); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
     } else if (heardName) {
       // no face engine on this device: the name alone opens the session, nothing is stored
       this.welcome({ id: 'tmp', name: heardName, key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
     }
-    this.missText.set('🤔 ' + (this.session.g() === 'f' ? 'Ban ji sunan ki sosai ba' : 'Ban ji sunan ka sosai ba')); this.retryTalk('s_retry_name'); this.againOn.set(true);
+    this.missText.set('🤔 ' + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
   private async welcome(p: Person, back: boolean, ownUrl?: string): Promise<void> {
-    this.doneText.set('Sannu' + (p.name ? ', ' + p.name : '') + '! ' + (back ? 'Barka da dawowa!' : 'Barka da zuwa!')); this.still.set(this.bestStill);
+    this.doneText.set(t('Sannu') + (p.name ? ', ' + p.name : '') + '! ' + (back ? t('Barka da dawowa!') : t('Barka da zuwa!'))); this.still.set(this.bestStill);
     await this.greet(p, back, ownUrl); if (!back) this.confetti(); this.enter();
   }
   /**
@@ -406,7 +410,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.gateFocus.set(null);
   }
   private retryRun = 0;
-  private showGate(mode: 'retry'): void { this.gate.set(mode); this.gateHint.set((this.session.g() === 'f' ? 'Ki danna kan Laila' : 'Ka danna kan Laila') + ' · sake gwadawa'); }
+  private showGate(mode: 'retry'): void { this.gate.set(mode); this.gateHint.set((this.session.g() === 'f' ? t('Ki danna kan Laila') : t('Ka danna kan Laila')) + ' · ' + t('sake gwadawa')); }
   /** The door under Laila on the gate: back to the very start, the session reset (Sani 14 Sep 2026). */
   startOver(e: Event): void { e.stopPropagation(); this.retryRun++; this.pending = null; this.bus.stopAll(); this.teardown(); this.dropModal(); this.session.end(); try { sessionStorage.clear(); } catch { /* ignore */ } this.router.navigate(['/gender']); }
   /** The only gate left is the try-again one: a child who was recognised never sees it. */

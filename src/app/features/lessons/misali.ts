@@ -12,6 +12,7 @@ import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AbcKeyboard, KeyMark } from '../../shared/lesson/abc-keyboard';
 import { Spotter, flyLetter, flyText, joy, matchWord, retryPic, wait } from '../../shared/lesson/helpers';
+import { t, tx } from '../../core/lang/t';
 
 /**
  * Misali · the sample. Laila shows one press-and-say (or spell, read, find) with the boy's or girl's voice, locked like a
@@ -25,18 +26,18 @@ const EG_TRIES = 3;
   imports: [Door, Ear, LailaButton, AbcKeyboard],
   host: { class: 's lesson misali', '[class.movie]': 'movie()', '[class.hearing]': 'hearing()', '[class.read]': "kind === 'karatu'", '[class.karatu]': "kind === 'karatu'", '[class.spell]': "kind === 'rubutu'", '[class.word]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.obj]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.quiz]': "kind === 'nemo' || kind === 'nemonum'", '[class.abc]': "kind === 'haruffa'" },
   template: `
-<app-door (pressed)="leave()" /><div class="moviepill"><i></i>Misali</div><app-ear (pressed)="restart()" /><div class="eyebrow">{{ title }}</div>
+<app-door (pressed)="leave()" /><div class="moviepill"><i></i>{{ t('Misali') }}</div><app-ear (pressed)="restart()" /><div class="eyebrow">{{ tx(title) }}</div>
 @if (kind === 'haruffa') {<div class="abcshow" [class.off]="!bigLetter()"><span class="abcbig" style="--c:var(--red)">{{ bigLetter() }}</span><span class="abcex">example</span></div>}
 @if (kind === 'nemo' || kind === 'nemonum') {
 <div class="qlesson"><div #qgrid class="qgrid" [class.n4]="kind === 'nemo'" [class.n6]="kind === 'nemonum'">
   @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img" (error)="retryPic($event)">@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
-</div><div class="objrow">@for (i of ten; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div><div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div></div>}
+</div><div class="objrow">@for (i of ten; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div><div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div></div>}
 @else {
 @if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span></div>}
 @if (kind === 'abubuwa' || kind === 'lambobi') {<div class="objrow">@for (i of five; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div>}
 @if (kind === 'karatu' || kind === 'rubutu') {<div #slots class="wslots">@for (l of slotLetters(); track $index) {<span class="wslot show" [class.on]="slotState()[$index] === 'on'" [class.done]="slotState()[$index] === 'done'" [class.all]="allDone()">{{ slotText()[$index] }}</span>}</div>}
 @if (kind === 'rubutu') {<app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />}
-<div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+<div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
 <div class="yesno ynpair objq"><app-laila-btn #lb [label]="kind === 'karatu' ? 'Karanta' : 'Faɗa'" [size]="kind === 'karatu' || kind === 'rubutu' ? 96 : 112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [amp]="rec() ? 0.7 : speech.amp()" (pressed)="lailaPressed()" [yay]="yay()" /></div>}`,
 })
 export class MisaliScreen implements OnInit, OnDestroy {
@@ -72,6 +73,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   readonly slotLetters = signal<string[]>([]); readonly slotText = signal<string[]>([]); readonly slotState = signal<('' | 'on' | 'done')[]>([]); readonly allDone = signal(false);
   readonly gridItems = signal<Word[]>([]); readonly gridDone = signal(''); readonly wrongTap = signal('');
   private stopped = false;
+  readonly t = t; readonly tx = tx;
   private phase: 'idle' | 'movie' | 'turn' | 'doing' = 'idle'; private running = false; private hand: HTMLElement | null = null;
   private W = 'CAT'; private AW: Word | null = null; private RW: Word | null = null; private KW: Word | null = null; private gridTarget = '';
   private hearHandle: { stop(): void } | null = null;

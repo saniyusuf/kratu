@@ -11,6 +11,7 @@ import { LoaderScreen } from './features/loader/loader';
 import { Settings } from './features/settings/settings';
 import { Subs } from './shared/subs/subs';
 import { LAILA_DEFS } from './shared/svg';
+import { t } from './core/lang/t';
 
 /** A new version exists: wait this long at most for it to download before carrying on with the copy we have. */
 const FRESH_WAIT = 90000;
@@ -25,11 +26,12 @@ const FRESH_ASK = 6000;
 <span class="svgdefs" [innerHTML]="defs"></span>
 @if (!loaded()) {<app-loader />}
 <div id="app"><div class="block active"><div class="frame"><router-outlet /></div></div></div>
-<div id="rotate"><svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="6"/><circle cx="32" cy="51" r="2"/><path d="M22 12h20"/></svg><b>Juya allon · Turn the tablet sideways</b><small>Kratu works in landscape only</small></div>
+<div id="rotate"><svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="6"/><circle cx="32" cy="51" r="2"/><path d="M22 12h20"/></svg><b>{{ t('Juya allon') }} · Turn the tablet sideways</b><small>Kratu works in landscape only</small></div>
 <app-settings /><app-subs />`,
   styles: [`:host{display:contents} .svgdefs{position:absolute;width:0;height:0;overflow:hidden}`],
 })
 export class App implements OnInit {
+  readonly t = t;
   readonly session = inject(SessionService);
   readonly bus = inject(AudioBus);
   private readonly loader = inject(LoaderService);
