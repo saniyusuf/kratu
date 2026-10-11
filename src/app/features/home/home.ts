@@ -83,16 +83,20 @@ export class HomeScreen implements OnInit, OnDestroy {
       const ok = await this.bus.play(k);
       // the ear may have asked again meanwhile, or a tap cut her off; a browser that refused the sound keeps the hand on the book
       if (!ok || mine !== this.asks) return false;
-      // then the tiles: "you can also pick a lesson to hear about it", with the hand on the first one (Sani 2026-10-12)
-      this.pointAtBook(false); this.spotter.spot(this.hostEl.nativeElement.querySelector('.htile'), 'above');
+      // then the tiles, as the second choice: "or pick a lesson to hear about it" — no hand, just the open tiles lifting once together (Sani 2026-10-12)
+      this.pointAtBook(false); this.nudgeTiles();
     }
-    const ok = await this.bus.play('app_act_pick');
+    const or = this.bus.gk('app_book_or'), ok = await this.bus.play(this.bus.has(or) ? or : 'app_act_pick');
     if (mine === this.asks && !this.bus.blocked()) this.pointAtBook(false);
     return ok;
   }
   private pointAtBook(on: boolean): void {
     this.pointing = on;
     if (on) this.spotter.spot(this.hostEl.nativeElement.querySelector('.cbook'), 'right'); else this.spotter.unspot();
+  }
+  private nudgeTiles(): void {
+    const g = this.hostEl.nativeElement.querySelector<HTMLElement>('.homegrid'); if (!g) return;
+    g.classList.remove('nudge'); void g.offsetWidth; g.classList.add('nudge');
   }
   /** The book slides to the middle as its cover opens; the hand follows it there. */
   respot(): void { if (this.pointing) this.pointAtBook(true); }

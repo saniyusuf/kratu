@@ -961,20 +961,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka danna wannan littafi, mu fara koyo.",
-   "f": "Ki danna wannan littafi, mu fara koyo."
+   "m": "Ka danna littafi, mu fara koyo.",
+   "f": "Ki danna littafi, mu fara koyo."
   },
   "en": "To start, tap the book to begin learning.",
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child who has not finished anything yet. Unreviewed: Claude draft (2026-10-11), awaiting Sani.",
+  "said_when": "on the chooser, to a child who has not finished anything yet. Wording per Sani 11 Oct ('ka danna littafi').",
   "status": "live",
   "recorded": {
-   "m": "a7c7e40118",
-   "f": "c6e6c3fb30"
+   "m": "71c7814a74",
+   "f": "ccf9d25327"
   },
-  "review": "unreviewed: Claude draft, awaiting Sani"
+  "review": "Sani 11 Oct: 'ka danna littafi'"
  },
  {
   "key": "app_book_more",
@@ -982,20 +982,40 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka danna wannan littafi, mu ci gaba da koyo.",
-   "f": "Ki danna wannan littafi, mu ci gaba da koyo."
+   "m": "Ka danna littafi, mu ci gaba da koyo.",
+   "f": "Ki danna littafi, mu ci gaba da koyo."
   },
   "en": "Tap the book to continue learning.",
   "screens": [
    "Zaɓi darasi · chooser"
   ],
-  "said_when": "on the chooser, to a child coming back with lessons under way. Unreviewed: Claude draft (2026-10-11), awaiting Sani.",
+  "said_when": "on the chooser, to a child coming back with lessons under way. Wording per Sani 11 Oct ('ka danna littafi').",
   "status": "live",
   "recorded": {
-   "m": "d343c0737a",
-   "f": "e44f9ab375"
+   "m": "9a7ed5d341",
+   "f": "8a07f1f0f3"
   },
-  "review": "unreviewed: Claude draft, awaiting Sani"
+  "review": "Sani 11 Oct: 'ka danna littafi'"
+ },
+ {
+  "key": "app_book_or",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ko kuma ka zaɓi darasi ɗaya, don jin ƙarin bayani a kansa.",
+   "f": "Ko kuma ki zaɓi darasi ɗaya, don jin ƙarin bayani a kansa."
+  },
+  "en": "Or you can pick a lesson to hear more about it.",
+  "screens": [
+   "Zaɓi darasi · chooser"
+  ],
+  "said_when": "on the chooser, right after app_book_start / app_book_more: the tiles are the second choice, after the book (Sani 2026-10-12: \"ko kuma ka zaɓi darasi\" + the approved app_act_pick ending).",
+  "status": "live",
+  "recorded": {
+   "m": "1dcd118f20",
+   "f": "01100539dc"
+  }
  },
  {
   "key": "app_board_intro",
