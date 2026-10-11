@@ -200,15 +200,18 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
         await this.runQueue(this.items.slice().filter((it) => !ex || it.k !== ex), true, false);
       }
       else {
-        let first = true;
+        let first = true, si = 0;
         for (const st of STAGES) {
           this.check(); this.loadCat(st.key); this.stageHa = st.ha;
           if (first) { first = false; await this.play(this.bus.gk('s_n_intro')); } await this.play(this.bus.gk(st.intro));
           for (const [a, b] of st.blocks) await this.runQueue(this.items.slice(a, b), a === 0 && st.key === 'lambobi_palms', true);
+          this.progress.mark('lambobi', 's' + si++);
         }
-        this.hidePic(); await this.bigTest();
+        this.hidePic(); await this.bigTest(); this.progress.mark('lambobi', 'test');
       }
-      this.hidePic(); await this.play(this.bus.gk('app_stage_done')); this.running = false; this.router.navigate(['/home']);
+      this.hidePic(); await this.play(this.bus.gk('app_stage_done'));
+      if (this.mode === 'words') this.progress.mark('abubuwa', this.cat);
+      this.running = false; this.router.navigate(['/home']);
     } catch (e) { if (!(e instanceof Stopped)) throw e; }
   }
   async ear(): Promise<void> { this.bus.stopAll(); if (this.curItem && this.picSrc()) { if (this.inTest) await this.play(this.bus.gk('s_o_say')); else await this.say(this.curItem); } else await this.play(this.bus.gk(this.mode === 'numbers' ? 's_n_intro' : 's_o_look')); }

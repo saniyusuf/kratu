@@ -101,7 +101,7 @@ export class NemoScreen extends TopicLessonBase {
     const done = this.session.takeExample(this.qdef.set ? 'nemonum' : 'nemo'); let pre = 0;
     if (done && this.pool.some((x) => x.k === done)) { this.pool = this.pool.filter((x) => x.k !== done); pre = 1; }
     for (;;) { this.check(); const items = this.nextTen(prev, 10 - pre); if (!items.length) break; await this.runTen(items, first, pre); pre = 0; first = false; prev = this.wrongs.slice(); if (!prev.length && !this.pool.some((x) => !this.seen.includes(x.k))) break; }
-    await this.play(this.bus.gk('app_stage_done'));
+    await this.play(this.bus.gk('app_stage_done')); this.finished();
   }
   protected clear(): void { this.tapRes = null; this.curItem = null; this.choices.set([]); this.placeholders.set([]); this.masks.set({}); this.dots.set([]); this.fb('', ''); this.resultsOn.set(false); this.resultItems.set([]); }
   protected earInLesson(): void { const it = this.curItem; if (it) this.seq([this.en(it), this.tapKey()]).catch(() => undefined); }

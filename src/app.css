@@ -387,3 +387,25 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   82% { transform: translateX(-4px) rotate(-8deg); }
 }
 @media (prefers-reduced-motion: reduce) { #app .x-laila.nope .lm, #app .x-laila.nope .lhand { animation: none; } }
+
+/* Chooser progress (Sani 2026-10-11): a see-through wave filled to the share of the lesson done (--p), a padlock until the
+   curriculum reaches the lesson (it still opens when pressed), and once finished no wave but a swaying medal and a shine. */
+.s.lesson .htile .hprog{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none}
+.s.lesson .htile .hwave{position:absolute;left:0;right:0;bottom:0;height:var(--p,0%);background:rgba(255,255,255,.26);transition:height 1.4s cubic-bezier(.3,.7,.2,1)}
+.s.lesson .htile .hwave::before,.s.lesson .htile .hwave::after{content:"";position:absolute;left:0;width:200%;height:12px;top:-11px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 13' preserveAspectRatio='none'%3E%3Cpath d='M0 13V7Q15 1 30 7T60 7T90 7T120 7V13Z' fill='%23fff'/%3E%3C/svg%3E") repeat-x 0 0/76px 100%;opacity:.26;animation:hwave 3.6s linear infinite;will-change:transform}
+.s.lesson .htile .hwave::after{opacity:.16;animation-duration:5.8s;animation-direction:reverse;top:-9px;height:10px}
+@keyframes hwave{to{transform:translateX(-76px)}}
+.s.lesson .htile .hlk{position:absolute;left:50%;top:44%;width:36px;translate:-50% -50%;opacity:0;transition:opacity .4s;filter:drop-shadow(0 3px 0 rgba(0,0,0,.2))}
+.s.lesson .htile .hshine{position:absolute;inset:0;opacity:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);translate:-100% 0}
+.s.lesson .htile .hdn{position:absolute;right:6px;top:6px;width:34px;opacity:0;scale:.4;pointer-events:none;transition:opacity .4s,scale .5s cubic-bezier(.3,1.6,.5,1);filter:drop-shadow(0 3px 0 rgba(0,0,0,.2));transform-origin:50% 10%}
+.s.lesson .htile.zero .hwave::before,.s.lesson .htile.zero .hwave::after,.s.lesson .htile.lock .hwave,.s.lesson .htile.done .hwave{display:none}
+.s.lesson .htile.lock .hprog{background:rgba(244,231,201,.42);-webkit-backdrop-filter:grayscale(.85);backdrop-filter:grayscale(.85)}
+.s.lesson .htile.lock .hlk{opacity:1}
+.s.lesson .htile.lock.hot .hlk{animation:hlkwig .5s ease-in-out}
+@keyframes hlkwig{0%,100%{rotate:0deg}25%{rotate:-14deg}75%{rotate:14deg}}
+.s.lesson .htile.done .hdn{opacity:1;scale:1;animation:hdnsway 3.2s ease-in-out infinite}
+@keyframes hdnsway{0%,100%{rotate:-6deg}50%{rotate:6deg}}
+.s.lesson .htile.done .hshine{opacity:1;animation:hshine 4.5s ease-in-out infinite}
+@keyframes hshine{0%,62%{translate:-100% 0}100%{translate:100% 0}}
+.s.lesson .htile.hot .hdn{top:auto;bottom:6px}
+@media (prefers-reduced-motion:reduce){.s.lesson .htile .hwave::before,.s.lesson .htile .hwave::after,.s.lesson .htile.done .hdn{animation:none}.s.lesson .htile .hwave{transition:none}.s.lesson .htile.done .hshine{opacity:0;animation:none}}

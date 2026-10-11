@@ -4,6 +4,7 @@ import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SpeechService } from '../../core/speech/speech.service';
 import { SessionService } from '../../core/state/session.service';
+import { ProgressService } from '../../core/state/progress.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
@@ -39,6 +40,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   readonly speech = inject(SpeechService);
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
+  private readonly progress = inject(ProgressService);
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -153,13 +155,13 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     const rest = group.filter((L) => L !== this.exampleLetter);
     await this.play(this.bus.gk('s_l_recall')); this.unfill(group); await this.recall(rest);
     await this.play('app_scatter_intro'); this.unfill(group); await this.recall(shuffle(rest), true);
-    const learned = Math.min(26, (gi + 1) * 4); this.hideLetter(); await this.play(this.bus.gk('app_stage_done'));
+    const learned = Math.min(26, (gi + 1) * 4); this.hideLetter(); await this.play(this.bus.gk('app_stage_done')); this.progress.mark('haruffa', 'g' + gi);
     if (learned < 26 && learned % 8 === 0) await this.checkpoint(learned);
   }
   private async checkpoint(n: number): Promise<void> { const list = ALL.slice(0, n); this.markActive(list); this.unfill(list); this.eye.set('Ƙaramin jarrabawa · ' + n + ' haruffa'); await this.play(this.bus.gk('s_l_check')); await this.recall(shuffle(list)); this.hideLetter(); await wait(400); }
   private async finals(): Promise<void> {
     this.markActive(ALL); this.unfill(ALL); this.eye.set('Babbar jarrabawa · A → Z'); await this.play(this.bus.gk('s_l_final1')); await this.recall(ALL); this.hideLetter(); this.unfill(ALL);
-    this.eye.set('Jarrabawa ta ƙarshe · a gauraye'); await this.play(this.bus.gk('s_l_final2')); await this.recall(shuffle(ALL), true); this.hideLetter(); this.fb('good', '✓ A – Z'); await this.play(this.bus.gk('s_all_done'));
+    this.eye.set('Jarrabawa ta ƙarshe · a gauraye'); await this.play(this.bus.gk('s_l_final2')); await this.recall(shuffle(ALL), true); this.hideLetter(); this.fb('good', '✓ A – Z'); await this.play(this.bus.gk('s_all_done')); this.progress.mark('haruffa', 'final');
   }
   private async start(fromGroup: number, intro = false): Promise<void> {
     this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(fromGroup * 4);

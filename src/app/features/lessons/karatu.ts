@@ -113,7 +113,7 @@ export class KaratuScreen extends TopicLessonBase {
     const blocks: Item[][] = []; for (let i = 0; i < this.WORDS.length; i += 5) blocks.push(this.WORDS.slice(i, i + 5));
     await firstHints(this.bus, this.session, this.spotter, this.s, null);
     for (let b = 0; b < blocks.length; b++) { this.block = blocks[b]; await this.runBlock(blocks[b], b === blocks.length - 1); }
-    await this.play(this.bus.gk('app_stage_done'));
+    await this.play(this.bus.gk('app_stage_done')); this.finished();
   }
   protected clear(): void { this.stopMic(); this.block = []; this.pend = null; this.awaiting = false; this.curWord = null; this.firstWord = true; this.needLaila = true; this.slots.set([]); this.fb('', ''); this.picSrc.set(null); this.resultsOn.set(false); this.resultItems.set([]); this.armed.set(false); this.rec.set(false); this.speak.set(false); }
   protected earInLesson(): void { const it = this.curWord; if (it && this.slots().length) this.walk(it.en).then(() => this.play('app_read_word')).catch(() => undefined); else this.play('s_k_lesson').catch(() => undefined); }
