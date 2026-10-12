@@ -76,3 +76,4 @@ tools/.soup*
 scripts/.sheet.tmp.mjs
 tools/.hedra-*/
 tools/.qa2/
+tools/.genvid/
