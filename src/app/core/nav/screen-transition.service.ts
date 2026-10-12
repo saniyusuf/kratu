@@ -26,9 +26,14 @@ export class ScreenTransition {
   readonly on = signal(!matchMedia('(prefers-reduced-motion: reduce)').matches);
   private static readonly SLIDE_MS = 320;
   private static readonly PAPER_MS = 340;
-  private kind: 'slide' | 'paper' = 'slide';
+  private kind: 'slide' | 'paper' | 'fade' = 'slide';
+  private plainNext = false;
   private ghost: HTMLElement | null = null;
   private dir = 1; private fromZ = 1; private armed = false;
+
+  /** The next move is a plain, quick fade of the arriving screen with no copy of the old one — for the chooser's
+   *  book, whose picture a copy cannot carry, on tablets that should spend the moment loading (Sani 2026-10-12). */
+  plain(): void { this.plainNext = true; }
 
   start(): void {
     this.router.events.subscribe((e) => { if (e instanceof NavigationStart) this.snap(e.url); });
@@ -38,6 +43,7 @@ export class ScreenTransition {
   /** Before the router takes the old screen away, keep a still copy of it to slide out. */
   private snap(to: string): void {
     this.drop();
+    if (this.plainNext) { this.plainNext = false; if (this.on()) { this.kind = 'fade'; this.armed = true; } return; }
     if (!this.on()) return;
     const from = this.router.url, a = depth(from), b = depth(to);
     if (a < 0 || b < 0 || a === b) { this.armed = false; return; }   // the loader's blank stop, and same-level moves, do not move
@@ -56,6 +62,10 @@ export class ScreenTransition {
   /** The new screen is measured and ready: slide them past each other. */
   private run(screen: HTMLElement): void {
     const g = this.ghost;
+    if (this.armed && this.kind === 'fade') {
+      this.armed = false; screen.classList.add('nav-in', 'nav-fade');
+      setTimeout(() => screen.classList.remove('nav-in', 'nav-fade'), 200); return;
+    }
     if (!this.armed || !this.on() || !g) { this.drop(); return; }
     const frame = screen.parentElement!, k = this.kind;
     const ms = k === 'slide' ? ScreenTransition.SLIDE_MS : ScreenTransition.PAPER_MS;

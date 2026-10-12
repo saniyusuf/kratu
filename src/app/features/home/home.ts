@@ -13,7 +13,8 @@ import { PlanService } from '../../core/state/plan.service';
 import { LessonId, ProgressService } from '../../core/state/progress.service';
 import { CourseBook } from '../../shared/book/book';
 import { ZoomService } from '../../core/zoom/zoom.service';
-import { Spotter } from '../../shared/lesson/helpers';
+import { Spotter, hintOnce } from '../../shared/lesson/helpers';
+import { ScreenTransition } from '../../core/nav/screen-transition.service';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
@@ -46,6 +47,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   private readonly progress = inject(ProgressService);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly zoom = inject(ZoomService);
+  private readonly nav = inject(ScreenTransition);
   private readonly spotter = new Spotter(this.hostEl.nativeElement, this.zoom);
   private pointing = false; private asks = 0;
   private readonly leaveBox = viewChild.required(Leave);
@@ -81,7 +83,8 @@ export class HomeScreen implements OnInit, OnDestroy {
       if (g.src && !(await this.bus.playRaw(g.src, { ha: g.name, en: g.name }))) return;
       if (!(await this.bus.play('s_welcome'))) return;
     }
-    await this.invite();
+    // then the door, the first time a child is on a screen that has one: "press this door to go back" (Sani 2026-10-12)
+    if (await this.invite()) await hintOnce('door', this.bus, this.session, this.spotter, this.hostEl.nativeElement);
   }
   /** The book comes first (Sani 2026-10-11): the hand points at it and it glows while Laila invites the child to press it —
    *  to start for a new child, to continue for a returning one — and then she says the tiles can be picked too. */
@@ -120,7 +123,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
     this.bus.stopAll(); this.pointAtBook(false); this.pointAtTiles(false); this.cue.set(false);
-    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 150);   // just long enough to see it pressed
+    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => { this.nav.plain(); this.next(); }, 150);   // just long enough to see it pressed; no slide
   }
   private next(): void {
     const c = this.step;

@@ -4147,8 +4147,8 @@
   "screens": [
    "Fashe haruffa"
   ],
-  "said_when": "before Laila points at A and pops it; the letter itself is said next",
-  "status": "live",
+  "said_when": "before Laila points at A and pops it; the letter itself is said next No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
+  "status": "unused",
   "recorded": {
    "m": "d1600e46ad",
    "f": "d1600e46ad"
@@ -4167,8 +4167,8 @@
   "screens": [
    "Fashe haruffa"
   ],
-  "said_when": "after the example, and when a child stalls",
-  "status": "live",
+  "said_when": "after the example, and when a child stalls No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
+  "status": "unused",
   "recorded": {
    "m": "263e421bf0",
    "f": "6dcc5f7497"
@@ -4187,8 +4187,8 @@
   "screens": [
    "Fasa haruffa"
   ],
-  "said_when": "before each letter, followed by the letter just popped, in Nigerian English",
-  "status": "live",
+  "said_when": "before each letter, followed by the letter just popped, in Nigerian English No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
+  "status": "unused",
   "recorded": {
    "m": "70d8bd1712",
    "f": "58bf78405a"
@@ -4200,18 +4200,60 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan harafin bayan sa, bi da bi.",
-   "f": "Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan harafin bayan sa, bi da bi."
+   "m": "Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan harafin bayan sa.",
+   "f": "Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan harafin bayan sa."
   },
-  "en": "Find the first letter of English and pop it. Then the letter after it, in order.",
+  "en": "Find the first letter of English and pop it. Then the letter after it.",
   "screens": [
    "Fasa haruffa"
   ],
-  "said_when": "after the balloons are introduced",
+  "said_when": "after the balloons are introduced 'bi da bi' dropped (Sani 12 Oct 15:18).",
   "status": "live",
   "recorded": {
-   "m": "3110c359f3",
-   "f": "0a4448ff9a"
+   "m": "9e2e86a08c",
+   "f": "7a00b8eb59"
+  }
+ },
+ {
+  "key": "s_pop_first",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fasa harafin farko:",
+   "f": "Ki fasa harafin farko:"
+  },
+  "en": "Pop the first letter:",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "Every 5 s while A is due, followed by app_en_A — A is the only letter she may name (Sani 12 Oct 15:18). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "recorded": {
+   "m": "7dc6f8ff11",
+   "f": "7cdd8ee285"
+  }
+ },
+ {
+  "key": "s_pop_next",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fasa harafi na gaba.",
+   "f": "Ki fasa harafi na gaba."
+  },
+  "en": "Pop the next letter.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "Every 5 s after A until the right balloon goes; never names the letter (Sani 12 Oct 15:18). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "recorded": {
+   "m": "7fe0422355",
+   "f": "58a163dd00"
   }
  },
  {

@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { Ear } from '../../shared/chrome/chrome';
+import { Spotter, hintOnce } from '../../shared/lesson/helpers';
+import { SessionService } from '../../core/state/session.service';
+import { ZoomService } from '../../core/zoom/zoom.service';
 import { Laila } from '../../shared/laila/laila';
 
 /** Screen 2 · Meet Laila. She introduces herself; she is pressable while she talks, a press cuts her off and goes on. */
@@ -23,6 +26,9 @@ import { Laila } from '../../shared/laila/laila';
 <button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> Ci gaba</button>`,
 })
 export class MeetLailaScreen implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
+  private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));
   private readonly bus = inject(AudioBus);
   private readonly router = inject(Router);
   /** While she says who she is, she is the emphasis; the hand and the two glows come only when it is time to press (Sani 16 Sep). */
@@ -33,9 +39,11 @@ export class MeetLailaScreen implements OnInit, OnDestroy {
   ngOnDestroy(): void { this.bus.stopAll(); }
   async intro(): Promise<void> {
     const my = ++this.seq; this.cue.set(false); this.talking.set(true);
-    await this.bus.play(this.bus.gk('s_laila2'));
+    const ok = await this.bus.play(this.bus.gk('s_laila2'));
     if (my !== this.seq) return;   // the ear started the line again: that run owns the screen now
+    // a child who pressed a gender before Laila got to the ear hears about it here instead (Sani 2026-10-12)
+    if (ok) { await hintOnce('ear', this.bus, this.session, this.spotter, this.hostEl.nativeElement); if (my !== this.seq) return; }
     this.talking.set(false); this.cue.set(true);
   }
-  go(): void { this.seq++; this.bus.stopAll(); this.router.navigate(['/face']); }
+  go(): void { this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.router.navigate(['/face']); }
 }

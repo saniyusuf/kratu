@@ -130,6 +130,20 @@ export async function firstHints(bus: AudioBus, session: SessionService, spotter
   for (const [k, el, where] of steps) { const ok = await bus.play(k, { onStart: () => spotter.spot(el, where) }); spotter.unspot(); if (!ok) return; }
 }
 
+/**
+ * "Press this ear to hear it again" / "press this door to go back": said once a session, the first time each is on
+ * screen, with the hand on it and it glowing (Sani 2026-10-12). Only a line heard to the end counts as told.
+ */
+export async function hintOnce(kind: 'ear' | 'door', bus: AudioBus, session: SessionService, spotter: Spotter, s: HTMLElement): Promise<boolean> {
+  if (session.hintSaid(kind)) return true;
+  const el = s.querySelector(kind === 'ear' ? '.helpdome' : '.backdoor'); if (!el) return true;
+  spotter.spot(el, kind === 'ear' ? 'left' : 'right');
+  const ok = await bus.play(bus.gk(kind === 'ear' ? 's_ear' : 's_back'));
+  spotter.unspot();
+  if (ok) session.hintMark(kind);
+  return ok;
+}
+
 /** The results cards all fit inside the picture box: up to five in a row, two rows for ten. */
 
 /**

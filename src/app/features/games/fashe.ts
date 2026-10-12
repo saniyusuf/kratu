@@ -24,13 +24,13 @@ const SKY = 8;
  */
 const CLOCK = 120_000, GAIN = 4_000, LOSS = 8_000;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
-const NUDGE_AT = 14000, GIVE_AT = 40000;
+const NUDGE_EVERY = 5000, GIVE_AT = 40000;
 
 interface Bub { id: number; L: string; lane: number; x: number; dur: number; wait: number; state: '' | 'pop' | 'burst' | 'go'; }
 
 /**
  * Fashe haruffa · the placement game. Letters drift up in balloons and the child pops them **in alphabetical order**,
- * A to Z, with nobody naming them: Laila pops A as the example and then says only "find the next one". That is the
+ * A to Z, with nobody naming them but A: Laila says "pop the first letter, A" and then only "pop the next letter". That is the
  * whole test — not whether a child can point at a letter somebody just read out, but whether they carry the order of
  * the English alphabet in their head (Sani 2026-09-25).
  *
@@ -295,20 +295,14 @@ export class FasheScreen implements OnInit, OnDestroy {
   /** The letter now due. Keeping it in the sky is this screen's one duty; naming it would end the test. */
   private want(): string { return ALL[this.at] || ''; }
   /**
-   * What Laila says before each letter: the one **just popped**, and never the one due — "ka fasa wanda ke bayan A",
-   * pop the one after A; then after B, then after C, as the child works down the strip. The letter she names is the
-   * app's Nigerian English recording, the same voice the lessons teach in, so a child hears "A" said the way they will
-   * be asked to say it (Sani 2026-09-25). A child who knows the alphabet knows what follows A; one who does not
-   * cannot be handed it, which is what this game is for.
+   * The reminder, every five seconds until the right balloon goes (Sani 2026-10-12): "pop the first letter: A" while A
+   * is due — A is the one letter she may name — and after that only "pop the next letter", never naming it, because
+   * knowing what comes next is exactly what this game is testing.
    */
-  private async askNext(first = false): Promise<void> {
-    const prev = ALL[this.at - 1]; if (!prev) return;
+  private async remind(): Promise<void> {
     this.speak.set(true);
-    // one chain, awaited end to end: every bus.play stops whatever is sounding, so a second line started alongside
-    // this one swallows it — that is how "ka fasa" went missing under "yanzu kai" (Sani 2026-09-25)
-    if (first) await this.bus.play(this.bus.gk('s_pop_go'));
-    await this.bus.play(this.bus.gk('s_pop_after'));
-    await this.bus.play('app_en_' + prev);
+    if (this.at === 0) { if (await this.bus.play(this.bus.gk('s_pop_first'))) await this.bus.play('app_en_A'); }
+    else await this.bus.play(this.bus.gk('s_pop_next'));
     this.speak.set(false);
   }
   private wait(): Promise<boolean | null> {
@@ -319,40 +313,16 @@ export class FasheScreen implements OnInit, OnDestroy {
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
       if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.float(old.id, L); }   // the old one floats off, the letter due rises in behind it
       this.fb('wait', '');
-      this.askNext(this.at === 1).catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
-      this.later(NUDGE_AT, () => { if (this.answer === res) this.again(); });
+      if (this.at === 0) this.remind().catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
+      const nudge = () => { if (this.answer !== res) return; this.remind().catch(() => undefined); this.later(NUDGE_EVERY, nudge); };
+      this.later(NUDGE_EVERY, nudge);
       this.later(GIVE_AT, () => { if (this.answer === res) { this.answer = null; res(false); } });   // they have stopped playing
     });
   }
-  /** The ear, and Laila herself: the same prompt again — the letter behind, never the one due. */
+  /** The ear, and Laila herself: the same reminder again. */
   async again(): Promise<void> {
     if (!this.target()) return;
-    this.bus.stopAll(); await this.askNext();
-  }
-  /**
-   * Laila does the first one herself, in full view: the balloons are drifting, a hand travels up to the A balloon and
-   * rides along with it, she says "here is an example, I'll pop the first one", names it — **A** — and only then does
-   * it burst. A child who has never held a tablet has now seen the whole move (Sani 2026-09-25).
-   */
-  private async example(): Promise<void> {
-    if (this.done()[0]) { this.at = Math.max(this.at, 1); return; }   // an eager child got there first
-    let b = this.bubs().find((x) => x.L === 'A');
-    if (!b) { const old = shuffle(this.bubs().filter((x) => !x.state))[0]; this.float(old.id, 'A'); b = this.bubs().find((x) => x.L === 'A')!; }
-    await wait(b.wait + 1400);                              // it has to rise in before she can point at it
-    const el = this.el(b.id);
-    if (el) this.pointAt(el);                               // it walks across to the one she is about to burst
-    this.speak.set(true);
-    await this.bus.play(this.bus.gk('s_pop_demo'));          // "Ga misali. Zan fasa na farko:"
-    await this.bus.play('app_en_A');                         // …and its name, so the move is unambiguous
-    this.speak.set(false);
-    if (this.stopped) { this.unpoint(); return; }
-    this.freeze(el);
-    this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
-    joy(this.bus, this.yay); this.unpoint();
-    if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot('A'), 'A', 'var(--green)');
-    this.done.update((a) => a.map((v, i) => i === 0 ? true : v));
-    this.at = 1;                                            // A is shown, not scored: the child's own run starts at B
-    this.later(60, () => { this.recycle(b.id); this.sweep(); });
+    this.bus.stopAll(); await this.remind();
   }
   /** The pointing hand rides the balloon it is pointing at, because the balloon is moving while she talks. */
   private hand: HTMLElement | null = null; private handRaf = 0; private handOn: HTMLElement | null = null;
@@ -390,15 +360,16 @@ export class FasheScreen implements OnInit, OnDestroy {
       const g = this.bus.gk(k);
       if (this.bus.has(g) && !(await this.bus.play(g))) { this.unpoint(); return; }
     }
-    await this.example();
+    this.unpoint();                                         // no demonstration (Sani 2026-10-12): the child starts at A
     if (this.stopped) return;
-    this.runClock();                                        // her demonstration is free; the child's run is not
+    this.runClock();
     for (; this.at < ALL.length; ) {
       if (this.stopped) return;
       const ok = await this.wait();
       if (ok === null || this.stopped) return;              // the screen was left
       if (!ok) { await this.finish(true); return; }         // the clock ran out, or they stopped playing
-      this.reached++; this.at++; this.gone.set(this.reached + ' / 25');
+      if (this.at > 0) this.reached++;                     // A is named for them, so it is not scored: B–Z, as before
+      this.at++; this.gone.set(this.reached + ' / 25');
       await wait(220);
     }
     await this.finish(false);

@@ -59,7 +59,10 @@ export class SessionService {
   /** A thing shown once per session (the three ways to spell, the first "press Laila"): true the first time only. */
   once(name: string): boolean { try { if (sessionStorage.getItem('kratu_once_' + name) === '1') return false; sessionStorage.setItem('kratu_once_' + name, '1'); return true; } catch { return true; } }
   /** Only the sample-session flag: a demo, or a child leaving, must never un-tell a real child (Sani 2026-09-20). */
-  hintsReset(): void { try { sessionStorage.removeItem('kratu_hints'); } catch { /* ignore */ } }
+  hintsReset(): void { try { for (const k of ['kratu_hints', 'kratu_hint_ear', 'kratu_hint_door']) sessionStorage.removeItem(k); } catch { /* ignore */ } }
+  /** The ear and the door, each told once a session, the first time it is on screen (Sani 2026-10-12). */
+  hintSaid(kind: 'ear' | 'door'): boolean { try { return sessionStorage.getItem('kratu_hint_' + kind) === '1'; } catch { return false; } }
+  hintMark(kind: 'ear' | 'door'): void { try { sessionStorage.setItem('kratu_hint_' + kind, '1'); } catch { /* private mode */ } }
 
   /**
    * What each example already got right, by lesson: the lesson that follows counts it as done instead of asking it

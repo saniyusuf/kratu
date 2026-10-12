@@ -4,7 +4,7 @@ import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService, Gender } from '../../core/state/session.service';
 import { Ear } from '../../shared/chrome/chrome';
-import { Spotter } from '../../shared/lesson/helpers';
+import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
 
 /** Screen 0 · Gender, always first: two photos, Laila greets and the ear repeats. */
@@ -46,9 +46,8 @@ export class GenderScreen implements OnInit, OnDestroy {
     if (!ok) { this.spotter.unspot(); this.touring.set(false); this.spot.set(''); return; }
     // then the ear: it pulses with the pointing hand beside it while Laila says "press the ear to hear it again",
     // and both go with her voice — the same hand every lesson uses for the ear (Sani 16 Sep)
-    this.spot.set('dome'); this.spotter.spot(this.hostEl.nativeElement.querySelector('.helpdome'), 'left');
-    await this.bus.play(this.bus.gk('s_ear'));
-    this.spotter.unspot(); this.touring.set(false); this.spot.set('');
+    await hintOnce('ear', this.bus, this.session, this.spotter, this.hostEl.nativeElement);
+    this.touring.set(false); this.spot.set('');
   }
   pick(g: Gender): void { this.bus.stopAll(); this.clear(); this.spotter.unspot(); this.touring.set(false); this.spot.set(''); this.session.setGender(g); this.router.navigate(['/laila']); }
   private clear(): void { this.timers.forEach((t) => clearTimeout(t)); this.timers = []; }

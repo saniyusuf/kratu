@@ -155,6 +155,8 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .frame > .ghost.nav-out.nav-paper{animation:paperOut calc(var(--nav-ms,340ms) * .88) ease-in both}
 @keyframes paperIn{from{transform:translateY(9%) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
 @keyframes paperOut{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(-50%,-50%) scale(.94);opacity:0}}
+#app .frame > .s.nav-in.nav-fade{animation:navFade .15s ease-out both}
+@keyframes navFade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){#app .frame > .s.nav-in,#app .frame > .ghost.nav-out{animation:none}}
 /* The camera guide (Sani 2026-09-17): one generous target ring in the middle of the picture, and the app's own pointing
    hand showing which way the child should move. The hand sits on the far side of the ring and points across it, so it
@@ -566,6 +568,8 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   filter:drop-shadow(0 0 8px rgba(251,192,45,1)) drop-shadow(0 0 22px rgba(251,192,45,.8))}
 #app .s.gate .yn.spot2{box-shadow:none;animation:objpulse 1.2s ease-in-out infinite}
 #app .s.gate .yn.spot2 .lm,#app .s.gate .yn.spot2 .allo{filter:drop-shadow(0 0 8px rgba(251,192,45,1)) drop-shadow(0 0 22px rgba(251,192,45,.85))}
+#app .helpdome.spot2,#app .backdoor.spot2{box-shadow:none;animation:objpulse 1.2s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(251,192,45,1)) drop-shadow(0 0 20px rgba(251,192,45,.85))}
 @keyframes objpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 /* A, B, C, D: the one she is saying grows with a little bounce and glows in the shape of the letter. */
 #app .s.gate .gateabc b.lit{transform:translateY(-8px) scale(1.4);filter:drop-shadow(0 0 6px rgba(251,192,45,1)) drop-shadow(0 0 16px rgba(251,192,45,.8))}
