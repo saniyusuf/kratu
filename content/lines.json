@@ -4344,8 +4344,11 @@
    "Haruffa · gwada"
   ],
   "said_when": "The gate, before she names them.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "b0274f1a09",
+   "f": "d7d3d001e7"
+  }
  },
  {
   "key": "s_gate_z",
@@ -4358,8 +4361,8 @@
    "Haruffa · gwada"
   ],
   "said_when": "After A B C D, to make the question the whole alphabet.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": "1d8b913fd1"
  },
  {
   "key": "s_gate_how",
@@ -4375,8 +4378,11 @@
    "Haruffa · gwada"
   ],
   "said_when": "The two choices, named.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "6e58c1d637",
+   "f": "6208b02828"
+  }
  },
  {
   "key": "s_gate_calm",
@@ -4392,8 +4398,11 @@
    "Haruffa · gwada"
   ],
   "said_when": "They tapped the slate; straight into Haruffa.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "c8b1e5c1b1",
+   "f": "59eb401ca5"
+  }
  },
  {
   "key": "s_gate_play",
@@ -4406,7 +4415,7 @@
    "Haruffa · gwada"
   ],
   "said_when": "The invitation, before the question.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": "328256a87d"
  }
 ]
