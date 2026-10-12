@@ -4466,8 +4466,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan ba ka sani ba, ba damuwa, za mu koye su tare. Ka danna baƙin allo don mu fara koyo.",
-   "f": "Idan ba ki sani ba, ba damuwa, za mu koye su tare. Ki danna baƙin allo don mu fara koyo."
+   "m": "Idan baka sani ba, ba damuwa, za mu koye su tare. Ka danna baƙin allo don mu fara koyo.",
+   "f": "Idan baki sani ba, ba damuwa, za mu koye su tare. Ki danna baƙin allo don mu fara koyo."
   },
   "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
   "screens": [
@@ -4475,10 +4475,10 @@
   ],
   "said_when": "The second choice, with the hand on the slate. Unreviewed: Claude draft from Sani's English (12 Oct).",
   "status": "live",
-  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "review": "Sani 12 Oct 14:38: 'baka sani ba' (the voice read 'ba ka sani' and lost the last 'ba')",
   "recorded": {
-   "m": "9b1d49d56e",
-   "f": "0a05989645"
+   "m": "e736f54e55",
+   "f": "089d01b8ad"
   }
  }
 ]

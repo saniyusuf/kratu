@@ -557,3 +557,17 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 @keyframes hshine{0%,62%{translate:-100% 0}100%{translate:100% 0}}
 .s.lesson .htile.hot .hdn{top:auto;bottom:6px}
 @media (prefers-reduced-motion:reduce){.s.lesson .htile .hwave::before,.s.lesson .htile .hwave::after,.s.lesson .htile.done .hdn{animation:none}.s.lesson .htile .hwave{transition:none}.s.lesson .htile.done .hshine{opacity:0;animation:none}}
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Emphasis glows follow the thing itself, never a box around it (Sani 2026-10-12). The shared .spot2 pulse draws a
+   square box-shadow on its target; on the chooser's book and the gate's two answers it is replaced by a drop-shadow,
+   which hugs Laila's outline, the slate's and the book's.                                                         */
+#app .s.home .cbook.spot2{box-shadow:none;animation:objpulse 1.4s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(251,192,45,1)) drop-shadow(0 0 22px rgba(251,192,45,.8))}
+#app .s.gate .yn.spot2{box-shadow:none;animation:objpulse 1.2s ease-in-out infinite}
+#app .s.gate .yn.spot2 .lm,#app .s.gate .yn.spot2 .allo{filter:drop-shadow(0 0 8px rgba(251,192,45,1)) drop-shadow(0 0 22px rgba(251,192,45,.85))}
+@keyframes objpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+/* A, B, C, D: the one she is saying grows with a little bounce and glows in the shape of the letter. */
+#app .s.gate .gateabc b.lit{transform:translateY(-8px) scale(1.4);filter:drop-shadow(0 0 6px rgba(251,192,45,1)) drop-shadow(0 0 16px rgba(251,192,45,.8))}
+#app .s.gate .gateabc b{transition:opacity .22s,transform .38s cubic-bezier(.2,1.7,.4,1),filter .25s}
+@media (prefers-reduced-motion:reduce){#app .s.home .cbook.spot2,#app .s.gate .yn.spot2{animation:none}}

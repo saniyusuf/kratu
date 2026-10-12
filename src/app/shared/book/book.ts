@@ -70,7 +70,7 @@ const SLOW = 1.5;
 @keyframes cbbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .cbook::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(251,192,45,.45),rgba(251,192,45,0) 65%);z-index:-1;translate:calc(var(--c) * 18.4%) 0;animation:cbglow 4.8s ease-in-out infinite}
 @keyframes cbglow{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
-.cbook.spot2::before{inset:-34%;background:radial-gradient(circle,rgba(251,192,45,.8),rgba(251,192,45,0) 66%);animation-duration:1.3s}
+.cbook.spot2::before{opacity:0;animation:none}
 .cbook.spot2 .cbback::before{animation-duration:1.1s}
 .cbback{position:absolute;inset:-6px -7px -8px;border-radius:12px 18px 18px 12px;background:linear-gradient(135deg,#A63A22,#7A2616);box-shadow:0 8px 0 rgba(59,46,30,.16),inset 0 0 0 2px #5E1C10;opacity:0}
 .cbback::after{content:"";position:absolute;inset:3px;border-radius:9px 15px 15px 9px;border:1.4px dashed #F1D9A8;opacity:.8}
