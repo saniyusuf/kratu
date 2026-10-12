@@ -120,7 +120,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
     this.bus.stopAll(); this.pointAtBook(false); this.pointAtTiles(false); this.cue.set(false);
-    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 700);   // the pictures jump first
+    clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 150);   // just long enough to see it pressed
   }
   private next(): void {
     const c = this.step;

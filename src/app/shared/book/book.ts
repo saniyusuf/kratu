@@ -82,8 +82,7 @@ const SLOW = 1.5;
 .cbfront{box-shadow:0 8px 0 rgba(59,46,30,.18)}
 .cbinside{transform:rotateY(180deg);border-radius:16px 4px 4px 16px;background:#FBF3DE repeating-linear-gradient(transparent 0 13px,rgba(201,174,116,.35) 13px 14px);border:3px solid #C9AE74}
 .cbhand{position:absolute;left:0;top:0;z-index:25;pointer-events:none;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 4px 3px rgba(59,46,30,.28))}
-.cbook.go::after{content:"";position:absolute;inset:-30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(255,255,255,0) 60%);animation:cbflash .9s ease-out forwards;z-index:9;pointer-events:none}
-@keyframes cbflash{0%{opacity:0}60%{opacity:1}100%{opacity:0}}
+.cbook.down{transform:scale(.96);transition:transform .12s ease-out}
 @media (prefers-reduced-motion:reduce){.cbook,.cbook::before,.cbback::before{animation:none!important}}
 `],
 })
@@ -129,20 +128,17 @@ export class CourseBook implements AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void { this.dead = true; cancelAnimationFrame(this.raf); this.ro?.disconnect(); this.io?.disconnect(); clearTimeout(this.goTimer); }
 
-  /** Pressed at any moment: the book is open at once, both pictures jump, and the next lesson opens. */
+  /** Pressed at any moment: the book stops where it is and the next lesson opens straight away. Nothing is redrawn —
+   *  a cheap tablet should spend the moment loading the next screen, not animating this one (Sani 2026-10-12). */
   press(): void {
-    if (performance.now() < this.goUntil) return;
-    if (this.phase === 'turn' && !this.turned) this.idx++;
-    if (this.idx === 0) this.idx = 1;
-    this.opened(); this.setHand(0, 0, 0, 1, 0); this.el.style.setProperty('--glow', spread(this.idx).edge);
-    this.boostAt = performance.now() / 1000 / SLOW; this.el.classList.add('go'); this.goUntil = performance.now() + 1200;
-    clearTimeout(this.goTimer); this.goTimer = window.setTimeout(() => { this.el.classList.remove('go'); this.go('wait'); this.schedule(); }, 1200);
-    this.schedule(); this.pressed.emit();
+    if (this.goUntil) return;
+    this.goUntil = 1; this.dead = true; cancelAnimationFrame(this.raf); this.raf = 0;
+    this.el.classList.remove('breath'); this.el.classList.add('down'); this.pressed.emit();
   }
 
   private size(): void {
     this.W = this.el.offsetWidth; this.H = this.el.offsetHeight; if (!this.W) return;
-    this.dpr = Math.min(2, window.devicePixelRatio || 1); this.S = this.W / 2; this.w = this.W / 2; this.h = this.H; this.ox = this.W * .1; this.oy = this.H * .5;
+    this.dpr = Math.min(1.5, window.devicePixelRatio || 1); this.S = this.W / 2; this.w = this.W / 2; this.h = this.H; this.ox = this.W * .1; this.oy = this.H * .5;
     this.cv.width = Math.round(this.W * 1.2 * this.dpr); this.cv.height = Math.round(this.H * 2 * this.dpr);
     this.hw = this.W * .30; this.ax = this.hw * 32 / 140; this.ay = this.hw * 12 / 140; this.hand.style.width = this.hw + 'px'; this.hand.style.transformOrigin = this.ax + 'px ' + this.ay + 'px';
   }
