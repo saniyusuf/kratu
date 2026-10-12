@@ -70,3 +70,7 @@ tools/.venv-yarn/
 tools/.yarngpt/
 tools/.spitch-ha-test/
 tools/.genimg-*/
+tools/.qa/
+tools/.sheet*
+tools/.soup*
+scripts/.sheet.tmp.mjs
