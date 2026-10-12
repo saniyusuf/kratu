@@ -68,7 +68,7 @@ textarea{width:100%;min-height:70px;font:inherit;padding:8px;border:1px solid va
 @media (max-width:640px){.bigpair{grid-template-columns:1fr}}
 </style></head><body>
 <h1>Kratu · pictures for each language</h1><p class="soft">Left: the shared Hausa picture · right: the new one. Click a picture to see it big and leave a comment. New pictures appear on their own.</p>
-<div class="tabs" id="tabs"></div><div id="list"></div>
+<div class="tabs" id="tabs"></div><p><button class="send" id="copy">📋 Copy all comments as JSON</button> <span class="soft" id="copied"></span></p><textarea id="copybox" readonly style="display:none"></textarea><div id="list"></div>
 <div id="big"><div class="bigwrap"><div class="bar"><b id="btitle"></b><span><button id="prev">← previous</button> <button id="next">next →</button> <button id="close">close ✕</button></span></div>
 <div class="bigpair"><div><div class="lab">shared (Hausa)</div><img id="bshared" alt=""></div><div><div class="lab" id="blab"></div><img id="bmine" alt=""></div></div>
 <h3>Comments</h3><div id="bcomments"></div><textarea id="btext" placeholder="What should change? e.g. 'wrong clothes', 'make her younger', 'perfect'"></textarea><button class="send" id="bsend">Save comment</button>
@@ -94,5 +94,12 @@ $('close').onclick=()=>{ $('big').classList.remove('on'); cur=null; };
 $('prev').onclick=()=>step(-1); $('next').onclick=()=>step(1);
 document.onkeydown=(e)=>{ if(!cur||e.target.tagName==='TEXTAREA') return; if(e.key==='Escape') $('close').onclick(); if(e.key==='ArrowRight') step(1); if(e.key==='ArrowLeft') step(-1); };
 $('bsend').onclick=async()=>{ const text=$('btext').value.trim(); if(!text||!cur) return; const r=await fetch('/comment',{method:'POST',body:JSON.stringify({lang,key:cur.key,text})}); if(r.ok){ $('btext').value=''; await load(); } else alert('Could not save the comment'); };
+$('copy').onclick=async()=>{
+  const out=[]; for(const L of D) for(const it of L.items) for(const c of it.comments) out.push({language:L.name,key:it.key,word:it.en,comment:c.text,at:c.at});
+  const txt=JSON.stringify({pictures_feedback:out},null,1);
+  let ok=false; try{ await navigator.clipboard.writeText(txt); ok=true; }catch{}
+  const box=$('copybox'); box.value=txt; box.style.display=ok?'none':'block'; if(!ok){ box.focus(); box.select(); }
+  $('copied').textContent=out.length?(ok?out.length+' comments copied — paste them in the chat.':'Select all in the box below and copy.'):'No comments yet.';
+};
 load(); setInterval(load,60000);
 </script></body></html>`;
