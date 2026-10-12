@@ -6,7 +6,7 @@ import { readFileSync, readdirSync, writeFileSync, existsSync, statSync, mkdirSy
 import { extname, normalize } from 'node:path';
 
 const PORT = 4210, COMMENTS = 'tools/.genimg/comments.json';
-const LANGS = [['yo', 'Yoruba'], ['ig', 'Igbo'], ['sw', 'Swahili']];
+const LANGS = [['shared', 'Shared (all languages)'], ['ha', 'Hausa'], ['yo', 'Yoruba'], ['ig', 'Igbo'], ['sw', 'Swahili']];   // the Hedra redraw: tools/.hedra-<set>, prompts in content/pictures/<set>.json
 const W = Object.fromEntries(JSON.parse(readFileSync('content/words.json', 'utf8')).words.map((w) => [w.key, w]));
 mkdirSync('tools/.genimg', { recursive: true });
 const comments = () => (existsSync(COMMENTS) ? JSON.parse(readFileSync(COMMENTS, 'utf8')) : {});
@@ -14,8 +14,8 @@ const comments = () => (existsSync(COMMENTS) ? JSON.parse(readFileSync(COMMENTS,
 function data() {
   const c = comments();
   return LANGS.map(([code, name]) => {
-    const pf = `content/langs/${code}/image_prompts.json`, prompts = existsSync(pf) ? JSON.parse(readFileSync(pf, 'utf8')) : {};
-    const dir = `tools/.genimg-${code}`, have = existsSync(dir) ? new Set(readdirSync(dir).filter((f) => f.endsWith('.png')).map((f) => f.slice(0, -4))) : new Set();
+    const pf = `content/pictures/${code}.json`, prompts = existsSync(pf) ? JSON.parse(readFileSync(pf, 'utf8')) : {};
+    const dir = `tools/.hedra-${code}`, have = existsSync(dir) ? new Set(readdirSync(dir).filter((f) => f.endsWith('.png')).map((f) => f.slice(0, -4))) : new Set();
     const items = Object.keys(prompts).filter((k) => have.has(k)).map((k) => {
       const w = W[k] || {}, t = statSync(`${dir}/${k}.png`).mtimeMs;
       return { key: k, en: w.en || '', at: t, mine: `/${dir}/${k}.png?${Math.round(t)}`, shared: typeof w.picture === 'string' ? '/public/assets/' + w.picture : null, prompt: prompts[k], comments: c[code + '/' + k] || [] };
@@ -42,7 +42,7 @@ createServer((req, res) => {
   }
   // pictures only, from the folders this page shows
   const p = normalize(decodeURIComponent(url.pathname)).replace(/^\/+/, '');
-  if (!/^(tools\/\.genimg-(yo|ig|sw)|public\/assets\/pictures)\/[a-z0-9_]+\.(png|webp)$/.test(p) || !existsSync(p)) { res.writeHead(404); res.end(); return; }
+  if (!/^(tools\/\.hedra-(shared|ha|yo|ig|sw)|public\/assets\/pictures)\/[a-z0-9_]+\.(png|webp)$/.test(p) || !existsSync(p)) { res.writeHead(404); res.end(); return; }
   res.writeHead(200, { 'content-type': TYPES[extname(p)], 'cache-control': 'max-age=60' }); createReadStream(p).pipe(res);
 }).listen(PORT, '127.0.0.1', () => console.log('gallery on http://localhost:' + PORT));
 
@@ -74,7 +74,7 @@ textarea{width:100%;min-height:70px;font:inherit;padding:8px;border:1px solid va
 <h3>Comments</h3><div id="bcomments"></div><textarea id="btext" placeholder="What should change? e.g. 'wrong clothes', 'make her younger', 'perfect'"></textarea><button class="send" id="bsend">Save comment</button>
 <p class="prompt" id="bprompt"></p></div></div>
 <script>
-let D=[],lang=localStorage.getItem('lang')||'yo',cur=null;
+let D=[],lang=localStorage.getItem('lang2')||'shared',cur=null;
 const $=(id)=>document.getElementById(id), esc=(s)=>String(s).replace(/[&<>"]/g,(c)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 async function load(){ try{ D=await (await fetch('/data.json')).json(); }catch{ return; } draw(); if(cur) fill(); }
 function draw(){
@@ -88,7 +88,7 @@ function fill(){ const its=items(); let i=its.findIndex(x=>x.key===cur.key); if(
   $('btitle').textContent=it.key+' · '+it.en; $('blab').textContent='new ('+(D.find(l=>l.code===lang).name)+')'; $('bmine').src=it.mine; $('bshared').src=it.shared||''; $('bshared').style.display=it.shared?'':'none';
   $('bcomments').innerHTML=it.comments.length?it.comments.map(c=>'<div class="c">'+esc(c.text)+'<br><small>'+new Date(c.at).toLocaleString()+'</small></div>').join(''):'<p class="soft">No comments yet.</p>'; $('bprompt').textContent='Prompt: '+it.prompt; }
 function step(d){ const n=items().length; if(!n) return; cur.i=(cur.i+d+n)%n; cur.key=items()[cur.i].key; fill(); $('btext').value=''; }
-$('tabs').onclick=(e)=>{ const b=e.target.closest('button'); if(!b) return; lang=b.dataset.l; try{localStorage.setItem('lang',lang)}catch{} draw(); };
+$('tabs').onclick=(e)=>{ const b=e.target.closest('button'); if(!b) return; lang=b.dataset.l; try{localStorage.setItem('lang2',lang)}catch{} draw(); };
 $('list').onclick=(e)=>{ const f=e.target.closest('figure'); if(f) open(+f.dataset.i); };
 $('close').onclick=()=>{ $('big').classList.remove('on'); cur=null; };
 $('prev').onclick=()=>step(-1); $('next').onclick=()=>step(1);

@@ -74,3 +74,4 @@ tools/.qa/
 tools/.sheet*
 tools/.soup*
 scripts/.sheet.tmp.mjs
+tools/.hedra-*/

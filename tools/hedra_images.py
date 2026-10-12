@@ -35,6 +35,8 @@ def inp(model, prompt, seed):
     if model.startswith('imagen'): base['resolution']='1K'; base.pop('seed',None)
     elif model.startswith('flux-dev') or model.startswith('flux-11'): base['resolution']='1080p'; base['output_format']='png'
     elif model.startswith('gpt-image'): base['quality']='medium'; base['resolution']='1024x1024'; base.pop('seed',None)
+    elif model.startswith('seedream'): base['resolution']='1440p (2K QHD)'; base.pop('seed',None)
+    elif model.startswith('flux2'): pass
     return base
 def run_one(model, k, prompt, dst):
     seed=int(__import__('hashlib').md5(k.encode()).hexdigest()[:6],16)
