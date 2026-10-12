@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
@@ -7,7 +7,8 @@ import { Door, Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
-import { wait } from '../../shared/lesson/helpers';
+import { Spotter, wait } from '../../shared/lesson/helpers';
+import { ZoomService } from '../../core/zoom/zoom.service';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 
 /** The four she names out loud, and the one she stops at. */
@@ -39,7 +40,6 @@ const SHOWN = ['A', 'B', 'C', 'D'];
     <span class="meethalo"></span><app-laila [size]="190" cls="meet-lm" />
     @if (ready()) {<span class="meet-hand">👆🏾</span>}
   </button>
-  <div class="pr">Za mu yi ɗan wasa<span class="sm">We are going to play a little game</span></div>
   <div class="starthint" [class.show]="ready()">Danna kan Laila mu fara<br><small>tap Laila to begin</small></div>
 } @else {
   <div class="pr">Ka san dukan haruffa?<span class="sm">Do you know all the letters?</span></div>
@@ -74,21 +74,18 @@ export class GateScreen implements OnInit, OnDestroy {
   readonly phase = signal<'invite' | 'ask'>('invite');
   readonly ready = signal(false);
   private seq = 0; private stopped = false;
+  private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
+  private readonly spotter = new Spotter(this.host.nativeElement, inject(ZoomService));
 
   colour(L: string): string { return LETTER_COLOR(ALL.indexOf(L)); }
 
-  ngOnInit(): void { afterPaint().then(() => this.invite()); }
-  ngOnDestroy(): void { this.stopped = true; this.seq++; this.bus.stopAll(); }
+  /** Straight into the question (Sani 2026-10-12: instructions are spoken, never waited for). A browser that refuses
+   *  the sound — a fresh load that nobody has touched yet — gets the press-Laila-to-begin beat first instead. */
+  ngOnInit(): void { this.phase.set('ask'); afterPaint().then(() => this.ask()); }
+  ngOnDestroy(): void { this.stopped = true; this.seq++; this.spotter.unspot(); this.bus.stopAll(); }
 
-  /** "Za mu yi ɗan wasa." Then she glows and waits for a finger. */
-  async invite(): Promise<void> {
-    const my = ++this.seq;
-    this.ready.set(false); this.speak.set(true);
-    const g = this.bus.gk('s_gate_play');
-    if (this.bus.has(g)) await this.bus.play(g); else await wait(700);
-    if (my !== this.seq || this.stopped) return;
-    this.speak.set(false); this.ready.set(true);
-  }
+  /** Only when the browser refused the sound: she glows and waits for the finger that unlocks it. */
+  private invite(): void { this.seq++; this.spotter.unspot(); this.speak.set(false); this.phase.set('invite'); this.ready.set(true); }
   /** The press: sound is unlocked, and the question follows. */
   begin(): void {
     if (!this.ready()) return;
@@ -99,16 +96,18 @@ export class GateScreen implements OnInit, OnDestroy {
   repeat(): void { if (this.phase() === 'invite') this.invite(); else this.ask(); }
 
   /**
-   * The question, then the letters one at a time so the child can hear what is being asked of them, then the
-   * two choices. The ear restarts the whole thing, as it does on every other screen.
+   * "First we need to know if you know the alphabet, like" A, B, C, D "… all the way to" Z — the letters in her
+   * English letter clips, never Hausa names — then each choice with the hand on it: Laila if they know them, the
+   * black slate if they do not (Sani 2026-10-12). The ear restarts the whole thing, as on every other screen.
    */
   async ask(): Promise<void> {
     const my = ++this.seq;
-    this.cue.set(false); this.lit.set(''); this.saidAt.set(0); this.fb('', '');
+    this.cue.set(false); this.lit.set(''); this.saidAt.set(0); this.fb('', ''); this.spotter.unspot();
     const mine = () => my === this.seq && !this.stopped;
 
     this.speak.set(true);
-    if (this.bus.has(this.bus.gk('s_gate_q')) && !(await this.bus.play(this.bus.gk('s_gate_q')))) return;
+    const first = this.bus.gk('s_gate_first');
+    if (this.bus.has(first) && !(await this.bus.play(first))) { if (this.bus.blocked() && mine()) this.invite(); return; }
     if (!mine()) return;
 
     // her own letter clips, the voice the child will have to answer in
@@ -126,22 +125,27 @@ export class GateScreen implements OnInit, OnDestroy {
     if (!mine()) return;
     this.saidAt.set(5); this.lit.set('');
 
-    if (this.bus.has(this.bus.gk('s_gate_how')) && !(await this.bus.play(this.bus.gk('s_gate_how')))) return;
+    const host = this.host.nativeElement;
+    this.spotter.spot(host.querySelector('app-laila-btn'), 'above');
+    if (this.bus.has(this.bus.gk('s_gate_yes')) && !(await this.bus.play(this.bus.gk('s_gate_yes')))) return;
     if (!mine()) return;
-    this.speak.set(false); this.cue.set(true);
+    this.spotter.spot(host.querySelector('app-allo-btn'), 'above');
+    if (this.bus.has(this.bus.gk('s_gate_no')) && !(await this.bus.play(this.bus.gk('s_gate_no')))) return;
+    if (!mine()) return;
+    this.spotter.unspot(); this.speak.set(false); this.cue.set(true);
   }
 
   /** Says they know them: straight to the game, which is where the claim gets tested. */
   yes(): void {
     if (!this.cue()) return;                       // nothing to answer until she has finished asking
-    this.seq++; this.bus.stopAll(); this.session.owedGame.set(false);
+    this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
     this.router.navigate(['/fashe']);
   }
 
   /** Says they do not: no fuss, no second question, into the lesson. */
   async no(): Promise<void> {
     if (!this.cue()) return;
-    this.seq++; this.bus.stopAll(); this.cue.set(false);
+    this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.cue.set(false);
     this.fb('wait', 'Kada ka damu');
     this.speak.set(true);
     const g = this.bus.gk('s_gate_calm');
@@ -151,6 +155,6 @@ export class GateScreen implements OnInit, OnDestroy {
     if (!this.stopped) this.router.navigate(['/haruffa/koyo']);
   }
 
-  leave(): void { this.seq++; this.stopped = true; this.bus.stopAll(); this.router.navigate(['/home']); }
+  leave(): void { this.seq++; this.stopped = true; this.spotter.unspot(); this.bus.stopAll(); this.router.navigate(['/home']); }
   private fb(cls: string, text: string): void { this.fbCls.set(cls); this.fbText.set(text); }
 }

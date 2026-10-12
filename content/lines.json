@@ -4343,8 +4343,8 @@
   "screens": [
    "Haruffa · gwada"
   ],
-  "said_when": "The gate, before she names them.",
-  "status": "live",
+  "said_when": "The gate, before she names them. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
+  "status": "unused",
   "recorded": {
    "m": "b0274f1a09",
    "f": "d7d3d001e7"
@@ -4377,8 +4377,8 @@
   "screens": [
    "Haruffa · gwada"
   ],
-  "said_when": "The two choices, named.",
-  "status": "live",
+  "said_when": "The two choices, named. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
+  "status": "unused",
   "recorded": {
    "m": "6e58c1d637",
    "f": "6208b02828"
@@ -4414,8 +4414,71 @@
   "screens": [
    "Haruffa · gwada"
   ],
-  "said_when": "The invitation, before the question.",
-  "status": "live",
+  "said_when": "The invitation, before the question. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
+  "status": "unused",
   "recorded": "328256a87d"
+ },
+ {
+  "key": "s_gate_first",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Da farko, muna so mu san ko ka san dukan haruffa, kamar",
+   "f": "Da farko, muna so mu san ko kin san dukan haruffa, kamar"
+  },
+  "en": "First we need to know if you know all the letters, like",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "Opens the gate; then A, B, C, D in her English letter clips. Unreviewed: Claude draft from Sani's English (12 Oct).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "recorded": {
+   "m": "71cd50d699",
+   "f": "f531fa4a61"
+  }
+ },
+ {
+  "key": "s_gate_yes",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka sani, ka danna Laila mu fara.",
+   "f": "Idan kin sani, ki danna Laila mu fara."
+  },
+  "en": "If you know them, tap Laila to begin.",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "The first choice, with the hand on Laila. Unreviewed: Claude draft from Sani's English (12 Oct).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "recorded": {
+   "m": "b006af5703",
+   "f": "2e23b9ad3e"
+  }
+ },
+ {
+  "key": "s_gate_no",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ba ka sani ba, ba damuwa, za mu koye su tare. Ka danna baƙin allo don mu fara koyo.",
+   "f": "Idan ba ki sani ba, ba damuwa, za mu koye su tare. Ki danna baƙin allo don mu fara koyo."
+  },
+  "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
+  "screens": [
+   "Haruffa · gwada"
+  ],
+  "said_when": "The second choice, with the hand on the slate. Unreviewed: Claude draft from Sani's English (12 Oct).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "recorded": {
+   "m": "9b1d49d56e",
+   "f": "0a05989645"
+  }
  }
 ]
