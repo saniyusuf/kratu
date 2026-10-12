@@ -985,10 +985,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Musa, sị: Aha m bụ Musa.",
-   "f": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Aisha, sị: Aha m bụ Aisha."
+   "m": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Ebuka, sị: Aha m bụ Ebuka.",
+   "f": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Chichi, sị: Aha m bụ Chichi."
   },
-  "en": "We will take a video of you saying your name. For example, if your name is Musa, say: Aha m bụ Musa.",
+  "en": "We will take a video of you saying your name. For example, if your name is Ebuka, say: Aha m bụ Ebuka.",
   "status": "draft"
  },
  {
@@ -997,10 +997,10 @@
   "voice": "laila",
   "gender": "f",
   "text": {
-   "any": "Lee nwa nwoke aha ya bụ Musa. Ọ na-akpọ aha ya.",
-   "f": "Lee nwa agbọghọ aha ya bụ Aisha. Ọ na-akpọ aha ya."
+   "any": "Lee nwa nwoke aha ya bụ Ebuka. Ọ na-akpọ aha ya.",
+   "f": "Lee nwa agbọghọ aha ya bụ Chichi. Ọ na-akpọ aha ya."
   },
-  "en": "Here is the boy Musa / the girl Aisha, saying the name.",
+  "en": "Here is the boy Ebuka / the girl Chichi, saying the name.",
   "status": "draft"
  },
  {

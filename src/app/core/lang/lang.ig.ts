@@ -64,8 +64,8 @@ export const LANG: LangPack = {
   "Bidiyo kana faɗin sunanka": "Vidiyo gị ka ị na-akpọ aha gị",
   "Namiji": "Nwa nwoke",
   "Mace": "Nwa agbọghọ",
-  "“Sunana Musa”": "“Aha m bụ Musa”",
-  "“Sunana Aisha”": "“Aha m bụ Aisha”",
+  "“Sunana Musa”": "“Aha m bụ Ebuka”",
+  "“Sunana Aisha”": "“Aha m bụ Chichi”",
   "Danna Laila don farawa": "Pịa Chioma ka ị malite",
   "Danna kan Laila don farawa": "Pịa Chioma ka ị malite",
   "Danna Laila · sake gwadawa": "Pịa Chioma · nwaa ọzọ",
@@ -211,5 +211,9 @@ export const LANG: LangPack = {
   "Ban ji harafi ba — sake.": "Anụghị m mkpụrụedemede — nwaa ọzọ.",
   "Sake": "Ọzọ",
   "A’a": "Mba"
+ },
+ "kids": {
+  "m": "Ebuka",
+  "f": "Chichi"
  }
 };

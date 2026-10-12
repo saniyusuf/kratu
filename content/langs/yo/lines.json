@@ -985,10 +985,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "A ó ya fídíò rẹ bí o ṣe ń sọ orúkọ rẹ. Bí àpẹẹrẹ, bí orúkọ rẹ bá jẹ́ Musa, sọ pé: Orúkọ mi ni Musa.",
-   "f": "A ó ya fídíò rẹ bí o ṣe ń sọ orúkọ rẹ. Bí àpẹẹrẹ, bí orúkọ rẹ bá jẹ́ Aisha, sọ pé: Orúkọ mi ni Aisha."
+   "m": "A ó ya fídíò rẹ bí o ṣe ń sọ orúkọ rẹ. Bí àpẹẹrẹ, bí orúkọ rẹ bá jẹ́ Báyọ̀, sọ pé: Orúkọ mi ni Báyọ̀.",
+   "f": "A ó ya fídíò rẹ bí o ṣe ń sọ orúkọ rẹ. Bí àpẹẹrẹ, bí orúkọ rẹ bá jẹ́ Fúnkẹ́, sọ pé: Orúkọ mi ni Fúnkẹ́."
   },
-  "en": "We will take a video of you saying your name. For example, if your name is Musa, say: Orúkọ mi ni Musa.",
+  "en": "We will take a video of you saying your name. For example, if your name is Bayo, say: Orúkọ mi ni Bayo.",
   "status": "draft"
  },
  {
@@ -997,10 +997,10 @@
   "voice": "laila",
   "gender": "f",
   "text": {
-   "any": "Ọmọkùnrin kan nìyí, Musa. Ó ń sọ orúkọ rẹ̀.",
-   "f": "Ọmọbìnrin kan nìyí, Aisha. Ó ń sọ orúkọ rẹ̀."
+   "any": "Ọmọkùnrin kan nìyí, Báyọ̀. Ó ń sọ orúkọ rẹ̀.",
+   "f": "Ọmọbìnrin kan nìyí, Fúnkẹ́. Ó ń sọ orúkọ rẹ̀."
   },
-  "en": "Here is the boy Musa / the girl Aisha, saying the name.",
+  "en": "Here is the boy Bayo / the girl Funke, saying the name.",
   "status": "draft"
  },
  {

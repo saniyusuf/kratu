@@ -7,7 +7,9 @@ import { LANG } from './lang';
 export function t(s: string): string {
   const u = LANG.ui[s];
   if (u !== undefined) return u;
-  return LANG.bird === 'Laila' ? s : s.replace(/Laila/g, LANG.bird);
+  let out = LANG.bird === 'Laila' ? s : s.replace(/Laila/g, LANG.bird);
+  if (LANG.kids) out = out.replace(/\bMusa\b/g, LANG.kids.m).replace(/\bAisha\b/g, LANG.kids.f);
+  return out;
 }
 
 /**

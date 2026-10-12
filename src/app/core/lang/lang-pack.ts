@@ -24,6 +24,8 @@ export interface LangPack {
   namesBank: boolean;
   /** The example films have a child saying "Sunana …" in Hausa: other builds show them silent. */
   muteFilms: boolean;
+  /** The example children's names (the films' Musa and Aisha are Hausa names), for the screens and the English text. */
+  kids?: { m: string; f: string };
   /** Text on screen: Hausa text → this language. Missing entries show as they are, with "Laila" changed to the bird's name. */
   ui: Record<string, string>;
 }

@@ -38,7 +38,7 @@ export function lintLang(code) {
   for (const k of JSON.parse(readFileSync('content/langs/ui-keys.json', 'utf8')).keys) keys.add(k);
   const ui = pack.ui || {}; let english = 0;
   // English text on screen needs no translation, only the bird's name, which t() swaps by itself
-  const ENGLISH = /^(click|tap|so Laila|a teleprompter)\b/i;
+  const ENGLISH = /^(click|tap|so Laila|a teleprompter|Start a sample session|Aisha$|Musa$)\b/i;
   for (const k of keys) { if (ui[k] !== undefined) continue; if (ENGLISH.test(k)) { english++; continue; } errors.push(`screen text "${k}": no ${code} translation in lang.json ui`); }
   for (const w of warns) console.log('warn  ' + w);
   for (const e of errors) console.log('ERROR ' + e);
