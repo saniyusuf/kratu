@@ -7,7 +7,8 @@ import sharp from 'sharp';
 const W = Object.fromEntries(JSON.parse(readFileSync('content/words.json', 'utf8')).words.map((w) => [w.key, w]));
 for (const set of process.argv.slice(2)) {
   const src = `tools/.hedra-${set}`; let n = 0, skipped = [];
-  for (const f of readdirSync(src).filter((f) => f.endsWith('.png'))) {
+  const want = new Set(Object.keys(JSON.parse(readFileSync(`content/pictures/${set}.json`, 'utf8'))));   // only what the set still owns
+  for (const f of readdirSync(src).filter((f) => f.endsWith('.png') && want.has(f.slice(0, -4)))) {
     const k = f.slice(0, -4), w = W[k];
     let dst;
     if (set === 'shared' || set === 'ha') { if (!w || typeof w.picture !== 'string') { skipped.push(k); continue; } dst = 'public/assets/' + w.picture; }

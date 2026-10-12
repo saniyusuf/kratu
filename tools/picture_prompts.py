@@ -81,7 +81,7 @@ C = {
             elder_m='a white babban riga and a red-and-white turban', elder_f='an atamfa wrapper and a large mayafi veil',
             soup='a bowl of Hausa taushe soup, thick orange pumpkin and groundnut soup with spinach and pieces of meat'),
  'yo': dict(people='Yoruba', region='south-western Nigeria', mum='a traditional Yoruba iro and buba in aso-oke fabric with a tall matching gele head-tie',
-            dad='a traditional Yoruba buba and sokoto with a matching fila cap', boy='a small Yoruba buba and sokoto with a fila cap', girl='a small iro and buba with a gele, hair in shuku braids',
+            dad='a traditional Yoruba buba and sokoto with a soft folded fila cap (abeti-aja) tilted to one side', boy='a small Yoruba buba and sokoto with a fila cap', girl='a small iro and buba with a gele, hair in shuku braids',
             elder_m='a flowing agbada over buba and sokoto with a fila cap', elder_f='an iro and buba with a gele and coral beads',
             soup='a bowl of Yoruba efo riro, rich green spinach stew with peppers, pieces of meat and fish'),
  'ig': dict(people='Igbo', region='south-eastern Nigeria', mum='a george wrapper with a lace blouse, a tall head-tie and coral beads',
@@ -110,7 +110,7 @@ def lang(code):
      'old_man': f'one {pp} old man with grey hair wearing {c["elder_m"]}, standing in front of his home in {rg}',
      'brother': f'a smiling {pp} boy about ten wearing {c["boy"]} giving his little sister a piggyback ride, the focus on the boy, at home in {rg}',
      'sister': f'a smiling {pp} girl about ten wearing {c["girl"]} holding her little brother\'s hand and helping him walk, the focus on the girl, at home in {rg}',
-     'friend': f'two happy {pp} children, best friends, a boy wearing {c["boy"]} and a girl wearing {c["girl"]}, standing side by side with arms around each other',
+     'friend': f'two happy {pp} boys about eight years old, best friends, both wearing {c["boy"]}, standing side by side with arms around each other\'s shoulders, no earrings, no jewellery',
      'teacher': f'one friendly {pp} teacher wearing {c["dad"]} standing beside a blackboard holding a piece of chalk in a classroom',
      'gown': f'one {pp} girl about eight wearing a long bright patterned gown, standing in front of a house in {rg}, full body',
      'scarf': f'one {pp} woman wearing a bright patterned headscarf tied on her head, shoulders-up portrait' if code != 'yo' else 'one Yoruba woman wearing a bright patterned headscarf (gele) tied on her head, shoulders-up portrait',
@@ -125,6 +125,15 @@ def lang(code):
                   'tricycle': 'one tuk-tuk three-wheeler taxi parked on a Kenyan street, no people', 'motorcycle': 'one red boda boda motorcycle taxi parked on a Kenyan street, no people',
                   'bus': 'one brightly painted Kenyan matatu minibus parked on a street, no people', 'taxi': 'one white taxi car with a yellow stripe parked on a Kenyan street, no people'})
     return {k: P(v) for k, v in d.items()}
+# Sani's picks (12 Oct): these were made per language, and one of them now serves every language
+PICKED = {'baby': ('yo', 'baby'), 'wrapper': ('ig', 'wrapper'), 'miya': ('ha', 'miya'), 'policeman': ('sw', 'policeman'), 'tricycle': ('sw', 'tricycle'), 'motorcycle': ('sw', 'motorcycle')}
+for k, (code, kk) in PICKED.items(): shared[k] = lang(code)[kk]
+shared['soldier'] = P('one African soldier in green camouflage uniform with a plain beret and no flag, no badge text and no country name, standing at ease, detailed uniform')
+KEEP_OLD = {'scarf'}   # the picture from before the redraw is the one for everyone
+def lang_only(code):
+    d = lang(code)
+    for k in list(PICKED) + ['soldier'] + list(KEEP_OLD): d.pop(k, None)
+    return d
 json.dump(shared, open('content/pictures/shared.json', 'w'), indent=1, ensure_ascii=False)
-for code in C: json.dump(lang(code), open(f'content/pictures/{code}.json', 'w'), indent=1, ensure_ascii=False)
-print('shared', len(shared), {c: len(lang(c)) for c in C})
+for code in C: json.dump(lang_only(code), open(f'content/pictures/{code}.json', 'w'), indent=1, ensure_ascii=False)
+print('shared', len(shared), {c: len(lang_only(c)) for c in C})
