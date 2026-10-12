@@ -4360,8 +4360,8 @@
   "screens": [
    "Haruffa · gwada"
   ],
-  "said_when": "After A B C D, to make the question the whole alphabet.",
-  "status": "live",
+  "said_when": "After A B C D, to make the question the whole alphabet. Dropped from the gate (Sani 12 Oct 13:02).",
+  "status": "unused",
   "recorded": "1d8b913fd1"
  },
  {
@@ -4424,19 +4424,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Da farko, muna so mu san ko ka san dukan haruffa, kamar",
-   "f": "Da farko, muna so mu san ko kin san dukan haruffa, kamar"
+   "m": "Muna so mu tabbatar cewa ka iya haruffan Turanci, kamar",
+   "f": "Muna so mu tabbatar cewa kin iya haruffan Turanci, kamar"
   },
-  "en": "First we need to know if you know all the letters, like",
+  "en": "We want to make sure you know the English letters, like",
   "screens": [
    "Haruffa · gwada"
   ],
-  "said_when": "Opens the gate; then A, B, C, D in her English letter clips. Unreviewed: Claude draft from Sani's English (12 Oct).",
+  "said_when": "Opens the gate; then A, B, C, D in her English letter clips. Wording per Sani 12 Oct 13:02.",
   "status": "live",
-  "review": "unreviewed: Claude draft from Sani's English, 12 Oct",
+  "review": "Sani 12 Oct 13:02 wording",
   "recorded": {
-   "m": "71cd50d699",
-   "f": "f531fa4a61"
+   "m": "c87befddff",
+   "f": "a2dd5896a2"
   }
  },
  {

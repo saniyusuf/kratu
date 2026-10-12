@@ -96,7 +96,7 @@ export class GateScreen implements OnInit, OnDestroy {
   repeat(): void { if (this.phase() === 'invite') this.invite(); else this.ask(); }
 
   /**
-   * "First we need to know if you know the alphabet, like" A, B, C, D "… all the way to" Z — the letters in her
+   * "We want to make sure you know the English letters, like" A, B, C, D — the letters in her
    * English letter clips, never Hausa names — then each choice with the hand on it: Laila if they know them, the
    * black slate if they do not (Sani 2026-10-12). The ear restarts the whole thing, as on every other screen.
    */
@@ -119,11 +119,7 @@ export class GateScreen implements OnInit, OnDestroy {
       await wait(140);
       if (!mine()) return;
     }
-    this.lit.set('Z');
-    if (this.bus.has(this.bus.gk('s_gate_z')) && !(await this.bus.play(this.bus.gk('s_gate_z')))) return;
-    if (!(await this.bus.play('app_en_Z'))) return;
-    if (!mine()) return;
-    this.saidAt.set(5); this.lit.set('');
+    this.saidAt.set(5);   // no "…har zuwa Z" (Sani 2026-10-12): the four letters are the example, the Z stays on screen
 
     const host = this.host.nativeElement;
     this.spotter.spot(host.querySelector('app-laila-btn'), 'above');
