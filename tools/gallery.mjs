@@ -14,7 +14,11 @@ const W = Object.fromEntries(JSON.parse(readFileSync('content/words.json', 'utf8
 mkdirSync('tools/.genimg', { recursive: true });
 const store = () => (existsSync(STORE) ? JSON.parse(readFileSync(STORE, 'utf8')) : { comments: {}, choices: {} });
 const prompts = (s) => (existsSync(`content/pictures/${s}.json`) ? JSON.parse(readFileSync(`content/pictures/${s}.json`, 'utf8')) : {});
-const pic = (s, k) => { const f = `tools/.hedra-${s}/${k}.png`; return existsSync(f) ? `/${f}?${Math.round(statSync(f).mtimeMs)}` : null; };
+const pic = (s, k) => {
+  // a word that moves shows its loop (tools/.genvid/small, as installed in the app) instead of its still
+  const loop = `tools/.genvid/small/${k}.webp`; if (s === 'shared' && existsSync(loop)) return `/${loop}?${Math.round(statSync(loop).mtimeMs)}`;
+  const f = `tools/.hedra-${s}/${k}.png`; return existsSync(f) ? `/${f}?${Math.round(statSync(f).mtimeMs)}` : null;
+};
 /** The picture each word had before the redraw (tools/.genimg/old holds the ones it replaced). */
 const old = (k) => { const w = W[k]; if (existsSync(`tools/.genimg/old/${k}.webp`)) return `/tools/.genimg/old/${k}.webp`; return w && typeof w.picture === 'string' ? '/public/assets/' + w.picture : null; };
 
@@ -51,7 +55,7 @@ createServer(async (req, res) => {
     } catch { return json(res, { ok: false }, 400); }
   }
   const p = normalize(decodeURIComponent(url.pathname)).replace(/^\/+/, '');
-  if (!/^(tools\/\.hedra-(shared|ha|yo|ig|sw)|tools\/\.genimg\/old|public\/assets\/pictures)\/[a-z0-9_]+\.(png|webp)$/.test(p) || !existsSync(p)) { res.writeHead(404); res.end(); return; }
+  if (!/^(tools\/\.hedra-(shared|ha|yo|ig|sw)|tools\/\.genimg\/old|tools\/\.genvid\/small|public\/assets\/pictures)\/[a-z0-9_]+\.(png|webp)$/.test(p) || !existsSync(p)) { res.writeHead(404); res.end(); return; }
   res.writeHead(200, { 'content-type': TYPES[extname(p)], 'cache-control': 'max-age=60' }); createReadStream(p).pipe(res);
 }).listen(PORT, '127.0.0.1', () => console.log('gallery on http://localhost:' + PORT));
 
