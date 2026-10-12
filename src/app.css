@@ -527,10 +527,14 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .spothand{z-index:90}
 /* On the chooser the hand follows the book as its cover opens and it slides to the middle (Sani 2026-10-11). */
 #app .s.home .spothand{transition:left .45s ease,top .45s ease}
-/* "Ko kuma ka zaɓi darasi": the tiles are the second choice, so no hand and no single glow — the open ones lift once, together. */
-#app .s.home .homegrid.nudge .htile:not(.lock){animation:tilenudge 1.1s ease-in-out}
-@keyframes tilenudge{0%,100%{translate:0 0}40%{translate:0 -7px}}
-@media (prefers-reduced-motion:reduce){#app .s.home .homegrid.nudge .htile{animation:none}}
+/* "Za ka iya danna darasi": every tile glows like the book does and they pulse together, with one hand in their middle
+   pulsing in step — any of them can be tapped (Sani 2026-10-12). */
+#app .s.home .homegrid.pickme .htile{box-shadow:0 0 0 4px rgba(251,192,45,.95),0 0 26px 8px rgba(251,192,45,.65);animation:tilepulse 1.4s ease-in-out infinite}
+#app .s.home .gridhand{position:absolute;z-index:80;font-size:46px;line-height:1;pointer-events:none;translate:-50% -30%;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.25));animation:handpulse 1.4s ease-in-out infinite}
+@keyframes tilepulse{0%,100%{scale:1}50%{scale:1.06}}
+@keyframes handpulse{0%,100%{scale:1}50%{scale:1.18}}
+@media (prefers-reduced-motion:reduce){#app .s.home .homegrid.pickme .htile,#app .s.home .gridhand{animation:none}}
 
 /* Chooser progress (Sani 2026-10-11): a see-through wave filled to the share of the lesson done (--p), a padlock until the
    curriculum reaches the lesson (it still opens when pressed), and once finished no wave but a swaying medal and a shine. */

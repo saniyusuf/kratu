@@ -45,7 +45,8 @@ export class HomeScreen implements OnInit, OnDestroy {
   private readonly step = inject(PlanService).next();
   private readonly progress = inject(ProgressService);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
-  private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));
+  private readonly zoom = inject(ZoomService);
+  private readonly spotter = new Spotter(this.hostEl.nativeElement, this.zoom);
   private pointing = false; private asks = 0;
   private readonly leaveBox = viewChild.required(Leave);
   private readonly courseBook = viewChild.required(CourseBook);
@@ -91,28 +92,34 @@ export class HomeScreen implements OnInit, OnDestroy {
       const ok = await this.bus.play(k);
       // the ear may have asked again meanwhile, or a tap cut her off; a browser that refused the sound keeps the hand on the book
       if (!ok || mine !== this.asks) return false;
-      // then the tiles, as the second choice: "or pick a lesson to hear about it" — no hand, just the open tiles lifting once together (Sani 2026-10-12)
-      this.pointAtBook(false); this.nudgeTiles();
+      // then the tiles: "you can tap any lesson to hear more" — all six glow and pulse together with the hand in their middle (Sani 2026-10-12)
+      this.pointAtBook(false); this.pointAtTiles(true);
     }
     const or = this.bus.gk('app_book_or'), ok = await this.bus.play(this.bus.has(or) ? or : 'app_act_pick');
-    if (mine === this.asks && !this.bus.blocked()) this.pointAtBook(false);
+    if (mine === this.asks && !this.bus.blocked()) { this.pointAtBook(false); this.pointAtTiles(false); }
     return ok;
   }
   private pointAtBook(on: boolean): void {
-    this.pointing = on;
+    this.pointing = on; if (on) this.pointAtTiles(false);
     if (on) this.spotter.spot(this.hostEl.nativeElement.querySelector('.cbook'), 'right'); else this.spotter.unspot();
   }
-  private nudgeTiles(): void {
-    const g = this.hostEl.nativeElement.querySelector<HTMLElement>('.homegrid'); if (!g) return;
-    g.classList.remove('nudge'); void g.offsetWidth; g.classList.add('nudge');
+  /** Every tile at once, and one hand in the middle of them pulsing in step: any of these can be tapped. */
+  private pointAtTiles(on: boolean): void {
+    const s = this.hostEl.nativeElement, g = s.querySelector<HTMLElement>('.homegrid');
+    s.querySelector('.gridhand')?.remove(); g?.classList.remove('pickme');
+    if (!on || !g) return;
+    const sR = this.zoom.rect(s), r = this.zoom.rect(g), h = document.createElement('span');
+    h.className = 'gridhand'; h.textContent = '👆🏾';
+    h.style.left = (r.left + r.width / 2 - sR.left) + 'px'; h.style.top = (r.top + r.height / 2 - sR.top) + 'px';
+    s.appendChild(h); g.classList.add('pickme');
   }
   /** The book slides to the middle as its cover opens; the hand follows it there. */
   respot(): void { if (this.pointing) this.pointAtBook(true); }
-  ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.spotter.unspot(); this.bus.stopAll(); }
+  ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.pointAtTiles(false); this.spotter.unspot(); this.bus.stopAll(); }
   pick(): void { this.bus.stopAll(); this.invite(); }
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
-    this.bus.stopAll(); this.pointAtBook(false); this.cue.set(false);
+    this.bus.stopAll(); this.pointAtBook(false); this.pointAtTiles(false); this.cue.set(false);
     clearTimeout(this.leaving); this.leaving = window.setTimeout(() => this.next(), 700);   // the pictures jump first
   }
   private next(): void {
@@ -126,7 +133,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   tile(e: Event): void {
     const t = (e.target as HTMLElement).closest('.htile') as HTMLElement | null; if (!t) return;
     const host = this.gridHost().nativeElement; host.querySelectorAll('.htile').forEach((x) => x.classList.toggle('hot', x === t)); host.querySelector('.homegrid')?.classList.add('has-sel');
-    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.pointAtBook(false);
+    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.pointAtBook(false); this.pointAtTiles(false);
     let k = 'app_act_desc_' + act; if (!this.bus.has(k)) k = FALLBACK[act] || k;
     this.bus.play(k).then((ok) => { if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white'); });
   }
