@@ -94,7 +94,9 @@
                     "assets/audio/ha/**",
                     "names_bank_expanded.json",
                     "assets/audio/en/app_*",
-                    "assets/audio/en/word_*"
+                    "assets/audio/en/word_*",
+                    "assets/gender-*",
+                    "assets/example-*"
                   ]
                 },
                 {
@@ -120,7 +122,9 @@
                     "assets/words.json",
                     "assets/media.json",
                     "assets/audio/ha/**",
-                    "names_bank_expanded.json"
+                    "names_bank_expanded.json",
+                    "assets/gender-*",
+                    "assets/example-*"
                   ]
                 },
                 {
@@ -146,7 +150,9 @@
                     "assets/words.json",
                     "assets/media.json",
                     "assets/audio/ha/**",
-                    "names_bank_expanded.json"
+                    "names_bank_expanded.json",
+                    "assets/gender-*",
+                    "assets/example-*"
                   ]
                 },
                 {

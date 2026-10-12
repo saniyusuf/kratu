@@ -47,8 +47,10 @@ export function buildLang(code) {
   writeFileSync(out + '/words.json', JSON.stringify(groups));
   // every media file this build ships: the shared ones (pictures, films, English) and this language's clips
   const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory() ? walk(dir + '/' + e.name) : [dir + '/' + e.name]);
+  // a language with its own first-screen photos and example films (gender-*.webp, example-m/f.*) leaves out the Hausa ones
+  const ownFaces = existsSync(out + '/gender-boy.webp') && existsSync(out + '/example-m.mp4');
   const SKIP = en ? /^assets\/(clips\.json|words\.json|media\.json|audio\/ha\/|audio\/en\/(app_|word_))/ : /^assets\/(clips\.json|words\.json|media\.json|audio\/ha\/)/;
-  const shared = walk('public/assets').map((f) => ({ path: 'assets/' + f.slice('public/assets/'.length), size: statSync(f).size })).filter((f) => !SKIP.test(f.path) && !replaced.has(f.path));
+  const shared = walk('public/assets').map((f) => ({ path: 'assets/' + f.slice('public/assets/'.length), size: statSync(f).size })).filter((f) => !SKIP.test(f.path) && !replaced.has(f.path) && !(ownFaces && /^assets\/(gender-|example-)/.test(f.path)));
   const own = walk(out).filter((f) => !/\/media\.json$/.test(f)).map((f) => ({ path: 'assets/' + f.slice(out.length + 1), size: statSync(f).size }));
   const media = shared.concat(own).sort((a, b) => a.path.localeCompare(b.path)), total = media.reduce((a, f) => a + f.size, 0);
   writeFileSync(out + '/media.json', JSON.stringify({ total, files: media }));
