@@ -449,7 +449,7 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 }
 /* a balloon whose letter is done, or whose lane is wanted, lets go and floats up out of the sky — it is never
    deleted where a child can see it (Sani 2026-09-25) */
-#app .s.fashe .bub.go{animation:bubgo 1.05s cubic-bezier(.35,0,.7,1) forwards;pointer-events:none}
+#app .s.fashe .bub.go{pointer-events:none;opacity:.35;transition:opacity .6s}
 @keyframes bubgo{
   0%{transform:translate(-50%,-50%) translateY(var(--y0,0px)) rotate(0);opacity:1}
   30%{transform:translate(-50%,-50%) translateY(calc(var(--y0,0px) + 10px)) rotate(-6deg);opacity:1}

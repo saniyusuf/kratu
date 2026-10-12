@@ -24,7 +24,8 @@ const SKY = 8;
  */
 const CLOCK = 120_000, GAIN = 4_000, LOSS = 8_000;
 /** A child who has stopped popping is nudged, and then the game gives up on them rather than waiting for ever. */
-const NUDGE_EVERY = 5000, GIVE_AT = 40000;
+/** Quiet before a reminder: two 10 s apart, then a 20 s pause, and again (Sani 2026-10-12). Giving up waits longer. */
+const NUDGE_GAP = 10000, NUDGE_REST = 20000, GIVE_AT = 90000;
 
 interface Bub { id: number; L: string; lane: number; x: number; dur: number; wait: number; state: '' | 'pop' | 'burst' | 'go'; }
 
@@ -224,12 +225,15 @@ export class FasheScreen implements OnInit, OnDestroy {
    */
   private float(id: number, replaceWith?: string): void {
     const old = this.bubs().find((b) => b.id === id); if (!old || old.state) return;
-    this.freeze(this.el(id));
+    // it carries on up at its own speed, faded and untappable, and goes once it is out of the top — nothing in the sky
+    // ever speeds up (Sani 2026-10-12)
+    const el = this.el(id), gone = () => this.bubs.update((a) => a.filter((b) => b.id !== id));
+    el?.addEventListener('animationiteration', gone, { once: true });
     this.bubs.update((a) => a.map((b) => b.id === id ? { ...b, state: 'go' as const } : b));
     const others = this.bubs().filter((b) => b.id !== id && b.state !== 'go').map((b) => b.L);
     const L = replaceWith || this.pickLetter([...others, this.target()], []);
     this.bubs.update((a) => [...a, this.mk(L, old.lane)]);
-    this.later(1100, () => this.bubs.update((a) => a.filter((b) => b.id !== id)));
+    this.later(old.dur + 500, gone);
   }
   /** Any balloon carrying a letter already on the strip leaves: the sky shows what is still to come, never a decoy a
    *  child has already dealt with. Cheaper than reasoning about which recycle raced which pop (Sani 2026-09-25). */
@@ -255,6 +259,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   }
   private hit(id: number): void {
     const b = this.bubs().find((x) => x.id === id); if (!b || b.state || !this.answer || !this.target()) return;
+    this.nudges = 0; this.arm(this.answer);           // any tap starts the quiet over
     if (b.L === this.target()) this.right(b); else this.miss(b);
   }
   private el(id: number): HTMLElement | null { return this.skyRef().nativeElement.querySelector('[data-b="' + id + '"]'); }
@@ -295,7 +300,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   /** The letter now due. Keeping it in the sky is this screen's one duty; naming it would end the test. */
   private want(): string { return ALL[this.at] || ''; }
   /**
-   * The reminder, every five seconds until the right balloon goes (Sani 2026-10-12): "pop the first letter: A" while A
+   * The reminder, after 10 s with no tap (Sani 2026-10-12): "pop the first letter: A" while A
    * is due — A is the one letter she may name — and after that only "pop the next letter", never naming it, because
    * knowing what comes next is exactly what this game is testing.
    */
@@ -313,11 +318,26 @@ export class FasheScreen implements OnInit, OnDestroy {
       // the letter now due must be in the sky: the balloon nearest the top makes way for it, in its own lane
       if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.float(old.id, L); }   // the old one floats off, the letter due rises in behind it
       this.fb('wait', '');
-      if (this.at === 0) this.remind().catch(() => undefined);   // she talks while they play: a pop mid-sentence counts
-      const nudge = () => { if (this.answer !== res) return; this.remind().catch(() => undefined); this.later(NUDGE_EVERY, nudge); };
-      this.later(NUDGE_EVERY, nudge);
-      this.later(GIVE_AT, () => { if (this.answer === res) { this.answer = null; res(false); } });   // they have stopped playing
+      this.nudges = 0;
+      if (this.at === 0) this.remind().then(() => this.arm(res), () => undefined);   // she talks while they play: a pop mid-sentence counts
+      else this.arm(res);
     });
+  }
+  /**
+   * The quiet is counted from the last tap or the end of her last line. After 10 s she reminds them, after 10 s more
+   * again, then she rests 20 s before the next pair; any tap starts it over. She never talks over herself.
+   */
+  private nudges = 0; private nudgeT = 0; private giveT = 0;
+  private arm(res: (v: boolean | null) => void): void {
+    if (this.answer !== res || this.stopped) return;
+    clearTimeout(this.nudgeT); clearTimeout(this.giveT);
+    const gap = this.nudges > 0 && this.nudges % 2 === 0 ? NUDGE_REST : NUDGE_GAP;
+    this.nudgeT = this.later(gap, async () => {
+      if (this.answer !== res) return;
+      if (this.bus.speaking()) { this.arm(res); return; }
+      this.nudges++; await this.remind().catch(() => undefined); this.arm(res);
+    });
+    this.giveT = this.later(GIVE_AT, () => { if (this.answer === res) { this.answer = null; res(false); } });   // they have stopped playing
   }
   /** The ear, and Laila herself: the same reminder again. */
   async again(): Promise<void> {
