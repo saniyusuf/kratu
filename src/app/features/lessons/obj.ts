@@ -84,6 +84,9 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
       if (!skippable) this.fb('wait', this.autoOn ? (this.KA() === 'ka' ? 'Ka faɗa da Turanci.' : 'Ki faɗa da Turanci.') : 'Danna kan Laila, ' + this.KA() + ' faɗa da Turanci.');
       (this.pend as any).it = it; (this.pend as any).skippable = skippable;
       if (this.autoOn && !skippable) this.listenSoon();
+      // a tap that came while she was talking is answered now; a naming she can skip keeps it for the question after
+      if (this.hurrying() && this.early?.kind === 'laila' && skippable) { setTimeout(() => this.press()); return; }
+      if (!skippable) { const e = this.takeEarly(); if (e) setTimeout(() => e.kind === 'dk' ? this.pressDk() : this.press()); }
     });
   }
   /** Open the microphone the moment Laila goes quiet, so her own voice never reaches it. */
@@ -109,8 +112,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     const h = this.speech.hear({ target: it.en, among: this.rowItems().map((x) => x.en), match: (raw) => matchWord(raw, it.en, this.rowItems().map((x) => x.en)) }); this.hearHandle = h; const r = await h.done; this.hearHandle = null; this.rec.set(false);
     this.pend = null; p.res({ kind: 'say', ok: r.value === it.en, heard: r.raw || null });
   }
-  pressDk(): void { if (!this.awaiting || !this.pend || (this.pend as any).skippable) return; const p = this.pend; this.awaiting = false; this.pend = null; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false); p.res({ kind: 'dk' }); }
-  lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) return; this.bus.stopAll(); this.start().catch(() => undefined); }
+  pressDk(): void { if (!this.awaiting || !this.pend || (this.pend as any).skippable) { if (this.running && !this.rec()) this.hurry('dk'); return; } const p = this.pend; this.awaiting = false; this.pend = null; this.armed.set(false); this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false); p.res({ kind: 'dk' }); }
+  lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) { if (!this.rec()) this.hurry('laila'); return; } this.bus.stopAll(); this.start().catch(() => undefined); }
   /** practice: say it; 3 wrong in a row, or "ban sani ba" → listen once → ask again */
   private async askSay(it: Item, first: boolean): Promise<void> {
     let misses = 0; this.showPic(it);

@@ -55,10 +55,11 @@ export class KaratuScreen extends TopicLessonBase {
     for (let i = 0; i < word.length; i++) { this.slots.update((a) => a.map((x, k) => ({ ...x, st: k === i ? 'on' : k < i ? 'done' : '' }))); if (!(await this.play('app_en_' + word.charAt(i)))) break; await wait(280); }
     this.speak.set(false);
   }
-  private waitAnswer(): Promise<{ got: string | null; raw: string }> { this.awaiting = true; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' karanta kalmar.'); return new Promise((res) => { this.pend = res; }); }
+  private waitAnswer(): Promise<{ got: string | null; raw: string }> { this.awaiting = true; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' karanta kalmar.'); const p = new Promise<{ got: string | null; raw: string }>((res) => { this.pend = res; }); if (this.takeEarly()) setTimeout(() => this.lailaPressed()); return p; }
   private stopMic(): void { this.round++; this.hearHandle?.stop(); this.hearHandle = null; this.rec.set(false); }
   lailaPressed(): void {
-    if (!this.awaiting || this.hearHandle) return; const it = this.curWord; if (!it) return; this.bus.stopAll(); this.spotter.unspot(); this.speak.set(false); this.armed.set(false); this.rec.set(true);
+    if (!this.awaiting) { if (this.inLesson() && !this.hearHandle) this.hurry('laila'); return; }   // said while she talks: answered at the question
+    if (this.hearHandle) return; const it = this.curWord; if (!it) return; this.bus.stopAll(); this.spotter.unspot(); this.speak.set(false); this.armed.set(false); this.rec.set(true);
     const word = it.en.toLowerCase(), my = ++this.round, h = this.speech.hear({ target: word, among: (this.block.length ? this.block : this.WORDS).map((w) => String(w.en)), match: (raw) => matchWord(raw, word, (this.block.length ? this.block : []).map((w) => String(w.en).toLowerCase())) }); this.hearHandle = h;
     h.done.then((r) => { if (my !== this.round || this.hearHandle !== h) return; this.hearHandle = null; this.rec.set(false); const p = this.pend; this.pend = null; this.awaiting = false; p?.({ got: (r.value as string | null), raw: r.raw }); });
   }

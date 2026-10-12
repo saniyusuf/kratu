@@ -133,14 +133,14 @@ export class GateScreen implements OnInit, OnDestroy {
 
   /** Says they know them: straight to the game, which is where the claim gets tested. */
   yes(): void {
-    if (!this.cue()) return;                       // nothing to answer until she has finished asking
+    if (this.phase() !== 'ask') return;            // an answer while she is still asking is fine (Sani 2026-10-12)
     this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
     this.router.navigate(['/fashe']);
   }
 
   /** Says they do not: no fuss, no second question, into the lesson. */
   async no(): Promise<void> {
-    if (!this.cue()) return;
+    if (this.phase() !== 'ask') return;
     this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.cue.set(false);
     this.fb('wait', 'Kada ka damu');
     this.speak.set(true);

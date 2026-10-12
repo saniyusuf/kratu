@@ -75,7 +75,11 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private KA(): string { return this.session.g() === 'f' ? 'ki' : 'ka'; }
   private reset(): void { this.stopAuto(); this.autoOn = false; this.st.set(ALL.map(() => '')); this.fb('', ''); this.armed.set(false); this.cue.set(false); this.rec.set(false); this.speak.set(false); this.awaiting = false; this.cur = null; this.hideLetter(); this.spotter.unspot(); }
   private setDoneUpTo(n: number): void { this.st.update((a) => a.map((x, k) => k < n ? 'done' : x)); }
-  private async play(k: string): Promise<boolean> { return this.stopped ? false : this.bus.play(k); }
+  /** A press on Laila while she talks (Sani 2026-10-12): it cuts her off, the lines up to the next question are
+   *  skipped, and she listens there. It lapses after a few seconds so nothing is left silent. */
+  private earlyUntil = 0;
+  private hurrying(): boolean { return performance.now() < this.earlyUntil; }
+  private async play(k: string): Promise<boolean> { if (this.stopped) return false; if (this.hurrying()) return true; const ok = await this.bus.play(k); return ok || this.hurrying(); }
   /** Right answer: the kalangu sounds and Laila hops, while the letter flies to its place. */
   private celebrate(): Promise<boolean> { return joy(this.bus, this.yay); }
   /**
@@ -103,6 +107,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private arm(L: string): Promise<{ ok: boolean; heard: string | null; tries: number }> {
     return new Promise((res) => {
       this.awaiting = true; this.cur = { L, res }; this.armed.set(true);
+      if (this.hurrying()) { this.earlyUntil = 0; setTimeout(() => this.press()); }
       this.fb('wait', this.autoOn ? (this.KA() === 'ka' ? 'Ka faɗi harafin.' : 'Ki faɗi harafin.') : 'Danna kan Laila, ' + this.KA() + ' faɗi harafin.');
       if (this.autoOn) this.listenSoon();
     });
@@ -204,7 +209,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     // promised: they go to it rather than back to a grid to choose for themselves (Sani 2026-10-07).
     this.router.navigate([this.session.owedGame() ? '/fashe' : '/home']);
   }
-  lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) return; this.bus.stopAll(); this.start(0); }
+  lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) { if (!this.rec()) { this.earlyUntil = performance.now() + 6000; this.bus.stopAll(); this.spotter.unspot(); } return; } this.bus.stopAll(); this.start(0); }
   async ear(): Promise<void> { this.bus.stopAll(); if (this.cur?.L) { await this.sayLetter('app_wannan', this.cur.L); } else await this.play(this.bus.gk('s_l_look')); }
   leave(): void { this.stopped = true; this.bus.stopAll(); this.hearHandle?.stop(); this.router.navigate(['/home']); }
 }

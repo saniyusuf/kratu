@@ -258,6 +258,9 @@ export class FasheScreen implements OnInit, OnDestroy {
     e.preventDefault(); this.hit(b.id);
   }
   private hit(id: number): void {
+    // a balloon pressed while she is still explaining (Sani 2026-10-12: what is on screen always works): she stops,
+    // the game starts, and that press is the child's first
+    if (!this.answer && this.introducing) { this.skipIntro = true; this.earlyBub = id; this.bus.stopAll(); this.unpoint(); return; }
     const b = this.bubs().find((x) => x.id === id); if (!b || b.state || !this.answer || !this.target()) return;
     this.nudges = 0; this.arm(this.answer);           // any tap starts the quiet over
     if (b.L === this.target()) this.right(b); else this.miss(b);
@@ -319,7 +322,9 @@ export class FasheScreen implements OnInit, OnDestroy {
       if (!this.inSky().includes(L)) { const old = shuffle(this.bubs().filter((b) => !b.state))[0]; if (old) this.float(old.id, L); }   // the old one floats off, the letter due rises in behind it
       this.fb('wait', '');
       this.nudges = 0;
-      if (this.at === 0) this.remind().then(() => this.arm(res), () => undefined);   // she talks while they play: a pop mid-sentence counts
+      const early = this.earlyBub; this.earlyBub = 0;
+      if (early) { this.arm(res); setTimeout(() => this.hit(early)); }
+      else if (this.at === 0) this.remind().then(() => this.arm(res), () => undefined);   // she talks while they play: a pop mid-sentence counts
       else this.arm(res);
     });
   }
@@ -328,6 +333,7 @@ export class FasheScreen implements OnInit, OnDestroy {
    * again, then she rests 20 s before the next pair; any tap starts it over. She never talks over herself.
    */
   private nudges = 0; private nudgeT = 0; private giveT = 0;
+  private introducing = false; private skipIntro = false; private earlyBub = 0;
   private arm(res: (v: boolean | null) => void): void {
     if (this.answer !== res || this.stopped) return;
     clearTimeout(this.nudgeT); clearTimeout(this.giveT);
@@ -372,14 +378,17 @@ export class FasheScreen implements OnInit, OnDestroy {
     // says it, so the move is shown before it is asked for (Sani 2026-09-25)
     const first = this.skyRef().nativeElement.querySelector('.bub') as HTMLElement | null;
     if (first) this.pointAt(first);
-    if (!(await this.bus.play(this.bus.gk('s_pop_intro')))) { this.unpoint(); return; }
-    if (!(await this.bus.play(this.bus.gk('s_pop_task')))) { this.unpoint(); return; }
+    this.introducing = true; this.skipIntro = false;
+    const say = async (k: string) => this.skipIntro || (await this.bus.play(k)) || this.skipIntro;
+    if (!(await say(this.bus.gk('s_pop_intro')))) { this.unpoint(); return; }
+    if (!(await say(this.bus.gk('s_pop_task')))) { this.unpoint(); return; }
     // The clock is explained while it is on screen and full, so the warning is attached to the thing it
     // is about. Each of these plays only once recorded; until then the bar says it on its own.
     for (const k of ['s_pop_clock', 's_pop_scoring', 's_pop_luck']) {
       const g = this.bus.gk(k);
-      if (this.bus.has(g) && !(await this.bus.play(g))) { this.unpoint(); return; }
+      if (this.bus.has(g) && !(await say(g))) { this.unpoint(); return; }
     }
+    this.introducing = false;
     this.unpoint();                                         // no demonstration (Sani 2026-10-12): the child starts at A
     if (this.stopped) return;
     this.runClock();

@@ -47,8 +47,21 @@ export abstract class LessonBase implements OnDestroy {
   protected KA(): string { return this.session.g() === 'f' ? 'ki' : 'ka'; }
   protected fb(cls: string, t: string): void { this.fbCls.set(cls); this.fbText.set(t); }
   protected check(): void { if (this.stopped) throw new Stopped(); }
-  /** Play one clip; false when it was cut short (a newer sound, a press, the screen left). */
-  protected async play(k: Clip, opts: { onStart?: () => void } = {}): Promise<boolean> { this.check(); if (!k) return true; return typeof k === 'string' ? this.bus.play(k, opts) : this.bus.play('', { src: k.src, caption: k.ha || k.en ? { ha: k.ha || '', en: k.en || '' } : undefined, ...opts }); }
+  /**
+   * A tap on Laila, the slate or a key while she is still talking (Sani 2026-10-12: what is on screen always works).
+   * It cuts her off, every line up to the next question is skipped, and the tap is answered there. It lapses after a
+   * few seconds so a lesson that never reaches a question again is not left silent.
+   */
+  protected early: { kind: 'laila' | 'dk' | 'key'; L?: string; until: number } | null = null;
+  protected hurry(kind: 'laila' | 'dk' | 'key', L?: string): void { if (this.stopped) return; this.early = { kind, L, until: performance.now() + 6000 }; this.bus.stopAll(); this.spotter.unspot(); }
+  protected hurrying(): boolean { return !!this.early && performance.now() < this.early.until; }
+  protected takeEarly(): { kind: 'laila' | 'dk' | 'key'; L?: string } | null { const e = this.hurrying() ? this.early : null; this.early = null; return e; }
+  /** Play one clip; false when it was cut short (a newer sound, the screen left) — but not by an early tap, which skips. */
+  protected async play(k: Clip, opts: { onStart?: () => void } = {}): Promise<boolean> {
+    this.check(); if (!k || this.hurrying()) return true;
+    const ok = await (typeof k === 'string' ? this.bus.play(k, opts) : this.bus.play('', { src: k.src, caption: k.ha || k.en ? { ha: k.ha || '', en: k.en || '' } : undefined, ...opts }));
+    return ok || this.hurrying();
+  }
   /** Play clips one after another; stops at the first one cut short. */
   protected async seq(ks: Clip[]): Promise<boolean> { for (const k of ks) if (!(await this.play(k))) return false; return true; }
   /** Play a clip while a spot shows where to press; the spot goes when the clip ends. */

@@ -83,7 +83,18 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private s(): HTMLElement { return this.host.nativeElement; }
   private word(k: string): Word | null { return this.words.find(k) ?? null; }
   private clip(w: Word | null, which: 'ha' | 'en'): string | null { return which === 'ha' ? w?.ha_clip ?? null : w?.en_clip ?? null; }
-  private async play(k: string | { src: string }): Promise<boolean> { if (this.stopped) return false; const ok = typeof k === 'string' ? await this.bus.play(k) : await this.bus.playRaw(k.src); return ok && !this.stopped; }
+  /** Bumped when a tap cuts the film short: anything the film still had in flight finds itself out of date and stops. */
+  private gen = 0;
+  private async play(k: string | { src: string }): Promise<boolean> { if (this.stopped) return false; const g = this.gen; const ok = typeof k === 'string' ? await this.bus.play(k) : await this.bus.playRaw(k.src); return ok && !this.stopped && g === this.gen; }
+  /**
+   * A tap on Laila, a picture or a key while the film is still running (Sani 2026-10-12: what is on screen always
+   * works): the film stops where it is, the child's turn begins, and the tap is answered as part of it.
+   */
+  private skipFilm(): boolean {
+    if (this.phase !== 'movie') return false;
+    this.gen++; this.bus.stopAll(); this.hearHandle?.stop(); this.hearHandle = null; this.recOff(); this.handOff(); this.speak.set(false);
+    this.running = false; this.yourTurn(); return true;
+  }
   private async seq(ks: (string | { src: string } | null)[]): Promise<boolean> { for (const k of ks) { if (!k) continue; if (!(await this.play(k))) return false; } return true; }
   private async say(ks: (string | { src: string } | null)[]): Promise<boolean> { this.speak.set(true); const ok = await this.seq(ks); this.speak.set(false); return ok; }
   private fb(cls: string, text: string): void { this.fbCls.set(cls); this.fbText.set(text); }
@@ -172,7 +183,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
       }
     } finally { spot.unspot(); }
   }
-  private async finish(): Promise<void> { await this.corners(); await this.say([this.gk('sx_now')]); this.running = false; this.yourTurn(); }
+  private async finish(): Promise<void> { const g = this.gen; await this.corners(); await this.say([this.gk('sx_now')]); if (g !== this.gen || this.phase !== 'movie') return; this.running = false; this.yourTurn(); }
   private sampleWord(k: 'rubutu' | 'karatu'): string { const p = this.flow.sampleWord[k]; return p && this.word(p.toLowerCase()) ? p.toUpperCase() : 'CAT'; }
   private pickAbubuwa(): Word { const list = this.words.list(this.session.category() || ''); const w = list[0]; if (w && this.bus.has('sx_w_' + String(w.en).toLowerCase() + '_m')) return w; return this.word('goat')!; }
   private numFive(): Word { return this.words.list('lambobi_symbols').find((x) => x.k === 'n5')!; }
@@ -201,7 +212,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   private done(): void { this.phase = 'idle'; this.running = false; this.cue.set(false); this.next(); }
   private next(): void { const next = this.route.snapshot.queryParamMap.get('next') || '/home'; setTimeout(() => this.router.navigateByUrl(next), 500); }
 
-  async lailaPressed(): Promise<void> { if (this.phase === 'turn') this.doTurn(); else if (!this.running) this.start(); }
+  async lailaPressed(): Promise<void> { if (this.skipFilm() || this.phase === 'turn') this.doTurn(); else if (!this.running && this.phase !== 'doing') this.start(); }   // never restart the film under an open microphone
   private async doTurn(): Promise<void> {
     if (this.phase !== 'turn') return; this.phase = 'doing'; this.bus.stopAll(); this.cue.set(false);
     if (this.kind === 'karatu') { const kw = this.KW || this.word('cat')!; await this.listen(String(kw.en).toLowerCase(), null, this.showRef()?.nativeElement || null, true); this.allDone.set(true); this.showPic(kw.img); this.reveal(); await this.play(this.gk('app_read_good')); this.done(); }
@@ -259,6 +270,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
     if (prompt) this.askNext();
   }
   tap(k: string): void {
+    this.skipFilm();
     if (this.phase !== 'turn') return;
     if (k === this.gridTarget) { this.phase = 'doing'; this.gridDone.set(k); this.fb('good', 'Madalla! ✓'); this.play('app_kudos').then(() => this.done()); }
     else { this.wrongTap.set(''); setTimeout(() => this.wrongTap.set(k), 0); this.fb('bad', 'A’a'); this.play('app_quiz_wrong'); }
@@ -271,7 +283,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
     const runs: Record<string, () => Promise<void>> = { karatu: () => this.runKaratu(), rubutu: () => this.runRubutu(), abubuwa: () => this.runAbubuwa(), lambobi: () => this.runLambobi(), nemo: () => this.runNemo(false), nemonum: () => this.runNemo(true), haruffa: () => this.runHaruffa() };
     await runs[this.kind]?.();
   }
-  restart(): void { this.bus.stopAll(); this.hearHandle?.stop(); this.reset(); this.start(); }
+  restart(): void { this.gen++; this.bus.stopAll(); this.hearHandle?.stop(); this.reset(); this.start(); }
   leave(): void { this.bus.stopAll(); this.hearHandle?.stop(); this.router.navigate(['/home']); }
   private async runKaratu(): Promise<void> {
     const W = this.sampleWord('karatu'); this.W = W; this.KW = this.word(W.toLowerCase()); this.mkSlots(W);

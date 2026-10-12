@@ -72,17 +72,23 @@ export class RubutuScreen extends TopicLessonBase {
   private fly(from: Element | null, i: number, L: string): Promise<void> { const el = this.slotEl(i); const land = () => this.setSlot(i, { text: L, st: 'done' }); if (!el || !from) { land(); return Promise.resolve(); } return flyLetter(this.zoom, this.s, from, el, L).then(land); }
 
   // ---- the child's turn: Laila armed, a key, the ear or the slate ----
-  private waitEv(): Promise<Ev> { this.awaiting = true; this.armed.set(true); return new Promise((res) => { this.pend = res; }); }
+  private waitEv(): Promise<Ev> {
+    this.awaiting = true; this.armed.set(true); const p = new Promise<Ev>((res) => { this.pend = res; });
+    const e = this.takeEarly();   // a tap while she talked is answered at the question
+    if (e) setTimeout(() => e.kind === 'key' ? this.keyTap(e.L || '') : e.kind === 'dk' ? this.pressDk() : this.lailaPressed());
+    return p;
+  }
   private settle(e: Ev): void { const p = this.pend; if (!p) return; this.pend = null; this.awaiting = false; this.armed.set(false); this.stopMic(); this.clearTimer(); p(e); }
   private stopMic(): void { this.round++; this.hearHandle?.stop(); this.hearHandle = null; this.rec.set(false); }
   private clearTimer(): void { if (this.timer) { clearTimeout(this.timer); this.timer = null; } }
   /** Clips that start after a short debounce: a fast child's next tap simply cancels them (Sani 2026-09-11). */
   private later(ms: number, ks: Clip[], speak = false): void { this.clearTimer(); this.timer = setTimeout(() => { this.timer = null; if (!this.awaiting) return; if (speak) this.speak.set(true); this.seq(ks).catch(() => undefined).then(() => this.speak.set(false)); }, ms); }
-  keyTap(L: string): void { if (!this.awaiting || this.kbLocked()) return; this.bus.stopAll(); this.clearBad(); this.settle({ kind: 'tap', L }); }
-  pressDk(): void { if (!this.awaiting || this.dkHidden()) return; this.settle({ kind: 'dk' }); }
+  keyTap(L: string): void { if (this.kbLocked()) return; if (!this.awaiting) { if (this.inLesson() && !this.hearHandle) this.hurry('key', L); return; } this.bus.stopAll(); this.clearBad(); this.settle({ kind: 'tap', L }); }
+  pressDk(): void { if (this.dkHidden()) return; if (!this.awaiting) { if (this.inLesson() && !this.hearHandle) this.hurry('dk'); return; } this.settle({ kind: 'dk' }); }
   /** The ear: listens up to 10 s, letters only; "G O A T" in one go is welcome. The keyboard always wins over the ear. */
   lailaPressed(): void {
-    if (!this.awaiting || this.hearHandle) return; this.bus.stopAll(); this.clearTimer(); this.clearBad(); this.armed.set(false); this.rec.set(true);
+    if (!this.awaiting) { if (this.inLesson() && !this.hearHandle) this.hurry('laila'); return; }
+    if (this.hearHandle) return; this.bus.stopAll(); this.clearTimer(); this.clearBad(); this.armed.set(false); this.rec.set(true);
     const my = ++this.round, h = this.speech.hear({ multi: true, word: this.curWord, target: this.curLetter || undefined }); this.hearHandle = h;
     h.done.then((r) => { if (my !== this.round || this.hearHandle !== h) return; this.hearHandle = null; this.rec.set(false); this.armed.set(true); this.settle({ kind: 'heard', letters: (r.value as string[] | null) }); });
   }
