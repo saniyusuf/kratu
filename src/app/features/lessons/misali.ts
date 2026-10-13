@@ -1,3 +1,4 @@
+import { Pic } from '../../shared/lesson/pic';
 import { Component, ElementRef, OnDestroy, OnInit, inject, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
@@ -23,17 +24,17 @@ const EG_TRIES = 3;
 
 @Component({
   selector: 'app-misali',
-  imports: [Door, Ear, LailaButton, AbcKeyboard],
+  imports: [Door, Ear, LailaButton, AbcKeyboard, Pic],
   host: { class: 's lesson misali', '[class.movie]': 'movie()', '[class.hearing]': 'hearing()', '[class.read]': "kind === 'karatu'", '[class.karatu]': "kind === 'karatu'", '[class.spell]': "kind === 'rubutu'", '[class.word]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.obj]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.quiz]': "kind === 'nemo' || kind === 'nemonum'", '[class.abc]': "kind === 'haruffa'" },
   template: `
 <app-door (pressed)="leave()" /><div class="moviepill"><i></i>{{ t('Misali') }}</div><app-ear (pressed)="restart()" /><div class="eyebrow">{{ tx(title) }}</div>
 @if (kind === 'haruffa') {<div class="abcshow" [class.off]="!bigLetter()"><span class="abcbig" style="--c:var(--red)">{{ bigLetter() }}</span><span class="abcex">example</span></div>}
 @if (kind === 'nemo' || kind === 'nemonum') {
 <div class="qlesson"><div #qgrid class="qgrid" [class.n4]="kind === 'nemo'" [class.n6]="kind === 'nemonum'">
-  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img" (error)="retryPic($event)">@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
+  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><app-pic [src]="it.img" />@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
 </div><div class="objrow">@for (i of ten; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div><div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div></div>}
 @else {
-@if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span></div>}
+@if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<app-pic [src]="picSrc()" />}</span></div>}
 @if (kind === 'abubuwa' || kind === 'lambobi') {<div class="objrow">@for (i of five; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div>}
 @if (kind === 'karatu' || kind === 'rubutu') {<div #slots class="wslots">@for (l of slotLetters(); track $index) {<span class="wslot show" [class.on]="slotState()[$index] === 'on'" [class.done]="slotState()[$index] === 'done'" [class.all]="allDone()">{{ slotText()[$index] }}</span>}</div>}
 @if (kind === 'rubutu') {<app-abc-keyboard #kb [locked]="kbLocked()" [marks]="keyMarks()" (key)="keyTap($event)" />}

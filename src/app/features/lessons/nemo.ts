@@ -1,3 +1,4 @@
+import { Pic } from '../../shared/lesson/pic';
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { afterPaint } from '../../shared/paint';
 import { Door, Ear } from '../../shared/chrome/chrome';
@@ -15,7 +16,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
  */
 @Component({
   selector: 'app-nemo',
-  imports: [Door, Ear, TopicMenu, ResultsGrid],
+  imports: [Door, Ear, TopicMenu, ResultsGrid, Pic],
   host: { class: 's lesson quiz' },
   template: `
 <app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
@@ -23,7 +24,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
 <div class="qlesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!resultsOn()" [hidden]="!resultsOn()"><span class="kimg objpic"></span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div [class]="'qgrid n' + n()">
-    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><img alt="" [src]="c.w.img" (error)="retryPic($event)">@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m">{{ m === 'good' ? '✓' : '✗' }}</div>}</button>}
+    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><app-pic [src]="c.w.img" />@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m">{{ m === 'good' ? '✓' : '✗' }}</div>}</button>}
     @for (p of placeholders(); track $index) {<div class="qph"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="8" width="36" height="32" rx="6"/><circle cx="17" cy="18" r="3.5"/><path d="M8 36l11-11 7 7 6-6 8 8"/></svg></div>}
   </div>
   <div class="objrow" [class.many]="dots().length > 5">@for (d of dots(); track $index) {<span class="oslot active" [class.on]="dotOn() === $index" [class.done]="d === 'done'" [class.miss]="d === 'miss'"></span>}</div>

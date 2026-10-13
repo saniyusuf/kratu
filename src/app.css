@@ -535,3 +535,19 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.lesson.misali .misalihand,
 #app .s.fashe .pophand,
 #app .spothand{z-index:90}
+
+/* Moving pictures (an action word is a looping <video>, shared/lesson/pic.ts): the same rules as the <img> they replace. */
+.s.lesson .wcard video{width:clamp(150px,22cqw,220px);height:clamp(150px,22cqw,220px);object-fit:contain;border-radius:16px;background:#FBF3DE}
+.s.lesson .wcard.mini video{width:110px;height:110px}
+.s.lesson .countrow video{width:clamp(90px,13cqw,130px);height:clamp(90px,13cqw,130px);object-fit:contain;background:#fff;border-radius:18px;border:3px solid #E6D6AE}
+.s.lesson .qcard video{width:clamp(110px,16cqw,160px);height:clamp(110px,16cqw,160px);object-fit:contain;display:block}
+.s.lesson .rpic video{width:100%;height:100%;object-fit:contain;filter:blur(10px)}
+.kimg video{width:100%;height:100%;object-fit:contain;display:block}
+.s.lesson .objshow .kimg.objpic video{height:var(--ph);width:var(--ph);border-radius:30px;object-fit:cover;box-shadow:0 10px 0 rgba(0,0,0,.10),0 18px 40px rgba(59,46,30,.18);animation:pop .35s ease-out}
+.s.lesson .oslider .oc video{width:var(--rc,var(--ph));height:var(--rc,var(--ph));object-fit:cover;border-radius:30px;display:block;box-shadow:0 10px 0 rgba(0,0,0,.10),0 18px 40px rgba(59,46,30,.18)}
+.s.lesson .exstrip .objshow .kimg.objpic video{border-radius:18px}
+.s.lesson .wpic video{width:clamp(160px,24cqw,230px);height:clamp(160px,24cqw,230px);object-fit:contain;display:block}
+.s.lesson .qc video{width:clamp(110px,15cqw,150px);height:clamp(110px,15cqw,150px);object-fit:contain}
+.s.lesson.quiz .qgrid video{width:100%;height:100%;object-fit:cover;display:block}
+.s.lesson.misali .qgrid video{width:100%;height:100%;object-fit:cover;display:block}
+#app .s.lesson .oslider .ogrid .oc video{width:100%;height:100%;object-fit:contain}
