@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { AudioBus } from './core/audio/audio-bus.service';
 import { LoaderService } from './core/loader/loader.service';
 import { SessionService } from './core/state/session.service';
@@ -66,6 +66,8 @@ export class App implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.zoom.start(); this.nav.start();
+    // the pointing hands live at body level (Spotter, the example's hand): a screen change takes any left behind with it
+    this.router.events.subscribe((e) => { if (e instanceof NavigationStart) document.querySelectorAll('body > .float').forEach((h) => h.remove()); });
     document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
     // a fresh load has no user gesture yet, so the first line of the first screen is refused by the browser: the first touch says it
     document.addEventListener('pointerdown', () => { if (this.bus.blocked()) setTimeout(() => this.bus.replayBlocked(), 0); }, { capture: true });

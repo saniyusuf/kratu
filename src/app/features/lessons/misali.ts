@@ -94,10 +94,11 @@ export class MisaliScreen implements OnInit, OnDestroy {
   /** A line that is written but not yet recorded: the screen still says it, the speaker just stays quiet. */
   private maybe(k: string): string | null { const g = this.bus.gk(k); return this.bus.has(g) ? g : null; }
   private async handTo(el: Element, dx = 0, dy = 0): Promise<void> {
-    const sR = this.zoom.rect(this.s()), r = this.zoom.rect(el);
-    const x0 = r.left + r.width / 2 - sR.left, y0 = r.top + r.height / 2 - sR.top;
-    if (!this.hand) { this.hand = document.createElement('span'); this.hand.className = 'misalihand'; this.hand.textContent = '👆🏾'; this.hand.style.transform = 'translate(' + (x0 + 80) + 'px,' + (y0 + 80) + 'px)'; this.s().appendChild(this.hand); }
-    const h = this.hand; await afterPaint(); h.style.transform = 'translate(' + (x0 - 16 + dx) + 'px,' + (y0 - 8 + dy) + 'px)'; await wait(750);
+    // at body level in screen pixels, like the Spotter's hand: inside the screen box it was clipped at the corners it walks to
+    const r = el.getBoundingClientRect(), z = this.zoom.z();
+    const x0 = r.left + r.width / 2, y0 = r.top + r.height / 2;
+    if (!this.hand) { this.hand = document.createElement('span'); this.hand.className = 'misalihand float'; this.hand.textContent = '👆🏾'; this.hand.style.transform = 'translate(' + (x0 + 80 * z) + 'px,' + (y0 + 80 * z) + 'px)'; document.body.appendChild(this.hand); }
+    const h = this.hand; await afterPaint(); h.style.transform = 'translate(' + (x0 + (-16 + dx) * z) + 'px,' + (y0 + (-8 + dy) * z) + 'px)'; await wait(750);
   }
   private handOff(): void { this.hand?.remove(); this.hand = null; }
   private recOn(): void { this.rec.set(true); this.hearing.set(true); }
