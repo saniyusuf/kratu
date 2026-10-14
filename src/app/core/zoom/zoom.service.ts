@@ -14,7 +14,7 @@ export class ZoomService {
 
   start(): void {
     this.fit();
-    addEventListener('resize', () => this.refit());
+    addEventListener('resize', () => { if (this.t) clearTimeout(this.t); this.t = setTimeout(() => this.fit(), 120); });   // a real resize always refits
     addEventListener('orientationchange', () => setTimeout(() => this.fit(), 200));
     const app = document.getElementById('app');
     if (app && !this.observer) {
@@ -62,9 +62,14 @@ export class ZoomService {
       .then(() => { this.fit(); return afterPaint(); })
       .then(() => { this.fit(); clearTimeout(guard); show(); }, () => { clearTimeout(guard); show(); });
   }
-  refit(): void { if (this.t) clearTimeout(this.t); this.t = setTimeout(() => this.fit(), 120); }
-  fit(): void {
-    const root = document.documentElement.style;
+  /**
+   * A change inside the screen (a class, a hint appearing) refits too, but only when the size really has to change: a
+   * bounce, a wobble or a balloon passing must never rescale the whole screen. Laila's "yay" made her a little bigger
+   * for a moment, the fit shrank everything to make room, and the game jumped on every pop (Sani 2026-10-14).
+   */
+  refit(): void { if (this.t) clearTimeout(this.t); this.t = setTimeout(() => this.fit(false), 120); }
+  fit(force = true): void {
+    const root = document.documentElement.style, prev = this.z();
     const base = Math.min(innerWidth / 960, innerHeight / 600);
     root.setProperty('--z', base.toFixed(3));
     void document.body.offsetHeight;
@@ -76,6 +81,7 @@ export class ZoomService {
       z = Math.max(floor, z * m); root.setProperty('--z', z.toFixed(3)); void document.body.offsetHeight;
       if (z <= floor) break;
     }
+    if (!force && Math.abs(z - prev) / prev < 0.03) { root.setProperty('--z', prev.toFixed(3)); void document.body.offsetHeight; }
   }
   private measure(): number {
     const s = document.querySelector('#app .block.active .s');
