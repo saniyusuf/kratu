@@ -4522,5 +4522,371 @@
    "m": "e736f54e55",
    "f": "089d01b8ad"
   }
+ },
+ {
+  "key": "s_g_lanterns_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya faɗin haruffan Turanci ɗaya-ɗaya?",
+   "f": "Kin iya faɗin haruffan Turanci ɗaya-ɗaya?"
+  },
+  "en": "Can you say the English letters one by one?",
+  "screens": [
+   "Wasanni · Fitilun gari"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "26b0e857a4",
+   "f": "ea490c452e"
+  }
+ },
+ {
+  "key": "s_g_lanterns_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna Laila, ka faɗi harafin da ke kan fitilar da ke haskakawa.",
+   "f": "Ki danna Laila, ki faɗi harafin da ke kan fitilar da ke haskakawa."
+  },
+  "en": "Tap Laila and say the letter on the glowing lantern.",
+  "screens": [
+   "Wasanni · Fitilun gari"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "ca46cd25af",
+   "f": "9591bbade9"
+  }
+ },
+ {
+  "key": "s_g_fish_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka san sunayen abubuwa da Turanci?",
+   "f": "Kin san sunayen abubuwa da Turanci?"
+  },
+  "en": "Do you know the names of things in English?",
+  "screens": [
+   "Wasanni · Kamun kifi"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "029b78dffb",
+   "f": "5b4514cfcf"
+  }
+ },
+ {
+  "key": "s_g_fish_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka kama kifin da ke ɗauke da abin da na faɗa.",
+   "f": "Ki kama kifin da ke ɗauke da abin da na faɗa."
+  },
+  "en": "Catch the fish carrying the thing I say.",
+  "screens": [
+   "Wasanni · Kamun kifi"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "53f849aff6",
+   "f": "1f0c0a92ce"
+  }
+ },
+ {
+  "key": "s_g_drum_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya faɗin sunayen abubuwa da Turanci?",
+   "f": "Kin iya faɗin sunayen abubuwa da Turanci?"
+  },
+  "en": "Can you say the names of things in English?",
+  "screens": [
+   "Wasanni · Kalangu"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "32b8c247e9",
+   "f": "e0398907a8"
+  }
+ },
+ {
+  "key": "s_g_drum_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!",
+   "f": "Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!"
+  },
+  "en": "Look at this picture. Tap Laila, say its name in English, and I will beat the drum!",
+  "screens": [
+   "Wasanni · Kalangu"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "3afc7aa901",
+   "f": "aeb2e655ab"
+  }
+ },
+ {
+  "key": "s_g_market_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Za ka iya gane abu idan an faɗe shi da Turanci?",
+   "f": "Za ki iya gane abu idan an faɗe shi da Turanci?"
+  },
+  "en": "Can you find a thing when it is said in English?",
+  "screens": [
+   "Wasanni · Hanzarin kasuwa"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "e9eab7ce17",
+   "f": "7f3f8be51c"
+  }
+ },
+ {
+  "key": "s_g_market_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Masu saye sun zo! Ka ba kowa abin da ya roƙa da sauri.",
+   "f": "Masu saye sun zo! Ki ba kowa abin da ya roƙa da sauri."
+  },
+  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "screens": [
+   "Wasanni · Hanzarin kasuwa"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "68e1374c5c",
+   "f": "3f28fada69"
+  }
+ },
+ {
+  "key": "s_g_stars_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya ƙirga da Turanci?",
+   "f": "Kin iya ƙirga da Turanci?"
+  },
+  "en": "Can you count in English?",
+  "screens": [
+   "Wasanni · Ƙirga taurari"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "8b3629a584",
+   "f": "cc07b93ddc"
+  }
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Taurari suna jira! Ka danna su bisa tsari, daga ɗaya.",
+   "f": "Taurari suna jira! Ki danna su bisa tsari, daga ɗaya."
+  },
+  "en": "The stars are waiting! Tap them in order, from one.",
+  "screens": [
+   "Wasanni · Ƙirga taurari"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "b854089acf",
+   "f": "c8a996701c"
+  }
+ },
+ {
+  "key": "s_g_canoes_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya karanta kalmomi da Turanci?",
+   "f": "Kin iya karanta kalmomi da Turanci?"
+  },
+  "en": "Can you read words in English?",
+  "screens": [
+   "Wasanni · Kwale-kwale"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "5db245a523",
+   "f": "d53bb96960"
+  }
+ },
+ {
+  "key": "s_g_canoes_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke cikin kowane kwale-kwale, sannan ka danna wadda ta dace da hoton.",
+   "f": "Ki karanta kalmar da ke cikin kowane kwale-kwale, sannan ki danna wadda ta dace da hoton."
+  },
+  "en": "Read the word in each canoe, then tap the one that matches the picture.",
+  "screens": [
+   "Wasanni · Kwale-kwale"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "f5c8277318",
+   "f": "6f67d71aaf"
+  }
+ },
+ {
+  "key": "s_g_pots_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya rubuta kalmomi da Turanci?",
+   "f": "Kin iya rubuta kalmomi da Turanci?"
+  },
+  "en": "Can you spell words in English?",
+  "screens": [
+   "Wasanni · Tukwane"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "1efb92ac43",
+   "f": "574634d374"
+  }
+ },
+ {
+  "key": "s_g_pots_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Bari mu gina kalma da tukwane. Ka danna haruffa ɗaya bayan ɗaya.",
+   "f": "Bari mu gina kalma da tukwane. Ki danna haruffa ɗaya bayan ɗaya."
+  },
+  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "screens": [
+   "Wasanni · Tukwane"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "779858dfd0",
+   "f": "88cbd11f6a"
+  }
+ },
+ {
+  "key": "s_g_house_ask",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka iya faɗin haruffan kalma ɗaya bayan ɗaya?",
+   "f": "Kin iya faɗin haruffan kalma ɗaya bayan ɗaya?"
+  },
+  "en": "Can you say the letters of a word one after another?",
+  "screens": [
+   "Wasanni · Ginin bulo"
+  ],
+  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "763254c827",
+   "f": "e203377670"
+  }
+ },
+ {
+  "key": "s_g_house_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mu gina gida kafin lokaci ya ƙare! Ka danna Laila, ka faɗi haruffan kalmar ɗaya bayan ɗaya. Kowane harafi bulo ne.",
+   "f": "Mu gina gida kafin lokaci ya ƙare! Ki danna Laila, ki faɗi haruffan kalmar ɗaya bayan ɗaya. Kowane harafi bulo ne."
+  },
+  "en": "Let's build the house before time runs out! Tap Laila and say the word's letters one by one. Every letter is a brick.",
+  "screens": [
+   "Wasanni · Ginin bulo"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": {
+   "m": "3a1bcbab64",
+   "f": "5350276894"
+  }
+ },
+ {
+  "key": "s_g_learn",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ba komai! Mu fara koyo tare. Danna Laila don a ci gaba.",
+  "en": "No problem! Let's start learning together. Tap Laila to continue.",
+  "screens": [
+   "Wasanni · all games"
+  ],
+  "said_when": "After Ban sani ba. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": "148f562d1c"
+ },
+ {
+  "key": "s_g_go",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna Laila don a ci gaba.",
+  "en": "Tap Laila to continue.",
+  "screens": [
+   "Wasanni · all games"
+  ],
+  "said_when": "After the score, following app_kudos. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "recorded": "4c7b29c113"
  }
 ]

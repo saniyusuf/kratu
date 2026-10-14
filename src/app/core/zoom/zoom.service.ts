@@ -19,6 +19,9 @@ export class ZoomService {
     const app = document.getElementById('app');
     if (app && !this.observer) {
       this.observer = new MutationObserver((records) => {
+        // a game draws inside a fixed box marked .nofit: its sparks, clocks and moving pieces can never change the size
+        records = records.filter((r) => !(r.target as Element).closest?.('.nofit'));
+        if (!records.length) return;
         // a whole new screen: settle its size before it is seen, so it never appears at one size and rescales to another
         for (const r of records) for (const n of Array.from(r.addedNodes)) {
           const el = n as HTMLElement;

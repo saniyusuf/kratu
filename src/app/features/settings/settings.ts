@@ -5,8 +5,9 @@ import { IdentityService, Person } from '../../core/identity/identity.service';
 import { LoaderService } from '../../core/loader/loader.service';
 import { SessionService } from '../../core/state/session.service';
 import { SpeechService } from '../../core/speech/speech.service';
+import { GAME_LIST } from '../games/lab/engine';
 
-type Stage = 'who' | 'confirm' | 'code' | 'students';
+type Stage = 'who' | 'confirm' | 'code' | 'students' | 'games';
 const CODE = '064662118';
 const ICO = {
   person: '<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
@@ -17,7 +18,7 @@ const ICO = {
 /**
  * The teal gear, bottom-left on every screen, and its panel: who is signed in, the English subtitles switch, the two
  * sample sessions (Aisha, Musa) for adults, a hard restart, and behind the code the students enrolled on this tablet
- * (simulate one, delete one). The microphone test, the device picker, the engine reset and the status line are
+ * (simulate one, delete one), and Wasanni: every judging game, to try (Sani 2026-10-14). The microphone test, the device picker, the engine reset and the status line are
  * diagnostics: only with ?debug in the address (Sani 2026-09-13).
  */
 @Component({
@@ -39,12 +40,16 @@ const ICO = {
   <div class="stage who-stage" [hidden]="stage() !== 'who'"><div class="who">
       <button class="pcard girl" [class.locked]="!permsOK()" (click)="ask('f', 'Aisha')"><img class="gph" alt="Aisha" src="assets/gender-girl.webp"><div class="nm">Aisha</div><small>yarinya · girl</small></button>
       <button class="pcard boy" [class.locked]="!permsOK()" (click)="ask('m', 'Musa')"><img class="gph" alt="Musa" src="assets/gender-boy.webp"><div class="nm">Musa</div><small>yaro · boy</small></button></div>
+    <button class="games-open" (click)="stage.set('games')"><svg class="ico" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><circle cx="15.5" cy="11.5" r="1"/><circle cx="17.5" cy="13.8" r="1"/></svg>Wasanni · games (all {{ games.length }}, to try)</button>
     <button class="restart" (click)="hardRestart()"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Sake farawa gaba ɗaya · hard restart (clears everything)</button>
     <button class="students-open" [class.locked]="!permsOK()" (click)="openCode()"><span [innerHTML]="ico.person"></span>Yara · students <span class="lock"><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>code</span></button></div>
   <div class="stage code-stage" [hidden]="stage() !== 'code'"><div class="sub">Adults only · enter the code to see the students</div><div class="code" id="admincode" [class.bad]="codeBad()">{{ dots() }}</div><div class="pad">@for (d of pad; track d) {<button (click)="key(d)">{{ d === 'del' ? '⌫' : d === 'ok' ? '✓' : d }}</button>}</div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
   <div class="stage students-stage" [hidden]="stage() !== 'students'"><h4 class="stitle">Yara · students</h4><div class="slist">
       @if (!students().length) {<div class="sempty">Babu yara tukuna · no students enrolled on this tablet yet.</div>}
       @for (p of students(); track p.id) {<div class="srow"><span class="wico" [class.girl]="p.gender === 'f'" [class.boy]="p.gender !== 'f'" [innerHTML]="ico.person"></span><div class="sname"><b>{{ p.name || '?' }}</b><small>{{ p.gender === 'f' ? 'yarinya · girl' : 'yaro · boy' }}{{ enrolled(p) }}{{ p.faceVecs?.length ? ' · face known' : '' }}</small></div><button class="ssim" (click)="simulate(p)"><span [innerHTML]="ico.play"></span>simulate</button><button class="sdel" [class.sure]="sure() === p.id" (click)="del(p)"><span [innerHTML]="ico.bin"></span>{{ sure() === p.id ? 'delete ' + p.name + '?' : 'delete' }}</button></div>}
+    </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
+  <div class="stage games-stage" [hidden]="stage() !== 'games'"><h4 class="stitle">Wasanni · games</h4><div class="sub">The judging games, to try. Each one opens as {{ session.g() === 'f' ? 'a girl' : 'a boy' }} would see it; the door brings you back.</div><div class="glist">
+      @for (g of games; track g.id) {<button class="grow" (click)="playGame(g.id)"><b>{{ g.name }}</b><small>{{ g.section }} · {{ g.en }}</small><span class="gico" [innerHTML]="ico.play"></span></button>}
     </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
   <div class="stage confirm-stage" [hidden]="stage() !== 'confirm'"><div class="cwho">@if (pending(); as w) {<button class="pcard" [class.girl]="w.g === 'f'" [class.boy]="w.g === 'm'"><img class="gph" [alt]="w.name" [src]="w.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"><div class="nm">{{ w.name }}</div><small>{{ w.g === 'f' ? 'yarinya · girl' : 'yaro · boy' }}</small></button>}</div>
     <h4 class="ctitle">Fara zaman gwaji a matsayin {{ pending()?.name }}? · Start a sample session as {{ pending()?.name }}?</h4>
@@ -61,6 +66,7 @@ export class Settings {
   private readonly loader = inject(LoaderService);
   private readonly router = inject(Router);
   readonly ico = ICO;
+  readonly games = GAME_LIST;
   readonly pad: (number | 'del' | 'ok')[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'del', 0, 'ok'];
   readonly isOpen = signal(false); readonly stage = signal<Stage>('who');
   readonly pending = signal<{ g: 'm' | 'f'; name: string; person?: Person } | null>(null);
@@ -95,6 +101,8 @@ export class Settings {
     if (this.router.url.startsWith('/home')) await this.router.navigateByUrl('/blank', { skipLocationChange: true });   // the chooser is re-entered so the greeting plays
     this.router.navigate(['/home']);
   }
+  /** Wasanni: the balloons are their own screen; the others share the games screen. */
+  playGame(id: string): void { this.bus.stopAll(); this.close(); this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id]); }
   hardRestart(): void {
     this.bus.stopAll(); try { localStorage.clear(); sessionStorage.clear(); } catch { /* ignore */ }
     try { indexedDB.databases?.().then((dbs) => dbs.forEach((d) => { try { if (d.name) indexedDB.deleteDatabase(d.name); } catch { /* ignore */ } })); } catch { /* ignore */ }

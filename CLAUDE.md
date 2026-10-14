@@ -133,6 +133,10 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
 - `?debug` + `localStorage.kratu_perms=1` bypasses the permission check for walkthroughs; `#musa` / `#aisha` are demo
   sessions (captions on). The Browser pane blocks camera and mic: mic flows can only be checked up to the "retry" path.
 - The ORT bundle we ship loads one runtime (`ort-wasm-simd-threaded.jsep.wasm.gz`) for WebGPU and plain wasm alike.
+- Wasanni (the judging games, `features/games/lab`, reached from the settings for now): the engine is the proposal page's
+  plain DOM script, drawn inside one fixed `.glab.nofit` box. `ZoomService` ignores mutations inside `.nofit`, so a game's
+  clock, sparks and moving pieces never refit or rescale the screen (Sani 14 Oct). Every rule in `gamelab.css` is scoped
+  under `.glab` and every keyframe is `g-…`. With `?debug` the speaking games show ✓/✗ to answer without a microphone.
 
 ## Open items
 - Review page inside the app (`/review`, debug only), screens index (`/screens`) — see the plan:
