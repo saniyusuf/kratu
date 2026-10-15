@@ -211,7 +211,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         function round() {
           pond.innerHTML = ''; target = words[r]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 3)));
           opts.forEach(function (w, k) {
-            var f = h('<button type="button" class="fish2 fish3" style="top:' + (2 + k * 23) + '%;animation-duration:' + (9 + k * 1.6) + 's;animation-delay:-' + (k * 2.4) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
+            var f = h('<button type="button" class="fish2 fish3" style="top:' + (2 + k * 23) + '%;animation-duration:' + (15 + k * 2.5) + 's;animation-delay:-' + (k * 3.8) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
             f.onclick = function () {
               if (f.classList.contains('caught')) return;
               if (w === target) { run.good(); f.classList.add('caught'); r++; net.querySelector('b').textContent = r; if (r >= 6) run.later(900, function () { done({ right: 6, finished: true, misses: run.miss }); }); else run.later(900, round); }
@@ -277,14 +277,15 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         run.scr.appendChild(h('<div class="awnwrap">' + KART.awning() + '</div>'));
         var mat = h('<div class="mat2">' + goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + KART.bowl(K.pic[k]) + '</button>'; }).join('') + '</div>');
         var sold = h('<div class="sold"><span class="coin s">Z</span> <b>0</b> / 6</div>');
-        run.scr.appendChild(top); run.scr.appendChild(mat); run.scr.appendChild(sold); run.clock(60, function () { done({ right: served, part: served / 6 }); });
+        var shop = h('<div class="shop"><div class="buyer"></div></div>'); shop.firstChild.appendChild(top); shop.firstChild.appendChild(sold); shop.appendChild(mat);   // the buyer beside the stall, so the goods can be big
+        run.scr.appendChild(shop); run.clock(90, function () { done({ right: served, part: served / 6 }); });
         run.remind = function () { say(K.en[q[c]], run); };
         function next() {
           if (c >= 6) return done({ right: served, finished: served === 6, part: served / 6 });
           var who = people[c]; top.querySelector('.person').innerHTML = '<img alt="" src="' + K.pic[who] + '">';
           top.classList.remove('leave', 'come'); void top.offsetWidth; top.classList.add('come');
-          var bar = top.querySelector('.pat b'); bar.style.transition = 'none'; bar.style.transform = 'scaleX(1)'; void bar.offsetWidth; bar.style.transition = 'transform 7s linear'; bar.style.transform = 'scaleX(0)';
-          clearTimeout(pt); pt = run.later(7000, function () { run.miss++; top.classList.add('leave'); c++; run.later(600, next); });
+          var bar = top.querySelector('.pat b'); bar.style.transition = 'none'; bar.style.transform = 'scaleX(1)'; void bar.offsetWidth; bar.style.transition = 'transform 12s linear'; bar.style.transform = 'scaleX(0)';
+          clearTimeout(pt); pt = run.later(12000, function () { run.miss++; top.classList.add('leave'); c++; run.later(600, next); });
           say(K.en[q[c]], run);
         }
         [].forEach.call(mat.children, function (b) {
@@ -332,7 +333,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         function round() {
           var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (7 + k) + 's;animation-delay:-' + (k * 2.3) + 's">' + KART.canoe(w) + '</button>');
+            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (12 + k * 1.6) + 's;animation-delay:-' + (k * 3.9) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
               if (run.dead || c.classList.contains('ok')) return;
               if (w === item[0].toUpperCase()) { run.good(); c.classList.add('ok'); say(K.en[item[0]], run); r++; if (r >= 5) run.later(900, function () { done({ right: 5, finished: true, misses: run.miss }); }); else run.later(1000, round); }

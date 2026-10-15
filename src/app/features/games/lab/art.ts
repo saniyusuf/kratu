@@ -236,11 +236,12 @@ export function bootArt(): any {
   };
   /* a calabash bowl to sell the goods from */
   A.bowl = function (img) {
-    return '<svg viewBox="0 0 100 70" class="art"><ellipse cx="50" cy="64" rx="44" ry="5" fill="rgba(40,20,6,.35)"/>' +
+    return '<svg viewBox="0 -34 100 104" class="art"><ellipse cx="50" cy="64" rx="44" ry="5" fill="rgba(40,20,6,.35)"/>' +
       '<path d="M6 30 Q10 64 50 64 Q90 64 94 30 Z" fill="url(#kc-gourd)"/><path d="M14 44 Q50 54 86 44" fill="none" stroke="#7A4A12" stroke-width="1.4" opacity=".6"/>' +
       '<path d="M18 50 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4" fill="none" stroke="#5E3A0E" stroke-width="1" opacity=".5"/>' +
       '<ellipse cx="50" cy="30" rx="44" ry="11" fill="#8A5A1E"/><ellipse cx="50" cy="30" rx="40" ry="9" fill="#3E2408"/>' +
-      '<image href="' + img + '" x="22" y="0" width="56" height="40" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 18px)"/></svg>';
+      '<rect x="9" y="-33" width="82" height="66" rx="12" fill="#fff" stroke="#E6D6AE" stroke-width="1.5"/>' +
+      '<image href="' + img + '" x="12" y="-30" width="76" height="60" preserveAspectRatio="xMidYMid meet"/></svg>';   // the picture big, on a white card standing in the bowl (Sani 2026-10-15)
   };
 })();
 /* the river for Kwale-kwale, painted to match the canoes: sky, far bank with acacias and huts, a wide river with reflections, reeds in front */

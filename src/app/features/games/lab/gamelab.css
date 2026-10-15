@@ -99,6 +99,17 @@
 .glab .glaila .lsvg{position:relative}
 .glab .scr>.cdown,.glab .scr>.finish{position:absolute!important;inset:-100vmax!important;z-index:7!important}
 .glab .scr.hit::before{inset:-100vmax!important}
+.glab .shop{display:flex;align-items:center;gap:3cqw;margin-top:9cqw}
+.glab .buyer{display:grid;justify-items:center;gap:1.4cqw}
+.glab .buyer .cust{margin-top:0!important;flex-direction:column;gap:1cqw}
+.glab .buyer .cust .person{width:16cqw;height:16cqw}
+.glab .buyer .pat{width:16cqw}
+.glab .scr.market2 .mat2{grid-template-columns:repeat(3,1fr);gap:1.6cqw!important;padding:1.6cqw 2cqw!important;transform:perspective(80cqw) rotateX(10deg)!important}
+.glab .mi2.bowl{width:19cqw!important;height:19.8cqw!important}
+.glab .scr.market2 .awnwrap{display:none}
+.glab .bank2{width:21cqw!important}
+.glab .sppic{width:17cqw!important}
+.glab .kcard{width:27cqw;height:27cqw}
 .glab .scr{gap:1.4cqw;padding:4cqw 5cqw}
 .glab button{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:inherit}
 .glab .glaila{display:grid;justify-items:center;gap:.4cqw;font:800 1.8cqw var(--disp)!important;color:var(--ink)}
@@ -521,3 +532,14 @@
 .glab .glaila .lsvg{position:relative}
 .glab .scr>.cdown,.glab .scr>.finish{position:absolute!important;inset:-100vmax!important;z-index:7!important}
 .glab .scr.hit::before{inset:-100vmax!important}
+.glab .shop{display:flex;align-items:center;gap:3cqw;margin-top:9cqw}
+.glab .buyer{display:grid;justify-items:center;gap:1.4cqw}
+.glab .buyer .cust{margin-top:0!important;flex-direction:column;gap:1cqw}
+.glab .buyer .cust .person{width:16cqw;height:16cqw}
+.glab .buyer .pat{width:16cqw}
+.glab .scr.market2 .mat2{grid-template-columns:repeat(3,1fr);gap:1.6cqw!important;padding:1.6cqw 2cqw!important;transform:perspective(80cqw) rotateX(10deg)!important}
+.glab .mi2.bowl{width:19cqw!important;height:19.8cqw!important}
+.glab .scr.market2 .awnwrap{display:none}
+.glab .bank2{width:21cqw!important}
+.glab .sppic{width:17cqw!important}
+.glab .kcard{width:27cqw;height:27cqw}
