@@ -127,11 +127,11 @@ export function bootArt(): any {
   /* a tilapia, head to the right: body, scales, bars, fins, gill, eye; the tail beats; a thread runs from the tail to a tag with the photo */
   A.fish3 = function (photo) {
     var bars = ''; for (var i = 0; i < 6; i++) bars += '<rect x="' + (78 + i * 18) + '" y="0" width="8" height="110" fill="#22341E" opacity=".13"/>';
-    return '<svg viewBox="-78 0 290 110" class="art fish3svg">' +
+    return '<svg viewBox="-122 0 334 110" class="art fish3svg">' +
       '<g class="tagg"><path d="M14 56 C-6 60 -20 50 -36 52" fill="none" stroke="#F4EBD0" stroke-width="1.6"/>' +
-        '<g transform="rotate(-6 -40 52)"><rect x="-78" y="26" width="52" height="62" rx="8" fill="url(#kb-tag)" stroke="#C9B88F" stroke-width="1.4"/>' +
+        '<g transform="rotate(-6 -40 52)"><rect x="-120" y="6" width="94" height="98" rx="10" fill="url(#kb-tag)" stroke="#C9B88F" stroke-width="1.4"/>' +
         '<circle cx="-32" cy="52" r="3" fill="#fff" stroke="#C9B88F"/>' +
-        '<image href="' + photo + '" x="-74" y="30" width="38" height="54" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 4px)"/></g></g>' +
+        '<image href="' + photo + '" x="-115" y="11" width="80" height="88" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 6px)"/></g></g>' +
       '<g class="ftail"><path d="M60 55 L14 22 Q24 55 14 88 Z" fill="url(#kb-tail)"/><path d="M58 55 L20 28 M58 55 L18 42 M58 55 L17 55 M58 55 L18 68 M58 55 L20 82" stroke="#4F6646" stroke-width=".8" opacity=".6"/></g>' +
       '<path class="dfin" d="M92 24 C110 6 150 4 176 26 L160 30 C140 22 112 22 96 30 Z" fill="url(#kb-fin)"/>' +
       '<path d="M98 26 L104 10 M110 24 L116 7 M122 22 L128 6 M134 22 L140 7 M146 23 L152 9 M158 25 L164 14" stroke="#3F5A3A" stroke-width="1" opacity=".55"/>' +
@@ -198,8 +198,8 @@ export function bootArt(): any {
       '<rect x="92" y="27" width="34" height="5" rx="1.5" fill="#C98A55"/>' +
       '<path d="M24 28 L196 28" stroke="#E2AA6A" stroke-width="1.6"/><path d="M2 26 Q14 20 24 28 M196 28 Q206 20 218 26" fill="none" stroke="#E2AA6A" stroke-width="1.6"/>' +
       '<g class="paddle"><path d="M150 14 L182 44" stroke="#7A4A22" stroke-width="2.6" stroke-linecap="round"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/></g>' +
-      '<rect x="62" y="38" width="96" height="16" rx="3" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.2"/><circle cx="66" cy="46" r="1.2" fill="#7A4A22"/><circle cx="154" cy="46" r="1.2" fill="#7A4A22"/>' +
-      '<text x="110" y="51" text-anchor="middle" class="tw">' + w + '</text></svg>';
+      '<rect x="56" y="29" width="108" height="26" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.4"/><circle cx="61" cy="42" r="1.4" fill="#7A4A22"/><circle cx="159" cy="42" r="1.4" fill="#7A4A22"/>' +
+      '<text x="110" y="50" text-anchor="middle" class="tw">' + w + '</text></svg>';
   };
   /* a clay pot: thick rim, incised band, speckled fired clay, a soft shine, the letter in white chalk */
   A.pot = function (L) {

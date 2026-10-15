@@ -110,6 +110,23 @@
 .glab .bank2{width:21cqw!important}
 .glab .sppic{width:17cqw!important}
 .glab .kcard{width:27cqw;height:27cqw}
+.glab .fish3{width:44cqw!important;height:14.5cqw!important;left:-46cqw!important}
+@keyframes g-swim{to{transform:translateX(150cqw)}}
+.glab .scr.pondbg .pond2{height:44cqw!important;margin-top:7cqw!important}
+.glab .street2{gap:1.6cqw!important}
+.glab .lan2{width:9.4cqw!important;height:17.2cqw!important}
+.glab .lan2 .t{font-size:22px!important}
+.glab .st3{width:11cqw!important;animation-duration:4s!important}
+.glab .st3>span{font-size:3.8cqw!important}
+.glab .canoe2{width:38cqw!important;height:15.6cqw!important;left:-40cqw!important}
+.glab .canal2{height:34cqw!important}
+@keyframes g-drift{to{transform:translateX(145cqw)}}
+.glab .pot2{width:13.5cqw!important;height:15.4cqw!important}
+.glab .spslots span{width:10cqw;height:11cqw;font-size:6cqw}
+.glab .site{width:44cqw}
+.glab .canoe3 .tw{font-size:22px!important;letter-spacing:3px}
+.glab .pot2 .tc{font-size:30px!important}
+.glab .sp,.glab .sp.hs{margin-top:10cqw!important}
 .glab .scr{gap:1.4cqw;padding:4cqw 5cqw}
 .glab button{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:inherit}
 .glab .glaila{display:grid;justify-items:center;gap:.4cqw;font:800 1.8cqw var(--disp)!important;color:var(--ink)}
@@ -543,3 +560,20 @@
 .glab .bank2{width:21cqw!important}
 .glab .sppic{width:17cqw!important}
 .glab .kcard{width:27cqw;height:27cqw}
+.glab .fish3{width:44cqw!important;height:14.5cqw!important;left:-46cqw!important}
+@keyframes g-swim{to{transform:translateX(150cqw)}}
+.glab .scr.pondbg .pond2{height:44cqw!important;margin-top:7cqw!important}
+.glab .street2{gap:1.6cqw!important}
+.glab .lan2{width:9.4cqw!important;height:17.2cqw!important}
+.glab .lan2 .t{font-size:22px!important}
+.glab .st3{width:11cqw!important;animation-duration:4s!important}
+.glab .st3>span{font-size:3.8cqw!important}
+.glab .canoe2{width:38cqw!important;height:15.6cqw!important;left:-40cqw!important}
+.glab .canal2{height:34cqw!important}
+@keyframes g-drift{to{transform:translateX(145cqw)}}
+.glab .pot2{width:13.5cqw!important;height:15.4cqw!important}
+.glab .spslots span{width:10cqw;height:11cqw;font-size:6cqw}
+.glab .site{width:44cqw}
+.glab .canoe3 .tw{font-size:22px!important;letter-spacing:3px}
+.glab .pot2 .tc{font-size:30px!important}
+.glab .sp,.glab .sp.hs{margin-top:10cqw!important}

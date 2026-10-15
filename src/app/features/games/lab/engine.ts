@@ -185,7 +185,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         var L8 = shuffle(['K', 'M', 'S', 'T', 'E', 'R', 'B', 'P']), i = 0, missed = [];
         var street = h('<div class="street2">' + L8.map(function (L) { return '<span class="lan2">' + KART.lantern(L) + '</span>'; }).join('') + '</div>');
         var box = micBox(run);
-        run.scr.appendChild(street); run.scr.appendChild(box); run.clock(60, function () { done({ right: run.right, part: run.right / 8, missed: L8.slice(i).concat(missed) }); });
+        run.scr.appendChild(street); run.scr.appendChild(box); run.clock(120, function () { done({ right: run.right, part: run.right / 8, missed: L8.slice(i).concat(missed) }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         function round() {
           var lan = street.children[i]; lan.classList.add('glow'); box.cue();
@@ -206,12 +206,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
       play: function (run, done) {
         var words = shuffle(['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair']), r = 0, target;
         var pond = h('<div class="pond2"></div>'), net = h('<div class="net">🥅 <b>0</b> / 6</div>');
-        run.scr.appendChild(pond); run.scr.appendChild(net); run.clock(60, function () { done({ right: r, part: r / 6 }); });
+        run.scr.appendChild(pond); run.scr.appendChild(net); run.clock(120, function () { done({ right: r, part: r / 6 }); });
         run.remind = function () { say(K.en[target], run); };
         function round() {
-          pond.innerHTML = ''; target = words[r]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 3)));
+          pond.innerHTML = ''; target = words[r]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 2)));
           opts.forEach(function (w, k) {
-            var f = h('<button type="button" class="fish2 fish3" style="top:' + (2 + k * 23) + '%;animation-duration:' + (15 + k * 2.5) + 's;animation-delay:-' + (k * 3.8) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
+            var f = h('<button type="button" class="fish2 fish3" style="top:' + (k * 34) + '%;animation-duration:' + (24 + k * 3) + 's;animation-delay:-' + (k * 8) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
             f.onclick = function () {
               if (f.classList.contains('caught')) return;
               if (w === target) { run.good(); f.classList.add('caught'); r++; net.querySelector('b').textContent = r; if (r >= 6) run.later(900, function () { done({ right: 6, finished: true, misses: run.miss }); }); else run.later(900, round); }
@@ -240,7 +240,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         var box = micBox(run);
         stage.querySelector('.kplayer').appendChild(box);
         run.scr.appendChild(stage); run.scr.appendChild(row); run.noBump = false;
-        run.clock(90, function () { done({ right: said, part: said / 6 }); });
+        run.clock(150, function () { done({ right: said, part: said / 6 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         var card = stage.querySelector('.easel'), plate = stage.querySelector('.plate'), player = stage.querySelector('.kplayer');
         function beat(n) { for (var k = 0; k < n; k++) (function (k) { run.later(k * 220, function () { drum(k % 2 === 0); player.classList.remove('hit'); void player.offsetWidth; player.classList.add('hit'); }); })(k); }
@@ -305,7 +305,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         var NUMS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'], want = 1;
         var pos = shuffle([[12, 22], [26, 60], [38, 18], [50, 52], [62, 22], [74, 62], [86, 30], [18, 78], [56, 82], [88, 76]]);
         var sky = h('<div class="sky3"><svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg></div>');
-        run.scr.appendChild(sky); run.clock(60, function () { done({ right: want - 1, part: (want - 1) / 10 }); });
+        run.scr.appendChild(sky); run.clock(120, function () { done({ right: want - 1, part: (want - 1) / 10 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         var prev = null;
         pos.forEach(function (p, k) {
@@ -328,12 +328,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
       play: function (run, done) {
         var R = shuffle([['cat', ['CAT', 'CAR', 'CUP']], ['dog', ['DOG', 'DIG', 'LOG']], ['sun', ['SUN', 'BUN', 'SUB']], ['bus', ['BUS', 'BUT', 'BUN']], ['cup', ['CUP', 'CAP', 'CUT']]]), r = 0;
         var bank = h('<div class="bank2"><img alt=""></div>'), river = h('<div class="canal2"></div>');
-        run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(60, function () { done({ right: r, part: r / 5 }); });
+        run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: r, part: r / 5 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         function round() {
           var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (12 + k * 1.6) + 's;animation-delay:-' + (k * 3.9) + 's">' + KART.canoe(w) + '</button>');
+            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (20 + k * 2.5) + 's;animation-delay:-' + (k * 6.5) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
               if (run.dead || c.classList.contains('ok')) return;
               if (w === item[0].toUpperCase()) { run.good(); c.classList.add('ok'); say(K.en[item[0]], run); r++; if (r >= 5) run.later(900, function () { done({ right: 5, finished: true, misses: run.miss }); }); else run.later(1000, round); }
@@ -353,7 +353,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         var top = h('<div class="sp"><span class="sppic"><img alt=""></span><div class="spslots"></div></div>');
         var pad = h('<div class="pots2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(pad);
-        run.clock(75, function () { done({ right: words, part: words / 4, misses: misses }); });
+        run.clock(120, function () { done({ right: words, part: words / 4, misses: misses }); });
         run.remind = function () { say(K.en[W[wi]], run); };
         function word() {
           var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
@@ -405,7 +405,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site); hrow.appendChild(box);
         run.scr.appendChild(top); run.scr.appendChild(hrow);
         run.noBump = true;
-        run.clock(90, function () { done({ right: wi, part: placed / TOTAL, built: placed }); });
+        run.clock(150, function () { done({ right: wi, part: placed / TOTAL, built: placed }); });
         run.remind = function () { say(K.en[W[wi]], run); };
         var bricks = site.querySelectorAll('.hb');
         function paint() { top.querySelector('.hpct b').textContent = Math.round(100 * placed / TOTAL); }
