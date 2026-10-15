@@ -1,6 +1,6 @@
 /* The judging games (Wasanni). Moved from the proposal page's games.css with the app's additions; every rule is scoped
    under .glab and every keyframe is g-…, so nothing here can touch the rest of the app or be touched by it. Keep it that way. */
-.glab{position:absolute;inset:0;container-type:inline-size;overflow:hidden;background:#F4E7C9;color:#3B2E1E;font-family:var(--body);--ink:#3B2E1E;--muted:#7A6A4C;--paper:#F4E7C9;--paper2:#FBF3DE;--sheet:#FFFDF7;--line:#E6D6AE;--gold:#E8A317;--gold2:#FFD54A;--golddk:#9C6B00}
+.glab{position:absolute;inset:0;container-type:size;overflow:hidden;background:#F4E7C9;color:#3B2E1E;font-family:var(--body);--ink:#3B2E1E;--muted:#7A6A4C;--paper:#F4E7C9;--paper2:#FBF3DE;--sheet:#FFFDF7;--line:#E6D6AE;--gold:#E8A317;--gold2:#FFD54A;--golddk:#9C6B00}
 .glab .scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;padding:5cqw 6cqw;text-align:center}
 .glab .eye{font:800 1.5cqw var(--disp);letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
 .glab .big{font:800 5.2cqw/1 var(--disp);margin:0}
@@ -85,6 +85,20 @@
 .glab .tester button{font:800 2cqw var(--disp)!important;width:5cqw;height:3.6cqw;border-radius:999px!important;background:#fff!important;border:.3cqw dashed #9C8B6E!important;color:#3B2E1E}
 .glab .tester .ok{color:#2E7D32}
 .glab .tester .no{color:#C62828}
+.glab>.gbg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.glab>.gbg>.scene{position:absolute;inset:0;width:100%;height:100%}
+.glab>.gbox{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(100cqw,160cqh);height:min(100cqh,62.5cqw);container-type:inline-size;z-index:1}
+.glab>.gbg:not(:empty)~.gbox .scr.p{background:none}
+.glab>.gbg::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 60%,rgba(20,12,4,.32));opacity:0}
+.glab>.gbg:not(:empty)::after{opacity:1}
+.glab .scr.p::after{display:none}
+.glab .glaila{position:relative;isolation:isolate}
+.glab .glaila.cue .lsvg{filter:none!important}
+.glab .glaila.cue::before{content:"";position:absolute;left:50%;top:0;width:100%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:radial-gradient(circle,rgba(255,213,74,.75) 0,rgba(255,213,74,.35) 45%,rgba(255,213,74,0) 70%);z-index:-1;pointer-events:none;animation:g-halo 1.6s ease-in-out infinite}
+@keyframes g-halo{50%{transform:scale(1.15);opacity:.7}}
+.glab .glaila .lsvg{position:relative}
+.glab .scr>.cdown,.glab .scr>.finish{position:absolute!important;inset:-100vmax!important;z-index:7!important}
+.glab .scr.hit::before{inset:-100vmax!important}
 .glab .scr{gap:1.4cqw;padding:4cqw 5cqw}
 .glab button{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:inherit}
 .glab .glaila{display:grid;justify-items:center;gap:.4cqw;font:800 1.8cqw var(--disp)!important;color:var(--ink)}
@@ -493,3 +507,17 @@
 .glab .tester button{font:800 2cqw var(--disp)!important;width:5cqw;height:3.6cqw;border-radius:999px!important;background:#fff!important;border:.3cqw dashed #9C8B6E!important;color:#3B2E1E}
 .glab .tester .ok{color:#2E7D32}
 .glab .tester .no{color:#C62828}
+.glab>.gbg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.glab>.gbg>.scene{position:absolute;inset:0;width:100%;height:100%}
+.glab>.gbox{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(100cqw,160cqh);height:min(100cqh,62.5cqw);container-type:inline-size;z-index:1}
+.glab>.gbg:not(:empty)~.gbox .scr.p{background:none}
+.glab>.gbg::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 60%,rgba(20,12,4,.32));opacity:0}
+.glab>.gbg:not(:empty)::after{opacity:1}
+.glab .scr.p::after{display:none}
+.glab .glaila{position:relative;isolation:isolate}
+.glab .glaila.cue .lsvg{filter:none!important}
+.glab .glaila.cue::before{content:"";position:absolute;left:50%;top:0;width:100%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:radial-gradient(circle,rgba(255,213,74,.75) 0,rgba(255,213,74,.35) 45%,rgba(255,213,74,0) 70%);z-index:-1;pointer-events:none;animation:g-halo 1.6s ease-in-out infinite}
+@keyframes g-halo{50%{transform:scale(1.15);opacity:.7}}
+.glab .glaila .lsvg{position:relative}
+.glab .scr>.cdown,.glab .scr>.finish{position:absolute!important;inset:-100vmax!important;z-index:7!important}
+.glab .scr.hit::before{inset:-100vmax!important}

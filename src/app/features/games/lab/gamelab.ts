@@ -37,7 +37,7 @@ const LINES: Record<string, { ask: string; how: string }> = {
   host: { class: 's gamelab' },
   encapsulation: ViewEncapsulation.None,
   styleUrl: './gamelab.css',
-  template: `<div #frame class="glab nofit"><div class="scr"></div></div><app-door (pressed)="leave()" /><app-ear (pressed)="again()" />`,
+  template: `<div #frame class="glab nofit"><div class="gbg"></div><div class="gbox"><div class="scr"></div></div></div><app-door (pressed)="leave()" /><app-ear (pressed)="again()" />`,
 })
 export class GameLabScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);

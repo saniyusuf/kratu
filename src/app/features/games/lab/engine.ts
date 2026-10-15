@@ -26,7 +26,7 @@ export interface GameIO {
 export interface GameHandle { stop(): void; again(): void; }
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandle {
-  const KART = bootArt(), K = io.K, F = io.female ? 1 : 0;
+  const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
   let ac = null, live = null, gone = false, mic = null;
   function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -119,7 +119,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
   function question() {
     if (live) live.stop();
     var g = GAMES[gid], run = new Run(); live = run;
-    run.scr.className = 'scr q';
+    run.scr.className = 'scr q'; bg.innerHTML = '';
     run.scr.innerHTML = '<div class="eye">' + g.title + '</div>' +
       '<div class="qrow">' + lailaBtn('yes talking', 'Na sani') + alloBtn() + '</div>';   // the question is heard, never written (Kratu rule)
     var yes = run.scr.querySelector('.glaila'), no = run.scr.querySelector('.gallo');
@@ -135,7 +135,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
     var PAINT = { 'j-haruffa-say': 'nightvillage', 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
     var scene = KART.scene[PAINT[gid]] || '';
     if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + KART.scene.underriver + KART.underwater + '</div>';
-    run.scr.innerHTML = scene + '<div class="eye">' + g.title + '</div>';
+    bg.innerHTML = scene; run.scr.innerHTML = '<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
     var go = function () {
       if (run.dead) return;
       var cd = h('<div class="cdown"><b></b></div>'); run.scr.appendChild(cd); var steps = ['3', '2', '1', 'Fara!'], i = 0;
@@ -163,7 +163,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
     else if (!r.finished) stars = r.right >= 1 ? (r.part >= .5 ? 2 : 1) : 1;
     else stars = run.miss === 0 ? (secs >= 20 ? 5 : 4) : run.miss <= 2 ? 3 : 2;
     var gold = r.learn ? 0 : Math.max(50, Math.floor((100 + run.right * 20 + secs) / 50) * 50);
-    res.scr.className = 'scr r' + (stars === 5 ? ' top' : '');
+    res.scr.className = 'scr r' + (stars === 5 ? ' top' : ''); bg.innerHTML = '';
     res.scr.innerHTML = (stars === 5 ? '<div class="conf">' + Array.from({ length: 36 }, function (_, i) { return '<i style="left:' + (i * 37 % 100) + '%;animation-delay:-' + (i * 7 % 15) / 10 + 's;background:' + ['#FFD54A', '#E63946', '#1FA1D8', '#2FAE9E', '#8A5FBF', '#4CAF50'][i % 6] + '"></i>'; }).join('') + '</div>' : '') +
       '<div class="eye">' + g.title + ' · sakamako</div>' +
       (r.learn ? '<p class="big">Ba komai!</p>' : '<div class="stars">' + [1, 2, 3, 4, 5].map(function (i) { return '<i class="' + (i <= stars ? '' : 'off') + '" style="animation-delay:' + (i * .3) + 's">★</i>'; }).join('') + '</div>' +
