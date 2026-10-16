@@ -28,7 +28,7 @@ export function moreGames(c: any): Record<string, any> {
 
   return {
     /* ---------------- Haruffa: the Durbar ---------------- */
-    'j-durbar': { title: 'Hawan Daushe', cls: 'durbar', scene: 'courtyard',
+    'j-durbar': { title: 'Hawan Daushe', cls: 'durbar', scene: 'palace',
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b> out of order: those letters would be taught.' : 'Said every letter out of order: with the balloons and the lanterns agreeing, Haruffa is done.',
       play(run, done) {
@@ -59,7 +59,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Abubuwa: the auctioneer ---------------- */
-    'j-dillali': { title: 'Dillalin kasuwa', cls: 'dillali', scene: 'market',
+    'j-dillali': { title: 'Dillalin kasuwa', cls: 'dillali', scene: 'kurmi',
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: (r) => r.right >= 6 ? 'Named everything the dillali held up: those groups would be skipped.' : 'Named ' + r.right + ' of 6: the groups with misses would be taught.',
       play(run, done) {
@@ -84,7 +84,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Nemo hoto: the keke ---------------- */
-    'j-keke': { title: 'Keke NAPEP', cls: 'keke', scene: 'savanna',
+    'j-keke': { title: 'Keke NAPEP', cls: 'keke', scene: 'street',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: (r) => r.right >= 6 ? 'Took every passenger where they asked: places are known.' : 'Got ' + r.right + ' of 6 places: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
@@ -109,7 +109,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Nemo hoto: the tea seller ---------------- */
-    'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'nightvillage',
+    'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'teanight',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
@@ -144,7 +144,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: the groundnut pyramids (tap) ---------------- */
-    'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'savanna', tap: true,
+    'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'pyramids', tap: true,
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.right >= 8 ? 'Matched every number to its stack, to twenty: Lambobi would start at the tens.' : 'Matched ' + r.right + ' of 8: Lambobi would start ' + (r.reached > 10 ? 'at 11 to 20.' : 'at 1 to 10.'),
       play(run, done) {
@@ -171,7 +171,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: the cattle market (tap) ---------------- */
-    'j-shanu': { title: 'Kasuwar shanu', cls: 'shanu', scene: 'market', tap: true,
+    'j-shanu': { title: 'Kasuwar shanu', cls: 'shanu', scene: 'cattle', tap: true,
       placeNo: 'Lambobi would start at the tens, with the lessons.',
       place: (r) => r.right >= 8 ? 'Knew every price by ear, to a thousand: the tens and hundreds would be skipped.' : 'Knew ' + r.right + ' of 8 prices: Lambobi would start ' + (r.hundreds < 2 ? 'at the tens.' : 'at the hundreds.'),
       play(run, done) {
@@ -198,7 +198,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: counting the herd (speaking) ---------------- */
-    'j-garke': { title: 'Ƙirgen garke', cls: 'garke', scene: 'savanna',
+    'j-garke': { title: 'Ƙirgen garke', cls: 'garke', scene: 'camp',
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.finished ? 'Counted the herd to ten and the big herd in tens to fifty: Lambobi would start at the hundreds.' : 'Counted to <b>' + r.reached + '</b>: Lambobi would start ' + (r.reached < 5 ? 'at 1 to 5.' : r.reached <= 10 ? 'at 6 to 10.' : 'at the tens.'),
       play(run, done) {
@@ -233,7 +233,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: the suya seller (speaking) ---------------- */
-    'j-suya': { title: 'Mai suya', cls: 'suyag', scene: 'nightvillage',
+    'j-suya': { title: 'Mai suya', cls: 'suyag', scene: 'suyanight',
       placeNo: 'Lambobi would start at the tens, with the lessons.',
       place: (r) => r.right >= 6 ? 'Paid with every note by name, to a thousand: Lambobi would skip the hundreds.' : 'Named ' + r.right + ' of 6 notes: Lambobi would start at the tens.',
       play(run, done) {
@@ -255,7 +255,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Karatu: the allo ---------------- */
-    'j-allo': { title: 'Allo', cls: 'allog', scene: 'courtyard',
+    'j-allo': { title: 'Allo', cls: 'allog', scene: 'islamiyya',
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: (r) => r.longest >= 5 ? 'Read aloud up to ' + r.longest + '-letter words: Karatu would start at long words.' : 'Read aloud up to ' + (r.longest || 0) + '-letter words: Karatu would start at short words.',
       play(run, done) {
@@ -278,7 +278,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Karatu: the ferry ---------------- */
-    'j-jirgi': { title: 'Jirgin ruwa', cls: 'jirgi', scene: 'riverart',
+    'j-jirgi': { title: 'Jirgin ruwa', cls: 'jirgi', scene: 'crossing',
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: (r) => r.right >= 5 ? 'Read every canoe aloud and filled the boat: the ferry and the board agree.' : 'Read ' + r.right + ' of 5 canoes: Karatu would start at short words.',
       play(run, done) {
@@ -300,7 +300,7 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Rubutu: the letter writer ---------------- */
-    'j-marubuci': { title: 'Marubucin wasiƙa', cls: 'marubg', scene: 'courtyard',
+    'j-marubuci': { title: 'Marubucin wasiƙa', cls: 'marubg', scene: 'postoffice',
       placeNo: 'Rubutu would start at three letters, with the lessons.',
       place: (r) => r.right >= 4 ? 'Spelled every name aloud: with Ginin bulo agreeing, Rubutu moves on.' : 'Spelled ' + r.right + ' of 4 aloud: Rubutu would start at three letters.',
       play(run, done) {

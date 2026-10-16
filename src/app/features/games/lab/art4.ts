@@ -233,4 +233,6 @@ export function passenger(i: number): string {
     { hat: 'hijab', hatc: '#EF6C00', robe: '#F57C00', robe2: '#E65100', skin: 2 }, { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 3 }, { hat: 'cap', hatc: '#B71C1C', robe: '#455A64', robe2: '#263238', skin: 1 }];
   return person(P[i % P.length]);
 }
-export function bootArt4(): void { defs(); }
+import { SCENES4 } from './scenes4';
+/** the drawings' shared gradients, and each Arewa game's own painted place added to the scenes */
+export function bootArt4(KART?: any): void { defs(); if (KART) Object.assign(KART.scene, SCENES4); }

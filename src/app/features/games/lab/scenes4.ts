@@ -1,0 +1,127 @@
+// @ts-nocheck
+/*
+ * A painted place for every Arewa game (Sani 2026-10-16: "the game's own background, not the current one"). Same
+ * hand as the other scenes: 160×100, sliced to fill any screen, flat shapes with soft gradients, a few slow moving
+ * things (bunting, smoke, a lamp's glow, the river) by transform and opacity. Ground sits at y≈70–76 so the drawn
+ * people and animals stand on it.
+ */
+const head = '<svg class="scene" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice">';
+const lg = (id, ...c) => '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' + c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
+const rg = (id, a, b) => '<radialGradient id="' + id + '" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="' + a + '"/><stop offset="1" stop-color="' + b + '" stop-opacity="0"/></radialGradient>';
+const cloud = (x, y, s) => '<g class="drift4" transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="#fff" opacity=".85"><ellipse rx="12" ry="3"/><ellipse cx="7" cy="-1.6" rx="7" ry="3.4"/><ellipse cx="-5" cy="-1" rx="5" ry="2.6"/></g>';
+const stars = (n, h) => { let s = '<g class="twinkle">'; for (let i = 0; i < n; i++) s += '<circle cx="' + ((i * 37.7) % 160).toFixed(1) + '" cy="' + ((i * 13.3) % h).toFixed(1) + '" r="' + (i % 3 ? .35 : .6) + '" fill="#fff"/>'; return s + '</g>'; };
+const neem = (x, y, s, c = '#3E6B2E', c2 = '#5A8A3C') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path d="M-1.4 0 Q-2 -10 -1 -18 L1 -18 Q2 -10 1.4 0 Z" fill="#5A3A1E"/><path d="M0 -14 L-6 -20 M0 -12 L6 -19" stroke="#5A3A1E" stroke-width="1.2"/>' +
+  '<ellipse cx="0" cy="-24" rx="14" ry="9" fill="' + c + '"/><ellipse cx="-7" cy="-20" rx="8" ry="6" fill="' + c + '"/><ellipse cx="7" cy="-21" rx="8" ry="6" fill="' + c + '"/><ellipse cx="-3" cy="-27" rx="8" ry="5" fill="' + c2 + '"/><ellipse cx="5" cy="-25" rx="6" ry="4" fill="' + c2 + '"/></g>';
+const dum = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path d="M-.8 0 L-.5 -16 L.5 -16 L.8 0 Z" fill="#6B4A2A"/><path d="M0 -16 L-6 -19 M0 -16 L6 -19 M0 -16 L-4 -22 M0 -16 L4 -22 M0 -16 L0 -23" stroke="#4F7A3A" stroke-width="1.6" stroke-linecap="round"/></g>';
+/* Hausa building: red-earth wall with zanko horns on the parapet and white relief */
+const zanko = (x0, x1, y) => { let s = ''; for (let x = x0; x <= x1; x += 8) s += '<path d="M' + x + ' ' + y + ' l1.4 -4 l1.4 4 Z"/>'; return s; };
+const relief = (x, y) => '<g fill="none" stroke="#FFF1D6" stroke-width=".6" opacity=".8"><path d="M' + (x - 5) + ' ' + y + ' q5 -5 10 0 q-5 5 -10 0 Z"/><circle cx="' + x + '" cy="' + y + '" r="1.2"/><path d="M' + (x - 7) + ' ' + (y + 5) + ' l3.5 -2 l3.5 2 l3.5 -2 l3.5 2"/></g>';
+const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .55 : .8) + '">'; const c = dark ? ['#2A2240', '#33294A', '#241D38'] : ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00'];
+  for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2; s += '<g transform="translate(' + x.toFixed(1) + ' ' + y + ')"><path d="M-2.4 0 L-1.6 -6 L1.6 -6 L2.4 0 Z" fill="' + c[i % c.length] + '"/><circle cy="-7.4" r="1.5" fill="' + (dark ? '#1A1428' : '#6B4422') + '"/></g>'; } return s + '</g>'; };
+
+export const SCENES4: Record<string, string> = {
+  /* Hawan Daushe: the emir's palace gate on Sallah day, bunting across the square */
+  palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#p4-sky)"/>' + cloud(26, 12, .8) + cloud(128, 9, .7) +
+    '<path d="M18 70 V30 H142 V70 Z" fill="url(#p4-wall)"/><g fill="#A9522B">' + zanko(18, 140, 30) + '</g>' +
+    '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="#B85C30"/><g fill="#B85C30">' + zanko(6, 28, 24) + zanko(130, 152, 24) + '</g>' +
+    '<path d="M62 70 V46 Q80 26 98 46 V70 Z" fill="#3A1E0C"/><path d="M58 70 V45 Q80 21 102 45 V70" fill="none" stroke="#FFF1D6" stroke-width="1.6"/>' +
+    '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + relief(40, 44) + relief(120, 44) + relief(18, 38) + relief(142, 38) +
+    '<g class="bunting"><path d="M0 18 Q80 32 160 18" fill="none" stroke="#5A3A1E" stroke-width=".5"/>' +
+    [8, 20, 32, 44, 56, 68, 80, 92, 104, 116, 128, 140, 152].map((x, i) => '<path d="M' + x + ' ' + (18 + Math.sin(x / 160 * Math.PI) * 13.5).toFixed(1) + ' l2.6 5 l2.6 -5 Z" fill="' + ['#C62828', '#2E7D32', '#FFD54A'][i % 3] + '"/>').join('') + '</g>' +
+    '<path d="M0 70 H160 V100 H0 Z" fill="url(#p4-ground)"/>' + people(74, 20, false) +
+    '<g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="90" rx="18" ry="1.6"/><ellipse cx="124" cy="86" rx="14" ry="1.2"/></g></svg>',
+
+  /* Dillalin kasuwa: Kasuwar Kurmi, zinc roofs, hanging cloth, the old arch behind */
+  kurmi: head + '<defs>' + lg('k4-sky', '#A7D8EE', '#F2E6CC') + lg('k4-zinc', '#B8C0C8', '#7E8893') + lg('k4-g', '#D9B57E', '#B4844A') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#k4-sky)"/>' + cloud(110, 10, .7) +
+    '<path d="M50 52 V24 H110 V52 Z" fill="#C98E52"/><g fill="#C98E52">' + zanko(50, 108, 24) + '</g><path d="M70 52 V38 Q80 28 90 38 V52 Z" fill="#5A3416"/>' + relief(60, 32) + relief(100, 32) +
+    [[2, 42], [42, 46], [82, 44], [122, 42]].map(([x, y]) => '<path d="M' + x + ' ' + y + ' L' + (x + 38) + ' ' + (y - 4) + ' L' + (x + 38) + ' ' + (y + 1) + ' L' + x + ' ' + (y + 5) + ' Z" fill="url(#k4-zinc)"/>' +
+      '<path d="M' + (x + 3) + ' ' + (y + 4) + ' V72 M' + (x + 35) + ' ' + y + ' V72" stroke="#5E3A1C" stroke-width="1.2"/>' +
+      '<g class="cloths"><rect x="' + (x + 6) + '" y="' + (y + 4) + '" width="5" height="14" fill="#1565C0"/><rect x="' + (x + 12) + '" y="' + (y + 4) + '" width="5" height="11" fill="#C2185B"/><rect x="' + (x + 18) + '" y="' + (y + 4) + '" width="5" height="16" fill="#FFB300"/><rect x="' + (x + 24) + '" y="' + (y + 4) + '" width="5" height="12" fill="#2E7D32"/></g>' +
+      '<rect x="' + (x + 2) + '" y="62" width="34" height="4" fill="#8B5A2B"/><ellipse cx="' + (x + 10) + '" cy="61" rx="5" ry="2.2" fill="#E9A23B"/><ellipse cx="' + (x + 22) + '" cy="61" rx="5" ry="2.2" fill="#F1E2B8"/><ellipse cx="' + (x + 32) + '" cy="61" rx="3" ry="2" fill="#B94A2A"/>').join('') +
+    '<path d="M0 72 H160 V100 H0 Z" fill="url(#k4-g)"/>' + people(76, 14, false) + '</svg>',
+
+  /* Keke: a town street, tarred road, shops with painted signboards, poles and wires */
+  street: head + '<defs>' + lg('st-sky', '#8FD0EE', '#E8F2EE') + lg('st-road', '#5E5E5E', '#3E3E3E') + lg('st-walk', '#D9B57E', '#C49A5E') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#st-sky)"/>' + cloud(30, 10, .8) + cloud(120, 14, .6) +
+    '<path d="M0 34 H160" stroke="#3A3A3A" stroke-width=".3"/><path d="M0 36 Q40 40 80 36 T160 36" fill="none" stroke="#3A3A3A" stroke-width=".3"/>' +
+    [20, 100].map((x) => '<rect x="' + x + '" y="26" width="1.4" height="40" fill="#6B4A2A"/><rect x="' + (x - 4) + '" y="28" width="9" height="1" fill="#6B4A2A"/>').join('') +
+    [[0, 32, '#E0B07A', 'PROVISIONS'], [34, 36, '#C98E52', 'CHEMIST'], [70, 30, '#D9A066', 'TELA'], [108, 38, '#BF8048', 'BUKA']].map(([x, w, c, t]) =>
+      '<rect x="' + x + '" y="40" width="' + w + '" height="28" fill="' + c + '"/><rect x="' + (x + 2) + '" y="42" width="' + (w - 4) + '" height="6" fill="#1F7A3A"/><text x="' + (x + w / 2) + '" y="46.6" text-anchor="middle" font-size="3.6" font-weight="800" fill="#fff" font-family="Baloo 2,sans-serif">' + t + '</text>' +
+      '<rect x="' + (x + 5) + '" y="52" width="9" height="16" fill="#4A2E14"/><rect x="' + (x + w - 13) + '" y="52" width="8" height="7" fill="#7FB8D9"/>').join('') +
+    neem(150, 68, 1.2) +
+    '<path d="M0 68 H160 V74 H0 Z" fill="url(#st-walk)"/><path d="M0 74 H160 V100 H0 Z" fill="url(#st-road)"/><g class="dash"><path d="M0 87 H160" stroke="#F5F5F5" stroke-width="1" stroke-dasharray="8 7"/></g></svg>',
+
+  /* Mai shayi: a roadside corner at night under a street lamp, a painted wall behind */
+  teanight: head + '<defs>' + lg('tn-sky', '#0E1230', '#2A2350') + rg('tn-glow', '#FFE08A', '#FFE08A') + lg('tn-g', '#3A2E4A', '#1E1828') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#tn-sky)"/>' + stars(40, 34) + '<circle cx="136" cy="14" r="5" fill="#FFF3C4"/><circle cx="138" cy="12.6" r="4.4" fill="#2A2350"/>' +
+    '<path d="M0 72 V40 H96 V72 Z" fill="#4A3A5E"/><g fill="#4A3A5E">' + zanko(0, 94, 40) + '</g><rect x="10" y="46" width="44" height="12" rx="1" fill="#2E7D32"/><text x="32" y="54.4" text-anchor="middle" font-size="5" font-weight="800" fill="#FFD54A" font-family="Baloo 2,sans-serif">MAI SHAYI</text>' +
+    '<rect x="66" y="52" width="10" height="20" fill="#241A30"/><rect x="104" y="48" width="40" height="24" fill="#3A2E4A"/><rect x="114" y="54" width="8" height="8" fill="#FFC94A" opacity=".8"/>' +
+    '<g class="lamp4"><rect x="150" y="22" width="1.4" height="52" fill="#555"/><path d="M151 22 Q142 20 140 24" stroke="#555" stroke-width="1.2" fill="none"/><path d="M137 24 h6 l-1 2 h-4 Z" fill="#FFE08A"/><ellipse cx="140" cy="60" rx="34" ry="34" fill="url(#tn-glow)" opacity=".35"/></g>' +
+    '<path d="M0 72 H160 V100 H0 Z" fill="url(#tn-g)"/><ellipse cx="140" cy="80" rx="30" ry="4" fill="#FFE08A" opacity=".15"/></svg>',
+
+  /* Dalar gyaɗa: Kano's groundnut pyramids in the harmattan haze, lorries waiting */
+  pyramids: head + '<defs>' + lg('py-sky', '#E9D6AE', '#F3E6C8') + lg('py-g', '#D8B57C', '#BC9157') + '<pattern id="py-sack" width="4" height="3" patternUnits="userSpaceOnUse"><rect width="4" height="3" fill="#D9BC86"/><path d="M0 2.9 H4 M2 0 V3" stroke="#B08E58" stroke-width=".35"/></pattern></defs>' +
+    '<rect width="160" height="100" fill="url(#py-sky)"/><circle cx="120" cy="18" r="8" fill="#FFF3D6" opacity=".9"/>' +
+    [[20, 62, 22, .7], [58, 62, 30, 1], [106, 62, 26, .85], [140, 62, 18, .6]].map(([x, y, w, o]) => '<path d="M' + (x - w) + ' ' + y + ' L' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' Z" fill="url(#py-sack)" opacity="' + o + '"/><path d="M' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' L' + (x + w * .45) + ' ' + y + ' Z" fill="#8B6A3A" opacity=".25"/>').join('') +
+    '<g opacity=".7"><rect x="4" y="56" width="14" height="6" fill="#2E7D32"/><rect x="18" y="57" width="5" height="5" fill="#C62828"/><circle cx="8" cy="63" r="1.5" fill="#222"/><circle cx="20" cy="63" r="1.5" fill="#222"/></g>' +
+    '<path d="M0 62 H160 V100 H0 Z" fill="url(#py-g)"/><g fill="#C9A06A" opacity=".6"><ellipse cx="30" cy="80" rx="20" ry="1.6"/><ellipse cx="120" cy="88" rx="24" ry="2"/></g>' +
+    '<rect width="160" height="100" fill="#F3E6C8" opacity=".12"/></svg>',
+
+  /* Kasuwar shanu: the open cattle market, wooden rails, herds in the dust, a tamarind tree */
+  cattle: head + '<defs>' + lg('ca-sky', '#9CCFE8', '#EFE4C8') + lg('ca-g', '#D6AF74', '#B4854A') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#ca-sky)"/>' + cloud(40, 12, .9) + cloud(130, 16, .6) +
+    '<path d="M0 58 Q40 52 80 56 T160 54 V64 H0 Z" fill="#B9A170" opacity=".6"/>' + neem(20, 60, 1.3, '#4F6B35', '#6A8A44') + neem(136, 58, 1, '#4F6B35', '#6A8A44') +
+    '<g opacity=".55">' + [50, 60, 70, 96, 108].map((x, i) => '<g transform="translate(' + x + ' 60)"><ellipse cx="0" cy="-2.4" rx="4" ry="2" fill="' + ['#8E3E1A', '#F1E2C0', '#6B2C14', '#9C4420', '#F1E2C0'][i] + '"/><path d="M-3 -1 v3 M3 -1 v3" stroke="#4E2E14" stroke-width=".7"/></g>').join('') + '</g>' +
+    '<path d="M0 64 H160 V100 H0 Z" fill="url(#ca-g)"/>' +
+    '<g stroke="#7A4A22" stroke-width="1.4"><path d="M0 70 H160 M0 75 H160"/>' + [6, 30, 54, 78, 102, 126, 150].map((x) => '<path d="M' + x + ' 66 V78"/>').join('') + '</g>' +
+    '<g fill="#C9A06A" opacity=".5"><ellipse cx="40" cy="90" rx="22" ry="2"/><ellipse cx="128" cy="94" rx="20" ry="2"/></g></svg>',
+
+  /* Ƙirgen garke: a Fulani camp at dusk, grass huts and calabashes on their stand */
+  camp: head + '<defs>' + lg('cp-sky', '#5B3A7A', '#E0714A', '#F6C177') + lg('cp-g', '#B98A50', '#8E6234') + rg('cp-sun', '#FFD27A', '#FFD27A') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#cp-sky)"/><circle cx="80" cy="58" r="12" fill="#FFC46A"/><circle cx="80" cy="58" r="30" fill="url(#cp-sun)" opacity=".5"/>' +
+    '<path d="M0 60 Q50 54 100 58 T160 56 V66 H0 Z" fill="#6B4A3A" opacity=".55"/>' +
+    [[14, 1.3], [36, 1], [138, 1.2]].map(([x, s]) => '<g transform="translate(' + x + ' 66) scale(' + s + ')"><path d="M-9 0 Q-9 -12 0 -13 Q9 -12 9 0 Z" fill="#C9A15E"/><path d="M-9 0 Q-9 -12 0 -13 Q9 -12 9 0" fill="none" stroke="#8B6A2E" stroke-width=".6"/>' +
+      '<path d="M-6 -3 Q0 -6 6 -3 M-7 -7 Q0 -10 7 -7" stroke="#8B6A2E" stroke-width=".5" fill="none"/><path d="M-2 0 V-5 a2 2 0 0 1 4 0 V0 Z" fill="#3A2412"/></g>').join('') +
+    '<g transform="translate(118 66)"><path d="M-6 0 V-10 M6 0 V-10 M-7 -10 H7" stroke="#5E3A1C" stroke-width="1"/><circle cx="-3" cy="-12" r="2.6" fill="#E9A23B"/><circle cx="2.4" cy="-12.4" r="2.2" fill="#C98E52"/><circle cx="-.4" cy="-15.6" r="1.8" fill="#F1C27D"/></g>' +
+    '<path d="M0 66 H160 V100 H0 Z" fill="url(#cp-g)"/><g class="smoke4"><circle cx="40" cy="58" r="2" fill="#bbb" opacity=".4"/><circle cx="42" cy="52" r="3" fill="#bbb" opacity=".3"/></g></svg>',
+
+  /* Mai suya: the suya spot at night, a string of bulbs, the smoke rising past the wall */
+  suyanight: head + '<defs>' + lg('sn-sky', '#120E2A', '#3A2240') + lg('sn-g', '#2E2230', '#18121C') + rg('sn-b', '#FFE08A', '#FFE08A') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#sn-sky)"/>' + stars(36, 30) +
+    '<path d="M0 72 V38 H160 V72 Z" fill="#3E2A3E"/><g fill="#3E2A3E">' + zanko(0, 158, 38) + '</g>' +
+    '<rect x="104" y="44" width="46" height="12" rx="1" fill="#B71C1C"/><text x="127" y="52.4" text-anchor="middle" font-size="5" font-weight="800" fill="#FFD54A" font-family="Baloo 2,sans-serif">SUYA SPOT</text>' +
+    '<rect x="12" y="50" width="12" height="22" fill="#1E141E"/><rect x="34" y="50" width="10" height="8" fill="#FFC94A" opacity=".7"/>' +
+    '<g class="bulbs"><path d="M0 26 Q40 34 80 28 T160 30" fill="none" stroke="#222" stroke-width=".4"/>' + [10, 26, 42, 58, 74, 90, 106, 122, 138, 154].map((x, i) => '<circle cx="' + x + '" cy="' + (29 + Math.sin(i) * 2.2).toFixed(1) + '" r="1.2" fill="#FFE08A"/><circle cx="' + x + '" cy="' + (29 + Math.sin(i) * 2.2).toFixed(1) + '" r="4" fill="url(#sn-b)" opacity=".5"/>').join('') + '</g>' +
+    '<path d="M0 72 H160 V100 H0 Z" fill="url(#sn-g)"/><ellipse cx="80" cy="80" rx="50" ry="5" fill="#FF8A3D" opacity=".12"/></svg>',
+
+  /* Allo: the Islamiyya under a big neem tree, the mosque's minaret beyond, mats and boards */
+  islamiyya: head + '<defs>' + lg('is-sky', '#9ED3EC', '#F3E8CE') + lg('is-g', '#E1C18A', '#C69C62') + lg('is-m', '#E8C08A', '#C98E52') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#is-sky)"/>' + cloud(96, 12, .7) +
+    '<path d="M100 66 V40 H140 V66 Z" fill="url(#is-m)"/><g fill="#C98E52">' + zanko(100, 138, 40) + '</g><path d="M112 40 V24 H122 V40 Z" fill="url(#is-m)"/><path d="M110 24 L117 14 L124 24 Z" fill="#C98E52"/><circle cx="117" cy="12" r="1.4" fill="#2E7D32"/>' +
+    '<path d="M114 66 V54 a6 6 0 0 1 12 0 V66 Z" fill="#4A2A12"/>' + relief(106, 48) + relief(134, 48) +
+    neem(30, 70, 2.4, '#3A6B2A', '#56883A') +
+    '<path d="M0 66 H160 V100 H0 Z" fill="url(#is-g)"/><ellipse cx="34" cy="74" rx="40" ry="6" fill="#3A2412" opacity=".18"/>' +
+    '<g><path d="M8 80 L62 80 L58 90 L4 90 Z" fill="#B23A2A"/><path d="M8 80 L62 80 L58 90 L4 90 Z" fill="none" stroke="#FFD54A" stroke-width=".6" stroke-dasharray="2 1.4"/></g>' +
+    '<g opacity=".9">' + [[72, -10], [82, 6]].map(([x, r]) => '<g transform="translate(' + x + ' 78) rotate(' + r + ')"><rect x="-4" y="-12" width="8" height="11" rx="2" fill="#4A2E14"/><rect x="-1" y="-1" width="2" height="3" fill="#3A220E"/><path d="M-2.4 -9 h4.8 M-2.4 -6.6 h4.8 M-2.4 -4.2 h3.4" stroke="#F5EEDC" stroke-width=".4"/></g>').join('') + '</g></svg>',
+
+  /* Jirgin ruwa: the river crossing, a wooden landing on this side, the far bank with its own canoes */
+  crossing: head + '<defs>' + lg('cr-sky', '#8CCDEB', '#EAF2E4') + lg('cr-w', '#4FA9D6', '#2A7FB3', '#1F6A9A') + lg('cr-s', '#E6CD95', '#CBA766') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#cr-sky)"/>' + cloud(40, 12, .8) + cloud(126, 10, .6) +
+    '<path d="M0 46 Q40 40 80 44 T160 42 V52 H0 Z" fill="#7FA05A"/>' + dum(18, 46, 1) + dum(26, 47, .8) + neem(120, 46, .9, '#4F6B35', '#6A8A44') +
+    '<g opacity=".8"><path d="M60 50 h18 l-2 2 h-14 Z" fill="#6B4422"/><path d="M96 51 h14 l-2 2 h-10 Z" fill="#6B4422"/></g>' +
+    '<path d="M0 50 H160 V100 H0 Z" fill="url(#cr-w)"/><g class="ripples4" stroke="#BDE3F2" stroke-width=".5" fill="none" opacity=".7"><path d="M10 60 q4 -1.4 8 0 M40 66 q4 -1.4 8 0 M90 58 q4 -1.4 8 0 M130 70 q4 -1.4 8 0 M64 76 q4 -1.4 8 0 M112 84 q4 -1.4 8 0"/></g>' +
+    '<path d="M0 82 Q20 76 44 80 L52 100 H0 Z" fill="url(#cr-s)"/><path d="M118 100 Q130 84 160 82 V100 Z" fill="url(#cr-s)"/>' +
+    '<g stroke="#4F7A3A" stroke-width=".8"><path d="M4 84 l-1 -8 M7 84 l1 -9 M150 86 l-1 -8 M154 86 l1 -9"/></g></svg>',
+
+  /* Marubucin wasiƙa: the front of the post office, its sign, a red pillar box, a neem tree */
+  postoffice: head + '<defs>' + lg('po-sky', '#9ED3EC', '#F1E8D0') + lg('po-w', '#F1E2C0', '#DCC79C') + lg('po-g', '#D9B57E', '#BC9157') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#po-sky)"/>' + cloud(130, 12, .8) +
+    '<path d="M20 70 V30 H140 V70 Z" fill="url(#po-w)"/><rect x="18" y="26" width="124" height="6" fill="#2E7D32"/>' +
+    '<rect x="34" y="34" width="92" height="10" rx="1" fill="#2E7D32"/><text x="80" y="41.4" text-anchor="middle" font-size="5" font-weight="800" fill="#fff" font-family="Baloo 2,sans-serif">GIDAN WAYA · POST OFFICE</text>' +
+    [28, 52, 96, 120].map((x) => '<rect x="' + x + '" y="48" width="12" height="10" fill="#7FB8D9"/><path d="M' + (x + 6) + ' 48 v10 M' + x + ' 53 h12" stroke="#DCC79C" stroke-width=".6"/>').join('') +
+    '<path d="M72 70 V50 H88 V70 Z" fill="#5A3416"/><path d="M68 70 h24 v3 h-24 Z M66 73 h28 v3 h-28 Z" fill="#C9B48A"/>' +
+    '<g transform="translate(148 74)"><rect x="-3.4" y="-14" width="6.8" height="14" rx="1.4" fill="#C62828"/><ellipse cy="-14" rx="3.8" ry="1.6" fill="#B71C1C"/><rect x="-2" y="-11" width="4" height=".8" fill="#222"/></g>' +
+    neem(8, 72, 1.3) + '<path d="M0 70 H160 V100 H0 Z" fill="url(#po-g)"/><g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="88" rx="20" ry="1.6"/><ellipse cx="124" cy="92" rx="16" ry="1.4"/></g></svg>',
+};

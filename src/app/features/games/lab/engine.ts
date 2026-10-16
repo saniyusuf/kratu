@@ -29,7 +29,7 @@ export interface GameHandle { stop(): void; again(): void; }
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
-  bootArt4();
+  bootArt4(KART);
   let ac = null, live = null, gone = false, mic = null;
   function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }

@@ -301,6 +301,17 @@
 .glab .bank3::before{content:"";position:absolute;left:-3cqw;right:-6cqw;bottom:-1.4cqw;height:2.6cqw;border-radius:.4cqw;background:repeating-linear-gradient(90deg,#9C6A3C 0 3.4cqw,#5E3A1C 3.4cqw 3.8cqw);box-shadow:0 1cqw 0 rgba(30,20,8,.35)}
 .glab .bank3::after{content:"";position:absolute;left:0;right:0;bottom:-6cqw;height:5cqw;background:repeating-linear-gradient(90deg,transparent 0 5cqw,#5E3A1C 5cqw 5.8cqw);z-index:-1}
 .glab .pc{width:7.5cqw!important;height:5.6cqw!important}
+.glab .scene .drift4{animation:g-cloud4 18s ease-in-out infinite alternate}
+@keyframes g-cloud4{to{transform:translateX(6px)}}
+.glab .scene .bunting{transform-origin:50% 0;animation:g-bunt 3s ease-in-out infinite alternate}
+@keyframes g-bunt{to{transform:translateY(.8px) skewX(1deg)}}
+.glab .scene .smoke4 circle{animation:g-suyasmoke 4s ease-out infinite}
+.glab .scene .ripples4{animation:g-rip4 4s linear infinite}
+@keyframes g-rip4{to{transform:translateX(6px)}}
+.glab .scene .bulbs circle{animation:g-bulb 2.4s ease-in-out infinite alternate}
+@keyframes g-bulb{to{opacity:.6}}
+.glab .scene .lamp4 ellipse{animation:g-bulb 3s ease-in-out infinite alternate}
+@media (prefers-reduced-motion:reduce){.glab .scene .drift4,.glab .scene .bunting,.glab .scene .smoke4 circle,.glab .scene .ripples4,.glab .scene .bulbs circle,.glab .scene .lamp4 ellipse{animation:none!important}}
 .glab .scr{gap:1.4cqw;padding:4cqw 5cqw}
 .glab button{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:inherit}
 .glab .glaila{display:grid;justify-items:center;gap:.4cqw;font:800 1.8cqw var(--disp)!important;color:var(--ink)}
@@ -925,3 +936,14 @@
 .glab .bank3::before{content:"";position:absolute;left:-3cqw;right:-6cqw;bottom:-1.4cqw;height:2.6cqw;border-radius:.4cqw;background:repeating-linear-gradient(90deg,#9C6A3C 0 3.4cqw,#5E3A1C 3.4cqw 3.8cqw);box-shadow:0 1cqw 0 rgba(30,20,8,.35)}
 .glab .bank3::after{content:"";position:absolute;left:0;right:0;bottom:-6cqw;height:5cqw;background:repeating-linear-gradient(90deg,transparent 0 5cqw,#5E3A1C 5cqw 5.8cqw);z-index:-1}
 .glab .pc{width:7.5cqw!important;height:5.6cqw!important}
+.glab .scene .drift4{animation:g-cloud4 18s ease-in-out infinite alternate}
+@keyframes g-cloud4{to{transform:translateX(6px)}}
+.glab .scene .bunting{transform-origin:50% 0;animation:g-bunt 3s ease-in-out infinite alternate}
+@keyframes g-bunt{to{transform:translateY(.8px) skewX(1deg)}}
+.glab .scene .smoke4 circle{animation:g-suyasmoke 4s ease-out infinite}
+.glab .scene .ripples4{animation:g-rip4 4s linear infinite}
+@keyframes g-rip4{to{transform:translateX(6px)}}
+.glab .scene .bulbs circle{animation:g-bulb 2.4s ease-in-out infinite alternate}
+@keyframes g-bulb{to{opacity:.6}}
+.glab .scene .lamp4 ellipse{animation:g-bulb 3s ease-in-out infinite alternate}
+@media (prefers-reduced-motion:reduce){.glab .scene .drift4,.glab .scene .bunting,.glab .scene .smoke4 circle,.glab .scene .ripples4,.glab .scene .bulbs circle,.glab .scene .lamp4 ellipse{animation:none!important}}
