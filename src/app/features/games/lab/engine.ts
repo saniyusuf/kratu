@@ -24,10 +24,14 @@ export interface GameIO {
   rect(el: Element): DOMRect;
   leave(): void;
   tester?: boolean;
+  next?: () => void;
 }
 export interface GameHandle { stop(): void; again(): void; }
+/** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening
+ *  question, and Laila on the score screen carries the child back into the lesson. */
+export interface GameOpts { letters?: string[]; order?: 'in' | 'mixed'; lesson?: boolean; }
 
-export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandle {
+export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: GameOpts = {}): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
   bootArt4(KART);
   let ac = null, live = null, gone = false, mic = null;
@@ -174,7 +178,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
         '<div class="gold"><span class="coin">Z</span><b>+' + gold + '</b><small>Zinari</small></div>') +
       '<div class="place">' + (r.learn ? g.placeNo : g.place(r, run)) + '</div>' +
       lailaBtn('cue', 'Danna Laila');
-    res.scr.querySelector('.glaila').onclick = function () { question(); };
+    res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(); } else question(); };
     if (r.learn) say(K.learn, res);
     else { sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { if (ok) say(K.go, res); }); }); }
   }
@@ -183,21 +187,25 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
   var GAMES = {
     'j-haruffa-say': { title: 'Fitilun gari', cls: 'night', instr: ['Danna Laila, ka faɗi harafin da ke kan fitilar da ke haskakawa.', 'Danna Laila, ki faɗi harafin da ke kan fitilar da ke haskakawa.'], ask: ['Ka iya faɗin haruffan Turanci ɗaya-ɗaya?', 'Kin iya faɗin haruffan Turanci ɗaya-ɗaya?'],
       placeNo: 'Haruffa would start at A, with the lessons.',
-      place: function (r) { return r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: only those letters would be taught, in their groups.' : 'Said every letter: with the balloons agreeing, Haruffa would be done.'; },
+      place: function (r) { return r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Said every letter on the street.'; },
       play: function (run, done) {
-        var L8 = shuffle(['K', 'M', 'S', 'T', 'E', 'R', 'B', 'P']), i = 0, missed = [];
-        var street = h('<div class="street2">' + L8.map(function (L) { return '<span class="lan2">' + KART.lantern(L) + '</span>'; }).join('') + '</div>');
+        /* in a lesson: the letters learned so far, in alphabetical order or mixed up, in streets of up to eight lanterns */
+        var L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(['K', 'M', 'S', 'T', 'E', 'R', 'B', 'P']), i = 0, missed = [], base = 0, N = L8.length;
+        var street = h('<div class="street2"></div>');
+        function newStreet() { base = i; var part = L8.slice(i, i + 8); street.innerHTML = part.map(function (L) { return '<span class="lan2">' + KART.lantern(L) + '</span>'; }).join(''); street.classList.remove('slidein'); void street.offsetWidth; street.classList.add('slidein'); }
+        newStreet();
         var box = micBox(run);
-        run.scr.appendChild(street); run.scr.appendChild(box); run.clock(120, function () { done({ right: run.right, part: run.right / 8, missed: L8.slice(i).concat(missed) }); });
+        run.scr.appendChild(street); run.scr.appendChild(box); run.clock(Math.max(120, 20 + N * 8), function () { done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         function round() {
-          var lan = street.children[i]; lan.classList.add('glow'); box.cue();
+          if (i - base >= 8) newStreet();
+          var lan = street.children[i - base]; lan.classList.add('glow'); box.cue();
           box.listen(function () { return { target: L8[i], until: L8[i], maxWrong: 3 }; }, function (r) {
             if (r.value === null && !r.wrong) { box.cue(); return; }                  // nothing heard: press again
             box.busy = true;
             if (r.value === L8[i]) { run.good(lan); lan.classList.remove('glow'); lan.classList.add('lit'); say(K.L[L8[i]], run); }
             else { run.bad(lan); missed.push(L8[i]); lan.classList.remove('glow'); lan.classList.add('out'); }
-            i++; if (i >= 8) run.later(900, function () { done({ right: run.right, finished: true, missed: missed }); }); else run.later(800, round);
+            i++; if (i >= N) run.later(900, function () { done({ right: run.right, finished: true, missed: missed }); }); else run.later(i - base >= 8 ? 1200 : 800, round);
           }, function () { return L8[i]; });
         }
         round();
@@ -442,9 +450,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
       } }
   };
 
-  Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io }));   // the Arewa games (games2.ts)
+  Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io, opts }));   // the Arewa games (games2.ts)
 
-  question();
+  if (opts.lesson) start(); else question();
   return {
     stop: function () { gone = true; if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } },
     again: function () { if (live && live.remind) live.remind(); else if (live && live.scr.classList.contains('q')) say(line(gid, 'ask'), live); },
@@ -452,10 +460,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
 }
 
 /** The games, for the list in the settings. The balloons are the app's own screen. */
-export const GAME_LIST = [
-  { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons', section: 'Haruffa' },
-  { id: 'j-haruffa-say', name: 'Fitilun gari', en: 'Light the lanterns · speaking', section: 'Haruffa' },
-  { id: 'j-durbar', name: 'Hawan Daushe', en: 'The Durbar · speaking', section: 'Haruffa' },
+export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = [
+  { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons · the whole A–Z', section: 'Haruffa' },
+  { id: 'j-haruffa-say', name: 'Fitilun gari · a jere', en: 'Lanterns, A–L in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKL', order: 'in' } },
+  { id: 'j-haruffa-say', name: 'Fitilun gari · a gauraye', en: 'Lanterns, A–T mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRST', order: 'mixed' } },
+  { id: 'j-durbar', name: 'Hawan Daushe · a jere', en: 'Durbar, A–P in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOP', order: 'in' } },
+  { id: 'j-durbar', name: 'Hawan Daushe · a gauraye', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX', order: 'mixed' } },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },
   { id: 'j-magana', name: 'Kalangu', en: 'The talking drum · speaking', section: 'Abubuwa' },
   { id: 'j-dillali', name: 'Dillalin kasuwa', en: 'The auctioneer · speaking', section: 'Abubuwa' },

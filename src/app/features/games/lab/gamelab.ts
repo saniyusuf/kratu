@@ -9,7 +9,7 @@ import { matchWord } from '../../../shared/lesson/helpers';
 import { ALLO_SVG } from '../../../shared/allo';
 import { LAILA_SVG } from '../../../shared/svg';
 import { afterPaint } from '../../../shared/paint';
-import { GameHandle, playGame } from './engine';
+import { GameHandle, GameOpts, playGame } from './engine';
 
 const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken',
   // the Arewa games: the dillali's goods, the keke's places, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
@@ -96,7 +96,13 @@ export class GameLabScreen implements OnInit, OnDestroy {
       match: (raw, word, among) => matchWord(raw, word, among),
       rect: (el) => this.zoom.rect(el),
       leave: () => this.leave(),
-    });
+      next: () => { const n = this.route.snapshot.queryParamMap.get('next'); if (n && n.startsWith('/')) this.router.navigateByUrl(n); else this.leave(); },
+    }, this.opts());
+  }
+  /** ?letters=ABCD&order=in|mixed: only those letters; ?next=/…: played inside a lesson, which it hands back to. */
+  private opts(): GameOpts {
+    const q = this.route.snapshot.queryParamMap, letters = (q.get('letters') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);
+    return { letters: letters.length ? letters : undefined, order: q.get('order') === 'mixed' ? 'mixed' : 'in', lesson: !!q.get('next') };
   }
   again(): void { this.game?.again(); }
   leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigate(['/home']); }

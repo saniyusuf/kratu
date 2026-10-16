@@ -312,6 +312,10 @@
 @keyframes g-bulb{to{opacity:.6}}
 .glab .scene .lamp4 ellipse{animation:g-bulb 3s ease-in-out infinite alternate}
 @media (prefers-reduced-motion:reduce){.glab .scene .drift4,.glab .scene .bunting,.glab .scene .smoke4 circle,.glab .scene .ripples4,.glab .scene .bulbs circle,.glab .scene .lamp4 ellipse{animation:none!important}}
+.glab .lrow.many{gap:.5cqw;padding:.6cqw 1.4cqw}
+.glab .lrow.many span{width:3.2cqw;height:3.2cqw;font-size:1.8cqw;border-width:.2cqw}
+.glab .street2.slidein{animation:g-streetin .7s cubic-bezier(.2,.8,.3,1) both}
+@keyframes g-streetin{from{transform:translateX(40cqw);opacity:0}}
 .glab .scr{gap:1.4cqw;padding:4cqw 5cqw}
 .glab button{font:inherit;border:0;background:none;padding:0;cursor:pointer;color:inherit}
 .glab .glaila{display:grid;justify-items:center;gap:.4cqw;font:800 1.8cqw var(--disp)!important;color:var(--ink)}
@@ -947,3 +951,7 @@
 @keyframes g-bulb{to{opacity:.6}}
 .glab .scene .lamp4 ellipse{animation:g-bulb 3s ease-in-out infinite alternate}
 @media (prefers-reduced-motion:reduce){.glab .scene .drift4,.glab .scene .bunting,.glab .scene .smoke4 circle,.glab .scene .ripples4,.glab .scene .bulbs circle,.glab .scene .lamp4 ellipse{animation:none!important}}
+.glab .lrow.many{gap:.5cqw;padding:.6cqw 1.4cqw}
+.glab .lrow.many span{width:3.2cqw;height:3.2cqw;font-size:1.8cqw;border-width:.2cqw}
+.glab .street2.slidein{animation:g-streetin .7s cubic-bezier(.2,.8,.3,1) both}
+@keyframes g-streetin{from{transform:translateX(40cqw);opacity:0}}

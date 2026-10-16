@@ -5098,5 +5098,26 @@
    "m": "660a6e5680",
    "f": "1c909b7201"
   }
+ },
+ {
+  "key": "s_l_game",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu mu yi wasa da haruffan da ka koya!",
+   "f": "Yanzu mu yi wasa da haruffan da kika koya!"
+  },
+  "en": "Now let's play a game with the letters you've learned!",
+  "screens": [
+   "Haruffa · koyo"
+  ],
+  "said_when": "After 12, 16, 20 and 24 letters, before the lanterns or the Durbar (Sani 17 Oct). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, 17 Oct",
+  "recorded": {
+   "m": "24b5c86b92",
+   "f": "8db4d628cd"
+  }
  }
 ]

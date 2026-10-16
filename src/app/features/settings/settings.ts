@@ -49,7 +49,7 @@ const ICO = {
       @for (p of students(); track p.id) {<div class="srow"><span class="wico" [class.girl]="p.gender === 'f'" [class.boy]="p.gender !== 'f'" [innerHTML]="ico.person"></span><div class="sname"><b>{{ p.name || '?' }}</b><small>{{ p.gender === 'f' ? 'yarinya · girl' : 'yaro · boy' }}{{ enrolled(p) }}{{ p.faceVecs?.length ? ' · face known' : '' }}</small></div><button class="ssim" (click)="simulate(p)"><span [innerHTML]="ico.play"></span>simulate</button><button class="sdel" [class.sure]="sure() === p.id" (click)="del(p)"><span [innerHTML]="ico.bin"></span>{{ sure() === p.id ? 'delete ' + p.name + '?' : 'delete' }}</button></div>}
     </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
   <div class="stage games-stage" [hidden]="stage() !== 'games'"><h4 class="stitle">Wasanni · games</h4><div class="sub">The judging games, to try. Each one opens as {{ session.g() === 'f' ? 'a girl' : 'a boy' }} would see it; the door brings you back.</div><div class="glist">
-      @for (g of games; track g.id) {<button class="grow" (click)="playGame(g.id)"><b>{{ g.name }}</b><small>{{ g.section }} · {{ g.en }}</small><span class="gico" [innerHTML]="ico.play"></span></button>}
+      @for (g of games; track $index) {<button class="grow" (click)="playGame(g.id, g.q)"><b>{{ g.name }}</b><small>{{ g.section }} · {{ g.en }}</small><span class="gico" [innerHTML]="ico.play"></span></button>}
     </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
   <div class="stage confirm-stage" [hidden]="stage() !== 'confirm'"><div class="cwho">@if (pending(); as w) {<button class="pcard" [class.girl]="w.g === 'f'" [class.boy]="w.g === 'm'"><img class="gph" [alt]="w.name" [src]="w.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"><div class="nm">{{ w.name }}</div><small>{{ w.g === 'f' ? 'yarinya · girl' : 'yaro · boy' }}</small></button>}</div>
     <h4 class="ctitle">Fara zaman gwaji a matsayin {{ pending()?.name }}? · Start a sample session as {{ pending()?.name }}?</h4>
@@ -102,7 +102,7 @@ export class Settings {
     this.router.navigate(['/home']);
   }
   /** Wasanni: the balloons are their own screen; the others share the games screen. */
-  playGame(id: string): void { this.bus.stopAll(); this.close(); this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id]); }
+  playGame(id: string, q?: Record<string, string>): void { this.bus.stopAll(); this.close(); this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id], { queryParams: q || {} }); }
   hardRestart(): void {
     this.bus.stopAll(); try { localStorage.clear(); sessionStorage.clear(); } catch { /* ignore */ }
     try { indexedDB.databases?.().then((dbs) => dbs.forEach((d) => { try { if (d.name) indexedDB.deleteDatabase(d.name); } catch { /* ignore */ } })); } catch { /* ignore */ }

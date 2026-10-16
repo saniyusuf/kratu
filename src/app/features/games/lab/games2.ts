@@ -8,7 +8,7 @@
 import * as A from './art4';
 
 export function moreGames(c: any): Record<string, any> {
-  const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c;
+  const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
   const LET = 'ABCDEFGHIJKLMNOPRSTUVWYZ'.split('');   // no Q or X: the recogniser cannot hear them apart from K and S
   const later = (run, ms, f) => run.later(ms, f);
   const beat = (run, n) => { for (let k = 0; k < n; k++) later(run, k * 200, () => drum(k % 2 === 0)); };
@@ -30,14 +30,15 @@ export function moreGames(c: any): Record<string, any> {
     /* ---------------- Haruffa: the Durbar ---------------- */
     'j-durbar': { title: 'Hawan Daushe', cls: 'durbar', scene: 'palace',
       placeNo: 'Haruffa would start at A, with the lessons.',
-      place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b> out of order: those letters would be taught.' : 'Said every letter out of order: with the balloons and the lanterns agreeing, Haruffa is done.',
+      place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
-        const L8 = shuffle(LET).slice(0, 8); let i = 0; const missed = [];
+        // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
+        const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
         const st = h('<div class="dstage"><div class="emirw">' + A.emir() + '</div><div class="rlane"></div></div>');
-        const row = h('<div class="lrow">' + L8.map(() => '<span></span>').join('') + '</div>');
+        const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run); st.appendChild(box);
         run.scr.appendChild(st); run.scr.appendChild(row);
-        run.clock(150, () => done({ right: run.right, part: run.right / 8, missed: L8.slice(i).concat(missed) }));
+        run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
         const lane = st.querySelector('.rlane');
         function next() {
@@ -54,7 +55,7 @@ export function moreGames(c: any): Record<string, any> {
             }, 3);
           });
         }
-        function step() { i++; if (i >= 8) done({ right: run.right, finished: true, missed }); else next(); }
+        function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }
         next();
       } },
 

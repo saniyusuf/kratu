@@ -29,6 +29,9 @@ const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 
  * Screens 6–9 · Koyo, the learning path. Four letters at a time: Laila shows them, teaches each (the child says it back),
  * recalls them in order, then scattered; a small check at 8 and 16 letters; two finals for A–Z. Missed letters get help after three tries.
  */
+/** The in-between games, by letters learned: lanterns then the Durbar, in order then mixed up (Sani 2026-10-17). */
+const BETWEEN: Record<number, { id: string; order: 'in' | 'mixed' }> = { 12: { id: 'j-haruffa-say', order: 'in' }, 16: { id: 'j-durbar', order: 'in' }, 20: { id: 'j-haruffa-say', order: 'mixed' }, 24: { id: 'j-durbar', order: 'mixed' } };
+
 @Component({
   selector: 'app-haruffa-learn',
   imports: [Door, Ear, LailaButton],
@@ -193,7 +196,16 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     await this.play(this.bus.gk('s_l_recall')); this.unfill(group); await this.recall(rest);
     await this.play('app_scatter_intro'); this.unfill(group); await this.recall(shuffle(rest), true);
     const learned = Math.min(26, (gi + 1) * 4); this.hideLetter(); await this.play(this.bus.gk('app_stage_done')); this.progress.mark('haruffa', 'g' + gi);
-    if (learned < 26 && learned % 8 === 0) await this.checkpoint(learned);
+    if (learned === 8) await this.checkpoint(learned);
+    // from twelve letters on, the in-between games take the place of the spoken checks: the lanterns and the Durbar,
+    // first in alphabetical order, then mixed up, each with only the letters learned so far. The balloons wait for the
+    // whole alphabet (Sani 2026-10-17).
+    const game = BETWEEN[learned];
+    if (game && !this.stopped) {
+      await this.play(this.bus.gk('s_l_game')); if (this.stopped) return;
+      this.stopped = true; this.bus.stopAll();
+      this.router.navigate(['/wasanni', game.id], { queryParams: { letters: ALL.slice(0, learned).join(''), order: game.order, next: '/haruffa/koyo?from=' + (gi + 1) + '&intro=0' } });
+    }
   }
   private async checkpoint(n: number): Promise<void> { const list = ALL.slice(0, n); this.markActive(list); this.unfill(list); this.eye.set('Ƙaramin jarrabawa · ' + n + ' haruffa'); await this.play(this.bus.gk('s_l_check')); await this.recall(shuffle(list)); this.hideLetter(); await wait(400); }
   private async finals(): Promise<void> {
@@ -205,9 +217,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     if (intro) { await this.play('app_board_intro'); if (this.stopped) return; }   // said here, not on the screen that sent them (Sani 2026-09-21)
     for (let gi = fromGroup; gi < GROUPS.length; gi++) { if (this.stopped) return; await this.runGroup(gi); }
     if (this.stopped) return; await this.finals(); this.running = false;
-    // A child who came here from the gate, or from running the clock down, is owed the game they were
-    // promised: they go to it rather than back to a grid to choose for themselves (Sani 2026-10-07).
-    this.router.navigate([this.session.owedGame() ? '/fashe' : '/home']);
+    this.router.navigate(['/fashe']);   // the whole alphabet learned: now the balloons, the A–Z game (Sani 2026-10-17)
   }
   lailaPressed(): void { if (this.awaiting) { this.press(); return; } if (this.running) { if (!this.rec()) { this.earlyUntil = performance.now() + 6000; this.bus.stopAll(); this.spotter.unspot(); } return; } this.bus.stopAll(); this.start(0); }
   async ear(): Promise<void> { this.bus.stopAll(); if (this.cur?.L) { await this.sayLetter('app_wannan', this.cur.L); } else await this.play(this.bus.gk('s_l_look')); }
