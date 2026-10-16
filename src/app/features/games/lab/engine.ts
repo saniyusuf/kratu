@@ -470,7 +470,6 @@ export const GAME_LIST: { id: string; name: string; en: string; section: string;
   { id: 'j-magana', name: 'Kalangu', en: 'The talking drum · speaking', section: 'Abubuwa' },
   { id: 'j-dillali', name: 'Dillalin kasuwa', en: 'The auctioneer · speaking', section: 'Abubuwa' },
   { id: 'j-nemo', name: 'Hanzarin kasuwa', en: 'Market rush', section: 'Nemo hoto' },
-  { id: 'j-keke', name: 'Keke NAPEP', en: 'The keke · speaking', section: 'Nemo hoto' },
   { id: 'j-shayi', name: 'Mai shayi', en: 'The tea seller · speaking', section: 'Nemo hoto' },
   { id: 'j-gyada', name: 'Dalar gyaɗa', en: 'The groundnut pyramids', section: 'Lambobi' },
   { id: 'j-shanu', name: 'Kasuwar shanu', en: 'The cattle market', section: 'Lambobi' },

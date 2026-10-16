@@ -13,7 +13,6 @@ function defs(): void {
     '<linearGradient id="k4-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C6A3C"/><stop offset="1" stop-color="#5E3A1C"/></linearGradient>' +
     '<linearGradient id="k4-allo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B4422"/><stop offset=".5" stop-color="#4A2E14"/><stop offset="1" stop-color="#3A220E"/></linearGradient>' +
     '<linearGradient id="k4-sack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D3A0"/><stop offset="1" stop-color="#B8925A"/></linearGradient>' +
-    '<linearGradient id="k4-keke" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE04A"/><stop offset="1" stop-color="#E8B400"/></linearGradient>' +
     '<linearGradient id="k4-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FAE5A"/><stop offset="1" stop-color="#1F7A3A"/></linearGradient>' +
     '<linearGradient id="k4-horse" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8B5A2B"/><stop offset="1" stop-color="#4E2E14"/></linearGradient>' +
     '<linearGradient id="k4-cow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B5562A"/><stop offset="1" stop-color="#7A3416"/></linearGradient>' +
@@ -86,20 +85,6 @@ export function emir(): string {
 export function dillali(): string {
   return `<svg class="dill" viewBox="0 0 120 200" aria-hidden="true"><ellipse cx="60" cy="194" rx="40" ry="5" fill="rgba(40,24,10,.28)"/>` +
     `<g transform="translate(18 70) scale(1.15)">${personInner({ hat: 'cap', hatc: '#E9D9A6', robe: '#5D4037', robe2: '#3E2723', arm: 'up', mouth: 'open', skin: 1 })}</g></svg>`;
-}
-
-/* ---- the keke ---- */
-export function keke(): string {
-  return `<svg class="keke" viewBox="0 0 240 170" aria-hidden="true"><ellipse cx="124" cy="160" rx="96" ry="7" fill="rgba(40,24,10,.3)"/>` +
-    `<path d="M40 40 Q46 18 96 16 L196 16 Q214 18 214 40 L214 50 L40 50 Z" fill="#1F7A3A"/><path d="M40 50 L214 50" stroke="#155C2A" stroke-width="3"/>` +
-    `<path d="M48 50 L48 112 M206 50 L206 112" stroke="#3A3A3A" stroke-width="4"/>` +
-    `<path d="M30 112 Q30 78 64 70 L110 66 L110 112 Z" fill="url(#k4-keke)"/><path d="M110 66 L214 66 Q226 70 226 92 L226 132 L22 132 L22 112 L110 112 Z" fill="url(#k4-keke)"/>` +
-    `<path d="M24 120 L226 120" stroke="#1F7A3A" stroke-width="6"/><path d="M36 76 Q38 72 62 70 L96 68 L96 96 L40 96 Z" fill="#BDE3F2" opacity=".85"/>` +
-    `<rect x="150" y="74" width="60" height="30" rx="5" fill="#3E2723" opacity=".85"/><text x="180" y="94" text-anchor="middle" class="kktx">KEKE</text>` +
-    `<g transform="translate(64 30) scale(.7)">${personInner({ hat: 'cap', hatc: '#F4EBD0', robe: '#37474F', robe2: '#263238', skin: 0 })}</g>` +
-    `<g class="wheel" style="transform-origin:58px 136px"><circle cx="58" cy="136" r="20" fill="#222"/><circle cx="58" cy="136" r="9" fill="#9AA3AD"/><path d="M58 118 V154 M40 136 H76" stroke="#555" stroke-width="2"/></g>` +
-    `<g class="wheel" style="transform-origin:190px 136px"><circle cx="190" cy="136" r="20" fill="#222"/><circle cx="190" cy="136" r="9" fill="#9AA3AD"/><path d="M190 118 V154 M172 136 H208" stroke="#555" stroke-width="2"/></g>` +
-    `<circle cx="20" cy="108" r="6" fill="#FFF59D"/><g class="puff"><circle cx="232" cy="128" r="6" fill="#BDBDBD" opacity=".7"/><circle cx="240" cy="122" r="4" fill="#BDBDBD" opacity=".5"/></g></svg>`;
 }
 
 /* ---- the mai shayi's stall ---- */
@@ -227,7 +212,7 @@ export function achaba(): string {
     `<g class="wheel" style="transform-origin:40px 104px"><circle cx="40" cy="104" r="18" fill="#222"/><circle cx="40" cy="104" r="7" fill="#9AA3AD"/></g>` +
     `<g class="wheel" style="transform-origin:160px 104px"><circle cx="160" cy="104" r="18" fill="#222"/><circle cx="160" cy="104" r="7" fill="#9AA3AD"/></g></svg>`;
 }
-/* a passenger for the ferry and the keke */
+/* a passenger for the ferry */
 export function passenger(i: number): string {
   const P: P[] = [{ hat: 'hijab', hatc: '#6A1B9A', robe: '#8E24AA', robe2: '#6A1B9A', skin: 1 }, { hat: 'cap', hatc: '#E9D9A6', robe: '#00838F', robe2: '#006064', skin: 0 },
     { hat: 'hijab', hatc: '#EF6C00', robe: '#F57C00', robe2: '#E65100', skin: 2 }, { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 3 }, { hat: 'cap', hatc: '#B71C1C', robe: '#455A64', robe2: '#263238', skin: 1 }];

@@ -12,7 +12,7 @@ import { afterPaint } from '../../../shared/paint';
 import { GameHandle, GameOpts, playGame } from './engine';
 
 const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken',
-  // the Arewa games: the dillali's goods, the keke's places, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
+  // the Arewa games: the dillali's goods, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
   'ram', 'camel', 'donkey', 'millet', 'groundnut', 'calabash', 'pot', 'mat', 'kettle', 'broom', 'kaftan', 'cap', 'turban', 'shoe', 'umbrella',
   'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'rice', 'beans', 'water', 'pen', 'key', 'milk', 'mama', 'baba', 'aunt', 'uncle'];
 const PEOPLE = ['woman', 'man', 'girl', 'boy', 'old_man'];
@@ -33,7 +33,6 @@ const LINES: Record<string, { ask: string; how: string }> = {
   // the Arewa games ask the same question as the other games of their lesson
   'j-durbar': { ask: 's_g_lanterns_ask', how: 's_g_durbar_how' },
   'j-dillali': { ask: 's_g_drum_ask', how: 's_g_dillali_how' },
-  'j-keke': { ask: 's_g_drum_ask', how: 's_g_keke_how' },
   'j-shayi': { ask: 's_g_drum_ask', how: 's_g_shayi_how' },
   'j-gyada': { ask: 's_g_stars_ask', how: 's_g_gyada_how' },
   'j-shanu': { ask: 's_g_stars_ask', how: 's_g_shanu_how' },

@@ -42,17 +42,6 @@ export const SCENES4: Record<string, string> = {
       '<rect x="' + (x + 2) + '" y="62" width="34" height="4" fill="#8B5A2B"/><ellipse cx="' + (x + 10) + '" cy="61" rx="5" ry="2.2" fill="#E9A23B"/><ellipse cx="' + (x + 22) + '" cy="61" rx="5" ry="2.2" fill="#F1E2B8"/><ellipse cx="' + (x + 32) + '" cy="61" rx="3" ry="2" fill="#B94A2A"/>').join('') +
     '<path d="M0 72 H160 V100 H0 Z" fill="url(#k4-g)"/>' + people(76, 14, false) + '</svg>',
 
-  /* Keke: a town street, tarred road, shops with painted signboards, poles and wires */
-  street: head + '<defs>' + lg('st-sky', '#8FD0EE', '#E8F2EE') + lg('st-road', '#5E5E5E', '#3E3E3E') + lg('st-walk', '#D9B57E', '#C49A5E') + '</defs>' +
-    '<rect width="160" height="100" fill="url(#st-sky)"/>' + cloud(30, 10, .8) + cloud(120, 14, .6) +
-    '<path d="M0 34 H160" stroke="#3A3A3A" stroke-width=".3"/><path d="M0 36 Q40 40 80 36 T160 36" fill="none" stroke="#3A3A3A" stroke-width=".3"/>' +
-    [20, 100].map((x) => '<rect x="' + x + '" y="26" width="1.4" height="40" fill="#6B4A2A"/><rect x="' + (x - 4) + '" y="28" width="9" height="1" fill="#6B4A2A"/>').join('') +
-    [[0, 32, '#E0B07A', 'PROVISIONS'], [34, 36, '#C98E52', 'CHEMIST'], [70, 30, '#D9A066', 'TELA'], [108, 38, '#BF8048', 'BUKA']].map(([x, w, c, t]) =>
-      '<rect x="' + x + '" y="40" width="' + w + '" height="28" fill="' + c + '"/><rect x="' + (x + 2) + '" y="42" width="' + (w - 4) + '" height="6" fill="#1F7A3A"/><text x="' + (x + w / 2) + '" y="46.6" text-anchor="middle" font-size="3.6" font-weight="800" fill="#fff" font-family="Baloo 2,sans-serif">' + t + '</text>' +
-      '<rect x="' + (x + 5) + '" y="52" width="9" height="16" fill="#4A2E14"/><rect x="' + (x + w - 13) + '" y="52" width="8" height="7" fill="#7FB8D9"/>').join('') +
-    neem(150, 68, 1.2) +
-    '<path d="M0 68 H160 V74 H0 Z" fill="url(#st-walk)"/><path d="M0 74 H160 V100 H0 Z" fill="url(#st-road)"/><g class="dash"><path d="M0 87 H160" stroke="#F5F5F5" stroke-width="1" stroke-dasharray="8 7"/></g></svg>',
-
   /* Mai shayi: a roadside corner at night under a street lamp, a painted wall behind */
   teanight: head + '<defs>' + lg('tn-sky', '#0E1230', '#2A2350') + rg('tn-glow', '#FFE08A', '#FFE08A') + lg('tn-g', '#3A2E4A', '#1E1828') + '</defs>' +
     '<rect width="160" height="100" fill="url(#tn-sky)"/>' + stars(40, 34) + '<circle cx="136" cy="14" r="5" fill="#FFF3C4"/><circle cx="138" cy="12.6" r="4.4" fill="#2A2350"/>' +

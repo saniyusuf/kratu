@@ -142,8 +142,8 @@
 .glab .tail{transform-box:fill-box;transform-origin:100% 0;animation:g-swish 1.6s ease-in-out infinite alternate}
 @keyframes g-swish{to{transform:rotate(10deg)}}
 .glab .stage-mic{position:absolute}
-.glab .dstage,.glab .kstage2,.glab .sstage,.glab .gstage,.glab .sgstage,.glab .fstage,.glab .mstage{position:relative;width:92cqw;height:40cqw;margin-top:9cqw}
-.glab .dstage>.mic,.glab .kstage2>.mic,.glab .sstage>.mic,.glab .sgstage>.mic,.glab .mstage>.mic{position:absolute;right:0;bottom:1cqw}
+.glab .dstage,.glab .sstage,.glab .gstage,.glab .sgstage,.glab .fstage,.glab .mstage{position:relative;width:92cqw;height:40cqw;margin-top:9cqw}
+.glab .dstage>.mic,.glab .sstage>.mic,.glab .sgstage>.mic,.glab .mstage>.mic{position:absolute;right:0;bottom:1cqw}
 .glab .miclaila .glaila .lsvg{width:13cqw;height:13cqw}
 .glab .seats,.glab .wraps,.glab .lrow{display:flex;gap:1cqw;margin-top:1.4cqw;background:rgba(255,253,247,.85);border-radius:999px;padding:.8cqw 2cqw}
 .glab .seats i,.glab .wraps i{width:3.4cqw;height:3.4cqw;border-radius:50%;background:#E3D3AC;display:block}
@@ -185,18 +185,6 @@
 @keyframes g-clap{to{transform:rotate(-24deg)}}
 .glab .crowd.clapping .pp-w{animation:g-hop .36s ease-in-out infinite alternate;animation-delay:var(--d)}
 @keyframes g-hop{to{transform:translateY(-1cqw)}}
-.glab .kekew{position:absolute;left:2cqw;bottom:0;width:42cqw;height:30cqw;transform:translateX(-70cqw)}
-.glab .kekew.arrive{transform:none;transition:transform 1.4s cubic-bezier(.2,.8,.3,1)}
-.glab .kekew.away{transform:translateX(110cqw);transition:transform 1.6s ease-in}
-.glab .keke .puff{animation:g-puff .8s ease-out infinite}
-@keyframes g-puff{to{transform:translate(10px,-8px);opacity:0}}
-.glab .pax{position:absolute;left:50cqw;bottom:0;width:12cqw;height:22cqw}
-.glab .pp1{width:100%;height:100%}
-.glab .pax.gone{opacity:0;transform:translateX(-14cqw);transition:transform .6s,opacity .6s}
-.glab .bub{position:absolute;left:8cqw;top:-14cqw;background:#fff;border-radius:2.4cqw;padding:1cqw;box-shadow:0 .8cqw .6cqw rgba(30,20,8,.3)}
-.glab .bub::after{content:"";position:absolute;left:1cqw;bottom:-2cqw;border:1.2cqw solid transparent;border-top:2cqw solid #fff}
-.glab .bub .ph{box-shadow:none;padding:0}
-.glab .bub .ph img{width:14cqw;height:14cqw}
 .glab .stallw{position:absolute;left:0;bottom:0;width:52cqw;height:37cqw}
 .glab .shayi .steam circle{animation:g-steam 2.2s ease-out infinite}
 .glab .shayi .steam circle:nth-child(2){animation-delay:.6s}
@@ -293,7 +281,6 @@
 .glab .scr.marubg .mstage>.mic{right:0;top:0;bottom:auto}
 @media (prefers-reduced-motion:reduce){.glab .lg,.glab .wheel,.glab .tail,.glab .cloth,.glab .steam circle,.glab .smoke circle,.glab .coals,.glab .puff,.glab .arm,.glab .mouth,.glab .ferry{animation:none!important}}
 .glab .seats,.glab .wraps,.glab .lrow{width:max-content}
-.glab .bub{width:max-content}
 .glab .board{top:-1cqw}
 .glab .kettle{top:21cqw!important;left:6cqw!important;width:16cqw!important}
 .glab .stacks2.big .stk{width:27cqw;height:27cqw}
@@ -781,8 +768,8 @@
 .glab .tail{transform-box:fill-box;transform-origin:100% 0;animation:g-swish 1.6s ease-in-out infinite alternate}
 @keyframes g-swish{to{transform:rotate(10deg)}}
 .glab .stage-mic{position:absolute}
-.glab .dstage,.glab .kstage2,.glab .sstage,.glab .gstage,.glab .sgstage,.glab .fstage,.glab .mstage{position:relative;width:92cqw;height:40cqw;margin-top:9cqw}
-.glab .dstage>.mic,.glab .kstage2>.mic,.glab .sstage>.mic,.glab .sgstage>.mic,.glab .mstage>.mic{position:absolute;right:0;bottom:1cqw}
+.glab .dstage,.glab .sstage,.glab .gstage,.glab .sgstage,.glab .fstage,.glab .mstage{position:relative;width:92cqw;height:40cqw;margin-top:9cqw}
+.glab .dstage>.mic,.glab .sstage>.mic,.glab .sgstage>.mic,.glab .mstage>.mic{position:absolute;right:0;bottom:1cqw}
 .glab .miclaila .glaila .lsvg{width:13cqw;height:13cqw}
 .glab .seats,.glab .wraps,.glab .lrow{display:flex;gap:1cqw;margin-top:1.4cqw;background:rgba(255,253,247,.85);border-radius:999px;padding:.8cqw 2cqw}
 .glab .seats i,.glab .wraps i{width:3.4cqw;height:3.4cqw;border-radius:50%;background:#E3D3AC;display:block}
@@ -824,18 +811,6 @@
 @keyframes g-clap{to{transform:rotate(-24deg)}}
 .glab .crowd.clapping .pp-w{animation:g-hop .36s ease-in-out infinite alternate;animation-delay:var(--d)}
 @keyframes g-hop{to{transform:translateY(-1cqw)}}
-.glab .kekew{position:absolute;left:2cqw;bottom:0;width:42cqw;height:30cqw;transform:translateX(-70cqw)}
-.glab .kekew.arrive{transform:none;transition:transform 1.4s cubic-bezier(.2,.8,.3,1)}
-.glab .kekew.away{transform:translateX(110cqw);transition:transform 1.6s ease-in}
-.glab .keke .puff{animation:g-puff .8s ease-out infinite}
-@keyframes g-puff{to{transform:translate(10px,-8px);opacity:0}}
-.glab .pax{position:absolute;left:50cqw;bottom:0;width:12cqw;height:22cqw}
-.glab .pp1{width:100%;height:100%}
-.glab .pax.gone{opacity:0;transform:translateX(-14cqw);transition:transform .6s,opacity .6s}
-.glab .bub{position:absolute;left:8cqw;top:-14cqw;background:#fff;border-radius:2.4cqw;padding:1cqw;box-shadow:0 .8cqw .6cqw rgba(30,20,8,.3)}
-.glab .bub::after{content:"";position:absolute;left:1cqw;bottom:-2cqw;border:1.2cqw solid transparent;border-top:2cqw solid #fff}
-.glab .bub .ph{box-shadow:none;padding:0}
-.glab .bub .ph img{width:14cqw;height:14cqw}
 .glab .stallw{position:absolute;left:0;bottom:0;width:52cqw;height:37cqw}
 .glab .shayi .steam circle{animation:g-steam 2.2s ease-out infinite}
 .glab .shayi .steam circle:nth-child(2){animation-delay:.6s}
@@ -932,7 +907,6 @@
 .glab .scr.marubg .mstage>.mic{right:0;top:0;bottom:auto}
 @media (prefers-reduced-motion:reduce){.glab .lg,.glab .wheel,.glab .tail,.glab .cloth,.glab .steam circle,.glab .smoke circle,.glab .coals,.glab .puff,.glab .arm,.glab .mouth,.glab .ferry{animation:none!important}}
 .glab .seats,.glab .wraps,.glab .lrow{width:max-content}
-.glab .bub{width:max-content}
 .glab .board{top:-1cqw}
 .glab .kettle{top:21cqw!important;left:6cqw!important;width:16cqw!important}
 .glab .stacks2.big .stk{width:27cqw;height:27cqw}

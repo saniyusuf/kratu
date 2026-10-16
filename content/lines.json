@@ -4911,27 +4911,6 @@
   }
  },
  {
-  "key": "s_g_keke_how",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka faɗi inda fasinja zai je da Turanci, sai keke ya kai shi!",
-   "f": "Ki faɗi inda fasinja zai je da Turanci, sai keke ya kai shi!"
-  },
-  "en": "Say where the passenger is going in English, and the keke will take them!",
-  "screens": [
-   "Wasanni · Keke NAPEP"
-  ],
-  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
-  "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
-  "recorded": {
-   "m": "e5e9e62908",
-   "f": "7cab922903"
-  }
- },
- {
   "key": "s_g_shayi_how",
   "lang": "ha",
   "voice": "laila",

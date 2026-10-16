@@ -84,31 +84,6 @@ export function moreGames(c: any): Record<string, any> {
         next();
       } },
 
-    /* ---------------- Nemo hoto: the keke ---------------- */
-    'j-keke': { title: 'Keke NAPEP', cls: 'keke', scene: 'street',
-      placeNo: 'Nemo hoto would start from the four-picture rounds.',
-      place: (r) => r.right >= 6 ? 'Took every passenger where they asked: places are known.' : 'Got ' + r.right + ' of 6 places: Nemo hoto would start from the four-picture rounds.',
-      play(run, done) {
-        const D = shuffle(['school', 'farm', 'river', 'well', 'forest', 'road']); let r = 0, got = 0;
-        const st = h('<div class="kstage2"><div class="kekew">' + A.keke() + '</div><div class="pax"><div class="pp1"></div><div class="bub">' + photo('school') + '</div></div></div>');
-        const box = micBox(run); st.appendChild(box); run.scr.appendChild(st);
-        const seats = h('<div class="seats">' + D.map(() => '<i></i>').join('') + '</div>'); run.scr.appendChild(seats);
-        run.clock(150, () => done({ right: got, part: got / 6 }));
-        run.remind = () => say(line('j-keke', 'how'), run);
-        const kw = st.querySelector('.kekew'), pax = st.querySelector('.pax');
-        function next() {
-          const w = D[r]; pax.querySelector('.pp1').innerHTML = A.passenger(r); pax.querySelector('.bub img').src = K.pic[w];
-          pax.classList.remove('gone'); kw.classList.remove('drive', 'away'); void kw.offsetWidth; kw.classList.add('arrive');
-          speakRound(run, box, w, D, () => {
-            got++; run.good(pax); say(K.en[w], run); seats.children[r].classList.add('on');
-            later(run, 600, () => pax.classList.add('gone')); later(run, 1100, () => { kw.classList.remove('arrive'); kw.classList.add('drive', 'away'); });
-            later(run, 2600, step);
-          }, () => { seats.children[r].classList.add('miss'); say(K.en[w], run); later(run, 1600, step); });
-        }
-        function step() { r++; if (r >= 6) done({ right: got, finished: true, part: got / 6 }); else next(); }
-        next();
-      } },
-
     /* ---------------- Nemo hoto: the tea seller ---------------- */
     'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'teanight',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
