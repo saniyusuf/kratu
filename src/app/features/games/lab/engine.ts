@@ -10,6 +10,8 @@
  * nope on their own channel so they never cut her off. The speaking games listen with the app's recogniser.
  */
 import { bootArt } from './art';
+import { bootArt4 } from './art4';
+import { moreGames } from './games2';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -27,6 +29,7 @@ export interface GameHandle { stop(): void; again(): void; }
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
+  bootArt4();
   let ac = null, live = null, gone = false, mic = null;
   function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
@@ -133,7 +136,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
     var g = GAMES[gid], run = new Run(); live = run;
     run.scr.className = 'scr p ' + g.cls;
     var PAINT = { 'j-haruffa-say': 'nightvillage', 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
-    var scene = KART.scene[PAINT[gid]] || '';
+    var scene = KART.scene[g.scene || PAINT[gid]] || '';
     if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + KART.scene.underriver + KART.underwater + '</div>';
     bg.innerHTML = scene; run.scr.innerHTML = '<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
     var go = function () {
@@ -439,6 +442,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
       } }
   };
 
+  Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io }));   // the Arewa games (games2.ts)
+
   question();
   return {
     stop: function () { gone = true; if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } },
@@ -450,11 +455,21 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO): GameHandl
 export const GAME_LIST = [
   { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons', section: 'Haruffa' },
   { id: 'j-haruffa-say', name: 'Fitilun gari', en: 'Light the lanterns · speaking', section: 'Haruffa' },
+  { id: 'j-durbar', name: 'Hawan Daushe', en: 'The Durbar · speaking', section: 'Haruffa' },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },
   { id: 'j-magana', name: 'Kalangu', en: 'The talking drum · speaking', section: 'Abubuwa' },
+  { id: 'j-dillali', name: 'Dillalin kasuwa', en: 'The auctioneer · speaking', section: 'Abubuwa' },
   { id: 'j-nemo', name: 'Hanzarin kasuwa', en: 'Market rush', section: 'Nemo hoto' },
-  { id: 'j-lambobi', name: 'Ƙirga taurari', en: 'Count the stars', section: 'Lambobi' },
+  { id: 'j-keke', name: 'Keke NAPEP', en: 'The keke · speaking', section: 'Nemo hoto' },
+  { id: 'j-shayi', name: 'Mai shayi', en: 'The tea seller · speaking', section: 'Nemo hoto' },
+  { id: 'j-gyada', name: 'Dalar gyaɗa', en: 'The groundnut pyramids', section: 'Lambobi' },
+  { id: 'j-shanu', name: 'Kasuwar shanu', en: 'The cattle market', section: 'Lambobi' },
+  { id: 'j-garke', name: 'Ƙirgen garke', en: 'Counting the herd · speaking', section: 'Lambobi' },
+  { id: 'j-suya', name: 'Mai suya', en: 'The suya seller · speaking', section: 'Lambobi' },
   { id: 'j-karatu', name: 'Kwale-kwale', en: 'The canoes', section: 'Karatu' },
+  { id: 'j-allo', name: 'Allo', en: 'The writing board · speaking', section: 'Karatu' },
+  { id: 'j-jirgi', name: 'Jirgin ruwa', en: 'The ferry · speaking', section: 'Karatu' },
   { id: 'j-rubutu', name: 'Tukwane', en: 'Clay pots', section: 'Rubutu' },
   { id: 'j-rubutu-say', name: 'Ginin bulo', en: 'Build the house · speaking', section: 'Rubutu' },
+  { id: 'j-marubuci', name: 'Marubucin wasiƙa', en: 'The letter writer · speaking', section: 'Rubutu' },
 ];

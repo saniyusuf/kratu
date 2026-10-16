@@ -11,19 +11,37 @@ import { LAILA_SVG } from '../../../shared/svg';
 import { afterPaint } from '../../../shared/paint';
 import { GameHandle, playGame } from './engine';
 
-const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken'];
+const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken',
+  // the Arewa games: the dillali's goods, the keke's places, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
+  'ram', 'camel', 'donkey', 'millet', 'groundnut', 'calabash', 'pot', 'mat', 'kettle', 'broom', 'kaftan', 'cap', 'turban', 'shoe', 'umbrella',
+  'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'rice', 'beans', 'water', 'pen', 'key', 'milk', 'mama', 'baba', 'aunt', 'uncle'];
 const PEOPLE = ['woman', 'man', 'girl', 'boy', 'old_man'];
 const NUMS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+/** Lambobi's numbers by value: 1–10 have their own word clips, the rest are the n-keys of the Lambobi lessons. */
+const NUMBER: Record<number, string> = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten', 11: 'Eleven', 12: 'Twelve', 13: 'Thirteen', 14: 'Fourteen',
+  15: 'Fifteen', 16: 'Sixteen', 17: 'Seventeen', 18: 'Eighteen', 19: 'Nineteen', 20: 'Twenty', 30: 'Thirty', 40: 'Forty', 50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', 90: 'Ninety', 100: 'One hundred',
+  200: 'Two hundred', 300: 'Three hundred', 400: 'Four hundred', 500: 'Five hundred', 600: 'Six hundred', 700: 'Seven hundred', 800: 'Eight hundred', 900: 'Nine hundred', 1000: 'One thousand' };
 /** Every game's two lines: the question first (Na sani / Ban sani ba), then how to play. Keys written out, so the content lint sees them. */
 const LINES: Record<string, { ask: string; how: string }> = {
   'j-haruffa-say': { ask: 's_g_lanterns_ask', how: 's_g_lanterns_how' },
   'j-abubuwa': { ask: 's_g_fish_ask', how: 's_g_fish_how' },
   'j-magana': { ask: 's_g_drum_ask', how: 's_g_drum_how' },
   'j-nemo': { ask: 's_g_market_ask', how: 's_g_market_how' },
-  'j-lambobi': { ask: 's_g_stars_ask', how: 's_g_stars_how' },
   'j-karatu': { ask: 's_g_canoes_ask', how: 's_g_canoes_how' },
   'j-rubutu': { ask: 's_g_pots_ask', how: 's_g_pots_how' },
   'j-rubutu-say': { ask: 's_g_house_ask', how: 's_g_house_how' },
+  // the Arewa games ask the same question as the other games of their lesson
+  'j-durbar': { ask: 's_g_lanterns_ask', how: 's_g_durbar_how' },
+  'j-dillali': { ask: 's_g_drum_ask', how: 's_g_dillali_how' },
+  'j-keke': { ask: 's_g_drum_ask', how: 's_g_keke_how' },
+  'j-shayi': { ask: 's_g_drum_ask', how: 's_g_shayi_how' },
+  'j-gyada': { ask: 's_g_stars_ask', how: 's_g_gyada_how' },
+  'j-shanu': { ask: 's_g_stars_ask', how: 's_g_shanu_how' },
+  'j-garke': { ask: 's_g_stars_ask', how: 's_g_garke_how' },
+  'j-suya': { ask: 's_g_stars_ask', how: 's_g_suya_how' },
+  'j-allo': { ask: 's_g_canoes_ask', how: 's_g_allo_how' },
+  'j-jirgi': { ask: 's_g_canoes_ask', how: 's_g_jirgi_how' },
+  'j-marubuci': { ask: 's_g_house_ask', how: 's_g_marubuci_how' },
 };
 
 /**
@@ -61,7 +79,9 @@ export class GameLabScreen implements OnInit, OnDestroy {
     const map = (keys: string[], f: (k: string) => string) => Object.fromEntries(keys.map((k) => [k, f(k)]));
     const K = {
       pic: map(WORDS.concat(PEOPLE), (w) => 'assets/pictures/' + w + '.webp'),
-      en: map(WORDS.concat(NUMS), (w) => 'assets/audio/en/word_' + w + '.ogg'),
+      en: { ...map(WORDS.concat(NUMS), (w) => 'assets/audio/en/word_' + w + '.ogg'),
+        ...Object.fromEntries(Object.keys(NUMBER).map((n) => ['n' + n, 'assets/audio/en/word_' + (+n <= 10 ? NUMBER[+n].toLowerCase() : 'n' + n) + '.ogg'])) },
+      enText: Object.fromEntries(Object.entries(NUMBER).map(([n, t]) => ['n' + n, t])),
       L: map('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), (L) => 'assets/audio/en/app_en_' + L + '.ogg'),
       yay: 'assets/audio/sfx/yay.ogg', nope: 'assets/audio/sfx/nope.ogg',
       lines: LINES, learn: 's_g_learn', kudos: 'app_kudos', go: 's_g_go',

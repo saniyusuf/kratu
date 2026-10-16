@@ -4713,27 +4713,6 @@
   }
  },
  {
-  "key": "s_g_stars_how",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Taurari suna jira! Ka danna su bisa tsari, daga ɗaya.",
-   "f": "Taurari suna jira! Ki danna su bisa tsari, daga ɗaya."
-  },
-  "en": "The stars are waiting! Tap them in order, from one.",
-  "screens": [
-   "Wasanni · Ƙirga taurari"
-  ],
-  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
-  "status": "live",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "b854089acf",
-   "f": "c8a996701c"
-  }
- },
- {
   "key": "s_g_canoes_ask",
   "lang": "ha",
   "voice": "laila",
@@ -4888,5 +4867,236 @@
   "status": "live",
   "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
   "recorded": "4c7b29c113"
+ },
+ {
+  "key": "s_g_durbar_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi harafin da ke kan tutar mahayin doki, sai ya gaida sarki!",
+   "f": "Ki faɗi harafin da ke kan tutar mahayin doki, sai ya gaida sarki!"
+  },
+  "en": "Say the letter on the horseman's banner, and he will greet the emir!",
+  "screens": [
+   "Wasanni · Hawan Daushe"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "b1e40d688e",
+   "f": "7fdd159e2f"
+  }
+ },
+ {
+  "key": "s_g_dillali_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi sunan abin nan da Turanci, sai dillali ya sayar da shi!",
+   "f": "Ki faɗi sunan abin nan da Turanci, sai dillali ya sayar da shi!"
+  },
+  "en": "Say this thing's name in English, and the auctioneer will sell it!",
+  "screens": [
+   "Wasanni · Dillalin kasuwa"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "d21618961f",
+   "f": "d5d5e70a8e"
+  }
+ },
+ {
+  "key": "s_g_keke_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi inda fasinja zai je da Turanci, sai keke ya kai shi!",
+   "f": "Ki faɗi inda fasinja zai je da Turanci, sai keke ya kai shi!"
+  },
+  "en": "Say where the passenger is going in English, and the keke will take them!",
+  "screens": [
+   "Wasanni · Keke NAPEP"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "e5e9e62908",
+   "f": "7cab922903"
+  }
+ },
+ {
+  "key": "s_g_shayi_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi abin da kake so da Turanci, sai mai shayi ya ba ka!",
+   "f": "Ki faɗi abin da kike so da Turanci, sai mai shayi ya ba ki!"
+  },
+  "en": "Say what you want in English, and the tea seller will give it to you!",
+  "screens": [
+   "Wasanni · Mai shayi"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "9efb1b7226",
+   "f": "076230ed3e"
+  }
+ },
+ {
+  "key": "s_g_gyada_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna tarin buhunan da yawansu ya kai lambar da na faɗa.",
+   "f": "Ki danna tarin buhunan da yawansu ya kai lambar da na faɗa."
+  },
+  "en": "Tap the stack with as many sacks as the number I say.",
+  "screens": [
+   "Wasanni · Dalar gyaɗa"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "ac4d217651",
+   "f": "79336374dd"
+  }
+ },
+ {
+  "key": "s_g_shanu_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna dabbar da farashinta ya yi daidai da abin da na faɗa.",
+   "f": "Ki danna dabbar da farashinta ya yi daidai da abin da na faɗa."
+  },
+  "en": "Tap the animal whose price matches what I say.",
+  "screens": [
+   "Wasanni · Kasuwar shanu"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "f934bb091b",
+   "f": "15557b223d"
+  }
+ },
+ {
+  "key": "s_g_garke_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka ƙirga shanun da Turanci yayin da suke shiga garke, ɗaya bayan ɗaya.",
+   "f": "Ki ƙirga shanun da Turanci yayin da suke shiga garke, ɗaya bayan ɗaya."
+  },
+  "en": "Count the cows in English as they go into the pen, one by one.",
+  "screens": [
+   "Wasanni · Ƙirgen garke"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "64d99e28fb",
+   "f": "3944b8b003"
+  }
+ },
+ {
+  "key": "s_g_suya_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi kuɗin da ke hannunka da Turanci, sai ka biya mai suya.",
+   "f": "Ki faɗi kuɗin da ke hannunki da Turanci, sai ki biya mai suya."
+  },
+  "en": "Say the money in your hand in English, and pay the suya seller.",
+  "screens": [
+   "Wasanni · Mai suya"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "ab78535631",
+   "f": "5280365dc8"
+  }
+ },
+ {
+  "key": "s_g_allo_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan allo da ƙarfi, sai mu wanke shi.",
+   "f": "Ki karanta kalmar da ke kan allo da ƙarfi, sai mu wanke shi."
+  },
+  "en": "Read the word on the board out loud, and we will wash it clean.",
+  "screens": [
+   "Wasanni · Allo"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "3cf738601e",
+   "f": "af4b9f48ea"
+  }
+ },
+ {
+  "key": "s_g_jirgi_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan kwale-kwale da ƙarfi, sai ya zo bakin ruwa.",
+   "f": "Ki karanta kalmar da ke kan kwale-kwale da ƙarfi, sai ya zo bakin ruwa."
+  },
+  "en": "Read the word on the canoe out loud, and it will come to the bank.",
+  "screens": [
+   "Wasanni · Jirgin ruwa"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "17db94f5db",
+   "f": "57562c2228"
+  }
+ },
+ {
+  "key": "s_g_marubuci_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya, sai marubuci ya rubuta su.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya, sai marubuci ya rubuta su."
+  },
+  "en": "Say the letters of the word one by one, and the letter writer will write them.",
+  "screens": [
+   "Wasanni · Marubucin wasiƙa"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "recorded": {
+   "m": "660a6e5680",
+   "f": "1c909b7201"
+  }
  }
 ]
