@@ -101,7 +101,8 @@ export class GameLabScreen implements OnInit, OnDestroy {
         const q = this.route.snapshot.queryParamMap;
         // the speaking check after the balloons: only letters said aloud count as known (Sani 2026-10-21)
         if (q.get('prove')) { this.router.navigateByUrl(this.progress.proveSaid(this.opts().letters || [], (r && r.missed) || []) ? '/home' : '/haruffa/koyo'); return; }
-        const n = q.get('next'); if (n && n.startsWith('/')) this.router.navigateByUrl(n); else this.leave();
+        const n = q.get('next'), missed = ((r && r.missed) || []).join('');
+        if (n && n.startsWith('/')) this.router.navigateByUrl(missed ? n + (n.includes('?') ? '&' : '?') + 'again=' + missed : n); else this.leave();
       },
     }, this.opts());
   }

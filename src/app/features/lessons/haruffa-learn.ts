@@ -218,6 +218,9 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async start(fromGroup: number, intro = false): Promise<void> {
     this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(fromGroup * 4);
     if (intro) { await this.play('app_board_intro'); if (this.stopped) return; }   // said here, not on the screen that sent them (Sani 2026-09-21)
+    // letters the in-between game showed they could not say are taught again before the next group (Sani 2026-10-21)
+    const again = (this.route.snapshot.queryParamMap.get('again') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);
+    if (again.length) { this.markActive(again); this.unfill(again); this.eye.set('Mu sake · ' + again.join(' ')); await this.teach(again); if (this.stopped) return; this.hideLetter(); await wait(400); }
     for (let gi = fromGroup; gi < GROUPS.length; gi++) { if (this.stopped) return; await this.runGroup(gi); }
     if (this.stopped) return; await this.finals(); this.running = false;
     this.router.navigate(['/fashe']);   // the whole alphabet learned: now the balloons, the A–Z game (Sani 2026-10-17)
