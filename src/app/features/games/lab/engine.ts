@@ -24,7 +24,7 @@ export interface GameIO {
   rect(el: Element): DOMRect;
   leave(): void;
   tester?: boolean;
-  next?: () => void;
+  next?: (r?: any) => void;
 }
 export interface GameHandle { stop(): void; again(): void; }
 /** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening
@@ -178,7 +178,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         '<div class="gold"><span class="coin">Z</span><b>+' + gold + '</b><small>Zinari</small></div>') +
       '<div class="place">' + (r.learn ? g.placeNo : g.place(r, run)) + '</div>' +
       lailaBtn('cue', 'Danna Laila');
-    res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(); } else question(); };
+    res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(r); } else question(); };
     if (r.learn) say(K.learn, res);
     else { sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { if (ok) say(K.go, res); }); }); }
   }

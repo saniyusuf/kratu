@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { PlanService } from '../../core/state/plan.service';
-import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
@@ -72,7 +71,6 @@ export class FasheScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly plan = inject(PlanService);
-  private readonly progress = inject(ProgressService);
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
@@ -414,7 +412,6 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.target.set(''); this.answer = null; this.stopClock();
     const start = PlanService.decide(this.reached, this.wrong);
     this.plan.save({ hits: this.reached, wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now() });
-    this.progress.proveLetters(start);   // what they showed they know is never taught or tested again
     const won = !stopped && this.reached >= ALL.length - 1;
     if (won) {
       this.eye.set('Mu gani · A → Z');
@@ -423,7 +420,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
       this.session.owedGame.set(false);
-      if (!this.stopped) this.router.navigate(['/home']);
+      if (!this.stopped) this.toSaying(26);   // found them all: now say them all
       return;
     }
     this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
@@ -432,7 +429,17 @@ export class FasheScreen implements OnInit, OnDestroy {
     if (this.stopped) return;
     // whatever they reached is kept; the lesson is where they go, not back to a grid to choose again
     this.session.owedGame.set(this.outOfTime);
+    // the clean stretch they found (A–H, A–P) is checked by voice before any of it is skipped
+    const proved = start === 'haruffa_qz' ? 16 : start === 'haruffa_ip' ? 8 : 0;
+    if (proved) { this.toSaying(proved); return; }
     this.router.navigate([this.outOfTime ? '/haruffa/koyo' : '/home']);
+  }
+  /**
+   * Finding a letter is not saying it (Sani 2026-10-21): the letters the balloons proved go to the lanterns, mixed
+   * up, and only the ones said aloud are marked learned. What was not said is taught in its group.
+   */
+  private toSaying(n: number): void {
+    this.router.navigate(['/wasanni', 'j-haruffa-say'], { queryParams: { letters: ALL.slice(0, n).join(''), order: 'mixed', prove: '1' } });
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
   private async sayMaybe(k: string): Promise<void> {
