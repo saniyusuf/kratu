@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { PlanService } from '../../core/state/plan.service';
+import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
@@ -71,6 +72,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly plan = inject(PlanService);
+  private readonly progress = inject(ProgressService);
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
@@ -412,6 +414,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.target.set(''); this.answer = null; this.stopClock();
     const start = PlanService.decide(this.reached, this.wrong);
     this.plan.save({ hits: this.reached, wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now() });
+    this.progress.proveLetters(start);   // what they showed they know is never taught or tested again
     const won = !stopped && this.reached >= ALL.length - 1;
     if (won) {
       this.eye.set('Mu gani · A → Z');

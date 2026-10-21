@@ -63,7 +63,10 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private spotter!: Spotter; private running = false; private awaiting = false; private cur: { L: string; res: (v: { ok: boolean; heard: string | null; tries: number }) => void } | null = null;
   private hinted = false; private hearHandle: { stop(): void } | null = null; private stopped = false;
 
-  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = +(q.get('from') || 0); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
+  /** Opened without a starting point (the tile): the first letter group not yet finished, so a child never relearns
+   *  what the balloons or the lessons have already proved. All of it finished: from A again, as a review. */
+  private resumeAt(): number { for (let g = 0; g < GROUPS.length; g++) if (!this.progress.has('haruffa', 'g' + g)) return g; return 0; }
+  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = q.get('from') !== null ? +(q.get('from') || 0) : this.resumeAt(); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
   ngOnDestroy(): void { this.stopped = true; this.stopAuto(); this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
 
   private idx(L: string): number { return ALL.indexOf(L); }

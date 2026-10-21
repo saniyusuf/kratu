@@ -50,6 +50,18 @@ export class ProgressService {
     const d = this.read(), list = d[lesson] || []; if (list.includes(unit)) return;
     d[lesson] = [...list, unit]; try { this.store().setItem(this.key(), JSON.stringify(d)); } catch { /* private mode */ }
   }
+  /** Has this unit been finished? */
+  has(lesson: LessonId, unit: string): boolean { return (this.read()[lesson] || []).includes(unit); }
+  /**
+   * What the balloons proved (Sani 2026-10-21): a child who knows a stretch of the alphabet never learns it again.
+   * Every letter group inside the clean stretch is finished, and the whole alphabet finishes Haruffa outright — no
+   * lessons, no in-between games, and the lessons that wait for the alphabet open.
+   */
+  proveLetters(start: string): void {
+    const upto = start === 'dabbobi' ? 7 : start === 'haruffa_qz' ? 4 : start === 'haruffa_ip' ? 2 : 0;
+    for (let g = 0; g < upto; g++) this.mark('haruffa', 'g' + g);
+    if (start === 'dabbobi') this.mark('haruffa', 'final');
+  }
   /** Share done, 0 to 1. */
   share(lesson: LessonId): number {
     const o = this.override(); if (o) return o[ORDER.indexOf(lesson)] ?? 0;
