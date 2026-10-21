@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { PlanService } from '../../core/state/plan.service';
+import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
@@ -71,6 +72,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly plan = inject(PlanService);
+  private readonly progress = inject(ProgressService);
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
@@ -413,6 +415,9 @@ export class FasheScreen implements OnInit, OnDestroy {
     const start = PlanService.decide(this.reached, this.wrong);
     this.plan.save({ hits: this.reached, wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now() });
     const won = !stopped && this.reached >= ALL.length - 1;
+    // a child who has already said the whole alphabet in the lessons is finished with letters whatever the balloons
+    // show: they are never sent back to A or through the speaking check again
+    const learned = this.progress.has('haruffa', 'final');
     if (won) {
       this.eye.set('Mu gani · A → Z');
       this.fb('good', 'Madalla! ' + this.reached + ' / 25');
@@ -420,13 +425,14 @@ export class FasheScreen implements OnInit, OnDestroy {
       await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
       this.session.owedGame.set(false);
-      if (!this.stopped) this.toSaying(26);   // found them all: now say them all
+      if (!this.stopped) { if (learned) this.router.navigate(['/home']); else this.toSaying(26); }   // found them all: now say them all
       return;
     }
     this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
     if (this.outOfTime) await this.sayMaybe('s_pop_timeup');   // "Lokaci ya ƙare. Mu koyi haruffa tukuna."
     await wait(400);
     if (this.stopped) return;
+    if (learned) { this.router.navigate(['/home']); return; }
     // whatever they reached is kept; the lesson is where they go, not back to a grid to choose again
     this.session.owedGame.set(this.outOfTime);
     // the clean stretch they found (A–H, A–P) is checked by voice before any of it is skipped
