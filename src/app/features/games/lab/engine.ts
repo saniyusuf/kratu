@@ -26,6 +26,8 @@ export interface GameIO {
   tester?: boolean;
   next?: (r?: any) => void;
   firstTime?: () => boolean;
+  amp?: () => number;
+  preparing?: () => boolean;
 }
 export interface GameHandle { stop(): void; again(): void; }
 /** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening
@@ -100,9 +102,15 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   /* The speaking games: Laila is the microphone. Press her, say it, and the answer comes back to `heard`.
      While she listens she glows red and the clock waits, so a slow speaker is never punished for the recogniser. */
   function micBox(run) {
-    var box = h('<div class="mic"><div class="miclaila">' + lailaBtn('cue', '') + '<span class="micring"></span></div><span class="micl">🎤</span></div>');
+    /* the same Laila the lessons press (Sani 2026-10-22): her glow, the green hear-rings, the sound bubble that moves
+       with the child's voice, the REC tag, a hop when right and a head-shake when wrong */
+    var box = h('<div class="mic micx"><span class="yn yes abc-start x-laila cue" role="button" aria-label="Laila"><span class="lglow"></span><span class="hearrings"></span>' +
+      '<span class="lmw"><span class="lm">' + K.laila + '</span></span><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>' +
+      '<span class="lhand">👆🏾</span><small>Faɗa</small></span></div>');
+    var btn = box.querySelector('.x-laila'), raf = 0;
+    function level() { btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
     box.listen = function (opts, heard, right) {
-      var btn = box.querySelector('.glaila'); box.heard = heard; box.right = right;
+      box.heard = heard; box.right = right;
       if (io.tester && !box.querySelector('.tester')) {     // ?debug only: answer for the child, for a desk without a microphone
         var t = h('<span class="tester"><button type="button" class="ok">✓</button><button type="button" class="no">✗</button></span>'); box.appendChild(t);
         t.querySelector('.ok').onclick = function () { if (!run.dead && !run.listening && !box.busy) box.heard({ value: box.right(), raw: 'test' }); };
@@ -110,18 +118,21 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       }
       btn.onclick = function () {
         if (run.dead || run.listening || box.busy) return;
-        io.hush(); run.idle = 0; run.listening = true; box.classList.add('rec'); btn.classList.remove('cue');
+        io.hush(); run.idle = 0; run.listening = true; btn.classList.remove('cue', 'yay', 'nope'); btn.classList.add('rec'); box.classList.add('rec'); level();
         var hh = io.hear(opts()); mic = hh;
         hh.done.then(function (r) {
-          if (mic === hh) mic = null;
-          run.listening = false; box.classList.remove('rec'); if (run.dead) return;
+          if (mic === hh) mic = null; cancelAnimationFrame(raf); btn.style.setProperty('--amp', '0');
+          run.listening = false; btn.classList.remove('rec', 'prep'); box.classList.remove('rec'); if (run.dead) return;
           heard(r || { value: null, raw: '' });
         });
       };
     };
-    box.cue = function (on) { box.busy = false; box.querySelector('.glaila').classList.toggle('cue', on !== false); };   // ready for an answer
+    box.cue = function (on) { box.busy = false; btn.classList.toggle('cue', on !== false); };   // ready for an answer
+    box.yay = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('yay'); setTimeout(function () { btn.classList.remove('yay'); }, 800); };
+    box.nope = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('nope'); setTimeout(function () { btn.classList.remove('nope'); }, 800); };
     return box;
   }
+
 
   /* ---------- the three screens every game shares ---------- */
   function question() {
@@ -440,8 +451,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 /** The games, for the list in the settings. The balloons are the app's own screen. */
 export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = [
   { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons · the whole A–Z', section: 'Haruffa' },
-  { id: 'j-durbar', name: 'Hawan Daushe · a jere', en: 'Durbar, A–P in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOP', order: 'in' } },
-  { id: 'j-durbar', name: 'Hawan Daushe · a gauraye', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX', order: 'mixed' } },
+  { id: 'j-durbar', name: 'Hawan Sallah · a jere', en: 'Durbar, A–P in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOP', order: 'in' } },
+  { id: 'j-durbar', name: 'Hawan Sallah · a gauraye', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX', order: 'mixed' } },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },
   { id: 'j-magana', name: 'Kalangu', en: 'The talking drum · speaking', section: 'Abubuwa' },
   { id: 'j-dillali', name: 'Dillalin kasuwa', en: 'The auctioneer · speaking', section: 'Abubuwa' },

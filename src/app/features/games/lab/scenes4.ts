@@ -20,7 +20,7 @@ const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .5
   for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2; s += '<g transform="translate(' + x.toFixed(1) + ' ' + y + ')"><path d="M-2.4 0 L-1.6 -6 L1.6 -6 L2.4 0 Z" fill="' + c[i % c.length] + '"/><circle cy="-7.4" r="1.5" fill="' + (dark ? '#1A1428' : '#6B4422') + '"/></g>'; } return s + '</g>'; };
 
 export const SCENES4: Record<string, string> = {
-  /* Hawan Daushe: the emir's palace gate on Sallah day, bunting across the square */
+  /* Hawan Sallah: the emir's palace gate on Sallah day, bunting across the square */
   palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + '</defs>' +
     '<rect width="160" height="100" fill="url(#p4-sky)"/>' + cloud(26, 12, .8) + cloud(128, 9, .7) +
     '<path d="M18 70 V30 H142 V70 Z" fill="url(#p4-wall)"/><g fill="#A9522B">' + zanko(18, 140, 30) + '</g>' +

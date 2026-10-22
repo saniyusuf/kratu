@@ -940,7 +940,7 @@
 .glab .stk.fade{opacity:0;transition:opacity .4s}
 @keyframes g-puff{to{transform:translate(-10px,-8px);opacity:0}}
 .glab .scr.gyada .stk{width:21cqw!important;height:14.5cqw!important;padding:.8cqw!important}.glab .scr.gyada .stacks2.big .stk{width:28cqw!important;height:19cqw!important}
-/* Hawan Daushe, drawn again (Sani 2026-10-22): the emir's moods and the horse's greeting */
+/* Hawan Sallah, drawn again (Sani 2026-10-22): the emir's moods and the horse's greeting */
 .glab .dur .r-frown,.glab .dur .r-eyes-sad,.glab .dur .e-frown,.glab .dur .e-fold,.glab .dur .e-brow.cross{opacity:0;transition:opacity .3s}
 .glab .dur .r-smile,.glab .dur .r-eyes-happy,.glab .dur .e-smile,.glab .dur .e-rest,.glab .dur .e-brow.calm{transition:opacity .3s}
 .glab .emirw.cross .e-smile,.glab .emirw.cross .e-rest,.glab .emirw.cross .e-brow.calm{opacity:0}.glab .emirw.cross .e-frown,.glab .emirw.cross .e-fold,.glab .emirw.cross .e-brow.cross{opacity:1}
@@ -975,3 +975,13 @@
 @keyframes g-pleg{from{transform:rotate(-18deg)}to{transform:rotate(18deg)}}
 .glab .scene .newsack{animation:g-newsack 7s ease-in-out infinite}@keyframes g-newsack{0%,30%{opacity:0;transform:translateY(-4px)}40%,90%{opacity:1;transform:none}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.glab .scene .porter,.glab .scene .pbob,.glab .scene .pl1,.glab .scene .pl2,.glab .scene .newsack,.glab .lorry .ld{animation:none}}
+/* the lessons' own Laila as the microphone (design.css .s.lesson .abc-start); the card around her is gone */
+.glab .micx{background:none!important;box-shadow:none!important;padding:0!important;display:grid;justify-items:center;gap:4px}
+.glab .micx .lmw{display:inline-block;line-height:0}.glab .micx .lm{display:inline-block;width:120px;height:120px}.glab .micx .lm svg{width:100%;height:100%}
+.glab .micx .x-laila small{font-size:17px;color:#3B2E1E;text-shadow:0 0 6px #fff,0 0 10px #fff}
+/* no hints, only displeasure (Sani 2026-10-22): a wrong turn is marked and the scene shows it is not pleased */
+.glab .board.nosale::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 14cqw/1 var(--disp);color:#C62828;background:rgba(255,255,255,.55)}
+.glab .crowd.grumble .pp-w{animation:g-grumble .35s ease-in-out 4 alternate}@keyframes g-grumble{from{transform:rotate(-4deg)}to{transform:rotate(4deg) translateY(1px)}}
+.glab .gstage.cross .herder,.glab .sgstage.cross .grillw{animation:g-headno .3s ease-in-out 4 alternate}@keyframes g-headno{from{transform:translateX(-.8cqw)}to{transform:translateX(.8cqw)}}
+.glab .allow2.wrongw::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 18cqw/1 var(--disp);color:#E53935;opacity:.85}
+.glab .allow2{position:relative}

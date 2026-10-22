@@ -51,7 +51,7 @@ const LINES: Record<string, { ask: string; how: string }> = {
 @Component({
   selector: 'app-gamelab',
   imports: [Door, Ear],
-  host: { class: 's gamelab' },
+  host: { class: 's lesson gamelab' },
   encapsulation: ViewEncapsulation.None,
   styleUrl: './gamelab.css',
   template: `<div #frame class="glab nofit"><div class="gbg"></div><div class="gbox"><div class="scr"></div></div></div><app-door (pressed)="leave()" /><app-ear (pressed)="again()" />`,
@@ -93,6 +93,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       hush: () => this.bus.stopAll(),
       sfx: (src) => { this.sfxP = this.bus.playRaw(src).catch(() => false); },
       hear: (o) => this.speech.hear(o),
+      amp: () => this.speech.amp(), preparing: () => this.speech.preparing(),
       match: (raw, word, among) => matchWord(raw, word, among),
       rect: (el) => this.zoom.rect(el),
       leave: () => this.leave(),

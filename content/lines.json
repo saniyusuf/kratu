@@ -4534,7 +4534,7 @@
   },
   "en": "Can you say the English letters one by one?",
   "screens": [
-   "Wasanni · Hawan Daushe"
+   "Wasanni · Hawan Sallah"
   ],
   "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
   "status": "live",
@@ -4858,7 +4858,7 @@
   },
   "en": "Say the letter on the horseman's banner, and he will greet the emir!",
   "screens": [
-   "Wasanni · Hawan Daushe"
+   "Wasanni · Hawan Sallah"
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",

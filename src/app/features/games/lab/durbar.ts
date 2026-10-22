@@ -1,6 +1,6 @@
 // @ts-nocheck
 /*
- * Hawan Daushe, drawn again (Sani 2026-10-22): a Durbar horseman as close to the real thing as a drawing can be, and the
+ * Hawan Sallah, drawn again (Sani 2026-10-22): a Durbar horseman as close to the real thing as a drawing can be, and the
  * emir on his throne under the royal umbrella. The horse wears its regalia: a quilted caparison in red and green with a
  * yellow fringe, brass discs on the breast band and bridle, a plume on its head, tassels down its neck. The rider wears
  * the babban riga and a white turban, carries the pennant with the letter and raises his sword.

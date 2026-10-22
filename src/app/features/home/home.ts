@@ -20,7 +20,7 @@ const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuw
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
 /** How a met game shows on the home page's shelf. */
 const GAME_ICON: Record<string, { name: string; ico: string }> = {
-  fashe: { name: 'Fashe haruffa', ico: '🎈' }, 'j-durbar': { name: 'Hawan Daushe', ico: '🐎' }, 'j-abubuwa': { name: 'Kamun kifi', ico: '🐟' }, 'j-magana': { name: 'Kalangu', ico: '🥁' },
+  fashe: { name: 'Fashe haruffa', ico: '🎈' }, 'j-durbar': { name: 'Hawan Sallah', ico: '🐎' }, 'j-abubuwa': { name: 'Kamun kifi', ico: '🐟' }, 'j-magana': { name: 'Kalangu', ico: '🥁' },
   'j-dillali': { name: 'Dillalin kasuwa', ico: '🔨' }, 'j-nemo': { name: 'Hanzarin kasuwa', ico: '🧺' }, 'j-shayi': { name: 'Mai shayi', ico: '☕' }, 'j-gyada': { name: 'Dalar gyaɗa', ico: '🥜' },
   'j-shanu': { name: 'Kasuwar shanu', ico: '🐄' }, 'j-garke': { name: 'Ƙirgen garke', ico: '🐂' }, 'j-suya': { name: 'Mai suya', ico: '🍢' }, 'j-karatu': { name: 'Kwale-kwale', ico: '🛶' },
   'j-allo': { name: 'Allo', ico: '📜' }, 'j-jirgi': { name: 'Jirgin ruwa', ico: '⛵' }, 'j-rubutu': { name: 'Tukwane', ico: '🏺' }, 'j-rubutu-say': { name: 'Ginin bulo', ico: '🧱' }, 'j-marubuci': { name: 'Marubucin wasiƙa', ico: '✉️' },

@@ -17,19 +17,21 @@ export function moreGames(c: any): Record<string, any> {
   /** one picture on a card, the lessons' photo */
   const photo = (w, cls = '') => `<span class="ph ${cls}"><img alt="" src="${K.pic[w]}"></span>`;
   /** a speaking round: press Laila, say it; right → onRight, wrong → onWrong(tries). Two tries, then the answer is shown. */
-  function speakRound(run, box, target, among, onRight, onMiss, tries = 2) {
+  /* one answer each (Sani 2026-10-22): no second go, no hints, the answer is never shown or said. Right: Laila hops;
+     wrong: she shakes her head, the turn is marked wrong and the game shows its displeasure. */
+  function speakRound(run, box, target, among, onRight, onMiss, tries = 1) {
     let t = 0; box.cue();
     box.listen(() => ({ target, among, match: (raw) => io.match(raw, target, among) }), (r) => {
       if (r.value === null && !r.raw) { box.cue(); return; }
-      if (r.value === target) { box.busy = true; onRight(); return; }
-      t++; run.bad(box);
+      if (r.value === target) { box.busy = true; box.yay(); onRight(); return; }
+      t++; run.bad(); box.nope();
       if (t >= tries) { box.busy = true; onMiss(); } else box.cue();
     }, () => target);
   }
 
   return {
-    /* ---------------- Haruffa: the Durbar ---------------- */
-    'j-durbar': { title: 'Hawan Daushe', cls: 'durbar', scene: 'palace',
+    /* ---------------- Haruffa: Hawan Sallah, the Durbar ---------------- */
+    'j-durbar': { title: 'Hawan Sallah', cls: 'durbar', scene: 'palace',
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
@@ -55,10 +57,10 @@ export function moreGames(c: any): Record<string, any> {
               later(run, 4300, step);
             }, () => {
               // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
-              missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss'); say(K.L[L], run);
+              missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
               emir.classList.add('cross'); rw.classList.add('sad');
               later(run, 1600, () => rw.classList.add('turn', 'gallop', 'back')); later(run, 3200, step);
-            }, 3);
+            }, 1);
           });
         }
         function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }
@@ -84,7 +86,7 @@ export function moreGames(c: any): Record<string, any> {
           const w = items[r]; board.classList.remove('sold', 'up'); board.querySelector('img').src = K.pic[w]; void board.offsetWidth; board.classList.add('up');
           speakRound(run, box, w, among, () => {
             sold++; run.good(board); tally.querySelector('b').textContent = sold; say(K.en[w], run); board.classList.add('sold'); bump(crowdEl, 'clapping', 1400); sfx('yay'); step();
-          }, () => { say(K.en[w], run); step(); });
+          }, () => { board.classList.add('nosale'); bump(crowdEl, 'grumble', 1400); step(); });
         }
         function step() { later(run, 1700, () => { r++; if (r >= 6) done({ right: sold, finished: true, part: sold / 6 }); else next(); }); }
         next();
@@ -156,8 +158,7 @@ export function moreGames(c: any): Record<string, any> {
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m !== n) {
                 // wrong: the right pile glows for a moment, and the lorry leaves empty
-                run.bad(b); row.querySelectorAll('.stk').forEach((o) => { if (o.getAttribute('aria-label') === n + ' sacks') o.classList.add('hint'); });
-                sayN(); horn(false); later(run, 900, () => lw.classList.add('away', 'slow')); after(2600); return;
+                run.bad(b); horn(false); later(run, 900, () => lw.classList.add('away', 'slow')); after(2600); return;
               }
               got++; reached = Math.max(reached, n); run.good(b); top.querySelector('.tally b').textContent = got;
               // the pile empties into the back of the lorry: the sacks drop in one after another
@@ -231,9 +232,9 @@ export function moreGames(c: any): Record<string, any> {
           box.cue();
           box.listen(() => ({ target: w, among: AMONG, match: (raw) => io.match(raw, w, AMONG) }), (r) => {
             if (r.value === null && !r.raw) { box.cue(); return; }
-            if (r.value === w) { box.busy = true; run.good(queue.firstChild); reached = n; walkIn(n); return; }
-            wrong++; run.bad(queue.firstChild);
-            if (wrong >= 3) { box.busy = true; say(K.en['n' + n], run); later(run, 900, () => { done({ right: s, part: s / STEPS.length, reached }); }); }
+            if (r.value === w) { box.busy = true; box.yay(); run.good(queue.firstChild); reached = n; walkIn(n); return; }
+            wrong++; run.bad(queue.firstChild); box.nope(); st.classList.add('cross'); later(run, 1200, () => st.classList.remove('cross'));
+            if (wrong >= 1) { box.busy = true; later(run, 900, () => { done({ right: s, part: s / STEPS.length, reached }); }); }
             else box.cue();
           }, () => w);
         }
@@ -262,7 +263,7 @@ export function moreGames(c: any): Record<string, any> {
           const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = A.note(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
           speakRound(run, box, w, AMONG, () => {
             got++; run.good(hand); say(K.en['n' + n], run); hand.classList.add('paid'); wraps.children[r].classList.add('on'); later(run, 1700, step);
-          }, () => { say(K.en['n' + n], run); wraps.children[r].classList.add('miss'); later(run, 1700, step); });
+          }, () => { wraps.children[r].classList.add('miss'); st.classList.add('cross'); later(run, 1500, () => { st.classList.remove('cross'); hand.classList.add('paid'); }); later(run, 1900, step); });
         }
         function step() { r++; if (r >= 6) done({ right: got, finished: true, part: got / 6 }); else next(); }
         next();
@@ -285,7 +286,7 @@ export function moreGames(c: any): Record<string, any> {
           speakRound(run, box, w, W, () => {
             got++; longest = Math.max(longest, w.length); run.good(aw); say(K.en[w], run); prog.children[r].classList.add('on');
             aw.classList.remove('writing'); aw.classList.add('washing'); later(run, 1900, step);
-          }, () => { say(K.en[w], run); prog.children[r].classList.add('miss'); later(run, 1700, step); });
+          }, () => { prog.children[r].classList.add('miss'); aw.classList.add('wrongw'); later(run, 1500, () => aw.classList.remove('wrongw')); later(run, 1700, step); });
         }
         function step() { r++; if (r >= W.length) done({ right: got, finished: got === W.length, part: got / W.length, longest }); else next(); }
         next();
@@ -307,7 +308,7 @@ export function moreGames(c: any): Record<string, any> {
           speakRound(run, box, w, W, () => {
             got++; run.good(ferry); say(K.en[w], run); ferry.classList.remove('drift'); ferry.classList.add('dock');
             const p = bank.children[r]; later(run, 900, () => p.classList.add('board')); later(run, 1600, () => ferry.classList.add('leave')); later(run, 2600, step);
-          }, () => { say(K.en[w], run); ferry.classList.add('leave'); later(run, 1800, step); });
+          }, () => { ferry.classList.add('leave'); later(run, 1800, step); });
         }
         function step() { r++; if (r >= 5) done({ right: got, finished: true, part: got / 5 }); else next(); }
         const KC = c.KART; next();
