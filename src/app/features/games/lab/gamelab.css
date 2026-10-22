@@ -940,3 +940,23 @@
 .glab .stk.fade{opacity:0;transition:opacity .4s}
 @keyframes g-puff{to{transform:translate(-10px,-8px);opacity:0}}
 .glab .scr.gyada .stk{width:21cqw!important;height:14.5cqw!important;padding:.8cqw!important}.glab .scr.gyada .stacks2.big .stk{width:28cqw!important;height:19cqw!important}
+/* Hawan Daushe, drawn again (Sani 2026-10-22): the emir's moods and the horse's greeting */
+.glab .dur .r-frown,.glab .dur .r-eyes-sad,.glab .dur .e-frown,.glab .dur .e-fold,.glab .dur .e-brow.cross{opacity:0;transition:opacity .3s}
+.glab .dur .r-smile,.glab .dur .r-eyes-happy,.glab .dur .e-smile,.glab .dur .e-rest,.glab .dur .e-brow.calm{transition:opacity .3s}
+.glab .emirw.cross .e-smile,.glab .emirw.cross .e-rest,.glab .emirw.cross .e-brow.calm{opacity:0}.glab .emirw.cross .e-frown,.glab .emirw.cross .e-fold,.glab .emirw.cross .e-brow.cross{opacity:1}
+.glab .dur .e-head{transform-box:fill-box;transform-origin:50% 90%;transition:transform .5s}
+.glab .emirw.cross .e-head{transform:rotate(-12deg) translateX(-3px)}.glab .emirw.cross .e-pupils{transform:translateX(-3px)}
+.glab .emirw.pleased .e-head{animation:g-enod .5s ease-in-out 2}@keyframes g-enod{50%{transform:rotate(4deg) translateY(2px)}}
+.glab .rw.sad .r-smile,.glab .rw.sad .r-eyes-happy{opacity:0}.glab .rw.sad .r-frown,.glab .rw.sad .r-eyes-sad{opacity:1}
+.glab .dur .hhead{transform-box:view-box;transform-origin:186px 112px;transition:transform .5s}.glab .rw.sad .hhead{transform:rotate(16deg)}
+.glab .dur .hrs{transform-box:view-box;transform-origin:96px 214px;transition:transform .5s}
+.glab .rw.zormo .hrs{animation:g-zormo .65s ease-in-out 2}@keyframes g-zormo{50%{transform:rotate(-15deg)}}
+.glab .rw.kneel .hrs{transform:rotate(7deg)}
+.glab .dur .fleg{transform-box:fill-box;transform-origin:50% 0;transition:transform .5s}.glab .rw.kneel .fleg{transform:scaleY(.62) skewX(18deg)}
+.glab .dur .rider2{transform-box:view-box;transform-origin:138px 100px;transition:transform .5s}.glab .rw.kneel .rider2{transform:rotate(6deg)}
+.glab .dur .sword{transform-box:view-box;transform-origin:132px 44px}.glab .rw.kneel .sword{animation:g-salute2 .5s ease-in-out 3 alternate}@keyframes g-salute2{to{transform:rotate(18deg)}}
+.glab .rw.turn svg{transform:scaleX(-1)}
+.glab .dur .plume{transform-box:fill-box;transform-origin:50% 100%;animation:g-plume 1.6s ease-in-out infinite alternate}@keyframes g-plume{to{transform:rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){.glab .rw.zormo .hrs,.glab .emirw.pleased .e-head,.glab .dur .plume,.glab .rw.kneel .sword{animation:none}}
+.glab .scr.durbar .emirw{width:25cqw;height:31cqw;right:10cqw}.glab .scr.durbar .rw{width:36cqw;height:39cqw}.glab .scr.durbar .dstage{height:42cqw;margin-top:8cqw}.glab .scr.durbar .dstage>.mic{left:auto;right:38cqw;bottom:auto;top:0}
+.glab .scr.durbar .dstage>.mic{right:auto;left:44cqw;top:0;bottom:auto}

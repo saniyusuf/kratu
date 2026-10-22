@@ -6,6 +6,7 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
+import { durbarRider, emirThrone } from './durbar';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -34,24 +35,29 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
         const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
-        const st = h('<div class="dstage"><div class="emirw">' + A.emir() + '</div><div class="rlane"></div></div>');
+        const st = h('<div class="dstage"><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run); st.appendChild(box);
         run.scr.appendChild(st); run.scr.appendChild(row);
         run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
-        const lane = st.querySelector('.rlane');
+        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw');
         function next() {
-          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + A.rider(L) + '</div>'); lane.appendChild(rw);
+          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased');
           rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); drum(false);
           later(run, 1300, () => { rw.classList.remove('gallop'); row.children[i].classList.add('now');
             speakRound(run, box, L, LET.map((x) => x), () => {
-              run.good(rw); say(K.L[L], run); rw.classList.add('salute'); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
-              later(run, 900, () => { rw.classList.add('gallop', 'go'); beat(run, 4); });
-              later(run, 2300, step);
+              // right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22)
+              run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
+              rw.classList.add('zormo'); beat(run, 4);
+              later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); });
+              later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); });
+              later(run, 4300, step);
             }, () => {
+              // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
               missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss'); say(K.L[L], run);
-              later(run, 700, () => rw.classList.add('gallop', 'back')); later(run, 2000, step);
+              emir.classList.add('cross'); rw.classList.add('sad');
+              later(run, 1600, () => rw.classList.add('turn', 'gallop', 'back')); later(run, 3200, step);
             }, 3);
           });
         }
