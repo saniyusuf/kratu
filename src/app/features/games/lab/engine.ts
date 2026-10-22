@@ -139,7 +139,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     if (live) live.stop();
     var g = GAMES[gid], run = new Run(); live = run;
     run.scr.className = 'scr p ' + g.cls;
-    var PAINT = { 'j-haruffa-say': 'nightvillage', 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
+    var PAINT = { 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
     var scene = KART.scene[g.scene || PAINT[gid]] || '';
     if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + KART.scene.underriver + KART.underwater + '</div>';
     bg.innerHTML = scene; run.scr.innerHTML = '<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
@@ -185,32 +185,6 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 
   /* ---------- the games ---------- */
   var GAMES = {
-    'j-haruffa-say': { title: 'Fitilun gari', cls: 'night', instr: ['Danna Laila, ka faɗi harafin da ke kan fitilar da ke haskakawa.', 'Danna Laila, ki faɗi harafin da ke kan fitilar da ke haskakawa.'], ask: ['Ka iya faɗin haruffan Turanci ɗaya-ɗaya?', 'Kin iya faɗin haruffan Turanci ɗaya-ɗaya?'],
-      placeNo: 'Haruffa would start at A, with the lessons.',
-      place: function (r) { return r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Said every letter on the street.'; },
-      play: function (run, done) {
-        /* in a lesson: the letters learned so far, in alphabetical order or mixed up, in streets of up to eight lanterns */
-        var L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(['K', 'M', 'S', 'T', 'E', 'R', 'B', 'P']), i = 0, missed = [], base = 0, N = L8.length;
-        var street = h('<div class="street2"></div>');
-        function newStreet() { base = i; var part = L8.slice(i, i + 8); street.innerHTML = part.map(function (L) { return '<span class="lan2">' + KART.lantern(L) + '</span>'; }).join(''); street.classList.remove('slidein'); void street.offsetWidth; street.classList.add('slidein'); }
-        newStreet();
-        var box = micBox(run);
-        run.scr.appendChild(street); run.scr.appendChild(box); run.clock(Math.max(120, 20 + N * 8), function () { done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }); });
-        run.remind = function () { say(line(gid, 'how'), run); };
-        function round() {
-          if (i - base >= 8) newStreet();
-          var lan = street.children[i - base]; lan.classList.add('glow'); box.cue();
-          box.listen(function () { return { target: L8[i], until: L8[i], maxWrong: 3 }; }, function (r) {
-            if (r.value === null && !r.wrong) { box.cue(); return; }                  // nothing heard: press again
-            box.busy = true;
-            if (r.value === L8[i]) { run.good(lan); lan.classList.remove('glow'); lan.classList.add('lit'); say(K.L[L8[i]], run); }
-            else { run.bad(lan); missed.push(L8[i]); lan.classList.remove('glow'); lan.classList.add('out'); }
-            i++; if (i >= N) run.later(900, function () { done({ right: run.right, finished: true, missed: missed }); }); else run.later(i - base >= 8 ? 1200 : 800, round);
-          }, function () { return L8[i]; });
-        }
-        round();
-      } },
-
     'j-abubuwa': { title: 'Kamun kifi', cls: 'pondbg', instr: ['Ka kama kifin da ke ɗauke da abin da na faɗa.', 'Ki kama kifin da ke ɗauke da abin da na faɗa.'], ask: ['Ka san sunayen abubuwa da Turanci?', 'Kin san sunayen abubuwa da Turanci?'],
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 && !r.misses ? 'Knew every word: those sets would be skipped.' : 'Knew ' + r.right + ' of 6: the sets with misses would be taught.'; },
@@ -462,8 +436,6 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 /** The games, for the list in the settings. The balloons are the app's own screen. */
 export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = [
   { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons · the whole A–Z', section: 'Haruffa' },
-  { id: 'j-haruffa-say', name: 'Fitilun gari · a jere', en: 'Lanterns, A–L in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKL', order: 'in' } },
-  { id: 'j-haruffa-say', name: 'Fitilun gari · a gauraye', en: 'Lanterns, A–T mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRST', order: 'mixed' } },
   { id: 'j-durbar', name: 'Hawan Daushe · a jere', en: 'Durbar, A–P in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOP', order: 'in' } },
   { id: 'j-durbar', name: 'Hawan Daushe · a gauraye', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX', order: 'mixed' } },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },

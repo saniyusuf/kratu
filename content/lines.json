@@ -4534,7 +4534,7 @@
   },
   "en": "Can you say the English letters one by one?",
   "screens": [
-   "Wasanni · Fitilun gari"
+   "Wasanni · Hawan Daushe"
   ],
   "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
   "status": "live",
@@ -4542,27 +4542,6 @@
   "recorded": {
    "m": "26b0e857a4",
    "f": "ea490c452e"
-  }
- },
- {
-  "key": "s_g_lanterns_how",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka danna Laila, ka faɗi harafin da ke kan fitilar da ke haskakawa.",
-   "f": "Ki danna Laila, ki faɗi harafin da ke kan fitilar da ke haskakawa."
-  },
-  "en": "Tap Laila and say the letter on the glowing lantern.",
-  "screens": [
-   "Wasanni · Fitilun gari"
-  ],
-  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
-  "status": "live",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "ca46cd25af",
-   "f": "9591bbade9"
   }
  },
  {

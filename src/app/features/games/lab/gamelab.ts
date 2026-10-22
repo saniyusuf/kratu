@@ -24,7 +24,6 @@ const NUMBER: Record<number, string> = { 1: 'One', 2: 'Two', 3: 'Three', 4: 'Fou
   200: 'Two hundred', 300: 'Three hundred', 400: 'Four hundred', 500: 'Five hundred', 600: 'Six hundred', 700: 'Seven hundred', 800: 'Eight hundred', 900: 'Nine hundred', 1000: 'One thousand' };
 /** Every game's two lines: the question first (Na sani / Ban sani ba), then how to play. Keys written out, so the content lint sees them. */
 const LINES: Record<string, { ask: string; how: string }> = {
-  'j-haruffa-say': { ask: 's_g_lanterns_ask', how: 's_g_lanterns_how' },
   'j-abubuwa': { ask: 's_g_fish_ask', how: 's_g_fish_how' },
   'j-magana': { ask: 's_g_drum_ask', how: 's_g_drum_how' },
   'j-nemo': { ask: 's_g_market_ask', how: 's_g_market_how' },

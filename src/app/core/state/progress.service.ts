@@ -54,7 +54,7 @@ export class ProgressService {
   has(lesson: LessonId, unit: string): boolean { return (this.read()[lesson] || []).includes(unit); }
   /**
    * Knowing a letter and saying it are different (Sani 2026-10-21). The balloons prove a child can find the letters in
-   * order with a finger; the lanterns that follow prove they can say them. Only a letter group whose every letter was
+   * order with a finger; the Durbar that follows proves they can say them. Only a letter group whose every letter was
    * said is finished, and only the whole alphabet said finishes Haruffa — then no letter lesson or letter game again.
    * Returns true when Haruffa is done.
    */

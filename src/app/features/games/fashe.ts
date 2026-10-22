@@ -441,11 +441,11 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.router.navigate([this.outOfTime ? '/haruffa/koyo' : '/home']);
   }
   /**
-   * Finding a letter is not saying it (Sani 2026-10-21): the letters the balloons proved go to the lanterns, mixed
+   * Finding a letter is not saying it (Sani 2026-10-21): the letters the balloons proved go to the Durbar, mixed
    * up, and only the ones said aloud are marked learned. What was not said is taught in its group.
    */
   private toSaying(n: number): void {
-    this.router.navigate(['/wasanni', 'j-haruffa-say'], { queryParams: { letters: ALL.slice(0, n).join(''), order: 'mixed', prove: '1' } });
+    this.router.navigate(['/wasanni', 'j-durbar'], { queryParams: { letters: ALL.slice(0, n).join(''), order: 'mixed', prove: '1' } });
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
   private async sayMaybe(k: string): Promise<void> {

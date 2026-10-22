@@ -29,8 +29,8 @@ const shuffle = <T,>(a: T[]) => { a = a.slice(); for (let i = a.length - 1; i > 
  * Screens 6–9 · Koyo, the learning path. Four letters at a time: Laila shows them, teaches each (the child says it back),
  * recalls them in order, then scattered; a small check at 8 and 16 letters; two finals for A–Z. Missed letters get help after three tries.
  */
-/** The in-between games, by letters learned: lanterns then the Durbar, in order then mixed up (Sani 2026-10-17). */
-const BETWEEN: Record<number, { id: string; order: 'in' | 'mixed' }> = { 12: { id: 'j-haruffa-say', order: 'in' }, 16: { id: 'j-durbar', order: 'in' }, 20: { id: 'j-haruffa-say', order: 'mixed' }, 24: { id: 'j-durbar', order: 'mixed' } };
+/** The in-between game, by letters learned: the Durbar, in order then mixed up (Sani 2026-10-17; the lanterns retired 22 Oct — they checked the same thing). */
+const BETWEEN: Record<number, { id: string; order: 'in' | 'mixed' }> = { 12: { id: 'j-durbar', order: 'in' }, 20: { id: 'j-durbar', order: 'mixed' } };
 
 @Component({
   selector: 'app-haruffa-learn',
@@ -199,10 +199,9 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     await this.play(this.bus.gk('s_l_recall')); this.unfill(group); await this.recall(rest);
     await this.play('app_scatter_intro'); this.unfill(group); await this.recall(shuffle(rest), true);
     const learned = Math.min(26, (gi + 1) * 4); this.hideLetter(); await this.play(this.bus.gk('app_stage_done')); this.progress.mark('haruffa', 'g' + gi);
-    if (learned === 8) await this.checkpoint(learned);
-    // from twelve letters on, the in-between games take the place of the spoken checks: the lanterns and the Durbar,
-    // first in alphabetical order, then mixed up, each with only the letters learned so far. The balloons wait for the
-    // whole alphabet (Sani 2026-10-17).
+    if (learned === 8 || learned === 16 || learned === 24) await this.checkpoint(learned);
+    // at twelve letters the Durbar in order, at twenty the Durbar mixed up, each with only the letters learned so far;
+    // the spoken checks stay at 8, 16 and 24. The balloons wait for the whole alphabet (Sani 2026-10-17, 22 Oct).
     const game = BETWEEN[learned];
     if (game && !this.stopped) {
       await this.play(this.bus.gk('s_l_game')); if (this.stopped) return;
