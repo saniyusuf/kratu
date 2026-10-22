@@ -12,6 +12,7 @@
 import { bootArt } from './art';
 import { bootArt4 } from './art4';
 import { moreGames } from './games2';
+import { kakakiPlayer, kalanguDrummer, dancer, pickRhythm, playRhythm, playSigh } from './band';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -230,39 +231,46 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     'j-magana': { title: 'Kalangu', cls: 'drum', instr: ['Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!', 'Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!'], ask: ['Ka iya faɗin sunayen abubuwa da Turanci?', 'Kin iya faɗin sunayen abubuwa da Turanci?'],
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 ? 'Said every word: those sets would be skipped.' : 'Said ' + r.right + ' of 6: the sets they could not say would be taught.'; },
+      /* Kalangu (Sani 2026-10-22): one picture, one answer, no hints. Right: the band plays one of fifteen rhythms
+         (at least three seconds) and the dancers come out; the word shows on the plate. Wrong: the plate shows a red
+         cross, the band sighs on the kakaki and the drummers shake their heads; the word is never shown or said. */
       play: function (run, done) {
-        var words = shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), r = 0, said = 0, tries = 0;
+        var words = shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), r = 0, said = 0;
         var stage = h('<div class="kstage">' +
           '<div class="easel"><div class="kcard"><img alt=""></div><div class="plate"><span class="pf">?</span><span class="pb"></span></div><span class="legs"></span></div>' +
-          '<div class="kplayer"><span class="notes"><i>♪</i><i>♫</i><i>♪</i></span>' + KART.talkdrum() + '</div>' +
+          '<div class="kband"><span class="bm k1">' + kakakiPlayer() + '</span><span class="bm d1">' + kalanguDrummer(0) + '</span><span class="bm d2">' + kalanguDrummer(1) + '</span><span class="notes"><i>♪</i><i>♫</i><i>♪</i></span></div>' +
+          '<div class="dancers"><span class="dn">' + dancer(0) + '</span><span class="dn">' + dancer(1) + '</span><span class="dn">' + dancer(2) + '</span></div>' +
           '</div>');
         var row = h('<div class="krow">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
-        var box = micBox(run);
-        stage.querySelector('.kplayer').appendChild(box);
-        run.scr.appendChild(stage); run.scr.appendChild(row); run.noBump = false;
+        var box = micBox(run); stage.appendChild(box);
+        run.scr.appendChild(stage); run.scr.appendChild(row);
         run.clock(150, function () { done({ right: said, part: said / 6 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
-        var card = stage.querySelector('.easel'), plate = stage.querySelector('.plate'), player = stage.querySelector('.kplayer');
-        function beat(n) { for (var k = 0; k < n; k++) (function (k) { run.later(k * 220, function () { drum(k % 2 === 0); player.classList.remove('hit'); void player.offsetWidth; player.classList.add('hit'); }); })(k); }
+        var card = stage.querySelector('.easel'), plate = stage.querySelector('.plate'), band = stage.querySelector('.kband'), dancers = stage.querySelector('.dancers');
+        function audio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } }
         function round() {
-          var w = words[r]; tries = 0;
+          var w = words[r];
           card.classList.remove('in', 'out'); plate.classList.remove('flip', 'miss'); void card.offsetWidth;
           card.querySelector('img').src = K.pic[w]; plate.querySelector('.pb').textContent = w; card.classList.add('in'); row.children[r].classList.add('now');
           box.cue();
           box.listen(function () { return { target: w, among: words, match: function (raw) { return io.match(raw, w, words); } }; }, function (res) {
             if (res.value === null && !res.raw) { box.cue(); return; }                  // nothing heard: press again
+            box.busy = true; row.children[r].classList.remove('now');
             if (res.value === w) {
-              box.busy = true; run.good(card); said++; plate.classList.add('flip'); row.children[r].classList.remove('now'); row.children[r].classList.add('on');
-              player.classList.add('play'); beat(4); say(K.en[w], run); next(1800);
+              box.yay(); run.good(card); said++; plate.classList.add('flip'); row.children[r].classList.add('on');
+              var a = audio(), ms = a ? playRhythm(a, pickRhythm()) : 3500;
+              band.classList.add('play'); dancers.classList.add('on');
+              run.later(ms, function () { band.classList.remove('play'); dancers.classList.remove('on'); });
+              next(ms + 500);
             } else {
-              tries++; run.bad(card);
-              if (tries >= 2) { box.busy = true; plate.classList.add('flip', 'miss'); row.children[r].classList.remove('now'); row.children[r].classList.add('miss'); say(K.en[w], run); next(1800); }
-              else box.cue();
+              box.nope(); run.bad(card); plate.classList.add('miss'); row.children[r].classList.add('miss');
+              var b = audio(); if (b) playSigh(b); band.classList.add('cross'); run.later(1500, function () { band.classList.remove('cross'); });
+              next(1900);
             }
           }, function () { return w; });
         }
         function next(ms) {
-          run.later(ms, function () { player.classList.remove('play'); card.classList.add('out'); r++;
+          run.later(ms, function () { card.classList.add('out'); r++;
             if (r >= 6) run.later(500, function () { done({ right: said, finished: true, part: said / 6, misses: 6 - said }); }); else run.later(450, round); });
         }
         round();
