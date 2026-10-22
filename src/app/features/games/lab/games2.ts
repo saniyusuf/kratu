@@ -6,7 +6,7 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
-import { durbarRider, emirThrone } from './durbar';
+import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -37,21 +37,22 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
         const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
-        const st = h('<div class="dstage"><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
+        const st = h('<div class="dstage"><div class="sallahw">' + sallahBand() + '</div><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
+        const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run); st.appendChild(box);
         run.scr.appendChild(st); run.scr.appendChild(row);
         run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
-        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw');
+        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), bandEl = st.querySelector('.sallahw');
         function next() {
-          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased');
+          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, looks[i % looks.length]) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased');
           rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); drum(false);
           later(run, 1300, () => { rw.classList.remove('gallop'); row.children[i].classList.add('now');
             speakRound(run, box, L, LET.map((x) => x), () => {
               // right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22)
               run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
-              rw.classList.add('zormo'); beat(run, 4);
+              rw.classList.add('zormo'); beat(run, 4); bandEl.classList.add('play'); later(run, 3000, () => bandEl.classList.remove('play'));
               later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); });
               later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); });
               later(run, 4300, step);
