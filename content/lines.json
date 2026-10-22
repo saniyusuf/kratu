@@ -5077,5 +5077,26 @@
    "m": "24b5c86b92",
    "f": "8db4d628cd"
   }
+ },
+ {
+  "key": "s_pop_again",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka kusa! Mu sake gwadawa sau ɗaya.",
+   "f": "Kin kusa! Mu sake gwadawa sau ɗaya."
+  },
+  "en": "You were close! Let's try once more.",
+  "screens": [
+   "Fashe haruffa"
+  ],
+  "said_when": "After a first try at the balloons that did not reach Z; the second try starts straight away (Sani 22 Oct). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, 22 Oct",
+  "recorded": {
+   "m": "eaba33183d",
+   "f": "641bd45737"
+  }
  }
 ]

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, computed, inject, signal, viewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { PlanService } from '../../core/state/plan.service';
@@ -75,6 +75,7 @@ export class FasheScreen implements OnInit, OnDestroy {
   private readonly progress = inject(ProgressService);
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly lb = viewChild.required<LailaButton>('lb');
   private readonly skyRef = viewChild.required<ElementRef<HTMLElement>>('sky');
@@ -412,11 +413,14 @@ export class FasheScreen implements OnInit, OnDestroy {
    */
   private async finish(stopped: boolean): Promise<void> {
     this.target.set(''); this.answer = null; this.stopClock();
-    const start = PlanService.decide(this.reached, this.wrong);
-    this.plan.save({ hits: this.reached, wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now() });
-    const won = !stopped && this.reached >= ALL.length - 1;
-    // a child who has already said the whole alphabet in the lessons is finished with letters whatever the balloons
-    // show: they are never sent back to A or through the speaking check again
+    // Two tries in a row (Sani 2026-10-22). The better of the two decides: all of A–Z goes straight to Abubuwa;
+    // anything less goes to Haruffa, starting at the very letter where they stopped.
+    const q = this.route.snapshot.queryParamMap, first = +(q.get('best') || -1), second = q.get('try') === '2';
+    const at = Math.max(this.at, first), won = !stopped && this.at >= ALL.length;
+    const startL = won ? '' : ALL[Math.min(at, ALL.length - 1)];
+    const start = won ? 'dabbobi' : PlanService.decide(Math.max(0, at - 1), this.wrong);
+    this.plan.save({ hits: Math.max(0, at - 1), wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now(), startL });
+    // a child who has already finished Haruffa in the lessons is never sent back to A, whatever the balloons show
     const learned = this.progress.has('haruffa', 'final');
     if (won) {
       this.eye.set('Mu gani · A → Z');
@@ -425,27 +429,28 @@ export class FasheScreen implements OnInit, OnDestroy {
       await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
       this.session.owedGame.set(false);
-      if (!this.stopped) { if (learned) this.router.navigate(['/home']); else this.toSaying(26); }   // found them all: now say them all
+      if (this.stopped) return;
+      this.progress.passLetters(ALL.length);                // the whole alphabet: Haruffa is done
+      this.session.category.set('animals'); this.router.navigate(['/abubuwa/koyo']);   // straight on to Abubuwa
       return;
     }
     this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
+    if (!second && !learned) {
+      // the first try missed: one more go, straight away, keeping how far they got
+      await this.sayMaybe('s_pop_again');                   // "Ka kusa! Mu sake gwadawa sau ɗaya."
+      await wait(300);
+      if (this.stopped) return;
+      await this.router.navigateByUrl('/blank', { skipLocationChange: true });
+      this.router.navigate(['/fashe'], { queryParams: { try: '2', best: at } });
+      return;
+    }
     if (this.outOfTime) await this.sayMaybe('s_pop_timeup');   // "Lokaci ya ƙare. Mu koyi haruffa tukuna."
     await wait(400);
     if (this.stopped) return;
     if (learned) { this.router.navigate(['/home']); return; }
-    // whatever they reached is kept; the lesson is where they go, not back to a grid to choose again
-    this.session.owedGame.set(this.outOfTime);
-    // the clean stretch they found (A–H, A–P) is checked by voice before any of it is skipped
-    const proved = start === 'haruffa_qz' ? 16 : start === 'haruffa_ip' ? 8 : 0;
-    if (proved) { this.toSaying(proved); return; }
-    this.router.navigate([this.outOfTime ? '/haruffa/koyo' : '/home']);
-  }
-  /**
-   * Finding a letter is not saying it (Sani 2026-10-21): the letters the balloons proved go to the Durbar, mixed
-   * up, and only the ones said aloud are marked learned. What was not said is taught in its group.
-   */
-  private toSaying(n: number): void {
-    this.router.navigate(['/wasanni', 'j-durbar'], { queryParams: { letters: ALL.slice(0, n).join(''), order: 'mixed', prove: '1' } });
+    this.session.owedGame.set(true);
+    this.progress.passLetters(ALL.indexOf(startL));         // the letters before it are known: never taught again
+    this.router.navigate(['/haruffa/koyo'], { queryParams: { fromL: startL } });
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
   private async sayMaybe(k: string): Promise<void> {

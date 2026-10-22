@@ -65,8 +65,10 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
 
   /** Opened without a starting point (the tile): the first letter group not yet finished, so a child never relearns
    *  what the balloons or the lessons have already proved. All of it finished: from A again, as a review. */
+  /** The letter to start at, from the balloons: earlier letters of its group are already known (Sani 2026-10-22). */
+  private startAt = 0;
   private resumeAt(): number { for (let g = 0; g < GROUPS.length; g++) if (!this.progress.has('haruffa', 'g' + g)) return g; return 0; }
-  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const from = q.get('from') !== null ? +(q.get('from') || 0) : this.resumeAt(); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
+  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const fromL = (q.get('fromL') || '').toUpperCase(); this.startAt = Math.max(0, ALL.indexOf(fromL)); const from = fromL ? Math.floor(this.startAt / 4) : q.get('from') !== null ? +(q.get('from') || 0) : this.resumeAt(); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
   ngOnDestroy(): void { this.stopped = true; this.stopAuto(); this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
 
   private idx(L: string): number { return ALL.indexOf(L); }
@@ -190,7 +192,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   }
   private async recall(list: string[], lastNoKudos = false): Promise<void> { for (let i = 0; i < list.length; i++) { if (this.stopped) return; await this.askSay(list[i], [this.bus.gk('s_abc_say')], lastNoKudos && i === list.length - 1); await wait(400); } }
   private async runGroup(gi: number): Promise<void> {
-    const group = GROUPS[gi]; this.markActive(group); this.unfill(group); this.eye.set('Haruffa · koyo · rukuni ' + (gi + 1));
+    const group = GROUPS[gi].filter((L) => ALL.indexOf(L) >= this.startAt); this.markActive(group); this.unfill(group); this.eye.set('Haruffa · koyo · rukuni ' + (gi + 1));
     await this.playIntro(gi === 0 ? this.bus.gk('s_l_look') : this.bus.gk(group.length < 4 ? 's_l_new2' : 's_l_new4'));
     await this.present(group); await this.teach(group);
     // whatever the example already got right is done: this group neither teaches nor recalls it again. The checkpoints
@@ -215,7 +217,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     this.eye.set('Jarrabawa ta ƙarshe · a gauraye'); await this.play(this.bus.gk('s_l_final2')); await this.recall(shuffle(ALL), true); this.hideLetter(); this.fb('good', '✓ A – Z'); await this.play(this.bus.gk('s_all_done')); this.progress.mark('haruffa', 'final');
   }
   private async start(fromGroup: number, intro = false): Promise<void> {
-    this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(fromGroup * 4);
+    this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(Math.max(fromGroup * 4, this.startAt));
     if (intro) { await this.play('app_board_intro'); if (this.stopped) return; }   // said here, not on the screen that sent them (Sani 2026-09-21)
     // letters the in-between game showed they could not say are taught again before the next group (Sani 2026-10-21)
     const again = (this.route.snapshot.queryParamMap.get('again') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);

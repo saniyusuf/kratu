@@ -7,7 +7,7 @@ export interface PlanCard {
   route: string; category?: string; query?: Record<string, string>;
 }
 /** The placement game's verdict: what it saw, and where it decided the child begins. */
-export interface Placement { hits: number; wrong: number; asked: number; start: string; at: number; }
+export interface Placement { hits: number; wrong: number; asked: number; start: string; at: number; startL?: string; }
 
 const CARDS: Record<string, PlanCard> = {
   // The first step is the question, not the game: the gate asks whether they know the letters and sends
@@ -61,5 +61,9 @@ export class PlanService {
   clear(): void { try { localStorage.removeItem(this.key()); } catch { /* ignore */ } this.rev.update((n) => n + 1); }
 
   /** What the chooser shows, and what Laila opens when nothing else is picked. */
-  next(): PlanCard { const p = this.placement(); return CARDS[p?.start || ''] || CARDS[p ? 'haruffa_ah' : 'mugani']; }
+  next(): PlanCard {
+    const p = this.placement(), c = CARDS[p?.start || ''] || CARDS[p ? 'haruffa_ah' : 'mugani'];
+    // the balloons found where this child stopped: Haruffa opens at that very letter (Sani 2026-10-22)
+    return p?.startL && c.route === 'haruffa/koyo' ? { ...c, query: { fromL: p.startL } } : c;
+  }
 }

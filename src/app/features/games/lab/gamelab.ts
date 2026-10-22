@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AudioBus } from '../../../core/audio/audio-bus.service';
 import { SessionService } from '../../../core/state/session.service';
 import { SpeechService } from '../../../core/speech/speech.service';
-import { ProgressService } from '../../../core/state/progress.service';
 import { ZoomService } from '../../../core/zoom/zoom.service';
 import { Door, Ear } from '../../../shared/chrome/chrome';
 import { matchWord } from '../../../shared/lesson/helpers';
@@ -61,7 +60,6 @@ export class GameLabScreen implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly speech = inject(SpeechService);
   private readonly zoom = inject(ZoomService);
-  private readonly progress = inject(ProgressService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly frame = viewChild.required<ElementRef<HTMLElement>>('frame');
@@ -98,8 +96,6 @@ export class GameLabScreen implements OnInit, OnDestroy {
       leave: () => this.leave(),
       next: (r) => {
         const q = this.route.snapshot.queryParamMap;
-        // the speaking check after the balloons: only letters said aloud count as known (Sani 2026-10-21)
-        if (q.get('prove')) { this.router.navigateByUrl(this.progress.proveSaid(this.opts().letters || [], (r && r.missed) || []) ? '/home' : '/haruffa/koyo'); return; }
         const n = q.get('next'), missed = ((r && r.missed) || []).join('');
         if (n && n.startsWith('/')) this.router.navigateByUrl(missed ? n + (n.includes('?') ? '&' : '?') + 'again=' + missed : n); else this.leave();
       },
@@ -108,7 +104,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
   /** ?letters=ABCD&order=in|mixed: only those letters; ?next=/…: played inside a lesson, which it hands back to. */
   private opts(): GameOpts {
     const q = this.route.snapshot.queryParamMap, letters = (q.get('letters') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);
-    return { letters: letters.length ? letters : undefined, order: q.get('order') === 'mixed' ? 'mixed' : 'in', lesson: !!(q.get('next') || q.get('prove')) };
+    return { letters: letters.length ? letters : undefined, order: q.get('order') === 'mixed' ? 'mixed' : 'in', lesson: !!q.get('next') };
   }
   again(): void { this.game?.again(); }
   leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigate(['/home']); }

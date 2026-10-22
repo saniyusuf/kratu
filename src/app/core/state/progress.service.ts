@@ -52,17 +52,10 @@ export class ProgressService {
   }
   /** Has this unit been finished? */
   has(lesson: LessonId, unit: string): boolean { return (this.read()[lesson] || []).includes(unit); }
-  /**
-   * Knowing a letter and saying it are different (Sani 2026-10-21). The balloons prove a child can find the letters in
-   * order with a finger; the Durbar that follows proves they can say them. Only a letter group whose every letter was
-   * said is finished, and only the whole alphabet said finishes Haruffa — then no letter lesson or letter game again.
-   * Returns true when Haruffa is done.
-   */
-  proveSaid(letters: string[], missed: string[]): boolean {
-    const said = new Set(letters.filter((L) => !missed.includes(L))), ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for (let g = 0; g < 7; g++) { const grp = ABC.slice(g * 4, g * 4 + 4).split(''); if (grp.every((L) => said.has(L))) this.mark('haruffa', 'g' + g); }
-    if (said.size >= 26) this.mark('haruffa', 'final');
-    return this.has('haruffa', 'final');
+  /** The balloons (Sani 2026-10-22): every letter group wholly before `n` letters is known; all 26 finishes Haruffa. */
+  passLetters(n: number): void {
+    for (let g = 0; g < 7; g++) if ((g + 1) * 4 <= n || (g === 6 && n >= 26)) this.mark('haruffa', 'g' + g);
+    if (n >= 26) this.mark('haruffa', 'final');
   }
   /** Share done, 0 to 1. */
   share(lesson: LessonId): number {
