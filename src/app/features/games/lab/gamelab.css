@@ -1141,3 +1141,6 @@
 .glab .herd .pc{width:8cqw!important;height:5.4cqw!important;margin:-1.2cqw -.6cqw}
 .glab .herd .pc .zl{animation:none}
 @media (prefers-reduced-motion:reduce){.glab .herd *{animation-duration:.01s!important;animation-iteration-count:1!important}}
+/* the game host now carries the lessons' classes (s lesson) for Laila's markup, so design.css's `.s.lesson .q` (a lesson's
+   dashed question tile, 78×88) also matched the opening screen `.scr.q` and squeezed it into the corner. Undo it here. */
+.glab .scr.q{width:auto;height:auto;border:0;border-radius:0;color:inherit;font:inherit;animation:none}
