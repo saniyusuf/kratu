@@ -12,8 +12,9 @@ function defs(): void {
   document.body.insertAdjacentHTML('afterbegin', '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
     '<linearGradient id="k4-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C6A3C"/><stop offset="1" stop-color="#5E3A1C"/></linearGradient>' +
     '<linearGradient id="k4-allo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B4422"/><stop offset=".5" stop-color="#4A2E14"/><stop offset="1" stop-color="#3A220E"/></linearGradient>' +
-    '<linearGradient id="k4-sackg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C58C"/><stop offset=".6" stop-color="#C9A262"/><stop offset="1" stop-color="#9C7638"/></linearGradient>' +
-    '<pattern id="k4-jute" width="2.4" height="2.4" patternUnits="userSpaceOnUse"><path d="M0 1.2 H2.4 M1.2 0 V2.4" stroke="#6B4E22" stroke-width=".45"/></pattern>' +
+    '<linearGradient id="k4-sackhi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3E2A10" stop-opacity=".28"/></linearGradient>' +
+    '<linearGradient id="k4-sackg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6CB95"/><stop offset=".55" stop-color="#C79E5E"/><stop offset="1" stop-color="#94703A"/></linearGradient>' +
+    '<pattern id="k4-jute" width="1.8" height="1.8" patternUnits="userSpaceOnUse"><path d="M0 .45 H1.8 M0 1.35 H1.8" stroke="#6B4E22" stroke-width=".35" opacity=".8"/><path d="M.45 0 V1.8 M1.35 0 V1.8" stroke="#F0DCAE" stroke-width=".3" opacity=".6"/></pattern>' +
     '<linearGradient id="k4-sack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D3A0"/><stop offset="1" stop-color="#B8925A"/></linearGradient>' +
     '<linearGradient id="k4-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FAE5A"/><stop offset="1" stop-color="#1F7A3A"/></linearGradient>' +
     '<linearGradient id="k4-horse" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8B5A2B"/><stop offset="1" stop-color="#4E2E14"/></linearGradient>' +
@@ -104,14 +105,20 @@ export function shayi(): string {
 }
 
 /* ---- groundnut sacks, stacked the way Kano's groundnut pyramids were, and an open lorry ---- */
-/* one jute sack lying on its side: a bulging bag, both corners tied off, a red and green trade band, stitched shut */
+/* one jute sack lying on its side, the way they are stacked: bulging in the middle, sagging at the ends, both corners
+   tied off with twine, a red and green trade band, the mouth sewn shut, a stencilled mark, coarse weave, shadow below */
 function sack(x: number, y: number): string {
-  return `<g transform="translate(${x} ${y})"><path d="M3 3 Q1 0 4 1 Q15 -1 26 1 Q29 0 27 3 Q30 9 27 15 Q29 18 26 17 Q15 19 4 17 Q1 18 3 15 Q0 9 3 3 Z" fill="url(#k4-sackg)" stroke="#7A5A2A" stroke-width=".7"/>` +
-    `<path d="M3 3 Q1 0 4 1 Q15 -1 26 1 Q29 0 27 3 Q30 9 27 15 Q29 18 26 17 Q15 19 4 17 Q1 18 3 15 Q0 9 3 3 Z" fill="url(#k4-jute)" opacity=".55"/>` +
-    `<path d="M10 1.2 Q10.5 9 10 17 M11.6 1.1 Q12.1 9 11.6 17.2" stroke="#B23A2A" stroke-width="1.1" fill="none" opacity=".85"/><path d="M13.2 1 Q13.7 9 13.2 17.3" stroke="#2E7D32" stroke-width="1.1" fill="none" opacity=".85"/>` +
-    `<path d="M5 3.2 Q15 1.8 25 3.2" stroke="#5E4220" stroke-width=".5" stroke-dasharray="1.2 1" fill="none"/>` +
-    `<path d="M3 3 l-2 -2.4 M3 15 l-2 2.4 M27 3 l2 -2.4 M27 15 l2 2.4" stroke="#7A5A2A" stroke-width="1.1" stroke-linecap="round"/>` +
-    `<ellipse cx="17" cy="12" rx="9" ry="3.5" fill="#fff" opacity=".1"/></g>`;
+  const body = 'M3 3.5 Q1.5 .5 4.5 1.3 Q15 -.6 25.5 1.3 Q28.6 .5 27 3.5 Q30.4 9 27 14.6 Q28.6 17.6 25.5 16.8 Q15 18.8 4.5 16.8 Q1.5 17.6 3 14.6 Q-.4 9 3 3.5 Z';
+  return `<g transform="translate(${x} ${y})"><ellipse cx="15" cy="17.6" rx="13" ry="1.4" fill="rgba(50,30,10,.35)"/>` +
+    `<path d="${body}" fill="url(#k4-sackg)" stroke="#6E4E1E" stroke-width=".6"/>` +
+    `<path d="${body}" fill="url(#k4-jute)" opacity=".7"/>` +
+    `<path d="${body}" fill="url(#k4-sackhi)"/>` +
+    `<path d="M6 5 Q9 7 8 11 M21 4 Q24 8 22 13 M14 13.5 Q17 12 19 14.6" stroke="#8C6A34" stroke-width=".55" fill="none" opacity=".75"/>` +
+    `<path d="M9.6 1.2 Q10.2 9 9.6 17 M11.3 1.1 Q11.9 9 11.3 17.2" stroke="#B23A2A" stroke-width="1" fill="none" opacity=".85"/><path d="M13 1 Q13.6 9 13 17.3" stroke="#2E7D32" stroke-width="1" fill="none" opacity=".85"/>` +
+    `<text x="20" y="10.4" text-anchor="middle" font-size="3.1" font-weight="800" fill="#3E2A10" opacity=".55" font-family="Baloo 2,sans-serif">GYAƊA</text>` +
+    `<path d="M4.6 3.2 Q15 1.6 25.6 3.2" stroke="#4E3A18" stroke-width=".55" stroke-dasharray="1.1 .9" fill="none"/>` +
+    `<path d="M3 3.5 q-1.6 -1.6 -2.4 -3 M3 14.6 q-1.6 1.6 -2.4 3 M27 3.5 q1.6 -1.6 2.4 -3 M27 14.6 q1.6 1.6 2.4 3" stroke="#6E4E1E" stroke-width="1.2" stroke-linecap="round" fill="none"/>` +
+    `<circle cx="1.7" cy="1.6" r=".9" fill="#C9A262"/><circle cx="28.3" cy="1.6" r=".9" fill="#C9A262"/><circle cx="1.7" cy="16.6" r=".9" fill="#C9A262"/><circle cx="28.3" cy="16.6" r=".9" fill="#C9A262"/></g>`;
 }
 /** n sacks in a stepped pyramid; every stack on one scale for its round (cap), standing on the same floor */
 export function sacks(n: number, cap = 20): string {
@@ -123,26 +130,32 @@ export function sacks(n: number, cap = 20): string {
   return `<svg class="sacks" viewBox="${(maxw - W) / 2} ${146 - H} ${W} ${H}" preserveAspectRatio="xMidYMax meet" aria-hidden="true">` +
     `<ellipse cx="${maxw / 2}" cy="143" rx="${maxw / 2 + 4}" ry="3" fill="rgba(60,40,15,.3)"/>${out}</svg>`;
 }
-/** the sacks a lorry carries, piled on its open bed (drawn inside the lorry's own coordinates) */
+/** the sacks a lorry carries, piled high on the back the way they are in the north; each drops in, one after another */
 export function lorryLoad(n: number): string {
-  let out = ''; const per = 6, rows = Math.ceil(n / per);
-  for (let r = 0; r < rows; r++) { const k = Math.min(per, n - r * per); for (let i = 0; i < k; i++) out += `<g transform="translate(${22 + i * 24 + (r % 2) * 10} ${55 - r * 10}) scale(.85)">${sack(0, 0).replace(/^<g transform="translate\(0 0\)">/, '<g>')}</g>`; }
+  let out = '', k = 0; const per = 6;
+  for (let r = 0; k < n; r++) { const inRow = Math.min(per - (r % 2), n - k);
+    for (let i = 0; i < inRow; i++, k++) out += `<g class="ld" style="--i:${k}"><g transform="translate(${20 + i * 25 + (r % 2) * 12} ${45 - r * 11}) scale(.86)">${sack(0, 0).replace(/^<g transform="translate\(0 0\)">/, '<g>')}</g></g>`; }
   return out;
 }
+/* a northern lorry: the high cab-over front, a painted wooden body with tall slatted sides, bright trim and a slogan */
 export function lorry(): string {
-  return `<svg class="lorry" viewBox="0 0 260 150" aria-hidden="true"><ellipse cx="130" cy="142" rx="122" ry="6" fill="rgba(40,24,10,.3)"/>` +
-    `<rect x="8" y="98" width="172" height="12" rx="2" fill="#5E3A1C"/>` +
+  let slats = ''; for (let x = 12; x < 176; x += 8) slats += `<path d="M${x} 62 V100" stroke="#7A4A22" stroke-width="1.2"/>`;
+  return `<svg class="lorry" viewBox="-14 0 288 160" aria-hidden="true"><ellipse cx="132" cy="150" rx="128" ry="7" fill="rgba(40,24,10,.32)"/>` +
     `<g class="load"></g>` +
-    `<g fill="#A0682E" stroke="#6B4422" stroke-width="1"><rect x="8" y="80" width="172" height="20"/><path d="M8 86 H180 M8 93 H180" stroke-width=".8"/></g>` +
-    `<path d="M8 80 V66 M50 80 V66 M94 80 V66 M138 80 V66 M180 80 V66" stroke="#6B4422" stroke-width="3"/><path d="M6 66 H182" stroke="#8B5A2B" stroke-width="3"/>` +
-    `<text x="94" y="96" text-anchor="middle" class="kktx" style="font-size:11px">GYAƊA · KANO</text>` +
-    `<path d="M182 62 L226 62 Q244 66 248 90 L250 120 L182 120 Z" fill="#1565C0"/><path d="M190 68 L222 68 Q234 70 238 88 L190 88 Z" fill="#BDE3F2"/>` +
-    `<rect x="182" y="104" width="68" height="6" fill="#0D47A1"/><circle cx="246" cy="104" r="3" fill="#FFF59D"/>` +
-    `<rect x="4" y="110" width="250" height="10" rx="3" fill="#3A3A3A"/>` +
-    `<g class="wheel" style="transform-origin:46px 124px"><circle cx="46" cy="124" r="16" fill="#222"/><circle cx="46" cy="124" r="7" fill="#9AA3AD"/><path d="M46 110 V138 M32 124 H60" stroke="#555" stroke-width="2"/></g>` +
-    `<g class="wheel" style="transform-origin:120px 124px"><circle cx="120" cy="124" r="16" fill="#222"/><circle cx="120" cy="124" r="7" fill="#9AA3AD"/><path d="M120 110 V138 M106 124 H134" stroke="#555" stroke-width="2"/></g>` +
-    `<g class="wheel" style="transform-origin:214px 124px"><circle cx="214" cy="124" r="16" fill="#222"/><circle cx="214" cy="124" r="7" fill="#9AA3AD"/><path d="M214 110 V138 M200 124 H228" stroke="#555" stroke-width="2"/></g>` +
-    `<g class="puff"><circle cx="0" cy="114" r="5" fill="#BDBDBD" opacity=".6"/><circle cx="-8" cy="108" r="4" fill="#BDBDBD" opacity=".4"/></g></svg>`;
+    `<rect x="8" y="60" width="172" height="44" fill="#C98E52"/>${slats}` +
+    `<path d="M8 60 H180 M8 78 H180 M8 100 H180" stroke="#5E3A1C" stroke-width="2.6"/>` +
+    `<rect x="8" y="80" width="172" height="10" fill="#2E7D32"/><path d="M8 80 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10 l8 -10 l8 10" stroke="#FFD54A" stroke-width="1.6" fill="none"/>` +
+    `<text x="94" y="73" text-anchor="middle" class="kktx" style="font-size:11px;fill:#5E2A08">ALLAH YA KIYAYE</text>` +
+    `<rect x="4" y="104" width="182" height="10" fill="#4A2E14"/>` +
+    `<path d="M186 40 L240 40 Q250 40 252 52 L256 112 L186 112 Z" fill="#E65100"/><path d="M186 40 L240 40 Q250 40 252 52 L253 60 L186 60 Z" fill="#FFB300"/>` +
+    `<path d="M194 48 L240 48 Q246 48 247 56 L249 76 L194 76 Z" fill="#BDE3F2"/><path d="M220 48 V76" stroke="#E65100" stroke-width="2"/>` +
+    `<rect x="230" y="84" width="24" height="16" rx="2" fill="#B0BEC5"/><path d="M232 88 h20 M232 92 h20 M232 96 h20" stroke="#78909C" stroke-width="1.2"/>` +
+    `<rect x="186" y="100" width="72" height="12" rx="2" fill="#37474F"/><circle cx="252" cy="88" r="4" fill="#FFF59D"/><circle cx="196" cy="92" r="3" fill="#FFF59D" opacity=".7"/>` +
+    `<path d="M186 84 h-6 v-24" stroke="#E65100" stroke-width="3" fill="none"/><path d="M190 30 h8 v10 h-8 Z" fill="#9E9E9E"/>` +
+    `<rect x="0" y="112" width="262" height="10" rx="3" fill="#2E2E2E"/>` +
+    [40, 110, 222].map((x) => `<g class="wheel" style="transform-origin:${x}px 130px"><circle cx="${x}" cy="130" r="18" fill="#1E1E1E"/><circle cx="${x}" cy="130" r="8" fill="#9AA3AD"/><path d="M${x} 114 V146 M${x - 16} 130 H${x + 16}" stroke="#555" stroke-width="2.2"/></g>`).join('') +
+    `<g class="dust"><circle cx="-4" cy="140" r="7" fill="#D8C08E" opacity=".7"/><circle cx="-14" cy="132" r="9" fill="#D8C08E" opacity=".5"/><circle cx="6" cy="128" r="5" fill="#D8C08E" opacity=".6"/></g>` +
+    `<g class="speed" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0"><path d="M-12 70 h-20 M-6 92 h-26 M-12 112 h-18"/></g></svg>`;
 }
 
 /* ---- animals: a red Bororo zebu with lyre horns, a white Sallah ram, a Sokoto red goat ---- */

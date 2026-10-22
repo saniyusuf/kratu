@@ -129,8 +129,9 @@ export function moreGames(c: any): Record<string, any> {
     'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'pyramids', tap: true,
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.right >= 8 ? 'Matched every number to its stack, to twenty: Lambobi would start at the tens.' : 'Matched ' + r.right + ' of 8: Lambobi would start ' + (r.reached > 10 ? 'at 11 to 20.' : 'at 1 to 10.'),
-      /* Laila says a number; the child taps the pyramid of groundnut sacks that has that many. The right stack is loaded
-         onto the open lorry, the lorry drives off, and an empty one pulls in for the next number (Sani 2026-10-22). */
+      /* Laila says a number; the child taps the pile of groundnut sacks that has that many. Right: the sacks are loaded
+         onto the back of the lorry one by one, the horn sounds and it speeds off in a cloud of dust. Wrong: the lorry
+         drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {
         const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0, busy = false;
         const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + A.lorry() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
@@ -141,28 +142,44 @@ export function moreGames(c: any): Record<string, any> {
         run.remind = sayN; top.querySelector('.hearn').onclick = sayN;
         const lw = top.querySelector('.lorryw');
         function newLorry() {   // an empty lorry pulls in from the left
-          lw.classList.remove('away'); lw.classList.add('reset'); lw.querySelector('.load').innerHTML = ''; void lw.offsetWidth;
+          lw.classList.remove('away', 'zoom', 'slow'); lw.classList.add('reset'); lw.querySelector('.load').innerHTML = ''; void lw.offsetWidth;
           lw.classList.remove('reset'); lw.classList.add('arrive'); later(run, 1300, () => lw.classList.remove('arrive'));
         }
+        function after(ms) { later(run, ms, () => { r++; if (r >= 8) { done({ right: got, finished: true, part: got / 8, reached }); return; } newLorry(); later(run, 900, next); }); }
         function next() {
           busy = false;
-          // up to ten: four stacks; the teens: three bigger stacks, so every sack stays big enough to count
+          // up to ten: four piles; the teens: three bigger piles, so every sack stays big enough to count
           const n = N[r], cap = n <= 10 ? 10 : 20, k = n <= 10 ? 3 : 2;
           const opts = shuffle([n].concat(shuffle([-3, -2, -1, 1, 2, 3].map((d) => n + d).filter((x) => x >= 1 && x <= cap)).slice(0, k)));
           row.innerHTML = ''; row.classList.toggle('big', cap === 20);
           opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + A.sacks(m, cap) + '</button>'); row.appendChild(b);
-            b.onclick = () => { if (run.dead || busy) return;
-              if (m !== n) { run.bad(b); return; }
-              busy = true; got++; reached = Math.max(reached, n); run.good(b); top.querySelector('.tally b').textContent = got;
-              // the stack flies up onto the lorry's bed
+            b.onclick = () => { if (run.dead || busy) return; busy = true;
+              if (m !== n) {
+                // wrong: the right pile glows for a moment, and the lorry leaves empty
+                run.bad(b); row.querySelectorAll('.stk').forEach((o) => { if (o.getAttribute('aria-label') === n + ' sacks') o.classList.add('hint'); });
+                sayN(); horn(false); later(run, 900, () => lw.classList.add('away', 'slow')); after(2600); return;
+              }
+              got++; reached = Math.max(reached, n); run.good(b); top.querySelector('.tally b').textContent = got;
+              // the pile empties into the back of the lorry: the sacks drop in one after another
               const br = io.rect(b), lr = io.rect(lw);
-              b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .45 - (br.top + br.height / 2)) + 'px');
+              b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .3 - (br.top + br.height / 2)) + 'px');
               b.classList.add('fly'); row.querySelectorAll('.stk').forEach((o) => { if (o !== b) o.classList.add('fade'); });
-              later(run, 850, () => { lw.querySelector('.load').innerHTML = A.lorryLoad(n); bump(lw, 'thump', 500); });
-              later(run, 1500, () => lw.classList.add('away'));                  // and off it goes
-              later(run, 3000, () => { r++; if (r >= 8) { done({ right: got, finished: true, part: got / 8, reached }); return; } newLorry(); later(run, 700, next); });
+              later(run, 500, () => { lw.querySelector('.load').innerHTML = A.lorryLoad(n); });
+              const loaded = 500 + n * 90 + 400;
+              later(run, loaded, () => { bump(lw, 'thump', 500); horn(true); });
+              later(run, loaded + 500, () => lw.classList.add('away', 'zoom'));   // off it speeds, in approval
+              after(loaded + 1700);
             }; });
           later(run, 300, sayN);
+        }
+        /* the lorry's horn: two bright toots when it is loaded, one low one when it leaves empty */
+        let hac = null;
+        function horn(happy) {
+          try { hac = hac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+          const notes = happy ? [[440, 0], [554, .18]] : [[220, 0]];
+          notes.forEach(([f, t0]) => { const t = hac.currentTime + t0, o = hac.createOscillator(), g = hac.createGain();
+            o.type = 'square'; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + (happy ? .16 : .4));
+            o.connect(g).connect(hac.destination); o.start(t); o.stop(t + .45); });
         }
         next();
       } },
