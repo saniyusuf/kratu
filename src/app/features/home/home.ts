@@ -18,6 +18,13 @@ import { ScreenTransition } from '../../core/nav/screen-transition.service';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
+/** How a met game shows on the home page's shelf. */
+const GAME_ICON: Record<string, { name: string; ico: string }> = {
+  fashe: { name: 'Fashe haruffa', ico: '🎈' }, 'j-durbar': { name: 'Hawan Daushe', ico: '🐎' }, 'j-abubuwa': { name: 'Kamun kifi', ico: '🐟' }, 'j-magana': { name: 'Kalangu', ico: '🥁' },
+  'j-dillali': { name: 'Dillalin kasuwa', ico: '🔨' }, 'j-nemo': { name: 'Hanzarin kasuwa', ico: '🧺' }, 'j-shayi': { name: 'Mai shayi', ico: '☕' }, 'j-gyada': { name: 'Dalar gyaɗa', ico: '🥜' },
+  'j-shanu': { name: 'Kasuwar shanu', ico: '🐄' }, 'j-garke': { name: 'Ƙirgen garke', ico: '🐂' }, 'j-suya': { name: 'Mai suya', ico: '🍢' }, 'j-karatu': { name: 'Kwale-kwale', ico: '🛶' },
+  'j-allo': { name: 'Allo', ico: '📜' }, 'j-jirgi': { name: 'Jirgin ruwa', ico: '⛵' }, 'j-rubutu': { name: 'Tukwane', ico: '🏺' }, 'j-rubutu-say': { name: 'Ginin bulo', ico: '🧱' }, 'j-marubuci': { name: 'Marubucin wasiƙa', ico: '✉️' },
+};
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
 
 /**
@@ -35,6 +42,15 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
 <app-course-book [hold]="true" (pressed)="book()" (settled)="respot()" />
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
 <div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" />@if (cue()) {<span class="lhand">👆🏾</span>}<span class="lhint">Fara</span></button></div>
+@if (games().length) {
+  <button class="gamesbtn" [class.fresh]="gamesFresh()" aria-label="Wasanni" (click)="openGames()"><span class="gico">🎮</span><b>Wasanni</b><small>{{ games().length }}</small></button>
+}
+@if (shelf()) {
+  <div class="gshelf" (click)="shelf.set(false)"><div class="gbox2" (click)="$event.stopPropagation()">
+    <h3>Wasanni</h3>
+    <div class="glist2">@for (g of games(); track g.id) {<button class="gcard" (click)="playGame(g.id)"><span class="gico">{{ g.ico }}</span><b>{{ g.name }}</b></button>}</div>
+  </div></div>
+}
 <app-leave />`,
 })
 export class HomeScreen implements OnInit, OnDestroy {
@@ -55,6 +71,12 @@ export class HomeScreen implements OnInit, OnDestroy {
   readonly grid = inject(DomSanitizer).bypassSecurityTrustHtml(HOMEGRID_HTML);
   private readonly gridHost = viewChild.required<ElementRef<HTMLElement>>('gridHost');
   readonly act = signal<string | null>(null);
+  /** The games this child has met: each one stays here to play any time (Sani 2026-10-22). */
+  readonly games = signal(this.progress.games().map((id) => ({ id, ...(GAME_ICON[id] || { name: id, ico: '🎮' }) })));
+  readonly gamesFresh = signal(this.progress.gamesNew());
+  readonly shelf = signal(false);
+  openGames(): void { this.bus.stopAll(); this.shelf.set(true); this.gamesFresh.set(false); this.progress.gamesSeen(); }
+  playGame(id: string): void { this.bus.stopAll(); this.shelf.set(false); this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id]); }
   readonly cue = signal(false);
 
   ngOnInit(): void { afterPaint().then(() => { this.marks(); this.arrive().finally(() => this.openBook()); }); }

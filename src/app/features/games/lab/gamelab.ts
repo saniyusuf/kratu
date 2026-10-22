@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AudioBus } from '../../../core/audio/audio-bus.service';
 import { SessionService } from '../../../core/state/session.service';
 import { SpeechService } from '../../../core/speech/speech.service';
+import { ProgressService } from '../../../core/state/progress.service';
 import { ZoomService } from '../../../core/zoom/zoom.service';
 import { Door, Ear } from '../../../shared/chrome/chrome';
 import { matchWord } from '../../../shared/lesson/helpers';
@@ -60,6 +61,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly speech = inject(SpeechService);
   private readonly zoom = inject(ZoomService);
+  private readonly progress = inject(ProgressService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly frame = viewChild.required<ElementRef<HTMLElement>>('frame');
@@ -82,7 +84,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       enText: Object.fromEntries(Object.entries(NUMBER).map(([n, t]) => ['n' + n, t])),
       L: map('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), (L) => 'assets/audio/en/app_en_' + L + '.ogg'),
       yay: 'assets/audio/sfx/yay.ogg', nope: 'assets/audio/sfx/nope.ogg',
-      lines: LINES, learn: 's_g_learn', kudos: 'app_kudos', go: 's_g_go',
+      lines: LINES, learn: 's_g_learn', kudos: 'app_kudos', go: 's_g_go', unlock: 's_game_open',
       laila: LAILA_SVG, allo: ALLO_SVG,
     };
     this.game = playGame(this.frame().nativeElement, id, {
@@ -94,6 +96,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       match: (raw, word, among) => matchWord(raw, word, among),
       rect: (el) => this.zoom.rect(el),
       leave: () => this.leave(),
+      firstTime: () => this.progress.unlockGame(id),
       next: (r) => {
         const q = this.route.snapshot.queryParamMap;
         const n = q.get('next'), missed = ((r && r.missed) || []).join('');

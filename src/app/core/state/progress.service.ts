@@ -57,6 +57,19 @@ export class ProgressService {
     for (let g = 0; g < 7; g++) if ((g + 1) * 4 <= n || (g === 6 && n >= 26)) this.mark('haruffa', 'g' + g);
     if (n >= 26) this.mark('haruffa', 'final');
   }
+  /**
+   * The games a child has met (Sani 2026-10-22): once introduced in the lessons, a game stays on the home page to play
+   * any time. unlockGame() says whether this was the first meeting, so Laila tells them only once.
+   */
+  games(): string[] { try { return JSON.parse(this.store().getItem(this.key() + '_games') || '[]'); } catch { return []; } }
+  unlockGame(id: string): boolean {
+    const g = this.games(); if (g.includes(id)) return false;
+    try { this.store().setItem(this.key() + '_games', JSON.stringify([...g, id])); this.store().setItem(this.key() + '_gamesnew', '1'); } catch { /* private mode */ }
+    return true;
+  }
+  /** A game was added since the home page last showed the shelf. */
+  gamesNew(): boolean { try { return this.store().getItem(this.key() + '_gamesnew') === '1'; } catch { return false; } }
+  gamesSeen(): void { try { this.store().removeItem(this.key() + '_gamesnew'); } catch { /* ignore */ } }
   /** Share done, 0 to 1. */
   share(lesson: LessonId): number {
     const o = this.override(); if (o) return o[ORDER.indexOf(lesson)] ?? 0;

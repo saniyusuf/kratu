@@ -591,3 +591,15 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.gate .gateabc b.lit{transform:translateY(-8px) scale(1.4);filter:drop-shadow(0 0 6px rgba(251,192,45,1)) drop-shadow(0 0 16px rgba(251,192,45,.8))}
 #app .s.gate .gateabc b{transition:opacity .22s,transform .38s cubic-bezier(.2,1.7,.4,1),filter .25s}
 @media (prefers-reduced-motion:reduce){#app .s.home .cbook.spot2,#app .s.gate .yn.spot2{animation:none}}
+
+/* Wasanni on the home page (Sani 2026-10-22): every game the child has met, to play any time */
+#app .s.home .gamesbtn{position:absolute;right:26px;bottom:22px;z-index:6;display:grid;justify-items:center;gap:0;border:0;border-radius:20px;padding:8px 14px 6px;background:#8A5FBF;color:#fff;font:800 15px var(--disp,sans-serif);cursor:pointer;box-shadow:0 4px 0 #6B45A0}
+#app .s.home .gamesbtn .gico{font-size:30px;line-height:1}#app .s.home .gamesbtn small{position:absolute;top:-8px;right:-8px;min-width:24px;height:24px;border-radius:999px;background:#FFD54A;color:#3B2E1E;font:800 13px/24px var(--disp,sans-serif);box-shadow:0 0 0 2px #fff}
+#app .s.home .gamesbtn.fresh{animation:gfresh 1.2s ease-in-out infinite}@keyframes gfresh{50%{transform:scale(1.08);box-shadow:0 4px 0 #6B45A0,0 0 0 8px rgba(255,213,74,.55)}}
+#app .s.home .gshelf{position:absolute;inset:0;z-index:20;background:rgba(40,28,14,.35);display:grid;place-items:center}
+#app .s.home .gbox2{background:#FFFDF7;border-radius:24px;padding:18px 22px 22px;max-width:86%;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#app .s.home .gbox2 h3{margin:0 0 12px;font:800 24px var(--disp,sans-serif);color:#3B2E1E;text-align:center}
+#app .s.home .glist2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#app .s.home .gcard{display:grid;justify-items:center;gap:4px;border:2px solid #E6D6AE;background:#fff;border-radius:16px;padding:12px 8px;cursor:pointer;font:800 14px var(--disp,sans-serif);color:#3B2E1E;min-width:120px}
+#app .s.home .gcard .gico{font-size:40px;line-height:1}#app .s.home .gcard:active{background:#EEE5F8;border-color:#8A5FBF}
+@media (prefers-reduced-motion:reduce){#app .s.home .gamesbtn.fresh{animation:none}}

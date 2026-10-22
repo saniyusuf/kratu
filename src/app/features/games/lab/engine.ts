@@ -25,6 +25,7 @@ export interface GameIO {
   leave(): void;
   tester?: boolean;
   next?: (r?: any) => void;
+  firstTime?: () => boolean;
 }
 export interface GameHandle { stop(): void; again(): void; }
 /** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening
@@ -180,7 +181,10 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       lailaBtn('cue', 'Danna Laila');
     res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(r); } else question(); };
     if (r.learn) say(K.learn, res);
-    else { sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { if (ok) say(K.go, res); }); }); }
+    else {
+      var fresh = io.firstTime ? io.firstTime() : false;   // the first meeting: this game is on the home page from now on
+      sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { return ok && fresh ? say(K.unlock, res) : ok; }).then(function (ok) { if (ok) say(K.go, res); }); });
+    }
   }
 
   /* ---------- the games ---------- */

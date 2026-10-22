@@ -5098,5 +5098,27 @@
    "m": "eaba33183d",
    "f": "641bd45737"
   }
+ },
+ {
+  "key": "s_game_open",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za ka iya buga wannan wasan a duk lokacin da kake so, daga shafin farko.",
+   "f": "Yanzu za ki iya buga wannan wasan a duk lokacin da kike so, daga shafin farko."
+  },
+  "en": "Now you can play this game whenever you like, from the home page.",
+  "screens": [
+   "Wasanni · all games",
+   "Fashe haruffa"
+  ],
+  "said_when": "The first time a child finishes a game, after the score (Sani 22 Oct). Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, 22 Oct",
+  "recorded": {
+   "m": "0305a57df9",
+   "f": "e07851a762"
+  }
  }
 ]
