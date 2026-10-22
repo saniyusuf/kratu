@@ -1038,3 +1038,16 @@
 .glab .riverlife .l0{left:20cqw;top:34cqw}.glab .riverlife .l1{left:60cqw;top:44cqw;animation-delay:3s}.glab .riverlife .l2{left:40cqw;top:52cqw;animation-delay:6s}
 @keyframes g-leap{0%,86%{opacity:0;transform:translate(0,0) rotate(-30deg)}88%{opacity:1}93%{transform:translate(3cqw,-3.5cqw) rotate(10deg)}98%{opacity:1;transform:translate(6cqw,0) rotate(40deg)}100%{opacity:0;transform:translate(6cqw,.5cqw) rotate(40deg)}}
 @media (prefers-reduced-motion:reduce){.glab .riverlife *{animation:none!important}}
+/* Tukwane (Sani 2026-10-22): pots fly into the boxes; a wrong pot cracks apart */
+.glab .pot2{position:relative;transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .2s}
+.glab .pot2.fly{transform:translate(var(--tx),var(--ty)) scale(.7);z-index:5}.glab .pot2.gone{opacity:0;pointer-events:none;transition:none}
+.glab .pot2.used{opacity:1;transform:none}
+.glab .spslots span .mp{display:block;width:100%;height:100%;animation:g-starin .3s ease-out both}.glab .spslots span .mp svg{width:100%;height:100%;display:block}
+.glab .spslots span.on{background:none!important;border-color:transparent!important}
+.glab .pot2.crack .art{animation:g-crack .7s ease-in forwards}@keyframes g-crack{0%{transform:none}15%{transform:rotate(-6deg) scale(1.04)}30%{transform:rotate(5deg)}100%{transform:translateY(3cqw) scaleY(.4) rotate(8deg);opacity:0}}
+.glab .pot2 .shard{position:absolute;left:45%;top:45%;width:2.4cqw;height:2cqw;background:linear-gradient(135deg,#E39B63,#A9572A);clip-path:polygon(0 0,100% 30%,40% 100%);opacity:0}
+.glab .pot2.crack .shard{animation:g-shard .8s ease-out forwards}
+.glab .pot2.crack .s1{--sx:-6cqw;--sy:-4cqw}.glab .pot2.crack .s2{--sx:6cqw;--sy:-5cqw;animation-delay:.05s}.glab .pot2.crack .s3{--sx:-5cqw;--sy:3cqw;animation-delay:.08s}.glab .pot2.crack .s4{--sx:5cqw;--sy:4cqw;animation-delay:.03s}
+@keyframes g-shard{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(220deg)}}
+.glab .spslots.wrongw span{border-color:#E53935!important;animation:g-shk .4s}
+@keyframes g-shk{25%{transform:translateX(-1cqw)}75%{transform:translateX(1cqw)}}

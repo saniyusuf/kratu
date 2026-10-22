@@ -64,6 +64,13 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     var src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t0 = a.currentTime; src.buffer = noiseBuf(a, 1.2); f.type = 'lowpass'; f.frequency.value = 500;
     g.gain.setValueAtTime(.2, t0); g.gain.exponentialRampToValueAtTime(.0001, t0 + 1.1); src.connect(f).connect(g).connect(a.destination); src.start(t0); src.stop(t0 + 1.2);
   }
+  /* a clay pot breaking: a bright crack, clinking shards, a dull thud */
+  function crashSound(a) {
+    var t = a.currentTime + .02, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+    src.buffer = noiseBuf(a, .5); f.type = 'highpass'; f.frequency.value = 1800; g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.0001, t + .35); src.connect(f).connect(g).connect(a.destination); src.start(t); src.stop(t + .5);
+    var o = a.createOscillator(), og = a.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(60, t + .2); og.gain.setValueAtTime(.4, t); og.gain.exponentialRampToValueAtTime(.0001, t + .25); o.connect(og).connect(a.destination); o.start(t); o.stop(t + .3);
+    for (var k = 0; k < 5; k++) { var tk = t + .08 + k * .07 + Math.random() * .04, c = a.createOscillator(), cg = a.createGain(); c.type = 'triangle'; c.frequency.value = 2200 + Math.random() * 1600; cg.gain.setValueAtTime(.12, tk); cg.gain.exponentialRampToValueAtTime(.0001, tk + .08); c.connect(cg).connect(a.destination); c.start(tk); c.stop(tk + .1); }
+  }
   function leapFish() { return '<svg viewBox="0 0 30 14" aria-hidden="true"><path d="M2 7 Q10 0 20 5 L28 1 L26 7 L28 13 L20 9 Q10 14 2 7 Z" fill="#7FA6B8"/><path d="M8 5 Q13 3 18 5" stroke="#E6F1F6" stroke-width="1" fill="none"/><circle cx="6" cy="6.4" r="1" fill="#1A2A30"/></svg>'; }
   function fisherman() {
     return '<svg viewBox="0 0 60 50" aria-hidden="true"><path d="M2 46 Q20 40 40 46 Z" fill="#8B6A3A" opacity=".6"/>' +
@@ -392,27 +399,40 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     'j-rubutu': { title: 'Tukwane', cls: 'potter2', instr: ['Bari mu gina kalma da tukwane. Ka danna haruffa ɗaya bayan ɗaya.', 'Bari mu gina kalma da tukwane. Ki danna haruffa ɗaya bayan ɗaya.'], ask: ['Ka iya rubuta kalmomi da Turanci?', 'Kin iya rubuta kalmomi da Turanci?'],
       placeNo: 'Rubutu would start at three letters, with the lessons.',
       place: function (r) { return r.finished && !r.misses ? 'Spelled every word: the full game moves on to longer words.' : 'Spelled ' + r.right + ' of 4 words: Rubutu would start at three letters.'; },
+      /* Tukwane (Sani 2026-10-22): the child writes the word with pots. A right pot lifts off its place and flies into
+         the next box, where it stays with its letter; its place is left empty. A wrong pot cracks apart with a crash, the
+         word is marked wrong and the next word comes. */
       play: function (run, done) {
-        var W = shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, words = 0, misses = 0;
+        var W = shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, words = 0, misses = 0, busy = false;
         var top = h('<div class="sp"><span class="sppic"><img alt=""></span><div class="spslots"></div></div>');
         var pad = h('<div class="pots2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(pad);
         run.clock(120, function () { done({ right: words, part: words / 4, misses: misses }); });
         run.remind = function () { say(K.en[W[wi]], run); };
+        function nextWord() { wi++; if (wi >= W.length) run.later(900, function () { done({ right: words, finished: words === W.length, misses: misses }); }); else run.later(1000, word); }
         function word() {
-          var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
+          busy = false; var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
           top.querySelector('.spslots').innerHTML = w.split('').map(function () { return '<span></span>'; }).join('');
           var pool = shuffle(w.split('').concat(shuffle('BDEGHKLMPRT'.split('').filter(function (x) { return w.indexOf(x) < 0; })).slice(0, 2)));
           pad.innerHTML = '';
           pool.forEach(function (L) {
             var b = h('<button type="button" class="pot2">' + KART.pot(L) + '</button>');
             b.onclick = function () {
-              if (b.disabled || run.dead) return;
+              if (b.disabled || run.dead || busy) return;
               if (L === w[li]) {
-                run.idle = 0; run.spark(b, 5); say(K.L[L], run); var slot = top.querySelectorAll('.spslots span')[li]; slot.textContent = L; slot.classList.add('on');
-                b.disabled = true; b.classList.add('used'); li++;
-                if (li >= w.length) { run.good(); words++; wi++; if (wi >= 4) run.later(1000, function () { done({ right: words, finished: true, misses: misses }); }); else run.later(1100, word); }
-              } else { misses++; run.bad(b); }
+                run.idle = 0; b.disabled = true; var slot = top.querySelectorAll('.spslots span')[li], k = li; li++;
+                var br = io.rect(b), sr = io.rect(slot);
+                b.style.setProperty('--tx', (sr.left + sr.width / 2 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (sr.top + sr.height / 2 - (br.top + br.height / 2)) + 'px');
+                b.classList.add('fly');                                 // the pot lifts off its place into the box
+                run.later(560, function () { slot.innerHTML = '<span class="mp">' + KART.pot(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
+                if (li >= w.length) { busy = true; run.later(700, function () { run.good(top.querySelector('.spslots')); words++; }); nextWord(); }
+              } else {
+                // a wrong pot cracks: a crash, the word is marked wrong, and on to the next word
+                busy = true; misses++; run.bad(); b.classList.add('crack'); b.insertAdjacentHTML('beforeend', '<i class="shard s1"></i><i class="shard s2"></i><i class="shard s3"></i><i class="shard s4"></i>');
+                try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); crashSound(ac); } catch (e) { /* no sound */ }
+                top.querySelector('.spslots').classList.add('wrongw'); run.later(1200, function () { top.querySelector('.spslots').classList.remove('wrongw'); });
+                nextWord();
+              }
             };
             pad.appendChild(b);
           });
