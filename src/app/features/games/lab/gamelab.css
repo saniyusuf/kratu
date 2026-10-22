@@ -1092,3 +1092,52 @@
 .glab .dstage.mk>.mic{top:-3cqw;bottom:auto;right:0}
 .glab .dstage.mk .crowd{left:57cqw}
 @media (prefers-reduced-motion:reduce){.glab .deal,.glab .deal *{animation-duration:.01s!important}}
+/* ---- Ƙirgen shanu (Sani 2026-10-22): grazing White Fulani and Red Bororo cattle, the herdsman walking with them ---- */
+.glab .herd .field{position:absolute;left:0;right:36cqw;bottom:0;height:12cqw;pointer-events:none}
+.glab .herd .tf{position:absolute;width:5cqw;height:2.8cqw;display:block}
+.glab .herd .tf svg{display:block;width:100%;height:100%;transform-origin:50% 100%;animation:g-tf 4s ease-in-out infinite alternate}
+.glab .herd .tf:nth-child(2n) svg{animation-duration:5.2s;animation-delay:-2s}
+@keyframes g-tf{from{transform:skewX(-5deg)}to{transform:skewX(5deg)}}
+.glab .zebu,.glab .herdsman{display:block;width:100%;height:100%;overflow:visible}
+.glab .herd .queue{left:9cqw;bottom:1cqw;flex-direction:row-reverse;gap:0}
+.glab .herd .qcow{width:18cqw;height:12cqw;animation:g-zdrift var(--gs,6s) ease-in-out var(--gd,0s) infinite}
+.glab .herd .qcow b{left:4cqw;top:-1.6cqw}
+@keyframes g-zdrift{0%,35%{transform:translateX(0)}55%,100%{transform:translateX(1.2cqw)}}
+/* grazing: the head goes down to the grass and the jaw works, lifts to look about, goes down again */
+.glab .zhead{transform-box:view-box;transform-origin:156px 74px;animation:g-zgraze var(--gs,6s) ease-in-out var(--gd,0s) infinite}
+@keyframes g-zgraze{0%,30%{transform:rotate(50deg) translateX(12px)}40%,62%{transform:rotate(0)}72%,100%{transform:rotate(50deg) translateX(12px)}}
+.glab .zebu .chew{transform-box:fill-box;transform-origin:50% 0;animation:g-zchew .5s ease-in-out infinite alternate}
+@keyframes g-zchew{to{transform:translateY(1.2px) scaleX(.85)}}
+.glab .zl{transform-box:fill-box;transform-origin:50% 0;animation:g-zstep var(--gs,6s) ease-in-out var(--gd,0s) infinite}
+.glab .zl.b,.glab .zl.c{animation-name:g-zstep2}
+@keyframes g-zstep{0%,35%,58%,100%{transform:rotate(0)}42%{transform:rotate(-10deg)}50%{transform:rotate(9deg)}}
+@keyframes g-zstep2{0%,35%,58%,100%{transform:rotate(0)}42%{transform:rotate(9deg)}50%{transform:rotate(-10deg)}}
+.glab .ztail{transform-box:fill-box;transform-origin:80% 0;animation:g-ztail 2.6s ease-in-out infinite alternate}
+@keyframes g-ztail{0%,40%{transform:rotate(-4deg)}100%{transform:rotate(14deg)}}
+/* walking into the pen: head up, a slow amble, smaller as she goes in */
+.glab .herd .qcow.zgo{animation:g-zgo 2.9s linear forwards;z-index:2}
+.glab .qcow.zgo .zhead{animation:none;transform:rotate(0);transition:transform .5s}
+.glab .qcow.zgo .zl{animation:g-zamble .7s ease-in-out infinite alternate}
+.glab .qcow.zgo .zl.b,.glab .qcow.zgo .zl.c{animation-direction:alternate-reverse}
+@keyframes g-zamble{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
+@keyframes g-zgo{0%{transform:translateX(0)}80%{opacity:1}100%{transform:translate(27cqw,-3cqw) scale(.45);opacity:0}}
+/* a wrong count: she lifts her head and shakes it */
+.glab .qcow.no{animation:none}
+.glab .qcow.no .zhead{animation:g-zno .28s ease-in-out 5 alternate}
+@keyframes g-zno{from{transform:rotate(-6deg)}to{transform:rotate(5deg)}}
+/* the herdsman: walks slowly to and fro behind the herd, staff upright, swaying and touching the ground */
+.glab .herd .hman{position:absolute;left:1cqw;bottom:1cqw;width:9cqw;height:18cqw;animation:g-hdrift 10s ease-in-out infinite alternate}
+@keyframes g-hdrift{to{transform:translateX(2.4cqw)}}
+.glab .herdsman .hl{transform-box:fill-box;transform-origin:50% 0;animation:g-hleg 1.4s ease-in-out infinite alternate}
+.glab .herdsman .hl.b{animation-direction:alternate-reverse}
+@keyframes g-hleg{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.glab .herdsman .hstaff{transform-box:fill-box;transform-origin:50% 100%;animation:g-hstaff 2.8s ease-in-out infinite alternate}
+@keyframes g-hstaff{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.glab .herd .hman.step>svg{animation:g-hstep 2.9s ease-in-out forwards}
+@keyframes g-hstep{50%{transform:translateX(5cqw)}100%{transform:translateX(0)}}
+.glab .herd.cross .hman>svg{animation:g-headno .3s ease-in-out 4 alternate}
+.glab .herd .pen3{width:36cqw}
+.glab .herd .inpen{left:4cqw;right:4cqw;bottom:3cqw;gap:0 .2cqw}
+.glab .herd .pc{width:8cqw!important;height:5.4cqw!important;margin:-1.2cqw -.6cqw}
+.glab .herd .pc .zl{animation:none}
+@media (prefers-reduced-motion:reduce){.glab .herd *{animation-duration:.01s!important;animation-iteration-count:1!important}}

@@ -72,7 +72,7 @@ export const SCENES4: Record<string, string> = {
     '<g stroke="#7A4A22" stroke-width="1.4"><path d="M0 70 H160 M0 75 H160"/>' + [6, 30, 54, 78, 102, 126, 150].map((x) => '<path d="M' + x + ' 66 V78"/>').join('') + '</g>' +
     '<g fill="#C9A06A" opacity=".5"><ellipse cx="40" cy="90" rx="22" ry="2"/><ellipse cx="128" cy="94" rx="20" ry="2"/></g></svg>',
 
-  /* Ƙirgen garke: a Fulani camp at dusk, grass huts and calabashes on their stand */
+  /* Ƙirgen shanu: a Fulani camp at dusk, grass huts and calabashes on their stand */
   camp: head + '<defs>' + lg('cp-sky', '#5B3A7A', '#E0714A', '#F6C177') + lg('cp-g', '#B98A50', '#8E6234') + rg('cp-sun', '#FFD27A', '#FFD27A') + '</defs>' +
     '<rect width="160" height="100" fill="url(#cp-sky)"/><circle cx="80" cy="58" r="12" fill="#FFC46A"/><circle cx="80" cy="58" r="30" fill="url(#cp-sun)" opacity=".5"/>' +
     '<path d="M0 60 Q50 54 100 58 T160 56 V66 H0 Z" fill="#6B4A3A" opacity=".55"/>' +

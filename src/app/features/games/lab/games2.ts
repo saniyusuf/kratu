@@ -8,6 +8,7 @@
 import * as A from './art4';
 import { GOODS, ACT_MS, deal } from './market';
 import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
+import { zebu, tuft, herdsman, cowbell, moo } from './herd';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -221,18 +222,24 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: counting the herd (speaking) ---------------- */
-    'j-garke': { title: 'Ƙirgen garke', cls: 'garke', scene: 'camp',
+    /* Ƙirgen shanu (Sani 2026-10-22): White Fulani and Red Bororo cattle graze on the open grass and drift slowly
+       forward; the herdsman walks behind them with his staff upright. Say the number and the front cow ambles into the
+       pen to its cowbell; a wrong count and she lifts her head, shakes it and lows, and the herdsman shakes his head. */
+    'j-garke': { title: 'Ƙirgen shanu', cls: 'garke', scene: 'camp',
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.finished ? 'Counted the herd to ten and the big herd in tens to fifty: Lambobi would start at the hundreds.' : 'Counted to <b>' + r.reached + '</b>: Lambobi would start ' + (r.reached < 5 ? 'at 1 to 5.' : r.reached <= 10 ? 'at 6 to 10.' : 'at the tens.'),
       play(run, done) {
         const STEPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50], WORD = (n) => K.enText['n' + n].toLowerCase(), AMONG = STEPS.map(WORD).concat(['eleven', 'twelve', 'sixty', 'hundred']);
-        let s = 0, reached = 0, wrong = 0;
-        const st = h('<div class="gstage"><div class="queue"></div><div class="gate2"><div class="herder">' + A.herder() + '</div></div><div class="pen3">' + A.zariba() + '<div class="inpen"></div><b class="cnt2">0</b></div></div>');
+        let s = 0, reached = 0, wrong = 0, v = 0;
+        const grass = [[4, 2, 0], [16, 6, 1], [27, 1, 2], [36, 5, 0], [47, 2, 1], [56, 7, 2], [9, 9, 1], [31, 9, 2]].map(([x, y, k]) => '<i class="tf" style="left:' + x + 'cqw;bottom:' + y + 'cqw">' + tuft(k) + '</i>').join('');
+        const st = h('<div class="gstage herd"><div class="field">' + grass + '</div><div class="queue"></div><div class="hman">' + herdsman() + '</div><div class="pen3">' + A.zariba() + '<div class="inpen"></div><b class="cnt2">0</b></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: s, part: s / STEPS.length, reached }));
         run.remind = () => say(line('j-garke', 'how'), run);
-        const queue = st.querySelector('.queue'), inpen = st.querySelector('.inpen'), cnt = st.querySelector('.cnt2');
-        function fill() { queue.innerHTML = ''; for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', '<span class="qcow' + (s >= 10 ? ' ten' : '') + '">' + A.cow() + (s >= 10 ? '<b>×10</b>' : '') + '</span>'); }
+        const queue = st.querySelector('.queue'), inpen = st.querySelector('.inpen'), cnt = st.querySelector('.cnt2'), hman = st.querySelector('.hman');
+        // each cow grazes on its own clock, so the herd never nods in step
+        const cow = (ten) => '<span class="qcow' + (ten ? ' ten' : '') + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's">' + zebu(v++) + (ten ? '<b>×10</b>' : '') + '</span>';
+        function fill() { queue.innerHTML = ''; for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', cow(s >= 10)); }
         function next() {
           if (s === 10) { inpen.innerHTML = ''; cnt.textContent = '0'; }
           if (s === 0 || s === 10) fill();
@@ -240,16 +247,19 @@ export function moreGames(c: any): Record<string, any> {
           box.cue();
           box.listen(() => ({ target: w, among: AMONG, match: (raw) => io.match(raw, w, AMONG) }), (r) => {
             if (r.value === null && !r.raw) { box.cue(); return; }
-            if (r.value === w) { box.busy = true; box.yay(); run.good(queue.firstChild); reached = n; walkIn(n); return; }
-            wrong++; run.bad(queue.firstChild); box.nope(); st.classList.add('cross'); later(run, 1200, () => st.classList.remove('cross'));
-            if (wrong >= 1) { box.busy = true; later(run, 900, () => { done({ right: s, part: s / STEPS.length, reached }); }); }
+            if (r.value === w) { box.busy = true; box.yay(); reached = n; walkIn(n); return; }
+            wrong++; run.bad(); box.nope(); moo();
+            const c = queue.firstChild; c.classList.add('no'); st.classList.add('cross'); later(run, 1400, () => { st.classList.remove('cross'); c.classList.remove('no'); });
+            if (wrong >= 1) { box.busy = true; later(run, 1500, () => { done({ right: s, part: s / STEPS.length, reached }); }); }
             else box.cue();
           }, () => w);
         }
+        // the front cow ambles into the pen (slowly, legs stepping), the herdsman walks a few steps after her
         function walkIn(n) {
-          const c = queue.firstChild; c.classList.add('walk');
-          later(run, 1100, () => { c.remove(); inpen.insertAdjacentHTML('beforeend', '<span class="pc">' + A.cow() + '</span>'); cnt.textContent = n; bump(cnt, 'pop');
-            queue.insertAdjacentHTML('beforeend', '<span class="qcow' + (s + 1 >= 10 ? ' ten' : '') + '">' + A.cow() + (s + 1 >= 10 ? '<b>×10</b>' : '') + '</span>');
+          const c = queue.firstChild; run.good(c); c.classList.add('zgo'); hman.classList.add('step'); cowbell(3);
+          later(run, 2900, () => { c.remove(); hman.classList.remove('step');
+            inpen.insertAdjacentHTML('beforeend', '<span class="pc" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's">' + zebu(v++) + '</span>'); cnt.textContent = n; bump(cnt, 'pop');
+            queue.insertAdjacentHTML('beforeend', cow(s + 1 >= 10));
             s++; if (s >= STEPS.length) done({ right: s, finished: true, part: 1, reached }); else next(); });
         }
         next();

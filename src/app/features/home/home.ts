@@ -22,7 +22,7 @@ const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa'
 const GAME_ICON: Record<string, { name: string; ico: string }> = {
   fashe: { name: 'Fashe haruffa', ico: '🎈' }, 'j-durbar': { name: 'Hawan Sallah', ico: '🐎' }, 'j-abubuwa': { name: 'Kamun kifi', ico: '🐟' }, 'j-magana': { name: 'Kalangu', ico: '🥁' },
   'j-dillali': { name: 'Dillalin kasuwa', ico: '🔨' }, 'j-nemo': { name: 'Hanzarin kasuwa', ico: '🧺' }, 'j-shayi': { name: 'Mai shayi', ico: '☕' }, 'j-gyada': { name: 'Dalar gyaɗa', ico: '🥜' },
-  'j-shanu': { name: 'Kasuwar shanu', ico: '🐄' }, 'j-garke': { name: 'Ƙirgen garke', ico: '🐂' }, 'j-suya': { name: 'Mai suya', ico: '🍢' }, 'j-karatu': { name: 'Kwale-kwale', ico: '🛶' },
+  'j-shanu': { name: 'Kasuwar shanu', ico: '🐄' }, 'j-garke': { name: 'Ƙirgen shanu', ico: '🐂' }, 'j-suya': { name: 'Mai suya', ico: '🍢' }, 'j-karatu': { name: 'Kwale-kwale', ico: '🛶' },
   'j-allo': { name: 'Allo', ico: '📜' }, 'j-jirgi': { name: 'Jirgin ruwa', ico: '⛵' }, 'j-rubutu': { name: 'Tukwane', ico: '🏺' }, 'j-rubutu-say': { name: 'Ginin bulo', ico: '🧱' }, 'j-marubuci': { name: 'Marubucin wasiƙa', ico: '✉️' },
 };
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
