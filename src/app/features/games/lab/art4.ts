@@ -12,6 +12,8 @@ function defs(): void {
   document.body.insertAdjacentHTML('afterbegin', '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
     '<linearGradient id="k4-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C6A3C"/><stop offset="1" stop-color="#5E3A1C"/></linearGradient>' +
     '<linearGradient id="k4-allo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B4422"/><stop offset=".5" stop-color="#4A2E14"/><stop offset="1" stop-color="#3A220E"/></linearGradient>' +
+    '<linearGradient id="k4-sackg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3C58C"/><stop offset=".6" stop-color="#C9A262"/><stop offset="1" stop-color="#9C7638"/></linearGradient>' +
+    '<pattern id="k4-jute" width="2.4" height="2.4" patternUnits="userSpaceOnUse"><path d="M0 1.2 H2.4 M1.2 0 V2.4" stroke="#6B4E22" stroke-width=".45"/></pattern>' +
     '<linearGradient id="k4-sack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D3A0"/><stop offset="1" stop-color="#B8925A"/></linearGradient>' +
     '<linearGradient id="k4-green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FAE5A"/><stop offset="1" stop-color="#1F7A3A"/></linearGradient>' +
     '<linearGradient id="k4-horse" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8B5A2B"/><stop offset="1" stop-color="#4E2E14"/></linearGradient>' +
@@ -101,29 +103,46 @@ export function shayi(): string {
     `<g class="lamp" transform="translate(-74 0)"><path d="M140 0 L140 10" stroke="#555" stroke-width="2"/><path d="M130 10 L150 10 L146 26 L134 26 Z" fill="#FFD54A" opacity=".95"/><circle cx="140" cy="30" r="22" fill="#FFD54A" opacity=".18"/></g></svg>`;
 }
 
-/* ---- groundnut sacks and the lorry ---- */
+/* ---- groundnut sacks, stacked the way Kano's groundnut pyramids were, and an open lorry ---- */
+/* one jute sack lying on its side: a bulging bag, both corners tied off, a red and green trade band, stitched shut */
+function sack(x: number, y: number): string {
+  return `<g transform="translate(${x} ${y})"><path d="M3 3 Q1 0 4 1 Q15 -1 26 1 Q29 0 27 3 Q30 9 27 15 Q29 18 26 17 Q15 19 4 17 Q1 18 3 15 Q0 9 3 3 Z" fill="url(#k4-sackg)" stroke="#7A5A2A" stroke-width=".7"/>` +
+    `<path d="M3 3 Q1 0 4 1 Q15 -1 26 1 Q29 0 27 3 Q30 9 27 15 Q29 18 26 17 Q15 19 4 17 Q1 18 3 15 Q0 9 3 3 Z" fill="url(#k4-jute)" opacity=".55"/>` +
+    `<path d="M10 1.2 Q10.5 9 10 17 M11.6 1.1 Q12.1 9 11.6 17.2" stroke="#B23A2A" stroke-width="1.1" fill="none" opacity=".85"/><path d="M13.2 1 Q13.7 9 13.2 17.3" stroke="#2E7D32" stroke-width="1.1" fill="none" opacity=".85"/>` +
+    `<path d="M5 3.2 Q15 1.8 25 3.2" stroke="#5E4220" stroke-width=".5" stroke-dasharray="1.2 1" fill="none"/>` +
+    `<path d="M3 3 l-2 -2.4 M3 15 l-2 2.4 M27 3 l2 -2.4 M27 15 l2 2.4" stroke="#7A5A2A" stroke-width="1.1" stroke-linecap="round"/>` +
+    `<ellipse cx="17" cy="12" rx="9" ry="3.5" fill="#fff" opacity=".1"/></g>`;
+}
+/** n sacks in a stepped pyramid; every stack on one scale for its round (cap), standing on the same floor */
 export function sacks(n: number, cap = 20): string {
-  // a pyramid: bottom row widest; rows of 4,3,2,1 (and more rows for bigger numbers)
   const rows: number[] = []; let left = n, w = Math.max(1, Math.ceil((Math.sqrt(8 * n + 1) - 1) / 2));
   while (left > 0) { const r = Math.min(w, left); rows.push(r); left -= r; w = Math.max(1, w - 1); }
-  const SW = 26, SH = 20; let out = '', y = 150; const maxw = rows[0] * SW;
-  rows.forEach((r) => { const x0 = (maxw - r * SW) / 2; for (let i = 0; i < r; i++) { const x = x0 + i * SW;
-    out += `<g transform="translate(${x} ${y - SH})"><path d="M2 4 Q2 0 7 0 L19 0 Q24 0 24 4 L25 17 Q13 22 1 17 Z" fill="url(#k4-sack)" stroke="#8B6A2E" stroke-width=".8"/>` +
-      `<path d="M5 6 h16 M4 11 h18" stroke="#8B6A2E" stroke-width=".7" opacity=".6"/><path d="M10 0 Q13 -4 16 0" stroke="#8B6A2E" stroke-width="1.2" fill="none"/></g>`; }
-    y -= SH - 4; });
-  // every stack on the same scale, standing on the same floor, so a bigger number is a bigger pile (never a zoomed small one)
-  const wc = Math.ceil((Math.sqrt(8 * cap + 1) - 1) / 2), W = wc * SW + 8, H = wc * (SH - 4) + 14;
-  return `<svg class="sacks" viewBox="${(maxw - W) / 2} ${156 - H} ${W} ${H}" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${out}</svg>`;
+  const SW = 27, SH = 14; let out = '', y = 142; const maxw = rows[0] * SW;
+  rows.forEach((r) => { const x0 = (maxw - r * SW) / 2; for (let i = 0; i < r; i++) out += sack(x0 + i * SW, y - 18); y -= SH; });
+  const wc = Math.ceil((Math.sqrt(8 * cap + 1) - 1) / 2), W = wc * SW + 8, H = wc * SH + 16;
+  return `<svg class="sacks" viewBox="${(maxw - W) / 2} ${146 - H} ${W} ${H}" preserveAspectRatio="xMidYMax meet" aria-hidden="true">` +
+    `<ellipse cx="${maxw / 2}" cy="143" rx="${maxw / 2 + 4}" ry="3" fill="rgba(60,40,15,.3)"/>${out}</svg>`;
+}
+/** the sacks a lorry carries, piled on its open bed (drawn inside the lorry's own coordinates) */
+export function lorryLoad(n: number): string {
+  let out = ''; const per = 6, rows = Math.ceil(n / per);
+  for (let r = 0; r < rows; r++) { const k = Math.min(per, n - r * per); for (let i = 0; i < k; i++) out += `<g transform="translate(${22 + i * 24 + (r % 2) * 10} ${55 - r * 10}) scale(.85)">${sack(0, 0).replace(/^<g transform="translate\(0 0\)">/, '<g>')}</g>`; }
+  return out;
 }
 export function lorry(): string {
-  return `<svg class="lorry" viewBox="0 0 260 140" aria-hidden="true"><ellipse cx="130" cy="132" rx="118" ry="6" fill="rgba(40,24,10,.3)"/>` +
-    `<rect x="10" y="40" width="160" height="66" rx="4" fill="#2E7D32"/><path d="M10 52 h160 M10 66 h160 M10 80 h160 M10 94 h160" stroke="#1B5E20" stroke-width="2"/>` +
-    `<path d="M172 54 L222 54 Q240 58 244 80 L246 110 L172 110 Z" fill="#C62828"/><path d="M182 60 L218 60 Q230 62 234 80 L182 80 Z" fill="#BDE3F2"/>` +
-    `<rect x="6" y="104" width="244" height="10" rx="3" fill="#3A3A3A"/><text x="90" y="80" text-anchor="middle" class="kktx" style="font-size:14px">GYAƊA · KANO</text>` +
+  return `<svg class="lorry" viewBox="0 0 260 150" aria-hidden="true"><ellipse cx="130" cy="142" rx="122" ry="6" fill="rgba(40,24,10,.3)"/>` +
+    `<rect x="8" y="98" width="172" height="12" rx="2" fill="#5E3A1C"/>` +
     `<g class="load"></g>` +
-    `<g class="wheel" style="transform-origin:50px 118px"><circle cx="50" cy="118" r="16" fill="#222"/><circle cx="50" cy="118" r="7" fill="#9AA3AD"/></g>` +
-    `<g class="wheel" style="transform-origin:130px 118px"><circle cx="130" cy="118" r="16" fill="#222"/><circle cx="130" cy="118" r="7" fill="#9AA3AD"/></g>` +
-    `<g class="wheel" style="transform-origin:212px 118px"><circle cx="212" cy="118" r="16" fill="#222"/><circle cx="212" cy="118" r="7" fill="#9AA3AD"/></g></svg>`;
+    `<g fill="#A0682E" stroke="#6B4422" stroke-width="1"><rect x="8" y="80" width="172" height="20"/><path d="M8 86 H180 M8 93 H180" stroke-width=".8"/></g>` +
+    `<path d="M8 80 V66 M50 80 V66 M94 80 V66 M138 80 V66 M180 80 V66" stroke="#6B4422" stroke-width="3"/><path d="M6 66 H182" stroke="#8B5A2B" stroke-width="3"/>` +
+    `<text x="94" y="96" text-anchor="middle" class="kktx" style="font-size:11px">GYAƊA · KANO</text>` +
+    `<path d="M182 62 L226 62 Q244 66 248 90 L250 120 L182 120 Z" fill="#1565C0"/><path d="M190 68 L222 68 Q234 70 238 88 L190 88 Z" fill="#BDE3F2"/>` +
+    `<rect x="182" y="104" width="68" height="6" fill="#0D47A1"/><circle cx="246" cy="104" r="3" fill="#FFF59D"/>` +
+    `<rect x="4" y="110" width="250" height="10" rx="3" fill="#3A3A3A"/>` +
+    `<g class="wheel" style="transform-origin:46px 124px"><circle cx="46" cy="124" r="16" fill="#222"/><circle cx="46" cy="124" r="7" fill="#9AA3AD"/><path d="M46 110 V138 M32 124 H60" stroke="#555" stroke-width="2"/></g>` +
+    `<g class="wheel" style="transform-origin:120px 124px"><circle cx="120" cy="124" r="16" fill="#222"/><circle cx="120" cy="124" r="7" fill="#9AA3AD"/><path d="M120 110 V138 M106 124 H134" stroke="#555" stroke-width="2"/></g>` +
+    `<g class="wheel" style="transform-origin:214px 124px"><circle cx="214" cy="124" r="16" fill="#222"/><circle cx="214" cy="124" r="7" fill="#9AA3AD"/><path d="M214 110 V138 M200 124 H228" stroke="#555" stroke-width="2"/></g>` +
+    `<g class="puff"><circle cx="0" cy="114" r="5" fill="#BDBDBD" opacity=".6"/><circle cx="-8" cy="108" r="4" fill="#BDBDBD" opacity=".4"/></g></svg>`;
 }
 
 /* ---- animals: a red Bororo zebu with lyre horns, a white Sallah ram, a Sokoto red goat ---- */

@@ -1,4 +1,4 @@
-/* The judging games (Wasanni). Moved from the proposal page's games.css with the app's additions; every rule is scoped
+/* The judging games (Wasanni). Edit this file directly. Every rule is scoped
    under .glab and every keyframe is g-…, so nothing here can touch the rest of the app or be touched by it. Keep it that way. */
 .glab{position:absolute;inset:0;container-type:size;overflow:hidden;background:#F4E7C9;color:#3B2E1E;font-family:var(--body);--ink:#3B2E1E;--muted:#7A6A4C;--paper:#F4E7C9;--paper2:#FBF3DE;--sheet:#FFFDF7;--line:#E6D6AE;--gold:#E8A317;--gold2:#FFD54A;--golddk:#9C6B00}
 .glab .scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;padding:5cqw 6cqw;text-align:center}
@@ -929,3 +929,14 @@
 .glab .lrow.many span{width:3.2cqw;height:3.2cqw;font-size:1.8cqw;border-width:.2cqw}
 .glab .street2.slidein{animation:g-streetin .7s cubic-bezier(.2,.8,.3,1) both}
 @keyframes g-streetin{from{transform:translateX(40cqw);opacity:0}}
+.glab .scr.gyada .gtop{display:flex;align-items:flex-end;gap:3cqw;margin-top:8cqw;width:92cqw}
+.glab .scr.gyada .lorryw{width:40cqw;height:23cqw;transition:transform 1.5s ease-in}.glab .scr.gyada .lorryw.away{transform:translateX(80cqw)}
+.glab .scr.gyada .lorryw.reset{transform:translateX(-90cqw);transition:none}.glab .scr.gyada .lorryw.arrive{transition:transform 1.2s cubic-bezier(.2,.8,.3,1)}
+.glab .lorry .puff{animation:g-puff .8s ease-out infinite}
+.glab .scr.gyada .gtop .tally{margin-left:auto;align-self:center}
+.glab .scr.gyada .stacks2{margin-top:1cqw;gap:2cqw}
+.glab .stk{background:rgba(255,253,247,.55)!important;border:.3cqw solid rgba(255,255,255,.9)!important}
+.glab .stk.fly{transform:translate(var(--tx),var(--ty)) scale(.3)!important;opacity:0;transition:transform .85s ease-in,opacity .3s .6s!important}
+.glab .stk.fade{opacity:0;transition:opacity .4s}
+@keyframes g-puff{to{transform:translate(-10px,-8px);opacity:0}}
+.glab .scr.gyada .stk{width:21cqw!important;height:14.5cqw!important;padding:.8cqw!important}.glab .scr.gyada .stacks2.big .stk{width:28cqw!important;height:19cqw!important}

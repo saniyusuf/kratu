@@ -123,24 +123,39 @@ export function moreGames(c: any): Record<string, any> {
     'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'pyramids', tap: true,
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.right >= 8 ? 'Matched every number to its stack, to twenty: Lambobi would start at the tens.' : 'Matched ' + r.right + ' of 8: Lambobi would start ' + (r.reached > 10 ? 'at 11 to 20.' : 'at 1 to 10.'),
+      /* Laila says a number; the child taps the pyramid of groundnut sacks that has that many. The right stack is loaded
+         onto the open lorry, the lorry drives off, and an empty one pulls in for the next number (Sani 2026-10-22). */
       play(run, done) {
-        const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0;
-        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + A.lorry() + '<span class="loaded"><b>0</b> / 8</span></div></div>');
+        const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0, busy = false;
+        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + A.lorry() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
         const row = h('<div class="stacks2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(row);
         run.clock(150, () => done({ right: got, part: got / 8, reached }));
         const sayN = () => say(K.en['n' + N[r]], run);
         run.remind = sayN; top.querySelector('.hearn').onclick = sayN;
+        const lw = top.querySelector('.lorryw');
+        function newLorry() {   // an empty lorry pulls in from the left
+          lw.classList.remove('away'); lw.classList.add('reset'); lw.querySelector('.load').innerHTML = ''; void lw.offsetWidth;
+          lw.classList.remove('reset'); lw.classList.add('arrive'); later(run, 1300, () => lw.classList.remove('arrive'));
+        }
         function next() {
+          busy = false;
           // up to ten: four stacks; the teens: three bigger stacks, so every sack stays big enough to count
           const n = N[r], cap = n <= 10 ? 10 : 20, k = n <= 10 ? 3 : 2;
           const opts = shuffle([n].concat(shuffle([-3, -2, -1, 1, 2, 3].map((d) => n + d).filter((x) => x >= 1 && x <= cap)).slice(0, k)));
           row.innerHTML = ''; row.classList.toggle('big', cap === 20);
           opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + A.sacks(m, cap) + '</button>'); row.appendChild(b);
-            b.onclick = () => { if (run.dead || b.classList.contains('fly')) return;
-              if (m === n) { got++; reached = Math.max(reached, n); run.good(b); b.classList.add('fly'); top.querySelector('.loaded b').textContent = got; bump(top.querySelector('.lorryw'), 'thump');
-                later(run, 1000, () => { r++; if (r >= 8) done({ right: got, finished: true, part: got / 8, reached }); else next(); }); }
-              else run.bad(b); }; });
+            b.onclick = () => { if (run.dead || busy) return;
+              if (m !== n) { run.bad(b); return; }
+              busy = true; got++; reached = Math.max(reached, n); run.good(b); top.querySelector('.tally b').textContent = got;
+              // the stack flies up onto the lorry's bed
+              const br = io.rect(b), lr = io.rect(lw);
+              b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .45 - (br.top + br.height / 2)) + 'px');
+              b.classList.add('fly'); row.querySelectorAll('.stk').forEach((o) => { if (o !== b) o.classList.add('fade'); });
+              later(run, 850, () => { lw.querySelector('.load').innerHTML = A.lorryLoad(n); bump(lw, 'thump', 500); });
+              later(run, 1500, () => lw.classList.add('away'));                  // and off it goes
+              later(run, 3000, () => { r++; if (r >= 8) { done({ right: got, finished: true, part: got / 8, reached }); return; } newLorry(); later(run, 700, next); });
+            }; });
           later(run, 300, sayN);
         }
         next();
