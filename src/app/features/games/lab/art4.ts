@@ -44,7 +44,9 @@ export function person(o: P = {}): string {
   if (arm === 'staff') armR = `<path d="M-4 40 L64 52" stroke="#6B4422" stroke-width="3.4" stroke-linecap="round"/><path d="M45 50 Q56 46 58 52" stroke="${robe2}" stroke-width="8" stroke-linecap="round" fill="none"/>`;
   if (arm === 'pole') armR = `<path d="M50 4 L40 140" stroke="#5E3A1C" stroke-width="3.4" stroke-linecap="round"/><path d="M45 50 Q50 46 47 60" stroke="${robe2}" stroke-width="8" stroke-linecap="round" fill="none"/>`;
   if (arm === 'sword') armR = `<g class="sword"><path d="M45 50 Q56 40 58 28" stroke="${robe2}" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="58" cy="27" r="4" fill="${skin}"/><path d="M58 25 L66 -2" stroke="url(#k4-steel)" stroke-width="3" stroke-linecap="round"/><path d="M54 27 h8" stroke="#C9A227" stroke-width="2.6"/></g>`;
-  const mouth = o.mouth === 'open' ? '<ellipse class="mouth" cx="30" cy="34" rx="3.2" ry="2.6" fill="#3A1A0A"/>' : '<path d="M25 33 Q30 37 35 33" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>';
+  // a smile, and a frown that shows instead when the scene is sad (.sad on any parent)
+  const mouth = (o.mouth === 'open' ? '<ellipse class="mouth pm-smile" cx="30" cy="34" rx="3.2" ry="2.6" fill="#3A1A0A"/>' : '<path class="pm-smile" d="M25 33 Q30 37 35 33" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>') +
+    '<path class="pm-sad" d="M25 36 Q30 32 35 36" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>';
   return `<svg class="pp" viewBox="-6 -4 72 128" aria-hidden="true">${back}` +
     `<path d="M14 46 Q30 40 46 46 L54 118 Q30 124 6 118 Z" fill="${robe}"/><path d="M30 46 L30 118" stroke="${robe2}" stroke-width="1.4" opacity=".6"/>` +
     `<path d="M22 46 Q30 54 38 46" fill="none" stroke="#F4EBD0" stroke-width="1.6" opacity=".8"/>${armL}${armR}` +

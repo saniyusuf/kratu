@@ -6,6 +6,7 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
+import { GOODS, ACT_MS, deal } from './market';
 import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
 
 export function moreGames(c: any): Record<string, any> {
@@ -72,24 +73,30 @@ export function moreGames(c: any): Record<string, any> {
     'j-dillali': { title: 'Dillalin kasuwa', cls: 'dillali', scene: 'kurmi',
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: (r) => r.right >= 6 ? 'Named everything the dillali held up: those groups would be skipped.' : 'Named ' + r.right + ' of 6: the groups with misses would be taught.',
+      /* Dillalin kasuwa (Sani 2026-10-22): the thing for sale is drawn, not a photo. Named right: a buyer takes it the
+         way people do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) and the crowd
+         claps. Wrong: the thing goes back off to the left and everyone looks sad; its name is never said. */
       play(run, done) {
         const G = [['ram', 'goat', 'chicken', 'camel', 'donkey'], ['millet', 'groundnut', 'mango', 'bread', 'onion'], ['calabash', 'pot', 'mat', 'kettle', 'broom'], ['kaftan', 'cap', 'turban', 'shoe', 'umbrella']];
         const items = shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6), among = G.flat();
         let r = 0, sold = 0;
-        const st = h('<div class="dstage"><div class="dillw">' + A.dillali() + '<div class="board"><img alt=""><b class="stamp">SOLD</b></div></div><div class="crowd">' + A.crowd(5) + '</div></div>');
+        const st = h('<div class="dstage mk"><div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="goods"></div><div class="dealw"></div></div><div class="crowd">' + A.crowd(4) + '</div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
         const box = micBox(run); st.appendChild(box);
         run.scr.appendChild(st); run.scr.appendChild(tally);
-        run.clock(150, () => done({ right: sold, part: sold / 6 }));
+        run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
-        const board = st.querySelector('.board'), crowdEl = st.querySelector('.crowd');
+        const goods = st.querySelector('.goods'), dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
         function next() {
-          const w = items[r]; board.classList.remove('sold', 'up'); board.querySelector('img').src = K.pic[w]; void board.offsetWidth; board.classList.add('up');
+          const w = items[r]; st.classList.remove('sad'); dealw.innerHTML = ''; goods.className = 'goods'; goods.innerHTML = GOODS[w].svg(); void goods.offsetWidth; goods.classList.add('up');
           speakRound(run, box, w, among, () => {
-            sold++; run.good(board); tally.querySelector('b').textContent = sold; say(K.en[w], run); board.classList.add('sold'); bump(crowdEl, 'clapping', 1400); sfx('yay'); step();
-          }, () => { board.classList.add('nosale'); bump(crowdEl, 'grumble', 1400); step(); });
+            sold++; run.good(goods); tally.querySelector('b').textContent = sold; goods.classList.add('taken');
+            dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600); sfx('yay');
+            later(run, 60, () => dealw.firstElementChild && dealw.firstElementChild.classList.add('run'));
+            step(ACT_MS[GOODS[w].act] || 3000);
+          }, () => { goods.classList.add('back'); st.classList.add('sad'); step(2200); });
         }
-        function step() { later(run, 1700, () => { r++; if (r >= 6) done({ right: sold, finished: true, part: sold / 6 }); else next(); }); }
+        function step(ms) { later(run, ms, () => { r++; if (r >= 6) done({ right: sold, finished: true, part: sold / 6 }); else next(); }); }
         next();
       } },
 

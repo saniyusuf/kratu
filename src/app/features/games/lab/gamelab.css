@@ -1051,3 +1051,44 @@
 @keyframes g-shard{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(220deg)}}
 .glab .spslots.wrongw span{border-color:#E53935!important;animation:g-shk .4s}
 @keyframes g-shk{25%{transform:translateX(-1cqw)}75%{transform:translateX(1cqw)}}
+/* Dillalin kasuwa with drawn goods and real sales (Sani 2026-10-22) */
+.glab .pm-sad{opacity:0;transition:opacity .3s}.glab .pm-smile{transition:opacity .3s}
+.glab .dstage.sad .pm-smile{opacity:0}.glab .dstage.sad .pm-sad{opacity:1}
+.glab .dstage.sad .crowd .pp-w,.glab .dstage.sad .dillw{transform:translateY(.6cqw) rotate(-3deg);transition:transform .4s}
+.glab .dstage.mk .dillw{left:0;width:19cqw;height:34cqw}
+.glab .dstage.mk .stall{position:absolute;left:20cqw;bottom:0;width:36cqw;height:30cqw}
+.glab .dstage.mk .stall::before{content:"";position:absolute;left:4cqw;right:4cqw;bottom:0;height:3cqw;border-radius:1cqw;background:linear-gradient(#A0682E,#6B4422);box-shadow:0 .6cqw 0 rgba(30,20,8,.3)}
+.glab .goods{position:absolute;left:5cqw;bottom:2cqw;width:26cqw;height:24cqw;opacity:0;transform:translateY(4cqw) scale(.9)}
+.glab .goods svg{width:100%;height:100%;display:block;overflow:visible}
+.glab .goods.up{opacity:1;transform:none;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .3s}
+.glab .goods.taken{opacity:0;transition:opacity .25s}
+.glab .goods.back{opacity:0;transform:translateX(-46cqw);transition:transform 1.3s ease-in,opacity .5s .8s}
+.glab .dealw{position:absolute;inset:0;pointer-events:none}
+.glab .deal{position:absolute;left:6cqw;bottom:2cqw;height:26cqw;display:flex;align-items:flex-end;gap:.5cqw}
+.glab .deal .buyer{display:block;width:9.5cqw;height:18cqw;position:relative}.glab .deal svg{width:100%;height:100%;display:block;overflow:visible}
+.glab .deal.run{animation:g-dealgo 2.4s ease-in 1s forwards}@keyframes g-dealgo{to{transform:translateX(75cqw)}}
+.glab .deal.act-lead .animal{display:block;width:17cqw;height:15cqw}.glab .deal.act-lead .rope{display:block;width:3cqw;height:.3cqw;background:#6B4422;margin-bottom:9cqw;margin-left:-1cqw;margin-right:-1cqw}
+.glab .deal.act-lead{flex-direction:row-reverse}.glab .deal.act-lead.run{animation-delay:.4s;animation-duration:2.6s}
+.glab .deal.act-head .prop,.glab .deal.act-umbrella .brolly{position:absolute;left:1cqw;bottom:16.5cqw;width:8cqw;height:7cqw}
+.glab .deal.act-head .prop{animation:g-lift .5s ease-out both}@keyframes g-lift{from{transform:translateY(8cqw) scale(.8)}}
+.glab .deal.act-arm .prop{display:block;width:6cqw;height:6cqw;margin-left:-3cqw;margin-bottom:5cqw}
+.glab .deal.act-hand .prop{display:block;width:6.5cqw;height:6.5cqw;margin-left:-2cqw;margin-bottom:2cqw}
+.glab .deal.act-eat .prop{position:absolute;left:4.6cqw;bottom:11.5cqw;width:6cqw;height:6cqw}.glab .deal.act-eat.run .prop{animation:g-bite .5s ease-in-out 3 alternate}@keyframes g-bite{to{transform:scale(.7) translateX(-1cqw)}}
+.glab .deal.act-eat.run{animation-delay:1.6s}
+.glab .deal.act-sweep .prop{display:block;width:8cqw;height:9cqw;margin-left:-3cqw;transform-origin:50% 10%;transform:rotate(-30deg)}
+.glab .deal.act-sweep.run .prop{animation:g-sweep .45s ease-in-out 4 alternate}@keyframes g-sweep{from{transform:rotate(-40deg)}to{transform:rotate(-10deg) translateX(1.5cqw)}}
+.glab .deal.act-sweep.run{animation-delay:1.8s}
+.glab .deal.act-wear.run .buyer{animation:g-turn .9s ease-in-out 2}@keyframes g-turn{50%{transform:scaleX(-1)}}
+.glab .deal.act-wear.run{animation-delay:1.8s}.glab .deal.act-wear .feet{position:absolute;left:1.5cqw;bottom:-1cqw;width:7cqw;height:5cqw}
+.glab .deal.act-umbrella .brolly{width:13cqw;height:8cqw;left:-2cqw;bottom:17cqw;transform-origin:50% 100%;animation:g-open .5s .2s cubic-bezier(.3,1.5,.5,1) both}@keyframes g-open{from{transform:scaleX(.1)}}
+.glab .deal.act-pray{left:2cqw;width:32cqw;height:26cqw}.glab .deal.act-pray .prayer{width:100%;height:100%}
+.glab .prayer .mat-flat{transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0)}
+.glab .prayer .p-stand,.glab .prayer .p-bow,.glab .prayer .p-sujud{opacity:0}
+.glab .deal.act-pray.run{animation:g-prayout .6s ease-in 4.4s forwards}@keyframes g-prayout{to{opacity:0}}
+.glab .deal.act-pray.run .mat-flat{animation:g-mat 4.6s ease-in-out forwards}@keyframes g-mat{0%{transform:scaleX(0)}10%,88%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.glab .deal.act-pray.run .p-stand{animation:g-p1 4.6s linear forwards}@keyframes g-p1{0%,10%{opacity:0}12%,30%{opacity:1}32%,74%{opacity:0}76%,100%{opacity:1}}
+.glab .deal.act-pray.run .p-bow{animation:g-p2 4.6s linear forwards}@keyframes g-p2{0%,30%{opacity:0}32%,44%{opacity:1}46%,100%{opacity:0}}
+.glab .deal.act-pray.run .p-sujud{animation:g-p3 4.6s linear forwards}@keyframes g-p3{0%,44%{opacity:0}46%,74%{opacity:1}76%,100%{opacity:0}}
+.glab .dstage.mk>.mic{top:-3cqw;bottom:auto;right:0}
+.glab .dstage.mk .crowd{left:57cqw}
+@media (prefers-reduced-motion:reduce){.glab .deal,.glab .deal *{animation-duration:.01s!important}}
