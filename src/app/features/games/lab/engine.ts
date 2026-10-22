@@ -50,6 +50,27 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     o.type = 'sine'; o.frequency.setValueAtTime(big ? 140 : 220, t); o.frequency.exponentialRampToValueAtTime(big ? 60 : 110, t + .25);
     g.gain.setValueAtTime(.6, t); g.gain.exponentialRampToValueAtTime(.001, t + .35); o.connect(g).connect(ac.destination); o.start(t); o.stop(t + .4);
   }
+  /* Kwale-kwale's sounds: the paddle pulling through water (filtered noise strokes), and a canoe going down (gurgle) */
+  function noiseBuf(a, secs) { var n = Math.floor(a.sampleRate * secs), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (var i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; }
+  function paddleSound(a) {
+    for (var k = 0; k < 4; k++) { var t = a.currentTime + .05 + k * .32, src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+      src.buffer = noiseBuf(a, .4); f.type = 'bandpass'; f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(300, t + .3); f.Q.value = 1.2;
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.35, t + .05); g.gain.exponentialRampToValueAtTime(.0001, t + .32); src.connect(f).connect(g).connect(a.destination); src.start(t); src.stop(t + .4); }
+  }
+  function sinkSound(a) {
+    for (var k = 0; k < 7; k++) { var t = a.currentTime + .05 + k * .16 + Math.random() * .05, o = a.createOscillator(), g = a.createGain(), f0 = 520 - k * 55;
+      o.type = 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f0 * 1.6, t + .06); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.18, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + .09);
+      o.connect(g).connect(a.destination); o.start(t); o.stop(t + .1); }
+    var src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t0 = a.currentTime; src.buffer = noiseBuf(a, 1.2); f.type = 'lowpass'; f.frequency.value = 500;
+    g.gain.setValueAtTime(.2, t0); g.gain.exponentialRampToValueAtTime(.0001, t0 + 1.1); src.connect(f).connect(g).connect(a.destination); src.start(t0); src.stop(t0 + 1.2);
+  }
+  function leapFish() { return '<svg viewBox="0 0 30 14" aria-hidden="true"><path d="M2 7 Q10 0 20 5 L28 1 L26 7 L28 13 L20 9 Q10 14 2 7 Z" fill="#7FA6B8"/><path d="M8 5 Q13 3 18 5" stroke="#E6F1F6" stroke-width="1" fill="none"/><circle cx="6" cy="6.4" r="1" fill="#1A2A30"/></svg>'; }
+  function fisherman() {
+    return '<svg viewBox="0 0 60 50" aria-hidden="true"><path d="M2 46 Q20 40 40 46 Z" fill="#8B6A3A" opacity=".6"/>' +
+      '<path d="M18 44 L20 28 Q24 24 28 28 L30 44 Z" fill="#2F6B9A"/><circle cx="24" cy="22" r="4" fill="#5E3A1C"/><path d="M16 20 Q24 10 32 20 Z" fill="#D9B46A"/>' +
+      '<path d="M27 30 L36 24" stroke="#2F6B9A" stroke-width="3" stroke-linecap="round"/><path d="M34 26 L56 6" stroke="#6B4422" stroke-width="1.2"/>' +
+      '<g class="line"><path d="M56 6 Q58 26 57 40" stroke="#fff" stroke-width=".5" fill="none" opacity=".8"/><circle class="float" cx="57" cy="40" r="1.4" fill="#E53935"/></g></svg>';
+  }
   /* one sound at a time, like the rest of the app: every line waits for the one before */
   function say(src, run) { if (!src || gone || (run && run.dead)) return Promise.resolve(false); return io.say(src).then(function (ok) { return ok && !gone && !(run && run.dead); }); }
   function lailaBtn(cls, label) { return '<button type="button" class="glaila ' + (cls || '') + '"><span class="lsvg">' + K.laila + '</span>' + (label ? '<small>' + label + '</small>' : '') + '</button>'; }
@@ -333,19 +354,34 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     'j-karatu': { title: 'Kwale-kwale', cls: 'pondbg', instr: ['Ka karanta kalmar da ke cikin kowane kwale-kwale, sannan ka danna wadda ta dace da hoton.', 'Ki karanta kalmar da ke cikin kowane kwale-kwale, sannan ki danna wadda ta dace da hoton.'], ask: ['Ka iya karanta kalmomi da Turanci?', 'Kin iya karanta kalmomi da Turanci?'],
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: function (r) { return r.right >= 5 && !r.misses ? 'Read every word: the full game moves on to longer words.' : 'Read ' + r.right + ' of 5: Karatu would start at short words.'; },
+      /* Kwale-kwale (Sani 2026-10-22): one answer. The right canoe paddles off fast through a splash with the sound of
+         the paddle in the water; a wrong one sinks with bubbles and a gurgle, and the round is marked wrong. Fish leap
+         now and then, and a fisherman sits on the far bank with his line in the water. */
       play: function (run, done) {
-        var R = shuffle([['cat', ['CAT', 'CAR', 'CUP']], ['dog', ['DOG', 'DIG', 'LOG']], ['sun', ['SUN', 'BUN', 'SUB']], ['bus', ['BUS', 'BUT', 'BUN']], ['cup', ['CUP', 'CAP', 'CUT']]]), r = 0;
+        var R = shuffle([['cat', ['CAT', 'CAR', 'CUP']], ['dog', ['DOG', 'DIG', 'LOG']], ['sun', ['SUN', 'BUN', 'SUB']], ['bus', ['BUS', 'BUT', 'BUN']], ['cup', ['CUP', 'CAP', 'CUT']]]), r = 0, got = 0, busy = false;
         var bank = h('<div class="bank2"><img alt=""></div>'), river = h('<div class="canal2"></div>');
-        run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: r, part: r / 5 }); });
+        var life = h('<div class="riverlife"><span class="fisher">' + fisherman() + '</span>' + [0, 1, 2].map(function (k) { return '<span class="leap l' + k + '">' + leapFish() + '</span>'; }).join('') + '</div>');
+        run.scr.appendChild(life); run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: got, part: got / 5, misses: run.miss }); });
         run.remind = function () { say(line(gid, 'how'), run); };
+        function audio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } }
+        function freeze(c) { var m = getComputedStyle(c).transform; c.style.animation = 'none'; c.style.transform = m === 'none' ? '' : m; void c.offsetWidth; }
+        function splash(c, cls) { var cr = io.rect(c), rr = io.rect(river), sp = h('<span class="' + cls + '" style="left:' + (cr.left - rr.left + cr.width * .45) + 'px;top:' + (cr.top - rr.top + cr.height * .7) + 'px"><i></i><i></i><i></i><b></b><b></b><b></b></span>'); river.appendChild(sp); setTimeout(function () { sp.remove(); }, 1600); }
         function round() {
-          var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
+          busy = false; var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (20 + k * 2.5) + 's;animation-delay:-' + (k * 6.5) + 's">' + KART.canoe(w) + '</button>');
+            var c = h('<button type="button" class="canoe2" style="top:' + (6 + k * 32) + '%;animation-duration:' + (23 + k * 2.8) + 's;animation-delay:-' + (k * 7.4) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
-              if (run.dead || c.classList.contains('ok')) return;
-              if (w === item[0].toUpperCase()) { run.good(); c.classList.add('ok'); say(K.en[item[0]], run); r++; if (r >= 5) run.later(900, function () { done({ right: 5, finished: true, misses: run.miss }); }); else run.later(1000, round); }
-              else run.bad(c);
+              if (run.dead || busy) return; busy = true;
+              if (w === item[0].toUpperCase()) {
+                run.good(c); got++; freeze(c); c.classList.add('row'); splash(c, 'splash');
+                var a = audio(); if (a) paddleSound(a);
+                requestAnimationFrame(function () { c.style.transition = 'transform 1.4s cubic-bezier(.5,0,.8,.4)'; c.style.transform = 'translateX(150cqw)'; });
+              } else {
+                run.bad(); freeze(c); c.classList.add('sink'); splash(c, 'bubbles');
+                var b = audio(); if (b) sinkSound(b);
+                requestAnimationFrame(function () { c.style.transition = 'transform 1.6s ease-in, opacity 1.2s ease-in .4s'; c.style.transform += ' translateY(9cqw) rotate(-14deg)'; c.style.opacity = '0'; });
+              }
+              r++; if (r >= 5) run.later(1900, function () { done({ right: got, finished: true, part: got / 5, misses: run.miss }); }); else run.later(1900, round);
             };
             river.appendChild(c);
           });

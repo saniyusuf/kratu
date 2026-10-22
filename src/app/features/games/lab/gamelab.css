@@ -1019,3 +1019,22 @@
 .glab .plate.miss .pb{transform:rotateX(180deg)!important}.glab .plate.miss .pf{transform:none!important}
 .glab .scr.drum .krow{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.glab .kband *,.glab .dancers *{animation:none!important}}
+/* Kwale-kwale (Sani 2026-10-22): paddle off through a splash, or sink with bubbles; fish leap; a fisherman on the far bank */
+.glab .canoe2.row .canoe3 .paddle{animation:g-row .28s ease-in-out infinite!important}@keyframes g-row{50%{transform:rotate(22deg)}}
+.glab .splash,.glab .bubbles{position:absolute;width:0;height:0;pointer-events:none;z-index:3}
+.glab .splash i{position:absolute;left:-3cqw;top:-1cqw;width:6cqw;height:2cqw;border-radius:50%;border:.4cqw solid rgba(255,255,255,.85);animation:g-ripple .9s ease-out forwards}
+.glab .splash i:nth-child(2){animation-delay:.2s}.glab .splash i:nth-child(3){animation-delay:.4s}
+@keyframes g-ripple{from{transform:scale(.4);opacity:1}to{transform:scale(3);opacity:0}}
+.glab .splash b{position:absolute;left:0;top:0;width:.9cqw;height:.9cqw;border-radius:50%;background:#E3F4FB;animation:g-drop .8s ease-out forwards}
+.glab .splash b:nth-of-type(1){--dx:-4cqw}.glab .splash b:nth-of-type(2){--dx:-1cqw}.glab .splash b:nth-of-type(3){--dx:-6cqw}
+@keyframes g-drop{0%{transform:translate(0,0);opacity:1}50%{transform:translate(calc(var(--dx) * .6),-4cqw)}100%{transform:translate(var(--dx),0);opacity:0}}
+.glab .bubbles i,.glab .bubbles b{position:absolute;left:0;top:0;width:1.2cqw;height:1.2cqw;border-radius:50%;border:.3cqw solid rgba(255,255,255,.9);animation:g-bub 1.4s ease-out forwards}
+.glab .bubbles i:nth-child(2){left:2cqw;animation-delay:.2s}.glab .bubbles i:nth-child(3){left:-2cqw;animation-delay:.35s}.glab .bubbles b:nth-of-type(1){left:1cqw;animation-delay:.5s}.glab .bubbles b:nth-of-type(2){left:-1cqw;animation-delay:.7s}.glab .bubbles b:nth-of-type(3){left:3cqw;animation-delay:.9s}
+@keyframes g-bub{from{transform:translateY(2cqw) scale(.6);opacity:0}30%{opacity:1}to{transform:translateY(-4cqw) scale(1.2);opacity:0}}
+.glab .riverlife{position:absolute!important;inset:0;z-index:0!important;pointer-events:none}
+.glab .riverlife .fisher{position:absolute;right:3cqw;top:13cqw;width:10cqw;height:8cqw;opacity:.9}.glab .riverlife svg{width:100%;height:100%;display:block;overflow:visible}
+.glab .riverlife .float{animation:g-float 2.4s ease-in-out infinite}@keyframes g-float{50%{transform:translateY(1px)}}
+.glab .riverlife .leap{position:absolute;width:4cqw;height:2cqw;opacity:0;animation:g-leap 9s ease-in-out infinite}
+.glab .riverlife .l0{left:20cqw;top:34cqw}.glab .riverlife .l1{left:60cqw;top:44cqw;animation-delay:3s}.glab .riverlife .l2{left:40cqw;top:52cqw;animation-delay:6s}
+@keyframes g-leap{0%,86%{opacity:0;transform:translate(0,0) rotate(-30deg)}88%{opacity:1}93%{transform:translate(3cqw,-3.5cqw) rotate(10deg)}98%{opacity:1;transform:translate(6cqw,0) rotate(40deg)}100%{opacity:0;transform:translate(6cqw,.5cqw) rotate(40deg)}}
+@media (prefers-reduced-motion:reduce){.glab .riverlife *{animation:none!important}}
