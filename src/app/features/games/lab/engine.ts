@@ -222,8 +222,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(r); } else question(); };
     if (r.learn) say(K.learn, res);
     else {
-      var fresh = io.firstTime ? io.firstTime() : false;   // the first meeting: this game is on the home page from now on
-      sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { return ok && fresh ? say(K.unlock, res) : ok; }).then(function (ok) { if (ok) say(K.go, res); }); });
+      if (io.firstTime) io.firstTime();   // remembered as met; no home-page shelf (Sani 2026-10-23: removed)
+      sfx('yay'); res.later(700, function () { say(K.kudos, res).then(function (ok) { if (ok) say(K.go, res); }); });
     }
   }
 

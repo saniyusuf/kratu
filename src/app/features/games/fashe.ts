@@ -434,7 +434,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       await wait(400);
       this.session.owedGame.set(false);
       if (this.stopped) return;
-      if (this.progress.unlockGame('fashe')) await this.sayMaybe('s_game_open');   // the first meeting: on the home page from now on
+      this.progress.unlockGame('fashe');                    // remembered as met (no home-page shelf: Sani 2026-10-23)
       if (this.stopped) return;
       this.progress.passLetters(ALL.length);                // the whole alphabet: Haruffa is done
       this.session.category.set('animals'); this.router.navigate(['/abubuwa/koyo']);   // straight on to Abubuwa
@@ -453,7 +453,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     if (this.outOfTime) await this.sayMaybe('s_pop_timeup');   // "Lokaci ya ƙare. Mu koyi haruffa tukuna."
     await wait(400);
     if (this.stopped) return;
-    if (this.progress.unlockGame('fashe')) { await this.sayMaybe('s_game_open'); if (this.stopped) return; }
+    this.progress.unlockGame('fashe');
     if (learned) { this.router.navigate(['/home']); return; }
     this.session.owedGame.set(true);
     this.progress.passLetters(ALL.indexOf(startL));         // the letters before it are known: never taught again
