@@ -66,9 +66,11 @@ export class App implements OnInit {
     this.zoom.start(); this.nav.start();
     // on a tablet the browser's address and status bars ate a seventh of the height, and the whole layout shrank with it
     // (Sani 2026-10-23, 7-inch Samsung): a touch in the browser takes the app full screen, again after the child swipes
-    // out of it. Android only locks the orientation in full screen, so the lock follows it.
+    // out of it. Android only locks the orientation in full screen, so the lock follows it. Bigger screens keep what
+    // they had: the first click asks for landscape, nothing more.
     const app = matchMedia('(display-mode: fullscreen), (display-mode: standalone)');
-    document.addEventListener('click', (e) => {
+    if (!ZoomService.small()) document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
+    else document.addEventListener('click', (e) => {
       if ((e as PointerEvent).pointerType !== 'touch' || app.matches || document.fullscreenElement || !document.fullscreenEnabled) return;
       document.documentElement.requestFullscreen({ navigationUI: 'hide' })
         .then(() => (screen.orientation as any)?.lock?.('landscape'))

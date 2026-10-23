@@ -77,18 +77,23 @@ export class ZoomService {
    * Laila small in a sea of paper (Sani 2026-10-23). So a new screen is also GROWN until its content fills the screen:
    * up to GROW times the plain fit, leaving HEAD of the height free so a hint appearing later rarely has to shrink it.
    * Only a new screen (or a resize) grows; a change inside a screen may only shrink it, never jump it bigger.
+   * Only on a small touch screen (a phone or a 7-inch tablet): a laptop or a big tablet keeps the plain fit it always
+   * had (Sani 2026-10-23).
    */
   private static readonly GROW = 1.6;
   private static readonly HEAD = 0.86;
+  /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
+  static small(): boolean { return matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) <= 640; }
   fit(force = true): void {
     const root = document.documentElement.style, prev = this.z();
     const base = Math.min(innerWidth / 960, innerHeight / 600);
     const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
-    const floor = base * 0.8, cap = base * ZoomService.GROW;
+    // nothing may ever be cut off or need scrolling: the floor is only there to stop a runaway measurement
+    const floor = base * 0.6, cap = base * ZoomService.GROW;
     let z = force ? base : prev; set(z);
     // grow: the content's size against the screen's, a few passes, because sizes given in frame units (cqw/cqh) stay
     // put on screen while everything given in pixels grows with the zoom
-    if (force) for (let i = 0; i < 8; i++) {
+    if (force && ZoomService.small()) for (let i = 0; i < 8; i++) {
       const g = this.room(); if (g <= 1.01) break;
       const nz = Math.min(cap, z * g); if (nz - z < 0.004) break;
       z = nz; set(z);
