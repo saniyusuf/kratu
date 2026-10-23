@@ -88,7 +88,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       laila: LAILA_SVG, allo: ALLO_SVG,
     };
     this.game = playGame(this.frame().nativeElement, id, {
-      K, female: this.session.g() === 'f', tester: this.session.debug,
+      K, female: this.session.g() === 'f', tester: this.session.debug && (() => { try { return localStorage.getItem('kratu_tester') === '1'; } catch { return false; } })(),   // the ✓ ✗ answer buttons: a desk without a microphone only, never on a tablet (Sani 2026-10-23)
       say: (src) => this.sfxP.then(() => this.gone ? false : src.startsWith('assets/') ? this.bus.playRaw(src) : this.bus.play(this.bus.gk(src))).catch(() => false),
       hush: () => this.bus.stopAll(),
       sfx: (src) => { this.sfxP = this.bus.playRaw(src).catch(() => false); },
