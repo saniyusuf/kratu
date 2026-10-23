@@ -46,7 +46,7 @@ export function moreGames(c: any): Record<string, any> {
         const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
         // the emir at his gate with his court about him: a dogari each side, his attendant fanning him; the yan lifidi wait behind the band
         const st = h('<div class="dstage"><div class="lifw"><span>' + lifidi(0) + '</span><span>' + lifidi(1) + '</span><span>' + lifidi(2) + '</span></div>' +
-          '<div class="sallahw">' + sallahBand() + '</div>' +
+          '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +
           '<div class="courtw"><span class="cw dg l">' + dogari(0) + '</span><div class="emirw">' + emirThrone() + '</div><span class="cw fk">' + maiFanka() + '</span><span class="cw dg r">' + dogari(1) + '</span></div>' +
           '<div class="rlane"></div></div>');
         const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
@@ -56,17 +56,36 @@ export function moreGames(c: any): Record<string, any> {
         run.remind = () => say(line('j-durbar', 'how'), run);
         const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), court = st.querySelector('.courtw'), bandEl = st.querySelector('.sallahw');
         const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // nothing to press here: the microphone opens by itself
+        const scene = run.scr.closest('.glab')?.querySelector('.gbg>.scene');   // the painted palace: its gate, its guards and the children on the square
+        posts();
         /** a horseman gallops in with his letter and reins in before the emir */
         function arrive(L, look) {
-          lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
+          lane.innerHTML = ''; lane.classList.remove('enter'); if (scene) scene.classList.remove('open', 'cheer'); st.classList.remove('open'); posts();   // the gate swings shut behind the last one
+          const rw = h('<div class="rw">' + durbarRider(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
           rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1); return rw;
         }
         /** right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22).
-            The band answers only once the letter has been said: kakaki, drums and the women's guda. */
+            The band answers only once the letter has been said: kakaki, drums and the women's guda, and the children wave.
+            Then (Sani 2026-10-23) the guards haul the gate open and he rides in behind the court, into the palace. */
         function greet(rw) {
-          rw.classList.remove('listen'); rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); }); later(run, 3200, () => bandEl.classList.remove('play'));
+          rw.classList.remove('listen'); rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); if (scene) scene.classList.add('cheer'); }); later(run, 3200, () => bandEl.classList.remove('play'));
           later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); court.classList.add('pleased'); });
-          later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); hooves(1.2, true); });
+          later(run, 2400, () => { if (scene) scene.classList.add('open'); st.classList.add('open'); });   // the guards haul the gate open
+          later(run, 3000, () => { rw.classList.remove('kneel'); toGate(rw); lane.classList.add('enter'); rw.classList.add('gallop', 'enter'); hooves(1.4, true); });
+        }
+        /** the gate guards stand at the gate's posts (x 61 and 99 of the drawing), their feet on its threshold */
+        function posts() {
+          const g = gateAt(), d = st.getBoundingClientRect(), k = st.offsetWidth / (d.width || 1); if (!g) return;
+          st.querySelectorAll('.gg').forEach((el, n) => { el.style.left = ((g.x(n ? 99 : 61) - d.left) * k - el.offsetWidth / 2).toFixed(1) + 'px'; el.style.bottom = ((d.bottom - g.y(70)) * k).toFixed(1) + 'px'; });
+        }
+        function gateAt() {
+          if (!scene) return null; const r = scene.getBoundingClientRect(), s = Math.max(r.width / 160, r.height / 100);
+          return { x: (v) => r.left + (r.width - 160 * s) / 2 + v * s, y: (v) => r.top + (r.height - 100 * s) / 2 + v * s };
+        }
+        /** where the gate's threshold is on screen: the scene is a 160×100 drawing sliced to fill, the gate's foot at (77, 70) */
+        function toGate(rw) {
+          const g = gateAt(); if (!g) return; const b = rw.getBoundingClientRect(), k = rw.offsetWidth / (b.width || 1), gx = g.x(77), gy = g.y(70);
+          rw.style.setProperty('--gx', ((gx - b.left - b.width / 2) * k).toFixed(1) + 'px'); rw.style.setProperty('--gy', ((gy - b.bottom) * k).toFixed(1) + 'px');
         }
         /*
          * The example first (Sani 2026-10-23: "when you start you teach the person how to say it"): Laila says it is an

@@ -1340,3 +1340,19 @@
 /* while the microphone listens on its own, the banner keeps flying a little harder and the letter breathes */
 .glab .scr.durbar .rw.listen .rider .cloth{animation-duration:.7s}
 .glab .scr.durbar .rw.listen .flagL{animation:g-lbreathe 1.2s ease-in-out infinite}@keyframes g-lbreathe{50%{transform:scale(1.07)}}
+/* Hawan Sallah (Sani 2026-10-23): a greeted horseman rides in behind the court and into the palace; the gate guards haul
+   the leaves open for him and the children along the square all wave. (The old exit used .go, which the app's teal
+   button style also matches: that was the circle round him as he left.) */
+.glab .scene .gl,.glab .scene .gr{transform-box:fill-box;transition:transform 1.1s ease-in-out}.glab .scene .gl{transform-origin:0 50%}.glab .scene .gr{transform-origin:100% 50%}
+.glab .scene.open .gl,.glab .scene.open .gr{transform:scaleX(.12)}
+.glab .scene .gring{transition:opacity .3s}.glab .scene.open .gring{opacity:0}
+.glab .scene .gguard{transform-box:fill-box;transform-origin:50% 100%;transition:transform 1.1s ease-in-out}.glab .scene.open .gguard{transform:translateX(-2.6px) rotate(-9deg)}
+.glab .scene .kids .arm4{opacity:0;transition:opacity .2s}.glab .scene .kids .wave4 .arm4,.glab .scene.cheer .kids .arm4{opacity:1}
+.glab .scene.cheer .kids .arm4{transform-box:fill-box;transform-origin:0 100%;animation:g-wave4 .35s ease-in-out infinite alternate}
+.glab .scene .kid{transform-box:fill-box}.glab .scene.cheer .kid{animation:g-khop .32s ease-in-out infinite alternate;animation-delay:var(--d)}@keyframes g-khop{to{transform:translateY(-1.4px)}}
+.glab .scr.durbar .rlane.enter{z-index:-1}
+.glab .scr.durbar .rw.enter{transform-origin:50% 100%;transform:translate(var(--gx,20cqw),var(--gy,-12cqw)) scale(.4);opacity:0;transition:transform 1.6s ease-in,opacity .5s 1.2s}
+@media (prefers-reduced-motion:reduce){.glab .scene.cheer .kids .arm4,.glab .scene.cheer .kid{animation:none}}
+.glab .scr.durbar .gg{position:absolute;left:30cqw;bottom:12cqw;width:5.6cqw;height:16.3cqw;z-index:0;transform-origin:50% 100%;transition:transform 1.1s ease-in-out}
+.glab .scr.durbar .gg svg{width:100%;height:100%;display:block}.glab .scr.durbar .gg.r svg{transform:scaleX(-1)}
+.glab .scr.durbar .dstage.open .gg.l{transform:translateX(-1.8cqw) rotate(-7deg)}.glab .scr.durbar .dstage.open .gg.r{transform:translateX(1.8cqw) rotate(7deg)}
