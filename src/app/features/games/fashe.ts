@@ -126,7 +126,10 @@ export class FasheScreen implements OnInit, OnDestroy {
     const set = () => {
       const bh = (el.querySelector('.bub') as HTMLElement | null)?.offsetHeight || 70;
       el.style.setProperty('--bh', bh + 'px');
-
+      // the climb is the sky's real height now that the game is full screen (Sani 2026-10-23), not the old 300px default
+      el.style.setProperty('--sky', el.clientHeight + 'px');
+      el.style.setProperty('--stage', ((el.querySelector('.stage') as HTMLElement | null)?.offsetHeight || 14) + 'px');
+      el.style.setProperty('--cur', ((el.querySelector('.curtain') as HTMLElement | null)?.offsetHeight || 20) + 'px');
     };
     set(); afterPaint().then(set);                          // again once the balloons have a size
     try { this.ro = new ResizeObserver(set); this.ro.observe(el); } catch { /* older webviews keep the first measure */ }
@@ -191,7 +194,8 @@ export class FasheScreen implements OnInit, OnDestroy {
    * inside the sky from the bottom of the rise to the top of it.
    */
   private mk(L: string, lane: number, wait = 0): Bub {
-    const dur = 19000 + Math.random() * 9000;
+    // the same speed as before on the taller full-screen sky: the climb's time grows with its height
+    const dur = (19000 + Math.random() * 9000) * Math.max(1, (this.skyRef().nativeElement.clientHeight || 300) / 300);
     return { id: ++this.seq, L, lane, x: 7 + lane * (86 / (SKY - 1)) + (Math.random() * 4 - 2), dur, wait, state: '' };
   }
   /**
