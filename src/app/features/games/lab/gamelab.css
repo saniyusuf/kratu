@@ -1337,3 +1337,6 @@
 .glab .scene .wave4 .arm4{transform-box:fill-box;transform-origin:0 100%;animation:g-wave4 .7s ease-in-out infinite alternate}@keyframes g-wave4{to{transform:rotate(30deg)}}
 @media (prefers-reduced-motion:reduce){.glab .scene .pen4,.glab .scene .wave4 .arm4{animation:none}}
 .glab .scr.durbar>.lrow span.miss{background:#EE7043;border:0}
+/* while the microphone listens on its own, the banner keeps flying a little harder and the letter breathes */
+.glab .scr.durbar .rw.listen .rider .cloth{animation-duration:.7s}
+.glab .scr.durbar .rw.listen .flagL{animation:g-lbreathe 1.2s ease-in-out infinite}@keyframes g-lbreathe{50%{transform:scale(1.07)}}

@@ -53,31 +53,63 @@ export function moreGames(c: any): Record<string, any> {
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(row); run.scr.appendChild(box);
-        run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
         const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), court = st.querySelector('.courtw'), bandEl = st.querySelector('.sallahw');
+        const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // nothing to press here: the microphone opens by itself
+        /** a horseman gallops in with his letter and reins in before the emir */
+        function arrive(L, look) {
+          lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
+          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1); return rw;
+        }
+        /** right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22).
+            The band answers only once the letter has been said: kakaki, drums and the women's guda. */
+        function greet(rw) {
+          rw.classList.remove('listen'); rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); }); later(run, 3200, () => bandEl.classList.remove('play'));
+          later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); court.classList.add('pleased'); });
+          later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); hooves(1.2, true); });
+        }
+        /*
+         * The example first (Sani 2026-10-23: "when you start you teach the person how to say it"): Laila says it is an
+         * example, a horseman rides in with A, Laila listens and the sample child (boy or girl, as the player) says "A",
+         * the horseman greets the emir; then "your turn". It is not scored and the clock has not started.
+         */
+        function example() {
+          say('sx_intro', run).then(() => {
+            if (run.dead) return; const rw = arrive('A', looks[looks.length - 1]);
+            later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true; lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec');
+              later(run, 600, () => say('sx_w_A', run).then(() => { if (run.dead) return;
+                lbtn.classList.remove('rec'); box.classList.remove('rec'); box.yay(); greet(rw);
+                later(run, 4300, () => say('sx_now', run).then(() => { if (run.dead) return; box.busy = false; lane.innerHTML = '';
+                  run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
+                  next(); }));
+              }));
+            });
+          });
+        }
+        /*
+         * Each letter after the example (Sani 2026-10-23): no press. The horseman reins in, the microphone opens by itself
+         * and listens for 6 s while his banner keeps flying. The right letter ends it at once; two wrong letters end it
+         * early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never shown or said.
+         */
         function next() {
-          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, looks[i % looks.length]) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
-          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1);
-          later(run, 1300, () => { rw.classList.remove('gallop'); row.children[i].classList.add('now');
-            speakRound(run, box, L, LET.map((x) => x), () => {
-              // right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22)
-              run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
-              // the band answers only once Laila has said the letter: kakaki, drums and the women's guda
-              rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); }); later(run, 3200, () => bandEl.classList.remove('play'));
-              later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); court.classList.add('pleased'); });
-              later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); hooves(1.2, true); });
-              later(run, 4300, step);
-            }, () => {
+          const L = L8[i], rw = arrive(L, looks[i % looks.length]);
+          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); row.children[i].classList.add('now');
+            box.listen(() => ({ target: L, until: L, maxWrong: 2, limit: 6000 }), (r) => {
+              box.busy = true; rw.classList.remove('listen');
+              if (r.value === L) {
+                box.yay(); run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
+                greet(rw); later(run, 4300, step); return;
+              }
               // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
-              missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
+              run.bad(); box.nope(); missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
               emir.classList.add('cross'); rw.classList.add('sad'); later(run, 450, groan);
               later(run, 1600, () => { rw.classList.add('turn', 'gallop', 'back'); hooves(1.2, true); }); later(run, 3200, step);
-            }, 1);
+            }, () => L);
+            box.busy = false; box.go();
           });
         }
         function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }
-        next();
+        example();
       } },
 
     /* ---------------- Abubuwa: the auctioneer ---------------- */
