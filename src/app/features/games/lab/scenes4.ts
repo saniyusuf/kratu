@@ -63,14 +63,31 @@ export const SCENES4: Record<string, string> = {
       '<path d="M-1 -4.6 L-1.2 -7.8 M1.6 -4.6 L1.8 -7.8" stroke="' + c + '" stroke-width=".7"/><ellipse cx=".3" cy="-8.4" rx="2.8" ry="1.1" fill="#C9A262" stroke="#8B6A3A" stroke-width=".25"/></g></g>').join('') +
     '<rect width="160" height="100" fill="#F3E6C8" opacity=".12"/></svg>',
 
-  /* Kasuwar shanu: the open cattle market, wooden rails, herds in the dust, a tamarind tree */
-  cattle: head + '<defs>' + lg('ca-sky', '#9CCFE8', '#EFE4C8') + lg('ca-g', '#D6AF74', '#B4854A') + '</defs>' +
-    '<rect width="160" height="100" fill="url(#ca-sky)"/>' + cloud(40, 12, .9) + cloud(130, 16, .6) +
-    '<path d="M0 58 Q40 52 80 56 T160 54 V64 H0 Z" fill="#B9A170" opacity=".6"/>' + neem(20, 60, 1.3, '#4F6B35', '#6A8A44') + neem(136, 58, 1, '#4F6B35', '#6A8A44') +
-    '<g opacity=".55">' + [50, 60, 70, 96, 108].map((x, i) => '<g transform="translate(' + x + ' 60)"><ellipse cx="0" cy="-2.4" rx="4" ry="2" fill="' + ['#8E3E1A', '#F1E2C0', '#6B2C14', '#9C4420', '#F1E2C0'][i] + '"/><path d="M-3 -1 v3 M3 -1 v3" stroke="#4E2E14" stroke-width=".7"/></g>').join('') + '</g>' +
+  /* Kasuwar shanu (Sani 2026-10-23): a cattle market in the morning haze. Lorries parked under a big baobab, mat
+     shelters with traders, herds coming in on the far side, a rail fence, hay and a water trough, egrets about the
+     cattle's feet and dust drifting over the yard. */
+  cattle: head + '<defs>' + lg('ca-sky', '#A9D6EC', '#E8E2CC', '#F3D9A8') + lg('ca-g', '#D9B57C', '#C49A5E', '#AE8248') + rg('ca-sun', '#FFF3C4', '#FFF3C4') + rg('ca-dust', '#F1DDB2', '#F1DDB2') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#ca-sky)"/><circle cx="124" cy="20" r="7" fill="#FFF6D6"/><circle cx="124" cy="20" r="22" fill="url(#ca-sun)" opacity=".6"/>' + cloud(34, 13, .8) + cloud(86, 9, .55) +
+    // far hills and the herds coming in along them
+    '<path d="M0 54 Q24 46 52 51 T104 48 T160 50 V62 H0 Z" fill="#B8A57E" opacity=".55"/>' +
+    '<g class="farherd" opacity=".6">' + [0, 5, 9, 14, 18, 23, 27].map((x, i) => '<g transform="translate(' + (6 + x) + ' 57)"><ellipse cx="0" cy="-1.6" rx="2.4" ry="1.3" fill="' + ['#8E3E1A', '#EDE6D8', '#6B2C14', '#EDE6D8', '#9C4420', '#EDE6D8', '#7A3416'][i] + '"/><path d="M-1.6 -.6 v2 M1.6 -.6 v2" stroke="#4E2E14" stroke-width=".45"/></g>').join('') + '</g>' +
+    // the baobab, and lorries parked in its shade
+    '<g transform="translate(140 62)"><path d="M-5 0 Q-6 -14 -4 -22 L4 -22 Q6 -14 5 0 Z" fill="#8A6A4A"/><path d="M-3 -21 Q-10 -26 -14 -32 M3 -21 Q10 -27 15 -31 M0 -22 Q0 -30 2 -35" stroke="#8A6A4A" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="-12" cy="-34" rx="8" ry="4" fill="#6E8A44"/><ellipse cx="14" cy="-33" rx="9" ry="4" fill="#6E8A44"/><ellipse cx="2" cy="-37" rx="8" ry="4" fill="#7E9A50"/></g>' +
+    [[96, '#2E6DA4'], [114, '#C62828']].map(([x, c]) => '<g transform="translate(' + x + ' 62)"><rect x="-1" y="-9" width="6" height="7" rx="1" fill="' + c + '"/><rect x="5" y="-8" width="11" height="6" fill="#8B5A2B"/><path d="M5 -8 h11" stroke="#5E3A1C" stroke-width=".6"/><rect x=".2" y="-8" width="3.4" height="2.6" fill="#BFE3F2"/>' +
+      '<circle cx="2" cy="-1.6" r="1.6" fill="#222"/><circle cx="12" cy="-1.6" r="1.6" fill="#222"/></g>').join('') +
+    // mat shelters with traders under them
+    [[28, 1], [58, .9]].map(([x, sc]) => '<g transform="translate(' + x + ' 64) scale(' + sc + ')"><path d="M-12 -12 L12 -12 L14 -9 L-14 -9 Z" fill="#C9A15E"/><path d="M-12 -12 L12 -12" stroke="#8B6A2E" stroke-width=".6"/><path d="M-11 -9 V0 M11 -9 V0" stroke="#6B4A2A" stroke-width="1"/>' +
+      '<g transform="translate(-5 0)"><path d="M-2 0 L-1.4 -5 L1.4 -5 L2 0 Z" fill="#2F6B9A"/><circle cy="-6.4" r="1.3" fill="#6E4426"/><path d="M-1.3 -7 q1.3 -1.6 2.6 0 Z" fill="#F4EBD0"/></g>' +
+      '<g transform="translate(4 0)"><path d="M-2 0 L-1.4 -5 L1.4 -5 L2 0 Z" fill="#EDE6D8"/><circle cy="-6.4" r="1.3" fill="#5E3A1C"/><path d="M-2.6 -6.8 L0 -9.4 L2.6 -6.8 Z" fill="#D9B464"/></g></g>').join('') +
+    // the yard: rail fence, hay, a water trough
     '<path d="M0 64 H160 V100 H0 Z" fill="url(#ca-g)"/>' +
-    '<g stroke="#7A4A22" stroke-width="1.4"><path d="M0 70 H160 M0 75 H160"/>' + [6, 30, 54, 78, 102, 126, 150].map((x) => '<path d="M' + x + ' 66 V78"/>').join('') + '</g>' +
-    '<g fill="#C9A06A" opacity=".5"><ellipse cx="40" cy="90" rx="22" ry="2"/><ellipse cx="128" cy="94" rx="20" ry="2"/></g></svg>',
+    '<g stroke="#7A4A22" stroke-width="1.2" stroke-linecap="round"><path d="M0 67.5 H160 M0 71 H160"/>' + [4, 22, 40, 58, 76, 94, 112, 130, 148].map((x) => '<path d="M' + x + ' 65 V73"/>').join('') + '</g>' +
+    '<g fill="#D9BE6A"><path d="M10 76 Q16 70 24 76 Z"/><path d="M134 78 Q141 71 150 78 Z"/></g><g stroke="#B89A44" stroke-width=".4"><path d="M13 75 l3 -3 M18 75 l2 -3.4 M137 77 l3 -3 M143 77 l2 -3.6"/></g>' +
+    '<g transform="translate(70 78)"><path d="M-8 0 L8 0 L7 3 L-7 3 Z" fill="#7C858F"/><ellipse cx="0" cy="0" rx="8" ry="1.2" fill="#8FC3D6"/></g>' +
+    // hoof-scuffed ground and drifting dust
+    '<g fill="#B88E54" opacity=".35"><ellipse cx="30" cy="88" rx="10" ry="1"/><ellipse cx="96" cy="92" rx="14" ry="1.2"/><ellipse cx="140" cy="86" rx="8" ry=".9"/><ellipse cx="60" cy="96" rx="12" ry="1"/></g>' +
+    '<g class="dust4"><ellipse cx="40" cy="78" rx="26" ry="5" fill="url(#ca-dust)" opacity=".7"/><ellipse cx="118" cy="82" rx="30" ry="6" fill="url(#ca-dust)" opacity=".6"/></g></svg>',
 
   /* Ƙirgen shanu: a Fulani camp at dusk, grass huts and calabashes on their stand */
   camp: head + '<defs>' + lg('cp-sky', '#5B3A7A', '#E0714A', '#F6C177') + lg('cp-g', '#B98A50', '#8E6234') + rg('cp-sun', '#FFD27A', '#FFD27A') + '</defs>' +

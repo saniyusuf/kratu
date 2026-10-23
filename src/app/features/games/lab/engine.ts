@@ -233,18 +233,21 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 && !r.misses ? 'Knew every word: those sets would be skipped.' : 'Knew ' + r.right + ' of 6: the sets with misses would be taught.'; },
       play: function (run, done) {
-        var words = shuffle(['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair']), r = 0, target;
+        // six casts, one touch each (Sani 2026-10-23: a miss is part of the game): a wrong fish slips off the hook and the
+        // shoal darts away, and the next cast comes; the right one goes into the net
+        var words = shuffle(['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair']), r = 0, n = 0, target, busy = false;
         var pond = h('<div class="pond2"></div>'), net = h('<div class="net">🥅 <b>0</b> / 6</div>');
         run.scr.appendChild(pond); run.scr.appendChild(net); run.clock(120, function () { done({ right: r, part: r / 6 }); });
         run.remind = function () { say(K.en[target], run); };
         function round() {
-          pond.innerHTML = ''; target = words[r]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 2)));
+          pond.innerHTML = ''; pond.classList.remove('scared'); busy = false; target = words[n]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 2)));
           opts.forEach(function (w, k) {
             var f = h('<button type="button" class="fish2 fish3" style="top:' + (k * 34) + '%;animation-duration:' + (24 + k * 3) + 's;animation-delay:-' + (k * 8) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
             f.onclick = function () {
-              if (f.classList.contains('caught')) return;
-              if (w === target) { run.good(); f.classList.add('caught'); r++; net.querySelector('b').textContent = r; if (r >= 6) run.later(900, function () { done({ right: 6, finished: true, misses: run.miss }); }); else run.later(900, round); }
-              else run.bad(f);
+              if (busy || run.dead) return; busy = true; n++;
+              if (w === target) { run.good(); f.classList.add('caught'); r++; net.querySelector('b').textContent = r; }
+              else { run.bad(); f.classList.add('slip'); pond.classList.add('scared'); }
+              run.later(w === target ? 900 : 1600, function () { if (n >= 6) done({ right: r, finished: r === 6, part: r / 6, misses: run.miss }); else round(); });
             };
             pond.appendChild(f);
           });
@@ -328,7 +331,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           b.onclick = function () {
             if (c >= 6 || run.dead) return;
             if (b.dataset.k === q[c]) { clearTimeout(pt); run.good(); served++; sold.querySelector('b').textContent = served; b.classList.add('fly'); setTimeout(function () { b.classList.remove('fly'); }, 700); top.classList.add('leave'); c++; run.later(700, next); }
-            else run.bad(b);
+            else { clearTimeout(pt); run.bad(b); top.classList.add('sad', 'leave'); c++; run.later(1200, function () { top.classList.remove('sad'); next(); }); }   // one go: the customer leaves unhappy
           };
         });
         next();
@@ -352,7 +355,10 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
               run.good(); s.classList.add('lit'); say(K.en[NUMS[n - 1]], run);
               if (prev) sky.querySelector('svg').insertAdjacentHTML('beforeend', '<line x1="' + prev[0] + '" y1="' + prev[1] + '" x2="' + p[0] + '" y2="' + p[1] + '"/>');
               prev = p; want++; if (want > 10) run.later(900, function () { done({ right: 10, finished: true }); });
-            } else run.bad(s);
+            } else {   // a wrong star falls away and the sky goes dim: the count ends where it reached (one go)
+              run.bad(); s.classList.add('fall'); sky.classList.add('dim'); [].forEach.call(sky.querySelectorAll('.st3'), function (x) { x.disabled = true; });
+              run.later(1600, function () { done({ right: want - 1, part: (want - 1) / 10 }); });
+            }
           };
           sky.appendChild(s);
         });
@@ -494,8 +500,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
             if (L === w[li]) {
               run.idle = 0; var slot = top.querySelectorAll('.spslots span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
               if (placed >= TOTAL) { box.busy = true; run.right = 4; site.classList.add('done'); sfx('yay'); run.later(1800, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
-            } else { run.bad(site); breakBrick(); break; }
+            } else { run.bad(site); breakBrick(); li = -1; break; }
           }
+          if (li < 0) { box.busy = true; wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
           if (li >= w.length) { box.busy = true; run.good(site); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
           else box.cue();
         }, function () { return W[wi].toUpperCase().slice(li).split(''); });

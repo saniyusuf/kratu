@@ -8,7 +8,7 @@
 import * as A from './art4';
 import { GOODS, ACT_MS, deal } from './market';
 import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
-import { zebu, tuft, herdsman, cowbell, moo } from './herd';
+import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
@@ -186,29 +186,45 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: the cattle market (tap) ---------------- */
+    /* Kasuwar shanu (Sani 2026-10-23): a real cattle market. Four cattle (White Fulani, Red Bororo, Gudali) stand at their
+       posts, each with its price on a little blackboard; they eat, switch their tails and egrets walk about their feet.
+       Hear a price and touch the animal that costs it. Right: the cowbell, the coins, and the buyer leads it away. Wrong:
+       it lows and turns its head away, the board gets a red cross, and the next price comes (one touch, no second go). */
     'j-shanu': { title: 'Kasuwar shanu', cls: 'shanu', scene: 'cattle', tap: true,
       placeNo: 'Lambobi would start at the tens, with the lessons.',
       place: (r) => r.right >= 8 ? 'Knew every price by ear, to a thousand: the tens and hundreds would be skipped.' : 'Knew ' + r.right + ' of 8 prices: Lambobi would start ' + (r.hundreds < 2 ? 'at the tens.' : 'at the hundreds.'),
       play(run, done) {
         const TENS = [20, 30, 40, 50, 60, 70, 80, 90], HUN = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-        const P = shuffle(TENS).slice(0, 3).concat(shuffle(HUN).slice(0, 5)); let r = 0, got = 0, hundreds = 0;
+        const P = shuffle(TENS).slice(0, 3).concat(shuffle(HUN).slice(0, 5)); let r = 0, got = 0, hundreds = 0, busy = false, v = 0;
         const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><span class="tally"><span class="coin s">Z</span> <b>0</b> / 8</span></div>');
-        const pen = h('<div class="pen2"></div>');
-        run.scr.appendChild(top); run.scr.appendChild(pen);
+        const yard = h('<div class="yard"><div class="pen4"></div><span class="eg e1">' + egret() + '</span><span class="eg e2">' + egret() + '</span><span class="eg e3">' + egret() + '</span><div class="buyer2">' + herdsman() + '</div></div>');
+        const pen = yard.querySelector('.pen4'), buyer = yard.querySelector('.buyer2');
+        run.scr.appendChild(yard); run.scr.appendChild(top);
         run.clock(150, () => done({ right: got, part: got / 8, hundreds }));
         const sayP = () => say(K.en['n' + P[r]], run);
         run.remind = sayP; top.querySelector('.hearn').onclick = sayP;
-        const BEASTS = [A.cow, A.ram, A.goat, A.cow];
         function next() {
+          busy = false; yard.classList.remove('sad');
           const p = P[r], pool = p >= 100 ? HUN : TENS, opts = shuffle([p].concat(shuffle(pool.filter((x) => x !== p)).slice(0, 3)));
           pen.innerHTML = '';
-          opts.forEach((m, k) => { const b = h('<button type="button" class="beastb" aria-label="₦' + m + '">' + BEASTS[k]() + '<b class="ptag">₦' + m.toLocaleString('en-GB') + '</b></button>'); pen.appendChild(b);
-            b.onclick = () => { if (run.dead || b.classList.contains('sold')) return;
-              if (m === p) { got++; if (p >= 100) hundreds++; run.good(b); b.classList.add('sold'); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run);
-                later(run, 1600, () => { r++; if (r >= 8) done({ right: got, finished: true, part: got / 8, hundreds }); else next(); }); }
-              else run.bad(b); }; });
+          opts.forEach((m, k) => {
+            const b = h('<button type="button" class="beast2" aria-label="₦' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + '">' +
+              priceBoard(m) + '<span class="post"></span>' + zebu(v++) + '</button>');
+            pen.appendChild(b);
+            b.onclick = () => { if (run.dead || busy) return; busy = true;
+              if (m === p) {
+                got++; if (p >= 100) hundreds++; run.good(b); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run); cowbell(3);
+                b.classList.add('bought'); buyer.classList.remove('lead'); void buyer.offsetWidth; buyer.classList.add('lead');
+                later(run, 3000, step);
+              } else {
+                // one touch: the animal lows and turns away, its board is crossed out, the market frowns, and on we go
+                run.bad(); moo(); b.classList.add('no'); yard.classList.add('sad');
+                later(run, 2200, step);
+              } };
+          });
           later(run, 300, sayP);
         }
+        function step() { r++; if (r >= 8) done({ right: got, finished: true, part: got / 8, hundreds }); else next(); }
         next();
       } },
 
@@ -344,10 +360,12 @@ export function moreGames(c: any): Record<string, any> {
           for (let k = 0; k < got.length && li < w.length; k++) {
             const L = String(got[k]).toUpperCase();
             if (L === w[li]) { const s = hand.children[li]; s.textContent = L; s.classList.add('on'); bump(st.querySelector('.marw'), 'writing', 400); li++; }
-            else { run.bad(env); break; }
+            else { run.bad(env); li = -1; break; }
           }
+          // one go (Sani 2026-10-23): a wrong letter blots the letter with ink, it is torn up, and the next one comes
+          if (li < 0) { box.busy = true; env.classList.add('blot'); later(run, 1800, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); return; }
           if (li >= w.length) { box.busy = true; words++; run.good(env); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); });
-            later(run, 2600, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: 1 }); else word(); }); }
+            later(run, 2600, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
           else box.cue();
         }, () => W[wi].toUpperCase().slice(li).split(''));
         word();

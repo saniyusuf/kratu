@@ -1207,3 +1207,56 @@
 .glab .scr.allog .astage{position:absolute;top:16cqw;left:2cqw;margin:0}
 .glab .scr.allog .allow2{width:40cqw;height:36cqw}
 .glab .scr.mud2 .hrow{align-self:flex-start;margin-left:1cqw}
+/* ---- Kasuwar shanu (Sani 2026-10-23): four cattle at their posts, price boards, egrets, a buyer who leads the sold one away ---- */
+.glab .scr.shanu .gtop{position:absolute;top:12cqw;left:4cqw;right:4cqw;margin:0}
+.glab .scr .yard{position:absolute;inset:0}
+.glab .yard .pen4{position:absolute;left:2cqw;right:2cqw;bottom:3cqw;display:flex;justify-content:space-between;align-items:flex-end}
+.glab .beast2{position:relative;width:23.5cqw;height:24cqw;border:0;background:none;padding:0;cursor:pointer;display:block;animation:g-bin .6s cubic-bezier(.3,1.3,.5,1) calc(var(--i) * .12s) both}
+@keyframes g-bin{from{transform:translateY(3cqw);opacity:0}}
+.glab .beast2 .zebu{position:absolute;left:0;bottom:0;width:100%;height:15.7cqw}
+.glab .beast2 .post{position:absolute;left:46%;top:0;width:1cqw;height:13cqw;border-radius:.4cqw;background:linear-gradient(90deg,#8B5A2B,#5E3A1C);box-shadow:0 .4cqw 0 rgba(30,20,8,.2)}
+.glab .pboard{position:absolute;left:50%;top:1.6cqw;transform:translateX(-50%) rotate(-2deg);z-index:2;background:#2B2B2B;border:.5cqw solid #8B5A2B;border-radius:.8cqw;padding:.4cqw 1.6cqw;box-shadow:0 .6cqw .4cqw rgba(30,20,8,.35);white-space:nowrap}
+.glab .pboard b{font:800 3.6cqw/1.2 var(--disp);color:#FFFDF2;letter-spacing:.05em}
+.glab .pboard .prope{position:absolute;left:50%;top:-1.6cqw;width:3cqw;height:1.6cqw;margin-left:-1.5cqw;border:.25cqw solid #C9A15E;border-bottom:0;border-radius:50% 50% 0 0}
+.glab .beast2:active .zebu{transform:scale(.97)}
+/* sold: the cowbell, a happy hop, and it walks off to the right behind the buyer */
+.glab .beast2.bought .pboard{background:#2E7D32}
+.glab .beast2.bought .zebu{animation:g-sold 3s ease-in .2s forwards}
+.glab .beast2.bought .zhead{animation:none;transform:rotate(0)}
+.glab .beast2.bought .zl{animation:g-zamble .7s ease-in-out infinite alternate}
+.glab .beast2.bought .zl.b,.glab .beast2.bought .zl.c{animation-direction:alternate-reverse}
+@keyframes g-sold{0%{transform:none}12%{transform:translateY(-1.2cqw)}22%{transform:none}100%{transform:translateX(80cqw);opacity:.2}}
+.glab .yard .buyer2{position:absolute;right:-12cqw;bottom:3cqw;width:9cqw;height:19cqw;z-index:3;opacity:0}
+.glab .yard .buyer2.lead{animation:g-lead 3s ease-in-out forwards}
+@keyframes g-lead{0%{transform:translateX(0);opacity:1}30%{transform:translateX(-30cqw);opacity:1}45%{transform:translateX(-30cqw)}100%{transform:translateX(30cqw);opacity:1}}
+/* a wrong touch: head up, a shake, and the head turned away; the board is crossed out */
+.glab .beast2.no .zhead{animation:g-zno .28s ease-in-out 5 alternate}
+.glab .beast2.no .zebu{animation:g-turnaway .5s ease-in-out .9s forwards}@keyframes g-turnaway{to{transform:scaleX(-1)}}
+.glab .beast2.no .pboard::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 5cqw/1 var(--disp);color:#E53935}
+.glab .beast2.no .pboard b{opacity:.35}
+.glab .yard.sad .beast2:not(.no){filter:saturate(.75)}
+/* egrets about the cattle's feet: they step a little and peck */
+.glab .yard .eg{position:absolute;bottom:2.4cqw;width:4.2cqw;height:4.2cqw;z-index:2;pointer-events:none;animation:g-egwalk 9s ease-in-out infinite alternate}
+.glab .yard .eg.e1{left:20cqw}.glab .yard .eg.e2{left:47cqw;animation-delay:-3s;transform:scaleX(-1)}.glab .yard .eg.e3{left:74cqw;animation-delay:-6s}
+@keyframes g-egwalk{to{translate:3cqw 0}}
+.glab .egret{display:block;width:100%;height:100%;overflow:visible}
+.glab .egret .peck{transform-box:view-box;transform-origin:24px 18px;animation:g-peck 3.4s ease-in-out infinite}
+.glab .yard .eg.e2 .peck{animation-delay:1.2s}.glab .yard .eg.e3 .peck{animation-delay:2.1s}
+@keyframes g-peck{0%,70%,100%{transform:rotate(0)}78%,86%{transform:rotate(70deg)}}
+.glab .scene .farherd{animation:g-farherd 40s linear infinite alternate}
+@keyframes g-farherd{to{transform:translateX(30px)}}
+.glab .scene .dust4{animation:g-dust4 14s ease-in-out infinite alternate}
+@keyframes g-dust4{from{transform:translateX(-6px);opacity:.6}to{transform:translateX(8px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.glab .yard *{animation-duration:.01s!important;animation-iteration-count:1!important}}
+/* one go in every game (Sani 2026-10-23: "wrong is part of it"): what a miss looks like where it used to mean "try again" */
+.glab .pond2.scared .fish3:not(.slip){transition:transform .8s ease-in,opacity .6s .3s;transform:translateX(40cqw)!important;opacity:0}
+.glab .fish3.slip{animation:g-slip 1.4s ease-in forwards!important}
+@keyframes g-slip{0%{transform:translateY(0)}20%{transform:translateY(-3cqw) rotate(-12deg)}100%{transform:translateY(30cqw) rotate(30deg);opacity:0}}
+.glab .cust.sad .person img{filter:grayscale(.7)}
+.glab .cust.sad .ask{background:#FFCDD2}
+.glab .st3.fall{animation:g-starfall 1.4s ease-in forwards!important}
+@keyframes g-starfall{0%{transform:none}25%{transform:scale(1.2)}100%{transform:translate(-14cqw,40cqw) rotate(-160deg) scale(.4);opacity:0}}
+.glab .sky3.dim .st3:not(.lit){opacity:.35;transition:opacity .8s}
+.glab .env.blot{animation:g-blot 1.6s ease-in forwards}
+.glab .env.blot::after{content:"";position:absolute;left:30%;top:25%;width:40%;height:50%;border-radius:47% 53% 40% 60%;background:#1A237E;opacity:.75}
+@keyframes g-blot{0%,40%{transform:none}55%{transform:rotate(-6deg) scale(.95)}100%{transform:translateY(20cqw) rotate(-20deg) scale(.5);opacity:0}}

@@ -95,3 +95,16 @@ export function moo(): void {
   f.type = 'lowpass'; f.frequency.value = 600; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.14, t + .12); g.gain.setValueAtTime(.14, t + .8); g.gain.exponentialRampToValueAtTime(.0001, t + 1.3);
   o.connect(f).connect(g).connect(bac.destination); o.start(t); o.stop(t + 1.35);
 }
+
+/* a cattle egret, the white bird that walks about the cattle's feet; it pecks now and then (.peck) */
+export function egret(): string {
+  return `<svg class="egret" viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="38" rx="9" ry="1.6" fill="rgba(40,24,10,.22)"/>` +
+    `<path d="M16 24 L15 37 M22 24 L23 37" stroke="#C9A040" stroke-width="1.4"/>` +
+    `<path d="M8 20 Q12 12 22 14 Q28 16 26 24 Q18 28 8 20 Z" fill="#FBFBF6"/><path d="M10 20 Q16 22 22 20" stroke="#E2E2DA" stroke-width="1" fill="none"/>` +
+    `<g class="peck"><path d="M24 16 Q27 8 30 6" stroke="#FBFBF6" stroke-width="3.4" fill="none" stroke-linecap="round"/><circle cx="30.5" cy="5.6" r="2.6" fill="#FBFBF6"/>` +
+    `<path d="M32 5 L38 6.4 L32 6.6 Z" fill="#E7B53A"/><circle cx="31" cy="5" r=".6" fill="#222"/></g></svg>`;
+}
+/* the price board hung on the post in front of each animal: chalk on a little blackboard */
+export function priceBoard(m: number): string {
+  return `<span class="pboard"><i class="prope"></i><b>₦${m.toLocaleString('en-GB')}</b></span>`;
+}
