@@ -56,11 +56,20 @@ export const SCENES4: Record<string, string> = {
     [[20, 62, 22, .7], [58, 62, 30, 1], [106, 62, 26, .85], [140, 62, 18, .6]].map(([x, y, w, o]) => '<path d="M' + (x - w) + ' ' + y + ' L' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' Z" fill="url(#py-sack)" opacity="' + o + '"/><path d="M' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' L' + (x + w * .45) + ' ' + y + ' Z" fill="#8B6A3A" opacity=".25"/>').join('') +
     '<g opacity=".7"><rect x="4" y="56" width="14" height="6" fill="#2E7D32"/><rect x="18" y="57" width="5" height="5" fill="#C62828"/><circle cx="8" cy="63" r="1.5" fill="#222"/><circle cx="20" cy="63" r="1.5" fill="#222"/></g>' +
     '<path d="M0 62 H160 V100 H0 Z" fill="url(#py-g)"/><g fill="#C9A06A" opacity=".6"><ellipse cx="30" cy="80" rx="20" ry="1.6"/><ellipse cx="120" cy="88" rx="24" ry="2"/></g>' +
-    /* porters walking to the pyramids with sacks on their heads, slowly, at different speeds */
-    [[-6, 28, '#2F6B9A'], [-32, 34, '#B23A2A'], [-58, 31, '#2E7D32'], [-80, 37, '#6A4C93']].map(([d, dur, c]) => '<g class="porter" style="animation-duration:' + dur + 's;animation-delay:' + d + 's"><g class="pbob">' +
-      '<path class="pl1" d="M0 0 l-1 4" stroke="#3A2410" stroke-width=".9" stroke-linecap="round"/><path class="pl2" d="M.6 0 l1 4" stroke="#3A2410" stroke-width=".9" stroke-linecap="round"/>' +
-      '<path d="M-1.6 0 L-1 -5 L1.6 -5 L2.2 0 Z" fill="' + c + '"/><circle cx=".3" cy="-6.2" r="1.1" fill="#5E3A1C"/>' +
-      '<path d="M-1 -4.6 L-1.2 -7.8 M1.6 -4.6 L1.8 -7.8" stroke="' + c + '" stroke-width=".7"/><ellipse cx=".3" cy="-8.4" rx="2.8" ry="1.1" fill="#C9A262" stroke="#8B6A3A" stroke-width=".25"/></g></g>').join('') +
+    /* the porters build the pyramid (Sani 2026-10-23): each carries a jute sack across the back of his neck, bent
+       forward, both hands up holding its ears; he walks to the pyramid on the right (the lorry hides the big one), climbs its face, sets the sack down near the
+       top, turns and comes back down for the next. The sack he sets down (.psk) stays on the pyramid until his next one. */
+    [[0, 44, '#2F6B9A', '#F4EBD0', 99, 42.3], [-11, 44, '#B23A2A', '#E9D9A6', 95.5, 46], [-22, 44, '#2E7D32', '#F4EBD0', 97.5, 43.9], [-33, 44, '#6A4C93', '#FFFFFF', 93.5, 48.1]].map(([d, dur, c, cap, px, py], i) =>
+      '<g class="psk" style="animation-duration:' + dur + 's;animation-delay:' + d + 's"><g transform="translate(' + (px + 1.2) + ' ' + (py - 1.6) + ') rotate(-46)">' +
+      '<rect x="-2.6" y="-1" width="5.2" height="2" rx="1" fill="#D2B072"/><path d="M-2 0 H2" stroke="#9A7A42" stroke-width=".25"/></g></g>' +
+      '<g class="porter climb" style="--dur:' + dur + 's;--d:' + d + 's;--px:' + px + 'px;--py:' + py + 'px"><g class="pbob">' +
+      '<path class="pl1" d="M0 0 l-1.4 6" stroke="#3A2410" stroke-width="1.3" stroke-linecap="round"/><path class="pl2" d="M.8 0 l1.4 6" stroke="#3A2410" stroke-width="1.3" stroke-linecap="round"/>' +
+      '<path d="M-2.4 .4 L-1 -8 L2.6 -8.4 L3 .4 Z" fill="' + c + '"/><path d="M-1.6 -3 h4.4" stroke="rgba(0,0,0,.15)" stroke-width=".5"/>' +
+      // the sack across the back of the neck, its two ears held up by the hands
+      '<g class="psack"><path d="M-6 -10.4 Q-6.4 -13 -4 -13.2 L5.6 -12.6 Q7.6 -12.2 7 -9.8 Q6.6 -8.6 4.8 -8.8 L-4.2 -9.2 Q-5.8 -9.2 -6 -10.4 Z" fill="#D2B072"/>' +
+      '<path d="M-5.4 -11.4 L6.6 -10.8" stroke="#9A7A42" stroke-width=".35" stroke-dasharray=".8 .6"/><path d="M-6 -12 l-1 -1.4 M7 -11.6 l1.2 -1.2" stroke="#B89656" stroke-width=".8" stroke-linecap="round"/></g>' +
+      '<path class="parm" d="M-.6 -7.6 L-4.6 -11.4 M2.2 -7.8 L5.8 -11" stroke="' + c + '" stroke-width="1.1" stroke-linecap="round"/>' +
+      '<circle cx="3.6" cy="-8.6" r="1.5" fill="#5E3A1C"/><path d="M2.4 -9.4 q1.2 -1.6 2.6 -.2 Z" fill="' + cap + '"/></g></g>').join('') +
     '<rect width="160" height="100" fill="#F3E6C8" opacity=".12"/></svg>',
 
   /* Kasuwar shanu (Sani 2026-10-23): a cattle market in the morning haze. Lorries parked under a big baobab, mat
