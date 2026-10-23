@@ -19,6 +19,18 @@ const relief = (x, y) => '<g fill="none" stroke="#FFF1D6" stroke-width=".6" opac
 const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .55 : .8) + '">'; const c = dark ? ['#2A2240', '#33294A', '#241D38'] : ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00'];
   for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2; s += '<g transform="translate(' + x.toFixed(1) + ' ' + y + ')"><path d="M-2.4 0 L-1.6 -6 L1.6 -6 L2.4 0 Z" fill="' + c[i % c.length] + '"/><circle cy="-7.4" r="1.5" fill="' + (dark ? '#1A1428' : '#6B4422') + '"/></g>'; } return s + '</g>'; };
 
+/* a groundnut pyramid built of real sacks (Sani 2026-10-23): rows of jute pillows, each row one sack shorter and set
+   half a sack in, so a porter can step up it; the shaded side darker, the tints varied so no two sacks match */
+const sackPyr = (cx, rows, o, sw = 3.6, sh = 2) => { let s = '<g opacity="' + o + '">';
+  for (let k = 0; k < rows; k++) { const n = rows - k, y = 62 - (k + 1) * sh, x0 = cx - n * sw / 2;
+    for (let i = 0; i < n; i++) { const x = x0 + i * sw, t = (i * 7 + k * 3) % 4, shade = x + sw / 2 > cx + (n * sw / 2) * .2;
+      const f = shade ? ['#B38E57', '#A98450', '#B89458', '#A27E4A'][t] : ['#DDBF86', '#D4B47A', '#E2C690', '#CFAE74'][t];
+      s += '<path d="M' + (x + .5).toFixed(1) + ' ' + (y + .35).toFixed(2) + 'Q' + (x + sw / 2).toFixed(1) + ' ' + (y - .3).toFixed(2) + ' ' + (x + sw - .5).toFixed(1) + ' ' + (y + .35).toFixed(2) +
+        'Q' + (x + sw + .25).toFixed(1) + ' ' + (y + sh / 2).toFixed(2) + ' ' + (x + sw - .5).toFixed(1) + ' ' + (y + sh - .2).toFixed(2) + 'Q' + (x + sw / 2).toFixed(1) + ' ' + (y + sh + .25).toFixed(2) + ' ' + (x + .5).toFixed(1) + ' ' + (y + sh - .2).toFixed(2) +
+        'Q' + (x - .25).toFixed(1) + ' ' + (y + sh / 2).toFixed(2) + ' ' + (x + .5).toFixed(1) + ' ' + (y + .35).toFixed(2) + 'Z" fill="' + f + '" stroke="#8B6A3A" stroke-width=".18"/>';
+      if ((i + k) % 3 === 0) s += '<path d="M' + (x + 1).toFixed(1) + ' ' + (y + sh / 2).toFixed(2) + 'h' + (sw - 2).toFixed(1) + '" stroke="#9A7A42" stroke-width=".15" stroke-dasharray=".4 .3"/>'; } }
+  return s + '</g>'; };
+
 export const SCENES4: Record<string, string> = {
   /* Hawan Sallah: the emir's palace gate on Sallah day, bunting across the square */
   palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + '</defs>' +
@@ -51,17 +63,17 @@ export const SCENES4: Record<string, string> = {
     '<path d="M0 72 H160 V100 H0 Z" fill="url(#tn-g)"/><ellipse cx="140" cy="80" rx="30" ry="4" fill="#FFE08A" opacity=".15"/></svg>',
 
   /* Dalar gyaɗa: Kano's groundnut pyramids in the harmattan haze, lorries waiting */
-  pyramids: head + '<defs>' + lg('py-sky', '#E9D6AE', '#F3E6C8') + lg('py-g', '#D8B57C', '#BC9157') + '<pattern id="py-sack" width="4" height="3" patternUnits="userSpaceOnUse"><rect width="4" height="3" fill="#D9BC86"/><path d="M0 2.9 H4 M2 0 V3" stroke="#B08E58" stroke-width=".35"/></pattern></defs>' +
+  pyramids: head + '<defs>' + lg('py-sky', '#E9D6AE', '#F3E6C8') + lg('py-g', '#D8B57C', '#BC9157') + '</defs>' +
     '<rect width="160" height="100" fill="url(#py-sky)"/><circle cx="120" cy="18" r="8" fill="#FFF3D6" opacity=".9"/>' +
-    [[20, 62, 22, .7], [58, 62, 30, 1], [106, 62, 26, .85], [140, 62, 18, .6]].map(([x, y, w, o]) => '<path d="M' + (x - w) + ' ' + y + ' L' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' Z" fill="url(#py-sack)" opacity="' + o + '"/><path d="M' + x + ' ' + (y - w * 1.05) + ' L' + (x + w) + ' ' + y + ' L' + (x + w * .45) + ' ' + y + ' Z" fill="#8B6A3A" opacity=".25"/>').join('') +
+    sackPyr(20, 8, .72) + sackPyr(142, 7, .66) + sackPyr(58, 12, 1) + sackPyr(106, 11, 1) +
     '<g opacity=".7"><rect x="4" y="56" width="14" height="6" fill="#2E7D32"/><rect x="18" y="57" width="5" height="5" fill="#C62828"/><circle cx="8" cy="63" r="1.5" fill="#222"/><circle cx="20" cy="63" r="1.5" fill="#222"/></g>' +
     '<path d="M0 62 H160 V100 H0 Z" fill="url(#py-g)"/><g fill="#C9A06A" opacity=".6"><ellipse cx="30" cy="80" rx="20" ry="1.6"/><ellipse cx="120" cy="88" rx="24" ry="2"/></g>' +
     /* the porters build the pyramid (Sani 2026-10-23): each carries a jute sack across the back of his neck, bent
        forward, both hands up holding its ears; he walks to the pyramid on the right (the lorry hides the big one), climbs its face, sets the sack down near the
        top, turns and comes back down for the next. The sack he sets down (.psk) stays on the pyramid until his next one. */
-    [[0, 44, '#2F6B9A', '#F4EBD0', 99, 42.3], [-11, 44, '#B23A2A', '#E9D9A6', 95.5, 46], [-22, 44, '#2E7D32', '#F4EBD0', 97.5, 43.9], [-33, 44, '#6A4C93', '#FFFFFF', 93.5, 48.1]].map(([d, dur, c, cap, px, py], i) =>
-      '<g class="psk" style="animation-duration:' + dur + 's;animation-delay:' + d + 's"><g transform="translate(' + (px + 1.2) + ' ' + (py - 1.6) + ') rotate(-46)">' +
-      '<rect x="-2.6" y="-1" width="5.2" height="2" rx="1" fill="#D2B072"/><path d="M-2 0 H2" stroke="#9A7A42" stroke-width=".25"/></g></g>' +
+    [[0, 44, '#2F6B9A', '#F4EBD0', 101.6, 44], [-11, 44, '#B23A2A', '#E9D9A6', 98, 48], [-22, 44, '#2E7D32', '#F4EBD0', 103.4, 42], [-33, 44, '#6A4C93', '#FFFFFF', 99.8, 46]].map(([d, dur, c, cap, px, py], i) =>
+      '<g class="psk" style="animation-duration:' + dur + 's;animation-delay:' + d + 's"><g transform="translate(' + (px + 2.2) + ' ' + (py - 1) + ')">' +
+      '<rect x="-1.8" y="-1" width="3.6" height="2" rx="1" fill="#D8BA80" stroke="#8B6A3A" stroke-width=".18"/></g></g>' +
       '<g class="porter climb" style="--dur:' + dur + 's;--d:' + d + 's;--px:' + px + 'px;--py:' + py + 'px"><g class="pbob">' +
       '<path class="pl1" d="M0 0 l-1.4 6" stroke="#3A2410" stroke-width="1.3" stroke-linecap="round"/><path class="pl2" d="M.8 0 l1.4 6" stroke="#3A2410" stroke-width="1.3" stroke-linecap="round"/>' +
       '<path d="M-2.4 .4 L-1 -8 L2.6 -8.4 L3 .4 Z" fill="' + c + '"/><path d="M-1.6 -3 h4.4" stroke="rgba(0,0,0,.15)" stroke-width=".5"/>' +
