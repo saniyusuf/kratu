@@ -7,7 +7,7 @@
  */
 import * as A from './art4';
 import { GOODS, ACT_MS, deal } from './market';
-import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
+import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, lifidi, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
 
@@ -24,7 +24,11 @@ export function moreGames(c: any): Record<string, any> {
      wrong: she shakes her head, the turn is marked wrong and the game shows its displeasure. */
   function speakRound(run, box, target, among, onRight, onMiss, tries = 1) {
     let t = 0; box.cue();
-    box.listen(() => ({ target, among, match: (raw) => io.match(raw, target, among) }), (r) => {
+    /* a single letter is heard the way the alphabet lessons hear it (Sani 2026-10-23: the Durbar never heard a letter):
+       the letter grammar has the letters' spoken names (bee, see, aitch…) and gives back the capital letter. The word
+       matcher left both out, so "bee" was never B, and the lowercase "b" it did return never equalled "B". */
+    const letter = /^[A-Z]$/.test(target);
+    box.listen(() => letter ? { target } : { target, among, match: (raw) => io.match(raw, target, among) }, (r) => {
       if (r.value === null && !r.raw) { box.cue(); return; }
       if (r.value === target) { box.busy = true; box.yay(); onRight(); return; }
       t++; run.bad(); box.nope();
@@ -40,30 +44,35 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
         const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
-        const st = h('<div class="dstage"><div class="sallahw">' + sallahBand() + '</div><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
+        // the emir at his gate with his court about him: a dogari each side, his attendant fanning him; the yan lifidi wait behind the band
+        const st = h('<div class="dstage"><div class="lifw"><span>' + lifidi(0) + '</span><span>' + lifidi(1) + '</span><span>' + lifidi(2) + '</span></div>' +
+          '<div class="sallahw">' + sallahBand() + '</div>' +
+          '<div class="courtw"><span class="cw dg l">' + dogari(0) + '</span><div class="emirw">' + emirThrone() + '</div><span class="cw fk">' + maiFanka() + '</span><span class="cw dg r">' + dogari(1) + '</span></div>' +
+          '<div class="rlane"></div></div>');
         const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(row); run.scr.appendChild(box);
         run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
-        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), bandEl = st.querySelector('.sallahw');
+        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), court = st.querySelector('.courtw'), bandEl = st.querySelector('.sallahw');
         function next() {
-          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, looks[i % looks.length]) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased');
-          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); drum(false);
+          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, looks[i % looks.length]) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
+          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1);
           later(run, 1300, () => { rw.classList.remove('gallop'); row.children[i].classList.add('now');
             speakRound(run, box, L, LET.map((x) => x), () => {
               // right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22)
               run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
-              rw.classList.add('zormo'); beat(run, 4); bandEl.classList.add('play'); later(run, 3000, () => bandEl.classList.remove('play'));
-              later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); });
-              later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); });
+              // the band answers only once Laila has said the letter: kakaki, drums and the women's guda
+              rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); }); later(run, 3200, () => bandEl.classList.remove('play'));
+              later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); court.classList.add('pleased'); });
+              later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); hooves(1.2, true); });
               later(run, 4300, step);
             }, () => {
               // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
               missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
-              emir.classList.add('cross'); rw.classList.add('sad');
-              later(run, 1600, () => rw.classList.add('turn', 'gallop', 'back')); later(run, 3200, step);
+              emir.classList.add('cross'); rw.classList.add('sad'); later(run, 450, groan);
+              later(run, 1600, () => { rw.classList.add('turn', 'gallop', 'back'); hooves(1.2, true); }); later(run, 3200, step);
             }, 1);
           });
         }

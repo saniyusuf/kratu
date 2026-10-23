@@ -19,6 +19,13 @@ const relief = (x, y) => '<g fill="none" stroke="#FFF1D6" stroke-width=".6" opac
 const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .55 : .8) + '">'; const c = dark ? ['#2A2240', '#33294A', '#241D38'] : ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00'];
   for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2; s += '<g transform="translate(' + x.toFixed(1) + ' ' + y + ')"><path d="M-2.4 0 L-1.6 -6 L1.6 -6 L2.4 0 Z" fill="' + c[i % c.length] + '"/><circle cy="-7.4" r="1.5" fill="' + (dark ? '#1A1428' : '#6B4422') + '"/></g>'; } return s + '</g>'; };
 
+/* spectators on a wall top: head and shoulders in bright veils and caps, one or two waving */
+const onWall = (xs, y) => { const c = ['#C2185B', '#FFB300', '#1565C0', '#2E7D32', '#AD1457', '#6A1B9A', '#EF6C00', '#00838F'];
+  return '<g class="onwall">' + xs.map((x, i) => '<g transform="translate(' + x + ' ' + y + ')"' + (i % 4 === 1 ? ' class="wave4"' : '') + '><path d="M-2 0 Q-2 -3.4 0 -3.6 Q2 -3.4 2 0 Z" fill="' + c[i % c.length] + '"/>' +
+    '<circle cy="-4.6" r="1.2" fill="#6B4422"/><path d="M-1.5 -4.4 Q0 -7.2 1.5 -4.4" fill="' + (i % 3 ? c[(i + 3) % c.length] : '#FFFFFF') + '"/>' + (i % 4 === 1 ? '<path class="arm4" d="M1.4 -2.8 L3 -6.4" stroke="' + c[i % c.length] + '" stroke-width=".9" stroke-linecap="round"/>' : '') + '</g>').join('') + '</g>'; };
+/* a long pennant on a pole, streaming in the wind */
+const pennant = (x, y, c) => '<path d="M' + x + ' ' + y + ' V' + (y - 16) + '" stroke="#5A3A1E" stroke-width=".6"/><path class="pen4" d="M' + x + ' ' + (y - 16) + ' Q' + (x + 6) + ' ' + (y - 15) + ' ' + (x + 11) + ' ' + (y - 13) + ' Q' + (x + 6) + ' ' + (y - 12.4) + ' ' + x + ' ' + (y - 11) + ' Z" fill="' + c + '"/>';
+
 /* a groundnut pyramid built of real sacks (Sani 2026-10-23): rows of jute pillows, each row one sack shorter and set
    half a sack in, so a porter can step up it; the shaded side darker, the tints varied so no two sacks match */
 const sackPyr = (cx, rows, o, sw = 3.6, sh = 2) => { let s = '<g opacity="' + o + '">';
@@ -41,8 +48,13 @@ export const SCENES4: Record<string, string> = {
     '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + relief(40, 44) + relief(120, 44) + relief(18, 38) + relief(142, 38) +
     '<g class="bunting"><path d="M0 18 Q80 32 160 18" fill="none" stroke="#5A3A1E" stroke-width=".5"/>' +
     [8, 20, 32, 44, 56, 68, 80, 92, 104, 116, 128, 140, 152].map((x, i) => '<path d="M' + x + ' ' + (18 + Math.sin(x / 160 * Math.PI) * 13.5).toFixed(1) + ' l2.6 5 l2.6 -5 Z" fill="' + ['#C62828', '#2E7D32', '#FFD54A'][i % 3] + '"/>').join('') + '</g>' +
+    // Sallah day on the palace wall (Sani 2026-10-23: more of the Hawan Sallah behind): women in bright veils watching
+    // from the parapet, the emir's pennants on the towers, a second line of spectators under shades at the back
+    onWall([22, 26, 31, 36, 41, 46, 112, 117, 122, 127, 132, 137], 30) +
+    pennant(14, 24, '#2E7D32') + pennant(150, 24, '#C62828') + pennant(28, 24, '#C62828') + pennant(136, 24, '#2E7D32') +
     '<path d="M0 70 H160 V100 H0 Z" fill="url(#p4-ground)"/>' + people(74, 20, false) +
-    '<g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="90" rx="18" ry="1.6"/><ellipse cx="124" cy="86" rx="14" ry="1.2"/></g></svg>',
+    '<g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="90" rx="18" ry="1.6"/><ellipse cx="124" cy="86" rx="14" ry="1.2"/></g>' +
+    '<g class="dustdrift" fill="#E9D3A6" opacity=".35"><ellipse cx="20" cy="80" rx="10" ry="2"/><ellipse cx="70" cy="84" rx="8" ry="1.6"/><ellipse cx="146" cy="82" rx="9" ry="1.8"/></g></svg>',
 
   /* Dillalin kasuwa: Kasuwar Kurmi, zinc roofs, hanging cloth, the old arch behind */
   kurmi: head + '<defs>' + lg('k4-sky', '#A7D8EE', '#F2E6CC') + lg('k4-zinc', '#B8C0C8', '#7E8893') + lg('k4-g', '#D9B57E', '#B4844A') + '</defs>' +
