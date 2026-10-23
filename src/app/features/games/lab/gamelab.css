@@ -1267,3 +1267,25 @@
 .glab .scr.potter2 .spslots>span{width:11cqw;height:12.5cqw}
 .glab .scr.potter2 .spslots span .mp svg{overflow:visible}
 .glab .spslots .mp .tc{font:800 30px var(--disp);fill:#FFF6E6;paint-order:stroke;stroke:rgba(62,26,8,.55);stroke-width:2.4}
+/* ---- Marubucin wasiƙa (Sani 2026-10-23): speak OR type the letters; the A–Z keys sit under the envelope ---- */
+.glab .scr>.mkb{position:absolute;left:50%;top:32.6cqw;transform:translateX(-50%);display:grid;grid-template-columns:repeat(13,4.3cqw);gap:.5cqw;z-index:5;padding:.8cqw;border-radius:1.6cqw;background:rgba(255,253,247,.86);box-shadow:0 .6cqw 1cqw rgba(30,20,8,.25)}
+.glab .mkb .mk{height:4.3cqw;border:.3cqw solid #C9B98F;border-radius:.8cqw;background:#fff;font:800 2.6cqw var(--disp);color:#3B2E1E;padding:0;cursor:pointer}
+.glab .mkb .mk:active{transform:scale(.9)}
+.glab .mkb .mk.good{background:#4CAF50;border-color:#4CAF50;color:#fff}
+.glab .mkb .mk.bad{background:#FDECEC;border-color:#E53935;color:#E53935}
+.glab .mkb.locked .mk{opacity:.5;pointer-events:none}
+.glab .scr.marubg .mstage{position:absolute;inset:0;width:auto;height:auto;margin:0}
+.glab .scr.marubg .env{left:31cqw;top:12.3cqw;width:38cqw;height:19cqw}
+.glab .scr.marubg .marw{left:1cqw;bottom:2cqw;width:22cqw;height:24cqw}
+.glab .scr.marubg .achw{right:2cqw;left:auto;bottom:2cqw;width:22cqw;height:14.7cqw}
+.glab .scr.marubg .achw.ride{transform:translateX(40cqw)}
+.glab .scr.marubg .env.post{transform:translate(30cqw,24cqw) scale(.2)}
+/* the street: walkers cross slowly, the goat nods, the boy's tyre turns */
+.glab .scene .walker{animation:g-walker 46s linear infinite}
+.glab .scene .walker.w1{animation-delay:-8s}.glab .scene .walker.w2{animation-duration:58s;animation-delay:-30s;animation-direction:reverse}.glab .scene .walker.w3{animation-duration:38s;animation-delay:-20s}
+@keyframes g-walker{from{transform:translateX(-12px)}to{transform:translateX(172px)}}
+.glab .scene .walker>g{animation:g-bob .6s ease-in-out infinite alternate}
+@keyframes g-bob{to{translate:0 -.35px}}
+.glab .scene .goat4{animation:g-goatnod 3s ease-in-out infinite}
+@keyframes g-goatnod{0%,60%,100%{translate:0 0}75%{translate:.6px .4px}}
+@media (prefers-reduced-motion:reduce){.glab .scene .walker,.glab .scene .walker>g,.glab .scene .goat4{animation:none}}

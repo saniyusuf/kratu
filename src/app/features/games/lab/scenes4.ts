@@ -127,12 +127,46 @@ export const SCENES4: Record<string, string> = {
     '<g stroke="#4F7A3A" stroke-width=".8"><path d="M4 84 l-1 -8 M7 84 l1 -9 M150 86 l-1 -8 M154 86 l1 -9"/></g></svg>',
 
   /* Marubucin wasiƙa: the front of the post office, its sign, a red pillar box, a neem tree */
-  postoffice: head + '<defs>' + lg('po-sky', '#9ED3EC', '#F1E8D0') + lg('po-w', '#F1E2C0', '#DCC79C') + lg('po-g', '#D9B57E', '#BC9157') + '</defs>' +
-    '<rect width="160" height="100" fill="url(#po-sky)"/>' + cloud(130, 12, .8) +
-    '<path d="M20 70 V30 H140 V70 Z" fill="url(#po-w)"/><rect x="18" y="26" width="124" height="6" fill="#2E7D32"/>' +
-    '<rect x="34" y="34" width="92" height="10" rx="1" fill="#2E7D32"/><text x="80" y="41.4" text-anchor="middle" font-size="5" font-weight="800" fill="#fff" font-family="Baloo 2,sans-serif">GIDAN WAYA · POST OFFICE</text>' +
-    [28, 52, 96, 120].map((x) => '<rect x="' + x + '" y="48" width="12" height="10" fill="#7FB8D9"/><path d="M' + (x + 6) + ' 48 v10 M' + x + ' 53 h12" stroke="#DCC79C" stroke-width=".6"/>').join('') +
-    '<path d="M72 70 V50 H88 V70 Z" fill="#5A3416"/><path d="M68 70 h24 v3 h-24 Z M66 73 h28 v3 h-28 Z" fill="#C9B48A"/>' +
-    '<g transform="translate(148 74)"><rect x="-3.4" y="-14" width="6.8" height="14" rx="1.4" fill="#C62828"/><ellipse cy="-14" rx="3.8" ry="1.6" fill="#B71C1C"/><rect x="-2" y="-11" width="4" height=".8" fill="#222"/></g>' +
-    neem(8, 72, 1.3) + '<path d="M0 70 H160 V100 H0 Z" fill="url(#po-g)"/><g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="88" rx="20" ry="1.6"/><ellipse cx="124" cy="92" rx="16" ry="1.4"/></g></svg>',
+  /* Marubucin wasiƙa (Sani 2026-10-23): a northern street outside the post office in the morning. Red-earth Hausa
+     houses with zanko horns and white relief either side, a minaret beyond, the green post office with its sign, a red
+     post box, a neem tree, electricity poles with birds on the wire, a mai ruwa's cart of yellow jerrycans, parked
+     motorbikes, a goat. People walk by (a woman with a calabash on her head, a man in a kaftan, a boy rolling a tyre). */
+  postoffice: head + '<defs>' + lg('po-sky', '#8ECDEB', '#D9EEF2', '#F3E6C6') + lg('po-w', '#F3E6C6', '#DCC79C') + lg('po-g', '#DDBA82', '#C69C62', '#B08550') +
+    lg('po-red', '#C8693A', '#A9522B') + lg('po-red2', '#B85C30', '#96461F') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#po-sky)"/>' + cloud(28, 10, .7) + cloud(132, 13, .85) +
+    // the minaret and domes far off
+    '<g fill="#E8DCC0" opacity=".8"><path d="M118 52 V20 l2 -4 l2 4 V52 Z"/><ellipse cx="120" cy="20" rx="2.6" ry="1.4"/><path d="M104 52 Q110 40 116 52 Z M124 52 Q131 38 138 52 Z"/></g>' +
+    // Hausa houses on either side, red earth, zanko horns, white relief
+    '<path d="M0 70 V34 H22 V70 Z" fill="url(#po-red)"/><g fill="url(#po-red)">' + zanko(0, 20, 34) + '</g>' + relief(11, 46) +
+    '<path d="M4 70 V58 a4 4 0 0 1 8 0 V70 Z" fill="#3A1E0C"/>' +
+    '<path d="M138 70 V36 H160 V70 Z" fill="url(#po-red2)"/><g fill="url(#po-red2)">' + zanko(138, 158, 36) + '</g>' + relief(149, 48) +
+    '<rect x="144" y="56" width="7" height="6" fill="#2A1A10"/><path d="M144 56 h7 M147.5 56 v6" stroke="#E8D3A8" stroke-width=".5"/>' +
+    // the post office
+    '<path d="M24 70 V30 H136 V70 Z" fill="url(#po-w)"/><rect x="22" y="26" width="116" height="6" fill="#2E7D32"/><path d="M22 32 h116" stroke="#1B5E20" stroke-width=".8"/>' +
+    '<rect x="38" y="34" width="84" height="10" rx="1" fill="#2E7D32"/><text x="80" y="41.4" text-anchor="middle" font-size="5" font-weight="800" fill="#fff" font-family="Baloo 2,sans-serif">GIDAN WAYA · POST OFFICE</text>' +
+    [32, 54, 96, 118].map((x) => '<rect x="' + x + '" y="48" width="11" height="10" fill="#7FB8D9"/><rect x="' + x + '" y="48" width="11" height="3" fill="#fff" opacity=".35"/><path d="M' + (x + 5.5) + ' 48 v10 M' + x + ' 53 h11" stroke="#DCC79C" stroke-width=".6"/><path d="M' + (x - 1) + ' 58.4 h13" stroke="#CDB98E" stroke-width="1"/>').join('') +
+    '<path d="M72 70 V50 H88 V70 Z" fill="#5A3416"/><path d="M80 50 V70" stroke="#3E2410" stroke-width=".5"/><path d="M68 70 h24 v2 h-24 Z M66 72 h28 v2 h-28 Z" fill="#C9B48A"/>' +
+    '<path d="M60 30 V22 M60 22 h6 v4 h-6" stroke="#555" stroke-width=".5" fill="#2E7D32"/>' +
+    // electricity poles and the wire, birds sitting on it
+    '<path d="M18 70 V16 M142 70 V18" stroke="#6B5A48" stroke-width="1.2"/><path d="M15 18 h6 M139 20 h6" stroke="#6B5A48" stroke-width="1"/>' +
+    '<path d="M21 18 Q80 30 139 20" stroke="#3A3A3A" stroke-width=".35" fill="none"/>' +
+    '<g fill="#2A2A2A">' + [[52, 23.2], [57, 23.9], [96, 23.7]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx="1.1" ry=".8"/><circle cx="' + (x + .9) + '" cy="' + (y - .7) + '" r=".45"/>').join('') + '</g>' +
+    // the red post box and the neem tree
+    '<g transform="translate(132 76)"><rect x="-3.4" y="-14" width="6.8" height="14" rx="1.4" fill="#C62828"/><ellipse cy="-14" rx="3.8" ry="1.6" fill="#B71C1C"/><rect x="-2" y="-11" width="4" height=".8" fill="#222"/><rect x="-1.6" y="-7" width="3.2" height="2" fill="#FFD54A"/></g>' +
+    neem(8, 74, 1.3) +
+    // the street
+    '<path d="M0 70 H160 V100 H0 Z" fill="url(#po-g)"/><path d="M0 70 H160 V72 H0 Z" fill="#B99560" opacity=".5"/>' +
+    '<g fill="#B98A50" opacity=".4"><ellipse cx="40" cy="88" rx="20" ry="1.4"/><ellipse cx="124" cy="93" rx="16" ry="1.2"/><ellipse cx="86" cy="80" rx="10" ry=".8"/></g>' +
+    // parked motorbikes by the wall
+    [[100, '#1565C0'], [111, '#C62828']].map(([x, c]) => '<g transform="translate(' + x + ' 74)"><circle cx="0" cy="0" r="2.4" fill="#222"/><circle cx="8" cy="0" r="2.4" fill="#222"/><path d="M0 0 L3 -3 L7 -3 L8 0" stroke="' + c + '" stroke-width="1.4" fill="none"/><rect x="2.4" y="-4.6" width="4" height="1.4" rx=".6" fill="#222"/><path d="M7 -3 L8 -6 h1.6" stroke="#444" stroke-width=".7" fill="none"/></g>').join('') +
+    // the mai ruwa's cart of jerrycans
+    '<g transform="translate(36 76)"><path d="M-8 0 H8 L7 -2 H-7 Z" fill="#6B4A2A"/><circle cx="-4" cy="1" r="2" fill="#333"/><circle cx="4" cy="1" r="2" fill="#333"/><path d="M8 -1 L14 -4" stroke="#6B4A2A" stroke-width=".8"/>' +
+    [-6, -2, 2, 6].map((x, i) => '<rect x="' + (x - 1.8) + '" y="-7.4" width="3.6" height="5" rx=".6" fill="' + (i % 2 ? '#F2C230' : '#FFD54A') + '"/>').join('') + '<rect x="-3.8" y="-12" width="3.6" height="5" rx=".6" fill="#F2C230"/><rect x=".2" y="-12" width="3.6" height="5" rx=".6" fill="#FFD54A"/></g>' +
+    // a goat nosing about
+    '<g class="goat4" transform="translate(146 82)"><ellipse cx="0" cy="-3" rx="3.4" ry="1.8" fill="#EDE6D8"/><path d="M-2.4 -1.6 v3 M2 -1.6 v3" stroke="#8E8678" stroke-width=".6"/><path d="M3 -3.6 l2 -1 l1 1.6 l-1.6 1 Z" fill="#EDE6D8"/><path d="M4.6 -4.6 l.6 -1.4" stroke="#8E8678" stroke-width=".4"/><path d="M-3.2 -3.6 l-1 -1" stroke="#EDE6D8" stroke-width=".6"/></g>' +
+    // people walking by: they cross the street slowly (.walker)
+    '<g class="walker w1"><g transform="translate(0 78)"><path d="M-2 0 L-1.6 -6 L1.6 -6 L2 0 Z" fill="#AD1457"/><path d="M-2.2 -6 Q0 -9.4 2.2 -6 Z" fill="#880E4F"/><circle cy="-7.6" r="1.3" fill="#6E4426"/><ellipse cy="-9.6" rx="2.4" ry=".9" fill="#E0A44A"/><path d="M-2.2 -9.8 Q0 -11.6 2.2 -9.8" fill="#C98E52"/></g></g>' +
+    '<g class="walker w2"><g transform="translate(0 84)"><path d="M-2.2 0 L-1.8 -7 L1.8 -7 L2.2 0 Z" fill="#F4EBD0"/><path d="M0 -7 V0" stroke="#D9CBA6" stroke-width=".4"/><circle cy="-8.4" r="1.4" fill="#5E3A1C"/><path d="M-1.4 -9 q1.4 -1.8 2.8 0 Z" fill="#6A1B9A"/></g></g>' +
+    '<g class="walker w3"><g transform="translate(0 90)"><path d="M-1.4 0 L-1.2 -4.6 L1.2 -4.6 L1.4 0 Z" fill="#1E88E5"/><circle cy="-5.6" r="1" fill="#6E4426"/><g class="tyre"><circle cx="3.6" cy="-1.6" r="1.6" fill="none" stroke="#222" stroke-width=".6"/></g><path d="M1 -3 L3.4 -2" stroke="#6B4A2A" stroke-width=".3"/></g></g>' +
+    '</svg>',
 };

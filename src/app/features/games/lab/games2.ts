@@ -340,34 +340,48 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Rubutu: the letter writer ---------------- */
+    /* Marubucin wasiƙa (Sani 2026-10-23): spell the name on the envelope by saying the letters to Laila OR by typing them
+       on the A–Z keys (or a real keyboard). Each right letter is written in ink; a wrong one blots the letter and the
+       next one comes (one go). A finished letter is sealed, stamped and taken off by the post rider. */
     'j-marubuci': { title: 'Marubucin wasiƙa', cls: 'marubg', scene: 'postoffice',
       placeNo: 'Rubutu would start at three letters, with the lessons.',
-      place: (r) => r.right >= 4 ? 'Spelled every name aloud: with Ginin bulo agreeing, Rubutu moves on.' : 'Spelled ' + r.right + ' of 4 aloud: Rubutu would start at three letters.',
+      place: (r) => r.right >= 4 ? 'Spelled every name: with Ginin bulo agreeing, Rubutu moves on.' : 'Spelled ' + r.right + ' of 4: Rubutu would start at three letters.',
       play(run, done) {
         const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
+        const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env"><span class="to"><img alt=""></span><div class="hand2"></div><span class="stamp2"></span></div><div class="achw">' + A.achaba() + '</div></div>');
-        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
+        const kb = h('<div class="mkb">' + ABC.map((L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>').join('') + '</div>');
+        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
         run.clock(150, () => done({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
         const env = st.querySelector('.env'), hand = env.querySelector('.hand2'), ach = st.querySelector('.achw');
         function word() {
-          const w = W[wi].toUpperCase(); li = 0; env.querySelector('img').src = K.pic[W[wi]]; env.className = 'env'; ach.className = 'achw';
+          const w = W[wi].toUpperCase(); li = 0; env.querySelector('img').src = K.pic[W[wi]]; env.className = 'env'; ach.className = 'achw'; kb.classList.remove('locked');
           hand.innerHTML = w.split('').map(() => '<span></span>').join(''); box.cue(); later(run, 300, () => say(K.en[W[wi]], run));
         }
-        box.listen(() => { const w = W[wi].toUpperCase(); return { multi: true, word: W[wi], target: w[li] }; }, (r) => {
-          const w = W[wi].toUpperCase(), got = r.value || [];
-          if (!got.length) { box.cue(); return; }
-          for (let k = 0; k < got.length && li < w.length; k++) {
-            const L = String(got[k]).toUpperCase();
-            if (L === w[li]) { const s = hand.children[li]; s.textContent = L; s.classList.add('on'); bump(st.querySelector('.marw'), 'writing', 400); li++; }
-            else { run.bad(env); li = -1; break; }
+        function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
+        // the same for a spoken run of letters and for a key: right letters are inked in order, the first wrong one ends the word
+        function take(letters, key) {
+          const w = W[wi].toUpperCase();
+          for (let k = 0; k < letters.length && li < w.length; k++) {
+            const L = String(letters[k]).toUpperCase();
+            if (L === w[li]) { const s = hand.children[li]; s.textContent = L; s.classList.add('on'); bump(st.querySelector('.marw'), 'writing', 400); if (key) bump(key, 'good', 500); li++; }
+            else { run.bad(env); if (key) bump(key, 'bad', 700); li = -1; break; }
           }
-          // one go (Sani 2026-10-23): a wrong letter blots the letter with ink, it is torn up, and the next one comes
-          if (li < 0) { box.busy = true; env.classList.add('blot'); later(run, 1800, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); return; }
-          if (li >= w.length) { box.busy = true; words++; run.good(env); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); });
-            later(run, 2600, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
+          if (li < 0) { box.busy = true; kb.classList.add('locked'); env.classList.add('blot'); nextWord(1800); return; }
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(env); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); }); nextWord(2600); }
           else box.cue();
+        }
+        box.listen(() => { const w = W[wi].toUpperCase(); return { multi: true, word: W[wi], target: w[li] }; }, (r) => {
+          const got = r.value || [];
+          if (!got.length) { box.cue(); return; }
+          take(got);
         }, () => W[wi].toUpperCase().slice(li).split(''));
+        const ready = () => !run.dead && !run.listening && !box.busy;
+        kb.addEventListener('click', (e) => { const b = e.target.closest('.mk'); if (b && ready()) take([b.dataset.l], b); });
+        const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
+          const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); take([L], kb.querySelector('[data-l="' + L + '"]')); } };
+        document.addEventListener('keydown', onKey);
         word();
       } },
   };
