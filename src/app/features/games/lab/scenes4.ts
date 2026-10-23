@@ -37,6 +37,16 @@ const gateLeaf = (cls, d, x0, x1) => { let pl = ''; for (let x = x0 + 3; x < x1;
 const gate = () => gateLeaf('gl', 'M62 70 V46 Q71 36 80 36 V70 Z', 62, 80) + gateLeaf('gr', 'M80 70 V36 Q89 36 98 46 V70 Z', 80, 98) +
   '<circle class="gring" cx="78" cy="56" r="1.2" fill="none" stroke="#D9B44A" stroke-width=".5"/><circle class="gring" cx="82" cy="56" r="1.2" fill="none" stroke="#D9B44A" stroke-width=".5"/>';
 
+/* the palace's mud plaster (Sani 2026-10-23: "a bit more realism"): blotches of darker and paler earth, rain streaks
+   down from the parapet, a few hairline cracks, the towers rounded by light, and the foot of the wall darkened where
+   the rain splashes; all flat shapes at low opacity, no filters */
+const mud = () => { let s = '<g opacity=".9">';
+  for (let i = 0; i < 70; i++) { const x = 8 + (i * 37.3) % 144, y = 32 + (i * 23.7) % 36; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (1 + (i % 4) * .7).toFixed(1) + '" ry="' + (.5 + (i % 3) * .3).toFixed(1) + '" fill="' + (i % 2 ? '#8E4423' : '#DE9464') + '" opacity=".22"/>'; }
+  for (let i = 0; i < 18; i++) { const x = 10 + (i * 53.1) % 140; s += '<path d="M' + x.toFixed(1) + ' ' + (i % 3 ? 31 : 25) + ' v' + (6 + (i % 4) * 3) + '" stroke="#7A3A1C" stroke-width="' + (.6 + (i % 2) * .5) + '" opacity=".14"/>'; }
+  s += '<path d="M36 52 l2 3 l-1 3 l2 4 M124 56 l-2 3 l1 4 M146 44 l1.5 3 l-1 3" stroke="#6B3418" stroke-width=".35" fill="none" opacity=".5"/>';
+  s += '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="url(#p4-tow)"/><path d="M6 70 V61 H154 V70 Z" fill="url(#p4-base)"/>';
+  return s + '</g>'; };
+
 /* spectators on a wall top: head and shoulders in bright veils and caps, one or two waving */
 const onWall = (xs, y) => { const c = ['#C2185B', '#FFB300', '#1565C0', '#2E7D32', '#AD1457', '#6A1B9A', '#EF6C00', '#00838F'];
   return '<g class="onwall">' + xs.map((x, i) => '<g transform="translate(' + x + ' ' + y + ')"' + (i % 4 === 1 ? ' class="wave4"' : '') + '><path d="M-2 0 Q-2 -3.4 0 -3.6 Q2 -3.4 2 0 Z" fill="' + c[i % c.length] + '"/>' +
@@ -58,10 +68,13 @@ const sackPyr = (cx, rows, o, sw = 3.6, sh = 2) => { let s = '<g opacity="' + o 
 
 export const SCENES4: Record<string, string> = {
   /* Hawan Sallah: the emir's palace gate on Sallah day, bunting across the square */
-  palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + '</defs>' +
+  palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + lg('p4-haze', 'rgba(255,243,220,0)', 'rgba(255,243,220,.55)') + lg('p4-base', 'rgba(90,40,16,0)', 'rgba(90,40,16,.5)') +
+    '<linearGradient id="p4-tow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>' +
     '<rect width="160" height="100" fill="url(#p4-sky)"/>' + cloud(26, 12, .8) + cloud(128, 9, .7) +
+    '<rect width="160" height="72" fill="url(#p4-haze)"/>' +
     '<path d="M18 70 V30 H142 V70 Z" fill="url(#p4-wall)"/><g fill="#A9522B">' + zanko(18, 140, 30) + '</g>' +
     '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="#B85C30"/><g fill="#B85C30">' + zanko(6, 28, 24) + zanko(130, 152, 24) + '</g>' +
+    mud() +
     '<path d="M62 70 V46 Q80 26 98 46 V70 Z" fill="#3A1E0C"/><path d="M58 70 V45 Q80 21 102 45 V70" fill="none" stroke="#FFF1D6" stroke-width="1.6"/>' +
     '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + gate() + relief(40, 44) + relief(120, 44) + relief(18, 38) + relief(142, 38) +
     '<g class="bunting"><path d="M0 18 Q80 32 160 18" fill="none" stroke="#5A3A1E" stroke-width=".5"/>' +

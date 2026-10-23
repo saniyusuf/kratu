@@ -39,7 +39,8 @@ export function durbarRider(L: string, vi = 0): string {
   const hoof = (x) => `<path d="M${x - 1} 204 h11 l1 6 h-13 Z" fill="#1A0E06"/>`;
   return `<svg class="rider dur" viewBox="-54 -116 316 342" aria-hidden="true"><defs>` +
     `<linearGradient id="${id}c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${v.coat[0]}"/><stop offset="1" stop-color="${v.coat[1]}"/></linearGradient></defs>` +
-    `<ellipse cx="140" cy="214" rx="96" ry="6" fill="rgba(40,24,10,.28)"/>` +
+    `<ellipse cx="140" cy="213" rx="104" ry="9" fill="url(#k4-shadow)"/>` +
+    `<g class="dust"><circle cx="96" cy="206" r="7"/><circle cx="114" cy="207" r="6"/><circle cx="180" cy="206" r="7"/><circle cx="194" cy="207" r="6"/></g>` +
     `<g class="hrs">` +
     /* the letter's banner (Sani 2026-10-23: "the flag with the letter must be huge"): a tall lance planted by the saddle,
        a big cream cloth edged in the rider's colours streaming back behind him, and the letter as large as the cloth allows */
@@ -54,6 +55,7 @@ export function durbarRider(L: string, vi = 0): string {
     `<g class="fleg">` + leg('d', 'M186 132 L190 174 L188 204 L198 204 L200 174 L200 134 Z', v.coat[1]) + hoof(188) + `</g>` +
     `<path d="M80 112 C78 92 94 84 114 84 C142 82 162 80 178 86 C194 92 204 104 202 122 C200 138 188 144 174 142 L106 144 C90 144 80 132 80 112 Z" fill="url(#${id}c)"/>` +
     `<ellipse cx="98" cy="108" rx="24" ry="26" fill="url(#${id}c)"/>` +
+    `<path d="M80 112 C78 92 94 84 114 84 C142 82 162 80 178 86 C194 92 204 104 202 122 C200 138 188 144 174 142 L106 144 C90 144 80 132 80 112 Z" fill="url(#k4-sheen)"/>` +
     leg('a', 'M90 128 C88 150 96 160 94 176 L92 204 L102 204 L104 176 C108 160 106 146 108 132 Z', v.coat[0]) + hoof(92) +
     `<g class="fleg">` + leg('c', 'M172 132 L176 174 L174 204 L184 204 L186 174 L186 134 Z', v.coat[0]) + hoof(174) + `</g>` +
     `<path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z" fill="${v.cap[0]}"/><clipPath id="${id}k"><path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z"/></clipPath>` +
@@ -72,6 +74,7 @@ export function durbarRider(L: string, vi = 0): string {
     `<g class="rider2">` +
     `<path d="M130 92 L124 128 L132 130" stroke="#3A2410" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M122 130 h14 v4 h-14 Z" fill="#C9A227"/>` +
     `<path d="M114 86 Q106 46 128 32 L150 32 Q170 46 164 82 L176 96 Q168 104 150 102 L124 102 Q110 98 114 86 Z" fill="${v.robe}" stroke="rgba(0,0,0,.15)" stroke-width="1"/>` +
+    `<path d="M114 86 Q106 46 128 32 L150 32 Q170 46 164 82 L176 96 Q168 104 150 102 L124 102 Q110 98 114 86 Z" fill="url(#k4-cloth)"/><path d="M122 58 Q118 80 124 100 M158 56 Q164 78 160 100 M150 84 Q160 92 170 94" stroke="rgba(0,0,0,.13)" stroke-width="1.4" fill="none" stroke-linecap="round"/>` +
     `<path d="M130 34 L134 70 L142 70 L146 34" fill="none" stroke="${v.trim}" stroke-width="1.8"/><path d="M128 44 q10 6 20 0 M128 52 q10 6 20 0 M130 60 q8 5 16 0" stroke="${v.trim}" stroke-width="1.3" fill="none"/>` +
     `<path d="M146 50 Q160 64 170 72" stroke="${v.robe}" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="170" cy="73" r="4" fill="${sk}"/>` +
     (v.spear
@@ -92,19 +95,26 @@ export function emirThrone(): string {
   let fringe = ''; for (let x = 12; x <= 188; x += 11) fringe += `<path d="M${x} 72 l-3 10 h6 Z" fill="#FFD54A"/>`;
   const S2 = '#5E3A1C';
   return `<svg class="emir dur" viewBox="0 0 200 250" aria-hidden="true">` +
-    `<ellipse cx="100" cy="244" rx="80" ry="6" fill="rgba(40,24,10,.28)"/>` +
+    `<ellipse cx="100" cy="243" rx="92" ry="9" fill="url(#k4-shadow)"/>` +
     `<path d="M100 60 L100 160" stroke="#5E3A1C" stroke-width="4"/>` +
-    `<path d="M8 72 Q100 -14 192 72 Z" fill="#C62828"/><path d="M8 72 Q100 -14 192 72" fill="none" stroke="#FFD54A" stroke-width="3"/>` +
+    `<path d="M8 72 Q100 -14 192 72 Z" fill="#C62828"/><path d="M8 72 Q100 -14 192 72 Z" fill="url(#k4-cloth)"/><path d="M8 72 Q100 -14 192 72" fill="none" stroke="#FFD54A" stroke-width="3"/>` +
     `<path d="M40 44 Q100 6 160 44" fill="none" stroke="#2E7D32" stroke-width="5"/><path d="M60 30 Q100 8 140 30" fill="none" stroke="#FFD54A" stroke-width="2" stroke-dasharray="3 3"/>` +
     fringe + `<circle cx="100" cy="4" r="6" fill="#FFD54A"/>` +
     `<path d="M52 100 Q52 80 70 80 L130 80 Q148 80 148 100 L148 200 L52 200 Z" fill="#2E7D32" stroke="#C9A227" stroke-width="4"/>` +
+    `<path d="M52 100 Q52 80 70 80 L130 80 Q148 80 148 100 L148 200 L52 200 Z" fill="url(#k4-sheen)"/>` +
     `<path d="M62 92 L138 92 M62 104 L138 104" stroke="#FFD54A" stroke-width="1.4" stroke-dasharray="4 3"/>` +
     `<rect x="40" y="180" width="120" height="16" rx="4" fill="#C9A227"/><path d="M48 196 L48 236 M152 196 L152 236" stroke="#8A6410" stroke-width="7"/><rect x="36" y="232" width="128" height="8" rx="3" fill="#8A6410"/>` +
     `<path d="M66 196 Q56 150 74 120 L126 120 Q144 150 134 196 Q100 206 66 196 Z" fill="#FFFFFF" stroke="#D9CBA6" stroke-width="1"/>` +
+    `<path d="M66 196 Q56 150 74 120 L126 120 Q144 150 134 196 Q100 206 66 196 Z" fill="url(#k4-cloth)"/><path d="M78 140 Q72 170 76 196 M122 140 Q130 168 126 196 M86 176 Q90 190 88 200 M114 176 Q110 190 112 200" stroke="rgba(0,0,0,.13)" stroke-width="1.4" fill="none" stroke-linecap="round"/>` +
     `<path d="M92 122 L96 170 L104 170 L108 122" fill="none" stroke="#C9A227" stroke-width="2"/><path d="M88 134 q12 7 24 0 M88 146 q12 7 24 0 M90 158 q10 6 20 0" stroke="#C9A227" stroke-width="1.6" fill="none"/>` +
     `<path d="M74 196 h52 v6 h-52 Z" fill="#E2DCCB"/><path d="M78 202 q-4 10 6 10 h10 v-10 Z M122 202 q4 10 -6 10 h-10 v-10 Z" fill="#8A6410"/>` +
-    `<g class="e-rest"><path d="M74 128 Q62 156 70 176" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M126 128 Q138 156 130 176" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/>` +
-    `<circle cx="72" cy="180" r="6" fill="${S2}"/><circle cx="128" cy="180" r="6" fill="${S2}"/></g>` +
+    `<g class="e-rest"><g class="e-armL"><path d="M74 128 Q62 156 70 176" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/><circle cx="72" cy="180" r="6" fill="${S2}"/></g>` +
+    `<path d="M126 128 Q138 156 130 176" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/><circle cx="128" cy="180" r="6" fill="${S2}"/></g>` +
+    /* pleased (Sani 2026-10-23: "the king should wave hand in approval"): the arm toward the horseman rises in its wide
+       white sleeve and the open palm waves from the elbow, then it rests on his knee again */
+    `<g class="e-wave"><path d="M76 126 Q62 124 56 106" stroke="#FFFFFF" stroke-width="15" fill="none" stroke-linecap="round"/><path d="M76 126 Q62 124 56 106" stroke="#E2DCCB" stroke-width="1.2" fill="none"/>` +
+    `<g class="e-fore"><path d="M56 106 L50 84" stroke="#FFFFFF" stroke-width="11" fill="none" stroke-linecap="round"/><ellipse cx="49" cy="75" rx="5.6" ry="7" fill="${S2}"/>` +
+    `<path d="M45 71 L43.5 62 M48 69 L47.6 59.5 M51.2 69 L52 60 M54 71.5 L56.2 64 M44 78 L39.6 73.6" stroke="${S2}" stroke-width="2.6" fill="none" stroke-linecap="round"/></g></g>` +
     `<g class="e-fold"><path d="M74 128 Q74 150 122 150" stroke="#FFFFFF" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M126 128 Q126 158 78 156" stroke="#F4EEDD" stroke-width="14" fill="none" stroke-linecap="round"/>` +
     `<circle cx="122" cy="150" r="6" fill="${S2}"/><circle cx="78" cy="156" r="6" fill="${S2}"/></g>` +
     `<g class="e-head"><rect x="93" y="104" width="14" height="16" fill="${S2}"/>` +
@@ -141,12 +151,13 @@ export function dogari(v = 0): string {
   const sk = SKIN[(v + 2) % SKIN.length], id = 'dg' + (gid++);
   let strips = ''; for (let k = 0; k < 6; k++) strips += `<rect x="${14 + k * 11}" y="92" width="11" height="160" fill="${k % 2 ? '#2E7D32' : '#C62828'}"/>`;
   const robe = 'M30 96 Q45 88 60 96 L76 248 Q45 256 14 248 Z';
-  return `<svg class="dogari dur" viewBox="0 0 90 262" aria-hidden="true"><ellipse cx="45" cy="252" rx="36" ry="5" fill="rgba(40,24,10,.3)"/>` +
+  return `<svg class="dogari dur" viewBox="0 0 90 262" aria-hidden="true"><ellipse cx="45" cy="252" rx="42" ry="8" fill="url(#k4-shadow)"/>` +
     // the spear first, held upright in the right hand, with its red tassel
     `<g class="dg-spear"><path d="M74 248 L74 14" stroke="#6B4422" stroke-width="3"/><path d="M71 16 L74 -4 L77 16 Z" fill="url(#k4-steel)"/><path d="M70 18 h8" stroke="#C9A227" stroke-width="3"/>` +
     `<g class="tassel"><path d="M74 20 q-6 8 -4 18 M74 20 q0 9 2 18 M74 20 q6 8 6 16" stroke="#C62828" stroke-width="2.6" fill="none" stroke-linecap="round"/></g></g>` +
     // the long robe in vertical red and green panels, gold edging, a wide sash
     `<clipPath id="${id}r"><path d="${robe}"/></clipPath><path d="${robe}" fill="#C62828"/><g clip-path="url(#${id}r)">${strips}<path d="M0 236 H90 V262 H0 Z" fill="#1B5E20"/></g>` +
+    `<path d="${robe}" fill="url(#k4-cloth)"/><path d="M30 120 Q26 180 30 244 M60 120 Q66 180 62 244" stroke="rgba(0,0,0,.13)" stroke-width="1.4" fill="none" stroke-linecap="round"/>` +
     `<path d="${robe}" fill="none" stroke="#FFD54A" stroke-width="1.6"/><path d="M45 100 L45 246" stroke="#FFD54A" stroke-width="1.4" stroke-dasharray="4 3"/>` +
     `<path d="M22 150 Q45 158 68 150 L69 162 Q45 170 21 162 Z" fill="#FFD54A"/><path d="M40 160 l-3 22 h8 Z" fill="#E8B730"/>` +
     // the sword in its leather scabbard at the left hip
@@ -169,9 +180,9 @@ export function maiFanka(): string {
   let rings = ''; ['#C62828', '#FFD54A', '#2E7D32', '#FFD54A', '#8B4A22'].forEach((c, k) => { rings += `<circle cx="0" cy="0" r="${34 - k * 6.5}" fill="${c}"/>`; });
   let tri = ''; for (let k = 0; k < 16; k++) { const a = k * Math.PI / 8, x = Math.cos(a) * 30, y = Math.sin(a) * 30; tri += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2" fill="#FFF8E7"/>`; }
   let fringe = ''; for (let k = 0; k < 28; k++) { const a = k * Math.PI / 14, x = Math.cos(a) * 36, y = Math.sin(a) * 36, x2 = Math.cos(a) * 42, y2 = Math.sin(a) * 42; fringe += `<path d="M${x.toFixed(1)} ${y.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${k % 2 ? '#C62828' : '#1A0E06'}" stroke-width="2.4" stroke-linecap="round"/>`; }
-  return `<svg class="fanka dur" viewBox="0 0 150 270" aria-hidden="true"><ellipse cx="92" cy="262" rx="34" ry="5" fill="rgba(40,24,10,.3)"/>` +
+  return `<svg class="fanka dur" viewBox="0 0 150 270" aria-hidden="true"><ellipse cx="92" cy="261" rx="40" ry="8" fill="url(#k4-shadow)"/>` +
     // the attendant: a plain white robe and a red cap, standing behind and to the side of the throne
-    `<path d="M78 110 Q92 102 106 110 L120 258 Q92 266 64 258 Z" fill="#F4F1EA" stroke="#D9D2C2" stroke-width="1"/><path d="M92 112 L92 200" stroke="#D9D2C2" stroke-width="1.4"/>` +
+    `<path d="M78 110 Q92 102 106 110 L120 258 Q92 266 64 258 Z" fill="#F4F1EA" stroke="#D9D2C2" stroke-width="1"/><path d="M92 112 L92 200" stroke="#D9D2C2" stroke-width="1.4"/><path d="M78 110 Q92 102 106 110 L120 258 Q92 266 64 258 Z" fill="url(#k4-cloth)"/><path d="M80 150 Q74 200 76 256 M104 150 Q112 200 110 256" stroke="rgba(0,0,0,.13)" stroke-width="1.4" fill="none" stroke-linecap="round"/>` +
     `<path d="M86 116 q6 5 12 0 M86 124 q6 5 12 0" stroke="#2E7D32" stroke-width="1.4" fill="none"/>` +
     `<rect x="86" y="92" width="12" height="14" fill="${sk}"/><circle cx="92" cy="84" r="13" fill="${sk}"/><circle cx="92" cy="84" r="13" fill="url(#k4-shade)"/>` +
     `<path d="M85 83 q2 -2 4 0 M95 83 q2 -2 4 0" stroke="#1A0E06" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M87 90 q5 4 10 0" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +

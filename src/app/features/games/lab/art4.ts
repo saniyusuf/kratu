@@ -10,6 +10,9 @@ let defsDone = false;
 function defs(): void {
   if (defsDone) return; defsDone = true;
   document.body.insertAdjacentHTML('afterbegin', '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
+    '<linearGradient id="k4-cloth" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/><stop offset=".68" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".26"/></linearGradient>' +
+    '<linearGradient id="k4-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>' +
+    '<radialGradient id="k4-shadow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#28180A" stop-opacity=".5"/><stop offset=".6" stop-color="#28180A" stop-opacity=".25"/><stop offset="1" stop-color="#28180A" stop-opacity="0"/></radialGradient>' +
     '<linearGradient id="k4-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C6A3C"/><stop offset="1" stop-color="#5E3A1C"/></linearGradient>' +
     '<linearGradient id="k4-allo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6B4422"/><stop offset=".5" stop-color="#4A2E14"/><stop offset="1" stop-color="#3A220E"/></linearGradient>' +
     '<linearGradient id="k4-sackhi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3E2A10" stop-opacity=".28"/></linearGradient>' +

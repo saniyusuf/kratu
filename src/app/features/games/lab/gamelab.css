@@ -1356,3 +1356,14 @@
 .glab .scr.durbar .gg{position:absolute;left:30cqw;bottom:12cqw;width:5.6cqw;height:16.3cqw;z-index:0;transform-origin:50% 100%;transition:transform 1.1s ease-in-out}
 .glab .scr.durbar .gg svg{width:100%;height:100%;display:block}.glab .scr.durbar .gg.r svg{transform:scaleX(-1)}
 .glab .scr.durbar .dstage.open .gg.l{transform:translateX(-1.8cqw) rotate(-7deg)}.glab .scr.durbar .dstage.open .gg.r{transform:translateX(1.8cqw) rotate(7deg)}
+/* the emir waves his approval (Sani 2026-10-23): the raised arm shows while the resting one hides, the palm waves from the elbow */
+.glab .dur .e-wave{opacity:0}.glab .dur .e-fore{transform-box:view-box;transform-origin:56px 106px}
+.glab .emirw.pleased .e-wave{animation:g-ewave 2.6s ease-in-out forwards}.glab .emirw.pleased .e-fore{animation:g-efore 2.6s ease-in-out forwards}.glab .emirw.pleased .e-armL{animation:g-earm 2.6s ease-in-out forwards}
+@keyframes g-ewave{0%,100%{opacity:0}8%,86%{opacity:1}94%{opacity:0}}
+@keyframes g-earm{0%,100%{opacity:1}8%,86%{opacity:0}94%{opacity:1}}
+@keyframes g-efore{0%,10%{transform:rotate(-4deg)}22%{transform:rotate(14deg)}34%{transform:rotate(-8deg)}46%{transform:rotate(14deg)}58%{transform:rotate(-8deg)}70%{transform:rotate(14deg)}82%,100%{transform:rotate(0)}}
+/* dust kicked up at the hooves while a horse gallops */
+.glab .dur .dust circle{fill:#E3C48C;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.glab .rw.gallop .dust circle{animation:g-dust .6s ease-out infinite}.glab .rw.gallop .dust circle:nth-child(2){animation-delay:.15s}.glab .rw.gallop .dust circle:nth-child(3){animation-delay:.3s}.glab .rw.gallop .dust circle:nth-child(4){animation-delay:.45s}
+@keyframes g-dust{0%{opacity:.75;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(-22px,-8px) scale(1.7)}}
+@media (prefers-reduced-motion:reduce){.glab .emirw.pleased .e-fore,.glab .rw.gallop .dust circle{animation:none}}
