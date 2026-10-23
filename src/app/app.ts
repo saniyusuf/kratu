@@ -64,7 +64,16 @@ export class App implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.zoom.start(); this.nav.start();
-    document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
+    // on a tablet the browser's address and status bars ate a seventh of the height, and the whole layout shrank with it
+    // (Sani 2026-10-23, 7-inch Samsung): a touch in the browser takes the app full screen, again after the child swipes
+    // out of it. Android only locks the orientation in full screen, so the lock follows it.
+    const app = matchMedia('(display-mode: fullscreen), (display-mode: standalone)');
+    document.addEventListener('click', (e) => {
+      if ((e as PointerEvent).pointerType !== 'touch' || app.matches || document.fullscreenElement || !document.fullscreenEnabled) return;
+      document.documentElement.requestFullscreen({ navigationUI: 'hide' })
+        .then(() => (screen.orientation as any)?.lock?.('landscape'))
+        .catch(() => undefined);
+    }, { capture: true });
     // a fresh load has no user gesture yet, so the first line of the first screen is refused by the browser: the first touch says it
     document.addEventListener('pointerdown', () => { if (this.bus.blocked()) setTimeout(() => this.bus.replayBlocked(), 0); }, { capture: true });
     // a long press on a tablet must not open a menu, select text or start a drag; the app has nothing to copy or save

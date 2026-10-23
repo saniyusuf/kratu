@@ -3,7 +3,8 @@ import { afterPaint } from '../../shared/paint';
 
 /**
  * A 960×600 layout scaled to whatever screen there is, up or down. The frame is zoomed with --z;
- * then the active screen's in-flow content is measured and the zoom eased back just enough to fit.
+ * then the active screen's in-flow content is measured: a new screen is grown until it fills the screen, and the
+ * zoom is eased back just enough for everything to fit.
  * Rectangles reported by the browser are in screen pixels while screens position hands and spots in
  * layout pixels: rect() hands back layout units for anything inside the frame.
  */
@@ -71,38 +72,74 @@ export class ZoomService {
    * for a moment, the fit shrank everything to make room, and the game jumped on every pop (Sani 2026-10-14).
    */
   refit(): void { if (this.t) clearTimeout(this.t); this.t = setTimeout(() => this.fit(false), 120); }
+  /**
+   * The design is drawn on a 960×600 page with room to spare, and on a 7-inch tablet that left the cards, pictures and
+   * Laila small in a sea of paper (Sani 2026-10-23). So a new screen is also GROWN until its content fills the screen:
+   * up to GROW times the plain fit, leaving HEAD of the height free so a hint appearing later rarely has to shrink it.
+   * Only a new screen (or a resize) grows; a change inside a screen may only shrink it, never jump it bigger.
+   */
+  private static readonly GROW = 1.6;
+  private static readonly HEAD = 0.86;
   fit(force = true): void {
     const root = document.documentElement.style, prev = this.z();
     const base = Math.min(innerWidth / 960, innerHeight / 600);
-    root.setProperty('--z', base.toFixed(3));
-    void document.body.offsetHeight;
-    // ease the zoom back until every in-flow piece of the active screen fits: a few passes, because centring moves the
-    // content each time the frame grows (the old build stopped after two and could leave a hint hanging below the edge)
-    let z = base; const floor = base * 0.8;
-    for (let i = 0; i < 6; i++) {
+    const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
+    const floor = base * 0.8, cap = base * ZoomService.GROW;
+    let z = force ? base : prev; set(z);
+    // grow: the content's size against the screen's, a few passes, because sizes given in frame units (cqw/cqh) stay
+    // put on screen while everything given in pixels grows with the zoom
+    if (force) for (let i = 0; i < 8; i++) {
+      const g = this.room(); if (g <= 1.01) break;
+      const nz = Math.min(cap, z * g); if (nz - z < 0.004) break;
+      z = nz; set(z);
+    }
+    // then ease back until every in-flow piece of the active screen fits: centring moves the content each time the
+    // frame grows (the old build stopped after two passes and could leave a hint hanging below the edge)
+    for (let i = 0; i < 8; i++) {
       const m = this.measure(); if (m >= 0.999) break;
-      z = Math.max(floor, z * m); root.setProperty('--z', z.toFixed(3)); void document.body.offsetHeight;
+      z = Math.max(floor, z * m); set(z);
       if (z <= floor) break;
     }
-    if (!force && Math.abs(z - prev) / prev < 0.03) { root.setProperty('--z', prev.toFixed(3)); void document.body.offsetHeight; }
+    if (!force && Math.abs(z - prev) / prev < 0.03) set(prev);
   }
-  private measure(): number {
+  /** The in-flow content of the active screen, as one screen-pixel box (null when there is none to fit). */
+  private box(): { s: DOMRect; top: number; bot: number; left: number; right: number } | null {
     const s = document.querySelector('#app .block.active .s');
-    if (!s) return 1;
-    const sr = s.getBoundingClientRect();
-    let top = Infinity, bot = -Infinity;
+    if (!s) return null;
+    let top = Infinity, bot = -Infinity, left = Infinity, right = -Infinity;
     const inFlow = (el: HTMLElement): boolean => { if (el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'absolute' && cs.position !== 'fixed'; };
+    const sr = s.getBoundingClientRect();
+    // sideways only what is really drawn (pictures, buttons, the innermost boxes): a row or grid stretched across the
+    // screen says nothing about how wide its content is
+    const drawn = (el: Element) => !el.firstElementChild || /^(BUTTON|IMG|SVG|VIDEO|CANVAS)$/i.test(el.tagName);
+    const add = (el: Element) => {
+      const r = el.getBoundingClientRect(); if (r.height <= 0) return;
+      top = Math.min(top, r.top); bot = Math.max(bot, r.bottom);
+      if (r.width > 0 && r.width < sr.width * 0.88 && drawn(el)) { left = Math.min(left, r.left); right = Math.max(right, r.right); }
+    };
     Array.from(s.children).forEach((k) => {
       const el = k as HTMLElement;
       if (el.classList.contains('backdoor') || el.classList.contains('helpdome') || !inFlow(el)) return;
-      const r = el.getBoundingClientRect();
-      if (r.height <= 0) return;
-      top = Math.min(top, r.top); bot = Math.max(bot, r.bottom);
+      add(el);
       // a child's in-flow descendants can hang below it (a hint under a fixed-size button): they must fit too, or the screen is cut off
-      el.querySelectorAll<HTMLElement>('*').forEach((d) => { if (!inFlow(d)) return; const dr = d.getBoundingClientRect(); if (dr.height > 0) { top = Math.min(top, dr.top); bot = Math.max(bot, dr.bottom); } });
+      el.querySelectorAll<HTMLElement>('*').forEach((d) => { if (inFlow(d)) add(d); });
     });
-    if (!isFinite(top)) return 1;
-    const content = bot - top, avail = sr.height - (top - sr.top) - 12;
+    if (!isFinite(top)) return null;
+    return { s: sr, top, bot, left, right };
+  }
+  /** How much the content could grow and still leave the screen's margins and some headroom free (1 = no room). */
+  private room(): number {
+    const b = this.box(); if (!b) return 1;
+    // a screen whose content runs edge to edge on purpose (the full-screen games) has nothing to grow into
+    if (b.right - b.left >= b.s.width - 4 && b.bot - b.top >= b.s.height * 0.9) return 1;
+    const gh = (b.s.height * ZoomService.HEAD - 24) / Math.max(1, b.bot - b.top);
+    // the corners belong to the door, the ear and the gear: the content keeps clear of them sideways
+    const gw = isFinite(b.left) ? (b.s.width - 2 * 64) / Math.max(1, b.right - b.left) : Infinity;
+    return Math.max(1, Math.min(gh, gw));
+  }
+  private measure(): number {
+    const b = this.box(); if (!b) return 1;
+    const content = b.bot - b.top, avail = b.s.height - (b.top - b.s.top) - 12;
     return Math.min(1, avail / Math.max(1, content));
   }
 }
