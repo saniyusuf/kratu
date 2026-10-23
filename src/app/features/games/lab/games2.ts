@@ -9,6 +9,7 @@ import * as A from './art4';
 import { GOODS, ACT_MS, deal } from './market';
 import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo } from './herd';
+import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -102,37 +103,27 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Nemo hoto: the tea seller ---------------- */
+    /* Mai shayi by the roadside (Sani 2026-10-23): one picture at a time, big, with Laila in the middle under it as in the
+       lessons. The seller pulls tea between two cups while an egg fries; people eat on the bench under the umbrella and a
+       motorbike goes by. Name the picture: two taps of the spoon and it goes over to the bench. Wrong: the seller and his
+       customers frown, the picture drops away, and the next one comes (one answer, no hints). */
     'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'teanight',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
-        const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'rice', 'beans', 'water'];
-        const orders = (() => { const m = shuffle(MENU); return [m.slice(0, 2), m.slice(2, 4), m.slice(4, 7)]; })(); let o = 0, got = 0;
-        const st = h('<div class="sstage"><div class="stallw">' + A.shayi() + '</div><div class="order"></div></div>');
-        const plate = h('<div class="plate3"></div>'), kettle = h('<div class="kettle"><i></i><span>♨</span></div>');
-        const box = micBox(run); st.appendChild(box);
-        run.scr.appendChild(st); run.scr.appendChild(plate); run.scr.appendChild(kettle);
+        const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7); let r = 0, got = 0;
+        const st = h('<div class="tstage"><div class="road"><i></i></div><div class="okw">' + okada() + '</div><div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div><div class="tcard"></div></div>');
+        const box = micBox(run); st.appendChild(box); run.scr.appendChild(st);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
-        const orderEl = st.querySelector('.order'); let kt = null;
-        function boil(secs) { const i = kettle.querySelector('i'); i.style.transition = 'none'; i.style.transform = 'scaleX(0)'; void i.offsetWidth; i.style.transition = 'transform ' + secs + 's linear'; i.style.transform = 'scaleX(1)';
-          if (kt) clearTimeout(kt); kt = later(run, secs * 1000, () => { run.bad(kettle); bump(kettle, 'over', 900); finish(); }); }
+        const card = st.querySelector('.tcard');
         function next() {
-          const want = orders[o].slice(); orderEl.innerHTML = want.map((w) => photo(w, 'o-' + w)).join(''); plate.innerHTML = ''; boil(22 + want.length * 6);
-          (function ask() {
-            if (!want.length) { clearTimeout(kt); later(run, 900, finish); return; }
-            box.cue();
-            box.listen(() => ({ target: want[0], among: MENU, match: (raw) => { for (const w of want) if (io.match(raw, w, MENU)) return w; return null; } }), (r) => {
-              if (r.value === null && !r.raw) { box.cue(); return; }
-              const w = want.indexOf(r.value) >= 0 ? r.value : null;
-              if (!w) { run.bad(orderEl); box.cue(); return; }
-              want.splice(want.indexOf(w), 1); got++; run.good(orderEl.querySelector('.o-' + w)); say(K.en[w], run);
-              orderEl.querySelector('.o-' + w).classList.add('done'); plate.insertAdjacentHTML('beforeend', photo(w, 'served'));
-              later(run, 700, ask);
-            }, () => want[0]);
-          })();
+          const w = ORDER[r]; st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
+          speakRound(run, box, w, MENU, () => {
+            got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad'); card.classList.add('serve'); step(1900);
+          }, () => { cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); });
         }
-        function finish() { o++; if (o >= orders.length) done({ right: got, finished: true, part: got / 7 }); else later(run, 600, next); }
+        function step(ms) { later(run, ms, () => { r++; if (r >= ORDER.length) done({ right: got, finished: true, part: got / 7 }); else next(); }); }
         next();
       } },
 

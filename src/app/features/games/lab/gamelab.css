@@ -1144,3 +1144,51 @@
 /* the game host now carries the lessons' classes (s lesson) for Laila's markup, so design.css's `.s.lesson .q` (a lesson's
    dashed question tile, 78×88) also matched the opening screen `.scr.q` and squeezed it into the corner. Undo it here. */
 .glab .scr.q{width:auto;height:auto;border:0;border-radius:0;color:inherit;font:inherit;animation:none}
+/* ---- Mai shayi by the roadside (Sani 2026-10-23): one big picture, Laila in the middle under it ---- */
+.glab .scr .tstage{position:absolute!important;inset:0;width:auto;height:auto;margin:0}
+.glab .tstage .road{position:absolute;left:-2cqw;right:-2cqw;bottom:0;height:6.5cqw;background:linear-gradient(#4A4650,#2E2B33);border-top:.5cqw solid #6B5A48}
+.glab .tstage .road i{position:absolute;left:0;right:0;top:3cqw;height:.5cqw;background:repeating-linear-gradient(90deg,#E8E2C8 0 4cqw,transparent 4cqw 8cqw);opacity:.7}
+.glab .tstall,.glab .ubench,.glab .okada{display:block;width:100%;height:100%;overflow:visible}
+.glab .tstage .tsw{position:absolute;left:0;bottom:4.5cqw;width:41cqw;height:29.1cqw}
+.glab .tstage .ubw{position:absolute;right:0;bottom:4.5cqw;width:36cqw;height:31.2cqw}
+.glab .tstage .okw{position:absolute;left:0;bottom:.2cqw;width:11cqw;height:7.3cqw;transform:translateX(-14cqw);animation:g-okada 17s linear 4s infinite}
+@keyframes g-okada{0%{transform:translateX(-14cqw)}28%,100%{transform:translateX(106cqw)}}
+.glab .okada .wheel{animation:g-spin .5s linear infinite}
+@keyframes g-spin{to{transform:rotate(360deg)}}
+.glab .tstage>.mic{position:absolute!important;left:50%;bottom:3.5cqw;right:auto;top:auto;transform:translateX(-50%);z-index:4}
+.glab .tstage .tcard{position:absolute;left:50%;top:8.5cqw;width:27cqw;height:27cqw;margin-left:-13.5cqw;z-index:3}
+.glab .tstage .tcard .ph{width:100%;height:100%;padding:.8cqw;border-radius:2.4cqw;box-sizing:border-box}
+.glab .tstage .tcard .ph img{width:100%;height:100%;border-radius:1.8cqw}
+.glab .tstage .tcard.in{animation:g-tcin .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes g-tcin{from{transform:scale(.4);opacity:0}}
+.glab .tstage .tcard.serve{transition:transform 1.3s cubic-bezier(.5,0,.6,1) .3s,opacity .4s 1.3s;transform:translate(31cqw,16cqw) scale(.22);opacity:0}
+.glab .tstage .tcard.drop{animation:g-tcdrop 1.5s ease-in forwards}
+@keyframes g-tcdrop{0%,30%{transform:none;filter:grayscale(0)}8%{transform:translateX(-1.4cqw)}16%{transform:translateX(1.4cqw)}24%{transform:translateX(-.8cqw)}100%{transform:translate(-30cqw,10cqw) rotate(-18deg) scale(.5);opacity:0;filter:grayscale(1)}}
+/* the seller pulls tea: the high cup rises and falls, the stream stretches with it, the foam swells */
+.glab .tstall .pour{animation:g-pour 1.6s ease-in-out infinite alternate}
+@keyframes g-pour{from{transform:translateY(4px)}to{transform:translateY(-16px)}}
+.glab .tstall .stream{transform-box:fill-box;transform-origin:50% 100%;animation:g-stream 1.6s ease-in-out infinite alternate}
+@keyframes g-stream{from{transform:scaleY(.94)}to{transform:scaleY(1.23)}}
+.glab .tstall .foam{transform-box:fill-box;transform-origin:50% 100%;animation:g-foam .8s ease-in-out infinite alternate}
+@keyframes g-foam{to{transform:scale(1.08,1.7)}}
+.glab .tstall .sizzle circle{animation:g-sizzle .7s ease-out infinite}
+.glab .tstall .sizzle circle:nth-child(2){animation-delay:.25s}.glab .tstall .sizzle circle:nth-child(3){animation-delay:.5s}
+@keyframes g-sizzle{from{transform:translateY(0);opacity:1}to{transform:translateY(-6px);opacity:0}}
+.glab .tstall .steam circle{animation:g-steam 2.4s ease-out infinite}
+.glab .tstall .steam circle:nth-child(2){animation-delay:.8s}.glab .tstall .steam circle:nth-child(3){animation-delay:1.6s}
+.glab .tstall .bulb{animation:g-bulb 3s ease-in-out infinite alternate}
+@keyframes g-bulb{to{opacity:.7}}
+/* the people on the bench: the fork, the cup and the bread go to the mouth on their own clocks */
+.glab .ubench .feed{animation:g-feed 3.2s ease-in-out infinite}
+.glab .ubench .sip{animation:g-feed 4.4s ease-in-out 1s infinite}
+.glab .ubench .bite{animation:g-feed 3.8s ease-in-out 2s infinite}
+@keyframes g-feed{0%,50%,100%{transform:rotate(0)}65%,80%{transform:rotate(-38deg)}}
+.glab .ubench .canopy{transform-box:fill-box;transform-origin:50% 100%;animation:g-canopy 5s ease-in-out infinite alternate}
+@keyframes g-canopy{from{transform:rotate(-1deg)}to{transform:rotate(1deg)}}
+.glab .tstage .sm-sad{display:none}
+.glab .tstage.sad .sm-sad{display:inline}.glab .tstage.sad .sm-happy{display:none}
+.glab .tstage.sad .seller{animation:g-sellerno .3s ease-in-out 4 alternate}
+@keyframes g-sellerno{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
+.glab .tstage.glad .sitter{animation:g-nod .45s ease-in-out 2 alternate}
+@keyframes g-nod{to{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.glab .tstage *{animation-duration:.01s!important;animation-iteration-count:1!important}}
