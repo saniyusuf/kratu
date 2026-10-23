@@ -426,7 +426,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
             b.onclick = function () {
               if (b.disabled || run.dead || busy) return;
               if (L === w[li]) {
-                run.idle = 0; b.disabled = true; var slot = top.querySelectorAll('.spslots span')[li], k = li; li++;
+                run.idle = 0; b.disabled = true; var slot = top.querySelectorAll('.spslots > span')[li], k = li; li++;
                 var br = io.rect(b), sr = io.rect(slot);
                 b.style.setProperty('--tx', (sr.left + sr.width / 2 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (sr.top + sr.height / 2 - (br.top + br.height / 2)) + 'px');
                 b.classList.add('fly');                                 // the pot lifts off its place into the box
@@ -498,7 +498,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           for (var k = 0; k < got.length && li < w.length; k++) {
             var L = String(got[k]).toUpperCase();
             if (L === w[li]) {
-              run.idle = 0; var slot = top.querySelectorAll('.spslots span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
+              run.idle = 0; var slot = top.querySelectorAll('.spslots > span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
               if (placed >= TOTAL) { box.busy = true; run.right = 4; site.classList.add('done'); sfx('yay'); run.later(1800, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
             } else { run.bad(site); breakBrick(); li = -1; break; }
           }
