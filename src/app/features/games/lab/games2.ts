@@ -43,8 +43,8 @@ export function moreGames(c: any): Record<string, any> {
         const st = h('<div class="dstage"><div class="sallahw">' + sallahBand() + '</div><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
         const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
-        const box = micBox(run); st.appendChild(box);
-        run.scr.appendChild(st); run.scr.appendChild(row);
+        const box = micBox(run);
+        run.scr.appendChild(st); run.scr.appendChild(row); run.scr.appendChild(box);
         run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
         const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), bandEl = st.querySelector('.sallahw');
@@ -84,8 +84,8 @@ export function moreGames(c: any): Record<string, any> {
         let r = 0, sold = 0;
         const st = h('<div class="dstage mk"><div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="goods"></div><div class="dealw"></div></div><div class="crowd">' + A.crowd(4) + '</div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
-        const box = micBox(run); st.appendChild(box);
-        run.scr.appendChild(st); run.scr.appendChild(tally);
+        const box = micBox(run);
+        run.scr.appendChild(st); run.scr.appendChild(tally); run.scr.appendChild(box);
         run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
         const goods = st.querySelector('.goods'), dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
@@ -113,7 +113,7 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7); let r = 0, got = 0;
         const st = h('<div class="tstage"><div class="road"><i></i></div><div class="okw">' + okada() + '</div><div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div><div class="tcard"></div></div>');
-        const box = micBox(run); st.appendChild(box); run.scr.appendChild(st);
+        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
         const card = st.querySelector('.tcard');
@@ -264,8 +264,8 @@ export function moreGames(c: any): Record<string, any> {
         const NOTES = shuffle([20, 50, 100, 200, 500, 1000]), AMONG = NOTES.map((n) => K.enText['n' + n].toLowerCase()).concat(['ten', 'five', 'two', 'one']); let r = 0, got = 0;
         const st = h('<div class="sgstage"><div class="grillw">' + A.suya() + '</div></div>');
         const hand = h('<div class="handn"></div>'), wraps = h('<div class="wraps">' + NOTES.map(() => '<i></i>').join('') + '</div>');
-        const box = micBox(run); st.appendChild(box);
-        run.scr.appendChild(st); run.scr.appendChild(hand); run.scr.appendChild(wraps);
+        const box = micBox(run);
+        run.scr.appendChild(st); run.scr.appendChild(hand); run.scr.appendChild(wraps); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 6 }));
         run.remind = () => say(line('j-suya', 'how'), run);
         function next() {
@@ -285,7 +285,7 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const W = shuffle(['cat', 'sun', 'bus', 'dog', 'cup']).slice(0, 3).concat(shuffle(['goat', 'book', 'fish', 'milk']).slice(0, 2), shuffle(['bread', 'mango', 'water']).slice(0, 2));
         let r = 0, got = 0, longest = 0;
-        const st = h('<div class="astage"><div class="allow2"></div></div>'); const box = micBox(run); st.appendChild(box); run.scr.appendChild(st);
+        const st = h('<div class="astage"><div class="allow2"></div></div>'); const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         const prog = h('<div class="seats">' + W.map(() => '<i></i>').join('') + '</div>'); run.scr.appendChild(prog);
         run.clock(150, () => done({ right: got, part: got / W.length, longest }));
         run.remind = () => say(line('j-allo', 'how'), run);
@@ -330,7 +330,7 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
         const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env"><span class="to"><img alt=""></span><div class="hand2"></div><span class="stamp2"></span></div><div class="achw">' + A.achaba() + '</div></div>');
-        const box = micBox(run); st.appendChild(box); run.scr.appendChild(st);
+        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
         const env = st.querySelector('.env'), hand = env.querySelector('.hand2'), ach = st.querySelector('.achw');

@@ -1192,3 +1192,18 @@
 .glab .tstage.glad .sitter{animation:g-nod .45s ease-in-out 2 alternate}
 @keyframes g-nod{to{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.glab .tstage *{animation-duration:.01s!important;animation-iteration-count:1!important}}
+/* Laila's place in every speaking game (Sani 2026-10-23): bottom centre, as in the lessons. Each game appends her to the
+   screen itself, so this one rule places her everywhere; the games keep their action clear of the middle bottom. */
+.glab .scr>.mic.micx{position:absolute!important;left:50%!important;right:auto!important;top:auto!important;bottom:3cqw!important;transform:translateX(-50%);margin:0!important;z-index:6}
+/* with Laila at the bottom centre, the progress rows go to the top under the clock, and each game keeps its action clear of her */
+.glab .scr>.lrow,.glab .scr>.krow,.glab .scr>.seats,.glab .scr>.tally{position:absolute!important;top:12.5cqw;left:50%;transform:translateX(-50%);margin:0!important;z-index:5}
+.glab .scr.garke .herd .qcow{width:15.5cqw;height:10.3cqw}.glab .scr.garke .herd .queue{left:5cqw;gap:0}.glab .scr.garke .herd .qcow+.qcow{margin-right:-3.5cqw}
+.glab .scr.garke .herd .qcow.zgo{animation-name:g-zgo2}
+@keyframes g-zgo2{0%{transform:translateX(0)}80%{opacity:1}100%{transform:translate(36cqw,-3cqw) scale(.5);opacity:0}}
+.glab .dstage.mk .dillw{left:-2cqw;width:17cqw}.glab .dstage.mk .stall{left:13cqw;width:28cqw}.glab .dstage.mk .goods{left:3cqw;width:22cqw;height:22cqw}
+.glab .scr.suyag .grillw{left:0;width:40cqw;height:31cqw}
+.glab .scr.suyag .handn{left:auto!important;right:3cqw}
+.glab .scr.suyag .handn.paid{transform:translate(-40cqw,-16cqw) rotate(-12deg) scale(.4)}
+.glab .scr.allog .astage{position:absolute;top:16cqw;left:2cqw;margin:0}
+.glab .scr.allog .allow2{width:40cqw;height:36cqw}
+.glab .scr.mud2 .hrow{align-self:flex-start;margin-left:1cqw}

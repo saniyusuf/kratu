@@ -270,8 +270,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           '<div class="dancers"><span class="dn">' + dancer(0) + '</span><span class="dn">' + dancer(1) + '</span><span class="dn">' + dancer(2) + '</span></div>' +
           '</div>');
         var row = h('<div class="krow">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
-        var box = micBox(run); stage.appendChild(box);
-        run.scr.appendChild(stage); run.scr.appendChild(row);
+        var box = micBox(run);
+        run.scr.appendChild(stage); run.scr.appendChild(row); run.scr.appendChild(box);
         run.clock(150, function () { done({ right: said, part: said / 6 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         var card = stage.querySelector('.easel'), plate = stage.querySelector('.plate'), band = stage.querySelector('.kband'), dancers = stage.querySelector('.dancers');
@@ -466,8 +466,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           '<g class="pot"><ellipse cx="146" cy="126" rx="10" ry="9"/><rect x="141" y="114" width="10" height="4" rx="2"/></g>' +
           '</svg><span class="ground"></span></div>');
         var box = micBox(run);
-        var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site); hrow.appendChild(box);
-        run.scr.appendChild(top); run.scr.appendChild(hrow);
+        var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site);
+        run.scr.appendChild(top); run.scr.appendChild(hrow); run.scr.appendChild(box);
         run.noBump = true;
         run.clock(150, function () { done({ right: wi, part: placed / TOTAL, built: placed }); });
         run.remind = function () { say(K.en[W[wi]], run); };
