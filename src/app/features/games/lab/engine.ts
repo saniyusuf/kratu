@@ -32,9 +32,9 @@ export interface GameIO {
   has?: (key: string) => boolean;  // is this line recorded? (a draft line not yet recorded is skipped)
 }
 export interface GameHandle { stop(): void; again(): void; }
-/** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening
+/** Inside a lesson (Haruffa's in-between games): only the letters learned so far, no opening
  *  question, and Laila on the score screen carries the child back into the lesson. */
-export interface GameOpts { letters?: string[]; order?: 'in' | 'mixed'; lesson?: boolean; }
+export interface GameOpts { letters?: string[]; lesson?: boolean; }
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: GameOpts = {}): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
@@ -525,8 +525,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 /** The games, for the list in the settings. The balloons are the app's own screen. */
 export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = [
   { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons · the whole A–Z', section: 'Haruffa' },
-  { id: 'j-durbar', name: 'Hawan Sallah · a jere', en: 'Durbar, A–P in order · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOP', order: 'in' } },
-  { id: 'j-durbar', name: 'Hawan Sallah · a gauraye', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX', order: 'mixed' } },
+  { id: 'j-durbar', name: 'Hawan Sallah', en: 'Durbar, A–X mixed up · speaking', section: 'Haruffa', q: { letters: 'ABCDEFGHIJKLMNOPQRSTUVWX' } },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },
   { id: 'j-magana', name: 'Kalangu', en: 'The talking drum · speaking', section: 'Abubuwa' },
   { id: 'j-dillali', name: 'Dillalin kasuwa', en: 'The auctioneer · speaking', section: 'Abubuwa' },

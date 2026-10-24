@@ -42,8 +42,9 @@ export function moreGames(c: any): Record<string, any> {
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
-        // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
-        const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
+        // always mixed up, never in order: the balloons already check A to Z in order (Sani 2026-10-24).
+        // In a lesson every letter learned so far; on its own, eight from the whole alphabet
+        const L8 = opts.letters ? shuffle(opts.letters) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
         // the emir at his gate with his court about him: a dogari each side, his attendant fanning him (no horses behind: Sani 2026-10-24)
         const st = h('<div class="dstage">' +
           '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +

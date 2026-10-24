@@ -106,10 +106,10 @@ export class GameLabScreen implements OnInit, OnDestroy {
       },
     }, this.opts());
   }
-  /** ?letters=ABCD&order=in|mixed: only those letters; ?next=/…: played inside a lesson, which it hands back to. */
+  /** ?letters=ABCD: only those letters; ?next=/…: played inside a lesson, which it hands back to. */
   private opts(): GameOpts {
     const q = this.route.snapshot.queryParamMap, letters = (q.get('letters') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);
-    return { letters: letters.length ? letters : undefined, order: q.get('order') === 'mixed' ? 'mixed' : 'in', lesson: !!q.get('next') };
+    return { letters: letters.length ? letters : undefined, lesson: !!q.get('next') };
   }
   again(): void { this.game?.again(); }
   leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigate(['/home']); }
