@@ -4916,8 +4916,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan baka faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
-   "f": "Idan baki faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
+   "m": "Idan baka faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya.",
+   "f": "Idan baki faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya."
   },
   "en": "If you don't say it right, the Sarki will be upset, the gate stays shut, and the horseman turns back.",
   "screens": [
@@ -4925,10 +4925,10 @@
   ],
   "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
   "status": "live",
-  "review": "approved: Sani 24 Oct (opening version 2 \"baka/baki\", middle \"Sarki zai ɓata rai\", version 6)",
+  "review": "approved: Sani 24 Oct (\"baka/baki\" as one word; \"Sarki zai ɓata rai\"; a full stop after \"a rufe\" for the falling tone, \"kuma\" kept lowercase as recorded)",
   "recorded": {
-   "m": "bf2f61b972",
-   "f": "6ccd8e4f86"
+   "m": "4d49b55e4f",
+   "f": "f355c3626e"
   }
  },
  {
