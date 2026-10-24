@@ -1364,9 +1364,7 @@
 .glab .rw.gallop .dust circle{animation:g-dust .6s ease-out infinite}.glab .rw.gallop .dust circle:nth-child(2){animation-delay:.15s}.glab .rw.gallop .dust circle:nth-child(3){animation-delay:.3s}.glab .rw.gallop .dust circle:nth-child(4){animation-delay:.45s}
 @keyframes g-dust{0%{opacity:.75;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(-22px,-8px) scale(1.7)}}
 @media (prefers-reduced-motion:reduce){.glab .emirw.pleased .e-fore,.glab .rw.gallop .dust circle{animation:none}}
-/* the example (Sani 2026-10-24): the app's hand comes to Laila and presses her; the banner glows gold while its letter is to be said */
-.glab .x-laila .dhand{position:absolute;left:50%;top:58%;z-index:5;font-size:60px;line-height:1;pointer-events:none;animation:g-dtap 1.4s ease-in-out forwards}
-@keyframes g-dtap{0%{opacity:0;transform:translate(60px,70px)}40%{opacity:1;transform:translate(-50%,0)}62%{transform:translate(-50%,-6px) scale(.82)}78%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,0)}}
+/* the banner glows gold while its letter is to be said (Sani 2026-10-24) */
 .glab .dur .fglow{opacity:0;transition:opacity .3s}.glab .rw.listen .fglow{animation:g-fglow .8s ease-in-out infinite alternate}@keyframes g-fglow{from{opacity:.35}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.glab .rw.listen .fglow{animation:none;opacity:1}}
 .glab .micx .x-laila{position:relative}

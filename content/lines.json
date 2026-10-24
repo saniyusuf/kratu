@@ -4874,14 +4874,14 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka kalla: za ka danna Laila, sannan ka faɗi harafin da ke kan tuta.",
-   "f": "Ki kalla: za ki danna Laila, sannan ki faɗi harafin da ke kan tuta."
+   "m": "Ga yadda wasan yake: mahayin doki zai zo da tuta mai harafi. Idan ya tsaya, ka faɗi harafin da ke kan tutarsa da babbar murya.",
+   "f": "Ga yadda wasan yake: mahayin doki zai zo da tuta mai harafi. Idan ya tsaya, ki faɗi harafin da ke kan tutarsa da babbar murya."
   },
-  "en": "Watch: you press Laila, then say the letter on the flag.",
+  "en": "Here is how the game works: a horseman comes with a flag with a letter on it. When he stops, say the letter on his flag out loud.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
-  "said_when": "In the example, as the first horseman reins in, before the hand presses Laila.",
+  "said_when": "In the example, after Misali, as the first horseman rides in; Laila then listens by herself.",
   "status": "planned",
   "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
  },
@@ -4891,10 +4891,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan ka faɗa daidai, Sarki zai yi farin ciki, kuma mahayin zai shiga fada.",
-   "f": "Idan kin faɗa daidai, Sarki zai yi farin ciki, kuma mahayin zai shiga fada."
+   "m": "Idan ka faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada.",
+   "f": "Idan kin faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada."
   },
-  "en": "If you say it right, the Sarki is happy and the rider goes into the palace.",
+  "en": "If you say the letter right, the Sarki is happy and waves to him, the guards open the gate, and the horseman goes into the palace.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
@@ -4906,9 +4906,12 @@
   "key": "s_g_durbar_bad",
   "lang": "ha",
   "voice": "laila",
-  "gender": "any",
-  "text": "Idan ba daidai ba ne, Sarki ba zai ji daɗi ba, kuma mahayin ba zai shiga fada ba.",
-  "en": "If it is wrong, the Sarki is not pleased and the rider does not go into the palace.",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ba ka faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
+   "f": "Idan ba ki faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
+  },
+  "en": "If you don't say it right, the Sarki is not pleased, the gate stays shut, and the horseman turns back.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],

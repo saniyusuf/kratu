@@ -95,25 +95,24 @@ export function moreGames(c: any): Record<string, any> {
         }
         /** a line not recorded yet is skipped, or its stand-in said instead */
         const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
-        /** the app's hand comes to Laila and presses her: the example shows how every turn starts */
-        function tapDemo() {
-          return new Promise((res) => { const hd = h('<span class="dhand" aria-hidden="true">👆🏾</span>'); lbtn.appendChild(hd); box.busy = true; lbtn.classList.add('cue');
-            later(run, 1000, () => { lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec'); });
-            later(run, 1400, () => { hd.remove(); res(); }); });
+        /** Laila starts listening by herself, as she does in the game: no press */
+        function autoRec() {
+          return new Promise((res) => { box.busy = true; later(run, 400, () => { lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec'); later(run, 500, res); }); });
         }
         const endRec = () => { lbtn.classList.remove('rec'); box.classList.remove('rec'); };
         /*
-         * The example teaches the whole game before it starts (Sani 2026-10-24), with no score and no clock:
-         * a horseman rides in with A, Laila says how a turn goes, the hand presses Laila and the flag glows while the sample
-         * child (boy or girl, as the player) says "A": the emir waves, the gate opens and he rides into the palace. Then a
-         * horseman with G, the sample child says "C": the emir turns away and he rides back out. Then Laila asks the child
-         * to press her when ready, and only that press starts the game and its clock.
+         * The example teaches the whole game before it starts (Sani 2026-10-24), with no score and no clock. Laila explains
+         * the game at length: a horseman comes with a letter on his flag, and when he stops before the Sarki the child says
+         * it; Laila listens by herself (no press). Then the right case: the sample child (boy or girl, as the player) says "A",
+         * the emir waves, the gate opens, he rides into the palace, and Laila says that is what a right answer does. Then the
+         * fail case: "C" for G, the emir turns away, the gate stays shut, he rides back out, and Laila says so. Last, Laila
+         * asks the child to press her when ready, and only that press starts the game and its clock.
          */
         function example() {
           sayIf('sx_intro').then(() => {
             if (run.dead) return; const rw = arrive('A', looks[looks.length - 1]);
             later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
-              sayIf('s_g_durbar_eg1', 'app_spell_way_speak').then(() => { if (run.dead) return; tapDemo().then(() => { if (run.dead) return;
+              sayIf('s_g_durbar_eg1').then(() => { if (run.dead) return; autoRec().then(() => { if (run.dead) return;
                 say('sx_w_A', run).then(() => { if (run.dead) return;
                   endRec(); rw.classList.remove('listen'); box.yay(); greet(rw);
                   later(run, 4300, () => sayIf('s_g_durbar_good').then(() => { if (!run.dead) badExample(); }));
@@ -125,7 +124,7 @@ export function moreGames(c: any): Record<string, any> {
         function badExample() {
           const rw = arrive('G', looks[looks.length - 2]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen');
-            tapDemo().then(() => { if (run.dead) return;
+            autoRec().then(() => { if (run.dead) return;
               say('sx_w_C', run).then(() => { if (run.dead) return;
                 endRec(); rw.classList.remove('listen'); box.nope(); refuse(rw);
                 later(run, 3200, () => sayIf('s_g_durbar_bad').then(() => { if (!run.dead) ready(); }));
@@ -143,12 +142,12 @@ export function moreGames(c: any): Record<string, any> {
           });
         }
         /*
-         * Each letter (Sani 2026-10-24: "we will say the letter by clicking Laila"): the horseman reins in, his flag glows
-         * and Laila waits for a press; then she listens for up to 6 s. The right letter ends it at once; two wrong letters
-         * end it early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never shown or
-         * said. AUTO = true brings back the microphone opening by itself (2026-10-23).
+         * Each letter: the horseman reins in, his flag glows and the microphone opens by itself (Sani 2026-10-24: pressing
+         * Laila to speak "is not how it works"), listening for up to 6 s. The right letter ends it at once; two wrong
+         * letters end it early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never
+         * shown or said. AUTO = false would make the child press Laila for each horseman instead.
          */
-        const AUTO = false;
+        const AUTO = true;
         function next() {
           const L = L8[i], rw = arrive(L, looks[i % looks.length]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); row.children[i].classList.add('now');
