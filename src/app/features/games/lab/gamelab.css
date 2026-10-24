@@ -73,7 +73,7 @@
 .glab .kd.miss{opacity:.4}
 .glab .gsay{position:relative;z-index:5}
 @media (prefers-reduced-motion:reduce){.glab .kplayer *,.glab .kd,.glab .mic.rec .micring{animation:none!important}}
-.glab .scr.p .eye{display:none!important}
+.glab .scr.p>.eye{display:none!important}
 .glab .kplayer .mic{background:none;box-shadow:none;padding:0}
 .glab .kplayer .miclaila .glaila .lsvg{width:20cqw;height:20cqw}
 .glab .kplayer .micring{inset:1cqw}
@@ -331,7 +331,7 @@
 @keyframes g-ptfly{0%{opacity:0;transform:translateY(1cqw)}25%{opacity:1}100%{opacity:0;transform:translateY(-2cqw)}}
 .glab .shake{animation:g-shk .4s}
 @keyframes g-shk{25%{transform:translateX(-1cqw)}75%{transform:translateX(1cqw)}}
-.glab .scr.p .eye{position:absolute;top:5.4cqw;left:0;right:0}
+.glab .scr.p>.eye{position:absolute;top:5.4cqw;left:0;right:0}
 .glab .scr.r .place{font:700 2cqw var(--disp);color:var(--muted);max-width:62cqw}
 .glab .scr.r .stars i{animation:g-starin .45s cubic-bezier(.3,1.6,.5,1) both}
 @keyframes g-starin{from{transform:scale(0) rotate(-40deg);opacity:0}}
@@ -472,7 +472,7 @@
 .glab .scr>.scene{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .glab .scr>*:not(.scene){position:relative;z-index:1}
 .glab .scr>.gclock{position:absolute;z-index:4}
-.glab .scr.p .eye{position:absolute!important;z-index:2!important}
+.glab .scr.p>.eye{position:absolute!important;z-index:2!important}
 .glab .scene .ripples{animation:g-rip 6s linear infinite}
 @keyframes g-rip{to{transform:translateX(10px)}}
 .glab .art{display:block;width:100%;height:100%;overflow:visible}
@@ -541,7 +541,7 @@
 .glab .gclock .tm{font:800 2.2cqw var(--disp);color:var(--ink)}
 .glab .gclock .combo{min-width:8cqw;font:800 2.2cqw var(--disp);color:var(--orange);opacity:0;transform:scale(.6);transition:opacity .2s,transform .3s cubic-bezier(.3,1.6,.5,1)}
 .glab .gclock .combo.on{opacity:1;transform:scale(1)}
-.glab .scr.p .eye{top:7cqw!important}
+.glab .scr.p>.eye{top:7cqw!important}
 .glab .fx{position:absolute;width:0;height:0;z-index:6;pointer-events:none}
 .glab .fx i{position:absolute;width:1.2cqw;height:1.2cqw;border-radius:50%;left:-.6cqw;top:-.6cqw;animation:g-spk .7s ease-out forwards}
 @keyframes g-spk{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
@@ -699,7 +699,7 @@
 .glab .kd.miss{opacity:.4}
 .glab .gsay{position:relative;z-index:5}
 @media (prefers-reduced-motion:reduce){.glab .kplayer *,.glab .kd,.glab .mic.rec .micring{animation:none!important}}
-.glab .scr.p .eye{display:none!important}
+.glab .scr.p>.eye{display:none!important}
 .glab .kplayer .mic{background:none;box-shadow:none;padding:0}
 .glab .kplayer .miclaila .glaila .lsvg{width:20cqw;height:20cqw}
 .glab .kplayer .micring{inset:1cqw}
