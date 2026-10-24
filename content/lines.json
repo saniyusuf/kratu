@@ -4882,8 +4882,12 @@
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "In the example, after Misali, as the first horseman rides in; Laila then listens by herself.",
-  "status": "planned",
-  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+  "status": "live",
+  "review": "approved: Sani 24 Oct",
+  "recorded": {
+   "m": "243ed5bc79",
+   "f": "7fd8c1a5b7"
+  }
  },
  {
   "key": "s_g_durbar_good",
@@ -4899,8 +4903,12 @@
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace.",
-  "status": "planned",
-  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+  "status": "live",
+  "review": "approved: Sani 24 Oct",
+  "recorded": {
+   "m": "dc9b2d1419",
+   "f": "ffbea56fcb"
+  }
  },
  {
   "key": "s_g_durbar_bad",
@@ -4916,8 +4924,12 @@
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
-  "status": "planned",
-  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+  "status": "live",
+  "review": "approved: Sani 24 Oct",
+  "recorded": {
+   "m": "e37076c150",
+   "f": "06c8b38bbf"
+  }
  },
  {
   "key": "s_g_durbar_ready",
@@ -4933,8 +4945,12 @@
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "At the end of the example; the game starts when the child presses Laila.",
-  "status": "planned",
-  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+  "status": "live",
+  "review": "approved: Sani 24 Oct",
+  "recorded": {
+   "m": "9dce555287",
+   "f": "646c646ed2"
+  }
  },
  {
   "key": "s_g_dillali_how",
