@@ -101,8 +101,13 @@ export class Settings {
     if (this.router.url.startsWith('/home')) await this.router.navigateByUrl('/blank', { skipLocationChange: true });   // the chooser is re-entered so the greeting plays
     this.router.navigate(['/home']);
   }
-  /** Wasanni: the balloons are their own screen; the others share the games screen. */
-  playGame(id: string, q?: Record<string, string>): void { this.bus.stopAll(); this.close(); this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id], { queryParams: q || {} }); }
+  /** Wasanni: the balloons are their own screen; the others share the games screen. Picked from inside a game, the games
+      screen is left first: the router would otherwise keep it and the old game (the Durbar mixed up) goes on (Sani 2026-10-24). */
+  async playGame(id: string, q?: Record<string, string>): Promise<void> {
+    this.bus.stopAll(); this.close();
+    if (/^\/(wasanni|fashe)/.test(this.router.url)) await this.router.navigateByUrl('/blank', { skipLocationChange: true });
+    this.router.navigate(id === 'fashe' ? ['/fashe'] : ['/wasanni', id], { queryParams: q || {} });
+  }
   hardRestart(): void {
     this.bus.stopAll(); try { localStorage.clear(); sessionStorage.clear(); } catch { /* ignore */ }
     try { indexedDB.databases?.().then((dbs) => dbs.forEach((d) => { try { if (d.name) indexedDB.deleteDatabase(d.name); } catch { /* ignore */ } })); } catch { /* ignore */ }
