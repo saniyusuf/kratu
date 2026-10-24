@@ -4916,19 +4916,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan baka faɗi daidai ba, Sai Sarki ya ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
-   "f": "Idan baki faɗi daidai ba, Sai Sarki ya ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
+   "m": "Idan baka faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
+   "f": "Idan baki faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
   },
-  "en": "If you don't say it right, the Sarki is upset, the gate stays shut, and the horseman turns back.",
+  "en": "If you don't say it right, the Sarki will be upset, the gate stays shut, and the horseman turns back.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
   "status": "live",
-  "review": "approved: Sani 24 Oct (opening version 2 \"baka/baki\", middle version 8 \"Sai Sarki ya ɓata rai\"; \"Sai\" capitalised as recorded)",
+  "review": "approved: Sani 24 Oct (opening version 2 \"baka/baki\", middle \"Sarki zai ɓata rai\", version 6)",
   "recorded": {
-   "m": "16282112aa",
-   "f": "2b3a9520d6"
+   "m": "bf2f61b972",
+   "f": "6ccd8e4f86"
   }
  },
  {
