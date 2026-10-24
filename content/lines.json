@@ -4916,19 +4916,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan baka faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
-   "f": "Idan baki faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
+   "m": "Idan baka faɗi daidai ba, Sai Sarki ya ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
+   "f": "Idan baki faɗi daidai ba, Sai Sarki ya ɓata rai, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
   },
-  "en": "If you don't say it right, the Sarki is not pleased, the gate stays shut, and the horseman turns back.",
+  "en": "If you don't say it right, the Sarki is upset, the gate stays shut, and the horseman turns back.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
   "status": "live",
-  "review": "approved: Sani 24 Oct (version 2 of the wrong-answer opening: \"baka/baki\" as one word)",
+  "review": "approved: Sani 24 Oct (opening version 2 \"baka/baki\", middle version 8 \"Sai Sarki ya ɓata rai\"; \"Sai\" capitalised as recorded)",
   "recorded": {
-   "m": "572ca36f2a",
-   "f": "14e9b97097"
+   "m": "16282112aa",
+   "f": "2b3a9520d6"
   }
  },
  {
@@ -4937,19 +4937,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan ka shirya, ka danna Laila mu fara.",
-   "f": "Idan kin shirya, ki danna Laila mu fara."
+   "m": "Yanzu, ka danna Laila mu fara.",
+   "f": "Yanzu, ki danna Laila mu fara."
   },
-  "en": "When you are ready, press Laila and we will start.",
+  "en": "Now, press Laila and we will start.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
   "said_when": "At the end of the example; the game starts when the child presses Laila.",
   "status": "live",
-  "review": "approved: Sani 24 Oct",
+  "review": "approved: Sani 24 Oct (version 7)",
   "recorded": {
-   "m": "9dce555287",
-   "f": "646c646ed2"
+   "m": "8fd90879fc",
+   "f": "b220460ac0"
   }
  },
  {
