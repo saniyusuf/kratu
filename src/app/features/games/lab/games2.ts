@@ -95,40 +95,28 @@ export function moreGames(c: any): Record<string, any> {
         }
         /** a line not recorded yet is skipped, or its stand-in said instead */
         const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
-        /** Laila starts listening by herself, as she does in the game: no press */
-        function autoRec() {
-          return new Promise((res) => { box.busy = true; later(run, 400, () => { lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec'); later(run, 500, res); }); });
-        }
-        const endRec = () => { lbtn.classList.remove('rec'); box.classList.remove('rec'); };
         /*
-         * The example teaches the whole game before it starts (Sani 2026-10-24), with no score and no clock. Laila explains
-         * the game at length: a horseman comes with a letter on his flag, and when he stops before the Sarki the child says
-         * it; Laila listens by herself (no press). Then the right case: the sample child (boy or girl, as the player) says "A",
-         * the emir waves, the gate opens, he rides into the palace, and Laila says that is what a right answer does. Then the
-         * fail case: "C" for G, the emir turns away, the gate stays shut, he rides back out, and Laila says so. Last, Laila
-         * asks the child to press her when ready, and only that press starts the game and its clock.
+         * The example teaches the game before it starts (Sani 2026-10-24), with no score and no clock, and nobody says a
+         * letter in it: Laila explains the game while a horseman with A reins in, his flag glowing; she says what a right
+         * answer does, and he is greeted, the gate opens and he rides into the palace. A horseman with G: she says what a
+         * wrong one does, and the emir turns away, the gate stays shut and he rides back out. Then she asks the child to
+         * press her, and only that press starts the game and its clock.
          */
         function example() {
           sayIf('sx_intro').then(() => {
             if (run.dead) return; const rw = arrive('A', looks[looks.length - 1]);
             later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
-              sayIf('s_g_durbar_eg1').then(() => { if (run.dead) return; autoRec().then(() => { if (run.dead) return;
-                say('sx_w_A', run).then(() => { if (run.dead) return;
-                  endRec(); rw.classList.remove('listen'); box.yay(); greet(rw);
-                  later(run, 4300, () => sayIf('s_g_durbar_good').then(() => { if (!run.dead) badExample(); }));
-                });
-              }); });
+              sayIf('s_g_durbar_eg1').then(() => sayIf('s_g_durbar_good')).then(() => { if (run.dead) return;
+                rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) badExample(); });
+              });
             });
           });
         }
         function badExample() {
           const rw = arrive('G', looks[looks.length - 2]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen');
-            autoRec().then(() => { if (run.dead) return;
-              say('sx_w_C', run).then(() => { if (run.dead) return;
-                endRec(); rw.classList.remove('listen'); box.nope(); refuse(rw);
-                later(run, 3200, () => sayIf('s_g_durbar_bad').then(() => { if (!run.dead) ready(); }));
-              });
+            sayIf('s_g_durbar_bad').then(() => { if (run.dead) return;
+              rw.classList.remove('listen'); refuse(rw); later(run, 3200, () => { if (!run.dead) ready(); });
             });
           });
         }
