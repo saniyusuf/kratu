@@ -194,18 +194,6 @@ export function maiFanka(): string {
     `<circle cx="78" cy="130" r="5" fill="${sk}"/><circle cx="84" cy="122" r="5" fill="${sk}"/></svg>`;
 }
 
-/* yan lifidi: the emir's heavy cavalry in the quilted armour of old, waiting further back with their lances */
-export function lifidi(v = 0): string {
-  const quilt = ['#E9D9A6', '#C9B27A', '#F4EBD0'][v % 3], band = ['#C62828', '#2E7D32', '#1565C0'][v % 3];
-  let q = ''; for (let x = 20; x < 120; x += 8) q += `<path d="M${x} 40 L${x - 2} 94" stroke="${band}" stroke-width="1.4" opacity=".7"/>`;
-  return `<svg class="lifidi" viewBox="0 0 150 130" aria-hidden="true"><ellipse cx="72" cy="124" rx="56" ry="4" fill="rgba(40,24,10,.25)"/>` +
-    `<path d="M30 92 L28 122 h7 l2 -30 Z M48 92 L48 122 h7 l0 -30 Z M96 92 L98 122 h7 l-2 -30 Z M110 92 L114 122 h7 l-4 -30 Z" fill="#5E3A1C"/>` +
-    `<path d="M112 46 Q122 24 134 16 L144 22 Q140 38 128 56 Z" fill="${quilt}"/><path d="M134 16 Q144 12 150 22 L148 30 Q140 30 136 26 Z" fill="#6B4422"/>` +
-    `<path d="M14 44 Q14 34 30 34 L116 34 Q132 36 130 52 L130 96 Q72 104 14 96 Z" fill="${quilt}"/>${q}<path d="M14 92 Q72 102 130 92" stroke="${band}" stroke-width="3" fill="none"/>` +
-    `<path d="M60 36 Q58 6 72 2 Q86 6 84 36 Z" fill="#9AA3AD"/><circle cx="72" cy="-4" r="8" fill="#5E3A1C"/><path d="M63 -6 Q72 -20 81 -6 Z" fill="#9AA3AD"/><path d="M72 -20 v-6" stroke="${band}" stroke-width="3"/>` +
-    `<path d="M88 30 L118 -40" stroke="#6B4422" stroke-width="2.4"/><path d="M116 -38 l5 -10 l1 11 Z" fill="#B0BEC5"/></svg>`;
-}
-
 /*
  * The Durbar's own sounds (Sani 2026-10-23: "don't forget sound effects"), made in Web Audio so nothing new is
  * downloaded: hooves when a horseman rides in and out, the kakaki's fanfare and the women's ululation (guda) for a

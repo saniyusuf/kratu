@@ -7,7 +7,7 @@
  */
 import * as A from './art4';
 import { GOODS, ACT_MS, deal } from './market';
-import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, lifidi, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
+import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
 
@@ -44,8 +44,8 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
         const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
-        // the emir at his gate with his court about him: a dogari each side, his attendant fanning him; the yan lifidi wait behind the band
-        const st = h('<div class="dstage"><div class="lifw"><span>' + lifidi(0) + '</span><span>' + lifidi(1) + '</span><span>' + lifidi(2) + '</span></div>' +
+        // the emir at his gate with his court about him: a dogari each side, his attendant fanning him (no horses behind: Sani 2026-10-24)
+        const st = h('<div class="dstage">' +
           '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +
           '<div class="courtw"><span class="cw dg l">' + dogari(0) + '</span><div class="emirw">' + emirThrone() + '</div><span class="cw fk">' + maiFanka() + '</span><span class="cw dg r">' + dogari(1) + '</span></div>' +
           '<div class="rlane"></div></div>');
