@@ -13,7 +13,6 @@ import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
-  const LET = 'ABCDEFGHIJKLMNOPRSTUVWYZ'.split('');   // no Q or X: the recogniser cannot hear them apart from K and S
   const later = (run, ms, f) => run.later(ms, f);
   const beat = (run, n) => { for (let k = 0; k < n; k++) later(run, k * 200, () => drum(k % 2 === 0)); };
   const bump = (el, cls, ms = 700) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); if (ms) setTimeout(() => el.classList.remove(cls), ms); };
@@ -42,9 +41,9 @@ export function moreGames(c: any): Record<string, any> {
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
-        // always mixed up, never in order: the balloons already check A to Z in order (Sani 2026-10-24).
-        // In a lesson every letter learned so far; on its own, eight from the whole alphabet
-        const L8 = opts.letters ? shuffle(opts.letters) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
+        // always mixed up, never in order: the balloons already check A to Z in order. Given letters (the learning path sends
+        // those learned so far), only those; given none, the full alphabet A to Z (Sani 2026-10-24)
+        const L8 = shuffle(opts.letters || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')), N = L8.length; let i = 0; const missed = [];
         // the emir at his gate with his court about him: a dogari each side, his attendant fanning him (no horses behind: Sani 2026-10-24)
         const st = h('<div class="dstage">' +
           '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +
