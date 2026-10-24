@@ -29,6 +29,7 @@ export interface GameIO {
   firstTime?: () => boolean;
   amp?: () => number;
   preparing?: () => boolean;
+  has?: (key: string) => boolean;  // is this line recorded? (a draft line not yet recorded is skipped)
 }
 export interface GameHandle { stop(): void; again(): void; }
 /** Inside a lesson (Haruffa's in-between games): only the letters learned so far, in order or mixed up, no opening

@@ -55,7 +55,7 @@ export function moreGames(c: any): Record<string, any> {
         run.scr.appendChild(st); run.scr.appendChild(row); run.scr.appendChild(box);
         run.remind = () => say(line('j-durbar', 'how'), run);
         const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), court = st.querySelector('.courtw'), bandEl = st.querySelector('.sallahw');
-        const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // nothing to press here: the microphone opens by itself
+        const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // no cue until the example is over
         const scene = run.scr.closest('.glab')?.querySelector('.gbg>.scene');   // the painted palace: its gate, its guards and the children on the square
         posts();
         /** a horseman gallops in with his letter and reins in before the emir */
@@ -87,29 +87,68 @@ export function moreGames(c: any): Record<string, any> {
           const g = gateAt(); if (!g) return; const b = rw.getBoundingClientRect(), k = rw.offsetWidth / (b.width || 1), gx = g.x(77), gy = g.y(70);
           rw.style.setProperty('--gx', ((gx - b.left - b.width / 2) * k).toFixed(1) + 'px'); rw.style.setProperty('--gy', ((gy - b.bottom) * k).toFixed(1) + 'px');
         }
+        /** wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride back out, and
+            the gate stays shut */
+        function refuse(rw) {
+          emir.classList.add('cross'); rw.classList.add('sad'); later(run, 450, groan);
+          later(run, 1600, () => { rw.classList.add('turn', 'gallop', 'back'); hooves(1.2, true); });
+        }
+        /** a line not recorded yet is skipped, or its stand-in said instead */
+        const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
+        /** the app's hand comes to Laila and presses her: the example shows how every turn starts */
+        function tapDemo() {
+          return new Promise((res) => { const hd = h('<span class="dhand" aria-hidden="true">👆🏾</span>'); lbtn.appendChild(hd); box.busy = true; lbtn.classList.add('cue');
+            later(run, 1000, () => { lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec'); });
+            later(run, 1400, () => { hd.remove(); res(); }); });
+        }
+        const endRec = () => { lbtn.classList.remove('rec'); box.classList.remove('rec'); };
         /*
-         * The example first (Sani 2026-10-23: "when you start you teach the person how to say it"): Laila says it is an
-         * example, a horseman rides in with A, Laila listens and the sample child (boy or girl, as the player) says "A",
-         * the horseman greets the emir; then "your turn". It is not scored and the clock has not started.
+         * The example teaches the whole game before it starts (Sani 2026-10-24), with no score and no clock:
+         * a horseman rides in with A, Laila says how a turn goes, the hand presses Laila and the flag glows while the sample
+         * child (boy or girl, as the player) says "A": the emir waves, the gate opens and he rides into the palace. Then a
+         * horseman with G, the sample child says "C": the emir turns away and he rides back out. Then Laila asks the child
+         * to press her when ready, and only that press starts the game and its clock.
          */
         function example() {
-          say('sx_intro', run).then(() => {
+          sayIf('sx_intro').then(() => {
             if (run.dead) return; const rw = arrive('A', looks[looks.length - 1]);
-            later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true; lbtn.classList.remove('cue'); lbtn.classList.add('rec'); box.classList.add('rec');
-              later(run, 600, () => say('sx_w_A', run).then(() => { if (run.dead) return;
-                lbtn.classList.remove('rec'); box.classList.remove('rec'); box.yay(); greet(rw);
-                later(run, 4300, () => say('sx_now', run).then(() => { if (run.dead) return; box.busy = false; lane.innerHTML = '';
-                  run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
-                  next(); }));
-              }));
+            later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
+              sayIf('s_g_durbar_eg1', 'app_spell_way_speak').then(() => { if (run.dead) return; tapDemo().then(() => { if (run.dead) return;
+                say('sx_w_A', run).then(() => { if (run.dead) return;
+                  endRec(); rw.classList.remove('listen'); box.yay(); greet(rw);
+                  later(run, 4300, () => sayIf('s_g_durbar_good').then(() => { if (!run.dead) badExample(); }));
+                });
+              }); });
             });
           });
         }
+        function badExample() {
+          const rw = arrive('G', looks[looks.length - 2]);
+          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen');
+            tapDemo().then(() => { if (run.dead) return;
+              say('sx_w_C', run).then(() => { if (run.dead) return;
+                endRec(); rw.classList.remove('listen'); box.nope(); refuse(rw);
+                later(run, 3200, () => sayIf('s_g_durbar_bad').then(() => { if (!run.dead) ready(); }));
+              });
+            });
+          });
+        }
+        function ready() {
+          lane.innerHTML = ''; emir.classList.remove('cross');
+          sayIf('s_g_durbar_ready', 'app_w_tap_white').then(() => { if (run.dead) return;
+            box.busy = false; lbtn.classList.add('cue');
+            lbtn.onclick = () => { if (run.dead) return; lbtn.onclick = null; lbtn.classList.remove('cue'); io.hush();
+              run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
+              next(); };
+          });
+        }
         /*
-         * Each letter after the example (Sani 2026-10-23): no press. The horseman reins in, the microphone opens by itself
-         * and listens for 6 s while his banner keeps flying. The right letter ends it at once; two wrong letters end it
-         * early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never shown or said.
+         * Each letter (Sani 2026-10-24: "we will say the letter by clicking Laila"): the horseman reins in, his flag glows
+         * and Laila waits for a press; then she listens for up to 6 s. The right letter ends it at once; two wrong letters
+         * end it early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never shown or
+         * said. AUTO = true brings back the microphone opening by itself (2026-10-23).
          */
+        const AUTO = false;
         function next() {
           const L = L8[i], rw = arrive(L, looks[i % looks.length]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); row.children[i].classList.add('now');
@@ -119,12 +158,10 @@ export function moreGames(c: any): Record<string, any> {
                 box.yay(); run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
                 greet(rw); later(run, 4300, step); return;
               }
-              // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
               run.bad(); box.nope(); missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
-              emir.classList.add('cross'); rw.classList.add('sad'); later(run, 450, groan);
-              later(run, 1600, () => { rw.classList.add('turn', 'gallop', 'back'); hooves(1.2, true); }); later(run, 3200, step);
+              refuse(rw); later(run, 3200, step);
             }, () => L);
-            box.busy = false; box.go();
+            if (AUTO) { box.busy = false; box.go(); } else box.cue();
           });
         }
         function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }

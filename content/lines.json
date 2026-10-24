@@ -4869,6 +4869,71 @@
   }
  },
  {
+  "key": "s_g_durbar_eg1",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka kalla: za ka danna Laila, sannan ka faɗi harafin da ke kan tuta.",
+   "f": "Ki kalla: za ki danna Laila, sannan ki faɗi harafin da ke kan tuta."
+  },
+  "en": "Watch: you press Laila, then say the letter on the flag.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "In the example, as the first horseman reins in, before the hand presses Laila.",
+  "status": "planned",
+  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+ },
+ {
+  "key": "s_g_durbar_good",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka faɗa daidai, Sarki zai yi farin ciki, kuma mahayin zai shiga fada.",
+   "f": "Idan kin faɗa daidai, Sarki zai yi farin ciki, kuma mahayin zai shiga fada."
+  },
+  "en": "If you say it right, the Sarki is happy and the rider goes into the palace.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace.",
+  "status": "planned",
+  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+ },
+ {
+  "key": "s_g_durbar_bad",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Idan ba daidai ba ne, Sarki ba zai ji daɗi ba, kuma mahayin ba zai shiga fada ba.",
+  "en": "If it is wrong, the Sarki is not pleased and the rider does not go into the palace.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
+  "status": "planned",
+  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka shirya, ka danna Laila mu fara.",
+   "f": "Idan kin shirya, ki danna Laila mu fara."
+  },
+  "en": "When you are ready, press Laila and we will start.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "At the end of the example; the game starts when the child presses Laila.",
+  "status": "planned",
+  "review": "unreviewed: Claude draft 24 Oct, awaiting Sani's wording"
+ },
+ {
   "key": "s_g_dillali_how",
   "lang": "ha",
   "voice": "laila",

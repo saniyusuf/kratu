@@ -91,6 +91,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       K, female: this.session.g() === 'f', tester: this.session.debug && (() => { try { return localStorage.getItem('kratu_tester') === '1'; } catch { return false; } })(),   // the ✓ ✗ answer buttons: a desk without a microphone only, never on a tablet (Sani 2026-10-23)
       say: (src) => this.sfxP.then(() => this.gone ? false : src.startsWith('assets/') ? this.bus.playRaw(src) : this.bus.play(this.bus.gk(src))).catch(() => false),
       hush: () => this.bus.stopAll(),
+      has: (k) => this.bus.has(this.bus.gk(k)),
       sfx: (src) => { this.sfxP = this.bus.playRaw(src).catch(() => false); },
       hear: (o) => this.speech.hear(o),
       amp: () => this.speech.amp(), preparing: () => this.speech.preparing(),
