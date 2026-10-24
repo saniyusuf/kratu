@@ -4916,8 +4916,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan ba ka faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
-   "f": "Idan ba ki faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
+   "m": "Idan baka faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya.",
+   "f": "Idan baki faɗi daidai ba, Sarki ba zai ji daɗi ba, ƙofa za ta zauna a rufe, kuma mahayin zai koma baya."
   },
   "en": "If you don't say it right, the Sarki is not pleased, the gate stays shut, and the horseman turns back.",
   "screens": [
@@ -4925,10 +4925,10 @@
   ],
   "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
   "status": "live",
-  "review": "approved: Sani 24 Oct",
+  "review": "approved: Sani 24 Oct (version 2 of the wrong-answer opening: \"baka/baki\" as one word)",
   "recorded": {
-   "m": "e37076c150",
-   "f": "06c8b38bbf"
+   "m": "572ca36f2a",
+   "f": "14e9b97097"
   }
  },
  {
