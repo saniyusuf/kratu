@@ -4874,19 +4874,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ga yadda wasan yake: mahayin doki zai zo da tuta mai harafi. Idan ya tsaya, ka faɗi harafin da ke kan tutarsa da babbar murya.",
-   "f": "Ga yadda wasan yake: mahayin doki zai zo da tuta mai harafi. Idan ya tsaya, ki faɗi harafin da ke kan tutarsa da babbar murya."
+   "m": "Ga yadda ake wasan: ka faɗi harafin da ka gani a kan tutar mahayin doki, domin Sarki ya yi murna.",
+   "f": "Ga yadda ake wasan: ki faɗi harafin da kika gani a kan tutar mahayin doki, domin Sarki ya yi murna."
   },
-  "en": "Here is how the game works: a horseman comes with a flag with a letter on it. When he stops, say the letter on his flag out loud.",
+  "en": "Here is how the game works: say the letter you see on the horseman's flag, so the Sarki is happy.",
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
-  "said_when": "In the example, after Misali, as the first horseman rides in; Laila then listens by herself.",
+  "said_when": "The whole example in one line (Sani 2026-10-25), as the first horseman reins in; then the horsemen show a right and a wrong answer without words.",
   "status": "live",
-  "review": "approved: Sani 24 Oct",
+  "review": "Sani's words 25 Oct, spelled cleanly by Claude; the ending and punctuation still to pick by ear (variants-5)",
   "recorded": {
-   "m": "243ed5bc79",
-   "f": "7fd8c1a5b7"
+   "m": "4565a2b83a",
+   "f": "af7a385b20"
   }
  },
  {
@@ -4902,8 +4902,8 @@
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
-  "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace.",
-  "status": "live",
+  "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
+  "status": "unused",
   "review": "approved: Sani 24 Oct",
   "recorded": {
    "m": "dc9b2d1419",
@@ -4923,8 +4923,8 @@
   "screens": [
    "Wasanni · Hawan Sallah"
   ],
-  "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out.",
-  "status": "live",
+  "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
+  "status": "unused",
   "review": "approved: Sani 24 Oct (\"baka/baki\" as one word; \"Sarki zai ɓata rai\"; a full stop after \"a rufe\" for the falling tone, \"kuma\" kept lowercase as recorded)",
   "recorded": {
    "m": "4d49b55e4f",

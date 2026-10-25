@@ -37,7 +37,7 @@ export function moreGames(c: any): Record<string, any> {
 
   return {
     /* ---------------- Haruffa: Hawan Sallah, the Durbar ---------------- */
-    'j-durbar': { title: 'Hawan Sallah', cls: 'durbar', scene: 'palace',
+    'j-durbar': { title: 'Hawan Sallah', cls: 'durbar', scene: 'palace', noHow: true,   // the example teaches it; "how" stays the reminder
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
@@ -96,28 +96,24 @@ export function moreGames(c: any): Record<string, any> {
         /** a line not recorded yet is skipped, or its stand-in said instead */
         const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
         /*
-         * The example teaches the game before it starts (Sani 2026-10-24), with no score and no clock, and nobody says a
-         * letter in it: Laila explains the game while a horseman with A reins in, his flag glowing; she says what a right
-         * answer does, and he is greeted, the gate opens and he rides into the palace. A horseman with G: she says what a
-         * wrong one does, and the emir turns away, the gate stays shut and he rides back out. Then she asks the child to
-         * press her, and only that press starts the game and its clock.
+         * The example teaches the game before it starts, with no score and no clock, and nobody says a letter in it. One
+         * line says it all (Sani 2026-10-25): a horseman with A reins in, his flag glowing, and Laila says what to do; he is
+         * greeted, the gate opens and he rides into the palace. A horseman with G then shows a wrong answer without words:
+         * the emir turns away, the gate stays shut and he rides back out. Then she asks the child to press her, and only
+         * that press starts the game and its clock.
          */
         function example() {
-          sayIf('sx_intro').then(() => {
-            if (run.dead) return; const rw = arrive('A', looks[looks.length - 1]);
-            later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
-              sayIf('s_g_durbar_eg1').then(() => sayIf('s_g_durbar_good')).then(() => { if (run.dead) return;
-                rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) badExample(); });
-              });
+          const rw = arrive('A', looks[looks.length - 1]);
+          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
+            sayIf('s_g_durbar_eg1').then(() => { if (run.dead) return;
+              rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) badExample(); });
             });
           });
         }
         function badExample() {
           const rw = arrive('G', looks[looks.length - 2]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen');
-            sayIf('s_g_durbar_bad').then(() => { if (run.dead) return;
-              rw.classList.remove('listen'); refuse(rw); later(run, 3200, () => { if (!run.dead) ready(); });
-            });
+            later(run, 1600, () => { if (run.dead) return; rw.classList.remove('listen'); refuse(rw); later(run, 3200, () => { if (!run.dead) ready(); }); });
           });
         }
         function ready() {

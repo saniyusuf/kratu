@@ -195,7 +195,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var b = cd.querySelector('b'); b.textContent = steps[i]; b.classList.remove('in'); void b.offsetWidth; b.classList.add('in'); drum(i === 3); i++; run.later(i === 4 ? 650 : 600, tick);
       })();
     };
-    var how = line(gid, 'how');
+    var how = g.noHow ? null : line(gid, 'how');   // a game whose example teaches it skips the spoken how-to before the 3-2-1
     if (how) {
       var s = h('<div class="gsay">' + lailaBtn('talking') + '</div>'); run.scr.appendChild(s);   // Laila explains out loud; nothing written
       var skip = false; s.querySelector('.glaila').onclick = function () { if (skip) return; skip = true; io.hush(); s.remove(); go(); };   // a tap while she explains starts the game

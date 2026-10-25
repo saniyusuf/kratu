@@ -1302,7 +1302,7 @@
 
 /* Hawan Sallah, Sani 2026-10-23: the letter's banner is huge (it is drawn inside the rider, so it scales with the
    screen), the emir has his court about him, the letters on the row float */
-.glab .scr.durbar .rw{width:42cqw;height:45.4cqw;left:0}
+.glab .scr.durbar .rw{width:42cqw;height:45.4cqw;left:5.5cqw}   /* clear of the door now the flag is bigger */
 .glab .scr.durbar .flagL{font:800 122px var(--disp);fill:#2A1A0A;stroke:none;animation:g-lfloat 2.4s ease-in-out infinite}
 .glab .scr.durbar .rider .cloth{transform-origin:100% 50%;animation:g-flag2 1.6s ease-in-out infinite alternate}
 @keyframes g-flag2{to{transform:skewY(-2.5deg) scaleY(.97)}}
@@ -1368,3 +1368,13 @@
 .glab .dur .fglow{opacity:0;transition:opacity .3s}.glab .rw.listen .fglow{animation:g-fglow .8s ease-in-out infinite alternate}@keyframes g-fglow{from{opacity:.35}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.glab .rw.listen .fglow{animation:none;opacity:1}}
 .glab .micx .x-laila{position:relative}
+/* the letter's flag, bigger and louder (Sani 2026-10-25: "the flag should be bigger and it should catch the user's
+   attention even more"): grown from the foot of the lance so the rider stays where he is, a white cloth with a near-black
+   letter, and while Laila listens the whole flag swells and its gold glow throbs. Transforms and opacity only. */
+.glab .scr.durbar .rider.dur{overflow:visible}
+.glab .scr.durbar .rider .flag{transform-box:fill-box;transform-origin:100% 100%;transform:scale(1.22)}
+.glab .scr.durbar .flagL{font-weight:900;fill:#120A02}
+.glab .scr.durbar .rw.listen .rider .flag{animation:g-flagswell 1s ease-in-out infinite}
+@keyframes g-flagswell{50%{transform:scale(1.29)}}
+.glab .scr.durbar .rw.listen .fglow{animation:g-fglow2 .6s ease-in-out infinite alternate}@keyframes g-fglow2{from{opacity:.5}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.glab .scr.durbar .rw.listen .rider .flag,.glab .scr.durbar .rw.listen .fglow{animation:none;opacity:1}}

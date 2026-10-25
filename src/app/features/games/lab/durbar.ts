@@ -45,8 +45,8 @@ export function durbarRider(L: string, vi = 0): string {
     /* the letter's banner (Sani 2026-10-23: "the flag with the letter must be huge"): a tall lance planted by the saddle,
        a big cream cloth edged in the rider's colours streaming back behind him, and the letter as large as the cloth allows */
     `<g class="flag"><path d="M116 -100 L120 112" stroke="#5E3A1C" stroke-width="4" stroke-linecap="round"/><path d="M114 -100 l2.5 -12 l2.5 12 Z" fill="#C9A227"/><circle cx="116.5" cy="-99" r="3" fill="#C9A227"/>` +
-    `<g class="cloth"><path class="fglow" d="M115 -94 Q60 -104 -40 -92 Q-26 -40 -40 14 Q60 4 116 14 Z" fill="none" stroke="#FFE066" stroke-width="18" stroke-linejoin="round"/><path d="M115 -94 Q60 -104 -40 -92 Q-26 -40 -40 14 Q60 4 116 14 Z" fill="${v.flag[0]}"/>` +
-    `<path d="M108 -84 Q58 -92 -26 -82 Q-14 -40 -26 4 Q58 -4 108 4 Z" fill="#FFF8E7"/>` +
+    `<g class="cloth"><path class="fglow" d="M115 -94 Q60 -104 -40 -92 Q-26 -40 -40 14 Q60 4 116 14 Z" fill="none" stroke="#FFD400" stroke-width="28" stroke-linejoin="round"/><path d="M115 -94 Q60 -104 -40 -92 Q-26 -40 -40 14 Q60 4 116 14 Z" fill="${v.flag[0]}"/>` +
+    `<path d="M108 -84 Q58 -92 -26 -82 Q-14 -40 -26 4 Q58 -4 108 4 Z" fill="#FFFFFF"/>` +
     `<path d="M-40 -92 l-10 8 l10 6 M-40 14 l-10 -8 l10 -6" fill="${v.flag[1]}"/>` +
     `<path d="M115 -94 Q60 -104 -40 -92 M-40 14 Q60 4 116 14" stroke="${v.flag[1]}" stroke-width="4" fill="none"/>` +
     `<text x="41" y="-1" text-anchor="middle" class="flagL">${L}</text></g></g>` +
