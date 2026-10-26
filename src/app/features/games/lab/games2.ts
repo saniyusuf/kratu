@@ -10,7 +10,7 @@ import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinC
 import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { react as reactScene } from './rest';
-import { teaStall, umbrellaBench, roadBehind, cupTap } from './teastall';
+import { teaStall, umbrellaBench, roadBehind, cupTap, served, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -223,25 +223,47 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Nemo hoto: the tea seller ---------------- */
-    /* Mai shayi by the roadside (Sani 2026-10-23): one picture at a time, big, with Laila in the middle under it as in the
-       lessons. The seller pulls tea between two cups while an egg fries; people eat on the bench under the umbrella and a
-       motorbike goes by. Name the picture: two taps of the spoon and it goes over to the bench. Wrong: the seller and his
-       customers frown, the picture drops away, and the next one comes (one answer, no hints). */
+    /* Mai shayi by the roadside (Sani 2026-10-23, served 2026-10-26): one picture at a time, big, with Laila in the
+       middle under it as in the lessons. Each order comes from someone, never the same person twice running: a bubble
+       over their head shows what they want, and a bar under the picture runs down for as long as they will wait (it
+       stops while Laila listens). Named right: two taps of the spoon, the picture becomes the thing as it is served (the
+       egg fried on a plate, the sugar dropping into a cup of tea, the milk poured in…) and it goes to that person.
+       Wrong, or the bar runs out: the seller and his customers frown, the picture drops away, the next order comes. */
     'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'teanight',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
-        const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7); let r = 0, got = 0;
-        const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div><div class="tcard"></div></div>');
+        const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7), WAIT = 15000; let r = 0, got = 0, last = -1;
+        const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div>' +
+          '<div class="tcard"></div><div class="twait"><i></i></div><div class="tbub"></div><div class="tserve"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
-        const card = st.querySelector('.tcard');
+        const card = st.querySelector('.tcard'), bar = st.querySelector('.twait'), fill = bar.firstElementChild, bub = st.querySelector('.tbub'), sv = st.querySelector('.tserve');
         function next() {
-          const w = ORDER[r]; st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
+          const w = ORDER[r], who = shuffle([0, 1, 2, 3].filter((k) => k !== last))[0], c = CUSTOMERS[who]; last = who;
+          let left = WAIT, over = false;
+          st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
+          sv.className = 'tserve'; sv.innerHTML = '';
+          bub.className = 'tbub'; bub.innerHTML = photo(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
+          bar.className = 'twait on'; fill.style.transform = 'scaleX(1)';
+          const end = () => { over = true; bar.classList.remove('on'); bub.classList.remove('on'); };
+          const miss = () => { end(); cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); };
+          // the wait runs down only while nobody is speaking and nothing is being judged
+          (function tick() { if (over || run.dead) return;
+            if (!run.listening && !box.busy) { left -= 100; fill.style.transform = 'scaleX(' + Math.max(0, left / WAIT).toFixed(3) + ')'; bar.classList.toggle('low', left < WAIT * .34); }
+            if (left <= 0) { box.busy = true; miss(); return; }
+            later(run, 100, tick); })();
           speakRound(run, box, w, MENU, () => {
-            got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad'); card.classList.add('serve'); step(1900);
-          }, () => { cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); });
+            end(); got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad');
+            // the picture becomes the thing as it is served, and goes to the one who asked for it
+            card.classList.add('turn'); sv.innerHTML = served(w);
+            const R = st.getBoundingClientRect(), S = sv.getBoundingClientRect(), u = R.width / 100;   // from the picture's middle to their hand, in the stage's own units
+            sv.style.setProperty('--dx', ((R.left + c.x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - c.hand * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
+            void sv.offsetWidth; sv.classList.add('show');
+            later(run, 700, () => sv.classList.add('fly'));
+            step(3000);
+          }, () => miss());
         }
         function step(ms) { later(run, ms, () => { r++; if (r >= ORDER.length) done({ right: got, finished: true, part: got / 7 }); else next(); }); }
         next();

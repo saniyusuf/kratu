@@ -182,6 +182,38 @@ export function roadBehind(): string {
     `<div class="fb fba">${okada('#1565C0', '#E65100', '#00897B')}</div><div class="fb fbb rev">${okada('#C62828', '#37474F')}</div>`;
 }
 
+/* who can be served, and where (Sani 2026-10-26): the man at the end of the table and the three on the bench. Each order
+   goes to someone other than the last; x is the hand and head across the stage (cqw), hand/head the height from the
+   bottom (cqw), worked out from where teaStall and umbrellaBench are placed in teastall.css. */
+export const CUSTOMERS = [
+  { x: 7.6, hand: 15, head: 26.4 },     // the man standing at the stand
+  { x: 73.8, hand: 14.5, head: 25 },    // the bench: first man, the elder, the last man
+  { x: 82, hand: 15.5, head: 25 },
+  { x: 90.4, hand: 15.2, head: 25 },
+];
+
+/* what each order becomes when it is served, drawn (60×60): where it makes sense the thing is used, not handed over
+   bare — the egg comes fried on a plate, the sugar drops into a cup of tea, the milk is poured into it, the spoon stirs
+   it, the kettle fills the cup; water is a sachet of pure water */
+export function served(w: string): string {
+  const cup = (tea = '#B0703A') => `<path d="M17 26 L43 26 L41 52 L19 52 Z" fill="#F4F4F4"/><path d="M18 46 H42" stroke="#1E5AA8" stroke-width="2.4"/><ellipse cx="30" cy="26" rx="13" ry="3.6" fill="${tea}"/>`;
+  const froth = `<ellipse cx="30" cy="25" rx="13" ry="4" fill="#E9CFA6"/><circle cx="25" cy="22.6" r="4" fill="#FBF1DD"/><circle cx="32" cy="21.6" r="4.4" fill="#FBF1DD"/><circle cx="38" cy="23.6" r="3" fill="#FBF1DD"/>`;
+  const steam = `<g class="sv-steam"><path d="M26 16 q-3 -4 0 -8 q3 -4 0 -8" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/><path d="M34 16 q-3 -4 0 -8" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/></g>`;
+  const D = {
+    tea: cup() + froth + steam,
+    bread: `<path d="M6 40 Q6 24 22 24 L38 24 Q54 24 54 40 L54 46 L6 46 Z" fill="#D9A55A"/><path d="M6 40 Q6 24 22 24 L38 24 Q54 24 54 40" fill="none" stroke="#A86E2C" stroke-width="2"/><path d="M16 27 L21 38 M28 25 L33 38 M40 27 L45 38" stroke="#B57A36" stroke-width="2.4"/>`,
+    egg: `<ellipse cx="30" cy="40" rx="26" ry="9" fill="#E8EEF2"/><ellipse cx="30" cy="38" rx="20" ry="6.4" fill="#C9D3DA"/><path d="M14 37 Q12 30 22 31 Q28 26 36 30 Q46 29 45 36 Q46 42 34 42 Q20 44 14 37 Z" fill="#FBF6EA"/><ellipse cx="30" cy="35" rx="6" ry="4.4" fill="#F5B21C"/><ellipse cx="28.4" cy="33.6" rx="2" ry="1.2" fill="#FFE08A"/>`,
+    sugar: cup() + `<g class="sv-drop"><rect x="25" y="4" width="8" height="8" rx="1" fill="#fff" stroke="#D8D8D8"/><rect x="31" y="12" width="7" height="7" rx="1" fill="#fff" stroke="#D8D8D8"/></g>`,
+    milk: `<g transform="rotate(-35 44 12)"><rect x="36" y="2" width="16" height="20" rx="2" fill="#E8EEF7"/><rect x="36" y="8" width="16" height="7" fill="#1E5AA8"/></g><path class="sv-pour" d="M35 16 Q31 20 31 26" stroke="#FBF6EA" stroke-width="3" fill="none"/>` + cup('#C8915A') + `<path d="M22 26 q8 3 16 0" stroke="#FBF6EA" stroke-width="1.6" fill="none"/>`,
+    cup: `<path d="M14 18 L44 18 L41 52 L17 52 Z" fill="#F4F4F4"/><path d="M15 46 H43" stroke="#1E5AA8" stroke-width="2.4"/><ellipse cx="29" cy="18" rx="15" ry="4" fill="#DCE3E8"/><path d="M43 26 Q54 28 51 38 Q48 44 42 42" stroke="#F4F4F4" stroke-width="4" fill="none"/>`,
+    spoon: cup() + froth + `<g class="sv-stir"><path d="M30 26 L42 4" stroke="#B7C0C8" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="43" cy="3" rx="3" ry="4.4" transform="rotate(30 43 3)" fill="#CFD8DC"/></g>`,
+    kettle: `<g transform="rotate(-28 18 20)"><path d="M4 32 Q0 14 16 12 Q32 14 28 32 Z" fill="#B7C0C8"/><path d="M28 22 Q36 20 38 14" stroke="#9AA3AD" stroke-width="3" fill="none" stroke-linecap="round"/></g><path class="sv-pour" d="M36 10 Q38 18 34 26" stroke="#C98A4A" stroke-width="2.6" fill="none"/>` + cup() + steam,
+    water: `<path d="M14 14 Q30 8 46 14 L48 48 Q30 56 12 48 Z" fill="#E3F2FD" stroke="#90CAF9" stroke-width="1.4"/><path d="M14 14 Q30 8 46 14 L46 20 Q30 15 14 20 Z" fill="#BBDEFB"/>` +
+      `<text x="30" y="34" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="8" fill="#1565C0">PURE</text><text x="30" y="43" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="8" fill="#1565C0">WATER</text>`,
+  };
+  return `<svg class="sv" viewBox="0 0 60 60" aria-hidden="true">${D[w] || D.tea}</svg>`;
+}
+
 /* the tea seller's pleasure: two quick taps of the spoon on the cup */
 let tac = null;
 export function cupTap(happy = true): void {
