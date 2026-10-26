@@ -50,3 +50,44 @@
 .glab .gbg.sad .bl4 .ta .x-bd,.glab .gbg.sad .bl4 .tb .x-bd{animation:none}
 
 @media (prefers-reduced-motion:reduce){.glab .gbg .bl4 *{animation:none!important}}
+
+/* ---- Ginin bulo, the game's own pieces (Sani 2026-10-26): the big word picture top middle, its letter slots and the
+   house's % beside it on the right, the red-earth house (buloHouse) on the left above the keys, and the A–Z keys in two
+   blocks at the bottom either side of Laila, as in Marubucin wasiƙa. The game box is always 16:10 (100 × 62.5cqw). ---- */
+.glab .scr.mud2>.sp.hs{display:contents}
+.glab .scr.mud2 .sppic{position:absolute;left:35.5cqw;top:9.4cqw;width:29cqw!important;height:29cqw;margin:0!important;transform:none!important;border-radius:2.2cqw;z-index:2}
+.glab .scr.mud2 .spslots{position:absolute;left:67.5cqw;width:30cqw;top:12.5cqw;justify-content:center;gap:1.2cqw;margin:0;z-index:2}
+.glab .scr.mud2 .spslots>span{width:8.6cqw;height:10cqw;font-size:6cqw;background:rgba(255,248,232,.55);border-color:#8B5A2B}
+.glab .scr.mud2 .spslots>span.on{background:#fff!important;border-color:#8B5A2B!important}
+.glab .scr.mud2 .hpct{position:absolute;left:67.5cqw;width:30cqw;top:24cqw;margin:0;z-index:2;font-size:3.6cqw;color:#7A3E14;
+  text-shadow:0 0 .6cqw #FFF4DC,0 0 1.2cqw #FFF4DC}
+.glab .scr.mud2>.hrow{position:absolute;left:1cqw;bottom:14.6cqw;margin:0!important;display:block;z-index:1}
+.glab .scr.mud2 .site{width:32cqw!important;margin:0!important}
+
+/* the keys (copied from .scr.marubg in rest.css), pulled in from the sides so the settings gear (bottom left) never covers a key */
+.glab .scr.mud2>.mkb{top:auto!important;bottom:2.4cqw!important;left:8cqw!important;right:8cqw!important;transform:none!important;display:flex!important;justify-content:space-between;
+  background:none!important;box-shadow:none!important;padding:0!important}
+.glab .scr.mud2 .mkh{display:grid;grid-template-columns:repeat(7,4.4cqw);gap:.5cqw;padding:.8cqw;border-radius:1.6cqw;background:rgba(255,253,247,.9);box-shadow:0 .6cqw 1cqw rgba(30,18,6,.3)}
+.glab .scr.mud2 .mkb .mk{height:4.4cqw!important}
+
+/* the house: unbuilt slots are a faint outline; a brick drops in with a squash and a puff of dust; a wrong letter
+   knocks the top one off; finished, it is plastered (zanko, relief, beams, the doorway) and bounces with pride */
+.glab .scr.mud2 .bhouse{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 92%}
+.glab .scr.mud2 .bhouse .plan{fill:none;stroke:rgba(255,244,220,.75);stroke-width:1;stroke-dasharray:4 3}
+.glab .scr.mud2 .bhouse .doorhole{fill:rgba(58,30,12,.18)}
+.glab .scr.mud2 .bhouse .gh{fill:rgba(255,236,204,.3);stroke:rgba(122,74,40,.7);stroke-width:.9;stroke-dasharray:3 2;transition:opacity .2s}
+.glab .scr.mud2 .bhouse .hb:not(.ghost) .gh{opacity:0}
+.glab .scr.mud2 .bhouse .hb.ghost .hbb{opacity:0}
+.glab .scr.mud2 .bhouse .hbb,.glab .scr.mud2 .bhouse .puff{transform-box:fill-box;transform-origin:50% 100%}
+.glab .scr.mud2 .bhouse .hbb text{font:800 15px var(--disp);fill:#FFF1D6;paint-order:stroke;stroke:rgba(74,36,18,.65);stroke-width:2.4}
+.glab .scr.mud2 .bhouse .puff{fill:#EED0A0;opacity:0;pointer-events:none}
+.glab .scr.mud2 .bhouse .hb.drop .hbb{animation:bl4-drop .5s cubic-bezier(.5,0,.8,.6) both}
+.glab .scr.mud2 .bhouse .hb.drop .puff{animation:bl4-puff .75s .3s ease-out both}
+.glab .scr.mud2 .bhouse .hb.fall .hbb{animation:bl4-fall .6s ease-in both}
+@keyframes bl4-drop{0%{transform:translateY(-60px);opacity:0}20%{opacity:1}60%{transform:none}74%{transform:scale(1.05,.9)}100%{transform:none}}
+@keyframes bl4-puff{0%{opacity:.85;transform:scale(.4)}100%{opacity:0;transform:translateY(-3px) scale(1.5)}}
+@keyframes bl4-fall{0%{transform:none;opacity:1}100%{transform:translate(12px,40px) rotate(28deg);opacity:0}}
+.glab .scr.mud2 .bhouse .fin{opacity:0;transition:opacity .9s .25s}
+.glab .scr.mud2 .site.done .bhouse .fin{opacity:1}
+.glab .scr.mud2 .site.done .bhouse{animation:bl4-proud .7s .9s ease-in-out 2}
+@keyframes bl4-proud{0%,100%{transform:none}50%{transform:translateY(-1.2cqw) scale(1.03)}}

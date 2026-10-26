@@ -13,6 +13,7 @@ import { bootArt } from './art';
 import { bootArt4 } from './art4';
 import { react, restScene, bowl2 } from './rest';
 import { moreGames } from './games2';
+import { buloHouse } from './sc-bulo';
 import { pickRhythm, playRhythm, playSigh } from './band';
 import * as KL from './kalangu';
 import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } from './kamun';
@@ -529,26 +530,14 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         /* every letter said right is a mud brick in the house; a wrong one knocks the top brick off. Finish before the clock runs out. */
         var W = shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, placed = 0, TOTAL = 12;
         var top = h('<div class="sp hs"><span class="sppic"><img alt=""></span><div class="spslots"></div><span class="hpct"><b>0</b>%</span></div>');
-        var ROWS = [[102, 4, 18, 182], [76, 4, 28, 172], [50, 3, 44, 156], [24, 1, 70, 130]], bricksSvg = '';
-        ROWS.forEach(function (r) { var w = (r[3] - r[2]) / r[1]; for (var k = 0; k < r[1]; k++) { var x = r[2] + k * w;
-          bricksSvg += '<g class="hb ghost"><rect x="' + (x + 1) + '" y="' + (r[0] + 1) + '" width="' + (w - 2) + '" height="24" rx="4"/><rect class="tex" x="' + (x + 1) + '" y="' + (r[0] + 1) + '" width="' + (w - 2) + '" height="24" rx="4" fill="url(#kc-crack)"/><text x="' + (x + w / 2) + '" y="' + (r[0] + 18) + '" text-anchor="middle"></text></g>'; } });
-        var site = h('<div class="site"><svg class="dome" viewBox="0 0 200 140" aria-hidden="true">' +
-          '<defs><clipPath id="domeclip"><path d="M16 128 A84 96 0 0 1 184 128 Z"/></clipPath>' +
-          '<linearGradient id="mudb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9A066"/><stop offset="1" stop-color="#A9672E"/></linearGradient>' +
-          '<radialGradient id="domeshade" cx=".36" cy=".3" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3A2412" stop-opacity=".55"/></radialGradient></defs>' +
-          '<ellipse class="shadow" cx="100" cy="130" rx="92" ry="9"/>' +
-          '<path class="outline" d="M16 128 A84 96 0 0 1 184 128 Z"/>' +
-          '<g clip-path="url(#domeclip)">' + bricksSvg +
-          '<g class="relief" fill="none" stroke="#FFF1D6" stroke-width="1.4"><path d="M70 62 q10 -12 20 0 q10 12 20 0 q10 -12 20 0"/><circle cx="100" cy="44" r="5"/><path d="M95 44 h10 M100 39 v10"/></g>' +
-          '<path class="band" d="M20 102 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6 l10 -6 l10 6"/>' +
-          '<ellipse cx="100" cy="128" rx="84" ry="96" fill="url(#domeshade)" class="shade"/></g>' +
-          '<path class="door" d="M84 128 V108 a16 16 0 0 1 32 0 V128 z"/><path class="doorlip" d="M80 128 V107 a20 20 0 0 1 40 0 V128"/>' +
-          '<g class="finial"><rect x="96" y="12" width="8" height="12" rx="2"/><circle cx="100" cy="10" r="5"/></g>' +
-          '<g class="pot"><ellipse cx="146" cy="126" rx="10" ry="9"/><rect x="141" y="114" width="10" height="4" rx="2"/></g>' +
-          '</svg><span class="ground"></span></div>');
+        /* the house is the red-earth Hausa house of the scene behind (sc-bulo.ts buloHouse, Sani 2026-10-26) */
+        var site = h('<div class="site">' + buloHouse() + '</div>');
+        /* the A–Z keys as in Marubucin wasiƙa: A–M left, N–Z right, Laila between them */
+        var ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), key = function (L) { return '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>'; };
+        var kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         var box = micBox(run);
         var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site);
-        run.scr.appendChild(top); run.scr.appendChild(hrow); run.scr.appendChild(box);
+        run.scr.appendChild(top); run.scr.appendChild(hrow); run.scr.appendChild(kb); run.scr.appendChild(box);
         run.noBump = true;
         run.clock(150, function () { done({ right: wi, part: placed / TOTAL, built: placed }); });
         run.remind = function () { say(K.en[W[wi]], run); };
@@ -561,29 +550,47 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           site.classList.remove('quake'); void site.offsetWidth; site.classList.add('quake'); paint();
         }
         function word() {
-          var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
+          var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]]; kb.classList.remove('locked');
           top.querySelector('.spslots').innerHTML = w.split('').map(function () { return '<span></span>'; }).join('');
           box.cue();
           run.later(200, function () { run.said = say(K.en[W[wi]], run); if (run.auto) autoGo(); });   // after the first press Laila listens by herself
         }
         function autoGo() { box.busy = true; Promise.resolve(run.said).then(function () { run.later(450, function () { if (!run.dead && !run.listening) { box.busy = false; box.go(); } }); }); }
-        var quiet = 0;
-        /* "C A T" in one breath is welcome: every letter heard in order is a brick; the first wrong one breaks one and stops */
-        box.listen(function () { var w = W[wi].toUpperCase(); run.auto = true; return { multi: true, word: W[wi], target: w[li] }; }, function (r) {
-          var w = W[wi].toUpperCase(), got = r.value || [];
-          if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }   // nothing heard: once more, then wait for a press
-          quiet = 0;
+        var quiet = 0, stamp = '';
+        /* the same for a spoken run of letters and for a key. "C A T" in one breath is welcome: every letter in order is a
+           brick; the first wrong one breaks one and stops (one go) */
+        function take(got, kbtn) {
+          var w = W[wi].toUpperCase();
           for (var k = 0; k < got.length && li < w.length; k++) {
             var L = String(got[k]).toUpperCase();
             if (L === w[li]) {
               run.idle = 0; var slot = top.querySelectorAll('.spslots > span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
-              if (placed >= TOTAL) { box.busy = true; run.right = 4; site.classList.add('done'); sfx('yay'); run.later(1800, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
-            } else { run.bad(site); react(run.scr, 'sad'); breakBrick(); li = -1; break; }
+              if (kbtn) { kbtn.classList.remove('bad'); kbtn.classList.add('good'); setTimeout(function () { kbtn.classList.remove('good'); }, 500); }
+              if (placed >= TOTAL) { box.busy = true; kb.classList.add('locked'); run.right = 4; site.classList.add('done'); react(run.scr, 'cheer'); sfx('yay'); run.later(2200, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
+            } else {
+              run.bad(site); react(run.scr, 'sad'); breakBrick(); li = -1;
+              if (kbtn) { kbtn.classList.add('bad'); setTimeout(function () { kbtn.classList.remove('bad'); }, 700); }
+              break;
+            }
           }
-          if (li < 0) { box.busy = true; wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
-          if (li >= w.length) { box.busy = true; run.good(site); react(run.scr, 'cheer'); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
-          else if (run.auto) autoGo(); else box.cue();
+          if (li < 0) { box.busy = true; kb.classList.add('locked'); wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); run.good(site); react(run.scr, 'cheer'); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
+          else if (run.auto && !kbtn) autoGo(); else box.cue();
+        }
+        /* a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
+           she listens: what she hears for a letter already typed past is dropped (stamp) */
+        box.listen(function () { var w = W[wi].toUpperCase(); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: W[wi], target: w[li] }; }, function (r) {
+          if ((stamp && stamp !== wi + ':' + li) || box.busy) return;   // (the ?tester buttons answer without a listen, so no stamp)
+          stamp = ''; var got = r.value || [];
+          if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }   // nothing heard: once more, then wait for a press
+          quiet = 0; take(got);
         }, function () { return W[wi].toUpperCase().slice(li).split(''); });
+        var ready = function () { return !run.dead && !box.busy; };
+        var typed = function (L, b) { run.auto = false; take([L], b); };
+        kb.addEventListener('click', function (e) { var b = e.target.closest('.mk'); if (b && ready()) typed(b.dataset.l, b); });
+        var onKey = function (e) { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
+          var L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
+        document.addEventListener('keydown', onKey);
         word();
       } }
   };

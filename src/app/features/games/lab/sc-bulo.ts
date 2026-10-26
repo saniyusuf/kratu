@@ -264,3 +264,63 @@ export function buloScene(): string {
     chicken(276, 192, 1.3, ['#F2EDE4', '#3A3A3A'], true, 'd0') +
     '</svg>';
 }
+
+/* ---------------- the game's own house (Sani 2026-10-26) ----------------
+ * "Why are we not creating the house with the realism of the houses in the bg": the same red-earth Hausa house as the
+ * one going up on the right of the scene, drawn big, built tubali by tubali. 12 brick slots (.hb, bottom course first,
+ * left to right): two courses either side of the doorway, then the course over it. A slot not yet built is a faint
+ * outline (.hb.ghost); a right letter drops its brick in (.drop: a thud and a dust puff), a wrong one knocks the top
+ * brick off (.fall). When .site gets .done the wall is plastered: smooth red earth, zanko horns on the parapet, the
+ * relief over the door, the roof beams and a pot by the door. Styles in sc-bulo.css (.glab .scr.mud2 .bhouse …). */
+export function buloHouse(): string {
+  const Q = 'bl4h', u = (id) => `url(#${Q}-${id})`;
+  const G = 156, R = [[130, [[24, 53], [53, 82], [118, 147], [147, 176]]], [104, [[24, 46], [46, 82], [118, 154], [154, 176]]],
+    [78, [[24, 62], [62, 100], [100, 138], [138, 176]]]];
+  let slots = '', k = 0;
+  R.forEach(([y0, xs]) => xs.forEach(([a, b]) => {
+    const x = a + .7, w = b - a - 1.4, y = y0 + .7, hh = 24.6, cx = n(x + w / 2), s = (k * 37) % 11;
+    // straw flecks and a thumb print or two in the mud, different on every brick
+    let fl = '';
+    for (let j = 0; j < 4; j++) { const fx = n(x + 4 + ((s + j * 7) % 10) / 10 * (w - 8)), fy = n(y + 6 + ((s * 3 + j * 5) % 7) / 7 * (hh - 11)); fl += `M${fx} ${fy} l${j % 2 ? 2.6 : -2.2} ${j % 3 ? .9 : -.7}`; }
+    slots += `<g class="hb ghost"><rect class="gh" x="${n(x + .6)}" y="${n(y + .6)}" width="${n(w - 1.2)}" height="${hh - 1.2}" rx="4.4"/>` +
+      `<g class="hbb"><rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${hh}" rx="5" fill="${u('brk')}"/>` +
+      `<path d="M${n(x + 4)} ${n(y + 1.6)} H${n(x + w - 4)}" stroke="#E6A872" stroke-width="2" stroke-linecap="round" opacity=".55"/>` +
+      `<path d="M${n(x + 3)} ${n(y + hh - 1.2)} H${n(x + w - 3)}" stroke="#6E3A1C" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>` +
+      `<rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${hh}" rx="5" fill="${u('side')}"/>` +
+      `<path d="${fl}" stroke="#E2C072" stroke-width=".7" stroke-linecap="round" opacity=".75"/>` +
+      `<ellipse cx="${n(x + w * (.25 + (s % 4) * .15))}" cy="${n(y + hh * .62)}" rx="2.2" ry="1.5" fill="#8A4A26" opacity=".35"/>` +
+      `<text x="${cx}" y="${n(y + 18)}" text-anchor="middle"></text></g>` +
+      `<g class="puff"><ellipse cx="${n(x + 3)}" cy="${y0 + 24}" rx="6" ry="3.2"/><ellipse cx="${n(x + w - 3)}" cy="${y0 + 24}" rx="6.4" ry="3.4"/><ellipse cx="${cx}" cy="${y0 + 25.4}" rx="${n(w * .4)}" ry="2.6"/></g></g>`;
+    k++;
+  }));
+  const wall = `M22 ${G} V74 H178 V${G} Z M82 ${G} V118 Q100 100 118 118 V${G} Z`;
+  let horns = ''; for (let x = 30; x <= 170; x += 14) horns += `<path d="M${x - 3.4} 70 Q${x - 1.2} 64 ${x} 60 Q${x + 1.2} 64 ${x + 3.4} 70 Z"/>`;
+  const defs = `<defs>` +
+    `<linearGradient id="${Q}-brk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C8784A"/><stop offset=".55" stop-color="#B5683A"/><stop offset="1" stop-color="#97522C"/></linearGradient>` +
+    `<linearGradient id="${Q}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D08A4E"/><stop offset="1" stop-color="#B4692F"/></linearGradient>` +
+    `<linearGradient id="${Q}-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>` +
+    `<linearGradient id="${Q}-lit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".78" stop-color="#3A1A08" stop-opacity="0"/><stop offset="1" stop-color="#3A1A08" stop-opacity=".28"/></linearGradient>` +
+    `<radialGradient id="${Q}-pot" cx=".36" cy=".35" r=".75"><stop offset="0" stop-color="#E9A56C"/><stop offset=".55" stop-color="#C0683A"/><stop offset="1" stop-color="#7E3A1A"/></radialGradient></defs>`;
+  return `<svg class="bhouse" viewBox="0 0 200 170" aria-hidden="true">` + defs +
+    `<ellipse cx="100" cy="${G + 1}" rx="92" ry="7" fill="rgba(60,34,14,.28)"/>` +
+    // the footing: a trench of trodden mud the house stands on, and the faint shape of the house to come
+    `<path d="M18 ${G - 1} H182 L186 ${G + 4} Q100 ${G + 8} 14 ${G + 4} Z" fill="#8E5A34"/><path d="M18 ${G - 1} H182" stroke="#6B3E20" stroke-width="1.2"/>` +
+    `<path class="plan" d="M24 ${G} V78 H176 V${G} M82 ${G} V118 Q100 100 118 118 V${G}"/>` +
+    `<path class="doorhole" d="M83 ${G} V118.6 Q100 101.4 117 118.6 V${G} Z"/>` +
+    slots +
+    // the finish: plaster over the bricks, the parapet and its zanko horns, roof beams, the relief and the doorway
+    `<g class="fin">` +
+    `<path d="${wall}" fill="${u('wall')}" fill-rule="evenodd"/><path d="${wall}" fill="${u('lit')}" fill-rule="evenodd"/>` +
+    `<path d="M22 74 H178 V78 H22 Z" fill="#A85E2E" opacity=".6"/>` +
+    `<path d="M20 70 H180 V75 H20 Z" fill="#B86A34"/><g fill="#C27840">${horns}</g>` +
+    `<path d="M18 70 Q19 58 22 50 Q24 60 27 70 Z M173 70 Q176 60 178 50 Q181 58 182 70 Z" fill="#B86A34"/>` +
+    `<g fill="#7A5230"><rect x="36" y="80" width="6" height="3.6" rx="1"/><rect x="70" y="80" width="6" height="3.6" rx="1"/><rect x="124" y="80" width="6" height="3.6" rx="1"/><rect x="158" y="80" width="6" height="3.6" rx="1"/></g>` +
+    `<g fill="#5A3A1E" opacity=".5"><rect x="37" y="83.6" width="5" height="1.4"/><rect x="71" y="83.6" width="5" height="1.4"/><rect x="125" y="83.6" width="5" height="1.4"/><rect x="159" y="83.6" width="5" height="1.4"/></g>` +
+    `<g fill="none" stroke="#FCEBD0" stroke-width="1.3" opacity=".8"><path d="M88 92 q12 -12 24 0 q-12 12 -24 0 Z"/><circle cx="100" cy="92" r="2.6"/>` +
+    `<path d="M76 102 l6 -4 l6 4 l6 -4 l6 4 l6 -4 l6 4 l6 -4 l6 4"/><path d="M40 98 l5 -5 l5 5 l-5 5 Z M150 98 l5 -5 l5 5 l-5 5 Z"/></g>` +
+    `<path d="M78 ${G} V117 Q100 95 122 117 V${G}" fill="none" stroke="#FCEBD0" stroke-width="1.6" opacity=".75"/>` +
+    `<path d="M83 ${G} V118.6 Q100 101.4 117 118.6 V${G} Z" fill="#3A1E0C"/><path d="M86 ${G} V120 Q100 106 114 120 V${G} Z" fill="#2A1408"/>` +
+    `<g transform="translate(140 ${G})"><path d="M-4 -.6 Q-8 -4 -7.6 -9 Q-7 -13.6 -2.8 -15 L-2.6 -16.8 H2.6 L2.8 -15 Q7 -13.6 7.6 -9 Q8 -4 4 -.6 Q0 .4 -4 -.6 Z" fill="${u('pot')}"/>` +
+    `<ellipse cy="-16.8" rx="3" ry=".8" fill="#4A2412"/><path d="M-6 -11 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2" stroke="#F3D9B0" stroke-width=".55" fill="none" opacity=".8"/></g>` +
+    `</g></svg>`;
+}
