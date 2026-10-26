@@ -11,6 +11,7 @@ import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare,
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { react as reactScene } from './rest';
 import { alloWrite, alloWash } from './sc-allo';
+import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
@@ -492,7 +493,8 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env"><span class="to"><img alt=""></span><div class="hand2"></div><span class="stamp2"></span></div><div class="achw">' + A.achaba() + '</div></div>');
+        const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env">' + envelopeArt() + '</div><div class="achw">' + postRider() + '</div></div>');
+        const snd = wasikaSound(run), fin = (r) => { snd.close(); done(r); };
         const key = (L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>';   // A–M on the left, N–Z on the right, Laila between them
         const kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
@@ -510,11 +512,14 @@ export function moreGames(c: any): Record<string, any> {
           const w = W[wi].toUpperCase();
           for (let k = 0; k < letters.length && li < w.length; k++) {
             const L = String(letters[k]).toUpperCase();
-            if (L === w[li]) { const s = hand.children[li]; s.textContent = L; s.classList.add('on'); bump(st.querySelector('.marw'), 'writing', 400); if (key) bump(key, 'good', 500); li++; }
-            else { run.bad(env); if (key) bump(key, 'bad', 700); li = -1; break; }
+            if (L === w[li]) { const s = hand.children[li]; s.innerHTML = inkLetter(L); s.classList.add('on'); snd.pen(); bump(st.querySelector('.marw'), 'writing', 400); if (key) bump(key, 'good', 500); li++; }
+            else { run.bad(env); if (key) bump(key, 'bad', 700); hand.children[li].innerHTML = splat(); snd.blot(); li = -1; break; }   // the ink blots where the letter should go
           }
           if (li < 0) { box.busy = true; kb.classList.add('locked'); env.classList.add('blot'); react(run, 'sad'); nextWord(1800); return; }
-          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(env); react(run, 'cheer'); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); }); nextWord(2600); }
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(env); react(run, 'cheer'); env.classList.add('sealed');
+            // the flap folds shut, the postmark comes down (thud), the counter bell, and the rider takes it off (putter)
+            later(run, 420, () => { env.classList.add('stamped'); snd.thud(); }); later(run, 760, () => snd.bell());
+            later(run, 1150, () => { env.classList.add('post'); ach.classList.add('ride'); }); later(run, 1950, () => snd.putter()); nextWord(3700); }
           else if (run.auto && !key) autoGo(run, box); else box.cue();
         }
         // a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
