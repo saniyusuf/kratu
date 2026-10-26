@@ -1,0 +1,63 @@
+/* ---- Kamun kifi at Argungu (Sani 2026-10-25): the fisherman and his basket stand in the scene layer, the water line at 31%;
+   both are placed from the right edge in screen heights, so his head stays right of the clock bar and below the ear on
+   any screen. The river below keeps three fish in three lanes and is never emptied between casts */
+.glab .scr.pondbg .pond2.ag{position:absolute!important;left:6cqw;right:6cqw;width:auto;top:19.6cqw;height:41cqw!important;margin:0!important}
+.glab .kamun{position:absolute;inset:0;pointer-events:none}
+.glab .kamun .fisher{position:absolute;right:-5cqh;top:9.4cqh;height:38cqh;aspect-ratio:120/130;animation:g-wade 3.4s ease-in-out infinite alternate}
+.glab .kamun .kw{position:absolute;right:27cqh;top:18.4cqh;height:15cqh;aspect-ratio:100/80;animation:g-wade 2.6s ease-in-out -1s infinite alternate}
+.glab .kamun svg{display:block;width:100%;height:100%;overflow:visible}
+@keyframes g-wade{to{transform:translateY(1.6%)}}
+.glab .fisher2 .homa{transform-box:view-box;transform-origin:62px 40px;transition:transform .45s ease-in-out}
+.glab .kamun.scoop .fisher2 .homa{transform:rotate(-40deg);transition-duration:.35s}
+.glab .kamun.throw .fisher2 .homa{transform:rotate(45deg);transition:transform .2s ease-out}
+.glab .kamun.miss .fisher2 .homa{animation:g-emptynet 1.2s ease-in-out}
+@keyframes g-emptynet{35%,55%{transform:rotate(-40deg)}}
+.glab .kamun.miss .fisher2 .head2{transform-box:view-box;transform-origin:62px 30px;animation:g-headno .3s ease-in-out .7s 3 alternate}
+@keyframes g-headno{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+.glab .fisher2 .ripple,.glab .kwando .rip{transform-box:fill-box;transform-origin:center;animation:g-rip 2.2s ease-in-out infinite alternate}
+@keyframes g-rip{to{transform:scaleX(1.12);opacity:.4}}
+.glab .kwando .bf{opacity:0;transition:opacity .25s}
+.glab .kwando .bf.on{opacity:1}
+.glab .kw.plop svg{transform-origin:50% 85%;animation:g-plop .5s ease-out}
+@keyframes g-plop{30%{transform:scale(1.08,.88)}65%{transform:scale(.97,1.05)}}
+.glab .kw .kn{position:absolute;right:100%;top:50%;translate:-10% -50%;padding:.2cqh 1.2cqh;border-radius:2cqh;background:#FFFDF4;border:.3cqh solid #C9B88F;font:800 2.8cqh var(--disp);color:#3B2E1E;white-space:nowrap}
+.glab .flyer{position:absolute;z-index:7;pointer-events:none;transform-origin:50% 50%}
+.glab .flyer svg{display:block;width:100%;height:100%}
+.glab .scene .farfish{animation:g-farbob 2.8s ease-in-out infinite alternate}
+.glab .scene .farfish.f1{animation-delay:-.9s}.glab .scene .farfish.f2{animation-delay:-1.7s}.glab .scene .farfish.f3{animation-delay:-2.3s}
+@keyframes g-farbob{to{transform:translateY(.5px)}}
+@media (prefers-reduced-motion:reduce){.glab .kamun *,.glab .kamun .fisher,.glab .kamun .kw,.glab .scene .farfish{animation:none!important}}
+/* the smaller fish with the bigger tag: rows 0/32/64% of the river; it swims from just off the left to just off the right */
+.glab .fish3.f4{width:35.2cqw!important;height:15cqw!important;left:-36cqw!important;animation-name:g-swim4!important;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes g-swim4{from{transform:translateX(-30cqw)}to{transform:translateX(140cqw)}}   /* starts and ends well out of sight, even on a wide screen */
+.glab .fish3.f4.slip2{animation:g-slip4 1.4s ease-in forwards!important}
+@keyframes g-slip4{0%{transform:translateX(var(--x))}20%{transform:translate(var(--x),-2cqw) rotate(-12deg)}100%{transform:translate(calc(var(--x) + 8cqw),30cqw) rotate(30deg);opacity:0}}
+.glab .fish3 .fbub circle{fill:none;stroke:#E9FBFF;stroke-width:.9;transform-box:fill-box;animation:g-fbub 2.4s linear infinite}
+.glab .fish3 .fbub circle+circle{animation-delay:-1.2s}
+@keyframes g-fbub{from{transform:translate(0,0);opacity:.9}to{transform:translate(8px,-26px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.glab .fish3 .fbub circle{animation:none!important}}
+/* the bank and the river come alive: hoes, grazing heads, the drying net, the cast net, the canoe, egrets, catfish, crab */
+.glab .scene .hoe{transform-box:fill-box;transform-origin:0 0;animation:g-hoe 1.6s ease-in-out infinite}
+.glab .scene .hoe.h1{animation-delay:-.6s}.glab .scene .hoe.h2{animation-delay:-1.1s}
+@keyframes g-hoe{40%{transform:rotate(-38deg)}55%{transform:rotate(6deg)}}
+.glab .scene .graze{transform-box:fill-box;transform-origin:100% 0;animation:g-graze 5s ease-in-out infinite}
+.glab .scene .graze.g1{animation-delay:-2.4s}
+@keyframes g-graze{0%,60%,100%{transform:rotate(0)}70%,90%{transform:rotate(-22deg)}}
+.glab .scene .drynet{transform-box:fill-box;transform-origin:50% 0;animation:g-drynet 3s ease-in-out infinite alternate}
+@keyframes g-drynet{to{transform:scaleY(1.5) translateY(-.3px)}}
+.glab .scene .castnet{transform-box:fill-box;transform-origin:0 50%;animation:g-cast 6s ease-out infinite}
+@keyframes g-cast{0%,20%{transform:scale(.15);opacity:0}32%{transform:scale(1);opacity:1}70%{transform:scale(1);opacity:.8}85%,100%{transform:scale(.15);opacity:0}}
+.glab .scene .canoe4{animation:g-canoe 22s ease-in-out infinite alternate}
+@keyframes g-canoe{to{transform:translateX(8px)}}
+.glab .scene .egrets{animation:g-egret 34s linear infinite}
+@keyframes g-egret{from{transform:translateX(-14px)}to{transform:translateX(176px)}}
+.glab .scene .catfish4{animation:g-catfish 38s ease-in-out infinite alternate}
+@keyframes g-catfish{to{transform:translateX(-50px)}}
+.glab .scene .crab4{animation:g-crab 9s ease-in-out infinite alternate}
+@keyframes g-crab{to{transform:translateX(10px)}}
+.glab .scene .shoal4{animation:g-shoal 30s linear infinite}
+@keyframes g-shoal{from{transform:translateX(-20px)}to{transform:translateX(110px)}}
+.glab .scene .bub4{animation:g-bub4 4s linear infinite}
+.glab .scene .bub4.b1{animation-delay:-1s}.glab .scene .bub4.b2{animation-delay:-2s}.glab .scene .bub4.b3{animation-delay:-3s}
+@keyframes g-bub4{from{transform:translateY(0);opacity:0}15%{opacity:.9}to{transform:translateY(-30px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.glab .scene .hoe,.glab .scene .graze,.glab .scene .drynet,.glab .scene .castnet,.glab .scene .canoe4,.glab .scene .egrets,.glab .scene .catfish4,.glab .scene .crab4,.glab .scene .shoal4,.glab .scene .bub4{animation:none!important}}

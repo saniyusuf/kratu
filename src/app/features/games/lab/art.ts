@@ -129,9 +129,11 @@ export function bootArt(): any {
     var bars = ''; for (var i = 0; i < 6; i++) bars += '<rect x="' + (78 + i * 18) + '" y="0" width="8" height="110" fill="#22341E" opacity=".13"/>';
     return '<svg viewBox="-122 0 334 110" class="art fish3svg">' +
       '<g class="tagg"><path d="M14 56 C-6 60 -20 50 -36 52" fill="none" stroke="#F4EBD0" stroke-width="1.6"/>' +
-        '<g transform="rotate(-6 -40 52)"><rect x="-120" y="6" width="94" height="98" rx="10" fill="url(#kb-tag)" stroke="#C9B88F" stroke-width="1.4"/>' +
-        '<circle cx="-32" cy="52" r="3" fill="#fff" stroke="#C9B88F"/>' +
-        '<image href="' + photo + '" x="-115" y="11" width="80" height="88" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 6px)"/></g></g>' +
+        '<g transform="rotate(-6 -40 52)"><rect x="-120" y="6" width="94" height="98" rx="10" fill="url(#kb-tag)"/>' +
+        // the photo fills the tag edge to edge (Sani 2026-10-25: no white space); the rim and the thread's hole sit on top
+        '<image href="' + photo + '" x="-120" y="6" width="94" height="98" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 10px)"/>' +
+        '<rect x="-120" y="6" width="94" height="98" rx="10" fill="none" stroke="#C9B88F" stroke-width="1.4"/>' +
+        '<circle cx="-32" cy="52" r="3" fill="#fff" stroke="#C9B88F"/></g></g>' +
       '<g class="ftail"><path d="M60 55 L14 22 Q24 55 14 88 Z" fill="url(#kb-tail)"/><path d="M58 55 L20 28 M58 55 L18 42 M58 55 L17 55 M58 55 L18 68 M58 55 L20 82" stroke="#4F6646" stroke-width=".8" opacity=".6"/></g>' +
       '<path class="dfin" d="M92 24 C110 6 150 4 176 26 L160 30 C140 22 112 22 96 30 Z" fill="url(#kb-fin)"/>' +
       '<path d="M98 26 L104 10 M110 24 L116 7 M122 22 L128 6 M134 22 L140 7 M146 23 L152 9 M158 25 L164 14" stroke="#3F5A3A" stroke-width="1" opacity=".55"/>' +
