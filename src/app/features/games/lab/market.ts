@@ -87,3 +87,72 @@ export function deal(key: string, b: number): string {
   if (act === 'umbrella') return `<div class="deal act-umbrella">${P}<span class="brolly"><svg viewBox="0 0 100 60" aria-hidden="true"><path d="M4 50 Q50 -10 96 50 Q86 42 74 50 Q62 42 50 50 Q38 42 26 50 Q14 42 4 50 Z" fill="#1565C0"/><path d="M50 50 V8" stroke="#0D47A1" stroke-width="2"/></svg></span></div>`;
   return `<div class="deal act-${act}">${P}<span class="prop">${item}</span></div>`;
 }
+
+/* ---- Dillalin kasuwa, again (Sani 2026-10-25): the dillali holds up the real photo; the drawing is what the buyer takes ---- */
+
+/** the thing for sale: its lesson photo on a little wooden easel, the picture filling the frame edge to edge */
+export function photoCard(src: string): string {
+  return `<span class="mkcard"><span class="mkframe"><img alt="" src="${src}"><i class="mkx"></i></span><span class="pleg"></span></span>`;
+}
+/** the round's shopper: walks up to the stall from the left and leans in to look; leaves with it, or walks off without */
+export function inspector(b: number): string {
+  return `<div class="deal look"><span class="buyer"><span class="bob">${person(BUYERS[b % BUYERS.length])}</span></span></div>`;
+}
+/** coins that leap from the sale up to the tally */
+export function coinBurst(n = 6): string {
+  let s = ''; for (let k = 0; k < n; k++) s += `<i class="cn" style="--k:${k};--x:${(k - (n - 1) / 2) * 2.2}cqw"></i>`;
+  return `<span class="mkcoins">${s}</span><span class="mkring"></span>`;
+}
+
+/* the market going about its day behind the stall: porters with wheelbarrows, a woman with a basin on her head, and
+   shoppers who stop at a stall, lean in to look, and walk on. One loop each, transform only, small and far off. */
+const inner = (svg: string) => svg.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+function barrow(load: string, robe: string, robe2: string, hatc: string, skin: number): string {
+  return `<svg viewBox="0 0 170 130" aria-hidden="true"><ellipse cx="90" cy="126" rx="70" ry="4" fill="rgba(40,24,10,.22)"/>` +
+    `<g transform="translate(4 6) rotate(10 30 120) scale(.92)">${inner(person({ hat: 'cap', hatc, robe, robe2, skin }))}</g>` +
+    `<path d="M44 92 L84 98" stroke="#5E3A1C" stroke-width="3.4" stroke-linecap="round"/>` +
+    `<path d="M76 84 L156 84 L146 106 L92 106 Z" fill="#5C7A8A"/><path d="M76 84 L156 84" stroke="#3E5866" stroke-width="3"/>${load}` +
+    `<path d="M100 106 L104 118 M138 106 L144 112" stroke="#3E3A36" stroke-width="3"/>` +
+    `<g class="mwheel"><circle cx="146" cy="116" r="10" fill="#2B2B2B"/><circle cx="146" cy="116" r="4" fill="#9AA3AD"/><path d="M146 106 V126 M136 116 H156" stroke="#555" stroke-width="1.6"/></g></svg>`;
+}
+const yams = `<g>${[[90, 78], [108, 76], [126, 78], [100, 70], [118, 70], [140, 78]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="11" ry="5.5" fill="#8D5A35" transform="rotate(-12 ${x} ${y})"/><ellipse cx="${x - 3}" cy="${y - 1.5}" rx="5" ry="1.6" fill="#B07A4E" opacity=".7" transform="rotate(-12 ${x} ${y})"/>`).join('')}</g>`;
+const bags = `<g>${[[92, 72], [118, 72], [105, 60]].map(([x, y]) => `<path d="M${x - 12} ${y + 12} Q${x - 14} ${y} ${x - 8} ${y - 8} L${x + 8} ${y - 8} Q${x + 14} ${y} ${x + 12} ${y + 12} Z" fill="#D9BE86" stroke="#8B6A3A"/><path d="M${x - 9} ${y - 2} h18" stroke="#B23A2A" stroke-width="2"/>`).join('')}</g>`;
+function basinWoman(): string {
+  return `<svg viewBox="-10 -30 80 154" aria-hidden="true"><ellipse cx="30" cy="22" rx="26" ry="5" fill="#C9CED4"/><path d="M6 18 Q30 30 54 18 L50 8 Q30 14 10 8 Z" fill="#AEB6BF"/>` +
+    `${[[18, 4], [30, 2], [42, 4], [24, -4], [36, -4]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="#F57C00"/>`).join('')}` +
+    `<g transform="translate(0 12)">${inner(person({ hat: 'hijab', hatc: '#6A1B9A', robe: '#8E24AA', robe2: '#6A1B9A', skin: 2, arm: 'up' }))}</g></svg>`;
+}
+function shopper(o: any): string { return `<svg viewBox="-6 -4 72 128" aria-hidden="true">${inner(person(o))}</svg>`; }
+export function marketLife(): string {
+  return `<div class="mklife" aria-hidden="true">` +
+    `<span class="wb wb1"><span class="bob">${barrow(yams, '#5D4037', '#3E2723', '#E9D9A6', 1)}</span></span>` +
+    `<span class="wb wb2"><span class="bob">${barrow(bags, '#1565C0', '#0D47A1', '#FFFFFF', 0)}</span></span>` +
+    `<span class="bw"><span class="bob">${basinWoman()}</span></span>` +
+    `<span class="sh sh1"><span class="lean">${shopper({ hat: 'turban', hatc: '#FFFFFF', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 0 })}</span></span>` +
+    `<span class="sh sh2"><span class="lean">${shopper({ hat: 'hijab', hatc: '#00897B', robe: '#26A69A', robe2: '#00796B', skin: 3 })}</span></span>` +
+    `<span class="sh sh3"><span class="lean">${shopper({ hat: 'cap', hatc: '#B71C1C', robe: '#455A64', robe2: '#37474F', skin: 1 })}</span></span></div>`;
+}
+
+/* the market's own sounds, on the game's little synth like the tea seller's cup and the herd's bell:
+   right, coins clink into the dillali's hand; wrong, the shopper's low "a'a" (no) as they turn away */
+let mac: AudioContext | null = null;
+const ctx = () => { try { return mac = mac || new ((window as any).AudioContext || (window as any).webkitAudioContext)(); } catch { return null; } };
+export function coinClink(): void {
+  const c = ctx(); if (!c) return;
+  [[3520, 0], [4180, .09], [2960, .17], [3950, .27], [3300, .34]].forEach(([f, d]) => {
+    const t = c.currentTime + .03 + d, o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain();
+    o.type = 'triangle'; o.frequency.setValueAtTime(f, t); o2.type = 'sine'; o2.frequency.setValueAtTime(f * 1.51, t);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.07, t + .004); g.gain.exponentialRampToValueAtTime(.0001, t + .28);
+    o.connect(g); o2.connect(g); g.connect(c.destination); o.start(t); o2.start(t); o.stop(t + .3); o2.stop(t + .3);
+  });
+}
+export function aaNo(): void {
+  const c = ctx(); if (!c) return;
+  [[210, 175, 0], [190, 140, .3]].forEach(([f1, f2, d]) => {
+    const t = c.currentTime + .03 + d, o = c.createOscillator(), g = c.createGain(), lp = c.createBiquadFilter();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(f2, t + .22);
+    lp.type = 'lowpass'; lp.frequency.value = 700;
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + .03); g.gain.setValueAtTime(.09, t + .14); g.gain.exponentialRampToValueAtTime(.0001, t + .26);
+    o.connect(lp).connect(g).connect(c.destination); o.start(t); o.stop(t + .3);
+  });
+}
