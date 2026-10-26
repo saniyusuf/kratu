@@ -11,8 +11,11 @@
  */
 import { bootArt } from './art';
 import { bootArt4 } from './art4';
+import { react, restScene, bowl2 } from './rest';
 import { moreGames } from './games2';
-import { kakakiPlayer, kalanguDrummer, dancer, pickRhythm, playRhythm, playSigh } from './band';
+import { pickRhythm, playRhythm, playSigh } from './band';
+import * as KL from './kalangu';
+import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } from './kamun';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -156,6 +159,8 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         });
       };
     };
+    /** open the microphone without a press, as if Laila had been pressed (the Durbar listens on its own, Sani 2026-10-23) */
+    box.go = function () { if (btn.onclick) btn.onclick(); };
     box.cue = function (on) { box.busy = false; btn.classList.toggle('cue', on !== false); };   // ready for an answer
     box.yay = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('yay'); setTimeout(function () { btn.classList.remove('yay'); }, 800); };
     box.nope = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('nope'); setTimeout(function () { btn.classList.remove('nope'); }, 800); };
@@ -182,8 +187,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     run.scr.className = 'scr p ' + g.cls;
     var PAINT = { 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
     var scene = KART.scene[g.scene || PAINT[gid]] || '';
-    if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + KART.scene.underriver + KART.underwater + '</div>';
-    bg.innerHTML = scene; run.scr.innerHTML = '<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
+    if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + argunguScene() + argunguWater() + '</div>';   // Argungu on festival day
+    scene = restScene(gid) || scene;   // the drawn scenes of 2026-10-25 (rest.ts)
+    bg.classList.remove('cheer', 'sad'); bg.innerHTML = scene; run.scr.innerHTML ='<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
     var go = function () {
       if (run.dead) return;
       var cd = h('<div class="cdown"><b></b></div>'); run.scr.appendChild(cd); var steps = ['3', '2', '1', 'Fara!'], i = 0;
@@ -233,75 +239,140 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 && !r.misses ? 'Knew every word: those sets would be skipped.' : 'Knew ' + r.right + ' of 6: the sets with misses would be taught.'; },
       play: function (run, done) {
-        // six casts, one touch each (Sani 2026-10-23: a miss is part of the game): a wrong fish slips off the hook and the
-        // shoal darts away, and the next cast comes; the right one goes into the net
+        // six casts, one touch each (Sani 2026-10-23: a miss is part of the game). Sani 2026-10-25: a busier river that is
+        // never emptied. Nine smaller fish with bigger photos swim in three rows of three, evenly spaced. The right fish is scooped up in the fisherman's homa and flicked into his basket; a wrong one
+        // slips off the hook and sinks away. Nothing ever appears mid-river (Sani 2026-10-25): a fish only joins by swimming
+        // in from off the left, when its empty place next comes round. The word is chosen only from fish already in view,
+        // never the newest arrival, so the answer is in the water before Laila says it and is not the obvious one.
         var words = shuffle(['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair']), r = 0, n = 0, target, busy = false;
-        var pond = h('<div class="pond2"></div>'), net = h('<div class="net">🥅 <b>0</b> / 6</div>');
-        run.scr.appendChild(pond); run.scr.appendChild(net); run.clock(120, function () { done({ right: r, part: r / 6 }); });
+        var slots = [null, null, null, null, null, null, null, null, null], asked = {}, used = {}, t0 = [0, 1, 2].map(function () { return performance.now() - Math.random() * 20000; });
+        var pond = h('<div class="pond2 ag"></div>');
+        var bank = h('<div class="kamun"><span class="fisher">' + argFisher() + '</span><span class="kw">' + basket() + '<b class="kn">0 / 6</b></span></div>');
+        bg.appendChild(bank); run.scr.appendChild(pond); run.clock(120, function () { done({ right: r, part: r / 6 }); });
         run.remind = function () { say(K.en[target], run); };
-        function round() {
-          pond.innerHTML = ''; pond.classList.remove('scared'); busy = false; target = words[n]; var opts = shuffle([target].concat(shuffle(words.filter(function (w) { return w !== target; })).slice(0, 2)));
-          opts.forEach(function (w, k) {
-            var f = h('<button type="button" class="fish2 fish3" style="top:' + (k * 34) + '%;animation-duration:' + (24 + k * 3) + 's;animation-delay:-' + (k * 8) + 's" aria-label="fish">' + KART.fish3(K.pic[w]) + '</button>');
-            f.onclick = function () {
-              if (busy || run.dead) return; busy = true; n++;
-              if (w === target) { run.good(); f.classList.add('caught'); r++; net.querySelector('b').textContent = r; }
-              else { run.bad(); f.classList.add('slip'); pond.classList.add('scared'); }
-              run.later(w === target ? 900 : 1600, function () { if (n >= 6) done({ right: r, finished: r === 6, part: r / 6, misses: run.miss }); else round(); });
-            };
-            pond.appendChild(f);
+        function dur(row) { return 26 + row * 4; }
+        function along(f) { var d = dur(f._row); return (((performance.now() - t0[f._row]) / 1000 / d) + f._ph / 3) % 1; }   // 0 = off at the left, 1 = off at the right
+        function swimming() { return slots.filter(Boolean); }
+        function addFish(w, s) {
+          var row = s % 3, ph = Math.floor(s / 3), d = dur(row); used[w] = true;
+          var f = h('<button type="button" class="fish2 fish3 f4" data-w="' + w + '" style="top:' + (row * 32) + '%;animation-duration:' + d + 's" aria-label="fish">' + fish4(K.pic[w]) + '</button>');
+          f._row = row; f._ph = ph; f._born = performance.now(); f.style.animationDelay = '-' + (along(f) * d).toFixed(2) + 's'; slots[s] = f;
+          f.onclick = function () {
+            if (busy || run.dead || slots.indexOf(f) < 0) return; busy = true; n++; var at0 = slots.indexOf(f); slots[at0] = null; refill(at0);
+            if (w === target) { run.good(); r++; land(f); }
+            else {
+              run.bad(); var m = new DOMMatrix(getComputedStyle(f).transform); f.style.setProperty('--x', m.m41 + 'px'); f.classList.add('slip2');
+              bank.classList.add('miss'); run.later(1400, function () { f.remove(); bank.classList.remove('miss'); });
+            }
+            run.later(w === target ? 1800 : 1500, function () { if (n >= 6) done({ right: r, finished: r === 6, part: r / 6, misses: run.miss }); else cast(); });
+          };
+          pond.appendChild(f);
+        }
+        /* the catch: up into the hoop, a flick, an arc through the air and into the basket, which bobs and shows one more fish */
+        function land(f) {
+          var fr = io.rect(frame), fb = io.rect(f), mr = io.rect(bank.querySelector('.fisher')), kr = io.rect(bank.querySelector('.kw'));
+          var w0 = fb.width * 126 / 262, h0 = fb.height * 60 / 110, c0x = fb.left + fb.width * 199 / 262 - fr.left, c0y = fb.top + fb.height * 56 / 110 - fr.top;
+          var fl = h('<div class="flyer">' + fish4('', true) + '</div>');
+          fl.style.cssText = 'left:' + (c0x - w0 / 2) + 'px;top:' + (c0y - h0 / 2) + 'px;width:' + w0 + 'px;height:' + h0 + 'px';
+          frame.appendChild(fl); f.style.visibility = 'hidden'; run.later(400, function () { f.remove(); });
+          var hx = mr.left - fr.left + mr.width * 22 / 120, hy = mr.top - fr.top + mr.height * 70 / 130;      // the hoop, dipped
+          var ux = mr.left - fr.left + mr.width * 28 / 120, uy = mr.top - fr.top + mr.height * 18 / 130;      // the hoop, flicked up
+          var bx = kr.left - fr.left + kr.width / 2, by = kr.top - fr.top + kr.height * .3;                    // the basket's mouth
+          var s1 = mr.width * .3 / w0, s2 = kr.width * .32 / w0;
+          function at(x, y, s, rot) { return 'translate(' + (x - c0x).toFixed(1) + 'px,' + (y - c0y).toFixed(1) + 'px) scale(' + s.toFixed(3) + ') rotate(' + rot + 'deg)'; }
+          if (fl.animate) fl.animate([
+            { transform: at(c0x, c0y, 1, 0) },
+            { offset: .38, transform: at(hx, hy, s1, -20) },
+            { offset: .46, transform: at(hx, hy, s1, -20) },
+            { offset: .62, transform: at(ux, uy, s1, -120) },
+            { offset: .8, transform: at((ux + bx) / 2, Math.min(uy, by) - mr.height * .12, s1, -250) },
+            { offset: 1, transform: at(bx, by, s2, -360) }
+          ], { duration: 1400, easing: 'ease-in-out', fill: 'forwards' });
+          run.later(250, function () { bank.classList.add('scoop'); });
+          run.later(650, function () { bank.classList.remove('scoop'); bank.classList.add('throw'); });
+          run.later(1150, function () { bank.classList.remove('throw'); });
+          run.later(1400, function () {
+            fl.remove(); var kw = bank.querySelector('.kw'), b = kw.querySelector('.bf.b' + r); if (b) b.classList.add('on');
+            kw.querySelector('.kn').textContent = r + ' / 6'; kw.classList.remove('plop'); void kw.offsetWidth; kw.classList.add('plop');
           });
+          run.later(1500, function () { fl.remove(); });
+        }
+        /* a free place in a row is filled when it next comes round to just off the left edge, so the new fish swims in */
+        function refill(sl) {
+          var row = sl % 3, d = dur(row), p = (((performance.now() - t0[row]) / 1000 / d) + Math.floor(sl / 3) / 3) % 1;
+          run.later((1 - p) * d * 1000 + 60, function () {
+            if (run.dead || slots[sl]) return;
+            var inRiver = {}; swimming().forEach(function (f) { inRiver[f.dataset.w] = true; });
+            var fresh = shuffle(words.filter(function (w) { return !used[w]; })), again = shuffle(words.filter(function (w) { return !asked[w] && !inRiver[w]; }));
+            var w = fresh[0] || again[0]; if (w) addFish(w, sl);
+          });
+        }
+        /* the word: a fish not asked before that is well into view and not the newest arrival; if none is ready yet, wait */
+        function cast(tries) {
+          busy = true; tries = tries || 0;
+          var open = swimming().filter(function (f) { return !asked[f.dataset.w]; });
+          var newest = swimming().reduce(function (m, f) { return !m || f._born > m._born ? f : m; }, null);
+          var ok = open.filter(function (f) { var p = along(f); return f !== newest && p > .4 && p < .62; });
+          if (!ok.length) ok = open.filter(function (f) { var p = along(f); return f !== newest && p > .36 && p < .74; });
+          if (!ok.length && tries < 40) { run.later(300, function () { cast(tries + 1); }); return; }
+          if (!ok.length) ok = open.filter(function (f) { var p = along(f); return p > .36 && p < .8; });
+          if (!ok.length) ok = open;
+          busy = false; target = rnd(ok).dataset.w; asked[target] = true; pond.dataset.t = target;
           say(K.en[target], run);
         }
-        round();
+        // the river at the start: three fish in each row, evenly spaced, already in the water when the game opens
+        [0, 1, 2, 3, 4, 5, 6, 7, 8].forEach(function (sl) { addFish(words[sl], sl); });
+        cast();
       } },
 
-    /* Kalangu, made plain (Sani 2026-10-14: "I don't understand it"). One picture on a stand with a "?" under it. Press
-       Laila and say its name. Right: the "?" turns over to show the word, Laila beats her drum and a drum in the row
-       lights up. Wrong: try once more; the second miss shows the word and moves on. Six pictures. */
-    'j-magana': { title: 'Kalangu', cls: 'drum', instr: ['Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!', 'Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!'], ask: ['Ka iya faɗin sunayen abubuwa da Turanci?', 'Kin iya faɗin sunayen abubuwa da Turanci?'],
+    /* Kalangu (Sani 2026-10-25): a drawn village square, the band on the right and four dancers on the left, the word's
+       picture on a carved board at the top left, filling it edge to edge. One picture, one answer, no hints. Right: the
+       band plays one of fifteen rhythms (at least three seconds), the dancers dance and the word shows on the plate.
+       Wrong: the plate shows a red cross, the kakaki sighs, the dancers stop and shake their heads; the word is never
+       shown or said. Laila waits for the first press; from then on she listens by herself as each picture comes in (if
+       she hears nothing she listens once more, then waits for a press again). */
+    'j-magana': { title: 'Kalangu', cls: 'drum', scene: (KART.scene.kalangu = KL.kalanguScene(), 'kalangu'),
+      instr: ['Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!', 'Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!'], ask: ['Ka iya faɗin sunayen abubuwa da Turanci?', 'Kin iya faɗin sunayen abubuwa da Turanci?'],
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 ? 'Said every word: those sets would be skipped.' : 'Said ' + r.right + ' of 6: the sets they could not say would be taught.'; },
-      /* Kalangu (Sani 2026-10-22): one picture, one answer, no hints. Right: the band plays one of fifteen rhythms
-         (at least three seconds) and the dancers come out; the word shows on the plate. Wrong: the plate shows a red
-         cross, the band sighs on the kakaki and the drummers shake their heads; the word is never shown or said. */
       play: function (run, done) {
-        var words = shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), r = 0, said = 0;
-        var stage = h('<div class="kstage">' +
-          '<div class="easel"><div class="kcard"><img alt=""></div><div class="plate"><span class="pf">?</span><span class="pb"></span></div><span class="legs"></span></div>' +
-          '<div class="kband"><span class="bm k1">' + kakakiPlayer() + '</span><span class="bm d1">' + kalanguDrummer(0) + '</span><span class="bm d2">' + kalanguDrummer(1) + '</span><span class="notes"><i>♪</i><i>♫</i><i>♪</i></span></div>' +
-          '<div class="dancers"><span class="dn">' + dancer(0) + '</span><span class="dn">' + dancer(1) + '</span><span class="dn">' + dancer(2) + '</span></div>' +
-          '</div>');
+        var words = shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), r = 0, said = 0, auto = false, quiet = 0;
+        var stage = h('<div class="kl-stage">' +
+          '<span class="kl-poles"><i></i><i></i></span><div class="kl-easel"><div class="kl-board"><img alt=""></div><div class="plate"><span class="pf">?</span><span class="pb"></span></div></div>' +
+          '<div class="kl-dancers">' + KL.dancers() + '</div><div class="kl-band">' + KL.band() + '</div></div>');
         var row = h('<div class="krow">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
         var box = micBox(run);
         run.scr.appendChild(stage); run.scr.appendChild(row); run.scr.appendChild(box);
         run.clock(150, function () { done({ right: said, part: said / 6 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
-        var card = stage.querySelector('.easel'), plate = stage.querySelector('.plate'), band = stage.querySelector('.kband'), dancers = stage.querySelector('.dancers');
+        var easel = stage.querySelector('.kl-easel'), plate = stage.querySelector('.plate');
         function audio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } }
         function round() {
           var w = words[r];
-          card.classList.remove('in', 'out'); plate.classList.remove('flip', 'miss'); void card.offsetWidth;
-          card.querySelector('img').src = K.pic[w]; plate.querySelector('.pb').textContent = w; card.classList.add('in'); row.children[r].classList.add('now');
-          box.cue();
-          box.listen(function () { return { target: w, among: words, match: function (raw) { return io.match(raw, w, words); } }; }, function (res) {
-            if (res.value === null && !res.raw) { box.cue(); return; }                  // nothing heard: press again
-            box.busy = true; row.children[r].classList.remove('now');
+          easel.classList.remove('in', 'out'); plate.classList.remove('flip', 'miss'); stage.classList.remove('sad'); void easel.offsetWidth;
+          easel.querySelector('img').src = K.pic[w]; plate.querySelector('.pb').textContent = w; easel.classList.add('in'); row.children[r].classList.add('now');
+          // every listen, pressed or by herself, turns her own listening on for the pictures after it
+          box.listen(function () { auto = true; return { target: w, among: words, match: function (raw) { return io.match(raw, w, words); } }; }, function (res) {
+            if (res.value === null && !res.raw) {                                       // nothing heard
+              if (auto && ++quiet < 2) { box.busy = false; box.go(); return; }          // she listens once more by herself
+              quiet = 0; auto = false; box.cue(); return;                                // then waits for a press
+            }
+            quiet = 0; box.busy = true; row.children[r].classList.remove('now');
             if (res.value === w) {
-              box.yay(); run.good(card); said++; plate.classList.add('flip'); row.children[r].classList.add('on');
+              box.yay(); run.good(easel); said++; plate.classList.add('flip'); row.children[r].classList.add('on');
               var a = audio(), ms = a ? playRhythm(a, pickRhythm()) : 3500;
-              band.classList.add('play'); dancers.classList.add('on');
-              run.later(ms, function () { band.classList.remove('play'); dancers.classList.remove('on'); });
+              stage.classList.add('play'); run.later(ms, function () { stage.classList.remove('play'); });
               next(ms + 500);
             } else {
-              box.nope(); run.bad(card); plate.classList.add('miss'); row.children[r].classList.add('miss');
-              var b = audio(); if (b) playSigh(b); band.classList.add('cross'); run.later(1500, function () { band.classList.remove('cross'); });
-              next(1900);
+              box.nope(); run.bad(easel); plate.classList.add('miss'); row.children[r].classList.add('miss'); stage.classList.add('sad');
+              var b = audio(); if (b) playSigh(b);
+              next(2200);
             }
           }, function () { return w; });
+          if (auto) run.later(700, function () { if (!run.dead) { box.busy = false; box.go(); } }); else box.cue();
         }
         function next(ms) {
-          run.later(ms, function () { card.classList.add('out'); r++;
+          run.later(ms, function () { easel.classList.add('out'); r++;
             if (r >= 6) run.later(500, function () { done({ right: said, finished: true, part: said / 6, misses: 6 - said }); }); else run.later(450, round); });
         }
         round();
@@ -314,7 +385,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var goods = ['tomato', 'bread', 'egg', 'orange', 'onion', 'banana'], people = ['woman', 'man', 'girl', 'boy', 'old_man', 'woman'], q = shuffle(goods), c = 0, served = 0, pt;
         var top = h('<div class="cust"><span class="person"></span><span class="ask"><i></i></span><span class="pat"><b></b></span></div>');
         run.scr.appendChild(h('<div class="awnwrap">' + KART.awning() + '</div>'));
-        var mat = h('<div class="mat2">' + goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + KART.bowl(K.pic[k]) + '</button>'; }).join('') + '</div>');
+        var mat = h('<div class="mat2">' + goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + bowl2(K.pic[k]) + '</button>'; }).join('') + '</div>');
         var sold = h('<div class="sold"><span class="coin s">Z</span> <b>0</b> / 6</div>');
         var shop = h('<div class="shop"><div class="buyer"></div></div>'); shop.firstChild.appendChild(top); shop.firstChild.appendChild(sold); shop.appendChild(mat);   // the buyer beside the stall, so the goods can be big
         run.scr.appendChild(shop); run.clock(90, function () { done({ right: served, part: served / 6 }); });
@@ -324,14 +395,14 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           var who = people[c]; top.querySelector('.person').innerHTML = '<img alt="" src="' + K.pic[who] + '">';
           top.classList.remove('leave', 'come'); void top.offsetWidth; top.classList.add('come');
           var bar = top.querySelector('.pat b'); bar.style.transition = 'none'; bar.style.transform = 'scaleX(1)'; void bar.offsetWidth; bar.style.transition = 'transform 12s linear'; bar.style.transform = 'scaleX(0)';
-          clearTimeout(pt); pt = run.later(12000, function () { run.miss++; top.classList.add('leave'); c++; run.later(600, next); });
+          clearTimeout(pt); pt = run.later(12000, function () { run.miss++; react(run.scr, 'sad'); top.classList.add('leave'); c++; run.later(600, next); });
           say(K.en[q[c]], run);
         }
         [].forEach.call(mat.children, function (b) {
           b.onclick = function () {
             if (c >= 6 || run.dead) return;
-            if (b.dataset.k === q[c]) { clearTimeout(pt); run.good(); served++; sold.querySelector('b').textContent = served; b.classList.add('fly'); setTimeout(function () { b.classList.remove('fly'); }, 700); top.classList.add('leave'); c++; run.later(700, next); }
-            else { clearTimeout(pt); run.bad(b); top.classList.add('sad', 'leave'); c++; run.later(1200, function () { top.classList.remove('sad'); next(); }); }   // one go: the customer leaves unhappy
+            if (b.dataset.k === q[c]) { clearTimeout(pt); run.good(); react(run.scr, 'cheer'); served++; sold.querySelector('b').textContent = served; b.classList.add('fly'); setTimeout(function () { b.classList.remove('fly'); }, 700); top.classList.add('leave'); c++; run.later(700, next); }
+            else { clearTimeout(pt); run.bad(b); react(run.scr, 'sad'); top.classList.add('sad', 'leave'); c++; run.later(1200, function () { top.classList.remove('sad'); next(); }); }   // one go: the customer leaves unhappy
           };
         });
         next();
@@ -364,7 +435,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         });
       } },
 
-    'j-karatu': { title: 'Kwale-kwale', cls: 'pondbg', instr: ['Ka karanta kalmar da ke cikin kowane kwale-kwale, sannan ka danna wadda ta dace da hoton.', 'Ki karanta kalmar da ke cikin kowane kwale-kwale, sannan ki danna wadda ta dace da hoton.'], ask: ['Ka iya karanta kalmomi da Turanci?', 'Kin iya karanta kalmomi da Turanci?'],
+    'j-karatu': { title: 'Kwale-kwale', cls: 'pondbg kwale', instr: ['Ka karanta kalmar da ke cikin kowane kwale-kwale, sannan ka danna wadda ta dace da hoton.', 'Ki karanta kalmar da ke cikin kowane kwale-kwale, sannan ki danna wadda ta dace da hoton.'], ask: ['Ka iya karanta kalmomi da Turanci?', 'Kin iya karanta kalmomi da Turanci?'],
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: function (r) { return r.right >= 5 && !r.misses ? 'Read every word: the full game moves on to longer words.' : 'Read ' + r.right + ' of 5: Karatu would start at short words.'; },
       /* Kwale-kwale (Sani 2026-10-22): one answer. The right canoe paddles off fast through a splash with the sound of
@@ -386,11 +457,11 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
             c.onclick = function () {
               if (run.dead || busy) return; busy = true;
               if (w === item[0].toUpperCase()) {
-                run.good(c); got++; freeze(c); c.classList.add('row'); splash(c, 'splash');
+                run.good(c); react(run.scr, 'cheer'); got++; freeze(c); c.classList.add('row'); splash(c, 'splash');
                 var a = audio(); if (a) paddleSound(a);
                 requestAnimationFrame(function () { c.style.transition = 'transform 1.4s cubic-bezier(.5,0,.8,.4)'; c.style.transform = 'translateX(150cqw)'; });
               } else {
-                run.bad(); freeze(c); c.classList.add('sink'); splash(c, 'bubbles');
+                run.bad(); react(run.scr, 'sad'); freeze(c); c.classList.add('sink'); splash(c, 'bubbles');
                 var b = audio(); if (b) sinkSound(b);
                 requestAnimationFrame(function () { c.style.transition = 'transform 1.6s ease-in, opacity 1.2s ease-in .4s'; c.style.transform += ' translateY(9cqw) rotate(-14deg)'; c.style.opacity = '0'; });
               }
@@ -431,10 +502,10 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
                 b.style.setProperty('--tx', (sr.left + sr.width / 2 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (sr.top + sr.height / 2 - (br.top + br.height / 2)) + 'px');
                 b.classList.add('fly');                                 // the pot lifts off its place into the box
                 run.later(560, function () { slot.innerHTML = '<span class="mp">' + KART.pot(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
-                if (li >= w.length) { busy = true; run.later(700, function () { run.good(top.querySelector('.spslots')); words++; }); nextWord(); }
+                if (li >= w.length) { busy = true; run.later(700, function () { run.good(top.querySelector('.spslots')); react(run.scr, 'cheer'); words++; }); nextWord(); }
               } else {
                 // a wrong pot cracks: a crash, the word is marked wrong, and on to the next word
-                busy = true; misses++; run.bad(); b.classList.add('crack'); b.insertAdjacentHTML('beforeend', '<i class="shard s1"></i><i class="shard s2"></i><i class="shard s3"></i><i class="shard s4"></i>');
+                busy = true; misses++; run.bad(); react(run.scr, 'sad'); b.classList.add('crack'); b.insertAdjacentHTML('beforeend', '<i class="shard s1"></i><i class="shard s2"></i><i class="shard s3"></i><i class="shard s4"></i>');
                 try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); crashSound(ac); } catch (e) { /* no sound */ }
                 top.querySelector('.spslots').classList.add('wrongw'); run.later(1200, function () { top.querySelector('.spslots').classList.remove('wrongw'); });
                 nextWord();
@@ -489,22 +560,25 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
           top.querySelector('.spslots').innerHTML = w.split('').map(function () { return '<span></span>'; }).join('');
           box.cue();
-          run.later(200, function () { say(K.en[W[wi]], run); });
+          run.later(200, function () { run.said = say(K.en[W[wi]], run); if (run.auto) autoGo(); });   // after the first press Laila listens by herself
         }
+        function autoGo() { box.busy = true; Promise.resolve(run.said).then(function () { run.later(450, function () { if (!run.dead && !run.listening) { box.busy = false; box.go(); } }); }); }
+        var quiet = 0;
         /* "C A T" in one breath is welcome: every letter heard in order is a brick; the first wrong one breaks one and stops */
-        box.listen(function () { var w = W[wi].toUpperCase(); return { multi: true, word: W[wi], target: w[li] }; }, function (r) {
+        box.listen(function () { var w = W[wi].toUpperCase(); run.auto = true; return { multi: true, word: W[wi], target: w[li] }; }, function (r) {
           var w = W[wi].toUpperCase(), got = r.value || [];
-          if (!got.length) { box.cue(); return; }
+          if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }   // nothing heard: once more, then wait for a press
+          quiet = 0;
           for (var k = 0; k < got.length && li < w.length; k++) {
             var L = String(got[k]).toUpperCase();
             if (L === w[li]) {
               run.idle = 0; var slot = top.querySelectorAll('.spslots > span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
               if (placed >= TOTAL) { box.busy = true; run.right = 4; site.classList.add('done'); sfx('yay'); run.later(1800, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
-            } else { run.bad(site); breakBrick(); li = -1; break; }
+            } else { run.bad(site); react(run.scr, 'sad'); breakBrick(); li = -1; break; }
           }
           if (li < 0) { box.busy = true; wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
-          if (li >= w.length) { box.busy = true; run.good(site); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
-          else box.cue();
+          if (li >= w.length) { box.busy = true; run.good(site); react(run.scr, 'cheer'); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
+          else if (run.auto) autoGo(); else box.cue();
         }, function () { return W[wi].toUpperCase().slice(li).split(''); });
         word();
       } }

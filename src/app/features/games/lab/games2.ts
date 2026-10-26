@@ -6,10 +6,11 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
-import { GOODS, ACT_MS, deal } from './market';
+import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinClink, aaNo } from './market';
 import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
-import { teaStall, umbrellaBench, okada, cupTap } from './teastall';
+import { react as reactScene } from './rest';
+import { teaStall, umbrellaBench, roadBehind, cupTap } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -31,6 +32,32 @@ export function moreGames(c: any): Record<string, any> {
       if (t >= tries) { box.busy = true; onMiss(); } else box.cue();
     }, () => target);
   }
+  /* the same round, with Laila listening by herself (Sani 2026-10-25, "auto mode like the other games"): the first
+     picture waits for a press; every press or listen after that turns her own listening on, so the next round opens
+     the microphone by itself once her last word has finished. Nothing heard: she listens once more, then waits for a
+     press again. `scene` is the drawn background, whose people cheer a right answer and frown at a wrong one. */
+  function autoRound(run, box, target, among, onRight, onMiss) {
+    let quiet = 0;
+    box.listen(() => { run.auto = true; return { target, among, match: (raw) => io.match(raw, target, among) }; }, (r) => {
+      if (r.value === null && !r.raw) {
+        if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; }
+        run.auto = false; box.cue(); return;
+      }
+      box.busy = true;
+      if (r.value === target) { box.yay(); react(run, 'cheer'); onRight(); return; }
+      run.bad(); box.nope(); react(run, 'sad'); onMiss();
+    }, () => target);
+    autoGo(run, box);
+  }
+  /** open the microphone by itself once Laila is quiet (her last line is run.said), or cue her for a press */
+  function autoGo(run, box) {
+    if (!run.auto || !box.go) { box.cue(); return; }
+    box.busy = true;
+    Promise.resolve(run.said).then(() => later(run, 450, () => { if (!run.dead && !run.listening) { box.busy = false; box.go(); } }));
+  }
+  /** a line that the next auto listen waits for */
+  const sayW = (run, src) => (run.said = say(src, run));
+  const react = (run, kind) => reactScene(run.scr, kind);
 
   return {
     /* ---------------- Haruffa: Hawan Sallah, the Durbar ---------------- */
@@ -75,28 +102,41 @@ export function moreGames(c: any): Record<string, any> {
     'j-dillali': { title: 'Dillalin kasuwa', cls: 'dillali', scene: 'kurmi',
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: (r) => r.right >= 6 ? 'Named everything the dillali held up: those groups would be skipped.' : 'Named ' + r.right + ' of 6: the groups with misses would be taught.',
-      /* Dillalin kasuwa (Sani 2026-10-22): the thing for sale is drawn, not a photo. Named right: a buyer takes it the
-         way people do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) and the crowd
-         claps. Wrong: the thing goes back off to the left and everyone looks sad; its name is never said. */
+      /* Dillalin kasuwa (Sani 2026-10-25): the dillali holds up the real photo, and a shopper walks up to look at it.
+         Named right: the photo turns into its drawing with a burst of coins and their clink, and the shopper takes it
+         the way people do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) while the
+         crowd claps. Wrong: a red cross on the photo, the shopper's low "a'a", and they walk off without buying; the
+         photo goes back and its name is never said. Behind the stall the market carries on: wheelbarrows, a woman with
+         a basin of oranges, people stopping at the stalls to look and moving on. */
       play(run, done) {
         const G = [['ram', 'goat', 'chicken', 'camel', 'donkey'], ['millet', 'groundnut', 'mango', 'bread', 'onion'], ['calabash', 'pot', 'mat', 'kettle', 'broom'], ['kaftan', 'cap', 'turban', 'shoe', 'umbrella']];
         const items = shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6), among = G.flat();
         let r = 0, sold = 0;
-        const st = h('<div class="dstage mk"><div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="goods"></div><div class="dealw"></div></div><div class="crowd">' + A.crowd(4) + '</div></div>');
+        const st = h('<div class="dstage mk">' + marketLife() + '<div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="goods"></div><div class="mkdrawn"></div><div class="dealw"></div><div class="mkfx"></div></div><div class="crowd">' + A.crowd(4) + '</div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(tally); run.scr.appendChild(box);
         run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
-        const goods = st.querySelector('.goods'), dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
+        const goods = st.querySelector('.goods'), drawn = st.querySelector('.mkdrawn'), dealw = st.querySelector('.dealw'), fx = st.querySelector('.mkfx'), crowdEl = st.querySelector('.crowd');
         function next() {
-          const w = items[r]; st.classList.remove('sad'); dealw.innerHTML = ''; goods.className = 'goods'; goods.innerHTML = GOODS[w].svg(); void goods.offsetWidth; goods.classList.add('up');
+          const w = items[r]; st.classList.remove('sad'); fx.innerHTML = ''; drawn.className = 'mkdrawn'; drawn.innerHTML = '';
+          goods.className = 'goods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up');
+          dealw.innerHTML = inspector(r); const look = dealw.firstElementChild;
           speakRound(run, box, w, among, () => {
-            sold++; run.good(goods); tally.querySelector('b').textContent = sold; goods.classList.add('taken');
-            dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600); sfx('yay');
-            later(run, 60, () => dealw.firstElementChild && dealw.firstElementChild.classList.add('run'));
-            step(ACT_MS[GOODS[w].act] || 3000);
-          }, () => { goods.classList.add('back'); st.classList.add('sad'); step(2200); });
+            sold++; run.good(goods); tally.querySelector('b').textContent = sold; bump(tally, 'pop', 600);
+            // the photo turns over into its drawing, coins leap and clink
+            goods.classList.add('turn'); fx.innerHTML = coinBurst(); later(run, 250, coinClink);
+            later(run, 260, () => { drawn.innerHTML = GOODS[w].svg(); drawn.classList.add('pop'); });
+            // then the shopper takes it away
+            later(run, 1100, () => { drawn.classList.add('taken'); dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600);
+              later(run, 60, () => dealw.firstElementChild && dealw.firstElementChild.classList.add('run')); });
+            step(1100 + (ACT_MS[GOODS[w].act] || 3000));
+          }, () => {
+            goods.classList.add('wrong'); st.classList.add('sad'); bump(crowdEl, 'grumble', 1400); later(run, 450, aaNo);
+            later(run, 700, () => look && look.classList.add('away'));
+            later(run, 1300, () => goods.classList.add('back')); step(2900);
+          });
         }
         function step(ms) { later(run, ms, () => { r++; if (r >= 6) done({ right: sold, finished: true, part: sold / 6 }); else next(); }); }
         next();
@@ -112,7 +152,7 @@ export function moreGames(c: any): Record<string, any> {
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
         const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7); let r = 0, got = 0;
-        const st = h('<div class="tstage"><div class="road"><i></i></div><div class="okw">' + okada() + '</div><div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div><div class="tcard"></div></div>');
+        const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div><div class="tcard"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
@@ -158,9 +198,9 @@ export function moreGames(c: any): Record<string, any> {
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m !== n) {
                 // wrong: the right pile glows for a moment, and the lorry leaves empty
-                run.bad(b); horn(false); later(run, 900, () => lw.classList.add('away', 'slow')); after(2600); return;
+                run.bad(b); react(run, 'sad'); horn(false); later(run, 900, () => lw.classList.add('away', 'slow')); after(2600); return;
               }
-              got++; reached = Math.max(reached, n); run.good(b); top.querySelector('.tally b').textContent = got;
+              got++; reached = Math.max(reached, n); run.good(b); react(run, 'cheer'); top.querySelector('.tally b').textContent = got;
               // the pile empties into the back of the lorry: the sacks drop in one after another
               const br = io.rect(b), lr = io.rect(lw);
               b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .3 - (br.top + br.height / 2)) + 'px');
@@ -213,12 +253,12 @@ export function moreGames(c: any): Record<string, any> {
             pen.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m === p) {
-                got++; if (p >= 100) hundreds++; run.good(b); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run); cowbell(3);
+                got++; if (p >= 100) hundreds++; run.good(b); react(run, 'cheer'); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run); cowbell(3);
                 b.classList.add('bought'); buyer.classList.remove('lead'); void buyer.offsetWidth; buyer.classList.add('lead');
                 later(run, 3000, step);
               } else {
                 // one touch: the animal lows and turns away, its board is crossed out, the market frowns, and on we go
-                run.bad(); moo(); b.classList.add('no'); yard.classList.add('sad');
+                run.bad(); react(run, 'sad'); moo(); b.classList.add('no'); yard.classList.add('sad');
                 later(run, 2200, step);
               } };
           });
@@ -286,8 +326,8 @@ export function moreGames(c: any): Record<string, any> {
         run.remind = () => say(line('j-suya', 'how'), run);
         function next() {
           const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = A.note(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
-          speakRound(run, box, w, AMONG, () => {
-            got++; run.good(hand); say(K.en['n' + n], run); hand.classList.add('paid'); wraps.children[r].classList.add('on'); later(run, 1700, step);
+          autoRound(run, box, w, AMONG, () => {
+            got++; run.good(hand); sayW(run, K.en['n' + n]); hand.classList.add('paid'); wraps.children[r].classList.add('on'); later(run, 1700, step);
           }, () => { wraps.children[r].classList.add('miss'); st.classList.add('cross'); later(run, 1500, () => { st.classList.remove('cross'); hand.classList.add('paid'); }); later(run, 1900, step); });
         }
         function step() { r++; if (r >= 6) done({ right: got, finished: true, part: got / 6 }); else next(); }
@@ -308,8 +348,8 @@ export function moreGames(c: any): Record<string, any> {
         const aw = st.querySelector('.allow2');
         function next() {
           const w = W[r]; aw.innerHTML = A.allo(w.toUpperCase()); aw.classList.remove('washing'); void aw.offsetWidth; aw.classList.add('writing');
-          speakRound(run, box, w, W, () => {
-            got++; longest = Math.max(longest, w.length); run.good(aw); say(K.en[w], run); prog.children[r].classList.add('on');
+          autoRound(run, box, w, W, () => {
+            got++; longest = Math.max(longest, w.length); run.good(aw); sayW(run, K.en[w]); prog.children[r].classList.add('on');
             aw.classList.remove('writing'); aw.classList.add('washing'); later(run, 1900, step);
           }, () => { prog.children[r].classList.add('miss'); aw.classList.add('wrongw'); later(run, 1500, () => aw.classList.remove('wrongw')); later(run, 1700, step); });
         }
@@ -330,8 +370,8 @@ export function moreGames(c: any): Record<string, any> {
         const ferry = st.querySelector('.ferry'), bank = st.querySelector('.bank3');
         function next() {
           const w = W[r]; ferry.innerHTML = KC.canoe(w.toUpperCase()); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
-          speakRound(run, box, w, W, () => {
-            got++; run.good(ferry); say(K.en[w], run); ferry.classList.remove('drift'); ferry.classList.add('dock');
+          autoRound(run, box, w, W, () => {
+            got++; run.good(ferry); sayW(run, K.en[w]); ferry.classList.remove('drift'); ferry.classList.add('dock');
             const p = bank.children[r]; later(run, 900, () => p.classList.add('board')); later(run, 1600, () => ferry.classList.add('leave')); later(run, 2600, step);
           }, () => { ferry.classList.add('leave'); later(run, 1800, step); });
         }
@@ -350,14 +390,16 @@ export function moreGames(c: any): Record<string, any> {
         const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env"><span class="to"><img alt=""></span><div class="hand2"></div><span class="stamp2"></span></div><div class="achw">' + A.achaba() + '</div></div>');
-        const kb = h('<div class="mkb">' + ABC.map((L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>').join('') + '</div>');
+        const key = (L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>';   // A–M on the left, N–Z on the right, Laila between them
+        const kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
         run.clock(150, () => done({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
         const env = st.querySelector('.env'), hand = env.querySelector('.hand2'), ach = st.querySelector('.achw');
         function word() {
           const w = W[wi].toUpperCase(); li = 0; env.querySelector('img').src = K.pic[W[wi]]; env.className = 'env'; ach.className = 'achw'; kb.classList.remove('locked');
-          hand.innerHTML = w.split('').map(() => '<span></span>').join(''); box.cue(); later(run, 300, () => say(K.en[W[wi]], run));
+          hand.innerHTML = w.split('').map(() => '<span></span>').join(''); box.cue();
+          later(run, 300, () => { sayW(run, K.en[W[wi]]); if (run.auto) autoGo(run, box); });   // after a spoken word, Laila listens by herself
         }
         function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
         // the same for a spoken run of letters and for a key: right letters are inked in order, the first wrong one ends the word
@@ -368,19 +410,24 @@ export function moreGames(c: any): Record<string, any> {
             if (L === w[li]) { const s = hand.children[li]; s.textContent = L; s.classList.add('on'); bump(st.querySelector('.marw'), 'writing', 400); if (key) bump(key, 'good', 500); li++; }
             else { run.bad(env); if (key) bump(key, 'bad', 700); li = -1; break; }
           }
-          if (li < 0) { box.busy = true; kb.classList.add('locked'); env.classList.add('blot'); nextWord(1800); return; }
-          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(env); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); }); nextWord(2600); }
-          else box.cue();
+          if (li < 0) { box.busy = true; kb.classList.add('locked'); env.classList.add('blot'); react(run, 'sad'); nextWord(1800); return; }
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(env); react(run, 'cheer'); env.classList.add('sealed'); later(run, 800, () => { env.classList.add('post'); ach.classList.add('ride'); }); nextWord(2600); }
+          else if (run.auto && !key) autoGo(run, box); else box.cue();
         }
-        box.listen(() => { const w = W[wi].toUpperCase(); return { multi: true, word: W[wi], target: w[li] }; }, (r) => {
+        // a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
+        // she listens: what she hears for a letter already typed past is dropped (stamp)
+        let quiet = 0, stamp = '';
+        box.listen(() => { const w = W[wi].toUpperCase(); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: W[wi], target: w[li] }; }, (r) => {
+          if (stamp !== wi + ':' + li || box.busy) return;
           const got = r.value || [];
-          if (!got.length) { box.cue(); return; }
-          take(got);
+          if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }
+          quiet = 0; take(got);
         }, () => W[wi].toUpperCase().slice(li).split(''));
-        const ready = () => !run.dead && !run.listening && !box.busy;
-        kb.addEventListener('click', (e) => { const b = e.target.closest('.mk'); if (b && ready()) take([b.dataset.l], b); });
+        const ready = () => !run.dead && !box.busy;
+        const typed = (L, b) => { run.auto = false; take([L], b); };
+        kb.addEventListener('click', (e) => { const b = e.target.closest('.mk'); if (b && ready()) typed(b.dataset.l, b); });
         const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
-          const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); take([L], kb.querySelector('[data-l="' + L + '"]')); } };
+          const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
         document.addEventListener('keydown', onKey);
         word();
       } },
