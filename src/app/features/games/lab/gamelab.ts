@@ -15,7 +15,7 @@ import { GameHandle, GameOpts, playGame } from './engine';
 const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken',
   // the Arewa games: the dillali's goods, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
   'ram', 'camel', 'donkey', 'millet', 'groundnut', 'calabash', 'pot', 'mat', 'kettle', 'broom', 'kaftan', 'cap', 'turban', 'shoe', 'umbrella',
-  'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'rice', 'beans', 'water', 'pen', 'key', 'milk', 'mama', 'baba', 'aunt', 'uncle'];
+  'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'spoon', 'rice', 'beans', 'water', 'pen', 'key', 'mama', 'baba', 'aunt', 'uncle'];
 const PEOPLE = ['woman', 'man', 'girl', 'boy', 'old_man'];
 const NUMS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 /** Lambobi's numbers by value: 1–10 have their own word clips, the rest are the n-keys of the Lambobi lessons. */
@@ -88,7 +88,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
       laila: LAILA_SVG, allo: ALLO_SVG,
     };
     this.game = playGame(this.frame().nativeElement, id, {
-      K, female: this.session.g() === 'f', tester: this.session.debug && (() => { try { return localStorage.getItem('kratu_tester') === '1'; } catch { return false; } })(),   // the ✓ ✗ answer buttons: a desk without a microphone only, never on a tablet (Sani 2026-10-23)
+      K, female: this.session.g() === 'f', tester: /[?&]tester=1\b/.test(location.search),   // the ✓ ✗ answer buttons: only with ?tester=1 in the link, for a desk without a microphone; never sticky, never on a tablet (Sani 2026-10-25: "remove that everywhere")
       say: (src) => this.sfxP.then(() => this.gone ? false : src.startsWith('assets/') ? this.bus.playRaw(src) : this.bus.play(this.bus.gk(src))).catch(() => false),
       hush: () => this.bus.stopAll(),
       has: (k) => this.bus.has(this.bus.gk(k)),
