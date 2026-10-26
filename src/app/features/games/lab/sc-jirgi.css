@@ -1,10 +1,9 @@
 /* Jirgin ruwa scene (sc-jirgi.ts): the river crossing and its market. Scoped under .glab .gbg .jr4; keyframes jr4-…;
    transform and opacity only. People are drawn in their own 60x140 boxes, so their pivots are given in those units. */
-.glab .gbg .jr4 .x-ferry,.glab .gbg .jr4 .x-pole,.glab .gbg .jr4 .x-bird,.glab .gbg .jr4 .x-goat,.glab .gbg .jr4 .x-egret,.glab .gbg .jr4 .x-ripple{transform-box:fill-box}
+.glab .gbg .jr4 .x-ferry,.glab .gbg .jr4 .x-bird,.glab .gbg .jr4 .x-goat,.glab .gbg .jr4 .x-egret,.glab .gbg .jr4 .x-ripple{transform-box:fill-box}
 
 /* idle: a few slow loops */
 .glab .gbg .jr4 .x-ferry{transform-origin:50% 100%;animation:jr4-ferry 9s ease-in-out infinite alternate}
-.glab .gbg .jr4 .x-pole{transform-origin:50% 100%;animation:jr4-pole 4.5s ease-in-out infinite alternate}
 .glab .gbg .jr4 .x-bird{transform-origin:50% 50%;animation:jr4-fly 7s ease-in-out infinite alternate}
 .glab .gbg .jr4 .x-bird.b2{animation-delay:-2.2s}.glab .gbg .jr4 .x-bird.b3{animation-delay:-4.4s}.glab .gbg .jr4 .x-bird.b4{animation-delay:-1s;animation-duration:9s}
 .glab .gbg .jr4 .x-ripple{animation:jr4-glint 3.4s ease-in-out infinite alternate}
@@ -13,7 +12,6 @@
 .glab .gbg .jr4 .p2 .x-head{animation:jr4-sway 3.2s ease-in-out infinite alternate}
 
 @keyframes jr4-ferry{from{transform:translate(0,0)}to{transform:translate(5px,.6px)}}
-@keyframes jr4-pole{from{transform:rotate(-2deg)}to{transform:rotate(3deg)}}
 @keyframes jr4-fly{from{transform:translate(0,0) scaleY(1)}50%{transform:translate(7px,-2px) scaleY(.6)}to{transform:translate(14px,1px) scaleY(1)}}
 @keyframes jr4-glint{from{opacity:.2}to{opacity:.9}}
 @keyframes jr4-graze{0%,60%,100%{transform:rotate(0)}70%,88%{transform:rotate(-8deg)}}
@@ -42,6 +40,49 @@
 .glab .gbg.sad .jr4 .x-mf{opacity:1}
 @keyframes jr4-no{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
 
+/* ---------- the game (Sani 2026-10-26): the word's engine boat up on the water, clear of Laila (bottom centre, her
+   top edge at 40cqw of the 16:10 frame at every size), and the jetty people who board it or go home ---------- */
+.glab .scr.jirgi .ferry{left:22cqw;top:3.4cqw;bottom:auto;width:48cqw;height:18.86cqw;transform:translateX(62cqw);opacity:0;transition:none;animation:none}
+.glab .scr.jirgi .ferry.drift{opacity:1;transform:none;transition:transform 2.3s cubic-bezier(.15,.6,.3,1),opacity .5s;animation:none}
+.glab .scr.jirgi .ferry.leave{opacity:0;transform:translateX(-95cqw);transition:transform 2.8s cubic-bezier(.5,0,.8,.6),opacity .5s 2.2s;animation:none}
+.glab .scr.jirgi .ferry .eb{width:100%;height:100%;display:block;overflow:visible;transform-origin:50% 85%;animation:jr4-bob 2.6s ease-in-out infinite}
+.glab .scr.jirgi .eb-eng,.glab .scr.jirgi .eb-wake,.glab .scr.jirgi .eb-spray{transform-box:fill-box;transform-origin:50% 50%}
+.glab .scr.jirgi .eb-eng{animation:jr4-judder .09s linear infinite alternate}
+.glab .scr.jirgi .eb-wake{animation:jr4-foam .45s ease-in-out infinite alternate;transition:opacity .6s}
+.glab .scr.jirgi .eb-spray{transition:opacity .6s}
+.glab .scr.jirgi .ferry.moor .eb-wake{opacity:.12;animation:none}
+.glab .scr.jirgi .ferry.moor .eb-spray{opacity:0}
+.glab .scr.jirgi .ferry.moor .eb-eng{animation-duration:.2s}
+.glab .scr.jirgi .eb-pax{opacity:0}
+.glab .scr.jirgi .eb-plank{opacity:0;transition:opacity .3s}
+.glab .scr.jirgi .ferry.plank .eb-plank{opacity:1}
+.glab .scr.jirgi .ferry{z-index:1}
+.glab .scr.jirgi .ferry.boarded .eb-pax{opacity:1;transition:opacity .25s}
+.glab .scr.jirgi .ferry.boarded .eb-pax .x-ar.x-wv{animation:jr4-wr .5s ease-in-out infinite alternate}
+@keyframes jr4-bob{50%{transform:translateY(-.45cqw) rotate(-.7deg)}}
+@keyframes jr4-judder{from{transform:translateY(0)}to{transform:translateY(.7px)}}
+@keyframes jr4-foam{from{opacity:.55;transform:translateX(0) scaleX(.9)}to{opacity:1;transform:translateX(1.5px) scaleX(1.05)}}
+
+/* the jetty: raised to the boat's water line, its posts reaching down to the sand */
+.glab .scr.jirgi .bank3{z-index:3;left:0;bottom:14cqw;transform:scale(.8);transform-origin:0 100%}
+.glab .scr.jirgi .bank3::after{bottom:-15cqw;height:14cqw}
+.glab .scr.jirgi .pq{position:relative;transform-origin:50% 100%}
+.glab .scr.jirgi .pq svg{width:100%;height:100%;display:block;overflow:visible}
+/* right: along the jetty to its end, then up and into the boat's seat (the boat shows them sitting from .in) */
+.glab .scr.jirgi .pq.aboard{z-index:2;animation:jr4-board 1.9s ease-in-out forwards}
+.glab .scr.jirgi .pq.in{opacity:0;transition:opacity .25s}
+@keyframes jr4-board{0%{transform:none}45%{transform:translate(var(--x1),0)}100%{transform:translate(var(--x2),var(--y2)) scale(.82)}}
+/* wrong: the face falls, tears, the head drops, and they walk off home the other way */
+.glab .scr.jirgi .pq .x-ms,.glab .scr.jirgi .pq .x-mf,.glab .scr.jirgi .pq .x-sadf{transition:opacity .3s}
+.glab .scr.jirgi .pq.x-sad .x-ms{opacity:0}
+.glab .scr.jirgi .pq.x-sad .x-mf,.glab .scr.jirgi .pq.x-sad .x-sadf{opacity:1}
+.glab .scr.jirgi .pq.x-sad .x-head{transform:translateY(2px) rotate(5deg);transition:transform .4s}
+.glab .scr.jirgi .pq.home{z-index:2;animation:jr4-home 2.8s linear forwards}
+@keyframes jr4-home{0%{transform:none;opacity:1}88%{opacity:1}100%{transform:translate(var(--x3),0);opacity:0}}
+/* walking: a step bob while they move */
+.glab .scr.jirgi .pq.aboard:not(.in) svg,.glab .scr.jirgi .pq.home svg{animation:jr4-step .3s ease-in-out infinite alternate}
+@keyframes jr4-step{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-.5cqw) rotate(2deg)}}
+
 @media (prefers-reduced-motion: reduce){
-  .glab .gbg .jr4 *{animation:none!important}
+  .glab .gbg .jr4 *,.glab .scr.jirgi .ferry .eb,.glab .scr.jirgi .eb *,.glab .scr.jirgi .pq svg{animation:none!important}
 }

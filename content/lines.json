@@ -5105,10 +5105,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka karanta kalmar da ke kan kwale-kwale da ƙarfi, sai ya zo bakin ruwa.",
-   "f": "Ki karanta kalmar da ke kan kwale-kwale da ƙarfi, sai ya zo bakin ruwa."
+   "m": "Ka karanta kalmar da ke kan jirgin ruwa da ƙarfi, sai ya zo bakin ruwa.",
+   "f": "Ki karanta kalmar da ke kan jirgin ruwa da ƙarfi, sai ya zo bakin ruwa."
   },
-  "en": "Read the word on the canoe out loud, and it will come to the bank.",
+  "en": "Read the word on the boat out loud, and it will come to the bank.",
   "screens": [
    "Wasanni · Jirgin ruwa"
   ],

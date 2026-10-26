@@ -12,6 +12,7 @@ import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { react as reactScene } from './rest';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
+import * as JR from './sc-jirgi';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
@@ -462,25 +463,49 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Karatu: the ferry ---------------- */
+    /* Sani 2026-10-26: the word rides a local engine passenger boat (sc-jirgi.ts engineBoat), up on the water clear of Laila.
+       Right: the horn toots, the next person on the jetty walks to the boat, climbs in and sits as it putts away. Wrong: a
+       soft sad fall, the person frowns with tears and walks off home along the jetty; the boat leaves empty. */
     'j-jirgi': { title: 'Jirgin ruwa', cls: 'jirgi', scene: 'crossing',
       placeNo: 'Karatu would start at short words, with the lessons.',
-      place: (r) => r.right >= 5 ? 'Read every canoe aloud and filled the boat: the ferry and the board agree.' : 'Read ' + r.right + ' of 5 canoes: Karatu would start at short words.',
+      place: (r) => r.right >= 5 ? 'Read every boat aloud and filled it: the ferry and the board agree.' : 'Read ' + r.right + ' of 5 boats: Karatu would start at short words.',
       play(run, done) {
         const W = shuffle(['cup', 'bed', 'pen', 'cow', 'egg', 'key', 'hat', 'map'].filter((w) => K.en[w])).slice(0, 5); let r = 0, got = 0;
-        const st = h('<div class="fstage"><div class="bank3">' + W.map((_, k) => '<span class="pq">' + A.passenger(k) + '</span>').join('') + '</div><div class="ferry"></div></div>');
+        const st = h('<div class="fstage"><div class="bank3">' + W.map((_, k) => '<span class="pq">' + JR.waiter(k) + '</span>').join('') + '</div><div class="ferry"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 5 }));
         run.remind = () => say(line('j-jirgi', 'how'), run);
         const ferry = st.querySelector('.ferry'), bank = st.querySelector('.bank3');
+        const who = () => bank.children[W.length - 1 - r];   // the one nearest the boat goes first
+        /* where the walker must go, in the jetty's own (scaled) px: to the jetty's end, then up into the boat's seat */
+        function aim(p) {
+          const op = ferry.offsetParent || st, S = op.getBoundingClientRect(), k = S.width / op.offsetWidth || 1, B = bank.getBoundingClientRect(), kb = (B.width / bank.offsetWidth || 1);
+          const P = p.getBoundingClientRect(), fx = P.left + P.width / 2, fy = P.bottom;
+          const bx = S.left + (ferry.offsetLeft + ferry.offsetWidth * 104 / 420) * k, by = S.top + (ferry.offsetTop + ferry.offsetHeight * 70 / 165) * k;   // the plank's top on the gunwale
+          p.style.setProperty('--x1', ((B.right - fx) / kb - P.width / kb / 2) + 'px');
+          p.style.setProperty('--x2', ((bx - fx) / kb) + 'px'); p.style.setProperty('--y2', ((by - fy) / kb) + 'px');
+        }
         function next() {
-          const w = W[r]; ferry.innerHTML = KC.canoe(w.toUpperCase()); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
+          const w = W[r]; ferry.innerHTML = JR.engineBoat(w.toUpperCase(), W.length - 1 - r); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
+          JR.puttPutt(2.2); later(run, 2300, () => ferry.classList.add('moor'));
           autoRound(run, box, w, W, () => {
-            got++; run.good(ferry); sayW(run, K.en[w]); ferry.classList.remove('drift'); ferry.classList.add('dock');
-            const p = bank.children[r]; later(run, 900, () => p.classList.add('board')); later(run, 1600, () => ferry.classList.add('leave')); later(run, 2600, step);
-          }, () => { ferry.classList.add('leave'); later(run, 1800, step); });
+            got++; run.good(ferry); sayW(run, K.en[w]);
+            const p = who(); aim(p); ferry.classList.add('plank'); p.classList.add('aboard');
+            later(run, 1900, () => { p.classList.add('in'); ferry.classList.add('boarded'); });
+            later(run, 2300, () => ferry.classList.remove('plank'));
+            later(run, 2300, () => JR.toot());
+            later(run, 3000, () => { ferry.classList.remove('moor'); ferry.classList.add('leave'); JR.puttPutt(2.4); });
+            later(run, 4800, step);
+          }, () => {
+            JR.sadTones(); const p = who(); p.classList.add('x-sad');
+            p.style.setProperty('--x3', -(p.getBoundingClientRect().right + 60) / ((bank.getBoundingClientRect().width / bank.offsetWidth) || 1) + 'px');
+            later(run, 900, () => p.classList.add('home'));
+            later(run, 1300, () => { ferry.classList.remove('moor'); ferry.classList.add('leave'); JR.puttPutt(2.4); });
+            later(run, 3900, step);
+          });
         }
         function step() { r++; if (r >= 5) done({ right: got, finished: true, part: got / 5 }); else next(); }
-        const KC = c.KART; next();
+        next();
       } },
 
     /* ---------------- Rubutu: the letter writer ---------------- */

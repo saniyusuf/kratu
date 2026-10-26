@@ -3,15 +3,15 @@
  * Jirgin ruwa (the ferry): a river crossing point in the morning. The far bank is a busy market town at its landing:
  * zinc-roofed and mat-roofed stalls of tomatoes, peppers and grain, umbrellas, market folk, a mosque with its minaret,
  * red-earth houses with zanko horns, dum palms and neems, canoes pulled up on the sand with a donkey and a man unloading.
- * Out on the water the big wooden ferry, loaded with passengers and sacks, is poled across by its ferryman. Birds fly
+ * Out on the water a long wooden engine boat full of passengers putts across near the far bank. Birds fly
  * over the river and two egrets stand at the far shallows. On the near bank (right) people wait for the ferry under a
  * shade tree: a market woman with a basin of tomatoes on her head, a man with his bicycle and its sack, a boy with a
  * goat on a rope, a man with a sack on his shoulder, and the tea seller (mai shayi) at his table and charcoal stove.
- * The lower middle stays open water for the game's word canoe; the bottom left is sand under the game's jetty.
+ * The middle stays open water for the game's word boat (engineBoat); the bottom left is sand under the game's jetty.
  *
  * Classes for sc-jirgi.css (transform and opacity only):
  *   .x-fig a whole person · .x-head head · .x-al / .x-ar arms · .x-wv an arm that waves on cheer · .x-cl a clapping arm
- *   .x-ms / .x-mf smile / frown · idle: .x-ferry .x-pole .x-bird .x-ripple .x-goat .x-egret
+ *   .x-ms / .x-mf smile / frown · idle: .x-ferry .x-bird .x-ripple .x-goat .x-egret
  */
 const P = 'jr4';
 const SK = ['#7A4A26', '#5E3A1C', '#8B5A2B', '#6B4022', '#4F2F17', '#94603A'];
@@ -79,7 +79,7 @@ function head(o, sk) {
     '<path class="x-ms" d="M26.2 30.4 Q30 33.8 33.8 30.4" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
     '<path class="x-mf" d="M26.6 32.6 Q30 30 33.4 32.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0"/>' +
     (o.beard ? '<path d="M21.4 28 Q22 37.6 30 38.4 Q38 37.6 38.6 28 Q36 33.4 30 33.4 Q24 33.4 21.4 28 Z" fill="' + (o.beard === 'w' ? '#E8E4DC' : '#24160C') + '"/>' : '') +
-    front + ld + '</g>';
+    front + ld + (o.face || '') + '</g>';
 }
 function body(o, sk) {
   const r = o.robe, r2 = o.robe2 || dk(o.robe, 0.2), t = o.trim || '#F4EBD0';
@@ -206,24 +206,6 @@ const goat = (x, y, s, c = '#F2EEE6', c2 = '#5A3A22') => '<g transform="translat
   '<path d="M2.4 -11 Q0 -15 -2 -16.6 Q-4.4 -17 -4.6 -15 Q-4 -13 -1 -11 Z" fill="' + c + '"/><path d="M-4.6 -15.6 L-4 -12.6" stroke="' + c2 + '" stroke-width=".8"/>' +
   '<path d="M-1.6 -16.6 Q-1 -20 1.6 -20.4" stroke="#8A7A62" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M-.6 -16 l3 1.2 l-2.6 .8 Z" fill="' + dk(c, 0.2) + '"/>' +
   '<circle cx="-2.6" cy="-15.8" r=".45" fill="#1A0E06"/><path d="M-4.4 -14.6 q-.2 1.8 .4 2.6" stroke="' + dk(c, 0.3) + '" stroke-width=".5" fill="none"/></g></g>';
-/** the big wooden ferry, bow at the right; centre (x, y) */
-const ferry = (x, y) => '<g transform="translate(' + x + ' ' + y + ')">' +
-  '<path d="M-50 -6 Q-46 6 -30 7 L34 7 Q48 6 54 -8 Q40 -3 20 -3 L-30 -3 Q-44 -3 -50 -6 Z" fill="#7A4A26"/>' +
-  '<path d="M-48 -3 Q-40 1 -30 1 L32 1 Q44 0 52 -5" stroke="#5A3418" stroke-width=".8" fill="none"/><path d="M-46 1.4 Q-38 4.6 -28 4.6 L32 4.6 Q42 4 50 -1" stroke="#5A3418" stroke-width=".6" fill="none"/>' +
-  '<path d="M-50 -6 Q-44 -3 -30 -3 L20 -3 Q40 -3 54 -8" stroke="#A8743E" stroke-width="1.2" fill="none"/>' +
-  '<g fill="#5A3418"><rect x="-24" y="-3" width="1.4" height="9"/><rect x="0" y="-3" width="1.4" height="9"/><rect x="24" y="-3" width="1.4" height="9"/></g>' +
-  // the cargo and the passengers sitting in it
-  '<path d="M34 -3 Q34 -10 40 -10 Q46 -10 45 -4 Z" fill="#DCCBA0"/><path d="M40 -10 Q46 -10 45 -4 L40 -3.4 Q43 -6 40 -10 Z" fill="#C2AE7E"/><path d="M24 -3 h8 v-5 h-8 Z" fill="#E8A13A"/><path d="M24 -6 h8" stroke="#B5781E" stroke-width=".5"/>' +
-  [[-24, '#C62828', '#FFD54A', 1], [-15, '#F4EBD0', '#F4EBD0', 0], [-6, '#1E88E5', '#1E88E5', 1], [3, '#2E7D32', '#C62828', 0], [12, '#6A4C93', '#FFB300', 1]].map(([px, c, hc, w], i) =>
-    '<g><path d="M' + (px - 3.6) + ' -3 Q' + (px - 3.8) + ' -11 ' + px + ' -11.6 Q' + (px + 3.8) + ' -11 ' + (px + 3.6) + ' -3 Z" fill="' + c + '"/><path d="M' + px + ' -11.6 Q' + (px + 3.8) + ' -11 ' + (px + 3.6) + ' -3 L' + (px + 1) + ' -3 Z" fill="#000" opacity=".12"/>' +
-    '<circle cx="' + px + '" cy="-14" r="2.5" fill="' + SK[i % 6] + '"/><circle cx="' + (px - .9) + '" cy="-14.2" r=".35" fill="#1A0E06"/><circle cx="' + (px + .9) + '" cy="-14.2" r=".35" fill="#1A0E06"/>' +
-    (w ? '<path d="M' + (px - 2.9) + ' -14.4 Q' + px + ' -19.4 ' + (px + 2.9) + ' -14.4 Q' + px + ' -16 ' + (px - 2.9) + ' -14.4 Z" fill="' + hc + '"/><path d="M' + (px - 2.8) + ' -14 Q' + (px - 4.4) + ' -8 ' + (px - 3.4) + ' -5" stroke="' + hc + '" stroke-width="1.4" fill="none"/>' : '<path d="M' + (px - 2.5) + ' -15 Q' + px + ' -18.6 ' + (px + 2.5) + ' -15 Z" fill="' + hc + '"/>') + '</g>').join('') +
-  '<path d="M-50 -6 Q-46 6 -30 7 L34 7 Q48 6 54 -8 Q40 -3 20 -3 L-30 -3 Q-44 -3 -50 -6 Z" fill="none"/>' +
-  // the ferryman at the stern, leaning on his long pole
-  '<g class="x-pole">' + person(-40, -4, 27, { kind: 'man', skin: 4, robe: '#5D6B7A', trou: '#5D6B7A', hat: 'turban', hatc: '#EDE6D6', al: 'clap', ar: 'clap', beard: 'd',
-    front: '<path d="M50 20 L-24 200" stroke="#8A6A3E" stroke-width="4.6" stroke-linecap="round"/><path d="M50 20 L-24 200" stroke="#B08A54" stroke-width="1.6" stroke-linecap="round"/>' }) + '</g>' +
-  '<path d="M-56 8 q8 -2 16 0 M44 8 q8 -2 14 0 M-20 9.4 q10 -1.6 20 0" stroke="#D9EEF6" stroke-width=".6" fill="none"/></g>';
-
 export function jirgiScene(): string {
   // the far bank: the town and its market at the landing
   const town = '<path d="M0 74 Q80 70 160 73 T320 72 V102 H0 Z" fill="' + u('bank') + '"/>' +
@@ -287,6 +269,123 @@ export function jirgiScene(): string {
     wader(222, 104.6, 0.32, false, 'e1') + wader(232, 105, 0.3, false, 'e2') +
     // birds over the water
     bird(118, 46, 1.1, 'b1') + bird(130, 40, 0.9, 'b2') + bird(142, 50, 0.8, 'b3') + bird(200, 58, 0.9, 'b4') +
-    '<g class="x-ferry">' + '<g transform="translate(70 116) scale(.88)">' + ferry(0, 0) + '</g>' + '</g>' +
+    // a passenger engine boat crossing near the far bank (the same kind of boat as the game's)
+    '<g class="x-ferry"><svg x="8" y="88" width="50" height="19.6" viewBox="0 0 420 165" overflow="visible">' + boatBody({ crowd: true }) + '</svg></g>' +
     nearL + nearR + '</svg>';
+}
+
+/* ---------- the game's own pieces (Sani 2026-10-26): a local engine passenger boat, the people waiting on the jetty,
+   and the boat's sounds ---------- */
+/** the hull of the long wooden boat: the gunwale sweeps up to a high prow at the left (bow), the keel runs flat to the
+    stern at the right. t = 0 at the gunwale, 1 at the keel; x in the boat's 420 x 165 box */
+const XB = 12, XS = 346;
+const gun = (x) => { const v = (x - XB) / (XS - XB); return 80 - 30 * Math.pow(1 - v, 3) - 6 * Math.pow(v, 4); };
+const keel = (x) => { const v = (x - XB) / (XS - XB); return 140 - 90 * Math.pow(1 - v, 6); };
+const band = (t0, t1) => { const xs = []; for (let x = XB; x <= XS; x += 6) xs.push(x); if (xs[xs.length - 1] !== XS) xs.push(XS);
+  const y = (x, t) => gun(x) + t * (keel(x) - gun(x));
+  return 'M' + xs.map((x) => f1(x) + ' ' + f1(y(x, t0))).join(' L') + ' L' + xs.slice().reverse().map((x) => f1(x) + ' ' + f1(y(x, t1))).join(' L') + ' Z'; };
+/* the far side of the boat seen over the near gunwale: its inside, dark, and its own rail a little higher */
+const inner = (edge) => { const xs = []; for (let x = 30; x <= XS; x += 8) xs.push(x); xs.push(XS); const far = (x) => gun(x) - 7 * Math.min(1, (x - 24) / 40);
+  return 'M' + xs.map((x) => f1(x) + ' ' + f1(far(x))).join(' L') + (edge ? '' : ' L' + xs.slice().reverse().map((x) => f1(x) + ' ' + f1(gun(x) + 1)).join(' L') + ' Z'); };
+const seam = (t) => { let s = ''; for (let x = XB + 4; x <= XS; x += 6) s += (s ? ' L' : 'M') + f1(x) + ' ' + f1(gun(x) + t * (keel(x) - gun(x))); return s; };
+/** the people in the boat: who waits on the jetty (k) and the same person sitting in the boat once they board */
+const WAIT = [
+  { kind: 'woman', skin: 1, robe: '#8E24AA', wrap: '#4A148C', wrap2: '#FFD54A', hat: 'hijab', hatc: '#6A1B9A' },
+  { kind: 'man', skin: 0, robe: '#00838F', trou: '#E8DFC8', trim: '#F4EBD0', hat: 'hula', hatc: '#E9D9A6', hatc2: '#00838F' },
+  { kind: 'woman', skin: 2, robe: '#F57C00', wrap: '#2E7D32', wrap2: '#FFF3C4', hat: 'kallabi', hatc: '#EF6C00', hatc2: '#2E7D32' },
+  { kind: 'man', skin: 3, robe: '#F4EBD0', robe2: '#D9CBA6', trim: '#8A6A3E', hat: 'turban', hatc: '#FFFFFF', beard: 'd' },
+  { kind: 'man', skin: 5, robe: '#455A64', trou: '#CFD8DC', trim: '#F4EBD0', hat: 'zanna', hatc: '#B71C1C' },
+];
+/* a sad face that shows only on .x-sad: brows that slope down and a tear on each cheek */
+const SADFACE = '<g class="x-sadf" opacity="0"><path d="M23 20 q2.6 -.4 4.8 1.4 M37 20 q-2.6 -.4 -4.8 1.4" stroke="#1A0E06" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+  '<path class="x-tear" d="M25.4 26.6 q-1.5 2.8 0 3.8 q1.5 -1 0 -3.8 Z M34.6 26.6 q-1.5 2.8 0 3.8 q1.5 -1 0 -3.8 Z" fill="#8FD3F4" stroke="#4FA9D6" stroke-width=".3"/></g>';
+const waitO = (k) => Object.assign({}, WAIT[k % WAIT.length], { face: SADFACE });
+/** one person waiting on the jetty for the boat, standing, feet at the bottom of the box */
+export function waiter(k: number): string {
+  return '<svg class="jr4w" viewBox="-6 -14 72 150" overflow="visible" aria-hidden="true">' + person(30, 134, 140, Object.assign(waitO(k), { cls: 'w-fig' })) + '</svg>';
+}
+/** the boat itself in its 420 x 165 box, bow at the left; o.board = the word, o.pax = the passenger index who boards,
+    o.crowd = a few seated passengers (the scene's far boat) */
+function boatBody(o) {
+  const rail = '#5A3418';
+  // under the canopy: its posts, the driver at the stern, the passenger who boards (hidden until .boarded)
+  let s = '<ellipse cx="200" cy="150" rx="196" ry="9" fill="rgba(10,40,70,.28)"/>' +
+    '<g stroke="#6B4422" stroke-width="3.2" stroke-linecap="round"><path d="M104 70 V30 M212 76 V24 M300 78 V26"/></g>' +
+    '<path d="' + inner() + '" fill="#4A2E18"/><path d="' + inner(true) + '" stroke="#7A4A26" stroke-width="2" fill="none"/>';
+  if (o.crowd) s += [[132, 1, '#C62828'], [168, 3, '#1E88E5'], [196, 0, '#F4EBD0'], [236, 2, '#2E7D32'], [266, 4, '#FFB300']].map(([x, k, c], i) =>
+    person(x, gun(x) + 34, 68, { kind: i % 2 ? 'man' : 'woman', skin: k, robe: c, hat: i % 2 ? 'hula' : 'hijab', hatc: i % 2 ? '#F4EBD0' : c, wrap: '#2F6B9A' })).join('');
+  if (o.pax != null) s += '<g class="eb-pax">' + person(118, gun(118) + 34, 68, Object.assign(waitO(o.pax), { al: 'down', ar: 'down', arc: 'x-wv' })) + '</g>';
+  s += '<g class="eb-drv">' + person(322, gun(322) + 30, 64, { kind: 'man', skin: 4, robe: '#5D6B7A', trou: '#5D6B7A', hat: 'turban', hatc: '#EDE6D6', ar: 'fwd', al: 'down', beard: 'd' }) + '</g>';
+  // the hull: painted planks, tarred below, a dark rail along the top, the transom at the stern
+  s += '<path d="' + band(0, 1) + '" fill="#3A2A1E"/>' +
+    '<path d="' + band(0, 0.13) + '" fill="' + rail + '"/><path d="' + band(0.13, 0.3) + '" fill="#F2C230"/><path d="' + band(0.3, 0.37) + '" fill="#C62828"/>' +
+    '<path d="' + band(0.37, 0.78) + '" fill="#1F7A8C"/><path d="' + band(0.78, 0.84) + '" fill="#F4EBD0"/>' +
+    '<path d="' + seam(0.22) + ' M' + seam(0.55).slice(1) + ' M' + seam(0.92).slice(1) + '" stroke="rgba(0,0,0,.22)" stroke-width="1" fill="none"/>' +
+    '<path d="' + seam(0.02) + '" stroke="#A8743E" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+    '<path d="M' + XS + ' ' + f1(gun(XS)) + ' L' + (XS + 4) + ' ' + f1(gun(XS) + 1) + ' L' + (XS + 3) + ' 140 L' + XS + ' 140 Z" fill="' + rail + '"/>' +
+    // ribs of the hull showing as nail lines, and the eye painted at the prow
+    '<g stroke="rgba(0,0,0,.18)" stroke-width="1">' + [60, 100, 140, 330].map((x) => '<path d="M' + x + ' ' + f1(gun(x) + 4) + ' V' + f1(keel(x) - 4) + '"/>').join('') + '</g>' +
+    '<circle cx="34" cy="' + f1(gun(34) + 12) + '" r="4.2" fill="#F4EBD0"/><circle cx="33" cy="' + f1(gun(34) + 12) + '" r="2" fill="#1A0E06"/>';
+  if (o.board != null) s += '<g class="eb-board"><rect x="124" y="84" width="196" height="46" rx="5" fill="#FFF6DF" stroke="#6B3E1E" stroke-width="3"/>' +
+    '<rect x="128" y="88" width="188" height="38" rx="3" fill="none" stroke="#E2C99A" stroke-width="1"/>' +
+    '<g fill="#8A6A3E"><circle cx="131" cy="91" r="1.6"/><circle cx="313" cy="91" r="1.6"/><circle cx="131" cy="123" r="1.6"/><circle cx="313" cy="123" r="1.6"/></g>' +
+    '<text x="222" y="121" text-anchor="middle" font-size="38" font-weight="900" letter-spacing="7" fill="#2A1A0C" style="font-family:var(--disp,sans-serif)">' + o.board + '</text></g>';
+  // the boarding plank from the end of the jetty (below the boat, nearer to us) up to the gunwale; shown while moored
+  if (o.pax != null) s += '<g class="eb-plank"><path d="M58 202 L86 202 L110 ' + f1(gun(104) + 1) + ' L98 ' + f1(gun(104) + 1) + ' Z" fill="#A8743E" stroke="#5E3A1C" stroke-width="1.6" stroke-linejoin="round"/>' +
+    '<path d="M64 186 h20 M70 166 h17 M76 146 h15 M82 126 h13 M88 106 h11 M93 88 h10" stroke="#6B4422" stroke-width="2.2" stroke-linecap="round"/></g>';
+  // the canopy: a tarpaulin roof on its posts, a fringe along the edge
+  s += '<path d="M90 32 Q200 12 316 24 L316 31 Q200 20 90 39 Z" fill="#2C7BB6"/><path d="M90 32 Q200 12 316 24" stroke="#7FB8E0" stroke-width="2" fill="none"/>' +
+    '<path d="M90 39 Q200 20 316 31" stroke="#FFD54A" stroke-width="2.4" fill="none" stroke-dasharray="5 4"/>' +
+    // the outboard engine on the transom: bracket, cowling, the leg going down into the water, the tiller to the driver
+    '<g class="eb-eng"><path d="M346 84 h7 v10 h-7 Z" fill="#4A4A4A"/>' +
+    '<path d="M362 102 L372 102 L370 138 L363 138 Z" fill="#3A3E42"/><path d="M359 128 h16 v3 h-16 Z" fill="#4A4E52"/>' +
+    '<path d="M352 76 Q351 64 362 63 L374 63 Q382 64 381 74 L379 98 Q378 104 371 104 L360 104 Q353 103 353 96 Z" fill="#2B2F33"/>' +
+    '<path d="M355 70 Q357 65 363 65 L373 65 Q378 65 379 70" stroke="#7A838A" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+    '<path d="M353 86 L380 86" stroke="#C62828" stroke-width="2.2"/><path d="M372 70 Q376 80 375 98" stroke="rgba(255,255,255,.12)" stroke-width="3" fill="none"/>' +
+    '<path d="M353 82 L335 79" stroke="#1E1E1E" stroke-width="3" stroke-linecap="round"/></g>';
+  // the water at the hull: a lip of river over the keel, foam along it, the wake and spray behind the engine
+  s += '<path d="M8 140 Q30 137 60 139 Q200 137 350 140 Q362 141 360 146 Q200 150 40 148 Q6 146 8 140 Z" fill="#4FA9D6" opacity=".6"/>' +
+    '<path d="M16 139 Q120 142 230 141 T344 141" stroke="#F4FBFF" stroke-width="2" fill="none" opacity=".85" stroke-linecap="round"/>' +
+    '<g class="eb-wake"><path d="M356 140 Q372 133 392 137 Q408 140 418 145 Q400 143 386 146 Q368 148 356 144 Z" fill="#F4FBFF" opacity=".85"/>' +
+    '<path d="M368 150 q12 -3 24 0 M394 147 q10 -2 20 1 M380 133 q10 -3 18 0" stroke="#F4FBFF" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".9"/>' +
+    '<g fill="#F4FBFF"><circle cx="384" cy="128" r="2"/><circle cx="394" cy="123" r="1.5"/><circle cx="402" cy="131" r="1.7"/><circle cx="376" cy="124" r="1.2"/><circle cx="410" cy="137" r="1.3"/></g></g>' +
+    '<g class="eb-spray" fill="#F4FBFF" opacity=".85"><path d="M14 139 q-8 -3 -13 1 q7 2 13 -1 Z"/><circle cx="4" cy="133" r="1.3"/><circle cx="9" cy="129" r=".9"/></g>';
+  return s;
+}
+/** the word's boat for the game: the word on a board along its side */
+export function engineBoat(word: string, pax: number): string {
+  return '<svg class="eb ' + P + 'b" viewBox="0 0 420 165" overflow="visible" aria-hidden="true">' + boatBody({ board: word, pax }) + '</svg>';
+}
+
+/* ---------- sounds: gentle and short, synthesised (the same pattern as engine.ts) ---------- */
+let jac = null;
+const audio = () => { try { jac = jac || new (window.AudioContext || (window as any).webkitAudioContext)(); return jac; } catch (e) { return null; } };
+/** the engine's putt-putt: soft low thuds, swelling and fading over `sec` seconds */
+export function puttPutt(sec = 1.8): void {
+  const a = audio(); if (!a) return;
+  const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 340; lp.connect(a.destination);
+  const n = Math.round(sec / 0.115), t0 = a.currentTime + 0.02;
+  for (let i = 0; i < n; i++) {
+    const t = t0 + i * 0.115, env = Math.sin(Math.PI * (i + 0.5) / n), o = a.createOscillator(), g = a.createGain();
+    o.type = 'triangle'; o.frequency.setValueAtTime(68 + (i % 2) * 6, t); o.frequency.exponentialRampToValueAtTime(48, t + 0.08);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.0001 + 0.09 * env, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+    o.connect(g).connect(lp); o.start(t); o.stop(t + 0.1);
+  }
+}
+/** the boat's horn: two bright friendly toots (right answer) */
+export function toot(): void {
+  const a = audio(); if (!a) return;
+  [[392, 0, 0.16], [523, 0.22, 0.3]].forEach(([f, d, len]) => { const t = a.currentTime + 0.02 + d;
+    [1, 1.005].forEach((m) => { const o = a.createOscillator(), g = a.createGain(), lp = a.createBiquadFilter();
+      o.type = 'sawtooth'; o.frequency.setValueAtTime(f * m, t); lp.type = 'lowpass'; lp.frequency.value = 1400;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.045, t + 0.03); g.gain.setValueAtTime(0.045, t + len - 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+      o.connect(lp).connect(g).connect(a.destination); o.start(t); o.stop(t + len + 0.05); }); });
+}
+/** a gentle sad fall: three soft tones going down (wrong answer) */
+export function sadTones(): void {
+  const a = audio(); if (!a) return;
+  [[392, 0], [349, 0.3], [294, 0.6]].forEach(([f, d], i) => { const t = a.currentTime + 0.02 + d, len = i === 2 ? 0.7 : 0.3, o = a.createOscillator(), g = a.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(f, t); o.frequency.linearRampToValueAtTime(f * 0.97, t + len);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    o.connect(g).connect(a.destination); o.start(t); o.stop(t + len + 0.05); });
 }

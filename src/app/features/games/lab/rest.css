@@ -24,9 +24,7 @@
 
 /* Kwale-kwale: the drawn river has its own fisherman, birds and life; the old floating fisherman goes */
 .glab .scr.kwale .riverlife{display:none!important}
-/* Jirgin ruwa: the word's canoe comes in to the middle of the river, big, above Laila at the bottom centre */
-.glab .scr.jirgi .ferry{left:28cqw!important;bottom:11cqw!important;width:44cqw!important;height:18cqw!important}
-.glab .scr.jirgi .bank3{transform:scale(.8);transform-origin:0 100%}
+/* Jirgin ruwa: the word's boat and the jetty are laid out in sc-jirgi.css */
 .glab .scr.marubg .marw{display:none!important}   /* the drawn street has its own letter writer under his umbrella */
 .glab .scr.marubg .achw{right:auto!important;left:24cqw!important;width:15cqw!important;height:10cqw!important}   /* the post rider waits by the post box, clear of the writer's queue */
 
