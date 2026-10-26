@@ -1,4 +1,4 @@
-/* ---- Kasuwar shanu, drawn (Sani 2026-10-25): the cattle market behind the game's own cattle. Transform and opacity only;
+/* ---- Kasuwar dabbobi, drawn (Sani 2026-10-25, 2026-10-26): the livestock market behind the game's own animals. Transform and opacity only;
    every keyframe is sh4-…; the game sets .cheer / .sad on .gbg ---- */
 .glab .gbg .sh4 .x-p,.glab .gbg .sh4 .x-hd,.glab .gbg .sh4 .x-al,.glab .gbg .sh4 .x-ar,.glab .gbg .sh4 .x-eg,.glab .gbg .sh4 .x-wg,.glab .gbg .sh4 .x-cow,
 .glab .gbg .sh4 .x-ch,.glab .gbg .sh4 .x-tl,.glab .gbg .sh4 .x-up,.glab .gbg .sh4 .x-du,.glab .gbg .sh4 .x-stm,.glab .gbg .sh4 .x-sit{transform-box:fill-box}
@@ -53,6 +53,64 @@
 .glab .gbg.sad .sh4 .x-hr .x-al.x-staff{transform:rotate(-6deg)}
 .glab .gbg.sad .sh4 .x-calf .x-ch{transform-origin:20% 30%;transform:rotate(14deg)}
 
+/* the market's animals in the background (2026-10-26): the tied rams and the haggled goat breathe and flick their tails,
+   the hens peck, the turkey cock puffs his fan; on a cheer the turkey fans wide, on a frown the rams toss their heads */
+.glab .gbg .sh4 .x-live :is(.d-up,.d-tl,.d-ear,.d-hd){transform-box:view-box}
+.glab .gbg .sh4 .x-live .d-up{animation:sh4-breathe 3.2s ease-in-out infinite alternate}
+.glab .gbg .sh4 .x-live .d-tl{animation:sh4-flick 5.4s ease-in-out infinite}
+.glab .gbg .sh4 .x-live.r2 .d-tl{animation-delay:-2.2s}.glab .gbg .sh4 .x-live.g1 .d-tl{animation-delay:-3.6s;animation-duration:4.2s}
+.glab .gbg .sh4 .x-live .d-ear{animation:sh4-ear 6s ease-in-out -1s infinite}
+.glab .gbg .sh4 :is(.x-pk .x-hb,.x-tk .x-fan){transform-box:fill-box}
+.glab .gbg .sh4 .x-pk .x-hb{transform-origin:40% 100%;animation:sh4-peck 2.6s ease-in-out infinite}
+.glab .gbg .sh4 .x-pk.p2 .x-hb{animation-delay:-1.1s;animation-duration:3.1s}
+@keyframes sh4-peck{0%,55%,100%{transform:none}64%,70%{transform:rotate(34deg)}76%{transform:rotate(8deg)}82%{transform:rotate(30deg)}}
+.glab .gbg .sh4 .x-tk .x-fan{transform-origin:50% 100%;animation:sh4-fan 4s ease-in-out infinite alternate}
+@keyframes sh4-fan{from{transform:scale(.94)}to{transform:scale(1.04)}}
+.glab .gbg.cheer .sh4 .x-tk .x-fan{animation:sh4-fan .3s ease-in-out 6 alternate}
+.glab .gbg.sad .sh4 .x-live .d-hd{animation:sh4-no .24s ease-in-out 4 alternate}
+
 @media (prefers-reduced-motion:reduce){
   .glab .gbg .sh4 *{animation:none!important}
 }
+
+/* ---- Kasuwar dabbobi's animals at their posts (sc-shanu.ts dabba()): one 240×160 frame each, the ground at its foot,
+   every animal at its own size in it; the post reaches the ground and the tether runs from it to the halter ---- */
+.glab .scr.shanu .beast2 .post{height:auto;bottom:1.6cqw}
+.glab .scr.shanu .beast2 .dab{position:absolute;left:0;bottom:0;width:100%;height:15.7cqw;overflow:visible;transform-origin:50% 100%;transition:transform .15s}
+.glab .scr.shanu .beast2:active .dab{transform:scale(.97)}
+.glab .scr.shanu .dab :is(.d-all,.d-up,.d-hd,.d-tl,.d-ear,.d-lg,.d-buy,.d-walk){transform-box:view-box}
+.glab .scr.shanu .dab .x-ms,.glab .scr.shanu .dab .x-mf{stroke:#3A1A0A;stroke-width:.42;fill:none;stroke-linecap:round}
+.glab .scr.shanu .dab .x-mf{opacity:0}
+.glab .scr.shanu .dab .x-sl{stroke-width:3.6;stroke-linecap:round;fill:none}
+.glab .scr.shanu .dab .x-sf{stroke:#000;stroke-opacity:.12;stroke-width:.9;stroke-linecap:round;fill:none;transform:translate(.5px,.2px)}
+/* idle: the flanks rise and fall, the tail flicks, an ear twitches, the head lifts now and then */
+.glab .scr.shanu .dab .d-up{animation:sh4-breathe 3.4s ease-in-out var(--gd,0s) infinite alternate}
+@keyframes sh4-breathe{to{transform:scale(1.008,1.022)}}
+.glab .scr.shanu .dab .d-tl{animation:sh4-flick var(--gs,6s) ease-in-out var(--gd,0s) infinite}
+@keyframes sh4-flick{0%,72%,100%{transform:none}78%{transform:rotate(16deg)}84%{transform:rotate(-8deg)}90%{transform:rotate(10deg)}}
+.glab .scr.shanu .dab .d-ear{animation:sh4-ear 7s ease-in-out var(--gd,0s) infinite}
+@keyframes sh4-ear{0%,86%,100%{transform:none}89%{transform:rotate(-14deg)}92%{transform:rotate(4deg)}}
+.glab .scr.shanu .dab .d-hd{animation:sh4-look calc(var(--gs,6s) * 1.7) ease-in-out var(--gd,0s) infinite}
+@keyframes sh4-look{0%,40%,100%{transform:none}50%,70%{transform:rotate(-4deg)}80%{transform:rotate(2deg)}}
+/* sold: the buyer steps in, takes up the lead and walks it away; the tether is untied */
+.glab .scr.shanu .beast2.bought{z-index:4}
+.glab .scr.shanu .dab .d-buy,.glab .scr.shanu .dab .d-rope{opacity:0}
+.glab .scr.shanu .beast2.bought .d-buy{opacity:1;animation:sh4-buyin .8s ease-out both}
+@keyframes sh4-buyin{from{transform:translateX(70px);opacity:0}}
+.glab .scr.shanu .beast2.bought .d-rope{opacity:1;transition:opacity .2s .75s}
+.glab .scr.shanu .beast2 .d-teth{transition:opacity .2s .7s}
+.glab .scr.shanu .beast2:is(.bought,.no) .d-teth{opacity:0}
+.glab .scr.shanu .beast2.bought .d-walk{animation:sh4-away 2.1s ease-in .95s forwards}
+@keyframes sh4-away{30%{opacity:1}100%{transform:translateX(330px);opacity:0}}
+.glab .scr.shanu .beast2.bought .d-all{animation:sh4-dbob .35s ease-in-out .95s infinite alternate}
+@keyframes sh4-dbob{to{transform:translateY(-1.6px)}}
+.glab .scr.shanu .beast2.bought .d-lg{animation:sh4-step .35s ease-in-out .95s infinite alternate}
+.glab .scr.shanu .beast2.bought .d-lg:is(.b,.c){animation-name:sh4-step2}
+@keyframes sh4-step{from{transform:rotate(-11deg)}to{transform:rotate(11deg)}}
+@keyframes sh4-step2{from{transform:rotate(11deg)}to{transform:rotate(-11deg)}}
+.glab .scr.shanu .beast2.bought .d-hd{animation:none}
+/* a wrong touch: the head shakes, then the animal turns its back */
+.glab .scr.shanu .beast2.no .d-hd{animation:sh4-no .24s ease-in-out 4 alternate}
+@keyframes sh4-no{from{transform:rotate(-8deg)}to{transform:rotate(6deg)}}
+.glab .scr.shanu .beast2.no .d-all{transform:scaleX(-1);transition:transform .5s ease-in-out 1s}
+@media (prefers-reduced-motion:reduce){.glab .scr.shanu .dab *{animation:none!important}}

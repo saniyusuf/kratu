@@ -9,6 +9,7 @@ import * as A from './art4';
 import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinClink, aaNo } from './market';
 import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
+import { dabba, dabSound } from './sc-shanu';
 import { react as reactScene } from './rest';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
@@ -349,12 +350,14 @@ export function moreGames(c: any): Record<string, any> {
         next();
       } },
 
-    /* ---------------- Lambobi: the cattle market (tap) ---------------- */
-    /* Kasuwar shanu (Sani 2026-10-23): a real cattle market. Four cattle (White Fulani, Red Bororo, Gudali) stand at their
-       posts, each with its price on a little blackboard; they eat, switch their tails and egrets walk about their feet.
-       Hear a price and touch the animal that costs it. Right: the cowbell, the coins, and the buyer leads it away. Wrong:
-       it lows and turns its head away, the board gets a red cross, and the next price comes (one touch, no second go). */
-    'j-shanu': { title: 'Kasuwar shanu', cls: 'shanu', scene: 'cattle', tap: true,
+    /* ---------------- Lambobi: the livestock market (tap) ---------------- */
+    /* Kasuwar dabbobi (Sani 2026-10-23, renamed and remade 2026-10-26: "goats and rams not cow only so a mix ... very
+       real"; "only livestock, no fowls"). Four animals of four kinds stand at their posts, each with its price on a little
+       blackboard: a zebu cow (White Fulani or Red Bororo), a Sokoto Red goat, a white Sahel goat, a Balami or an Uda ram
+       (sc-shanu.ts draws them); they breathe, flick their tails and ears. Hear a price and touch the animal that costs it.
+       Right: a buyer comes and leads it off on a rope, it calls (bleat, moo), the cowbell or the coins. Wrong: it shakes
+       its head, complains and turns away, the board gets a red cross, and the next price comes (one touch, no second go). */
+    'j-shanu': { title: 'Kasuwar dabbobi', cls: 'shanu', scene: 'cattle', tap: true,
       placeNo: 'Lambobi would start at the tens, with the lessons.',
       place: (r) => r.right >= 8 ? 'Knew every price by ear, to a thousand: the tens and hundreds would be skipped.' : 'Knew ' + r.right + ' of 8 prices: Lambobi would start ' + (r.hundreds < 2 ? 'at the tens.' : 'at the hundreds.'),
       play(run, done) {
@@ -371,18 +374,21 @@ export function moreGames(c: any): Record<string, any> {
           busy = false; yard.classList.remove('sad');
           const p = P[r], pool = p >= 100 ? HUN : TENS, opts = shuffle([p].concat(shuffle(pool.filter((x) => x !== p)).slice(0, 3)));
           pen.innerHTML = '';
+          // four kinds every round, never four of one: one cow (the two breeds take turns), two goats, the rams
+          const kinds = shuffle([v++ % 2 ? 'cr' : 'cw', 'gr', 'gw', 'rb', 'ru']).slice(0, 4);
           opts.forEach((m, k) => {
             const b = h('<button type="button" class="beast2" aria-label="₦' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + '">' +
-              priceBoard(m) + '<span class="post"></span>' + zebu(v++) + '</button>');
+              priceBoard(m) + '<span class="post"></span>' + dabba(kinds[k]) + '</button>');
             pen.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m === p) {
-                got++; if (p >= 100) hundreds++; run.good(b); react(run, 'cheer'); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run); cowbell(3);
-                b.classList.add('bought'); buyer.classList.remove('lead'); void buyer.offsetWidth; buyer.classList.add('lead');
+                got++; if (p >= 100) hundreds++; run.good(b); react(run, 'cheer'); top.querySelector('.tally b').textContent = got; say(K.en['n' + p], run);
+                b.classList.add('bought'); if (kinds[k][0] === 'c') cowbell(2); else coinClink();
+                later(run, 1100, () => dabSound(kinds[k], true));
                 later(run, 3000, step);
               } else {
                 // one touch: the animal lows and turns away, its board is crossed out, the market frowns, and on we go
-                run.bad(); react(run, 'sad'); moo(); b.classList.add('no'); yard.classList.add('sad');
+                run.bad(); react(run, 'sad'); dabSound(kinds[k], false); b.classList.add('no'); yard.classList.add('sad');
                 later(run, 2200, step);
               } };
           });

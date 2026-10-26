@@ -614,7 +614,7 @@ export const GAME_LIST: { id: string; name: string; en: string; section: string;
   { id: 'j-nemo', name: 'Hanzarin kasuwa', en: 'Market rush', section: 'Nemo hoto' },
   { id: 'j-shayi', name: 'Mai shayi', en: 'The tea seller · speaking', section: 'Nemo hoto' },
   { id: 'j-gyada', name: 'Dalar gyaɗa', en: 'The groundnut pyramids', section: 'Lambobi' },
-  { id: 'j-shanu', name: 'Kasuwar shanu', en: 'The cattle market', section: 'Lambobi' },
+  { id: 'j-shanu', name: 'Kasuwar dabbobi', en: 'The animal market', section: 'Lambobi' },
   { id: 'j-garke', name: 'Ƙirgen shanu', en: 'Counting the herd · speaking', section: 'Lambobi' },
   { id: 'j-suya', name: 'Mai suya', en: 'The suya seller · speaking', section: 'Lambobi' },
   { id: 'j-karatu', name: 'Kwale-kwale', en: 'The canoes', section: 'Karatu' },

@@ -1,7 +1,7 @@
 // @ts-nocheck
 /*
  * Shared bits for the games reworked on 2026-10-25 (Sani: "increase realism with new background details, fix Laila and
- * the voice"): Hanzarin kasuwa, Dalar gyaɗa, Kasuwar shanu, Mai suya, Kwale-kwale, Allo, Jirgin ruwa, Tukwane,
+ * the voice"): Hanzarin kasuwa, Dalar gyaɗa, Kasuwar dabbobi, Mai suya, Kwale-kwale, Allo, Jirgin ruwa, Tukwane,
  * Ginin bulo and Marubucin wasiƙa. Each has its own drawn scene (sc-*.ts / sc-*.css) whose people react to the answers.
  */
 import { kogiScene } from './sc-kogi';

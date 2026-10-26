@@ -5026,7 +5026,7 @@
   },
   "en": "Tap the animal whose price matches what I say.",
   "screens": [
-   "Wasanni · Kasuwar shanu"
+   "Wasanni · Kasuwar dabbobi"
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
