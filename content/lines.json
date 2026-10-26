@@ -4869,6 +4869,90 @@
   }
  },
  {
+  "key": "s_g_durbar_eg1",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga yadda ake wasan: ka faɗi harafin da ka gani a kan tutar mahayin doki, domin Sarki ya yi murna.",
+   "f": "Ga yadda ake wasan: ki faɗi harafin da kika gani a kan tutar mahayin doki, domin Sarki ya yi murna."
+  },
+  "en": "Here is how the game works: say the letter you see on the horseman's flag, so the Sarki is happy.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "The whole example in one line (Sani 2026-10-25), as the first horseman reins in; then the horsemen show a right and a wrong answer without words.",
+  "status": "live",
+  "review": "Sani's words 25 Oct, spelled cleanly by Claude; the ending and punctuation still to pick by ear (variants-5)",
+  "recorded": {
+   "m": "4565a2b83a",
+   "f": "af7a385b20"
+  }
+ },
+ {
+  "key": "s_g_durbar_good",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada.",
+   "f": "Idan kin faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada."
+  },
+  "en": "If you say the letter right, the Sarki is happy and waves to him, the guards open the gate, and the horseman goes into the palace.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
+  "status": "unused",
+  "review": "approved: Sani 24 Oct",
+  "recorded": {
+   "m": "dc9b2d1419",
+   "f": "ffbea56fcb"
+  }
+ },
+ {
+  "key": "s_g_durbar_bad",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan baka faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya.",
+   "f": "Idan baki faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya."
+  },
+  "en": "If you don't say it right, the Sarki will be upset, the gate stays shut, and the horseman turns back.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
+  "status": "unused",
+  "review": "approved: Sani 24 Oct (\"baka/baki\" as one word; \"Sarki zai ɓata rai\"; a full stop after \"a rufe\" for the falling tone, \"kuma\" kept lowercase as recorded)",
+  "recorded": {
+   "m": "4d49b55e4f",
+   "f": "f355c3626e"
+  }
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, ka danna Laila mu fara.",
+   "f": "Yanzu, ki danna Laila mu fara."
+  },
+  "en": "Now, press Laila and we will start.",
+  "screens": [
+   "Wasanni · Hawan Sallah"
+  ],
+  "said_when": "At the end of the example; the game starts when the child presses Laila.",
+  "status": "live",
+  "review": "approved: Sani 24 Oct (version 7)",
+  "recorded": {
+   "m": "8fd90879fc",
+   "f": "b220460ac0"
+  }
+ },
+ {
   "key": "s_g_dillali_how",
   "lang": "ha",
   "voice": "laila",

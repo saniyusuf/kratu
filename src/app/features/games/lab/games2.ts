@@ -7,14 +7,13 @@
  */
 import * as A from './art4';
 import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinClink, aaNo } from './market';
-import { durbarRider, emirThrone, sallahBand, RIDER_COUNT } from './durbar';
+import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { react as reactScene } from './rest';
 import { teaStall, umbrellaBench, roadBehind, cupTap } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
-  const LET = 'ABCDEFGHIJKLMNOPRSTUVWYZ'.split('');   // no Q or X: the recogniser cannot hear them apart from K and S
   const later = (run, ms, f) => run.later(ms, f);
   const beat = (run, n) => { for (let k = 0; k < n; k++) later(run, k * 200, () => drum(k % 2 === 0)); };
   const bump = (el, cls, ms = 700) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); if (ms) setTimeout(() => el.classList.remove(cls), ms); };
@@ -25,7 +24,11 @@ export function moreGames(c: any): Record<string, any> {
      wrong: she shakes her head, the turn is marked wrong and the game shows its displeasure. */
   function speakRound(run, box, target, among, onRight, onMiss, tries = 1) {
     let t = 0; box.cue();
-    box.listen(() => ({ target, among, match: (raw) => io.match(raw, target, among) }), (r) => {
+    /* a single letter is heard the way the alphabet lessons hear it (Sani 2026-10-23: the Durbar never heard a letter):
+       the letter grammar has the letters' spoken names (bee, see, aitch…) and gives back the capital letter. The word
+       matcher left both out, so "bee" was never B, and the lowercase "b" it did return never equalled "B". */
+    const letter = /^[A-Z]$/.test(target);
+    box.listen(() => letter ? { target } : { target, among, match: (raw) => io.match(raw, target, among) }, (r) => {
       if (r.value === null && !r.raw) { box.cue(); return; }
       if (r.value === target) { box.busy = true; box.yay(); onRight(); return; }
       t++; run.bad(); box.nope();
@@ -61,41 +64,118 @@ export function moreGames(c: any): Record<string, any> {
 
   return {
     /* ---------------- Haruffa: Hawan Sallah, the Durbar ---------------- */
-    'j-durbar': { title: 'Hawan Sallah', cls: 'durbar', scene: 'palace',
+    'j-durbar': { title: 'Hawan Sallah', cls: 'durbar', scene: 'palace', noHow: true,   // the example teaches it; "how" stays the reminder
       placeNo: 'Haruffa would start at A, with the lessons.',
       place: (r) => r.missed.length ? 'Could not say <b>' + r.missed.join(', ') + '</b>: those letters are taught again.' : 'Every horseman greeted the emir: every letter said.',
       play(run, done) {
-        // in a lesson: every letter learned so far, in alphabetical order or mixed up; on its own, eight from the whole alphabet
-        const L8 = opts.letters ? (opts.order === 'mixed' ? shuffle(opts.letters) : opts.letters.slice()) : shuffle(LET).slice(0, 8), N = L8.length; let i = 0; const missed = [];
-        const st = h('<div class="dstage"><div class="sallahw">' + sallahBand() + '</div><div class="emirw">' + emirThrone() + '</div><div class="rlane"></div></div>');
+        // always mixed up, never in order: the balloons already check A to Z in order. Given letters (the learning path sends
+        // those learned so far), only those; given none, the full alphabet A to Z (Sani 2026-10-24)
+        const L8 = shuffle(opts.letters || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')), N = L8.length; let i = 0; const missed = [];
+        // the emir at his gate with his court about him: a dogari each side, his attendant fanning him (no horses behind: Sani 2026-10-24)
+        const st = h('<div class="dstage">' +
+          '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +
+          '<div class="courtw"><span class="cw dg l">' + dogari(0) + '</span><div class="emirw">' + emirThrone() + '</div><span class="cw fk">' + maiFanka() + '</span><span class="cw dg r">' + dogari(1) + '</span></div>' +
+          '<div class="rlane"></div></div>');
         const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(row); run.scr.appendChild(box);
-        run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
         run.remind = () => say(line('j-durbar', 'how'), run);
-        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), bandEl = st.querySelector('.sallahw');
+        const lane = st.querySelector('.rlane'), emir = st.querySelector('.emirw'), court = st.querySelector('.courtw'), bandEl = st.querySelector('.sallahw');
+        const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // no cue until the example is over
+        const scene = run.scr.closest('.glab')?.querySelector('.gbg>.scene');   // the painted palace: its gate, its guards and the children on the square
+        posts();
+        /** a horseman gallops in with his letter and reins in before the emir */
+        function arrive(L, look) {
+          lane.innerHTML = ''; lane.classList.remove('enter'); if (scene) scene.classList.remove('open', 'cheer'); st.classList.remove('open'); posts();   // the gate swings shut behind the last one
+          const rw = h('<div class="rw">' + durbarRider(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
+          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1); return rw;
+        }
+        /** right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22).
+            The band answers only once the letter has been said: kakaki, drums and the women's guda, and the children wave.
+            Then (Sani 2026-10-23) the guards haul the gate open and he rides in behind the court, into the palace. */
+        function greet(rw) {
+          rw.classList.remove('listen'); rw.classList.add('zormo'); later(run, 900, () => { fanfare(); beat(run, 4); bandEl.classList.add('play'); if (scene) scene.classList.add('cheer'); }); later(run, 3200, () => bandEl.classList.remove('play'));
+          later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); court.classList.add('pleased'); });
+          later(run, 2400, () => { if (scene) scene.classList.add('open'); st.classList.add('open'); });   // the guards haul the gate open
+          later(run, 3000, () => { rw.classList.remove('kneel'); toGate(rw); lane.classList.add('enter'); rw.classList.add('gallop', 'enter'); hooves(1.4, true); });
+        }
+        /** the gate guards stand at the gate's posts (x 61 and 99 of the drawing), their feet on its threshold */
+        function posts() {
+          const g = gateAt(), d = st.getBoundingClientRect(), k = st.offsetWidth / (d.width || 1); if (!g) return;
+          st.querySelectorAll('.gg').forEach((el, n) => { el.style.left = ((g.x(n ? 99 : 61) - d.left) * k - el.offsetWidth / 2).toFixed(1) + 'px'; el.style.bottom = ((d.bottom - g.y(70)) * k).toFixed(1) + 'px'; });
+        }
+        function gateAt() {
+          if (!scene) return null; const r = scene.getBoundingClientRect(), s = Math.max(r.width / 160, r.height / 100);
+          return { x: (v) => r.left + (r.width - 160 * s) / 2 + v * s, y: (v) => r.top + (r.height - 100 * s) / 2 + v * s };
+        }
+        /** where the gate's threshold is on screen: the scene is a 160×100 drawing sliced to fill, the gate's foot at (77, 70) */
+        function toGate(rw) {
+          const g = gateAt(); if (!g) return; const b = rw.getBoundingClientRect(), k = rw.offsetWidth / (b.width || 1), gx = g.x(77), gy = g.y(70);
+          rw.style.setProperty('--gx', ((gx - b.left - b.width / 2) * k).toFixed(1) + 'px'); rw.style.setProperty('--gy', ((gy - b.bottom) * k).toFixed(1) + 'px');
+        }
+        /** wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride back out, and
+            the gate stays shut */
+        function refuse(rw) {
+          emir.classList.add('cross'); rw.classList.add('sad'); later(run, 450, groan);
+          later(run, 1600, () => { rw.classList.add('turn', 'gallop', 'back'); hooves(1.2, true); });
+        }
+        /** a line not recorded yet is skipped, or its stand-in said instead */
+        const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
+        /*
+         * The example teaches the game before it starts, with no score and no clock, and nobody says a letter in it. One
+         * line says it all (Sani 2026-10-25): a horseman reins in with a blank white flag, the pointing hand on it while
+         * Laila says what to do; then, without words, he is greeted, the gate opens and he rides into the palace. Only the
+         * happy outcome is shown (Sani 2026-10-26: no wrong-answer demo). Then she asks the child to press her, and only
+         * that press starts the game and its clock.
+         */
+        function example() {
+          const rw = arrive('', looks[looks.length - 1]);
+          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
+            const hand = h('<span class="spothand dhand">👇🏾</span>'); rw.appendChild(hand);   // the app's pointing hand, on the flag
+            sayIf('s_g_durbar_eg1').then(() => { hand.remove(); if (run.dead) return;
+              rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) ready(); });
+            });
+          });
+        }
+        /** "press Laila to start": said again 10 s later if she is not pressed, then every 20 s until she is (Sani 2026-10-26);
+            the press, or leaving the screen (run.stop clears run.later), ends it */
+        function ready() {
+          lane.innerHTML = ''; emir.classList.remove('cross'); let nag = null;
+          const ask = () => sayIf('s_g_durbar_ready', 'app_w_tap_white');
+          const again = (ms) => { nag = later(run, ms, () => { if (run.dead || !lbtn.onclick) return; ask().then(() => { if (!run.dead && lbtn.onclick) again(20000); }); }); };
+          ask().then(() => { if (run.dead) return;
+            box.busy = false; lbtn.classList.add('cue');
+            lbtn.onclick = () => { if (run.dead) return; lbtn.onclick = null; clearTimeout(nag); lbtn.classList.remove('cue'); io.hush();
+              run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
+              next(); };
+            again(10000);
+          });
+        }
+        /*
+         * Each letter: the horseman reins in, his flag glows and the microphone opens by itself (Sani 2026-10-24: pressing
+         * Laila to speak "is not how it works"), listening for up to 6 s. The right letter ends it at once; two wrong
+         * letters end it early as a miss; 6 s without the letter is a miss too. One answer, no hints: the letter is never
+         * shown or said. AUTO = false would make the child press Laila for each horseman instead.
+         */
+        const AUTO = true;
         function next() {
-          const L = L8[i]; lane.innerHTML = ''; const rw = h('<div class="rw">' + durbarRider(L, looks[i % looks.length]) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased');
-          rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); drum(false);
-          later(run, 1300, () => { rw.classList.remove('gallop'); row.children[i].classList.add('now');
-            speakRound(run, box, L, LET.map((x) => x), () => {
-              // right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22)
-              run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
-              rw.classList.add('zormo'); beat(run, 4); bandEl.classList.add('play'); later(run, 3000, () => bandEl.classList.remove('play'));
-              later(run, 1300, () => { rw.classList.remove('zormo'); rw.classList.add('kneel'); emir.classList.add('pleased'); });
-              later(run, 3000, () => { rw.classList.remove('kneel'); rw.classList.add('gallop', 'go'); });
-              later(run, 4300, step);
-            }, () => {
-              // wrong: the emir folds his arms and turns his face away; horse and rider hang their heads and ride out
-              missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
-              emir.classList.add('cross'); rw.classList.add('sad');
-              later(run, 1600, () => rw.classList.add('turn', 'gallop', 'back')); later(run, 3200, step);
-            }, 1);
+          const L = L8[i], rw = arrive(L, looks[i % looks.length]);
+          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); row.children[i].classList.add('now');
+            box.listen(() => ({ target: L, until: L, maxWrong: 2, limit: 6000 }), (r) => {
+              box.busy = true; rw.classList.remove('listen');
+              if (r.value === L) {
+                box.yay(); run.good(rw); say(K.L[L], run); row.children[i].classList.remove('now'); row.children[i].classList.add('on'); row.children[i].textContent = L;
+                greet(rw); later(run, 4300, step); return;
+              }
+              run.bad(); box.nope(); missed.push(L); row.children[i].classList.remove('now'); row.children[i].classList.add('miss');
+              refuse(rw); later(run, 3200, step);
+            }, () => L);
+            if (AUTO) { box.busy = false; box.go(); } else box.cue();
           });
         }
         function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }
-        next();
+        example();
       } },
 
     /* ---------------- Abubuwa: the auctioneer ---------------- */

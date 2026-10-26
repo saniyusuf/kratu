@@ -57,6 +57,8 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
 - **No pushes to GitHub until Sani says so.**
 
 ## Gotchas
+- Hausa voice tone: punctuation and spelling change how the TTS sounds (a full stop resets the pitch, "baka" as one word,
+  no "kuskure"). Read "Voice tone" in `content/README.md` before writing or re-recording a Laila line.
 - The name is the sound, not the spelling (Sani 17 Sep). `nameClip()` keeps only the NAME: the recording is split at the
   pauses and the last piece taken, so the greeting is "Sannu," + "Sani", never "Sannu, sunana Sani". `snapName()` accepts
   a bank name only on an exact or spelling-folded match — the old near-miss matching is gone, because one name must never

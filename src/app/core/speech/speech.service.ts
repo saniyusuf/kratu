@@ -24,6 +24,8 @@ export interface HearOptions {
   until?: string;
   /** With `until`: how many wrong tries close the microphone anyway. Three, like every other lesson in the app. */
   maxWrong?: number;
+  /** A hard limit in ms from the moment the microphone opens: tries do not wind it back (the Durbar's 6 s, Sani 2026-10-23). */
+  limit?: number;
   /** The word being spelled; a child may say it too and it is ignored. */
   word?: string;
   /** Demo mode: nothing is heard, the expected answer is simulated after the sample clips. */
@@ -203,9 +205,9 @@ export class SpeechService {
       for (const b of this.preroll) if (b.t - (b.d.length / (this.ctx?.sampleRate || 48000)) * 1000 >= from) { try { this.rec.acceptWaveformFloat(b.d, this.ctx!.sampleRate); } catch { this.feedErr++; } }
       this.preroll = [];
       this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set('Ina saurara…');
-      again = () => { if (tmo) clearTimeout(tmo); if (Date.now() - opened > UNTIL_CAP) { end(); return; } tmo = setTimeout(end, UNTIL_QUIET); };
+      again = () => { if (o.limit) return; if (tmo) clearTimeout(tmo); if (Date.now() - opened > UNTIL_CAP) { end(); return; } tmo = setTimeout(end, UNTIL_QUIET); };
       const end = () => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); };
-      tmo = setTimeout(end, o.multi ? 10000 : o.until ? UNTIL_QUIET : 8000);
+      tmo = setTimeout(end, o.limit || (o.multi ? 10000 : o.until ? UNTIL_QUIET : 8000));
     };
     // the multi result: letters are the value
     const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw, tries: r.tries } : r); };
