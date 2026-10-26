@@ -13,7 +13,7 @@ import { react as reactScene } from './rest';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
 import * as JR from './sc-jirgi';
-import { teaStall, umbrellaBench, roadBehind, cupTap, served, CUSTOMERS } from './teastall';
+import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -230,8 +230,9 @@ export function moreGames(c: any): Record<string, any> {
        middle under it as in the lessons. Each order comes from someone, never the same person twice running: a bubble
        over their head shows what they want, and a bar under the picture runs down for as long as they will wait (it
        stops while Laila listens). Named right: two taps of the spoon, the picture becomes the thing as it is served (the
-       egg fried on a plate, the sugar dropping into a cup of tea, the milk poured in…) and it goes to that person.
-       Wrong, or the bar runs out: the seller and his customers frown, the picture drops away, the next order comes. */
+       egg fried on a plate, the sugar dropping into a cup of tea, the milk poured in…) and it goes to that person: the
+       man at the stand takes it from the seller, and for the bench the seller's helper carries it over on his tray
+       (Sani 2026-10-26) and walks back, while the seller keeps pulling tea and cooking. Wrong, or the bar runs out: the seller and his customers frown, the picture drops away, the next order comes. */
     'j-shayi': { title: 'Mai shayi', cls: 'shayi', scene: 'teanight',
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
@@ -248,7 +249,8 @@ export function moreGames(c: any): Record<string, any> {
           let left = WAIT, over = false;
           st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
           sv.className = 'tserve'; sv.innerHTML = '';
-          bub.className = 'tbub'; bub.innerHTML = photo(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
+          // the bubble shows the order drawn, as it will be served
+          bub.className = 'tbub'; bub.innerHTML = served(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
           bar.className = 'twait on'; fill.style.transform = 'scaleX(1)';
           const end = () => { over = true; bar.classList.remove('on'); bub.classList.remove('on'); };
           const miss = () => { end(); cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); };
@@ -259,24 +261,41 @@ export function moreGames(c: any): Record<string, any> {
             later(run, 100, tick); })();
           speakRound(run, box, w, MENU, () => {
             end(); got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad');
-            // the picture becomes the thing as it is served, and goes to the one who asked for it
+            // the picture becomes the thing as it is served
             card.classList.add('turn'); sv.innerHTML = served(w);
-            const R = st.getBoundingClientRect(), S = sv.getBoundingClientRect(), u = R.width / 100;   // from the picture's middle to their hand, in the stage's own units
-            sv.style.setProperty('--dx', ((R.left + c.x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - c.hand * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
-            void sv.offsetWidth; sv.classList.add('show');
-            later(run, 700, () => sv.classList.add('fly'));
-            step(3000);
+            if (who === 0) {   // the man at the stand takes it from the seller's hand
+              fly(c.x, c.hand); later(run, 1800, () => { sv.className = 'tserve'; hand(0, w); }); step(3000); return;
+            }
+            // the bench: it lands on the helper's tray, he walks it over, hands it on and walks back
+            const T = tray.getBoundingClientRect(), R = st.getBoundingClientRect(), u = R.width / 100;
+            fly((T.left + T.width / 2 - R.left) / u, (R.bottom - T.top - T.height / 2) / u);
+            later(run, 1800, () => { sv.className = 'tserve'; tray.innerHTML = served(w); tray.classList.add('on');
+              helper.classList.add('walk'); helper.style.transform = 'translateX(' + (c.x - 4.5 - 39).toFixed(1) + 'cqw)'; });
+            later(run, 3450, () => { helper.classList.remove('walk'); tray.classList.remove('on'); hand(who, w); });
+            later(run, 3800, () => { helper.classList.add('walk', 'back'); helper.style.transform = ''; });
+            later(run, 5450, () => helper.classList.remove('walk', 'back'));
+            step(4000);
           }, () => miss());
         }
         function step(ms) { later(run, ms, () => { r++; if (r >= ORDER.length) done({ right: got, finished: true, part: got / 7 }); else next(); }); }
         next();
       } },
 
+          CUSTOMERS.map((c) => '<div class="tgot" style="left:' + c.x + 'cqw;bottom:' + c.hand + 'cqw"></div>').join('') +
+          '<div class="twaiter">' + waiter() + '<div class="ttray"></div></div>' +
     /* ---------------- Lambobi: the groundnut pyramids (tap) ---------------- */
     'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'pyramids', tap: true,
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.right >= 8 ? 'Matched every number to its stack, to twenty: Lambobi would start at the tens.' : 'Matched ' + r.right + ' of 8: Lambobi would start ' + (r.reached > 10 ? 'at 11 to 20.' : 'at 1 to 10.'),
       /* Laila says a number; the child taps the pile of groundnut sacks that has that many. Right: the sacks are loaded
+        const helper = st.querySelector('.twaiter'), tray = st.querySelector('.ttray'), gots = st.querySelectorAll('.tgot');
+        /** the served thing flies from the picture to a point on the stage (cqw from the left, cqw from the bottom) */
+        function fly(x, y) {
+          const R = st.getBoundingClientRect(), S = sv.getBoundingClientRect(), u = R.width / 100;   // in the stage's own units
+          sv.style.setProperty('--dx', ((R.left + x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - y * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
+          void sv.offsetWidth; sv.classList.add('show'); later(run, 700, () => sv.classList.add('fly'));
+        }
+        function hand(who, w) { const g = gots[who]; g.className = 'tgot'; g.innerHTML = served(w); void g.offsetWidth; g.classList.add('on'); }
          onto the back of the lorry one by one, the horn sounds and it speeds off in a cloud of dust. Wrong: the lorry
          drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {

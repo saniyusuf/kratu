@@ -42,11 +42,17 @@ export function teaStall(): string {
     `<defs><linearGradient id="ts-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A87444"/><stop offset="1" stop-color="#6E4524"/></linearGradient>` +
     `<linearGradient id="ts-steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8E979F"/><stop offset=".45" stop-color="#EEF2F5"/><stop offset="1" stop-color="#737C85"/></linearGradient>` +
     `<radialGradient id="ts-coal" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#FFE07A"/><stop offset=".5" stop-color="#F57C00"/><stop offset="1" stop-color="#6A1A00"/></radialGradient>` +
-    `<radialGradient id="ts-glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE9A0" stop-opacity="0"/></radialGradient></defs>` +
+    `<pattern id="ts-zinc" width="12" height="60" patternUnits="userSpaceOnUse" patternTransform="skewY(-3.4)"><rect width="12" height="60" fill="#A9B2BA"/><rect width="5" height="60" fill="#C9D1D8"/><rect x="10" width="2" height="60" fill="#7E8790"/></pattern><radialGradient id="ts-glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE9A0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE9A0" stop-opacity="0"/></radialGradient></defs>` +
     `<ellipse cx="200" cy="262" rx="182" ry="7" fill="rgba(0,0,0,.35)"/>` +
-    // the bulb on a wooden pole
-    `<path d="M14 262 V14 H214" stroke="#5E3A1C" stroke-width="5" fill="none"/><path d="M214 14 V30" stroke="#333" stroke-width="2"/>` +
-    `<circle class="bulb" cx="214" cy="40" r="66" fill="url(#ts-glow)"/><ellipse cx="214" cy="38" rx="6" ry="8" fill="#FFF3C0"/>` +
+    // the shelter (Sani 2026-10-26): a zinc roof on four wooden poles keeps off the sun and the rain; a painted board
+    // hangs from its front edge and the bulb from under it
+    `<path d="M92 262 V40 M356 262 V30" stroke="#4E2E14" stroke-width="5"/><path d="M112 186 V44 M338 186 V34" stroke="#3E2410" stroke-width="4" opacity=".7"/>` +
+    `<path d="M44 26 L378 6 L378 32 L44 52 Z" fill="url(#ts-zinc)"/><path d="M44 52 L378 32" stroke="#5E646B" stroke-width="2"/>` +
+    `<g fill="#9C5A2A" opacity=".55"><ellipse cx="96" cy="44" rx="10" ry="3"/><ellipse cx="300" cy="24" rx="14" ry="3.4"/><ellipse cx="210" cy="34" rx="6" ry="2"/></g>` +
+    `<g class="tsign"><path d="M120 48 V58 M196 43 V54" stroke="#4E3A2A" stroke-width="1.6"/><rect x="108" y="56" width="98" height="30" rx="3" fill="#1E6B3A" stroke="#F4EBD0" stroke-width="2.4"/>` +
+    `<text x="146" y="78" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="19" fill="#FFD54A">SHAYI</text>` +
+    `<path d="M182 64 L198 64 L196 80 L184 80 Z" fill="#F4F4F4"/><ellipse cx="190" cy="64" rx="8" ry="2.4" fill="#E9CFA6"/><path d="M187 60 q-2 -3 0 -6 M193 60 q-2 -3 0 -6" stroke="#fff" stroke-width="1.2" fill="none"/></g>` +
+    `<path d="M228 35 V48" stroke="#333" stroke-width="2"/><circle class="bulb" cx="228" cy="58" r="64" fill="url(#ts-glow)"/><ellipse cx="228" cy="56" rx="6" ry="8" fill="#FFF3C0"/>` +
     // the man standing at the end of the table, in a kaftan and a zanna cap
     `<g class="cust">` +
     `<path d="M38 230 V254 M58 230 V254" stroke="#E8DDB8" stroke-width="9"/><path d="M30 254 h14 v5 h-16 Z M52 254 h14 v5 h-12 Z" fill="#3A2A1E"/>` +
@@ -64,7 +70,10 @@ export function teaStall(): string {
     // pulling tea: the low cup steady in the left hand, foam rising in it; the high cup in the right hand rises and falls and the stream stretches with it
     `<g class="p-pull">` + arm(188, 114, 206, 156, 244, 154, SL, S) +
     `<path d="M242 142 L262 142 L259 164 L245 164 Z" fill="url(#ts-steel)"/><ellipse class="foam" cx="252" cy="142" rx="10" ry="3" fill="#F3E2C4"/>` +
-    `<rect class="stream" x="249.6" y="72" width="3.4" height="70" rx="1.7" fill="#B0703A"/>` +
+    `<g class="froth"><circle cx="246" cy="139" r="2.6" fill="#FBF1DD"/><circle cx="252" cy="137.6" r="3" fill="#FBF1DD"/><circle cx="258" cy="139.4" r="2.2" fill="#FBF1DD"/><circle cx="249" cy="135.6" r="1.6" fill="#fff"/></g>` +
+    `<g class="splash"><circle cx="246" cy="136" r="1.2" fill="#C98A4A"/><circle cx="258" cy="135" r="1" fill="#C98A4A"/><circle cx="252" cy="133" r="1.1" fill="#E9CFA6"/></g>` +
+    `<rect class="stream" x="249.6" y="72" width="3.4" height="70" rx="1.7" fill="#A8652F"/><rect class="stream" x="250.4" y="72" width="1" height="70" fill="#E0A66A" opacity=".8"/>` +
+    `<g class="tsteam"><circle cx="248" cy="126" r="4" fill="#fff" opacity=".4"/><circle cx="256" cy="112" r="5.4" fill="#fff" opacity=".28"/><circle cx="250" cy="98" r="6.4" fill="#fff" opacity=".18"/></g>` +
     `<g class="pour">${arm(232, 114, 258, 100, 236, 70, SL, S)}<g transform="rotate(28 244 66)"><path d="M234 52 L254 52 L251 74 L237 74 Z" fill="url(#ts-steel)"/></g></g></g>` +
     // handing a fresh cup to the man at the end of the table
     `<g class="p-give">${arm(188, 114, 150, 128, 130, 150, SL, S)}${arm(232, 114, 246, 150, 238, 180, SL, S)}${frothy(121, 146)}</g>` +
@@ -119,6 +128,9 @@ function sitter(x: number, o: { cap: 'hula' | 'zanna'; robe: string; skin: numbe
 export function umbrellaBench(): string {
   const A = 72, B = 150, Cx = 228, ka = SK[1], kb = SK[3], kc = SK[2], ra = '#0D47A1', rb = '#4E342E', rc = '#33691E';
   return `<svg class="ubench" viewBox="0 0 300 260" aria-hidden="true"><ellipse cx="150" cy="252" rx="138" ry="6" fill="rgba(0,0,0,.35)"/>` +
+    // a tarpaulin stretched on two poles shades the bench too
+    `<path d="M14 250 V30 M286 250 V30" stroke="#5E3A1C" stroke-width="5"/>` +
+    `<path class="tarp" d="M4 26 L296 26 L296 40 Q222 56 150 44 Q78 56 4 40 Z" fill="#1E5AA8"/><path d="M4 26 L296 26 L296 31 L4 31 Z" fill="#2F78D0"/><path d="M40 27 V48 M110 27 V50 M190 27 V50 M260 27 V48" stroke="#174A8C" stroke-width="2"/>` +
     `<rect x="24" y="176" width="252" height="10" rx="2" fill="#9C6A3C"/><path d="M34 186 V244 M266 186 V244" stroke="#5E3A1C" stroke-width="6"/>` +
     // the first man: bread and egg in one hand, the passed cup in the other
     `<g class="sitter">` + sitter(A, { cap: 'hula', robe: '#1E88E5', skin: 1 }) +
@@ -212,6 +224,22 @@ export function served(w: string): string {
       `<text x="30" y="34" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="8" fill="#1565C0">PURE</text><text x="30" y="43" text-anchor="middle" font-family="Baloo 2,sans-serif" font-weight="800" font-size="8" fill="#1565C0">WATER</text>`,
   };
   return `<svg class="sv" viewBox="0 0 60 60" aria-hidden="true">${D[w] || D.tea}</svg>`;
+}
+
+/* the seller's helper (Sani 2026-10-26), a grown man in a yellow shirt and an apron, who carries the orders to the bench
+   on a tray held up at his shoulder. 70×150; his legs (.wl1/.wl2) swing while he walks */
+export function waiter(): string {
+  const sk = SK[3];
+  return `<svg class="twsvg" viewBox="0 0 70 150" aria-hidden="true"><ellipse cx="35" cy="147" rx="20" ry="3" fill="rgba(0,0,0,.3)"/>` +
+    `<g class="wl1"><path d="M30 96 L28 142" stroke="#37474F" stroke-width="8" stroke-linecap="round"/><path d="M22 142 h10 v4 h-12 Z" fill="#212121"/></g>` +
+    `<g class="wl2"><path d="M40 96 L42 142" stroke="#37474F" stroke-width="8" stroke-linecap="round"/><path d="M38 142 h12 v4 h-10 Z" fill="#212121"/></g>` +
+    `<path d="M20 52 Q35 44 50 52 L52 100 L18 100 Z" fill="#F9A825"/><path d="M24 62 L46 62 L48 100 L22 100 Z" fill="#F4EBD0"/><path d="M24 62 Q35 56 46 62" stroke="#C9A15E" stroke-width="1.4" fill="none"/>` +
+    `<path d="M21 56 Q12 76 18 92" stroke="#F9A825" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="18" cy="93" r="3.6" fill="${sk}"/>` +
+    `<path d="M49 56 Q60 54 59 40" stroke="#F9A825" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="59" cy="39" r="3.6" fill="${sk}"/>` +
+    `<ellipse cx="59" cy="35.4" rx="15" ry="3" fill="#B0BEC5"/><ellipse cx="59" cy="34.6" rx="13" ry="2" fill="#CFD8DC"/>` +
+    `<rect x="31" y="40" width="8" height="8" fill="${sk}"/><circle cx="35" cy="32" r="11" fill="${sk}"/><circle cx="31" cy="31" r="1.4" fill="#1A0E06"/><circle cx="39" cy="31" r="1.4" fill="#1A0E06"/>` +
+    `<path d="M30 37.6 Q35 40.4 40 37.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M26 36 Q35 46 44 36 Q40 44 35 44 Q30 44 26 36 Z" fill="#2A1A10" opacity=".85"/>` +
+    `<path d="M25 28 Q25 18 35 18 Q45 18 45 28 Z" fill="#F4EBD0"/><path d="M26 24 h18" stroke="#C9A15E" stroke-width="1"/></svg>`;
 }
 
 /* the tea seller's pleasure: two quick taps of the spoon on the cup */
