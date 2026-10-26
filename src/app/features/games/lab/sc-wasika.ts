@@ -222,7 +222,7 @@ export function wasikaScene(): string {
     '<path d="M-6 120 H76 V132 H-6 Z" fill="#2E7D4A"/><path d="M-6 120 H76" stroke="#1B5E32" stroke-width=".8"/><path d="M-6 120 H76 V132 H-6 Z" fill="url(#ws4-plaster)" opacity=".6"/>' +
     '<path d="M70 70 V132 H76 V70 Z" fill="url(#ws4-pillar)"/><path d="M70 70 V132" stroke="#000" stroke-width=".4" opacity=".1"/>' +
     '<path d="M60 74 q3 6 1 12 M8 104 q-2 4 1 8" stroke="#9A8A68" stroke-width=".35" fill="none" opacity=".6"/>' +
-    '<rect x="22" y="73" width="26" height="6" rx=".8" fill="#FFF8E1" stroke="#0B7A3B" stroke-width=".6"/><text x="35" y="77.8" text-anchor="middle" font-size="4.2" font-weight="800" fill="#0B6B33" font-family="Baloo 2,sans-serif">GIDAN WAYA</text>' +
+    '<rect x="18" y="72.6" width="34" height="6.8" rx=".8" fill="#FFF8E1" stroke="#0B7A3B" stroke-width=".6"/><text x="35" y="77.6" text-anchor="middle" font-size="4" textLength="28" lengthAdjust="spacingAndGlyphs" font-weight="800" fill="#0B6B33" font-family="Baloo 2,sans-serif">GIDAN WAYA</text>' +
     barWin(2, 82, 14, 14) +
     '<rect x="1" y="99" width="9" height="5.4" rx=".6" fill="#D6D3CC"/><g stroke="#8A8780" stroke-width=".35">' + [2.4, 3.6, 4.8, 6, 7.2, 8.4].map((x) => '<path d="M' + x + ' 99.6 v4.2"/>').join('') + '</g><path d="M6 104.4 q.6 3 -.4 6" stroke="#5A6A70" stroke-width=".35" fill="none"/>' +
     // the door: two green leaves, one open on the dark hall

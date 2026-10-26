@@ -127,3 +127,11 @@
 @media (prefers-reduced-motion: reduce){
   .glab .scr.marubg .ws4r,.glab .scr.marubg .ws4r *{animation:none!important}
 }
+
+/* the name much bigger (Sani 2026-10-26: "what is being said is still too small"): the photo steps down to 16cqw and
+   the five slots take the rest of the letter, each letter about 12cqw tall */
+.glab .scr.marubg .mstage .env .to img{width:16cqw!important;height:16cqw!important}
+.glab .scr.marubg .mstage .env .hand2{left:20cqw!important;top:12.4cqw!important;gap:.5cqw!important}
+.glab .scr.marubg .mstage .env .hand2 span{width:7.6cqw!important;height:12cqw!important}
+.glab .scr.marubg .env .hand2 .ink{left:-.8cqw!important;top:.3cqw!important;width:9.2cqw!important;height:11.6cqw!important}
+.glab .scr.marubg .env .hand2 .splat{width:11cqw!important;height:12cqw!important;margin:-6.4cqw 0 0 -5.5cqw!important}

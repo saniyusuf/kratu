@@ -5126,10 +5126,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya, sai marubuci ya rubuta su.",
-   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya, sai marubuci ya rubuta su."
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ka danna su a kan allo. Sai marubuci ya rubuta su.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ki danna su a kan allo. Sai marubuci ya rubuta su."
   },
-  "en": "Say the letters of the word one by one, and the letter writer will write them.",
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
   "screens": [
    "Wasanni · Marubucin wasiƙa"
   ],
