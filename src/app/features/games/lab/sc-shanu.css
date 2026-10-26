@@ -1,0 +1,58 @@
+/* ---- Kasuwar shanu, drawn (Sani 2026-10-25): the cattle market behind the game's own cattle. Transform and opacity only;
+   every keyframe is sh4-…; the game sets .cheer / .sad on .gbg ---- */
+.glab .gbg .sh4 .x-p,.glab .gbg .sh4 .x-hd,.glab .gbg .sh4 .x-al,.glab .gbg .sh4 .x-ar,.glab .gbg .sh4 .x-eg,.glab .gbg .sh4 .x-wg,.glab .gbg .sh4 .x-cow,
+.glab .gbg .sh4 .x-ch,.glab .gbg .sh4 .x-tl,.glab .gbg .sh4 .x-up,.glab .gbg .sh4 .x-du,.glab .gbg .sh4 .x-stm,.glab .gbg .sh4 .x-sit{transform-box:fill-box}
+.glab .gbg .sh4 .x-hd,.glab .gbg .sh4 .x-al,.glab .gbg .sh4 .x-ar{transform-origin:50% 50%;transition:transform .3s ease}
+.glab .gbg .sh4 .x-p,.glab .gbg .sh4 .x-cow{transform-origin:50% 100%;transition:transform .3s ease}
+.glab .gbg .sh4 .x-ms,.glab .gbg .sh4 .x-mf{stroke:#3A1A0A;stroke-width:.42;fill:none;stroke-linecap:round;transition:opacity .2s}
+.glab .gbg .sh4 .x-mf{opacity:0}
+.glab .gbg .sh4 .x-sl{stroke-width:2.6;stroke-linecap:round;fill:none}
+.glab .gbg .sh4 .x-sf{stroke:#000;stroke-opacity:.12;stroke-width:.9;stroke-linecap:round;fill:none;transform:translate(.5px,.2px)}
+
+/* the loops: egrets drift over, dust hangs and drifts, the tea steams, a cow drinks, the bull is walked up the ramp */
+.glab .gbg .sh4 .x-eg{animation:sh4-fly 36s linear infinite}.glab .gbg .sh4 .x-eg.e2{animation-duration:44s;animation-delay:-22s}
+@keyframes sh4-fly{0%{transform:translate(-190px,8px);opacity:0}6%{opacity:1}50%{transform:translate(10px,-4px)}94%{opacity:1}100%{transform:translate(190px,4px);opacity:0}}
+.glab .gbg .sh4 .x-wg{transform-origin:20% 100%;animation:sh4-wing 1.3s ease-in-out infinite alternate}
+@keyframes sh4-wing{to{transform:scaleY(-.6)}}
+.glab .gbg .sh4 .x-du{transform-origin:50% 50%;animation:sh4-dust 13s ease-in-out infinite alternate}
+.glab .gbg .sh4 .x-du.d2{animation-duration:10s;animation-delay:-5s}
+@keyframes sh4-dust{from{transform:translateX(-10px);opacity:.6}to{transform:translateX(12px);opacity:1}}
+.glab .gbg .sh4 .x-stm{transform-origin:50% 100%;animation:sh4-steam 3s ease-out infinite}
+@keyframes sh4-steam{0%{transform:translateY(1px) scaleY(.7);opacity:0}30%{opacity:.9}100%{transform:translateY(-2px) scaleY(1.1);opacity:0}}
+.glab .gbg .sh4 .x-dr .x-ch{transform-origin:20% 30%;animation:sh4-drink 3.4s ease-in-out infinite alternate}
+@keyframes sh4-drink{to{transform:rotate(-12deg)}}
+.glab .gbg .sh4 :is(.x-dr,.x-bull,.x-calf) .x-tl{transform-origin:90% 0;animation:sh4-tail 2.4s ease-in-out infinite alternate}
+@keyframes sh4-tail{to{transform:rotate(-20deg)}}
+.glab .gbg .sh4 .x-up{animation:sh4-ramp 4.6s ease-in-out infinite alternate}
+@keyframes sh4-ramp{from{transform:translate(1.6px,1px)}to{transform:translate(-1.6px,-1px)}}
+.glab .gbg .sh4 .x-push{animation:sh4-push 4.6s ease-in-out infinite alternate}
+@keyframes sh4-push{from{transform:translateX(1px) rotate(2deg)}to{transform:translateX(-1px) rotate(-3deg)}}
+.glab .gbg .sh4 .x-sit .x-al{animation:sh4-sip 5s ease-in-out infinite}
+@keyframes sh4-sip{0%,60%,100%{transform:none}70%,85%{transform:rotate(-24deg)}}
+
+/* cheer: herders raise their staffs, everyone waves and bobs, the calf hops, the cattle lift their heads */
+.glab .gbg.cheer .sh4 .x-hr .x-al.x-staff{transform:rotate(155deg);animation:sh4-wl .45s .3s ease-in-out infinite alternate}
+.glab .gbg.cheer .sh4 .x-w .x-al:is(.x-down,.x-hip,.x-front){transform:rotate(150deg);animation:sh4-wl .4s .3s ease-in-out infinite alternate}
+.glab .gbg.cheer .sh4 .x-w .x-ar:is(.x-down,.x-hip,.x-front){transform:rotate(-150deg);animation:sh4-wr .4s .3s ease-in-out infinite alternate}
+@keyframes sh4-wl{from{transform:rotate(138deg)}to{transform:rotate(165deg)}}
+@keyframes sh4-wr{from{transform:rotate(-138deg)}to{transform:rotate(-165deg)}}
+.glab .gbg.cheer .sh4 .x-p.x-w{animation:sh4-bob .4s ease-in-out infinite alternate}
+@keyframes sh4-bob{to{transform:translateY(-1.4px)}}
+.glab .gbg.cheer .sh4 .x-calf{animation:sh4-hop .34s ease-out infinite alternate}
+@keyframes sh4-hop{0%{transform:none}100%{transform:translateY(-4px) rotate(-6deg)}}
+.glab .gbg.cheer .sh4 .x-ch{transform-origin:20% 60%;animation:sh4-low .5s ease-in-out 4 alternate}
+@keyframes sh4-low{to{transform:rotate(-8deg)}}
+
+/* sad: heads shake, frowns, the buyers shrug, the cattle drop their heads */
+.glab .gbg.sad .sh4 .x-ms{opacity:0}.glab .gbg.sad .sh4 .x-mf{opacity:1}
+.glab .gbg.sad .sh4 .x-hd{animation:sh4-shake .22s ease-in-out 6 alternate}
+@keyframes sh4-shake{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.glab .gbg.sad .sh4 .x-shrug .x-hd{animation:none;transform:rotate(-10deg)}
+.glab .gbg.sad .sh4 .x-shrug .x-al{transform:rotate(55deg)}.glab .gbg.sad .sh4 .x-shrug .x-ar{transform:rotate(-55deg)}
+.glab .gbg.sad .sh4 .x-p.x-shrug{transform:translateY(-.6px) scaleY(1.03)}
+.glab .gbg.sad .sh4 .x-hr .x-al.x-staff{transform:rotate(-6deg)}
+.glab .gbg.sad .sh4 .x-calf .x-ch{transform-origin:20% 30%;transform:rotate(14deg)}
+
+@media (prefers-reduced-motion:reduce){
+  .glab .gbg .sh4 *{animation:none!important}
+}

@@ -1,0 +1,61 @@
+/* ---- Dalar gyaɗa, drawn (Sani 2026-10-25): the pyramids, porters, the scale and the clerk. Transform and opacity only;
+   every keyframe is gy4-…; the game sets .cheer / .sad on .gbg ---- */
+.glab .gbg .gy4 .x-p,.glab .gbg .gy4 .x-hd,.glab .gbg .gy4 .x-al,.glab .gbg .gy4 .x-ar,.glab .gbg .gy4 .x-climb,.glab .gbg .gy4 .x-eg,
+.glab .gbg .gy4 .x-tail,.glab .gbg .gy4 .x-dh,.glab .gbg .gy4 .x-wg,.glab .gbg .gy4 .x-wt,.glab .gbg .gy4 .x-haze{transform-box:fill-box}
+.glab .gbg .gy4 .x-hd,.glab .gbg .gy4 .x-al,.glab .gbg .gy4 .x-ar{transform-origin:50% 50%;transition:transform .3s ease}
+.glab .gbg .gy4 .x-p{transform-origin:50% 100%;transition:transform .3s ease}
+.glab .gbg .gy4 .x-mf{opacity:0;transition:opacity .2s}.glab .gbg .gy4 .x-ms{transition:opacity .2s}
+
+/* the loops: two porters climb the pyramid, one sets his sack down at the top, one comes back down */
+.glab .gbg .gy4 .x-climb{animation:gy4-climb 16s linear infinite;opacity:0}
+.glab .gbg .gy4 .x-climb.c1{animation-delay:-8s}
+@keyframes gy4-climb{0%{transform:translate(0,0);opacity:0}5%{opacity:1}78%{transform:translate(-40px,-49px);opacity:1}86%,100%{transform:translate(-40px,-49px);opacity:0}}
+.glab .gbg .gy4 .x-climb .x-p{animation:gy4-step .8s ease-in-out infinite alternate}
+@keyframes gy4-step{to{transform:translateY(-.8px) rotate(2deg)}}
+.glab .gbg .gy4 .x-top{animation:gy4-set 3.2s ease-in-out infinite}
+@keyframes gy4-set{0%,100%{transform:none}45%,60%{transform:translateY(.9px) scaleY(.96)}}
+.glab .gbg .gy4 .x-down2{animation:gy4-step 1s ease-in-out infinite alternate}
+/* egrets drift across the haze, wings beating slowly */
+.glab .gbg .gy4 .x-eg{animation:gy4-fly 34s linear infinite}.glab .gbg .gy4 .x-eg.e2{animation-duration:42s;animation-delay:-20s}
+@keyframes gy4-fly{0%{transform:translate(-150px,6px);opacity:0}6%{opacity:1}50%{transform:translate(20px,-4px)}94%{opacity:1}100%{transform:translate(200px,4px);opacity:0}}
+.glab .gbg .gy4 .x-wg{transform-origin:20% 100%;animation:gy4-wing 1.3s ease-in-out infinite alternate}
+@keyframes gy4-wing{to{transform:scaleY(-.6)}}
+.glab .gbg .gy4 .x-haze{transform-origin:50% 50%;animation:gy4-haze 14s ease-in-out infinite alternate}
+@keyframes gy4-haze{to{transform:translateX(12px);opacity:.55}}
+/* the donkey switches its tail; the weigher slides the weight; the clerk writes */
+.glab .gbg .gy4 .x-tail{transform-origin:100% 0;animation:gy4-tail 2.6s ease-in-out infinite alternate}
+@keyframes gy4-tail{to{transform:rotate(18deg)}}
+.glab .gbg .gy4 .x-wt{animation:gy4-wt 5s ease-in-out infinite alternate}
+@keyframes gy4-wt{to{transform:translateX(4px)}}
+.glab .gbg .gy4 .x-clerk .x-ar{animation:gy4-write 1.2s ease-in-out infinite alternate}
+@keyframes gy4-write{to{transform:rotate(-7deg)}}
+
+/* cheer: arms up and waving, everyone bobs, the children hop, the clerk nods, the donkey lifts its head */
+.glab .gbg.cheer .gy4 .x-w .x-al:is(.x-down,.x-hip,.x-staff,.x-front){transform:rotate(150deg);animation:gy4-wl .4s .3s ease-in-out infinite alternate}
+.glab .gbg.cheer .gy4 .x-w .x-ar:is(.x-down,.x-hip,.x-staff,.x-front){transform:rotate(-150deg);animation:gy4-wr .4s .3s ease-in-out infinite alternate}
+@keyframes gy4-wl{from{transform:rotate(138deg)}to{transform:rotate(165deg)}}
+@keyframes gy4-wr{from{transform:rotate(-138deg)}to{transform:rotate(-165deg)}}
+.glab .gbg.cheer .gy4 .x-p.x-w{animation:gy4-bob .4s ease-in-out infinite alternate}
+.glab .gbg.cheer .gy4 .x-p.x-kid{animation:gy4-hop .32s ease-out infinite alternate}
+@keyframes gy4-bob{to{transform:translateY(-1.4px)}}
+@keyframes gy4-hop{to{transform:translateY(-3.4px)}}
+.glab .gbg.cheer .gy4 .x-clerk .x-hd{animation:gy4-nod .36s ease-in-out 6 alternate}
+@keyframes gy4-nod{to{transform:rotate(9deg) translateY(.4px)}}
+.glab .gbg.cheer .gy4 .x-dh{transform-origin:0 100%;animation:gy4-dh .5s ease-in-out 4 alternate}
+@keyframes gy4-dh{to{transform:rotate(-8deg)}}
+
+/* sad: heads shake, frowns; the porters droop under their sacks */
+.glab .gbg.sad .gy4 .x-ms{opacity:0}.glab .gbg.sad .gy4 .x-mf{opacity:1}
+.glab .gbg.sad .gy4 .x-hd{animation:gy4-shake .22s ease-in-out 6 alternate}
+@keyframes gy4-shake{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+.glab .gbg.sad .gy4 .x-por .x-hd{animation:none;transform:rotate(14deg) translateY(.6px)}
+.glab .gbg.sad .gy4 .x-p.x-por{animation:none;transform:translateY(.8px) scaleY(.95)}
+.glab .gbg.sad .gy4 .x-clerk .x-ar{animation:none;transform:rotate(10deg)}
+
+@media (prefers-reduced-motion:reduce){
+  .glab .gbg .gy4 *{animation:none!important}
+  .glab .gbg .gy4 .x-climb{opacity:1}
+}
+.glab .gbg .gy4 .x-ms,.glab .gbg .gy4 .x-mf{stroke:#3A1A0A;stroke-width:.42;fill:none;stroke-linecap:round}
+.glab .gbg .gy4 .x-sl{stroke-width:2.6;stroke-linecap:round;fill:none}
+.glab .gbg .gy4 .x-sf{stroke:#000;stroke-opacity:.12;stroke-width:.9;stroke-linecap:round;fill:none;transform:translate(.5px,.2px)}

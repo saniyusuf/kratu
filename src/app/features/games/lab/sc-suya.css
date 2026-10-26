@@ -1,0 +1,54 @@
+/* ---- Mai suya scene (sc-suya.ts): a roadside suya spot at night. Scoped under .glab .gbg .sy4, keyframes sy4-…,
+   transform and opacity only. .gbg.cheer after a right answer, .gbg.sad after a wrong one. ---- */
+.glab .gbg .sy4 .x-p,.glab .gbg .sy4 .x-h,.glab .gbg .sy4 .x-a,.glab .gbg .sy4 .x-fan,.glab .gbg .sy4 .x-smoke,.glab .gbg .sy4 .x-smk,
+.glab .gbg .sy4 .x-gen,.glab .gbg .sy4 .x-exh,.glab .gbg .sy4 .x-lamp,.glab .gbg .sy4 .x-flame,.glab .gbg .sy4 .x-coal,.glab .gbg .sy4 .x-beam{transform-box:fill-box}
+.glab .gbg .sy4 .x-p{transform-origin:50% 100%}
+.glab .gbg .sy4 .x-h,.glab .gbg .sy4 .x-a,.glab .gbg .sy4 .x-fan,.glab .gbg .sy4 .x-lamp,.glab .gbg .sy4 .x-coal{transform-origin:50% 50%}
+.glab .gbg .sy4 .x-smoke,.glab .gbg .sy4 .x-smk,.glab .gbg .sy4 .x-exh,.glab .gbg .sy4 .x-flame{transform-origin:50% 100%}
+
+/* the quiet loops: the stars, two sets of bulbs, the lantern, the grill smoke (two plumes), the brazier's smoke and
+   coals, the helper's fan, the generator, its exhaust, the okada's headlight */
+.glab .gbg .sy4 .x-stars{animation:sy4-twinkle 5s ease-in-out infinite alternate}
+@keyframes sy4-twinkle{from{opacity:.55}to{opacity:1}}
+.glab .gbg .sy4 .x-bulbs{animation:sy4-bulb 3.2s ease-in-out infinite alternate}
+.glab .gbg .sy4 .x-b2{animation-delay:-1.6s}
+@keyframes sy4-bulb{from{opacity:.55}to{opacity:1}}
+.glab .gbg .sy4 .x-lamp{animation:sy4-lamp 1.7s ease-in-out infinite alternate}
+@keyframes sy4-lamp{from{opacity:.7;transform:scale(.94)}to{opacity:1;transform:scale(1.04)}}
+.glab .gbg .sy4 .x-flame{animation:sy4-flame .5s ease-in-out infinite alternate}
+@keyframes sy4-flame{from{transform:scaleY(.86)}to{transform:scaleY(1.08)}}
+.glab .gbg .sy4 .x-smk{animation:sy4-rise 7s ease-in-out infinite}
+.glab .gbg .sy4 .x-s2{animation-delay:-3.5s;animation-duration:8s}
+@keyframes sy4-rise{0%{transform:translate(0,6px) scale(.85);opacity:0}30%{opacity:1}100%{transform:translate(-6px,-12px) scale(1.2);opacity:0}}
+.glab .gbg .sy4 .x-smoke{animation:sy4-rise 4.5s ease-in-out infinite}
+.glab .gbg .sy4 .x-coal{animation:sy4-coal 1.4s ease-in-out infinite alternate}
+@keyframes sy4-coal{from{opacity:.6}to{opacity:1}}
+.glab .gbg .sy4 .x-fan{animation:sy4-fan .38s ease-in-out infinite alternate}
+@keyframes sy4-fan{from{transform:rotate(-8deg)}to{transform:rotate(18deg)}}
+.glab .gbg .sy4 .x-gen{animation:sy4-hum .12s linear infinite alternate}
+@keyframes sy4-hum{from{transform:translateY(0)}to{transform:translateY(-.3px)}}
+.glab .gbg .sy4 .x-exh{animation:sy4-rise 2.4s ease-out infinite}
+.glab .gbg .sy4 .x-beam{animation:sy4-beam 4s ease-in-out infinite alternate}
+@keyframes sy4-beam{from{opacity:.75}to{opacity:1}}
+
+/* faces: happy eyes on cheer, a frown on sad */
+.glab .gbg.cheer .sy4{--eo:0;--eh:1}
+.glab .gbg.sad .sy4{--ms:0;--mf:1}
+
+/* cheer: the customers clap and smile, the boy jumps with his arms up, the helper nods along */
+.glab .gbg.cheer .sy4 .x-cl .x-a{animation:sy4-clap .32s ease-in-out 7 alternate}
+@keyframes sy4-clap{from{transform:rotate(-30deg)}to{transform:rotate(-58deg)}}
+.glab .gbg.cheer .sy4 .x-nod .x-h,.glab .gbg.cheer .sy4 .x-cl .x-h{animation:sy4-nod .45s ease-in-out 4 alternate}
+@keyframes sy4-nod{from{transform:rotate(0) translateY(0)}to{transform:rotate(4deg) translateY(.5px)}}
+.glab .gbg.cheer .sy4 .x-up .x-a{transform:rotate(150deg);transition:transform .2s}
+.glab .gbg.cheer .sy4 .x-hop{animation:sy4-hop .42s ease-out 5}
+@keyframes sy4-hop{0%,100%{transform:translateY(0)}45%{transform:translateY(-6px)}}
+
+/* sad: heads shake, clapping hands drop to the lap */
+.glab .gbg.sad .sy4 .x-h{animation:sy4-shake .36s ease-in-out 4 alternate}
+@keyframes sy4-shake{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.glab .gbg.sad .sy4 .x-cl .x-a{transform:rotate(8deg);transition:transform .3s}
+
+@media (prefers-reduced-motion: reduce){
+  .glab .gbg .sy4 *{animation:none!important;transition:none!important}
+}

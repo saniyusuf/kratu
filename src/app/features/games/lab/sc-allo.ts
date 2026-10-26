@@ -1,0 +1,171 @@
+// @ts-nocheck
+/*
+ * Allo, drawn (Sani 2026-10-25): a makarantar allo in a compound under a big neem tree in the morning. A red-earth
+ * compound wall with zanko horns and white relief runs behind; beyond it a Sahel mud mosque with a tapering minaret
+ * bristling with toron stakes. On the right, in the tree's shade, the malam sits on a sheepskin with his cane and the
+ * rahala (book stand) holding the open book; boys and girls (the girls in hijab) sit on a woven mat with their own
+ * allo boards, an ink pot (tawada) with reed pens, a clay water pot with a calabash cup, sandals lined up at the mat's
+ * edge, a goat resting in the shade, hens by the wall, weaver birds in the sky.
+ *
+ * Classes animated by sc-allo.css (transform and opacity only):
+ *   .x-kid (each child: rocks while reciting) · .x-lift / .x-arms (the board and arms, raised on cheer) · .x-head
+ *   .x-eo / .x-eh open and happy eyes · .x-ms / .x-mf smile and frown · .x-malam · .x-goat .x-gh (goat's head)
+ *   .x-hen · .x-birds · .x-crown (the neem's leaves) · .x-cloud
+ */
+const SK = ['#7A4A26', '#5E3A1C', '#8B5A2B', '#6B4022', '#9A6436'];
+const lg = (id, ...c) => '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' + c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
+const zanko = (x0, x1, y, h = 4) => { let s = ''; for (let x = x0; x <= x1; x += 7) s += '<path d="M' + x + ' ' + y + ' l1.3 -' + h + ' l1.3 ' + h + ' Z"/>'; return s; };
+const relief = (x, y, s = 1) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="none" stroke="#FFF1D6" stroke-width=".55" opacity=".85"><path d="M-5 0 q5 -5 10 0 q-5 5 -10 0 Z"/><circle r="1.2"/><path d="M-7 5 l3.5 -2 l3.5 2 l3.5 -2 l3.5 2"/></g>';
+const cloud = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-cloud" fill="#fff" opacity=".85"><ellipse rx="12" ry="3"/><ellipse cx="7" cy="-1.6" rx="7" ry="3.4"/><ellipse cx="-5" cy="-1" rx="5" ry="2.6"/></g></g>';
+
+/* ---------------- a head, centred on its own origin, radius 5.2 ---------------- */
+function head(o) {
+  const sk = SK[o.skin % SK.length], hc = o.hatc || '#fff', hc2 = o.hatc2 || '#C62828';
+  let back = '', top = '', ears = '<g fill="' + sk + '"><circle cx="-5.1" cy=".5" r="1.1"/><circle cx="5.1" cy=".5" r="1.1"/></g>';
+  if (o.hat === 'hula') top = '<path d="M-5.3 -1.3 Q-5.7 -7.8 0 -8.3 Q5.7 -7.8 5.3 -1.3 Q0 -2.9 -5.3 -1.3 Z" fill="' + hc + '"/><path d="M-4.6 -3.6 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2" stroke="' + hc2 + '" stroke-width=".5" fill="none"/><path d="M-5.3 -1.3 Q0 -2.9 5.3 -1.3" stroke="rgba(0,0,0,.2)" stroke-width=".5" fill="none"/>';
+  if (o.hat === 'turban') top = '<path d="M-5.9 -.6 Q-6.8 -9.6 0 -10 Q6.8 -9.6 5.9 -.6 Q0 -4.2 -5.9 -.6 Z" fill="' + hc + '"/><path d="M-5.6 -3.4 Q0 -8.2 5.6 -3.4 M-5.9 -1.6 Q0 -6.2 5.9 -1.6 M-3 -9 Q1 -6.6 5.4 -6" stroke="rgba(0,0,0,.13)" stroke-width=".5" fill="none"/>' +
+    (o.tail ? '<path d="M5.4 -1.4 Q7.6 4 6.4 10.6" stroke="' + hc + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' : '');
+  if (o.hat === 'kallabi') top = '<path d="M-5.6 -.6 Q-6.4 -8.6 0 -9.2 Q6.4 -8.6 5.6 -.6 Q0 -4.2 -5.6 -.6 Z" fill="' + hc + '"/><path d="M-2.6 -8.4 Q-6.6 -13.6 -1.4 -12 Q0 -15.4 1.6 -12 Q6.6 -13.4 2.8 -8.4 Z" fill="' + hc + '"/><path d="M-5 -3.4 Q0 -7.2 5 -3.4" stroke="' + hc2 + '" stroke-width=".7" fill="none"/>';
+  if (o.hat === 'hijab') { back = '<path d="M-6.2 0 Q-6.9 -8.8 0 -9.2 Q6.9 -8.8 6.2 0 L8.4 11.6 Q0 14.4 -8.4 11.6 Z" fill="' + hc + '"/>'; ears = '';
+    top = '<path d="M-5.5 1.2 Q-6.1 -7.4 0 -7.7 Q6.1 -7.4 5.5 1.2 Q4.9 -3.6 0 -3.9 Q-4.9 -3.6 -5.5 1.2 Z" fill="' + hc + '"/><path d="M-5.3 1.2 Q-4.6 5.8 0 6 Q4.6 5.8 5.3 1.2 L8.3 11.6 Q0 14.2 -8.3 11.6 Z" fill="' + hc + '"/>' +
+      '<path d="M-5.4 1 Q-4.6 5.8 0 6 Q4.6 5.8 5.4 1" stroke="rgba(0,0,0,.14)" stroke-width=".5" fill="none"/><path d="M2 7 Q4 10 3.4 13" stroke="rgba(0,0,0,.12)" stroke-width=".5" fill="none"/>'; }
+  if (o.hat === 'zanna') top = '<path d="M-5.1 -1.6 L-4.7 -7.6 Q0 -9.2 4.7 -7.6 L5.1 -1.6 Q0 -3 -5.1 -1.6 Z" fill="' + hc + '"/><path d="M.6 -9 L-.8 -2.6" stroke="rgba(0,0,0,.25)" stroke-width=".5"/>';
+  const beard = o.beard ? '<path d="M-4.7 1.2 Q-4.2 8 0 8.8 Q4.2 8 4.7 1.2 Q2.8 4.4 0 4.4 Q-2.8 4.4 -4.7 1.2 Z" fill="' + o.beard + '"/><path d="M-2.2 2.6 Q0 1.8 2.2 2.6" stroke="' + o.beard + '" stroke-width=".9" fill="none"/>' : '';
+  return '<g class="x-head">' + back + ears +
+    '<circle r="5.2" fill="' + sk + '"/><path d="M1 -5.1 A5.2 5.2 0 0 1 1 5.1 A3.8 5.2 0 0 0 1 -5.1 Z" fill="#000" opacity=".13"/>' +
+    (o.cheek ? '<g fill="#E8735A" opacity=".28"><circle cx="-3" cy="1.9" r="1.1"/><circle cx="3" cy="1.9" r="1.1"/></g>' : '') +
+    '<g class="x-eo"><g fill="#1A0E06"><circle cx="-1.9" cy="-.3" r=".72"/><circle cx="1.9" cy="-.3" r=".72"/></g><g fill="#fff"><circle cx="-1.7" cy="-.55" r=".22"/><circle cx="2.1" cy="-.55" r=".22"/></g></g>' +
+    '<g class="x-eh" fill="none" stroke="#1A0E06" stroke-width=".55" stroke-linecap="round"><path d="M-2.8 0 q.9 -1.1 1.8 0 M1 0 q.9 -1.1 1.8 0"/></g>' +
+    '<path d="M-3 -2.5 q1.1 -.7 2.2 -.2 M3 -2.5 q-1.1 -.7 -2.2 -.2" stroke="#2A160A" stroke-width=".45" fill="none" stroke-linecap="round"/>' +
+    '<path d="M-.2 .4 q-.6 1.5 .3 1.7 q.6 0 .8 -.3" stroke="rgba(40,20,8,.55)" stroke-width=".35" fill="none" stroke-linecap="round"/>' +
+    (o.specs ? '<g fill="none" stroke="#2A1A10" stroke-width=".35"><circle cx="-1.9" cy="-.3" r="1.3"/><circle cx="1.9" cy="-.3" r="1.3"/><path d="M-.6 -.4 h1.2"/></g>' : '') +
+    beard +
+    '<path class="x-ms" d="M-1.7 2.7 Q0 4.1 1.7 2.7" stroke="#3A1A0A" stroke-width=".55" fill="none" stroke-linecap="round"/>' +
+    '<path class="x-mf" d="M-1.5 3.8 Q0 2.7 1.5 3.8" stroke="#3A1A0A" stroke-width=".55" fill="none" stroke-linecap="round"/>' +
+    top + '</g>';
+}
+
+/* ---------------- a child sitting cross-legged on the mat, holding an allo ---------------- */
+let bn = 0;
+function allo(write) {
+  const w = (write || 3);
+  let ink = ''; for (let k = 0; k < w; k++) ink += '<path d="M-3.6 ' + (-13.6 + k * 2.3) + ' q.8 -.9 1.6 0 t1.6 0 q.4 -.8 1.2 -.3 t1.6 .1 q.6 -.6 1.2 0" stroke="#24180E" stroke-width=".42" fill="none" stroke-linecap="round"/>';
+  return '<path d="M-1.6 -16.6 v-1.9 q1.6 -1.7 3.2 0 v1.9 Z" fill="#B3874F" stroke="#6E4A24" stroke-width=".35"/>' +
+    '<path d="M-5.4 -16.6 h10.8 v11 q0 1 -1 1 h-8.8 q-1 0 -1 -1 Z" fill="#C9A272" stroke="#6E4A24" stroke-width=".45"/>' +
+    '<path d="M-4.4 -15.6 h8.8 v9.2 h-8.8 Z" fill="#E9D8B4" opacity=".75"/><path d="M2.4 -15.6 l2 0 l0 9.2 l-5 0 Z" fill="#000" opacity=".06"/>' + ink;
+}
+function kid(o) {
+  const sk = SK[o.skin % SK.length], g = o.girl;
+  return '<g class="x-kid ' + (o.cls || '') + '">' +
+    '<ellipse cx="0" cy=".4" rx="12" ry="1.8" fill="rgba(40,24,10,.25)"/>' +
+    '<path d="M-10.6 -1 Q-11.2 -6.6 -4 -6.6 L4 -6.6 Q11.2 -6.6 10.6 -1 Q0 1.4 -10.6 -1 Z" fill="' + o.robe2 + '"/>' +
+    '<path d="M-6 -3.4 Q0 -1.6 6 -3.4" stroke="rgba(0,0,0,.18)" stroke-width=".5" fill="none"/>' +
+    '<g fill="' + sk + '"><ellipse cx="-4" cy="-1.3" rx="1.7" ry=".9"/><ellipse cx="4" cy="-1.3" rx="1.7" ry=".9"/></g>' +
+    '<path d="M-5 -19.6 Q0 -21 5 -19.6 L7.6 -5 Q0 -3.6 -7.6 -5 Z" fill="' + o.robe + '"/><path d="M0 -20.4 Q5 -20.6 5 -19.6 L7.6 -5 Q3.8 -4.2 0 -4 Z" fill="#000" opacity=".13"/>' +
+    (g ? '' : '<path d="M-1.6 -19.8 L0 -16.4 L1.6 -19.8" stroke="' + o.trim + '" stroke-width=".5" fill="none"/>') +
+    '<g transform="translate(0 -25.6)">' + head({ ...o, cheek: 1 }) + '</g>' +
+    '<g class="x-arms"><path d="M-5.2 -19 L-5.8 -10.4 M5.2 -19 L5.8 -10.4" stroke="' + o.robe + '" stroke-width="2.6" stroke-linecap="round"/><path d="M-5.2 -19 L-5.8 -10.4" stroke="#000" stroke-width="2.6" stroke-linecap="round" opacity=".08"/></g>' +
+    '<g class="x-lift">' + allo(o.ink) + '<g fill="' + sk + '"><circle cx="-5.8" cy="-10.2" r="1.35"/><circle cx="5.8" cy="-10.2" r="1.35"/></g></g>' +
+    '</g>';
+}
+
+/* ---------------- the malam, sitting on a sheepskin with his cane, the rahala before him ---------------- */
+function malam() {
+  const sk = SK[1];
+  return '<g class="x-malam">' +
+    '<path d="M-17 1 Q-19 -4 -12 -5 Q-6 -8 0 -6 Q8 -8 14 -5 Q20 -3 17 1 Q0 4 -17 1 Z" fill="#EFE6D2"/><path d="M-15 0 q2 -1.4 4 0 t4 0 t4 0 t4 0 t4 0 t4 0 t4 0" stroke="#D6C9AC" stroke-width=".6" fill="none"/>' +
+    '<ellipse cx="0" cy="-.6" rx="15" ry="1.8" fill="rgba(40,24,10,.2)"/>' +
+    '<path d="M-14.4 -1.4 Q-15 -9 -5 -9 L5 -9 Q15 -9 14.4 -1.4 Q0 1.6 -14.4 -1.4 Z" fill="#E7E1D3"/><path d="M0 -9 L5 -9 Q15 -9 14.4 -1.4 Q7 .6 0 1 Z" fill="#000" opacity=".08"/>' +
+    '<g fill="' + sk + '"><ellipse cx="-5" cy="-2" rx="2.1" ry="1.1"/><ellipse cx="5" cy="-2" rx="2.1" ry="1.1"/></g>' +
+    '<path d="M-6.6 -27 Q0 -29 6.6 -27 Q10.6 -18 11.4 -7 Q0 -5 -11.4 -7 Q-10.6 -18 -6.6 -27 Z" fill="#F4F1EA"/><path d="M0 -28.4 Q6.6 -28.4 6.6 -27 Q10.6 -18 11.4 -7 Q5.6 -5.8 0 -5.6 Z" fill="#B9B2A2" opacity=".35"/>' +
+    '<path d="M-2.6 -27.2 L0 -20 L2.6 -27.2" stroke="#C9B37A" stroke-width=".6" fill="none"/><path d="M-6 -17 q2 -3 4.2 -.6 q1.4 2.4 -1 3 q-2 .4 -1.4 -1.6" stroke="#C9B37A" stroke-width=".5" fill="none"/>' +
+    '<path d="M-3 -20 Q-5 -13 -6 -8 M4 -21 Q6 -14 8 -8" stroke="rgba(0,0,0,.1)" stroke-width=".6" fill="none"/>' +
+    '<g transform="translate(0 -33.6)">' + head({ skin: 1, hat: 'turban', hatc: '#FBF8F0', tail: 1, beard: '#EDEAE2' }) + '</g>' +
+    // left arm to the book, right arm holding the cane up over his shoulder
+    '<path d="M-6.4 -26 Q-12 -18 -15.6 -14.6" stroke="#F4F1EA" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="-16.4" cy="-14.2" r="1.5" fill="' + sk + '"/>' +
+    '<g class="x-cane"><path d="M10.4 -14 Q16 -30 25 -40" stroke="#6B4422" stroke-width=".8" fill="none" stroke-linecap="round"/>' +
+    '<path d="M6.4 -26 Q12 -20 10.6 -14.6" stroke="#F4F1EA" stroke-width="3.6" stroke-linecap="round" fill="none"/><circle cx="10.4" cy="-13.8" r="1.5" fill="' + sk + '"/></g>' +
+    // the rahala: two crossed carved slats and the open book
+    '<g transform="translate(-21 1)"><path d="M-5 0 L4 -13 M4 0 L-5 -13" stroke="#7A4E26" stroke-width="1.5" stroke-linecap="round"/><path d="M-5 0 L4 -13" stroke="#A8743E" stroke-width=".5"/>' +
+    '<path d="M-8 -14.6 L-.4 -11.6 L7.2 -14.6 L7.2 -10.8 L-.4 -8 L-8 -10.8 Z" fill="#2E6B4A"/><path d="M-7.4 -15.2 L-.4 -12.6 L6.6 -15.2 L6.6 -11.6 L-.4 -9 L-7.4 -11.6 Z" fill="#F7F0DC"/>' +
+    '<path d="M-6.4 -13.6 l4.6 1.6 M-6.4 -12.2 l4.6 1.6 M1 -11.6 l4.6 -1.6 M1 -10.2 l4.6 -1.6" stroke="#5A4630" stroke-width=".3"/><path d="M-.4 -12.6 V-9" stroke="#C9B48A" stroke-width=".4"/></g>' +
+    '</g>';
+}
+
+/* ---------------- animals and things ---------------- */
+const goat = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-goat">' +
+  '<ellipse cx="0" cy=".6" rx="11" ry="1.6" fill="rgba(40,24,10,.22)"/>' +
+  '<path d="M-9 0 Q-10 -7 -3 -7.6 Q5 -8 8 -4 Q9.6 -1 8 0 Z" fill="#F2EADB"/><path d="M-6 -6.6 Q-1 -9 4 -6.2 Q0 -4 -6 -6.6 Z" fill="#7A4E2C"/>' +
+  '<path d="M-6 0 q-1 -2 1 -2.4 q3 0 4 2.4 Z M2 0 q0 -2.2 3 -2 q2 .6 1.4 2 Z" fill="#E2D6C0"/><path d="M-9 -3 q-2.6 -1 -2.4 -3.4" stroke="#F2EADB" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+  '<g class="x-gh"><path d="M6 -5 Q8 -11 11 -12.4 Q14 -12.6 14.6 -10 Q14.6 -7.6 12.6 -7 Q10 -6 9 -3.6 Z" fill="#F2EADB"/><path d="M11 -12.2 Q9.6 -16 7 -16.6 M12 -12.4 Q11.4 -16.4 9 -17.4" stroke="#8A7458" stroke-width=".8" fill="none" stroke-linecap="round"/>' +
+  '<path d="M10.6 -11 Q8 -10.6 7.4 -8.6 Q9.6 -9.4 10.8 -10.2 Z" fill="#7A4E2C"/><circle cx="12.6" cy="-10.6" r=".5" fill="#1A0E06"/><path d="M13.6 -7.4 q.2 2.2 -.8 3" stroke="#D8CCB4" stroke-width=".8" fill="none"/></g></g></g>';
+const hen = (x, y, s, c = '#B5532A', k = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-hen' + k + '"><ellipse cy=".4" rx="4" ry=".8" fill="rgba(40,24,10,.2)"/><path d="M-4 -3 Q-4.4 -6.6 -2 -5.4 Q0 -4.4 2 -5 L3.4 -5.6 Q4.6 -4 3.4 -2.4 Q1 0 -2 -.6 Q-4 -1.4 -4 -3 Z" fill="' + c + '"/><path d="M-1.6 -3.4 q1.4 1 3 0" stroke="rgba(0,0,0,.25)" stroke-width=".4" fill="none"/>' +
+  '<path d="M3.4 -5.6 l.6 -1 l.5 .8 Z" fill="#D32F2F"/><path d="M4.2 -4.8 l1 .4 l-1 .3 Z" fill="#E8B23A"/><path d="M-.6 -.4 v1 M.8 -.4 v1" stroke="#C99A3A" stroke-width=".35"/></g></g>';
+const pot = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="7" ry="1.3" fill="rgba(40,24,10,.25)"/><path d="M-3 -12 Q-3.4 -10 -5.6 -8.6 Q-8 -5 -5.6 -1.6 Q0 1.2 5.6 -1.6 Q8 -5 5.6 -8.6 Q3.4 -10 3 -12 Z" fill="#B0603A"/>' +
+  '<path d="M2 -11 Q4 -9 6 -7 Q7.4 -3.6 5 -1.4 Q3 -.4 1 0 Q5 -4 2 -11 Z" fill="#000" opacity=".15"/><path d="M-6.2 -6 Q0 -4 6.2 -6" stroke="#E6B080" stroke-width=".4" fill="none"/><path d="M-6.4 -4.8 q1 -.8 2 0 t2 0 t2 0 t2 0 t2 0 t2 0" stroke="#7A3A1E" stroke-width=".35" fill="none"/>' +
+  '<ellipse cy="-12" rx="3.4" ry=".9" fill="#8A4426"/><path d="M-5 -13.6 Q0 -10 5 -13.6 Q0 -15.2 -5 -13.6 Z" fill="#E2B85A"/><path d="M-5 -13.6 Q0 -10 5 -13.6" stroke="#A8823A" stroke-width=".4" fill="none"/></g>';
+const tawada = (x, y) => '<g transform="translate(' + x + ' ' + y + ')"><ellipse cy=".3" rx="3.2" ry=".7" fill="rgba(40,24,10,.25)"/><path d="M-2.4 0 Q-3.2 -2.6 -1.6 -3.4 L1.6 -3.4 Q3.2 -2.6 2.4 0 Z" fill="#5A3A22"/><ellipse cy="-3.4" rx="1.7" ry=".45" fill="#140C06"/>' +
+  '<path d="M-.6 -3.4 L-2.6 -9.6 M.4 -3.4 L1.8 -10.2 M.9 -3.4 L3.6 -8.8" stroke="#C8A86A" stroke-width=".5" stroke-linecap="round"/><path d="M-2.6 -9.6 l-.2 -.7 M1.8 -10.2 l.1 -.7" stroke="#24180E" stroke-width=".5"/></g>';
+const sandal = (x, y, c, r = 0) => '<g transform="translate(' + x + ' ' + y + ') rotate(' + r + ')"><ellipse cx="-1.3" rx="1.1" ry="2.5" fill="' + c + '"/><ellipse cx="1.3" cy=".3" rx="1.1" ry="2.5" fill="' + c + '"/><path d="M-2.2 -.8 h1.8 M.4 -.5 h1.8" stroke="#3A2414" stroke-width=".55"/></g>';
+const dum = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path d="M-.8 0 Q-1.2 -9 -.5 -18 L.5 -18 Q1 -9 .8 0 Z" fill="#7A5A3A"/><path d="M-.5 -18 L-1.6 -26 L.6 -18 M0 -18 L2.2 -27 L.8 -18" stroke="#7A5A3A" stroke-width=".8"/>' +
+  '<g fill="#5E8A3E"><path d="M-1.6 -26 q-6 -1 -9 2 q5 -4 9 -2 Z M-1.6 -26 q-3 -5 -8 -6 q6 0 8 6 Z M-1.6 -26 q2 -5 5 -6 q-2 3 -5 6 Z"/><path d="M2.2 -27 q6 -1 9 2 q-5 -4 -9 -2 Z M2.2 -27 q3 -5 8 -6 q-6 0 -8 6 Z M2.2 -27 q-2 -5 -5 -6 q2 3 5 6 Z"/></g></g>';
+const bird = (x, y, s) => '<path transform="translate(' + x + ' ' + y + ') scale(' + s + ')" d="M-3 0 Q-1.6 -1.6 0 0 Q1.6 -1.6 3 0 Q1.6 -.8 0 .6 Q-1.6 -.8 -3 0 Z" fill="#4A3A22"/>';
+
+export function alloScene(): string {
+  // the neem: a wide dark crown of many leaf clusters over the school, the trunk at the right edge
+  let leaves = ''; const L = [[214, 30, 20, 13], [238, 18, 24, 15], [266, 10, 26, 16], [296, 14, 26, 17], [318, 26, 18, 14], [226, 48, 16, 10], [252, 40, 22, 13], [282, 36, 24, 14], [310, 48, 16, 12], [200, 42, 12, 8], [262, 58, 14, 7], [292, 58, 14, 8]];
+  L.forEach(([x, y, rx, ry]) => { leaves += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="#3E6B2E"/>'; });
+  let hi = ''; [[232, 12, 14, 7], [262, 4, 16, 7], [296, 8, 14, 7], [246, 32, 12, 6], [280, 28, 14, 6], [214, 24, 10, 5], [310, 38, 9, 5]].forEach(([x, y, rx, ry]) => { hi += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="#5B8C3E"/>'; });
+  let speck = ''; for (let i = 0; i < 46; i++) { const x = 196 + (i * 37) % 128, y = 6 + (i * 23) % 56; speck += '<path d="M' + x + ' ' + y + ' q1.6 -1.6 3 0 q-1.6 1 -3 0 Z" fill="' + (i % 3 ? '#4C7D34' : '#6E9E48') + '"/>'; }
+  const kids = [
+    // back row
+    [222, 143, .84, { skin: 2, girl: 1, hat: 'hijab', hatc: '#F2C94C', robe: '#F2C94C', robe2: '#D9A92C', ink: 3, cls: 'k1' }],
+    [240, 143, .84, { skin: 0, hat: 'hula', hatc: '#FFFFFF', hatc2: '#2E7D32', robe: '#E9E4D6', robe2: '#C9C0AA', trim: '#2E7D32', ink: 4, cls: 'k2' }],
+    [258, 143, .84, { skin: 3, girl: 1, hat: 'hijab', hatc: '#1E88A8', robe: '#1E88A8', robe2: '#15657E', ink: 2, cls: 'k3' }],
+    // front row
+    [232, 173, 1, { skin: 4, hat: 'hula', hatc: '#C62828', hatc2: '#FFD54A', robe: '#6FA8DC', robe2: '#4C82B4', trim: '#FFFFFF', ink: 3, cls: 'k4' }],
+    [255, 173, 1, { skin: 1, girl: 1, hat: 'hijab', hatc: '#C2185B', robe: '#C2185B', robe2: '#8E1046', ink: 4, cls: 'k5' }],
+  ].map(([x, y, s, o]) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')">' + kid(o) + '</g>').join('');
+  const W = 320, H = 200;
+  return '<svg class="scene al4" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
+    lg('al4-sky', '#8FCBEA', '#CDEAF0', '#F7E8C4') + lg('al4-wall', '#CE8650', '#B4693A') + lg('al4-mos', '#E2B27A', '#C98E56') + lg('al4-g', '#E6C892', '#D7B07A', '#C99C64') +
+    lg('al4-trunk', '#6B4A2E', '#4A3020') +
+    '<radialGradient id="al4-shade" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3A2412" stop-opacity=".3"/><stop offset=".7" stop-color="#3A2412" stop-opacity=".16"/><stop offset="1" stop-color="#3A2412" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="al4-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".45" stop-color="#FFE7A0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></radialGradient></defs>' +
+    '<rect width="' + W + '" height="' + H + '" fill="url(#al4-sky)"/><circle cx="58" cy="40" r="26" fill="url(#al4-sun)"/><circle cx="58" cy="40" r="7" fill="#FFF3C6"/>' +
+    cloud(110, 26, 1) + cloud(30, 66, .7) +
+    // far town: pale flat roofs with zanko, dum palms
+    '<g fill="#D9B48A" opacity=".55"><path d="M0 100 V84 H30 V100 Z M38 100 V80 H66 V100 Z M70 100 V86 H96 V100 Z M246 100 V82 H270 V100 Z"/>' + zanko(0, 28, 84, 3) + zanko(38, 64, 80, 3) + zanko(70, 94, 86, 3) + '</g>' +
+    '<g opacity=".7">' + dum(20, 96, 1.1) + dum(102, 94, .9) + dum(160, 94, .8) + '</g>' +
+    // the mosque beyond the wall: mud walls with pinnacles, the tapering minaret with toron stakes
+    '<g><path d="M150 106 V84 H204 V106 Z" fill="url(#al4-mos)"/><g fill="#D29A60">' + zanko(150, 202, 84, 5) + '</g>' +
+    '<path d="M178 106 L180.5 40 Q185 34 189.5 40 L192 106 Z" fill="url(#al4-mos)"/><path d="M185 40 L192 106 L185 106 Z" fill="#000" opacity=".08"/><path d="M181.6 40 Q185 30.6 188.4 40 Z" fill="#D29A60"/><path d="M185 31 v-4" stroke="#8A6A3A" stroke-width=".7"/><circle cx="185" cy="26.4" r="1" fill="#E8C35A"/>' +
+    '<g stroke="#7A5434" stroke-width=".7">' + [50, 62, 74, 86, 98].map((y) => { const half = 4.5 + (y - 40) * 0.0234 * 3; return '<path d="M' + (185 - half - 1.6).toFixed(1) + ' ' + y + ' h3 M' + (185 + half - 1.4).toFixed(1) + ' ' + y + ' h3 M184 ' + (y + 6) + ' h2"/>'; }).join('') + '</g>' +
+    '<g stroke="#7A5434" stroke-width=".7">' + [156, 166, 196].map((x) => '<path d="M' + x + ' 92 v-2.4 M' + (x + 4) + ' 96 v-2.4"/>').join('') + '</g>' +
+    '<path d="M162 106 V98 a3 3 0 0 1 6 0 V106 Z M196 106 V98 a2.6 2.6 0 0 1 5.2 0 V106 Z" fill="#5A3416"/></g>' +
+    // the compound wall, red earth, zanko horns, white relief, the zaure entrance
+    '<path d="M0 118 V98 H320 V118 Z" fill="url(#al4-wall)"/><g fill="#B4693A">' + zanko(0, 318, 98) + '</g>' +
+    '<path d="M126 118 V92 H156 V118 Z" fill="#C27A44"/><g fill="#A9612F">' + zanko(126, 154, 92, 5) + '</g><path d="M134 118 V106 Q141 98 148 106 V118 Z" fill="#3A1E0C"/><path d="M131.6 118 V105.4 Q141 95 150.4 105.4 V118" stroke="#FFF1D6" stroke-width=".8" fill="none"/>' +
+    relief(141, 98.4, .7) + relief(16, 107) + relief(60, 107) + relief(104, 107) + relief(178, 109) + relief(222, 107) +
+    '<path d="M0 116 H320" stroke="#9A5A30" stroke-width="1" opacity=".6"/>' +
+    // the ground and the neem's shade
+    '<path d="M0 117 H320 V200 H0 Z" fill="url(#al4-g)"/>' +
+    '<ellipse cx="258" cy="160" rx="84" ry="30" fill="url(#al4-shade)"/>' +
+    '<g fill="#B98A50" opacity=".35"><ellipse cx="40" cy="128" rx="22" ry="1.4"/><ellipse cx="150" cy="190" rx="26" ry="1.6"/><ellipse cx="110" cy="135" rx="14" ry="1"/></g>' +
+    hen(210, 124, 1.1) + hen(222, 128, .9, '#F2EADB', ' h2') + hen(150, 125, .9, '#7A4A2A', ' h2') +
+    // the neem: trunk, branches, crown (the crown sways a little)
+    '<path d="M292 142 Q300 138 301 128 L319 128 Q320 138 326 142 Z" fill="#4A3020"/><path d="M302 140 Q298 112 292 96 Q296 94 300 102 Q302 86 298 70 Q304 76 306 92 Q310 78 318 70 Q316 86 312 100 Q316 120 318 140 Z" fill="url(#al4-trunk)"/>' +
+    '<path d="M303 120 Q305 104 304 92 M311 128 Q313 112 312 104" stroke="#3E2618" stroke-width=".6" fill="none"/>' +
+    '<path d="M298 72 Q284 62 262 60 M300 76 Q290 50 270 40 M306 74 Q312 50 300 30 M314 72 Q320 54 324 50" stroke="#4A3020" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+    '<g class="x-crown">' + leaves + hi + speck + '</g>' +
+    '<g class="x-birds"><g transform="translate(70 44)">' + bird(0, 0, 1) + bird(9, 4, .8) + bird(-6, 6, .7) + '</g></g>' +
+    // things by the tree: the clay water pot, the goat in the shade
+    pot(190, 152, .95) + goat(190, 127, .8) +
+    // the mat, the children with their boards, the malam
+    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="#D9B26A"/><g stroke="#B8893E" stroke-width=".5">' + [140, 144, 148, 152, 156, 160, 164, 168, 172, 176].map((y) => '<path d="M' + (208 - (y - 136) * .23).toFixed(1) + ' ' + y + ' H' + (314 + (y - 136) * .09).toFixed(1) + '"/>').join('') + '</g>' +
+    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="none" stroke="#8B5A2B" stroke-width=".9"/><path d="M226 136 L220 180 M266 136 L266 180 M302 136 L306 180" stroke="#A8762E" stroke-width="1.2" opacity=".55"/>' +
+    kids + '<g transform="translate(293 163)">' + malam() + '</g>' +
+    tawada(272, 177) + tawada(207, 162) +
+    sandal(204, 186, '#2F4F7F', -6) + sandal(212, 187, '#8E3B2A', 4) + sandal(220, 186.4, '#3A3A3A', -2) + sandal(228, 187, '#C2185B', 6) + sandal(236, 186.6, '#5D4037', -3) + sandal(284, 185.6, '#E8E0CC', 2) +
+    '</svg>';
+}

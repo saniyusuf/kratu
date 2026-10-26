@@ -1,0 +1,31 @@
+/* The games reworked on 2026-10-25 (rest.ts): the word's picture fills its frame edge to edge (Sani: "full container,
+   no white border"), a wooden rim around it, and the drawn scenes' people react to the answers (sc-*.css). */
+
+/* Hanzarin kasuwa: the goods' cards carry no white plate; the bowl's photo fills its own card (bowl2) */
+.glab .scr.market2 .mi2.bowl{background:none!important;box-shadow:none!important}
+.glab .scr.market2 .cust .person{background:#3E2408;box-shadow:0 0 0 .5cqw #8B5A2B,0 .8cqw 1cqw rgba(30,18,6,.35)!important}
+
+/* Kwale-kwale, Tukwane, Ginin bulo: the photo fills the frame */
+.glab .scr.kwale .bank2,.glab .scr.potter2 .sppic,.glab .scr.mud2 .sppic{background:#3E2408;overflow:hidden;padding:0;
+  box-shadow:0 0 0 .55cqw #8B5A2B,0 0 0 .8cqw #5A3A1E,0 1cqw 1.2cqw rgba(30,18,6,.35)!important}
+.glab .scr.kwale .bank2 img,.glab .scr.potter2 .sppic img,.glab .scr.mud2 .sppic img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Marubucin wasiƙa: the person the letter is for, bigger, the photo filling its round frame */
+.glab .scr.marubg .env .to img{width:13cqw;height:13cqw;box-shadow:0 0 0 .4cqw #8B5A2B}
+/* the keys in two blocks at the bottom, A–M left and N–Z right, so Laila keeps the bottom centre between them; the
+   letter writer and the post rider move up beside the envelope */
+.glab .scr.marubg .env{top:11cqw!important}
+.glab .scr.marubg>.mkb{top:auto!important;bottom:2.4cqw!important;left:2.5cqw!important;right:2.5cqw!important;transform:none!important;display:flex!important;justify-content:space-between;
+  background:none!important;box-shadow:none!important;padding:0!important}
+.glab .scr.marubg .mkh{display:grid;grid-template-columns:repeat(7,4.7cqw);gap:.5cqw;padding:.8cqw;border-radius:1.6cqw;background:rgba(255,253,247,.9);box-shadow:0 .6cqw 1cqw rgba(30,18,6,.3)}
+.glab .scr.marubg .mkb .mk{height:4.7cqw!important}
+.glab .scr.marubg .marw{left:3cqw!important;top:auto!important;bottom:13.4cqw!important;width:19cqw!important;height:20.7cqw!important}
+.glab .scr.marubg .achw{right:3cqw!important;top:auto!important;bottom:13.4cqw!important;width:19cqw!important;height:12.7cqw!important}
+
+/* Kwale-kwale: the drawn river has its own fisherman, birds and life; the old floating fisherman goes */
+.glab .scr.kwale .riverlife{display:none!important}
+/* Jirgin ruwa: the word's canoe comes in to the middle of the river, big, above Laila at the bottom centre */
+.glab .scr.jirgi .ferry{left:28cqw!important;bottom:11cqw!important;width:44cqw!important;height:18cqw!important}
+.glab .scr.jirgi .bank3{transform:scale(.8);transform-origin:0 100%}
+.glab .scr.marubg .marw{display:none!important}   /* the drawn street has its own letter writer under his umbrella */
+.glab .scr.marubg .achw{right:auto!important;left:24cqw!important;width:15cqw!important;height:10cqw!important}   /* the post rider waits by the post box, clear of the writer's queue */

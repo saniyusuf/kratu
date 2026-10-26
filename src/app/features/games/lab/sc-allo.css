@@ -1,0 +1,56 @@
+/* Allo scene (sc-allo.ts): the makarantar allo under the neem. Transform and opacity only; keyframes al4-… */
+.glab .gbg .al4 .x-kid,.glab .gbg .al4 .x-head,.glab .gbg .al4 .x-lift,.glab .gbg .al4 .x-arms,.glab .gbg .al4 .x-malam,
+.glab .gbg .al4 .x-gh,.glab .gbg .al4 .x-hen,.glab .gbg .al4 .x-birds,.glab .gbg .al4 .x-crown,.glab .gbg .al4 .x-cloud,.glab .gbg .al4 .x-cane{transform-box:fill-box}
+.glab .gbg .al4 .x-kid{transform-origin:50% 100%}
+.glab .gbg .al4 .x-head{transform-origin:50% 95%}
+.glab .gbg .al4 .x-arms{transform-origin:50% 0}
+.glab .gbg .al4 .x-gh{transform-origin:10% 90%}
+.glab .gbg .al4 .x-hen{transform-origin:20% 100%}
+.glab .gbg .al4 .x-crown{transform-origin:70% 100%}
+.glab .gbg .al4 .x-cane{transform-origin:0 100%}
+
+/* faces: open eyes and a smile; happy eyes on cheer; a frown when sad */
+.glab .gbg .al4 .x-eh,.glab .gbg .al4 .x-mf{opacity:0}
+.glab .gbg.cheer .al4 .x-eh,.glab .gbg.sad .al4 .x-mf{opacity:1}
+.glab .gbg.cheer .al4 .x-eo,.glab .gbg.sad .al4 .x-ms{opacity:0}
+
+/* idle: the children rock as they recite, each on their own clock; the malam's cane taps; the goat chews;
+   the hens peck; weaver birds cross; the neem breathes; a cloud drifts */
+.glab .gbg .al4 .x-kid{animation:al4-rock 2.4s ease-in-out infinite alternate}
+.glab .gbg .al4 .k2{animation-delay:-.6s}.glab .gbg .al4 .k3{animation-delay:-1.3s}.glab .gbg .al4 .k4{animation-delay:-.9s}.glab .gbg .al4 .k5{animation-delay:-1.9s}
+@keyframes al4-rock{from{transform:rotate(-2.2deg)}to{transform:rotate(2.2deg)}}
+.glab .gbg .al4 .x-cane{animation:al4-cane 4s ease-in-out infinite}
+@keyframes al4-cane{0%,70%,100%{transform:none}80%{transform:rotate(6deg)}90%{transform:rotate(-2deg)}}
+.glab .gbg .al4 .x-gh{animation:al4-chew 3s ease-in-out infinite}
+@keyframes al4-chew{0%,60%,100%{transform:none}70%,90%{transform:rotate(4deg)}80%{transform:rotate(1deg)}}
+.glab .gbg .al4 .x-hen{animation:al4-peck 2.2s ease-in-out infinite}
+.glab .gbg .al4 .x-hen.h2{animation-delay:-1.1s}
+@keyframes al4-peck{0%,55%,100%{transform:none}65%,80%{transform:rotate(28deg)}}
+.glab .gbg .al4 .x-birds{animation:al4-fly 14s linear infinite}
+@keyframes al4-fly{from{transform:translate(-90px,8px)}to{transform:translate(260px,-14px)}}
+.glab .gbg .al4 .x-crown{animation:al4-crown 6s ease-in-out infinite alternate}
+@keyframes al4-crown{to{transform:rotate(.8deg)}}
+.glab .gbg .al4 .x-cloud{animation:al4-drift 40s linear infinite alternate}
+@keyframes al4-drift{to{transform:translateX(26px)}}
+
+/* cheer: the children raise their boards high and smile, the malam nods, the goat lifts its head */
+.glab .gbg.cheer .al4 .x-lift{animation:al4-lift 2.5s ease-in-out both}
+.glab .gbg.cheer .al4 .x-arms{animation:al4-arms 2.5s ease-in-out both}
+@keyframes al4-lift{0%,100%{transform:none}18%,82%{transform:translateY(-26.9px)}}
+@keyframes al4-arms{0%,100%{transform:none}18%,82%{transform:scaleY(-2.1)}}
+.glab .gbg.cheer .al4 .x-kid{animation:al4-bounce .42s ease-in-out infinite alternate}
+@keyframes al4-bounce{from{transform:none}to{transform:translateY(-1.6px)}}
+.glab .gbg.cheer .al4 .x-malam .x-head{animation:al4-nod .7s ease-in-out 3}
+@keyframes al4-nod{0%,100%{transform:none}50%{transform:rotate(9deg) translateY(.6px)}}
+.glab .gbg.cheer .al4 .x-gh{animation:al4-bleat .5s ease-in-out 4 alternate}
+@keyframes al4-bleat{to{transform:rotate(-14deg)}}
+
+/* sad: heads shake gently, the children stop rocking */
+.glab .gbg.sad .al4 .x-kid{animation:none}
+.glab .gbg.sad .al4 .x-head{animation:al4-shake .5s ease-in-out 3}
+.glab .gbg.sad .al4 .k2 .x-head,.glab .gbg.sad .al4 .k4 .x-head{animation-delay:.12s}
+@keyframes al4-shake{0%,100%{transform:none}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+
+@media (prefers-reduced-motion: reduce){
+  .glab .gbg .al4 *{animation:none!important}
+}

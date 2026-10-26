@@ -1,0 +1,55 @@
+/* ---- Hanzarin kasuwa scene (sc-kasuwa.ts): a northern market at mid-morning. Scoped under .glab .gbg .kw4,
+   keyframes kw4-…, transform and opacity only. .gbg.cheer after a right answer, .gbg.sad after a wrong one. ---- */
+.glab .gbg .kw4 .x-p,.glab .gbg .kw4 .x-h,.glab .gbg .kw4 .x-a,.glab .gbg .kw4 .x-ab,.glab .gbg .kw4 .x-ah,.glab .gbg .kw4 .x-gh,
+.glab .gbg .kw4 .x-hen,.glab .gbg .kw4 .x-tail,.glab .gbg .kw4 .x-ear,.glab .gbg .kw4 .x-goat,.glab .gbg .kw4 .x-smoke,.glab .gbg .kw4 .x-cloud,.glab .gbg .kw4 .x-baro{transform-box:fill-box}
+.glab .gbg .kw4 .x-p{transform-origin:50% 100%}
+.glab .gbg .kw4 .x-h,.glab .gbg .kw4 .x-a,.glab .gbg .kw4 .x-ab,.glab .gbg .kw4 .x-ah,.glab .gbg .kw4 .x-gh,.glab .gbg .kw4 .x-hen,.glab .gbg .kw4 .x-tail,.glab .gbg .kw4 .x-ear{transform-origin:50% 50%}
+.glab .gbg .kw4 .x-goat{transform-origin:50% 100%}
+
+/* the quiet loops: two clouds, the kosai smoke, the mai baro's walk, a grazing goat, two pecking hens, the donkey's
+   tail and ear, the kosai woman's fan arm, a woman walking with her tray */
+.glab .gbg .kw4 .x-cloud{animation:kw4-drift 60s linear infinite alternate}
+.glab .gbg .kw4 .x-c2{animation-duration:80s;animation-direction:alternate-reverse}
+@keyframes kw4-drift{from{transform:translateX(-14px)}to{transform:translateX(14px)}}
+.glab .gbg .kw4 .x-smoke{transform-origin:50% 100%;animation:kw4-smoke 4s ease-in-out infinite}
+@keyframes kw4-smoke{0%{transform:translateY(3px) scale(.85);opacity:.3}50%{opacity:1}100%{transform:translateY(-5px) scale(1.15);opacity:0}}
+.glab .gbg .kw4 .x-baro{animation:kw4-push 1.1s ease-in-out infinite alternate}
+@keyframes kw4-push{from{transform:translate(0,0)}to{transform:translate(1.2px,-.6px)}}
+.glab .gbg .kw4 .x-gr .x-gh{animation:kw4-graze 5s ease-in-out infinite}
+@keyframes kw4-graze{0%,40%,100%{transform:rotate(0)}55%,85%{transform:rotate(38deg)}}
+.glab .gbg .kw4 .x-pk{animation:kw4-peck 2.4s ease-in-out infinite}
+.glab .gbg .kw4 .x-pk2{animation-delay:-1.1s;animation-duration:3s}
+@keyframes kw4-peck{0%,60%,100%{transform:rotate(0)}70%,80%{transform:rotate(32deg)}}
+.glab .gbg .kw4 .x-tail{animation:kw4-tail 3s ease-in-out infinite}
+@keyframes kw4-tail{0%,70%,100%{transform:rotate(0)}80%{transform:rotate(14deg)}90%{transform:rotate(-8deg)}}
+.glab .gbg .kw4 .x-ear{animation:kw4-ear 6s ease-in-out infinite}
+@keyframes kw4-ear{0%,85%,100%{transform:rotate(0)}92%{transform:rotate(-14deg)}}
+.glab .gbg .kw4 .x-walk{animation:kw4-bob .7s ease-in-out infinite alternate}
+@keyframes kw4-bob{from{transform:translateY(0)}to{transform:translateY(-.8px)}}
+
+/* faces: happy eyes on cheer, a frown on sad */
+.glab .gbg.cheer .kw4{--eo:0;--eh:1}
+.glab .gbg.sad .kw4{--ms:0;--mf:1}
+
+/* cheer: the sellers clap and nod, the girl and the boy jump with their arms up, the goats hop */
+.glab .gbg.cheer .kw4 .x-cl .x-a{animation:kw4-clap .32s ease-in-out 7 alternate}
+@keyframes kw4-clap{from{transform:rotate(-38deg)}to{transform:rotate(-62deg)}}
+.glab .gbg.cheer .kw4 .x-nod .x-h,.glab .gbg.cheer .kw4 .x-cl .x-h{animation:kw4-nod .45s ease-in-out 4 alternate}
+@keyframes kw4-nod{from{transform:rotate(0) translateY(0)}to{transform:rotate(4deg) translateY(.5px)}}
+.glab .gbg.cheer .kw4 .x-up .x-a{transform:rotate(150deg);transition:transform .2s}
+.glab .gbg.cheer .kw4 .x-hop{animation:kw4-hop .42s ease-out 5}
+@keyframes kw4-hop{0%,100%{transform:translateY(0)}45%{transform:translateY(-6px)}}
+.glab .gbg.cheer .kw4 .x-goat{animation:kw4-ghop .5s ease-out 3}
+@keyframes kw4-ghop{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-4px) rotate(-6deg)}}
+.glab .gbg.cheer .kw4 .x-goat .x-gh{animation:kw4-bleat .25s ease-in-out 6 alternate}
+@keyframes kw4-bleat{to{transform:rotate(-14deg)}}
+
+/* sad: heads shake, a few droop, raised arms come down */
+.glab .gbg.sad .kw4 .x-h{animation:kw4-shake .36s ease-in-out 4 alternate}
+@keyframes kw4-shake{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.glab .gbg.sad .kw4 .x-cl .x-a{transform:rotate(-8deg);transition:transform .3s}
+.glab .gbg.sad .kw4 .x-up{transform:translateY(.6px);transition:transform .3s}
+
+@media (prefers-reduced-motion: reduce){
+  .glab .gbg .kw4 *{animation:none!important;transition:none!important}
+}

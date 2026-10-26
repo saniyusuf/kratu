@@ -1,0 +1,61 @@
+/* Marubucin wasiƙa scene (sc-wasika.ts): the street outside the post office. Transform and opacity only; keyframes ws4-… */
+.glab .gbg .ws4 .x-body,.glab .gbg .ws4 .x-head,.glab .gbg .ws4 .x-al,.glab .gbg .ws4 .x-ar,.glab .gbg .ws4 .x-kid1,.glab .gbg .ws4 .x-kid2,
+.glab .gbg .ws4 .x-roll,.glab .gbg .ws4 .x-tyre,.glab .gbg .ws4 .x-wheel,.glab .gbg .ws4 .x-ruwa,.glab .gbg .ws4 .x-wire,.glab .gbg .ws4 .x-crown,.glab .gbg .ws4 .x-cloud,.glab .gbg .ws4 .x-type{transform-box:fill-box}
+.glab .gbg .ws4 .x-body{transform-origin:50% 100%}
+/* heads and arms carry an invisible ring centred on the neck / shoulder, so 50% 50% is the joint */
+.glab .gbg .ws4 .x-head,.glab .gbg .ws4 .x-al,.glab .gbg .ws4 .x-ar,.glab .gbg .ws4 .x-tyre,.glab .gbg .ws4 .x-wheel{transform-origin:50% 50%}
+.glab .gbg .ws4 .x-kid1,.glab .gbg .ws4 .x-kid2{transform-origin:50% 100%}
+.glab .gbg .ws4 .x-crown{transform-origin:30% 100%}
+
+/* faces */
+.glab .gbg .ws4 .x-eh,.glab .gbg .ws4 .x-mf{opacity:0}
+.glab .gbg.cheer .ws4 .x-eh,.glab .gbg.sad .ws4 .x-mf{opacity:1}
+.glab .gbg.cheer .ws4 .x-eo,.glab .gbg.sad .ws4 .x-ms{opacity:0}
+
+/* idle: the writer types, the queue shifts its weight, the water seller pushes on the spot, the children play with
+   the tyre, birds bob on the wire, the neem breathes, clouds drift */
+.glab .gbg .ws4 .x-writer .x-al{animation:ws4-type .32s ease-in-out infinite alternate}
+.glab .gbg .ws4 .x-writer .x-ar{animation:ws4-type .32s ease-in-out -.16s infinite alternate}
+@keyframes ws4-type{to{transform:rotate(-5deg)}}
+.glab .gbg .ws4 .q1 .x-body,.glab .gbg .ws4 .q2 .x-body,.glab .gbg .ws4 .q3 .x-body{animation:ws4-sway 3.2s ease-in-out infinite alternate}
+.glab .gbg .ws4 .q2 .x-body{animation-delay:-1.1s}.glab .gbg .ws4 .q3 .x-body{animation-delay:-2.2s;animation-duration:4s}
+@keyframes ws4-sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+.glab .gbg .ws4 .x-ruwa{animation:ws4-push 1.4s ease-in-out infinite alternate}
+@keyframes ws4-push{to{transform:translateX(1.4px)}}
+.glab .gbg .ws4 .x-wheel{animation:ws4-spin 2.8s ease-in-out infinite alternate}
+@keyframes ws4-spin{to{transform:rotate(60deg)}}
+.glab .gbg .ws4 .x-roll{animation:ws4-roll 2.6s ease-in-out infinite alternate}
+@keyframes ws4-roll{from{transform:translateX(-2px)}to{transform:translateX(2.4px)}}
+.glab .gbg .ws4 .x-tyre{animation:ws4-spin 2.6s ease-in-out infinite alternate}
+.glab .gbg .ws4 .x-kid1{animation:ws4-skip 1.3s ease-in-out infinite}
+@keyframes ws4-skip{0%,60%,100%{transform:none}30%{transform:translateY(-3px)}}
+.glab .gbg .ws4 .x-wire{animation:ws4-bob 3s ease-in-out infinite alternate}
+@keyframes ws4-bob{to{transform:translateY(.6px)}}
+.glab .gbg .ws4 .x-crown{animation:ws4-crown 6s ease-in-out infinite alternate}
+@keyframes ws4-crown{to{transform:rotate(-.8deg)}}
+.glab .gbg .ws4 .x-cloud{animation:ws4-drift 40s linear infinite alternate}
+@keyframes ws4-drift{to{transform:translateX(-24px)}}
+
+/* cheer: the queue claps, the children jump, the writer and the water seller nod */
+.glab .gbg.cheer .ws4 .q1 .x-al,.glab .gbg.cheer .ws4 .q2 .x-al,.glab .gbg.cheer .ws4 .q3 .x-al{animation:ws4-clapl .26s ease-in-out infinite alternate}
+.glab .gbg.cheer .ws4 .q1 .x-ar,.glab .gbg.cheer .ws4 .q2 .x-ar{animation:ws4-clapr .26s ease-in-out infinite alternate}
+@keyframes ws4-clapl{from{transform:rotate(14deg)}to{transform:rotate(-4deg)}}
+@keyframes ws4-clapr{from{transform:rotate(-14deg)}to{transform:rotate(4deg)}}
+.glab .gbg.cheer .ws4 .q1 .x-body,.glab .gbg.cheer .ws4 .q2 .x-body,.glab .gbg.cheer .ws4 .q3 .x-body{animation:ws4-hop .5s ease-in-out infinite alternate}
+@keyframes ws4-hop{from{transform:none}to{transform:translateY(-1.6px)}}
+.glab .gbg.cheer .ws4 .x-kid1,.glab .gbg.cheer .ws4 .x-kid2{animation:ws4-jump .55s ease-out infinite}
+.glab .gbg.cheer .ws4 .x-kid2{animation-delay:.2s}
+@keyframes ws4-jump{0%,100%{transform:none}45%{transform:translateY(-12px)}}
+.glab .gbg.cheer .ws4 .x-kid2 .x-al{transform:rotate(150deg)}
+.glab .gbg.cheer .ws4 .x-writer .x-head,.glab .gbg.cheer .ws4 .mr .x-head{animation:ws4-nod .6s ease-in-out 4}
+@keyframes ws4-nod{0%,100%{transform:none}50%{transform:rotate(8deg)}}
+
+/* sad: heads shake, the children stop */
+.glab .gbg.sad .ws4 .x-head{animation:ws4-shake .5s ease-in-out 3}
+.glab .gbg.sad .ws4 .q2 .x-head,.glab .gbg.sad .ws4 .x-kid2 .x-head{animation-delay:.12s}
+.glab .gbg.sad .ws4 .x-kid1,.glab .gbg.sad .ws4 .x-roll,.glab .gbg.sad .ws4 .x-tyre,.glab .gbg.sad .ws4 .x-writer .x-al,.glab .gbg.sad .ws4 .x-writer .x-ar{animation:none}
+@keyframes ws4-shake{0%,100%{transform:none}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
+
+@media (prefers-reduced-motion: reduce){
+  .glab .gbg .ws4 *{animation:none!important}
+}

@@ -1,0 +1,52 @@
+/* ---- Ginin bulo scene (sc-bulo.ts): magina at work. Scoped under .glab .gbg .bl4; keyframes bl4-…;
+   transform and opacity only. .gbg gets .cheer after a right answer and .sad after a wrong one. ---- */
+.glab .gbg .bl4 .x-p,.glab .gbg .bl4 .x-bd,.glab .gbg .bl4 .x-pk,.glab .gbg .bl4 .x-cl{transform-box:fill-box;transform-origin:50% 100%}
+.glab .gbg .bl4 .x-eh,.glab .gbg .bl4 .x-mf,.glab .gbg .bl4 .x-up,.glab .gbg .bl4 .x-hh{opacity:0}
+.glab .gbg .bl4 .x-eo,.glab .gbg .bl4 .x-eh,.glab .gbg .bl4 .x-ms,.glab .gbg .bl4 .x-mf,.glab .gbg .bl4 .x-up,.glab .gbg .bl4 .x-hh,
+.glab .gbg .bl4 .x-al,.glab .gbg .bl4 .x-ar{transition:opacity .15s}
+
+/* idle life: the two men tread the mud in turn, the carrier sways up the ladder, clouds, the hen, the donkey */
+.glab .gbg .bl4 .ta .x-bd,.glab .gbg .bl4 .tb .x-bd{animation:bl4-tread 1.6s ease-in-out infinite alternate}
+.glab .gbg .bl4 .tb .x-bd{animation-delay:-.8s}
+@keyframes bl4-tread{from{transform:translateY(0) rotate(-2.5deg)}to{transform:translateY(-1.6px) rotate(2.5deg)}}
+.glab .gbg .bl4 .cy .x-bd{animation:bl4-climb 2.8s ease-in-out infinite alternate}
+@keyframes bl4-climb{from{transform:translate(0,0)}to{transform:translate(1px,-2px)}}
+.glab .gbg .bl4 .x-cl{animation:bl4-cloud 14s ease-in-out infinite alternate}
+.glab .gbg .bl4 .x-cl.d1{animation-duration:11s;animation-delay:-4s}
+@keyframes bl4-cloud{to{transform:translateX(9px)}}
+.glab .gbg .bl4 .x-pk{transform-origin:20% 100%;animation:bl4-peck 3.6s ease-in-out infinite}
+@keyframes bl4-peck{0%,55%,100%{transform:none}65%,75%{transform:rotate(32deg)}70%{transform:rotate(26deg)}}
+.glab .gbg .bl4 .x-ear{animation:bl4-ear 5s ease-in-out infinite}
+@keyframes bl4-ear{0%,80%,100%{transform:none}88%{transform:rotate(-14deg)}}
+.glab .gbg .bl4 .x-tail{animation:bl4-tail 3.6s ease-in-out infinite alternate}
+@keyframes bl4-tail{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+
+/* a right answer: the builders throw their arms up and cheer, laughing, and jump a little */
+.glab .gbg.cheer .bl4 .x-eo,.glab .gbg.cheer .bl4 .x-ms{opacity:0}
+.glab .gbg.cheer .bl4 .x-eh{opacity:1}
+.glab .gbg.cheer .bl4 .cheerup .x-al,.glab .gbg.cheer .bl4 .cheerup .x-ar{opacity:0}
+.glab .gbg.cheer .bl4 .cheerup .x-up{opacity:1}
+.glab .gbg.cheer .bl4 .x-ul{animation:bl4-wavel .32s ease-in-out infinite alternate}
+.glab .gbg.cheer .bl4 .x-ur{animation:bl4-waver .32s ease-in-out infinite alternate}
+@keyframes bl4-wavel{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+@keyframes bl4-waver{from{transform:rotate(8deg)}to{transform:rotate(-8deg)}}
+.glab .gbg.cheer .bl4 .cheerup .x-bd{animation:bl4-jump 2.4s ease-in-out}
+.glab .gbg.cheer .bl4 .tb .x-bd,.glab .gbg.cheer .bl4 .tm .x-bd{animation-delay:.15s}
+@keyframes bl4-jump{0%,25%,50%,75%,100%{transform:none}12%,37%,62%,87%{transform:translateY(-3px)}}
+.glab .gbg.cheer .bl4 .cy .x-hd{animation:bl4-nod .3s ease-in-out 6 alternate}
+@keyframes bl4-nod{to{transform:rotate(5deg)}}
+.glab .gbg.cheer .bl4 .x-pk{animation:bl4-flap .4s ease-in-out 5 alternate}
+@keyframes bl4-flap{to{transform:translateY(-4px) rotate(-8deg)}}
+
+/* a wrong answer: heads shake and droop; the first treader puts both hands on his head */
+.glab .gbg.sad .bl4 .x-ms{opacity:0}
+.glab .gbg.sad .bl4 .x-mf{opacity:1}
+.glab .gbg.sad .bl4 .x-hd{animation:bl4-no 1.9s ease-in-out forwards}
+.glab .gbg.sad .bl4 .tb .x-hd,.glab .gbg.sad .bl4 .mo .x-hd{animation-delay:.12s}
+.glab .gbg.sad .bl4 .tm .x-hd,.glab .gbg.sad .bl4 .dw .x-hd{animation-delay:.24s}
+@keyframes bl4-no{0%{transform:none}12%{transform:rotate(-9deg)}26%{transform:rotate(9deg)}40%{transform:rotate(-8deg)}54%{transform:rotate(7deg)}68%,100%{transform:rotate(-2deg) translateY(1px)}}
+.glab .gbg.sad .bl4 .ta .x-al,.glab .gbg.sad .bl4 .ta .x-ar{opacity:0}
+.glab .gbg.sad .bl4 .ta .x-hh{opacity:1}
+.glab .gbg.sad .bl4 .ta .x-bd,.glab .gbg.sad .bl4 .tb .x-bd{animation:none}
+
+@media (prefers-reduced-motion:reduce){.glab .gbg .bl4 *{animation:none!important}}
