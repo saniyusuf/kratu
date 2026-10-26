@@ -105,7 +105,7 @@ export function moreGames(c: any): Record<string, any> {
         function example() {
           const rw = arrive('', looks[looks.length - 1]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
-            const hand = h('<span class="spothand dhand">👇🏾</span>'); rw.appendChild(hand);   // the app's pointing hand, on the flag
+            const hand = h('<span class="dhand">👇🏾</span>'); rw.appendChild(hand);   // the app's pointing hand (as the lessons' Spotter draws it), on the flag
             sayIf('s_g_durbar_eg1').then(() => { hand.remove(); if (run.dead) return;
               rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) ready(); });
             });
