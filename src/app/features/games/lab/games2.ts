@@ -97,32 +97,32 @@ export function moreGames(c: any): Record<string, any> {
         const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
         /*
          * The example teaches the game before it starts, with no score and no clock, and nobody says a letter in it. One
-         * line says it all (Sani 2026-10-25): a horseman with A reins in, his flag glowing, and Laila says what to do; he is
-         * greeted, the gate opens and he rides into the palace. A horseman with G then shows a wrong answer without words:
-         * the emir turns away, the gate stays shut and he rides back out. Then she asks the child to press her, and only
+         * line says it all (Sani 2026-10-25): a horseman reins in with a blank white flag, the pointing hand on it while
+         * Laila says what to do; then, without words, he is greeted, the gate opens and he rides into the palace. Only the
+         * happy outcome is shown (Sani 2026-10-26: no wrong-answer demo). Then she asks the child to press her, and only
          * that press starts the game and its clock.
          */
         function example() {
-          const rw = arrive('A', looks[looks.length - 1]);
+          const rw = arrive('', looks[looks.length - 1]);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); box.busy = true;
-            sayIf('s_g_durbar_eg1').then(() => { if (run.dead) return;
-              rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) badExample(); });
+            const hand = h('<span class="spothand dhand">👇🏾</span>'); rw.appendChild(hand);   // the app's pointing hand, on the flag
+            sayIf('s_g_durbar_eg1').then(() => { hand.remove(); if (run.dead) return;
+              rw.classList.remove('listen'); greet(rw); later(run, 4300, () => { if (!run.dead) ready(); });
             });
           });
         }
-        function badExample() {
-          const rw = arrive('G', looks[looks.length - 2]);
-          later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen');
-            later(run, 1600, () => { if (run.dead) return; rw.classList.remove('listen'); refuse(rw); later(run, 3200, () => { if (!run.dead) ready(); }); });
-          });
-        }
+        /** "press Laila to start": said again 10 s later if she is not pressed, then every 20 s until she is (Sani 2026-10-26);
+            the press, or leaving the screen (run.stop clears run.later), ends it */
         function ready() {
-          lane.innerHTML = ''; emir.classList.remove('cross');
-          sayIf('s_g_durbar_ready', 'app_w_tap_white').then(() => { if (run.dead) return;
+          lane.innerHTML = ''; emir.classList.remove('cross'); let nag = null;
+          const ask = () => sayIf('s_g_durbar_ready', 'app_w_tap_white');
+          const again = (ms) => { nag = later(run, ms, () => { if (run.dead || !lbtn.onclick) return; ask().then(() => { if (!run.dead && lbtn.onclick) again(20000); }); }); };
+          ask().then(() => { if (run.dead) return;
             box.busy = false; lbtn.classList.add('cue');
-            lbtn.onclick = () => { if (run.dead) return; lbtn.onclick = null; lbtn.classList.remove('cue'); io.hush();
+            lbtn.onclick = () => { if (run.dead) return; lbtn.onclick = null; clearTimeout(nag); lbtn.classList.remove('cue'); io.hush();
               run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) }));
               next(); };
+            again(10000);
           });
         }
         /*

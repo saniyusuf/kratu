@@ -1378,3 +1378,7 @@
 @keyframes g-flagswell{50%{transform:scale(1.29)}}
 .glab .scr.durbar .rw.listen .fglow{animation:g-fglow2 .6s ease-in-out infinite alternate}@keyframes g-fglow2{from{opacity:.5}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.glab .scr.durbar .rw.listen .rider .flag,.glab .scr.durbar .rw.listen .fglow{animation:none;opacity:1}}
+/* the example's pointing hand on the blank flag while Laila speaks (Sani 2026-10-26); the flag cloth's centre is at
+   about 29% across and 22% down the rider drawing */
+.glab .scr.durbar .rw .dhand{position:absolute;left:29%;top:22%;transform:translate(-50%,-100%);z-index:5;font-size:8cqw;line-height:1;pointer-events:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+.glab .scr.durbar .rw .dhand{animation:g-dhandbob .8s ease-in-out infinite}@keyframes g-dhandbob{0%,100%{translate:0 0}50%{translate:0 -1.2cqw}}
