@@ -29,3 +29,16 @@
 .glab .scr.jirgi .bank3{transform:scale(.8);transform-origin:0 100%}
 .glab .scr.marubg .marw{display:none!important}   /* the drawn street has its own letter writer under his umbrella */
 .glab .scr.marubg .achw{right:auto!important;left:24cqw!important;width:15cqw!important;height:10cqw!important}   /* the post rider waits by the post box, clear of the writer's queue */
+
+/* the sparks and "+10" of a right answer never take a place in the layout: the rule that lifts every child of .scr
+   (position:relative) also caught them, so each spark was added to the column and nudged the game (Tukwane's wobble) */
+.glab .scr>.fx,.glab .scr>.finish,.glab .scr>.cdown{position:absolute!important}
+
+/* Kwale-kwale (Sani 2026-10-25): the picture bigger with a soft warm glow; up to five canoes, each lane on open water,
+   fading in and out where the river meets a bank (engine.ts LANES) */
+.glab .scr.kwale .bank2{position:absolute!important;top:8.6cqw;left:50%;width:23cqw!important;margin:0!important;transform:translateX(-50%)!important;z-index:2!important;
+  box-shadow:0 0 0 .55cqw #8B5A2B,0 0 0 .8cqw #5A3A1E,0 0 2.6cqw 1.4cqw rgba(255,232,160,.85),0 0 6cqw 2cqw rgba(255,214,110,.45)!important}
+.glab .scr.kwale .canal2{position:absolute!important;inset:0;width:auto!important;height:auto!important;transform:none!important;pointer-events:none;overflow:visible;z-index:3!important}
+.glab .scr.kwale .canoe2.lane{left:0!important;width:24cqw!important;height:9.8cqw!important;pointer-events:auto;animation-name:kg4-lane!important;animation-timing-function:linear!important;animation-iteration-count:infinite!important}
+@keyframes kg4-lane{0%{transform:translateX(var(--x0));opacity:0}9%{opacity:1}91%{opacity:1}100%{transform:translateX(var(--x1));opacity:0}}
+@media (prefers-reduced-motion:reduce){.glab .scr.kwale .canoe2.lane{animation:none!important;opacity:1;transform:translateX(calc((var(--x0) + var(--x1)) / 2))}}
