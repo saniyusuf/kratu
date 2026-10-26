@@ -54,13 +54,17 @@ export const SCENES4: Record<string, string> = {
       '<rect x="' + (x + 2) + '" y="62" width="34" height="4" fill="#8B5A2B"/><ellipse cx="' + (x + 10) + '" cy="61" rx="5" ry="2.2" fill="#E9A23B"/><ellipse cx="' + (x + 22) + '" cy="61" rx="5" ry="2.2" fill="#F1E2B8"/><ellipse cx="' + (x + 32) + '" cy="61" rx="3" ry="2" fill="#B94A2A"/>').join('') +
     '<path d="M0 72 H160 V100 H0 Z" fill="url(#k4-g)"/>' + people(76, 14, false) + '</svg>',
 
-  /* Mai shayi: a roadside corner at night under a street lamp, a painted wall behind */
-  teanight: head + '<defs>' + lg('tn-sky', '#0E1230', '#2A2350') + rg('tn-glow', '#FFE08A', '#FFE08A') + lg('tn-g', '#3A2E4A', '#1E1828') + '</defs>' +
-    '<rect width="160" height="100" fill="url(#tn-sky)"/>' + stars(40, 34) + '<circle cx="136" cy="14" r="5" fill="#FFF3C4"/><circle cx="138" cy="12.6" r="4.4" fill="#2A2350"/>' +
-    '<path d="M0 72 V40 H96 V72 Z" fill="#4A3A5E"/><g fill="#4A3A5E">' + zanko(0, 94, 40) + '</g><rect x="10" y="46" width="44" height="12" rx="1" fill="#2E7D32"/><text x="32" y="54.4" text-anchor="middle" font-size="5" font-weight="800" fill="#FFD54A" font-family="Baloo 2,sans-serif">MAI SHAYI</text>' +
-    '<rect x="66" y="52" width="10" height="20" fill="#241A30"/><rect x="104" y="48" width="40" height="24" fill="#3A2E4A"/><rect x="114" y="54" width="8" height="8" fill="#FFC94A" opacity=".8"/>' +
-    '<g class="lamp4"><rect x="150" y="22" width="1.4" height="52" fill="#555"/><path d="M151 22 Q142 20 140 24" stroke="#555" stroke-width="1.2" fill="none"/><path d="M137 24 h6 l-1 2 h-4 Z" fill="#FFE08A"/><ellipse cx="140" cy="60" rx="34" ry="34" fill="url(#tn-glow)" opacity=".35"/></g>' +
-    '<path d="M0 72 H160 V100 H0 Z" fill="url(#tn-g)"/><ellipse cx="140" cy="80" rx="30" ry="4" fill="#FFE08A" opacity=".15"/></svg>',
+  /* Mai shayi (Sani 2026-10-25): the open roadside at dusk, no walls. The evening sky goes from deep blue to the last
+     orange over the horizon; far off, neem trees, a palm, a minaret and the electricity poles; the ground is red earth.
+     The road with its passers-by is drawn by the game itself (teastall.ts), just below the horizon at y≈47. */
+  teanight: head + '<defs>' + lg('tn-sky', '#1C2156', '#4A3A78', '#B8607A', '#F0A060') + lg('tn-g', '#A86A42', '#7A4A30') + rg('tn-sun', '#FFC27A', '#FFC27A') + '</defs>' +
+    '<rect width="160" height="100" fill="url(#tn-sky)"/>' + stars(22, 20) + '<circle cx="128" cy="11" r="4.4" fill="#FFF3C4"/><circle cx="129.8" cy="9.8" r="3.9" fill="#2A2A66"/>' +
+    '<ellipse cx="96" cy="48" rx="60" ry="12" fill="url(#tn-sun)" opacity=".45"/>' +
+    '<g fill="#3B2A4E" opacity=".9"><rect x="104" y="30" width="2.4" height="17"/><path d="M103.2 30 h4 l-.6 -2 h-2.8 Z"/><ellipse cx="105.2" cy="27.4" rx="1.6" ry="2"/><path d="M105.2 25 v-1.6"/>' +
+    '<path d="M60 47 V41 h14 v6 Z M78 47 V43 h10 v4 Z M120 47 V42 h12 v5 Z"/></g>' +
+    neem(18, 47, .55, '#2E2A48', '#3A3458') + neem(46, 47, .4, '#2E2A48', '#3A3458') + neem(146, 47, .5, '#2E2A48', '#3A3458') + dum(92, 47, .55) +
+    '<g stroke="#2A2238" stroke-width=".6" fill="none"><path d="M8 47 V31 M30 47 V31 M52 47 V31"/><path d="M6 32 h4 M28 32 h4 M50 32 h4"/><path d="M8 32.4 Q19 35 30 32.4 Q41 35 52 32.4 Q60 34 68 33"/></g>' +
+    '<path d="M0 47 H160 V100 H0 Z" fill="url(#tn-g)"/><g fill="#6E4028" opacity=".6"><ellipse cx="30" cy="86" rx="16" ry="1.4"/><ellipse cx="124" cy="92" rx="20" ry="1.6"/><ellipse cx="80" cy="96" rx="14" ry="1.2"/></g></svg>',
 
   /* Dalar gyaɗa: Kano's groundnut pyramids in the harmattan haze, lorries waiting */
   pyramids: head + '<defs>' + lg('py-sky', '#E9D6AE', '#F3E6C8') + lg('py-g', '#D8B57C', '#BC9157') + '</defs>' +

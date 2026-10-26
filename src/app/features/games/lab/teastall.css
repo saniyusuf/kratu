@@ -1,0 +1,131 @@
+/* ---- Mai shayi by the roadside (Sani 2026-10-23, reworked 2026-10-25): one big picture, Laila in the middle under it.
+   The stand on the left, the bench on the right, the road behind them with people and motorbikes going by.
+   Transform and opacity only. Each pose is a whole drawing shown in its window of the cycle (teastall.ts). ---- */
+.glab .scr .tstage{position:absolute!important;inset:0;width:auto;height:auto;margin:0}
+.glab .tstall,.glab .ubench,.glab .okada,.glab .tstage .fw svg{display:block;width:100%;height:100%;overflow:visible}
+.glab .tstage .tsw{position:absolute;left:0;bottom:3cqw;width:41cqw;height:29.1cqw}
+.glab .tstage .ubw{position:absolute;right:0;bottom:3cqw;width:36cqw;height:31.2cqw}
+.glab .tstage>.mic{position:absolute!important;left:50%;bottom:3.5cqw;right:auto;top:auto;transform:translateX(-50%);z-index:4}
+.glab .tstage .tcard{position:absolute;left:50%;top:8.5cqw;width:27cqw;height:27cqw;margin-left:-13.5cqw;z-index:3}
+.glab .tstage .tcard .ph{width:100%;height:100%;padding:.8cqw;border-radius:2.4cqw;box-sizing:border-box}
+.glab .tstage .tcard .ph img{width:100%;height:100%;border-radius:1.8cqw}
+.glab .tstage .tcard.in{animation:g-tcin .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes g-tcin{from{transform:scale(.4);opacity:0}}
+.glab .tstage .tcard.serve{transition:transform 1.3s cubic-bezier(.5,0,.6,1) .3s,opacity .4s 1.3s;transform:translate(31cqw,16cqw) scale(.22);opacity:0}
+.glab .tstage .tcard.drop{animation:g-tcdrop 1.5s ease-in forwards}
+@keyframes g-tcdrop{0%,30%{transform:none;filter:grayscale(0)}8%{transform:translateX(-1.4cqw)}16%{transform:translateX(1.4cqw)}24%{transform:translateX(-.8cqw)}100%{transform:translate(-30cqw,10cqw) rotate(-18deg) scale(.5);opacity:0;filter:grayscale(1)}}
+
+/* the road behind: walkers and motorbikes cross it on long loops, started part way through so it is never empty */
+.glab .tstage .froad{position:absolute;left:0;right:0;bottom:30cqw;height:2.6cqw;background:linear-gradient(#57525E,#3C3843);border-top:.35cqw solid #9A7452;border-bottom:.35cqw solid #7A5A3E}
+.glab .tstage .froad i{position:absolute;left:0;right:0;top:1.05cqw;height:.25cqw;background:repeating-linear-gradient(90deg,#E8E2C8 0 2.4cqw,transparent 2.4cqw 5cqw);opacity:.45}
+.glab .tstage .fw{position:absolute;left:0;bottom:30.9cqw;width:2.7cqw;height:7cqw;animation:g-fwalk linear infinite}
+.glab .tstage .fb{position:absolute;left:0;bottom:30.3cqw;width:7.4cqw;height:5.8cqw;animation:g-fride linear infinite}
+.glab .tstage .rev{animation-direction:reverse}
+.glab .tstage .rev svg{transform:scaleX(-1)}
+.glab .tstage .fwa{animation-duration:30s;animation-delay:-9s}
+.glab .tstage .fwb{animation-duration:38s;animation-delay:-26s}
+.glab .tstage .fwc{animation-duration:52s;animation-delay:-8s}
+.glab .tstage .fba{animation-duration:17s;animation-delay:-3s}
+.glab .tstage .fbb{animation-duration:23s;animation-delay:-14s}
+@keyframes g-fwalk{from{transform:translateX(-5cqw)}to{transform:translateX(105cqw)}}
+@keyframes g-fride{0%{transform:translateX(-10cqw)}42%,100%{transform:translateX(108cqw)}}
+.glab .tstage .fw .lg1,.glab .tstage .fw .lg2{transform-origin:20px 62px;animation:g-leg .45s ease-in-out infinite alternate}
+.glab .tstage .fw .lg2{animation-direction:alternate-reverse}
+.glab .tstage .fwc .lg1,.glab .tstage .fwc .lg2{animation-duration:.7s}
+@keyframes g-leg{from{transform:rotate(-15deg)}to{transform:rotate(15deg)}}
+.glab .okada .wheel{animation:g-spin .5s linear infinite}
+@keyframes g-spin{to{transform:rotate(360deg)}}
+
+/* the seller's day, 18 s: pull tea, hand a fresh cup over, crack an egg, fry and flip it, break the bread, pull tea */
+.glab .tstall .p-pull,.glab .tstall .p-give,.glab .tstall .p-crack,.glab .tstall .p-fry,.glab .tstall .p-bread,.glab .tstall .c-rest,.glab .tstall .c-sip,.glab .tstall .c-reach,
+.glab .tstall .pegg,.glab .tstall .pflip,.glab .tstall .ys,.glab .tstall .yb,.glab .tstall .sh1,.glab .tstall .sh2,.glab .tstall .drip,.glab .tstall .bl,.glab .tstall .br,.glab .tstall .bsl,.glab .tstall .plate{animation:18s linear infinite}
+.glab .tstall .p-pull{animation-name:g-ts-pull}
+.glab .tstall .p-give,.glab .tstall .c-reach{animation-name:g-ts-give}
+.glab .tstall .p-crack{animation-name:g-ts-crack}
+.glab .tstall .p-fry{animation-name:g-ts-fry}
+.glab .tstall .p-bread{animation-name:g-ts-bread}
+.glab .tstall .c-rest{animation-name:g-ts-crest}
+.glab .tstall .c-sip{animation-name:g-ts-csip}
+@keyframes g-ts-pull{0%,33.9%{opacity:1}34%,79.9%{opacity:0}80%,100%{opacity:1}}
+@keyframes g-ts-give{0%,33.9%{opacity:0}34%,41.9%{opacity:1}42%,100%{opacity:0}}
+@keyframes g-ts-crack{0%,41.9%{opacity:0}42%,45.9%{opacity:1}46%,100%{opacity:0}}
+@keyframes g-ts-fry{0%,45.9%{opacity:0}46%,65.9%{opacity:1}66%,100%{opacity:0}}
+@keyframes g-ts-bread{0%,65.9%{opacity:0}66%,79.9%{opacity:1}80%,100%{opacity:0}}
+/* the man at the end of the table sips now and then, and reaches out for his fresh cup when it comes */
+@keyframes g-ts-crest{0%,11.9%{opacity:1}12%,15.9%{opacity:0}16%,23.9%{opacity:1}24%,27.9%{opacity:0}28%,33.9%{opacity:1}34%,41.9%{opacity:0}42%,49.9%{opacity:1}50%,53.9%{opacity:0}54%,63.9%{opacity:1}64%,67.9%{opacity:0}68%,87.9%{opacity:1}88%,91.9%{opacity:0}92%,100%{opacity:1}}
+@keyframes g-ts-csip{0%,11.9%{opacity:0}12%,15.9%{opacity:1}16%,23.9%{opacity:0}24%,27.9%{opacity:1}28%,49.9%{opacity:0}50%,53.9%{opacity:1}54%,63.9%{opacity:0}64%,67.9%{opacity:1}68%,87.9%{opacity:0}88%,91.9%{opacity:1}92%,100%{opacity:0}}
+/* the egg: the shell breaks, the egg drops into the pan, fries, jumps and turns over, then goes into the bread */
+.glab .tstall .sh1{animation-name:g-ts-sh1;transform-origin:320px 132px}
+.glab .tstall .sh2{animation-name:g-ts-sh2;transform-origin:320px 132px}
+.glab .tstall .drip{animation-name:g-ts-drip}
+@keyframes g-ts-sh1{0%,43.4%{transform:none}44.6%,100%{transform:translateX(-3px) rotate(-38deg)}}
+@keyframes g-ts-sh2{0%,43.4%{transform:none}44.6%,100%{transform:translateX(3px) rotate(38deg)}}
+@keyframes g-ts-drip{0%,43.9%{opacity:0;transform:none}44%{opacity:1;transform:none}45.8%{opacity:1;transform:translateY(14px)}46%,100%{opacity:0}}
+.glab .tstall .pegg{animation-name:g-ts-pegg;transform-box:fill-box;transform-origin:50% 50%}
+.glab .tstall .pflip{animation-name:g-ts-flip;transform-box:fill-box;transform-origin:50% 50%}
+.glab .tstall .ys{animation-name:g-ts-ys}
+.glab .tstall .yb{animation-name:g-ts-yb}
+@keyframes g-ts-pegg{0%,44.9%{opacity:0;transform:scale(.3)}45%{opacity:1;transform:scale(.3)}46.5%{transform:scale(1)}71.9%{opacity:1;transform:scale(1)}72%,100%{opacity:0}}
+@keyframes g-ts-flip{0%,55%{transform:none}57%{transform:translateY(-36px) scaleY(.1)}59.5%,100%{transform:none}}
+@keyframes g-ts-ys{0%,56.9%{opacity:1}57%,100%{opacity:0}}
+@keyframes g-ts-yb{0%,56.9%{opacity:0}57%,100%{opacity:1}}
+/* the bread: the halves pull apart, the egg goes in, they close on it; then the sandwich waits on its plate */
+.glab .tstall .bl{animation-name:g-ts-bl;transform-origin:198px 154px}
+.glab .tstall .br{animation-name:g-ts-br;transform-origin:224px 154px}
+.glab .tstall .bsl{animation-name:g-ts-bsl}
+.glab .tstall .plate{animation-name:g-ts-plate}
+@keyframes g-ts-bl{0%,68%{transform:none}70.5%,74.5%{transform:translateX(-9px) rotate(-14deg)}77%,100%{transform:none}}
+@keyframes g-ts-br{0%,68%{transform:none}70.5%,74.5%{transform:translateX(9px) rotate(14deg)}77%,100%{transform:none}}
+@keyframes g-ts-bsl{0%,72.9%{opacity:0}73%,100%{opacity:1}}
+@keyframes g-ts-plate{0%,29.9%{opacity:1}30%,79.9%{opacity:0}80%,100%{opacity:1}}
+/* the tea itself: the high cup rises and falls, the stream stretches with it, the foam swells; the egg sizzles */
+.glab .tstall .pour{animation:g-pour 1.6s ease-in-out infinite alternate}
+@keyframes g-pour{from{transform:translateY(4px)}to{transform:translateY(-16px)}}
+.glab .tstall .stream{transform-box:fill-box;transform-origin:50% 100%;animation:g-stream 1.6s ease-in-out infinite alternate}
+@keyframes g-stream{from{transform:scaleY(.94)}to{transform:scaleY(1.23)}}
+.glab .tstall .foam{transform-box:fill-box;transform-origin:50% 100%;animation:g-foam .8s ease-in-out infinite alternate}
+@keyframes g-foam{to{transform:scale(1.08,1.7)}}
+.glab .tstall .sizzle circle{animation:g-sizzle .7s ease-out infinite}
+.glab .tstall .sizzle circle:nth-child(2){animation-delay:.25s}.glab .tstall .sizzle circle:nth-child(3){animation-delay:.5s}
+@keyframes g-sizzle{from{transform:translateY(0);opacity:1}to{transform:translateY(-6px);opacity:0}}
+.glab .tstall .steam circle{animation:g-steam 2.4s ease-out infinite}
+.glab .tstall .steam circle:nth-child(2){animation-delay:1.2s}
+.glab .tstall .bulb{animation:g-bulb 3s ease-in-out infinite alternate}
+@keyframes g-bulb{to{opacity:.7}}
+
+/* the bench, 12 s: the first man passes his cup to the elder, the elder passes it on, the last man drinks it;
+   the first man eats his bread and egg */
+.glab .ubench [class^="a-"],.glab .ubench [class^="b-"],.glab .ubench [class^="cc-"],.glab .ubench .pass1,.glab .ubench .pass2{animation:12s linear infinite}
+.glab .ubench .a-cup{animation-name:g-tb-acup}
+.glab .ubench .a-reach,.glab .ubench .b-lreach,.glab .ubench .pass1{animation-name:g-tb-p1}
+.glab .ubench .a-rest{animation-name:g-tb-arest}
+.glab .ubench .a-eat{animation-name:g-tb-eat}
+.glab .ubench .a-bite{animation-name:g-tb-bite}
+.glab .ubench .b-lhold{animation-name:g-tb-hold}
+.glab .ubench .b-lrest{animation-name:g-tb-blrest}
+.glab .ubench .b-rreach,.glab .ubench .cc-reach,.glab .ubench .pass2{animation-name:g-tb-p2}
+.glab .ubench .b-rrest{animation-name:g-tb-brrest}
+.glab .ubench .cc-rest{animation-name:g-tb-crest}
+.glab .ubench .cc-cup{animation-name:g-tb-ccup}
+.glab .ubench .cc-sip{animation-name:g-tb-csip}
+@keyframes g-tb-acup{0%{opacity:0}4%,9.9%{opacity:1}10%,100%{opacity:0}}
+@keyframes g-tb-p1{0%,9.9%{opacity:0}10%,19.9%{opacity:1}20%,100%{opacity:0}}
+@keyframes g-tb-arest{0%,19.9%{opacity:0}20%,100%{opacity:1}}
+@keyframes g-tb-eat{0%,51.9%{opacity:1}52%,57.9%{opacity:0}58%,75.9%{opacity:1}76%,81.9%{opacity:0}82%,100%{opacity:1}}
+@keyframes g-tb-bite{0%,51.9%{opacity:0}52%,57.9%{opacity:1}58%,75.9%{opacity:0}76%,81.9%{opacity:1}82%,100%{opacity:0}}
+@keyframes g-tb-hold{0%,19.9%{opacity:0}20%,29.9%{opacity:1}30%,100%{opacity:0}}
+@keyframes g-tb-blrest{0%,9.9%{opacity:1}10%,29.9%{opacity:0}30%,100%{opacity:1}}
+@keyframes g-tb-p2{0%,29.9%{opacity:0}30%,39.9%{opacity:1}40%,100%{opacity:0}}
+@keyframes g-tb-brrest{0%,29.9%{opacity:1}30%,39.9%{opacity:0}40%,100%{opacity:1}}
+@keyframes g-tb-crest{0%,29.9%{opacity:1}30%,100%{opacity:0}}
+@keyframes g-tb-ccup{0%,39.9%{opacity:0}40%,51.9%{opacity:1}52%,57.9%{opacity:0}58%,69.9%{opacity:1}70%,75.9%{opacity:0}76%,87.9%{opacity:1}88%,93.9%{opacity:0}94%,100%{opacity:1}}
+@keyframes g-tb-csip{0%,51.9%{opacity:0}52%,57.9%{opacity:1}58%,69.9%{opacity:0}70%,75.9%{opacity:1}76%,87.9%{opacity:0}88%,93.9%{opacity:1}94%,100%{opacity:0}}
+
+/* how they take an answer: a right one, the bench nods; a wrong one, the seller shakes his head and everyone frowns */
+.glab .tstage .sm-sad{display:none}
+.glab .tstage.sad .sm-sad{display:inline}.glab .tstage.sad .sm-happy{display:none}
+.glab .tstage.sad .seller{animation:g-sellerno .3s ease-in-out 4 alternate}
+@keyframes g-sellerno{from{transform:translateX(-3px)}to{transform:translateX(3px)}}
+.glab .tstage.glad .sitter{animation:g-nod .45s ease-in-out 2 alternate}
+@keyframes g-nod{to{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.glab .tstage *{animation-duration:.01s!important;animation-iteration-count:1!important}}
