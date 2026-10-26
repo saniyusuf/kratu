@@ -169,3 +169,160 @@ export function alloScene(): string {
     sandal(204, 186, '#2F4F7F', -6) + sandal(212, 187, '#8E3B2A', 4) + sandal(220, 186.4, '#3A3A3A', -2) + sandal(228, 187, '#C2185B', 6) + sandal(236, 186.6, '#5D4037', -3) + sandal(284, 185.6, '#E8E0CC', 2) +
     '</svg>';
 }
+
+/* ======================================================================================================================
+ * The big allo board of the game (Sani 2026-10-26: "make the allo look like the actual hausa allo written with ink, and
+ * the wash, the clean and rewrite should be like a water wash and pen writing the word quickly with ink").
+ * A flat light wooden board with its rounded handle at the top, vertical grain, worn darker edges and old wash stains;
+ * the word written in brown-black tawada with a reed pen (alkalami): every letter is pen strokes drawn with a slanted
+ * nib (three offset passes give the thick-and-thin), ink pools where the pen lands, each letter leans and sits a little
+ * differently. alloWrite(): the pen writes the word stroke by stroke (each segment appears as the pen passes it, a
+ * light scratch for each stroke). alloWash(): water poured from a buta runs over the board, the ink runs down and
+ * fades, a hand with a cloth wipes it clean (2.2s). Transform and opacity only; classes al4b-… (sc-allo.css).
+ * ==================================================================================================================== */
+// letters on a 100-high grid (baseline y=100), [width, strokes]; only M L H V Q Z, absolute
+const LET = {
+  A: [70, ['M5 100 L35 0 L65 100', 'M17 62 H53']],
+  B: [60, ['M8 0 V100', 'M8 0 H34 Q56 0 56 24 Q56 48 34 48 H8', 'M8 48 H38 Q60 48 60 74 Q60 100 36 100 H8']],
+  C: [62, ['M58 18 Q48 0 32 0 Q4 0 4 50 Q4 100 32 100 Q50 100 58 82']],
+  D: [64, ['M8 0 V100', 'M8 0 H28 Q60 0 60 50 Q60 100 28 100 H8']],
+  E: [54, ['M50 0 H8 V100 H52', 'M8 48 H42']],
+  F: [52, ['M50 0 H8 V100', 'M8 48 H42']],
+  G: [66, ['M60 18 Q50 0 34 0 Q4 0 4 50 Q4 100 34 100 Q60 100 60 74 V56 H38']],
+  H: [62, ['M6 0 V100', 'M56 0 V100', 'M6 50 H56']],
+  I: [20, ['M10 0 V100']],
+  J: [46, ['M40 0 V70 Q40 100 20 100 Q4 100 2 84']],
+  K: [60, ['M8 0 V100', 'M54 0 L10 58', 'M24 42 L58 100']],
+  L: [50, ['M8 0 V100 H48']],
+  M: [78, ['M6 100 V0 L39 70 L72 0 V100']],
+  N: [64, ['M6 100 V0 L58 100 V0']],
+  O: [70, ['M35 0 Q4 0 4 50 Q4 100 35 100 Q66 100 66 50 Q66 0 35 0']],
+  P: [56, ['M8 100 V0 H32 Q56 0 56 26 Q56 52 32 52 H8']],
+  Q: [70, ['M35 0 Q4 0 4 50 Q4 100 35 100 Q66 100 66 50 Q66 0 35 0', 'M40 70 L66 104']],
+  R: [60, ['M8 100 V0 H32 Q56 0 56 25 Q56 50 32 50 H8', 'M30 50 L58 100']],
+  S: [56, ['M52 16 Q46 0 28 0 Q6 0 6 24 Q6 44 28 50 Q52 56 52 76 Q52 100 28 100 Q8 100 4 82']],
+  T: [60, ['M2 0 H58', 'M30 0 V100']],
+  U: [62, ['M6 0 V66 Q6 100 31 100 Q56 100 56 66 V0']],
+  V: [66, ['M4 0 L33 100 L62 0']],
+  W: [86, ['M4 0 L22 100 L43 30 L64 100 L82 0']],
+  X: [62, ['M4 0 L58 100', 'M58 0 L4 100']],
+  Y: [62, ['M4 0 L31 50 L58 0', 'M31 50 V100']],
+  Z: [58, ['M6 0 H54 L4 100 H56']],
+};
+/* a stroke as its segments: [{d, a:[x,y], b:[x,y], len}] */
+function segs(d) {
+  const t = d.match(/[MLHVQ]|-?[\d.]+/g); let i = 0, x = 0, y = 0; const out = [];
+  const num = () => +t[i++];
+  while (i < t.length) {
+    const c = t[i++];
+    if (c === 'M') { x = num(); y = num(); continue; }
+    const a = [x, y]; let s, len;
+    if (c === 'L') { x = num(); y = num(); s = 'L' + x + ' ' + y; len = Math.hypot(x - a[0], y - a[1]); }
+    else if (c === 'H') { x = num(); s = 'H' + x; len = Math.abs(x - a[0]); }
+    else if (c === 'V') { y = num(); s = 'V' + y; len = Math.abs(y - a[1]); }
+    else { const cx = num(), cy = num(); x = num(); y = num(); s = 'Q' + cx + ' ' + cy + ' ' + x + ' ' + y;
+      len = (Math.hypot(cx - a[0], cy - a[1]) + Math.hypot(x - cx, y - cy) + Math.hypot(x - a[0], y - a[1])) / 2; }
+    out.push({ d: 'M' + a[0] + ' ' + a[1] + ' ' + s, a, b: [x, y], len });
+  }
+  return out;
+}
+let pn = 0, actx = null;
+const BODY = 'M34 62 H150 Q170 62 174 48 L176 36 Q160 30 162 16 Q166 0 215 0 Q264 0 268 16 Q270 30 254 36 L256 48 Q260 62 280 62 H396 Q422 62 422 88 V414 Q422 440 398 440 H32 Q8 440 8 414 V88 Q8 62 34 62 Z';
+/* the board and the word on it; returns the svg and the pen timeline (stroke start/end in ms) */
+function board(word) {
+  const id = ++pn, W = word.split('').filter((c) => LET[c]);
+  let seed = 7; for (const c of word) seed = (seed * 31 + c.charCodeAt(0)) % 9973;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  const GAP = 16, wid = W.reduce((s, c) => s + LET[c][0], 0) + GAP * (W.length - 1);
+  const sc = Math.min(1.42, 350 / wid), x0 = 215 - wid * sc / 2, y0 = 262 - 50 * sc;
+  // the wood: light board, grain running from the handle down, a knot, old wash stains, darker worn edges
+  let grain = '';
+  for (let k = 0; k < 26; k++) { const gx = 14 + k * 16 + rnd() * 8, w1 = 2 + rnd() * 5;
+    grain += '<path d="M' + gx.toFixed(1) + ' 0 Q' + (gx + w1).toFixed(1) + ' 120 ' + (gx - w1 * .6).toFixed(1) + ' 240 T' + (gx + w1 * .4).toFixed(1) + ' 450" stroke="' + (k % 3 ? '#B48550' : '#A2723F') + '" stroke-width="' + (.8 + rnd() * 1.8).toFixed(1) + '" opacity="' + (.18 + rnd() * .25).toFixed(2) + '" fill="none"/>'; }
+  const knot = '<g fill="none" stroke="#9A6A38" opacity=".45"><ellipse cx="352" cy="352" rx="9" ry="20"/><ellipse cx="352" cy="352" rx="15" ry="30" opacity=".6"/><ellipse cx="352" cy="352" rx="21" ry="42" opacity=".35"/></g><ellipse cx="352" cy="352" rx="4" ry="10" fill="#8A5A2C" opacity=".55"/>';
+  const stains = '<g fill="#6B4A2A"><ellipse cx="120" cy="170" rx="70" ry="26" opacity=".06"/><ellipse cx="300" cy="330" rx="90" ry="30" opacity=".05"/><ellipse cx="200" cy="390" rx="120" ry="18" opacity=".05"/><path d="M60 300 q30 -6 60 0 t60 0" stroke="#4A3018" stroke-width="5" fill="none" opacity=".05"/></g>';
+  // the word: per letter a little lean, rise and size; ink a little darker after each dip
+  let ink = '', runs = '', t = 260, cx = 0; const tl = [], keys = [];
+  W.forEach((c, li) => {
+    const [lw, strokes] = LET[c], rot = (rnd() - .5) * 5, dy = (rnd() - .5) * 7, s2 = .96 + rnd() * .08, op = (li % 3 === 0 ? 1 : li % 3 === 1 ? .93 : .86);
+    const tx = x0 + cx * sc, ty = y0 + dy; const m = (p) => { const r = rot * Math.PI / 180, px = (p[0] - lw / 2) * s2, py = (p[1] - 50) * s2;
+      return [tx + (lw / 2 + px * Math.cos(r) - py * Math.sin(r)) * sc, ty + (50 + px * Math.sin(r) + py * Math.cos(r)) * sc]; };
+    let g = '';
+    strokes.forEach((d) => {
+      const ss = segs(d); const st = t;
+      keys.push([t - 70, m(ss[0].a), 1, true]);
+      g += '<circle class="al4b-s" style="--del:' + t + 'ms;--dur:40ms" cx="' + (ss[0].a[0] + .6) + '" cy="' + (ss[0].a[1] - .6) + '" r="5" fill="#170C05" opacity=".9"/>';
+      ss.forEach((sg) => { const dur = Math.round(22 + sg.len * .55);
+        g += '<g class="al4b-s" style="--del:' + t + 'ms;--dur:' + dur + 'ms"><path d="' + sg.d + '" stroke-width="6.5"/><path d="' + sg.d + '" transform="translate(2.4 -2.4)" stroke-width="6"/><path d="' + sg.d + '" transform="translate(4.6 -4.6)" stroke-width="5"/></g>';
+        keys.push([t, m(sg.a), 1]); t += dur; keys.push([t, m(sg.b), 1]); });
+      const e = ss[ss.length - 1].b; if (rnd() < .5) g += '<circle class="al4b-s" style="--del:' + (t - 20) + 'ms;--dur:40ms" cx="' + (e[0] + 1) + '" cy="' + (e[1] - 1) + '" r="3.8" fill="#1A0E06" opacity=".85"/>';
+      tl.push([st, t]); t += 70;
+    });
+    ink += '<g transform="translate(' + tx.toFixed(1) + ' ' + ty.toFixed(1) + ') scale(' + sc.toFixed(3) + ') rotate(' + rot.toFixed(1) + ' ' + lw / 2 + ' 50) translate(' + (lw / 2 * (1 - s2)).toFixed(1) + ' ' + (50 * (1 - s2)).toFixed(1) + ') scale(' + s2.toFixed(3) + ')" opacity="' + op + '">' + g + '</g>';
+    // where this letter's ink will run when it is washed
+    for (let k = 0; k < 2; k++) { const rx = tx + (lw * (.2 + rnd() * .6)) * sc, ry = ty + 96 * sc, L = 22 + rnd() * 40;
+      runs += '<path d="M' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ' q' + (rnd() * 4 - 2).toFixed(1) + ' ' + (L / 2).toFixed(1) + ' 0 ' + L.toFixed(1) + '" stroke="#3A2414" stroke-width="' + (2 + rnd() * 3).toFixed(1) + '" stroke-linecap="round" fill="none"/>'; }
+    cx += lw + GAP;
+  });
+  // the pen's path: comes in, lands on each stroke, follows it, lifts between strokes, goes away
+  const T = t + 260, f = (p) => 'translate(' + p[0].toFixed(1) + 'px,' + p[1].toFixed(1) + 'px)';
+  const first = keys[0][1], last = keys[keys.length - 1][1];
+  let kf = '0%{transform:' + f([first[0] + 60, first[1] - 90]) + ';opacity:0}' + (keys[0][0] / T * 100).toFixed(2) + '%{transform:' + f([first[0] + 8, first[1] - 14]) + ';opacity:1}';
+  keys.forEach(([ms, p, o, lift]) => { kf += (Math.max(0, ms) / T * 100).toFixed(2) + '%{transform:' + f(lift ? [p[0] + 6, p[1] - 10] : p) + ';opacity:1}'; });
+  kf += ((t - 40) / T * 100).toFixed(2) + '%{transform:' + f([last[0] + 10, last[1] - 16]) + ';opacity:1}100%{transform:' + f([last[0] + 70, last[1] - 110]) + ';opacity:0}';
+  const pen = '<g class="al4b-pen al4b-p' + id + '"><g transform="rotate(30) scale(1.25)"><path d="M-3.6 -15 L0 0 L3.6 -15 Z" fill="#1A0E06"/><path d="M-3.8 -15 V-158 Q0 -163 3.8 -158 V-15 Z" fill="#D4AF6E"/><path d="M-1.2 -18 V-156" stroke="#EAD3A0" stroke-width="1.4"/><path d="M2.6 -16 V-157" stroke="#A9814A" stroke-width="1.1"/><path d="M-3.8 -76 h7.6 M-3.8 -128 h7.6" stroke="#8E6638" stroke-width="2"/><path d="M-3.6 -15 L-1.6 -26 L1.6 -26 L3.6 -15 Z" fill="#3A2414" opacity=".7"/></g></g>';
+  const style = '<style>@keyframes al4b-pk' + id + '{' + kf + '}.allow2.writing .al4b-p' + id + '{animation:al4b-pk' + id + ' ' + T + 'ms linear both}</style>';
+  // the wash: a buta pours, water spreads down the board, a hand with a cloth wipes
+  const buta = '<g class="al4b-buta"><g transform="translate(366 62)"><g class="al4b-tilt"><path d="M-22 -2 Q-26 -30 0 -32 Q26 -30 22 -2 Q20 10 0 10 Q-20 10 -22 -2 Z" fill="#2E8B57"/><path d="M-14 -30 Q0 -40 14 -30" stroke="#1F6B42" stroke-width="4" fill="none"/><path d="M-20 -14 Q-40 -16 -52 -4 L-48 0 Q-38 -8 -21 -6 Z" fill="#2E8B57"/><path d="M-12 -24 Q-6 -28 0 -26" stroke="#7FD1A3" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M18 -22 Q34 -18 22 -2" stroke="#1F6B42" stroke-width="4" fill="none"/></g></g></g>' +
+    '<path class="al4b-pour" d="M316 64 Q300 92 296 140 L304 140 Q306 98 320 68 Z" fill="#BFE3F4" opacity=".85"/>' +
+    '<g class="al4b-drops" fill="#CFEAF7">' + [[-40, -20], [-28, -34], [-6, -40], [18, -32], [36, -18], [-50, 0], [48, 2]].map(([dx, dy]) => '<circle cx="300" cy="150" r="5" style="--dx:' + dx + 'px;--dy:' + dy + 'px"/>').join('') + '</g>';
+  const rag = '<g class="al4b-rag"><g transform="translate(70 150)"><path d="M-74 66 Q-44 44 -20 20 L0 34 Q-26 62 -54 86 Z" fill="#7A4A26"/><path d="M-92 74 Q-76 54 -64 56 L-42 86 Q-58 96 -78 102 Z" fill="#F4F1E8"/><path d="M-64 56 L-42 86" stroke="#D8D2C2" stroke-width="2"/>' +
+    '<path d="M-36 -8 Q-10 -30 30 -20 Q52 -10 44 16 Q34 40 4 42 Q-30 42 -40 20 Q-46 4 -36 -8 Z" fill="#F2EDE2"/><path d="M-30 -2 Q0 -20 38 -10 M-36 16 Q0 4 42 12" stroke="#2F4A7F" stroke-width="5" fill="none" opacity=".8"/><path d="M-20 30 Q4 36 30 26" stroke="#CFC6B2" stroke-width="3" fill="none"/>' +
+    '<path d="M-24 22 Q-26 4 -8 -2 L18 -4 Q30 2 26 16 Q20 30 0 32 Q-18 32 -24 22 Z" fill="#7A4A26"/><g fill="#86532C" stroke="#5E3A1C" stroke-width="1.2"><ellipse cx="-6" cy="-4" rx="7" ry="5.5"/><ellipse cx="6" cy="-6" rx="7" ry="5.5"/><ellipse cx="18" cy="-4" rx="6.5" ry="5"/><ellipse cx="27" cy="3" rx="5.5" ry="4.5"/></g><path d="M-22 14 Q-34 6 -30 -6 Q-24 -8 -18 2" fill="#86532C" stroke="#5E3A1C" stroke-width="1.2"/><path d="M-14 -2 Q-12 -10 -4 -10 M8 -11 h6" stroke="#B07A48" stroke-width="1.4" fill="none" opacity=".7"/></g></g>';
+  const svg = '<svg class="al4b" viewBox="0 0 430 450" aria-hidden="true">' + style +
+    '<defs><linearGradient id="al4b-wd' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8C893"/><stop offset=".55" stop-color="#DBB57A"/><stop offset="1" stop-color="#C99C5E"/></linearGradient>' +
+    '<radialGradient id="al4b-ed' + id + '" cx=".5" cy=".55" r=".62"><stop offset=".62" stop-color="#6E4520" stop-opacity="0"/><stop offset="1" stop-color="#6E4520" stop-opacity=".38"/></radialGradient>' +
+    '<linearGradient id="al4b-wt' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CDEBF7" stop-opacity=".55"/><stop offset="1" stop-color="#8CC0DA" stop-opacity=".35"/></linearGradient>' +
+    '<clipPath id="al4b-cl' + id + '"><path d="' + BODY + '"/></clipPath></defs>' +
+    '<ellipse cx="215" cy="444" rx="180" ry="6" fill="rgba(40,24,10,.28)"/>' +
+    '<path d="' + BODY + '" fill="url(#al4b-wd' + id + ')"/>' +
+    '<g clip-path="url(#al4b-cl' + id + ')">' + grain + knot + stains +
+    '<path d="' + BODY + '" fill="url(#al4b-ed' + id + ')"/><path d="' + BODY + '" fill="none" stroke="#8C5E30" stroke-width="12" opacity=".35"/>' +
+    '<ellipse cx="130" cy="130" rx="110" ry="50" fill="#fff" opacity=".1"/>' +
+    '<g class="al4b-ink" fill="none" stroke="#2A190C" stroke-linecap="round" stroke-linejoin="round">' + ink + '</g>' +
+    '<g class="al4b-runs">' + runs + '</g>' +
+    '<g class="al4b-wet"><path d="' + BODY + '" fill="url(#al4b-wt' + id + ')"/><g stroke="#fff" stroke-linecap="round" fill="none" opacity=".45">' + [60, 130, 190, 260, 330, 380].map((x, k) => '<path d="M' + x + ' 70 q' + (k % 2 ? 6 : -6) + ' 120 0 ' + (220 + k * 23) + '" stroke-width="' + (2 + k % 3) + '"/>').join('') + '</g></g></g>' +
+    '<path d="' + BODY + '" fill="none" stroke="#7A4E26" stroke-width="2.4"/>' +
+    '<path d="M180 22 Q215 12 250 22" stroke="#fff" stroke-width="3" opacity=".25" fill="none" stroke-linecap="round"/>' +
+    buta + rag + pen + '</svg>';
+  return { svg, tl };
+}
+function audio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); return actx; } catch (e) { return null; } }
+function noise(a, secs) { const n = Math.floor(a.sampleRate * secs), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; }
+function burst(a, t, dur, type, f0, f1, q, peak) {
+  const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = noise(a, dur + .05); f.type = type; f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur); f.Q.value = q;
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + Math.min(.03, dur / 3)); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  src.connect(f).connect(g).connect(a.destination); src.start(t); src.stop(t + dur + .05);
+}
+/* write `word` on the board in aw: the reed pen writes it stroke by stroke with a light scratch for each stroke */
+export function alloWrite(aw, word) {
+  const { svg, tl } = board(word);
+  aw.innerHTML = svg; aw.classList.remove('washing', 'writing'); void aw.offsetWidth; aw.classList.add('writing');
+  const a = audio(); if (!a) return;
+  const t0 = a.currentTime + .02;
+  tl.forEach(([s, e]) => burst(a, t0 + s / 1000, Math.max(.06, (e - s) / 1000), 'bandpass', 3800 + Math.random() * 900, 2600, 2.2, .035 + Math.random() * .015));
+}
+/* wash the board: water poured, the ink runs and fades, a cloth wipes it clean (2.2s); a splash, a trickle, two wipes */
+export function alloWash(aw) {
+  aw.classList.remove('writing'); void aw.offsetWidth; aw.classList.add('washing');
+  const a = audio(); if (!a || !aw.isConnected) return;
+  const t = a.currentTime + .02;
+  burst(a, t + .25, .5, 'lowpass', 2400, 500, .7, .09);                      // the water lands
+  burst(a, t + .35, 1.1, 'bandpass', 1800, 1100, 1.5, .03);                  // and runs down
+  for (let k = 0; k < 6; k++) { const tt = t + .4 + k * .17 + Math.random() * .06, o = a.createOscillator(), g = a.createGain(), f0 = 700 + Math.random() * 600;
+    o.type = 'sine'; o.frequency.setValueAtTime(f0, tt); o.frequency.exponentialRampToValueAtTime(f0 * 1.5, tt + .05);
+    g.gain.setValueAtTime(.0001, tt); g.gain.exponentialRampToValueAtTime(.03, tt + .01); g.gain.exponentialRampToValueAtTime(.0001, tt + .07);
+    o.connect(g).connect(a.destination); o.start(tt); o.stop(tt + .08); }
+  burst(a, t + .85, .3, 'bandpass', 700, 1000, 1, .05); burst(a, t + 1.25, .3, 'bandpass', 700, 1000, 1, .05);   // the cloth
+}

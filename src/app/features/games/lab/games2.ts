@@ -10,6 +10,7 @@ import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinC
 import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { react as reactScene } from './rest';
+import { alloWrite, alloWash } from './sc-allo';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
@@ -449,11 +450,11 @@ export function moreGames(c: any): Record<string, any> {
         run.remind = () => say(line('j-allo', 'how'), run);
         const aw = st.querySelector('.allow2');
         function next() {
-          const w = W[r]; aw.innerHTML = A.allo(w.toUpperCase()); aw.classList.remove('washing'); void aw.offsetWidth; aw.classList.add('writing');
+          const w = W[r]; alloWrite(aw, w.toUpperCase());
           autoRound(run, box, w, W, () => {
             got++; longest = Math.max(longest, w.length); run.good(aw); sayW(run, K.en[w]); prog.children[r].classList.add('on');
-            aw.classList.remove('writing'); aw.classList.add('washing'); later(run, 1900, step);
-          }, () => { prog.children[r].classList.add('miss'); aw.classList.add('wrongw'); later(run, 1500, () => aw.classList.remove('wrongw')); later(run, 1700, step); });
+            alloWash(aw); later(run, 2350, step);
+          }, () => { prog.children[r].classList.add('miss'); aw.classList.add('wrongw'); later(run, 1100, () => { aw.classList.remove('wrongw'); alloWash(aw); }); later(run, 3400, step); });
         }
         function step() { r++; if (r >= W.length) done({ right: got, finished: got === W.length, part: got / W.length, longest }); else next(); }
         next();
