@@ -144,7 +144,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     function level() { btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
     box.listen = function (opts, heard, right) {
       box.heard = heard; box.right = right;
-      if (io.tester && !box.querySelector('.tester')) {     // ?debug + localStorage.kratu_tester=1 only: answer for the child, for a desk without a microphone
+      if (io.tester && !box.querySelector('.tester')) {     // ?tester=1 in the link only: answer for the child, for a desk without a microphone
         var t = h('<span class="tester"><button type="button" class="ok">✓</button><button type="button" class="no">✗</button></span>'); box.appendChild(t);
         t.querySelector('.ok').onclick = function () { if (!run.dead && !run.listening && !box.busy) box.heard({ value: box.right(), raw: 'test' }); };
         t.querySelector('.no').onclick = function () { if (!run.dead && !run.listening && !box.busy) box.heard({ value: Array.isArray(box.right()) ? ['Q'] : 'zzz', raw: 'test', wrong: 'Q' }); };

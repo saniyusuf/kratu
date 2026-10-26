@@ -138,7 +138,7 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
 - Wasanni (the judging games, `features/games/lab`, reached from the settings for now): the engine is the proposal page's
   plain DOM script, drawn inside one fixed `.glab.nofit` box. `ZoomService` ignores mutations inside `.nofit`, so a game's
   clock, sparks and moving pieces never refit or rescale the screen (Sani 14 Oct). Every rule in `gamelab.css` is scoped
-  under `.glab` and every keyframe is `g-…`. With `?debug` the speaking games show ✓/✗ to answer without a microphone.
+  under `.glab` and every keyframe is `g-…`. Only with `?tester=1` in the link do the speaking games show ✓/✗ under Laila to answer without a microphone (Sani 25 Oct: never otherwise).
 
 ## Open items
 - Review page inside the app (`/review`, debug only), screens index (`/screens`) — see the plan:
