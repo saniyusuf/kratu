@@ -1,0 +1,90 @@
+/* ---- Kalangu (Sani 2026-10-25): the square, the board, four dancers on the left, the band on the right, Laila between ----
+   Scoped under .glab like gamelab.css; keyframes are g-kl…; transform and opacity only. */
+.glab .scr.drum .kl-stage{position:absolute;inset:0}
+.glab .kl-scene .kl-bunting{animation:g-klflag 4s ease-in-out infinite alternate}
+@keyframes g-klflag{to{transform:translateY(.6px)}}
+
+/* the board: the word's picture fills it edge to edge, in a carved frame on two poles */
+.glab .kl-easel{position:absolute;left:2cqw;top:10cqw;width:29cqw;z-index:5;opacity:0;transform:translateX(-30cqw) rotate(-6deg)}
+.glab .kl-easel.in{opacity:1;transform:none;transition:transform .5s cubic-bezier(.3,1.3,.5,1),opacity .3s}
+.glab .kl-easel.out{opacity:0;transform:translateX(30cqw) rotate(6deg);transition:transform .45s ease-in,opacity .45s}
+.glab .kl-easel.shake .kl-board{animation:g-shk .4s}
+.glab .kl-board{position:relative;width:29cqw;height:29cqw;box-sizing:border-box;padding:0;border:1.1cqw solid #6B4422;border-radius:1.8cqw;background:#6B4422;overflow:hidden;
+  box-shadow:0 0 0 .35cqw #C9A227,0 1.4cqw 1.2cqw rgba(40,24,10,.38)}
+.glab .kl-board img{display:block;width:100%;height:100%;object-fit:cover;border-radius:.7cqw}
+.glab .kl-poles{position:absolute;left:2cqw;width:29cqw;top:14cqw;bottom:3cqw;z-index:2}
+.glab .kl-poles i{position:absolute;top:0;bottom:0;width:1.1cqw;border-radius:.5cqw;background:linear-gradient(90deg,#8B5A2B,#5E3A1C)}
+.glab .kl-poles i:first-child{left:3cqw}.glab .kl-poles i:last-child{right:3cqw}
+.glab .kl-easel .plate{margin:-3.6cqw auto 0;width:17cqw;height:5.6cqw}
+.glab .kl-easel .plate span{font-size:3.8cqw}
+
+/* the drums that count the turns move right, clear of the board */
+.glab .scr.drum>.krow{left:57%}
+
+/* the dancers and the band stand on the ground, clear of Laila in the middle */
+.glab .kl-dancers,.glab .kl-band{position:absolute;bottom:2cqw;width:41cqw;height:20cqw;display:flex;align-items:flex-end;justify-content:space-between;z-index:4;pointer-events:none}
+.glab .kl-dancers{left:7cqw;width:35.5cqw}.glab .kl-band{right:1cqw}
+.glab .kl-dn,.glab .kl-bm{display:block;flex:none;width:10.3cqw;height:17.8cqw}
+.glab .kl-dn+.kl-dn{margin-left:-1.6cqw}
+.glab .kl-fig{display:block;width:100%;height:100%;overflow:visible}
+
+/* faces: open eyes and a smile; happy eyes while the band plays; brows and a frown after a wrong answer */
+.glab .kl-eh,.glab .kl-eb,.glab .kl-mf{display:none}
+.glab .kl-stage.play .kl-eh{display:inline}.glab .kl-stage.play .kl-eo{display:none}
+.glab .kl-stage.sad .kl-eb,.glab .kl-stage.sad .kl-mf{display:inline}.glab .kl-stage.sad .kl-ms{display:none}
+
+/* waiting: the dancers sway a little, each on her own clock */
+.glab .kl-dn .kl-body{animation:g-klidle 2.6s ease-in-out infinite alternate}
+.glab .kl-dn.d1 .kl-body{animation-delay:-.7s}.glab .kl-dn.d2 .kl-body{animation-delay:-1.4s}.glab .kl-dn.d3 .kl-body{animation-delay:-2s}
+@keyframes g-klidle{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+
+/* the band plays: sticks strike, drums are squeezed, the kakaki lifts, everyone bobs, notes rise */
+.glab .kl-stage.play .kl-bm .kl-body{animation:g-klbob .5s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-bm.d2 .kl-body{animation-delay:-.25s}
+@keyframes g-klbob{to{transform:translateY(-3px)}}
+.glab .kl-stage.play .kl-bm.d1 .kl-ar,.glab .kl-stage.play .kl-bm.d2 .kl-ar{animation:g-klstick .16s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-bm.d2 .kl-ar{animation-duration:.2s}
+@keyframes g-klstick{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+.glab .kl-stage.play .kl-bm.d1 .kl-al,.glab .kl-stage.play .kl-bm.d2 .kl-al{animation:g-klsqz .25s ease-in-out infinite alternate}
+@keyframes g-klsqz{to{transform:rotate(5deg)}}
+.glab .kl-stage.play .kl-drum{animation:g-kldrum .25s ease-in-out infinite alternate}
+@keyframes g-kldrum{to{transform:scaleY(.9)}}
+.glab .kl-stage.play .kl-bm.g .kl-ar{animation:g-klstick .25s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-bm.g .kl-al{animation:g-klstick .25s ease-in-out -.125s infinite alternate}
+.glab .kl-stage.play .kl-horn{animation:g-klhorn .6s ease-in-out infinite alternate}
+@keyframes g-klhorn{to{transform:rotate(-5deg)}}
+.glab .kl-notes{position:absolute;left:30%;top:-6cqw;width:16cqw;height:10cqw;pointer-events:none}
+.glab .kl-notes i{position:absolute;bottom:0;font:800 3.4cqw var(--disp);font-style:normal;color:#8A5FBF;opacity:0}
+.glab .kl-notes i:nth-child(2){left:4cqw;color:#E63946}.glab .kl-notes i:nth-child(3){left:8cqw;color:#1FA1D8}.glab .kl-notes i:nth-child(4){left:12cqw;color:#2E7D32}
+.glab .kl-stage.play .kl-notes i{animation:g-noteup 1.2s ease-out infinite}
+.glab .kl-stage.play .kl-notes i:nth-child(2){animation-delay:.3s}.glab .kl-stage.play .kl-notes i:nth-child(3){animation-delay:.6s}.glab .kl-stage.play .kl-notes i:nth-child(4){animation-delay:.9s}
+
+/* the dancers dance: the woman sways and waves her cloth, the man steps side to side, the girl hops and claps,
+   the old man turns and fans himself */
+.glab .kl-stage.play .kl-dn.d0 .kl-body{animation:g-klsway .45s ease-in-out infinite alternate}
+@keyframes g-klsway{from{transform:rotate(-6deg)}to{transform:rotate(6deg) translateY(-2px)}}
+.glab .kl-stage.play .kl-dn.d0 .kl-al{animation:g-klwave .45s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-dn.d0 .kl-ar{animation:g-klwave .45s ease-in-out -.22s infinite alternate}
+@keyframes g-klwave{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.glab .kl-stage.play .kl-dn.d1 .kl-body{animation:g-klstep .5s ease-in-out infinite alternate}
+@keyframes g-klstep{from{transform:translateX(-5px) rotate(-3deg)}to{transform:translate(5px,-3px) rotate(3deg)}}
+.glab .kl-stage.play .kl-dn.d1 .kl-al,.glab .kl-stage.play .kl-dn.d1 .kl-ar{animation:g-klwave .5s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-dn.d2 .kl-body{animation:g-klhop .32s ease-in-out infinite alternate}
+@keyframes g-klhop{to{transform:translateY(-8px)}}
+.glab .kl-stage.play .kl-dn.d2 .kl-al{animation:g-klclapl .32s ease-in-out infinite alternate}
+.glab .kl-stage.play .kl-dn.d2 .kl-ar{animation:g-klclapr .32s ease-in-out infinite alternate}
+@keyframes g-klclapl{from{transform:rotate(14deg)}to{transform:rotate(-6deg)}}
+@keyframes g-klclapr{from{transform:rotate(-14deg)}to{transform:rotate(6deg)}}
+.glab .kl-stage.play .kl-dn.d3 .kl-body{animation:g-klturn .6s ease-in-out infinite alternate}
+@keyframes g-klturn{from{transform:rotate(-4deg)}to{transform:rotate(4deg) translateY(-2px)}}
+.glab .kl-stage.play .kl-dn.d3 .kl-ar{animation:g-klfan .3s ease-in-out infinite alternate}
+@keyframes g-klfan{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}
+
+/* a wrong answer: everyone stops, the kakaki droops, heads shake */
+.glab .kl-stage.sad .kl-dn .kl-body{animation:none}
+.glab .kl-stage.sad .kl-head{animation:g-klno .3s ease-in-out 4 alternate}
+@keyframes g-klno{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.glab .kl-stage.sad .kl-horn{transform:rotate(16deg);transition:transform .5s}
+.glab .kl-stage.sad .kl-sit{opacity:.85}
+
+@media (prefers-reduced-motion:reduce){.glab .kl-stage *,.glab .kl-scene *{animation:none!important}}
