@@ -71,16 +71,16 @@ export function dillaliScene(): string {
   // two buyers at the cloth shed, leaning in to look at the goods, and the seller nodding
   const lookers = '<g class="x-look">' + person({ x: 196, y: 98, s: .6, kind: 'man', sk: SKIN[3], robe: '#F4F1EA', robe2: '#E0D8C4', trim: '#8EA8C8', cap: 'turban', capc: '#F4F1EA', beard: '#E8E4DC', al: 'front', ar: 'down', flip: true }) + '</g>' +
     '<g class="x-look x-look2">' + person({ x: 246, y: 99, s: .58, kind: 'woman', sk: SKIN[2], top: '#00897B', wrap: '#00897B', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'mayafi', capc: '#FFD54A', al: 'front', ar: 'down', flip: true }) + '</g>' +
-    person({ x: 258, y: 97, s: .56, kind: 'man', sk: SKIN[5], robe: '#3E5C8A', robe2: '#E9E2CF', trim: '#E8D9A8', cap: 'hula', capc: '#fff', capc2: '#2E7D32', al: 'down', ar: 'hip', cls: 'x-nod x-cl', flip: true });
+    person({ x: 258, y: 97, s: .56, kind: 'man', sk: SKIN[5], robe: '#3E5C8A', robe2: '#E9E2CF', trim: '#E8D9A8', cap: 'borno', capc: '#1F2E5A', capc2: '#E9C46A', capc3: '#B23A2A', al: 'down', ar: 'hip', cls: 'x-nod x-cl', flip: true });
   // crossing the square, each on its own loop (the outer <g> moves, the inner one places)
   const baro = '<g class="x-tr x-tr1"><g transform="translate(0 112)"><g class="x-baro">' +
-    person({ x: 0, y: 0, s: .7, kind: 'jal', sk: SKIN[2], robe: '#E9E2CF', trim: '#9C8458', cap: 'zanna', capc: '#C62828', capc2: '#7A1A1A', acl: 'x-ab', acr: 'x-ab' }) +
+    person({ x: 0, y: 0, s: .7, kind: 'jal', sk: SKIN[2], robe: '#E9E2CF', trim: '#9C8458', cap: 'zanna', capc: '#7A1F2B', capc2: '#E9C46A', acl: 'x-ab', acr: 'x-ab' }) +
     '<g transform="translate(9.8 0) scale(.8)">' + barrow('<path d="M5 -15.4 Q4 -21 9 -21.4 Q12 -22 12.6 -16 Z" fill="#D8C49A"/><path d="M12 -15.6 Q12 -21.4 17 -21 Q21 -20 20.4 -16 Z" fill="#CDB888"/>' + onions(12, -21.4, 5, 4)) + '</g></g></g></g>';
   const basin = '<g class="x-tr x-tr2"><g transform="translate(0 108)">' +
     person({ x: 0, y: 0, s: .64, kind: 'woman', sk: SKIN[5], top: '#AD1457', wrap: '#AD1457', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'kallabi', capc: '#FFD54A', capc2: '#AD1457', al: 'head', ar: 'down', acl: 'x-ah', load: headLoad('basin', '#F4F1EA', '#C62828'), cls: 'x-walk', flip: true }) + '</g></g>';
   const ramMan = '<g class="x-tr x-tr3"><g transform="translate(0 116)">' + ram(-16, 0, .62, false, 'x-walk') +
     '<path d="M-8.6 -9.6 Q-5 -6 -3.4 -12" stroke="#6B4422" stroke-width=".5" fill="none"/>' +
-    person({ x: 0, y: 0, s: .7, kind: 'man', sk: SKIN[0], robe: '#5D4037', robe2: '#3E2723', trim: '#E8D9A8', cap: 'hula', capc: '#E9D9A6', capc2: '#B71C1C', al: 'out', ar: 'down', cls: 'x-walk', flip: true }) + '</g></g>';
+    person({ x: 0, y: 0, s: .7, kind: 'man', sk: SKIN[0], robe: '#5D4037', robe2: '#3E2723', trim: '#E8D9A8', cap: 'zanna', capc: '#F4EBD0', capc2: '#7A1F2B', capside: -1, al: 'out', ar: 'down', cls: 'x-walk', flip: true }) + '</g></g>';
   const road = '<g class="x-tr x-tr4"><g transform="translate(0 101)">' + keke(0, 0, .55) + '</g></g>';
   const stopper = '<g class="x-tr x-tr5"><g transform="translate(0 106)"><g class="x-stoop">' +
     person({ x: 0, y: 0, s: .6, kind: 'man', sk: SKIN[4], robe: '#1F5FA8', robe2: '#E9E2CF', trim: '#fff', cap: 'hula', capc: '#fff', capc2: '#1F5FA8', al: 'down', ar: 'front' }) + '</g></g></g>';

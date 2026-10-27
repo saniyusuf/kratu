@@ -7,6 +7,7 @@
  */
 import { ram, goat } from './art4';
 import { KW } from './sc-kasuwa';
+import { arewaCap } from './capsArewa';
 
 const G = (vb, inner) => `<svg class="good" viewBox="${vb}" aria-hidden="true">${inner}</svg>`;
 const SH = (cx, cy, rx) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx / 7}" fill="rgba(40,24,10,.25)"/>`;
@@ -44,7 +45,7 @@ function matRolled(): string { return G('0 0 100 100', SH(50, 92, 40) + `<rect x
 function kettle(): string { return G('0 0 100 100', SH(50, 94, 28) + `<path d="M28 90 Q20 56 38 46 L62 46 Q80 56 72 90 Z" fill="#1E88E5"/><path d="M70 60 Q90 52 92 38" stroke="#1E88E5" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M36 46 Q50 22 64 46" stroke="#1565C0" stroke-width="4" fill="none"/><ellipse cx="50" cy="46" rx="12" ry="3" fill="#90CAF9"/><path d="M30 70 h40" stroke="#FFD54A" stroke-width="3"/>`); }
 function broom(): string { let s = ''; for (let k = 0; k < 13; k++) s += `<path d="M50 30 L${26 + k * 4} 92" stroke="#C9A24A" stroke-width="1.6"/>`; return G('0 0 100 100', SH(50, 94, 30) + s + `<path d="M44 24 h12 v16 h-12 Z" fill="#B23A2A"/><path d="M44 30 h12 M44 35 h12" stroke="#FFD54A" stroke-width="1.4"/>`); }
 function kaftan(): string { return G('0 0 100 100', SH(50, 96, 30) + `<path d="M30 20 Q50 14 70 20 L90 40 L80 50 L72 42 L74 94 L26 94 L28 42 L20 50 L10 40 Z" fill="#F4EBD0" stroke="#C9B48A"/><path d="M44 20 L48 60 L52 60 L56 20" stroke="#2E7D32" stroke-width="2" fill="none"/><path d="M40 34 q10 6 20 0 M40 44 q10 6 20 0" stroke="#C9A227" stroke-width="1.6" fill="none"/>`); }
-function cap(): string { return G('0 0 100 100', SH(50, 86, 30) + `<path d="M18 80 Q20 34 50 32 Q80 34 82 80 Z" fill="#6A1B9A"/><path d="M22 70 h56 M24 58 h52 M30 46 h40" stroke="#FFD54A" stroke-width="2.4"/><path d="M26 64 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6" stroke="#E53935" stroke-width="1.6" fill="none"/>`); }
+function cap(): string { return G('0 0 100 100', SH(50, 86, 30) + arewaCap('hula', 50, 80, 31, '#6A1B9A', '#FFD54A')); }
 function turban(): string { return G('0 0 100 100', SH(50, 86, 34) + `<ellipse cx="50" cy="64" rx="34" ry="20" fill="#FFFFFF" stroke="#D9CBA6"/><path d="M18 62 Q50 40 82 62 M20 70 Q50 50 80 70 M24 76 Q50 60 76 76" stroke="#D9CBA6" stroke-width="2" fill="none"/><path d="M78 66 Q92 76 86 92" stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round"/>`); }
 function shoe(): string { return G('0 0 100 100', SH(50, 88, 38) + [[18, 0], [52, 4]].map(([x, d]) => `<path d="M${x} ${78 + d} Q${x} ${64 + d} ${x + 14} ${64 + d} L${x + 30} ${70 + d} Q${x + 34} ${80 + d} ${x + 28} ${84 + d} L${x + 4} ${84 + d} Z" fill="#8B5A2B"/><path d="M${x + 10} ${68 + d} Q${x + 18} ${62 + d} ${x + 24} ${70 + d}" stroke="#C62828" stroke-width="3" fill="none"/>`).join('')); }
 function umbrella(): string { return G('0 0 100 100', SH(50, 94, 20) + `<path d="M50 14 L50 86 Q50 94 42 92" stroke="#3A2410" stroke-width="3" fill="none"/><path d="M50 18 L38 74 L50 70 L62 74 Z" fill="#1565C0"/><path d="M50 18 L44 72 M50 18 L56 72" stroke="#0D47A1" stroke-width="1.2"/>`); }
@@ -60,7 +61,7 @@ export const ACT_MS: Record<string, number> = { lead: 3200, arm: 2800, head: 300
 
 const BUYERS = [
   { hat: 'cap', hatc: '#E9D9A6', robe: '#2F6B9A', robe2: '#24557C', skin: 1 }, { hat: 'hijab', hatc: '#AD1457', robe: '#C2185B', robe2: '#880E4F', skin: 2 },
-  { hat: 'cap', hatc: '#B71C1C', robe: '#6D4C41', robe2: '#4E342E', skin: 0 }, { hat: 'hijab', hatc: '#2E7D32', robe: '#388E3C', robe2: '#1B5E20', skin: 3 },
+  { hat: 'cap', style: 'zanna', hatc: '#7A1F2B', hatc2: '#E9C46A', robe: '#6D4C41', robe2: '#4E342E', skin: 0 }, { hat: 'hijab', hatc: '#2E7D32', robe: '#388E3C', robe2: '#1B5E20', skin: 3 },
 ];
 
 /* the three positions of salah, side on, in a white robe and cap: standing, bowing (ruku'), prostrating (sujud) */
@@ -140,10 +141,10 @@ export function kwPerson(o: any): string {
 function kwOf(by: any, arm = 'down'): any {
   const a = arm === 'up' ? 'up' : arm === 'clap' ? 'front' : 'down', sk = KW.SKIN[by.skin ?? 1];
   if (by.hat === 'hijab') return { kind: 'woman', sk, top: by.robe, wrap: by.robe, wrap2: '#FFD54A', trim: '#FFD54A', cap: 'mayafi', capc: by.hatc, al: 'down', ar: a };
-  return { kind: 'man', sk, robe: by.robe, robe2: by.robe2, trim: '#E8D9A8', cap: by.hat === 'turban' ? 'turban' : 'hula', capc: by.hatc, capc2: by.robe2, beard: by.skin === 0 ? '#2A1A10' : '', al: 'down', ar: a };
+  return { kind: 'man', sk, robe: by.robe, robe2: by.robe2, trim: '#E8D9A8', cap: by.hat === 'turban' ? 'turban' : by.style || 'hula', capc: by.hatc, capc2: by.hatc2 || by.robe2, capc3: by.hatc3, beard: by.skin === 0 ? '#2A1A10' : '', al: 'down', ar: a };
 }
 const CROWD_KW = [
-  { kind: 'man', sk: KW.SKIN[1], robe: '#2F6B9A', robe2: '#24557C', trim: '#E8D9A8', cap: 'hula', capc: '#E9D9A6', capc2: '#24557C' },
+  { kind: 'man', sk: KW.SKIN[1], robe: '#2F6B9A', robe2: '#24557C', trim: '#E8D9A8', cap: 'borno', capc: '#F2E8CF', capc2: '#A3242C', capc3: '#1E5B3A' },
   { kind: 'woman', sk: KW.SKIN[2], top: '#AD1457', wrap: '#AD1457', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'kallabi', capc: '#C2185B', capc2: '#FFD54A' },
   { kind: 'man', sk: KW.SKIN[0], robe: '#F4EBD0', robe2: '#D9CBA6', trim: '#8EA8C8', cap: 'turban', capc: '#FFFFFF', beard: '#E8E4DC' },
 ];
@@ -153,7 +154,7 @@ export function crowdKw(n = 3): string {
 }
 
 /** the dillali: a grown man about seven heads tall in a brown babban riga with its embroidered pocket (aljihu) and
- *  neck, a cream jallabiya and wando under it, sandals, an embroidered hula, a short beard; his left arm up with the
+ *  neck, a cream jallabiya and wando under it, sandals, a folded embroidered zanna cap, a short beard; his left arm up with the
  *  wide sleeve fallen back to the elbow, his right hand holding a carbi (prayer beads). Lit from the upper left. */
 export function auctioneer(): string {
   const sk = '#7A4A2A', skd = '#5A3520', robe = '#5B3A29', robeD = '#3E271A', robeL = '#76503B', emb = '#E2C26A', cr = '#EFE6D2', crD = '#CDBF9F', hair = '#1E140C';
@@ -204,8 +205,6 @@ export function auctioneer(): string {
     `<path d="M50.2 32.4 Q49.6 36.8 47.8 38 Q50 39.4 52.4 38.2" stroke="${skd}" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M48.8 33 Q48.4 36 47.8 37.4" stroke="#fff" stroke-opacity=".18" stroke-width=".7" fill="none"/>` +
     `<path class="mouth pm-smile" d="M46.4 42.6 Q50 47.8 53.6 42.6 Q50 43.6 46.4 42.6 Z" fill="#3A1A0A"/>` +
     `<path class="pm-sad" d="M46.4 45 Q50 42.4 53.6 45" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>` +
-    // the hula: embroidered, a little tilted
-    `<path d="M38 27.4 Q37 13.6 50 12.8 Q63 13.6 62 27.4 Q50 24.4 38 27.4 Z" fill="#EDE2C4"/><path d="M51 13 Q62.6 14 62 27.4 Q57 25.6 52 25.2 Q55 19 51 13 Z" fill="#000" opacity=".12"/>` +
-    `<path d="M39.2 21.6 Q50 18.8 60.8 21.6" stroke="#8B5A2B" stroke-width=".7" fill="none"/><path d="M39.6 24.8 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.2 1.4" stroke="#2E7D32" stroke-width=".7" fill="none"/>` +
-    `<path d="M42 17.4 Q50 14.6 58 17.4" stroke="#8B5A2B" stroke-width=".6" fill="none" stroke-dasharray="1 1"/></svg>`;
+    // the folded zanna cap, leaning to one side, embroidered
+    arewaCap('zanna', 50, 27.2, 12.2, '#EDE2C4', '#7A3A22', '', -1) + `</svg>`;
 }

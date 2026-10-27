@@ -111,7 +111,7 @@ export function garkeScene(): string {
     '<g transform="translate(-4 0) scale(.5)"><g class="gk-milk">' + person({ x: 0, y: 0, s: 1, skin: 3, dress: 'sit', c: '#2E7D32', t: '#FFD54A', cap: 'kallabi', capc: '#FFD54A', capc2: '#2E7D32', al: 'front', ar: 'front', cls: 'x-w', flip: 1 }) + '</g></g>' +
     '<path d="M-12 0 Q-12.6 -3.4 -10 -3.6 Q-7.4 -3.4 -8 0Z" fill="#D9A55A"/><ellipse cx="-10" cy="-3.5" rx="2" ry=".5" fill="#FFFDF4"/>' +
     egret(4, -15, .32, 'gk-ride') + '</g>';
-  const lead = '<g transform="translate(214 174) scale(1.4)"><g class="gk-lead">' + person({ x: 0, y: 0, s: .5, skin: 0, c: '#F4EBD0', t: '#C62828', cap: 'hula', capc: '#C62828', capc2: '#F4EBD0', al: 'out', ar: 'down', cls: 'x-w x-kid', flip: 1 }) +
+  const lead = '<g transform="translate(214 174) scale(1.4)"><g class="gk-lead">' + person({ x: 0, y: 0, s: .5, skin: 0, c: '#F4EBD0', t: '#C62828', cap: 'hula', capc: '#7A1F2B', capc2: '#E9C46A', al: 'out', ar: 'down', cls: 'x-w x-kid', flip: 1 }) +
     '<path d="M5.4 -8.4 Q11 -5 15.6 -7.4" stroke="#6B4422" stroke-width=".4" fill="none"/>' + calf(20, 0, .66, 'rb', 0) + '</g></g>';
 
   // the evening light over everything, warm at the bottom
