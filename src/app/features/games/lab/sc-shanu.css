@@ -114,3 +114,18 @@
 @keyframes sh4-no{from{transform:rotate(-8deg)}to{transform:rotate(6deg)}}
 .glab .scr.shanu .beast2.no .d-all{transform:scaleX(-1);transition:transform .5s ease-in-out 1s}
 @media (prefers-reduced-motion:reduce){.glab .scr.shanu .dab *{animation:none!important}}
+
+/* ---- round three (Sani 2026-10-27, realism): each animal stands on the ground tied to a peg at its head; its price is
+   chalked on a framed slate nailed to a stake behind its rump, low enough that no slate covers a face in the crowd
+   behind; the animals a little bigger, so they read as the nearest thing in the market ---- */
+.glab .scr.shanu .beast2{height:19.6cqw}
+.glab .scr.shanu .yard .pen4{bottom:2.6cqw;left:4.2cqw;right:1.4cqw}   /* the first animal's rump clear of the gear */
+.glab .scr.shanu .beast2 .dab{left:-4%;width:108%;height:17cqw}
+.glab .scr.shanu .beast2 .post{left:var(--px,46%);top:2.4cqw;bottom:2.4cqw;height:auto;width:.9cqw;margin-left:-.45cqw;border-radius:.3cqw .3cqw .1cqw .1cqw;
+  background:linear-gradient(90deg,#A8743E,#7A4A22 55%,#4E2E12);box-shadow:.35cqw .2cqw .3cqw rgba(30,20,8,.25)}
+.glab .scr.shanu .pboard{left:var(--px,50%);top:0;transform:translateX(-50%) rotate(-2.5deg);padding:.3cqw 1.3cqw .4cqw;border:.42cqw solid #7A4A22;border-radius:.4cqw;
+  background:radial-gradient(ellipse at 30% 35%,rgba(255,255,255,.08),transparent 60%),linear-gradient(160deg,#3A403B,#232823);
+  box-shadow:inset 0 0 0 .12cqw #4E2E12,inset .3cqw .3cqw .6cqw rgba(0,0,0,.4),.45cqw .55cqw .45cqw rgba(30,20,8,.35)}
+.glab .scr.shanu .pboard b{font-size:3.3cqw;color:#F2EFE4;text-shadow:0 0 .2cqw rgba(255,255,255,.35)}
+.glab .scr.shanu .pboard .prope{top:.25cqw;left:50%;width:.55cqw;height:.55cqw;margin-left:-.27cqw;border:0;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E0E3E6,#7D848A)}
+.glab .scr.shanu .yard .eg{bottom:1.6cqw}

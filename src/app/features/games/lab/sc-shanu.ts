@@ -255,11 +255,22 @@ export function shanuScene(): string {
   let slats = ''; for (let x = 238; x <= 284; x += 4.6) slats += 'M' + n2(x) + ' 80 V104';
   const lorry = '<g><ellipse cx="252" cy="111" rx="40" ry="2" fill="#3C2810" opacity=".2"/>' +
     cow(250, 100, .66, 'rb', 1) + an(262, 99.4, .64, 'rb', 0) + cow(276, 100, .62, 'gu', 1) +
-    '<rect x="236" y="80" width="51" height="24" fill="#8B5A2B" opacity=".25"/><path d="' + slats + '" stroke="#8B5A2B" stroke-width="1.4"/><path d="M236 80 H287 M236 92 H287 M236 103.4 H287" stroke="#6B4422" stroke-width="1.4"/>' +
-    '<rect x="234" y="104" width="54" height="3.4" fill="#3E3A38"/><path d="M234 104 H288" stroke="#C62828" stroke-width=".8"/>' +
-    '<path d="M214 107.4 V95 Q214 90 218 89 L224 85.6 H235 V107.4Z" fill="#1E6FA8"/><path d="M219 95 L224.4 88.6 H232 V95Z" fill="#BFE3F2"/><path d="M214 100 H235" stroke="#155A8A" stroke-width=".7"/><rect x="212.4" y="102.6" width="3" height="1.8" fill="#FFE08A"/><path d="M226 96 v8" stroke="#155A8A" stroke-width=".5"/>' +
-    '<path d="M214 104.4 H235" stroke="#FFD54A" stroke-width=".8"/>' +
-    [222, 248, 276].map((x) => '<circle cx="' + x + '" cy="108.6" r="3.4" fill="#222"/><circle cx="' + x + '" cy="108.6" r="1.3" fill="#9E9E9E"/>').join('') +
+    // (r3) the lorry drawn properly: weathered slats with light on their tops and shade on the far side, the deck and
+    // chassis, a two-tone cab with glass and a driver, rims and tyres, and its shadow on the ground (light from the left)
+    '<defs><linearGradient id="sh4-lw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7844E"/><stop offset="1" stop-color="#7A4E28"/></linearGradient>' +
+    '<linearGradient id="sh4-lc" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#3F86C4"/><stop offset="1" stop-color="#1A4E80"/></linearGradient>' +
+    '<linearGradient id="sh4-lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E2F2F6"/><stop offset="1" stop-color="#7FA2B0"/></linearGradient></defs>' +
+    '<path d="M212 108.6 L290 108.6 L296 112.4 L216 112.4Z" fill="#3C2810" opacity=".22"/>' +
+    '<path d="' + slats + '" stroke="url(#sh4-lw)" stroke-width="1.5"/><path d="' + slats + '" stroke="#2A1A0C" stroke-width=".35" opacity=".5" transform="translate(.8 0)"/>' +
+    '<rect x="236" y="96.4" width="51" height="7.6" fill="url(#sh4-lw)"/><path d="M237 98.6 q10 -.6 20 0 t20 0 M240 101.4 q8 .5 16 0 t20 .2" stroke="#5E3A1C" stroke-width=".3" fill="none" opacity=".6"/>' +
+    '<path d="M236 80 H287 M236 88.4 H287" stroke="#6B4422" stroke-width="1.6"/><path d="M236 79.4 H287" stroke="#D6A86C" stroke-width=".5"/><path d="M236 96.4 H287" stroke="#5E3A1C" stroke-width=".7"/>' +
+    '<rect x="234.4" y="78.4" width="2.4" height="26" fill="#5E3A1C"/><rect x="285.6" y="78.4" width="2.4" height="26" fill="#4E2E12"/>' +
+    '<rect x="234" y="104" width="54" height="2.4" fill="#3A2614"/><rect x="214" y="106.2" width="76" height="2" fill="#262626"/><path d="M234 104.2 H288" stroke="#C62828" stroke-width=".7"/>' +
+    '<path d="M214 107.4 V95 Q214 90 218 89 L224 85.6 H235 V107.4Z" fill="url(#sh4-lc)"/><path d="M218 89 L224 85.6 H235 V90 H217.4Z" fill="#F2E8D0"/>' +
+    '<path d="M219.4 95 L224.6 89 H232.4 V95Z" fill="url(#sh4-lg)" stroke="#203040" stroke-width=".35"/><circle cx="228.4" cy="92.4" r="1.5" fill="#5E3A1C"/><path d="M226.6 91.4 q1.8 -1.8 3.6 0Z" fill="#F4EBD0"/><path d="M220.4 94.4 L224 90.4 L225.4 90.4 L221.6 94.4Z" fill="#fff" opacity=".35"/>' +
+    '<path d="M214 100 H235" stroke="#123A60" stroke-width=".6"/><path d="M214 101.2 H235" stroke="#E8731A" stroke-width=".8"/><path d="M226 96 v8" stroke="#123A60" stroke-width=".45"/><rect x="229.4" y="98" width="2.6" height=".7" rx=".3" fill="#D0D4D8"/>' +
+    '<rect x="211.6" y="102.4" width="3.2" height="1.8" rx=".4" fill="#FFE9A8"/><rect x="211.2" y="105" width="4" height="1.6" rx=".4" fill="#BFC4C8"/><path d="M214 95 Q214 90 218 89" stroke="#fff" stroke-width=".5" opacity=".35" fill="none"/>' +
+    [222, 248, 276].map((x) => '<ellipse cx="' + (x + 1) + '" cy="112" rx="3.8" ry=".7" fill="#1A0E04" opacity=".45"/><circle cx="' + x + '" cy="108.6" r="3.4" fill="#1C1C1C"/><circle cx="' + x + '" cy="108.6" r="2.9" fill="none" stroke="#333" stroke-width=".5" stroke-dasharray=".6 .5"/><circle cx="' + x + '" cy="108.6" r="1.7" fill="#B23A2A"/><circle cx="' + x + '" cy="108.6" r=".7" fill="#D8DCE0"/>').join('') +
     '<path d="M287 104 L306 117 H312 L291 104Z" fill="#A9814E"/><path d="M288 104.4 L307 116.6 M290 104.4 L309.4 116.6" stroke="#7A5530" stroke-width=".5"/>' +
     '<g class="x-up"><g transform="translate(297 111) rotate(33)">' + cowLive(0, 0, .74, 'rb', 1, 'up', 'x-bull') + '</g></g>' +
     herder(311, 119.4, .48, 1, '#E9DDC0', 1, 'x-push') + '</g>';
@@ -506,14 +517,19 @@ function dabArt(id, live = true) {
 const place = (id, p) => { const s = SPEC[id]; return [120 + s.k * (p[0] - s.cx), 150 + s.k * (p[1] + (s.lift || 0) - 150)]; };
 /** a game piece: the animal at its post, its tether, and (hidden till it is bought) the buyer with his lead rope */
 export function dabba(id) {
-  const s = SPEC[id], [ax, ay] = place(id, s.at), bx = Math.max(ax + 44, 238), hand = [bx - 11.4 * 3.5, 150 - 17 * 3.5];
+  const s = SPEC[id], [ax, ay] = place(id, s.at), bx = Math.max(ax + 44, 238), hand = [bx - 11.4 * 3.5, 150 - 17 * 3.5], px = Math.min(ax + 6, 232);
   const buyer = person({ x: bx, y: 150, s: 3.5, skin: [0, 2, 4][id.charCodeAt(1) % 3], dress: 'riga', c: ['#F4EBD0', '#3F6E8C', '#7A6A58'][id.charCodeAt(1) % 3], t: '#C9A15E', cap: 'hula', capc: '#F4EBD0', capc2: '#3F6E8C', al: 'out', ar: 'down', cls: 'x-buyer' });
   return '<svg class="dab dab-' + id + '" viewBox="0 0 240 160" aria-hidden="true"><defs>' + dabDefs(id) + '</defs>' +
-    '<path class="d-teth" d="M116 128 Q' + r1((116 + ax) / 2) + ' ' + r1(Math.max(128, ay) + 10) + ' ' + r1(ax) + ' ' + r1(ay) + '" stroke="' + ROPE2 + '" stroke-width="1.3" fill="none"/>' +
+    // (r3, Sani 2026-10-27) tied the way they are at the market: the halter rope runs down to a peg driven into the
+    // ground in front of the forefeet; the price board stands on its own stake behind the rump (games2 places it)
+    '<g><ellipse cx="' + r1(px + 1.6) + '" cy="151" rx="4.4" ry="1.1" fill="#3C2810" opacity=".3"/><path d="M' + r1(px - 1.1) + ' 151 L' + r1(px - .8) + ' 143.4 Q' + r1(px) + ' 142.4 ' + r1(px + .8) + ' 143.4 L' + r1(px + 1.1) + ' 151Z" fill="#7A5230"/><path d="M' + r1(px - .6) + ' 150 L' + r1(px - .4) + ' 144" stroke="#B88A56" stroke-width=".5"/></g>' +
+    '<path class="d-teth" d="M' + r1(px) + ' 144.4 Q' + r1((px + ax) / 2 + 3) + ' ' + r1(Math.max(144, ay) + 6) + ' ' + r1(ax) + ' ' + r1(ay) + '" stroke="' + ROPE2 + '" stroke-width="1.3" fill="none"/>' +
     '<g class="d-walk"><g class="d-all" style="transform-origin:120px 150px"><g transform="translate(120 150) scale(' + s.k + ') translate(' + (-s.cx) + ' -150)">' + dabArt(id) + '</g></g>' +
     '<path class="d-rope" d="M' + r1(ax) + ' ' + r1(ay) + ' Q' + r1((ax + hand[0]) / 2) + ' ' + r1(Math.max(ay, hand[1]) + 14) + ' ' + r1(hand[0]) + ' ' + r1(hand[1]) + '" stroke="' + ROPE2 + '" stroke-width="1.4" fill="none"/>' +
     '<g class="d-buy sh4">' + buyer + '</g></g></svg>';
 }
+/** where the price board's stake stands, in % of the 240-wide frame: just behind the animal's rump */
+export function dabRump(id) { const s = SPEC[id], B = s.body, x0 = Math.min(...B.map((p) => p[0])), x1 = Math.max(...B.map((p) => p[0])); return Math.max(9, place(id, [x0 + (x1 - x0) * .06, 0])[0] / 2.4); }
 /** a still copy for the background (no classes), placed like the cattle there: feet at (x, y), s the scale */
 export const dabStill = (x, y, s, id, flip) => '<g transform="translate(' + n2(x) + ' ' + n2(y) + ') scale(' + (flip ? -s : s) + ' ' + s + ') ' + FRAME + '"><g transform="translate(120 150) scale(' + SPEC[id].k + ') translate(' + (-SPEC[id].cx) + ' -150)">' + dabArt(id, false) + '</g></g>';
 /** a background copy that moves (breathes, flicks its tail, lifts its head): classes kept, under .x-live */
