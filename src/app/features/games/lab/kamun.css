@@ -32,10 +32,6 @@
 @keyframes g-swim4{from{transform:translateX(-30cqw)}to{transform:translateX(140cqw)}}   /* starts and ends well out of sight, even on a wide screen */
 .glab .fish3.f4.slip2{animation:g-slip4 1.4s ease-in forwards!important}
 @keyframes g-slip4{0%{transform:translateX(var(--x))}20%{transform:translate(var(--x),-2cqw) rotate(-12deg)}100%{transform:translate(calc(var(--x) + 8cqw),30cqw) rotate(30deg);opacity:0}}
-.glab .fish3 .fbub circle{fill:none;stroke:#E9FBFF;stroke-width:.9;transform-box:fill-box;animation:g-fbub 2.4s linear infinite}
-.glab .fish3 .fbub circle+circle{animation-delay:-1.2s}
-@keyframes g-fbub{from{transform:translate(0,0);opacity:.9}to{transform:translate(8px,-26px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.glab .fish3 .fbub circle{animation:none!important}}
 /* the bank and the river come alive: hoes, grazing heads, the drying net, the cast net, the canoe, egrets, catfish, crab */
 .glab .scene .hoe{transform-box:fill-box;transform-origin:0 0;animation:g-hoe 1.6s ease-in-out infinite}
 .glab .scene .hoe.h1{animation-delay:-.6s}.glab .scene .hoe.h2{animation-delay:-1.1s}
@@ -57,10 +53,10 @@
 @keyframes g-crab{to{transform:translateX(10px)}}
 .glab .scene .shoal4{animation:g-shoal 30s linear infinite}
 @keyframes g-shoal{from{transform:translateX(-20px)}to{transform:translateX(110px)}}
-.glab .scene .bub4{animation:g-bub4 4s linear infinite}
-.glab .scene .bub4.b1{animation-delay:-1s}.glab .scene .bub4.b2{animation-delay:-2s}.glab .scene .bub4.b3{animation-delay:-3s}
-@keyframes g-bub4{from{transform:translateY(0);opacity:0}15%{opacity:.9}to{transform:translateY(-30px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.glab .scene .hoe,.glab .scene .graze,.glab .scene .drynet,.glab .scene .castnet,.glab .scene .canoe4,.glab .scene .egrets,.glab .scene .catfish4,.glab .scene .crab4,.glab .scene .shoal4,.glab .scene .bub4{animation:none!important}}
 /* r3 (2026-10-27): the far bank is pinned so its waterline (y 31 of 100) sits on the water's 31% at every aspect, so the
    far fishermen and the canoe float on the river, never on the grass */
 .glab .scene.paint>svg.ag4{inset:auto;left:50%;top:31cqh;width:max(100cqw,160cqh);height:max(62.5cqw,100cqh);translate:-50% -31%}
+/* r5 (Sani 2026-10-27 "realism, keep performance in mind"): nine fish each ran seven loops, most of them on shapes
+   inside an SVG (repainted every frame). The tag hangs still now (the fish still swims and waves its body), the
+   pectoral fin no longer flaps (too small to see) and the bubbles are gone: 98 animations down to about 60. */
+.glab .fish3.f4 .tagg,.glab .fish3.f4 .pfin{animation:none}

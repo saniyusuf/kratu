@@ -161,10 +161,15 @@ export function argunguScene(): string {
 export function argunguWater(): string {
   const s = 19.4;
   const shoal = [0, 1, 2, 3, 4].map(i => '<path transform="translate(' + (i * 2.6) + ' ' + ((i % 2) * 1.4 + (i % 3) * .6).toFixed(1) + ')" d="M0 0 Q1 -.6 2 0 L2.6 -.4 L2.5 0 L2.6 .4 L2 0 Q1 .6 0 0 Z"/>').join('');
-  const bub = (x, k) => '<g transform="translate(' + x + ' 56)"><g class="bub4 b' + k + '"><circle r=".5"/><circle cx=".4" cy="-2.4" r=".35"/><circle cx="-.2" cy="-4.6" r=".3"/></g></g>';
   return '<svg class="uw" viewBox="0 0 100 62.5" preserveAspectRatio="none"><rect y="' + s + '" width="100" height="' + (62.5 - s) + '" fill="url(#kb-under)"/>' +
     '<g class="rays"><path d="M10 ' + s + ' L4 62.5 H16 Z M34 ' + s + ' L30 62.5 H42 Z M58 ' + s + ' L56 62.5 H66 Z" fill="url(#kb-ray)"/></g>' +
     '<path d="M0 ' + s + ' Q12 ' + (s - 1.2) + ' 25 ' + s + ' T50 ' + s + ' T75 ' + s + ' T100 ' + s + '" stroke="#E9FBFF" stroke-opacity=".75" stroke-width=".6" fill="none"/>' +
+    // (r5) the surface seen from below: a pale, broken band of light just under it, rippled on its lower edge
+    '<path d="M0 ' + s + ' H100 V' + (s + 1.6) + ' Q94 ' + (s + 2.6) + ' 88 ' + (s + 1.5) + ' T76 ' + (s + 1.7) + ' T64 ' + (s + 1.4) + ' T52 ' + (s + 1.9) + ' T40 ' + (s + 1.5) + ' T28 ' + (s + 1.8) + ' T16 ' + (s + 1.4) + ' T4 ' + (s + 1.9) + ' L0 ' + (s + 1.6) + ' Z" fill="#DFF6FB" opacity=".22"/>' +
+    // (r5) the tilapia's own skin, defined once for every fish in the river: countershaded (dark olive back, pale silver
+    // belly) and scales as offset rows of crescents, each with a dark lower rim and a faint lit upper edge
+    '<linearGradient id="kk-fish" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F4430"/><stop offset=".3" stop-color="#5F7758"/><stop offset=".56" stop-color="#A9B79A"/><stop offset=".8" stop-color="#DDE2CF"/><stop offset="1" stop-color="#EEF0E2"/></linearGradient>' +
+    '<pattern id="kk-scales" width="9" height="10" patternUnits="userSpaceOnUse"><path d="M0 5 Q4.5 1 9 5 M-4.5 10 Q0 6 4.5 10 M4.5 10 Q9 6 13.5 10" fill="none" stroke="#1C2A18" stroke-opacity=".16" stroke-width=".7"/><path d="M1 4.2 Q4.5 1.2 8 4.2 M-3.5 9.2 Q0 6.2 3.5 9.2 M5.5 9.2 Q9 6.2 12.5 9.2" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width=".5"/></pattern>' +
     '<g class="shoal4" fill="#0E3E52" opacity=".35"><g transform="translate(0 33)">' + shoal + '</g><g transform="translate(30 41) scale(.8)">' + shoal + '</g></g>' +
     '<linearGradient id="ag-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9C9068"/><stop offset=".3" stop-color="#C2AA74"/><stop offset="1" stop-color="#A48E5E"/></linearGradient>' +
     '<path d="M0 62.5 V57 Q20 54 40 57 T80 56 T100 57 V62.5 Z" fill="url(#ag-sand)"/>' +
@@ -177,7 +182,7 @@ export function argunguWater(): string {
       '<path d="M.4 0 Q-1.6 1 -2.6 2.6 M.4 .2 Q-1.4 -.4 -2.8 0 M.6 .4 Q-.6 1.6 -1 3" stroke="#3B3A36" stroke-width=".18" fill="none"/><circle cx="1.4" cy="-.3" r=".25" fill="#E9E2D2"/></g></g>' +
     '<g class="crab4"><g transform="translate(26 57.6)"><ellipse rx="1.8" ry="1" fill="#C8552E"/><path d="M-1.4 .4 L-2.6 1.4 M-1 .7 L-2 1.8 M1.4 .4 L2.6 1.4 M1 .7 L2 1.8" stroke="#A8441F" stroke-width=".3"/>' +
       '<path d="M-1.6 -.4 L-2.6 -1.6 M1.6 -.4 L2.6 -1.6" stroke="#A8441F" stroke-width=".4"/><circle cx="-2.7" cy="-1.8" r=".5" fill="#C8552E"/><circle cx="2.7" cy="-1.8" r=".5" fill="#C8552E"/></g></g>' +
-    '<g fill="none" stroke="#E9FBFF" stroke-width=".18" opacity=".8">' + bub(20, 0) + bub(47, 1) + bub(78, 2) + bub(92, 3) + '</g></svg>';
+    '</svg>';
 }
 
 /* The fisherman, a grown Arewa man, turned to face us, waist-deep: embroidered hula cap, short beard, a riga, his homa
@@ -249,19 +254,20 @@ export function basket(): string {
    as fish3 (tagg, ftail, pfin) so the tail beat and the tag sway carry over. viewBox -124..138 × 0..110; the body is
    x 14..136, y 26..86. */
 export function fish4(photo: string, bodyOnly = false): string {
-  let bars = ''; for (let i = 0; i < 6; i++) bars += '<rect x="' + (78 + i * 18) + '" y="0" width="8" height="110" fill="#22341E" opacity=".13"/>';
+  // (r5) the faint vertical bars of a Nile tilapia as one soft path, not six hard stripes that read as a grid
+  let bars = '<path d="'; for (let i = 0; i < 6; i++) bars += 'M' + (80 + i * 18) + ' 0 h7 l3 110 h-7 Z'; bars += '" fill="#22341E" opacity=".07"/>';
   const body = '<g transform="translate(14 56) scale(.6) translate(-14 -56)">' +
     '<g class="ftail"><path d="M60 55 L14 22 Q24 55 14 88 Z" fill="url(#kb-tail)"/><path d="M58 55 L20 28 M58 55 L18 42 M58 55 L17 55 M58 55 L18 68 M58 55 L20 82" stroke="#4F6646" stroke-width=".8" opacity=".6"/></g>' +
     '<path d="M92 24 C110 6 150 4 176 26 L160 30 C140 22 112 22 96 30 Z" fill="url(#kb-fin)"/>' +
     '<path d="M98 26 L104 10 M110 24 L116 7 M122 22 L128 6 M134 22 L140 7 M146 23 L152 9 M158 25 L164 14" stroke="#3F5A3A" stroke-width="1" opacity=".55"/>' +
     '<path d="M110 84 C122 102 146 102 158 86 Z" fill="url(#kb-fin)"/>' +
-    '<path d="M58 55 C72 18 150 10 198 44 C210 52 210 60 198 67 C150 100 72 92 58 55 Z" fill="url(#kb-fish)"/>' +
-    '<g clip-path="url(#kb-body)">' + bars + '<rect x="50" y="0" width="160" height="110" fill="url(#kb-scales)"/>' +
-      '<path d="M64 62 C100 70 160 70 204 58" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none"/><ellipse cx="128" cy="34" rx="46" ry="8" fill="#fff" opacity=".22"/></g>' +
-    '<path d="M170 32 C160 48 160 66 172 80" fill="none" stroke="#2E4229" stroke-width="2" opacity=".55"/>' +
+    '<path d="M58 55 C72 18 150 10 198 44 C210 52 210 60 198 67 C150 100 72 92 58 55 Z" fill="url(#kk-fish)"/>' +
+    '<g clip-path="url(#kb-body)">' + bars + '<rect x="50" y="0" width="160" height="110" fill="url(#kk-scales)"/>' +
+      '<path d="M64 50 C100 40 150 38 188 46" stroke="#1C2A18" stroke-opacity=".2" stroke-width="1.2" fill="none"/><ellipse cx="128" cy="36" rx="44" ry="6" fill="#fff" opacity=".12"/></g>' +
+    '<path d="M170 32 C160 48 160 66 172 80" fill="none" stroke="#2E4229" stroke-width="2" opacity=".55"/><ellipse cx="166" cy="48" rx="3.6" ry="4.6" fill="#1C2A18" opacity=".4"/>' +
     '<g class="pfin"><path d="M160 64 C150 70 140 80 136 90 C150 86 160 78 166 70 Z" fill="url(#kb-fin)" opacity=".9"/></g>' +
     '<path d="M200 60 Q206 62 202 64" stroke="#2E2A1E" stroke-width="1.6" fill="none"/>' +
-    '<circle cx="186" cy="47" r="7.5" fill="#F6F4E8"/><circle cx="186" cy="47" r="5.6" fill="url(#kb-eye)"/><circle cx="187" cy="47" r="2.8" fill="#121212"/><circle cx="184.5" cy="44.6" r="1.4" fill="#fff"/></g>';
+    '<circle cx="186" cy="47" r="7.5" fill="#46563E"/><circle cx="186" cy="47" r="5.6" fill="url(#kb-eye)"/><circle cx="187" cy="47" r="2.8" fill="#121212"/><circle cx="184.5" cy="44.6" r="1.4" fill="#fff"/></g>';
   if (bodyOnly) return '<svg viewBox="12 26 126 60" class="art">' + body + '</svg>';
   return '<svg viewBox="-124 0 262 110" class="art fish3svg">' +
     '<g class="tagg"><path d="M14 56 C2 60 -10 50 -24 52" fill="none" stroke="#F4EBD0" stroke-width="1.6"/>' +
@@ -269,5 +275,5 @@ export function fish4(photo: string, bodyOnly = false): string {
       '<image href="' + photo + '" x="-122" y="4" width="98" height="102" preserveAspectRatio="xMidYMid slice" clip-path="inset(0 round 10px)"/>' +
       '<rect x="-122" y="4" width="98" height="102" rx="10" fill="none" stroke="#C9B88F" stroke-width="1.4"/>' +
       '<circle cx="-30" cy="52" r="3" fill="#fff" stroke="#C9B88F"/></g></g>' +
-    body + '<g class="fbub"><circle cx="134" cy="52" r="2.4"/><circle cx="137" cy="48" r="1.5"/></g></svg>';
+    body + '</svg>';
 }
