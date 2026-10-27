@@ -65,7 +65,20 @@
 
 /* the jetty: raised to the boat's water line, its posts reaching down to the sand */
 .glab .scr.jirgi .bank3{z-index:3;left:0;bottom:14cqw;transform:scale(.8);transform-origin:0 100%}
-.glab .scr.jirgi .bank3::after{bottom:-15cqw;height:14cqw}
+/* r3 (2026-10-27): the jetty stands IN the river, not on stilts over the sand: a plank deck lit from the upper left
+   with a dark front edge and nail heads, short posts down to the water with the deck's shade on the water between
+   them, a bright waterline, and below it the posts' reflections fading away; it runs on off the left edge to the
+   shore, so on a wide screen it never ends in open water */
+.glab .scr.jirgi .bank3::before{left:-40cqw;background:
+  linear-gradient(180deg,rgba(255,226,180,.35) 0 .35cqw,transparent .35cqw 1.5cqw,rgba(40,20,6,.55) 1.5cqw),
+  radial-gradient(circle at 1.7cqw 1.05cqw,#3A2410 .14cqw,transparent .2cqw) 0 0/3.8cqw 2.6cqw,
+  repeating-linear-gradient(90deg,#A8743F 0 1.1cqw,#9C6A3C 1.1cqw 2.4cqw,#8E5E33 2.4cqw 3.4cqw,#4A2C12 3.4cqw 3.8cqw);
+  box-shadow:0 .5cqw .6cqw rgba(10,30,45,.35)}
+.glab .scr.jirgi .bank3::after{left:-40.8cqw;right:-4cqw;bottom:-10.6cqw;height:9.2cqw;
+  background:linear-gradient(180deg,transparent 35.5%,rgba(233,251,255,.4) 35.5% 37.5%,transparent 37.5%),
+    linear-gradient(180deg,rgba(12,44,64,.5),rgba(12,44,64,.12) 35%,transparent 36%),
+    repeating-linear-gradient(90deg,transparent 0 5cqw,#8A5A2C 5cqw 5.25cqw,#5E3A1C 5.25cqw 5.55cqw,#3A2410 5.55cqw 5.8cqw);
+  -webkit-mask-image:linear-gradient(180deg,#000 0 37%,rgba(0,0,0,.45) 39%,transparent 92%);mask-image:linear-gradient(180deg,#000 0 37%,rgba(0,0,0,.45) 39%,transparent 92%)}
 .glab .scr.jirgi .pq{position:relative;transform-origin:50% 100%}
 .glab .scr.jirgi .pq svg{width:100%;height:100%;display:block;overflow:visible}
 /* right: along the jetty to its end, then up and into the boat's seat (the boat shows them sitting from .in) */
