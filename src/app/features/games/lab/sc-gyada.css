@@ -10,23 +10,16 @@
 .glab .gbg .gy4 .x-climb{animation:gy4-climb 16s linear infinite;opacity:0}
 .glab .gbg .gy4 .x-climb.c1{animation-delay:-8s}
 @keyframes gy4-climb{0%{transform:translate(0,0);opacity:0}5%{opacity:1}78%{transform:translate(-40px,-49px);opacity:1}86%,100%{transform:translate(-40px,-49px);opacity:0}}
-.glab .gbg .gy4 .x-climb .x-p{animation:gy4-step .8s ease-in-out infinite alternate}
-@keyframes gy4-step{to{transform:translateY(-.8px) rotate(2deg)}}
 .glab .gbg .gy4 .x-top{animation:gy4-set 3.2s ease-in-out infinite}
 @keyframes gy4-set{0%,100%{transform:none}45%,60%{transform:translateY(.9px) scaleY(.96)}}
-.glab .gbg .gy4 .x-down2{animation:gy4-step 1s ease-in-out infinite alternate}
 /* egrets drift across the haze, wings beating slowly */
 .glab .gbg .gy4 .x-eg{animation:gy4-fly 34s linear infinite}.glab .gbg .gy4 .x-eg.e2{animation-duration:42s;animation-delay:-20s}
 @keyframes gy4-fly{0%{transform:translate(-150px,6px);opacity:0}6%{opacity:1}50%{transform:translate(20px,-4px)}94%{opacity:1}100%{transform:translate(200px,4px);opacity:0}}
 .glab .gbg .gy4 .x-wg{transform-origin:20% 100%;animation:gy4-wing 1.3s ease-in-out infinite alternate}
 @keyframes gy4-wing{to{transform:scaleY(-.6)}}
-.glab .gbg .gy4 .x-haze{transform-origin:50% 50%;animation:gy4-haze 14s ease-in-out infinite alternate}
-@keyframes gy4-haze{to{transform:translateX(12px);opacity:.55}}
 /* the donkey switches its tail; the weigher slides the weight; the clerk writes */
 .glab .gbg .gy4 .x-tail{transform-origin:100% 0;animation:gy4-tail 2.6s ease-in-out infinite alternate}
 @keyframes gy4-tail{to{transform:rotate(18deg)}}
-.glab .gbg .gy4 .x-wt{animation:gy4-wt 5s ease-in-out infinite alternate}
-@keyframes gy4-wt{to{transform:translateX(4px)}}
 .glab .gbg .gy4 .x-clerk .x-ar{animation:gy4-write 1.2s ease-in-out infinite alternate}
 @keyframes gy4-write{to{transform:rotate(-7deg)}}
 

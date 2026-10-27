@@ -84,17 +84,35 @@ function person(o) {
 }
 
 /* ---------------- things ---------------- */
-/* a pyramid of real sacks (copied and grown from the old sackPyr): each row a sack shorter and set half a sack in, so a
-   porter can step up it; the shaded side darker and the tints varied so no two sacks match */
+/* a pyramid of real sacks: each row a sack shorter and set half a sack in, so a porter can step up it. Round five
+   (Sani 2026-10-27, realism with performance): the sacks are one pattern tile (nine sacks, each with its lit top, its
+   shadowed belly and the dark gap under it) that every pyramid shares, laid behind the stepped outline of the pile; the
+   side away from the sun is one shade, and the foot of the pile sits in its own shadow. Five shapes instead of a hundred. */
+let pyrN = 0;
 function pyr(cx, base, rows, o) {
-  const sw = 7.2, sh = 4, by = {}; let s = '<g opacity="' + o + '">', st = '';
-  for (let k = 0; k < rows; k++) { const n = rows - k, y = base - (k + 1) * sh, x0 = cx - n * sw / 2;
-    for (let i = 0; i < n; i++) { const x = x0 + i * sw, t = (i * 7 + k * 3) % 4, shade = x + sw / 2 > cx + (n * sw / 2) * .2;
-      const f = shade ? ['#B38E57', '#A98450', '#B89458', '#A27E4A'][t] : ['#DDBF86', '#D4B47A', '#E2C690', '#CFAE74'][t];
-      by[f] = (by[f] || '') + '<use href="#' + P + '-s" x="' + n2(x) + '" y="' + n2(y) + '"/>';
-      if ((i + k * 2) % 4 === 0) st += 'M' + n2(x + 1.8) + ' ' + n2(y + 2) + 'h3.6'; } }
-  for (const f in by) s += '<g fill="' + f + '">' + by[f] + '</g>';
-  return s + '<path d="' + st + '" stroke="#8A6A38" stroke-width=".25" stroke-dasharray=".5 .4"/></g>';
+  const sw = 7.2, sh = 4, x0 = cx - rows * sw / 2, id = P + '-pp' + (pyrN++);
+  let d = 'M' + n2(x0) + ' ' + base;
+  for (let k = 0; k < rows; k++) d += 'V' + n2(base - (k + 1) * sh) + 'H' + n2(k < rows - 1 ? x0 + (k + 1) * sw / 2 : x0 + (k + 2) * sw / 2);
+  for (let k = rows - 1; k >= 0; k--) d += 'V' + n2(base - k * sh) + (k ? 'H' + n2(x0 + rows * sw - (k - 1) * sw / 2) : '');
+  const out = d + 'Z', xt = x0 + (rows - 1) * sw / 2, yt = base - rows * sh;
+  return '<g opacity="' + o + '"><pattern id="' + id + '" href="#' + P + '-pt" x="' + n2(x0) + '" y="' + n2(base - 2 * sh) + '"/>' +
+    '<path d="' + out + '" fill="url(#' + id + ')"/><path d="' + out + '" fill="url(#' + P + '-psh)"/>' +
+    '<path d="M' + n2(x0 - 1) + ' ' + base + 'H' + n2(x0 + rows * sw + 1) + 'L' + n2(x0 + rows * sw - 2) + ' ' + (base - 2.4) + 'H' + n2(x0 + 2) + 'Z" fill="#3A2208" opacity=".22"/></g>';
+}
+/* the tile: two rows of sacks, the upper one set half a sack over, in four tints so the repeat is not seen */
+function pyrTile() {
+  const lit = ['#DDBF86', '#D2B279', '#E2C690', '#CDAB70', '#D8B87E'];
+  let u = '', hl = '', dk = '';
+  const put = (x, y, i) => { u += '<use href="#' + P + '-ps" x="' + n2(x) + '" y="' + n2(y + [0, .25, -.15, .1][i % 4]) + '" fill="' + lit[i % 5] + '"/>';
+    hl += 'M' + n2(x + 1.3) + ' ' + n2(y + 1.1) + 'Q' + n2(x + 3.4) + ' ' + n2(y + .4) + ' ' + n2(x + 5.6) + ' ' + n2(y + 1);
+    dk += 'M' + n2(x + .9) + ' ' + n2(y + 3.5) + 'Q' + n2(x + 3.6) + ' ' + n2(y + 4.3) + ' ' + n2(x + 6.6) + ' ' + n2(y + 3.4); };
+  [-3.6, 3.6, 10.8, 18, 25.2].forEach((x, i) => put(x, 0, i + 2));
+  [0, 7.2, 14.4, 21.6].forEach((x, i) => put(x, 4, i));
+  return '<path id="' + P + '-ps" d="M.7 1Q3.6 -.4 6.5 1Q7.7 2.2 6.8 3.5Q3.6 4.7 .4 3.5Q-.5 2.2 .7 1Z"/>' +
+    '<linearGradient id="' + P + '-psh" x1="0" y1="0" x2="1" y2="0"><stop offset=".46" stop-color="#3E2408" stop-opacity="0"/><stop offset=".6" stop-color="#3E2408" stop-opacity=".26"/><stop offset="1" stop-color="#3E2408" stop-opacity=".34"/></linearGradient>' +
+    '<pattern id="' + P + '-pt" width="28.8" height="8" patternUnits="userSpaceOnUse"><rect width="28.8" height="8" fill="#6A4820"/>' + u +
+    '<path d="' + hl + '" stroke="#FFF4D8" stroke-width=".55" opacity=".55" fill="none"/><path d="' + dk + '" stroke="#5E3E16" stroke-width=".7" opacity=".45" fill="none"/>' +
+    '<path d="M2 2h3.2M16.4 2h3.2M9.2 6h3.2M23.6 6h3.2" stroke="#8A6A38" stroke-width=".25" stroke-dasharray=".5 .4"/></pattern>';
 }
 /* a loose heap of sacks on the ground */
 const heap = (x, y, k = 0) => [[0, 0], [7.2, 0], [14.4, 0], [3.6, -4], [10.8, -4], [7.2, -8]].slice(0, k ? 3 : 6).map(([dx, dy], i) =>
@@ -103,11 +121,12 @@ const egret = (x, y, s, cls) => '<g class="x-eg ' + cls + '"><g transform="trans
   '<path d="M-6 0 Q-2 -1.6 3 -.6 L6.4 -1.6 L4 .4 Q0 1.4 -6 0Z" fill="#FFFDF6"/><path class="x-wg" d="M-2 -.6 Q1 -7 6 -6.4 Q2 -3 1.4 -.4Z" fill="#F4F0E4"/><path d="M6.4 -1.6 l2.4 .4 l-2.2 .4" fill="#E8B730"/><path d="M-6 .2 l-3 1.4" stroke="#3A2A1A" stroke-width=".4"/></g></g>';
 
 export function gyadaScene(): string {
+  pyrN = 0;
   const defs = '<defs>' + lg('sky', '#E2C795', '#ECD8AE', '#F4E5C4') + lg('gr', '#D9B77E', '#C9A167', '#B88E55') + lg('zinc', '#C3C7C6', '#8E9496') + lg('wall', '#DCC7A0', '#C9AE80') +
     '<radialGradient id="' + P + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8E2"/><stop offset=".35" stop-color="#FFEFC4" stop-opacity=".7"/><stop offset="1" stop-color="#FFEFC4" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + P + '-sh" cx=".38" cy=".36" r=".7"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></radialGradient>' +
     '<linearGradient id="' + P + '-hz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4E4C0" stop-opacity="0"/><stop offset=".7" stop-color="#F4E4C0" stop-opacity=".55"/><stop offset="1" stop-color="#F4E4C0" stop-opacity=".2"/></linearGradient>' +
-    HEADB + FACE + SACKDEF + JALF + RIGF + WOMF + '<path id="' + P + '-ft" d="M-3.6 -1.4h2.8v1.3h-3.4z M.8 -1.4h2.8l.6 1.3h-3.4z" fill="#2E2218"/>' +
+    pyrTile() + SKDEF + SKSYM + HEADB + FACE + SACKDEF + JALF + RIGF + WOMF + '<path id="' + P + '-ft" d="M-3.6 -1.4h2.8v1.3h-3.4z M.8 -1.4h2.8l.6 1.3h-3.4z" fill="#2E2218"/>' +
     '<path id="' + P + '-s" d="M.5 .4Q3.6 -.3 6.7 .4Q7.5 2 6.7 3.8Q3.6 4.3 .5 3.8Q-.3 2 .5 .4Z" stroke="#8B6A3A" stroke-width=".22"/></defs>';
 
   const sky = '<rect width="320" height="200" fill="url(#' + P + '-sky)"/><circle cx="70" cy="34" r="34" fill="url(#' + P + '-sun)"/><circle cx="70" cy="34" r="8.5" fill="#FFF6DC" opacity=".9"/>' +
@@ -154,12 +173,20 @@ export function gyadaScene(): string {
     por(222, 101, .48, 0, '#6A4C93', { flip: true, lean: -5 });
 
   // the donkey, loaded with two sacks across its back, led to the scale
-  const donkey = '<g transform="translate(232 127)"><ellipse cy=".2" rx="9" ry="1.2" fill="#3C2810" opacity=".22"/>' +
-    '<g stroke="#6E6660" stroke-width="1.3" stroke-linecap="round"><path d="M-6 -6 L-6.6 -.4 M-3.6 -6 L-3 -.4 M4.4 -6 L4 -.4 M6.4 -6 L7 -.4"/></g><g fill="#2E2620"><rect x="-7.4" y="-1" width="1.6" height="1"/><rect x="-3.8" y="-1" width="1.6" height="1"/><rect x="3.2" y="-1" width="1.6" height="1"/><rect x="6.2" y="-1" width="1.6" height="1"/></g>' +
-    '<g class="x-tail"><path d="M-7.6 -10 Q-10 -7 -9.6 -3.6" stroke="#7C746C" stroke-width=".6" fill="none"/><path d="M-9.8 -4.4 l-.4 1.6 l.9 -.2Z" fill="#3A322C"/></g>' +
-    '<path d="M-8 -9.6 Q-8 -13 -4 -13 L5 -13 Q8.4 -13 8.6 -9.4 Q8.4 -6 5 -5.6 L-4.6 -5.6 Q-8 -6 -8 -9.6Z" fill="#9A928A"/><path d="M-6 -6 Q0 -4.6 6 -6" stroke="#E8E2DA" stroke-width="1.2" fill="none" opacity=".7"/>' +
-    '<g class="x-dh"><path d="M6.6 -11.8 Q9 -15 11.4 -16.6 L14.6 -12.4 Q12.6 -11.6 10 -8.6Z" fill="#9A928A"/><path d="M11.4 -16.6 Q14.4 -16.4 15.8 -13.4 Q15.6 -12 14 -11.8 L12.4 -12.4Z" fill="#A8A098"/><ellipse cx="15.2" cy="-12.8" rx="1.2" ry="1" fill="#E8E2DA"/>' +
-    '<path d="M10.8 -16.4 L9.4 -21.6 L11.6 -17 M12 -16.8 L12.6 -22 L13 -16.6" stroke="#8A827A" stroke-width="1" stroke-linejoin="round" fill="#8A827A"/><circle cx="12.8" cy="-14.6" r=".45" fill="#1A1410"/><path d="M8 -15 Q9 -16.4 10.6 -17" stroke="#3A322C" stroke-width=".6" fill="none"/></g>' +
+  // round five: a real grey Sahel donkey, the dark cross on its shoulders, pale belly and muzzle, jointed legs with
+  // knees and hocks on small hooves, the long ears, a rope halter; its load of two sacks on a saddle cloth
+  const donkey = '<g transform="translate(232 127)"><ellipse cx="1" cy=".2" rx="10" ry="1.3" fill="#3C2810" opacity=".26"/>' +
+    '<path d="M-6.6 -8 Q-4.4 -7.6 -4.8 -5.4 L-5.8 -2.6 L-5.4 -.9 L-6.6 -.9 L-7 -2.8 Q-8 -5 -6.6 -8Z M3.4 -7 L5 -7 L4.8 -3.6 L4.9 -.9 L3.7 -.9 L3.6 -3.6Z" fill="#7A726A"/>' +
+    '<path d="M-8.2 -8.6 Q-5.2 -8.4 -5.4 -5.8 L-3.8 -2.6 L-3.4 -.9 L-4.7 -.9 L-5.4 -2.6 Q-7.6 -4.6 -8.2 -8.6Z M5.4 -7.2 L7.4 -7.2 L7 -3.6 L7.1 -.9 L5.8 -.9 L5.8 -3.6Z" fill="#9A928A"/>' +
+    '<path d="M-6.8 -.9h1.5v.9h-1.7z M-4.9 -.9h1.6v.9h-1.6z M3.6 -.9h1.4v.9h-1.5z M5.7 -.9h1.5v.9h-1.6z" fill="#2E2620"/>' +
+    '<g class="x-tail"><path d="M-7.8 -11 Q-9.6 -8 -9.4 -4.2" stroke="#7C746C" stroke-width=".6" fill="none"/><path d="M-9.6 -5 l-.5 1.8 l1 -.3Z" fill="#3A322C"/></g>' +
+    '<path d="M-8.4 -9.8 Q-9 -13.4 -4.8 -13.6 Q0 -12.8 4.6 -13.2 Q7.8 -13.4 8.6 -10.4 Q8.6 -7.4 6.4 -6.8 Q1 -5.6 -3.6 -6.4 Q-7.8 -6.8 -8.4 -9.8Z" fill="#9C948C"/>' +
+    '<path d="M-6 -6.6 Q0 -5.2 6 -7 Q2 -8 -6 -6.6Z" fill="#E2DCD2"/><path d="M-8.4 -9.8 Q-7.8 -6.8 -3.6 -6.4 Q1 -5.6 6.4 -6.8 Q8.6 -7.4 8.6 -10.4 Q7 -8.4 1 -8 Q-5 -8 -8.4 -9.8Z" fill="#3A2C20" opacity=".18"/>' +
+    '<g class="x-dh"><path d="M5.4 -12.4 Q7.6 -15.8 10.4 -17.4 L13.6 -14.6 Q11.2 -12.4 9.8 -8.8 L6.4 -8Z" fill="#9C948C"/><path d="M5.6 -12.8 Q8 -16.2 10.6 -17.6" stroke="#4A423C" stroke-width=".8" fill="none"/>' +
+    '<path d="M10.2 -17.6 Q12.6 -18.4 14.2 -16.6 L17.2 -13 Q17.8 -11.2 16.2 -10.8 Q14.6 -10.6 13.4 -12 L10.6 -14.4Z" fill="#A39B93"/><ellipse cx="16.1" cy="-11.8" rx="1.5" ry="1.1" fill="#E4DED6"/><circle cx="16.9" cy="-12.2" r=".25" fill="#3A322C"/>' +
+    '<path d="M10.9 -17.4 Q9.4 -21.8 9.8 -23.4 Q11.6 -21.4 12.1 -17.6Z M12.3 -17.8 Q13 -22.2 14.2 -23.2 Q14.2 -20.8 13.3 -17.4Z" fill="#8A827A"/><path d="M9.8 -23.4 l.7 1.2 M14.2 -23.2 l-.5 1.2" stroke="#2E2620" stroke-width=".7"/>' +
+    '<circle cx="12.6" cy="-15" r=".55" fill="#E8E2DA"/><circle cx="12.7" cy="-15" r=".36" fill="#1A1410"/><path d="M11 -16.8 L14.6 -12.6 M13.6 -14.2 L16.4 -13.2" stroke="#6B4422" stroke-width=".35" fill="none"/></g>' +
+    '<path d="M4.4 -13.4 Q5 -10.4 4.4 -7.6" stroke="#3A322C" stroke-width=".6" opacity=".5" fill="none"/>' +
     '<path d="M-4.4 -13.6 Q.6 -15 5.2 -13.6 L5.6 -11.6 L-4.8 -11.6Z" fill="#8B2E1A"/>' + '<use href="#' + P + '-s" x="-6.6" y="-15.6" fill="#D8BA80" transform="rotate(-8 -3 -14)"/><use href="#' + P + '-s" x="-.6" y="-15.8" fill="#CFAE74" transform="rotate(6 3 -14)"/>' +
     '<path d="M-3 -11.6 v4.6 M3 -11.6 v4.6" stroke="#6B4422" stroke-width=".5"/><path d="M15.4 -12.4 Q19 -10 21 -12" stroke="#6B4422" stroke-width=".35" fill="none"/></g>';
 
@@ -205,17 +232,19 @@ const SKDEF = '<radialGradient id="gyS-hl" cx=".3" cy=".22" r=".6"><stop offset=
   '<linearGradient id="gyS-dk" x1="0" y1="0" x2="1" y2="1"><stop offset=".45" stop-color="#2A1806" stop-opacity="0"/><stop offset="1" stop-color="#2A1806" stop-opacity=".38"/></linearGradient>' +
   '<pattern id="gyS-mat" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#C9A35E"/><path d="M0 1 H4 M0 3 H4" stroke="#A9843E" stroke-width=".9"/><path d="M1 0 V1 M3 2 V3" stroke="#E2C27E" stroke-width=".8"/></pattern>';
 const TINT = ['#000', '#5A3A10', '#000', '#FFF2D0'], TOP = [0, .1, .08, .1];
+/* one sack, drawn once (round five, for cheap tablets): every pile and the lorry's load reuse it with <use>; the scene's
+   defs carry it, so it is in the page whenever the game is */
+const SKSYM = '<g id="gyS-sk"><path d="' + SKB + '" fill="url(#k4-sackg)" stroke="#5E4218" stroke-width=".55"/><path d="' + SKB + '" fill="url(#k4-jute)" opacity=".55"/>' +
+  '<path d="' + SKB + '" fill="url(#gyS-hl)"/><path d="' + SKB + '" fill="url(#gyS-dk)"/>' +
+  '<path d="M6 5 Q9 7 8 11 M21 4 Q24 8 22 13 M14 13.5 Q17 12 19 14.6 M4.4 15.6 Q15 17.4 25.6 15.6" stroke="#6A4A1E" stroke-width=".5" fill="none" opacity=".7"/>' +
+  '<path d="M9.6 1.2 Q10.2 9 9.6 17 M11.3 1.1 Q11.9 9 11.3 17.2" stroke="#A8352A" stroke-width=".95" fill="none" opacity=".75"/><path d="M13 1 Q13.6 9 13 17.3" stroke="#2E6E30" stroke-width=".95" fill="none" opacity=".75"/>' +
+  '<text x="20" y="10.4" text-anchor="middle" font-size="3.1" font-weight="800" fill="#3E2A10" opacity=".42" font-family="Baloo 2,sans-serif">GYAƊA</text>' +
+  '<path d="M4.6 3.2 Q15 1.6 25.6 3.2" stroke="#4E3A18" stroke-width=".5" stroke-dasharray="1.1 .9" fill="none"/>' +
+  '<path d="M3 3.5 q-1.6 -1.6 -2.4 -3 M3 14.6 q-1.6 1.6 -2.4 3 M27 3.5 q1.6 -1.6 2.4 -3 M27 14.6 q1.6 1.6 2.4 3" stroke="#6E4E1E" stroke-width="1.2" stroke-linecap="round" fill="none"/></g>';
 function gySack(x, y, k = 0) {
   const t = k % 4;
-  return '<g transform="translate(' + n2(x) + ' ' + n2(y) + ')"><ellipse cx="16.4" cy="17.4" rx="14" ry="2" fill="#2A1806" opacity=".38"/>' +
-    '<path d="' + SKB + '" fill="url(#k4-sackg)" stroke="#5E4218" stroke-width=".55"/><path d="' + SKB + '" fill="url(#k4-jute)" opacity=".55"/>' +
-    (TOP[t] ? '<path d="' + SKB + '" fill="' + TINT[t] + '" opacity="' + TOP[t] + '"/>' : '') +
-    '<path d="' + SKB + '" fill="url(#gyS-hl)"/><path d="' + SKB + '" fill="url(#gyS-dk)"/>' +
-    '<path d="M6 5 Q9 7 8 11 M21 4 Q24 8 22 13 M14 13.5 Q17 12 19 14.6" stroke="#7A5826" stroke-width=".5" fill="none" opacity=".7"/>' +
-    '<path d="M9.6 1.2 Q10.2 9 9.6 17 M11.3 1.1 Q11.9 9 11.3 17.2" stroke="#A8352A" stroke-width=".95" fill="none" opacity=".8"/><path d="M13 1 Q13.6 9 13 17.3" stroke="#2E6E30" stroke-width=".95" fill="none" opacity=".8"/>' +
-    '<text x="20" y="10.4" text-anchor="middle" font-size="3.1" font-weight="800" fill="#3E2A10" opacity=".5" font-family="Baloo 2,sans-serif">GYAƊA</text>' +
-    '<path d="M4.6 3.2 Q15 1.6 25.6 3.2" stroke="#4E3A18" stroke-width=".5" stroke-dasharray="1.1 .9" fill="none"/>' +
-    '<path d="M3 3.5 q-1.6 -1.6 -2.4 -3 M3 14.6 q-1.6 1.6 -2.4 3 M27 3.5 q1.6 -1.6 2.4 -3 M27 14.6 q1.6 1.6 2.4 3" stroke="#6E4E1E" stroke-width="1.2" stroke-linecap="round" fill="none"/></g>';
+  return '<g transform="translate(' + n2(x) + ' ' + n2(y) + ')"><ellipse cx="16.4" cy="17.4" rx="14" ry="2" fill="#2A1806" opacity=".38"/><use href="#gyS-sk"/>' +
+    (TOP[t] ? '<path d="' + SKB + '" fill="' + TINT[t] + '" opacity="' + TOP[t] + '"/>' : '') + '</g>';
 }
 /** n sacks in a stepped pile on a mat; the mat and the scale are the same for every pile of the round (cap) */
 export function gySacks(n, cap = 20) {
@@ -229,7 +258,7 @@ export function gySacks(n, cap = 20) {
     '<path d="M' + n2(ml - 1) + ' 147 H' + n2(mr + 3) + '" stroke="#9A7434" stroke-width="1.1" opacity=".7"/>' +
     '<path d="M' + n2(ml - 2) + ' 148.4 L' + n2(mr + 4) + ' 148.6" stroke="#E6CC92" stroke-width=".5" stroke-dasharray=".6 .8"/>';
   const cast = '<ellipse cx="' + n2(cx + maxw * .12) + '" cy="143.2" rx="' + n2(maxw * .58) + '" ry="3.2" fill="#2A1806" opacity=".3"/>';
-  return '<svg class="sacks gys" viewBox="' + n2(cx - W / 2) + ' ' + (151 - H) + ' ' + n2(W) + ' ' + H + '" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs>' + SKDEF + '</defs>' + mat + cast + out + '</svg>';
+  return '<svg class="sacks gys" viewBox="' + n2(cx - W / 2) + ' ' + (151 - H) + ' ' + n2(W) + ' ' + H + '" preserveAspectRatio="xMidYMax meet" aria-hidden="true">' + mat + cast + out + '</svg>';
 }
 /** the sacks on the back of the lorry, piled above the sides the way they are in the north; each drops in in turn */
 export function gyLorryLoad(n) {
@@ -248,7 +277,7 @@ function wheel(x) {
 }
 /** a northern lorry, side on, facing right: the long bonnet, a painted wooden body, a driver at the window */
 export function gyLorry() {
-  const defs = '<defs>' + SKDEF +
+  const defs = '<defs>' +
     '<linearGradient id="gyL-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9A562"/><stop offset=".6" stop-color="#B57E42"/><stop offset="1" stop-color="#8E5C2C"/></linearGradient>' +
     '<linearGradient id="gyL-cab" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#4C93CF"/><stop offset=".55" stop-color="#2468A8"/><stop offset="1" stop-color="#174A7C"/></linearGradient>' +
     '<linearGradient id="gyL-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E6"/><stop offset="1" stop-color="#D9CCAE"/></linearGradient>' +
