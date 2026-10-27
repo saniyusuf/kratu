@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Drawn people, animals and places for the Arewa games (Sani 2026-10-16: "real SVG, animated, not just photos").
  * Every piece is a small shaded SVG: gradients only, no filters, so a cheap tablet draws them fast. Moving parts carry
@@ -35,7 +36,7 @@ export function person(o: P = {}): string {
   const skin = SKIN[o.skin ?? 1], robe = o.robe || '#2F6B9A', robe2 = o.robe2 || '#24557C', hat = o.hat || 'cap', hc = o.hatc || '#F4EBD0';
   let back = '', front = '';
   if (hat === 'hijab') back = `<path d="M13 34 Q12 10 30 9 Q48 10 47 34 L52 60 Q30 68 8 60 Z" fill="${hc}"/>`;
-  if (hat === 'cap') front = `<path d="M17 22 Q18 9 30 9 Q42 9 43 22 Z" fill="${hc}"/><path d="M19 18 h22 M18 21 h24" stroke="rgba(0,0,0,.18)" stroke-width="1.2"/>`;
+  if (hat === 'cap') front = arewaCap((o as any).style || 'hula', 30, 21.6, 13.2, hc, (o as any).hatc2, (o as any).hatc3);   // Arewa caps (capsArewa.ts)
   if (hat === 'turban') front = `<ellipse cx="30" cy="17" rx="15" ry="10" fill="${hc}"/><path d="M16 18 Q30 10 44 18 M17 22 Q30 15 43 22" stroke="rgba(0,0,0,.15)" stroke-width="1.4" fill="none"/>`;
   if (hat === 'emir') front = `<ellipse cx="30" cy="17" rx="16" ry="10" fill="${hc}"/><path d="M18 14 Q20 -2 26 10 M42 14 Q40 -2 34 10" stroke="${hc}" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M15 26 Q30 40 45 26 L45 34 Q30 46 15 34 Z" fill="${hc}"/>`;
   if (hat === 'malafa') front = `<ellipse cx="30" cy="17" rx="27" ry="6" fill="#D9B46A"/><path d="M19 16 L30 -2 L41 16 Z" fill="#C99A4E"/><path d="M26 6 L30 -2 L34 6 Z" fill="#7A4A22"/><ellipse cx="30" cy="16" rx="27" ry="6" fill="none" stroke="#8B6A2E" stroke-width="1.2"/>`;
@@ -57,7 +58,7 @@ export function person(o: P = {}): string {
     `<circle cx="25.5" cy="26" r="1.7" fill="#1A0E06"/><circle cx="34.5" cy="26" r="1.7" fill="#1A0E06"/>${mouth}${front}</svg>`;
 }
 const CROWD: P[] = [{ hat: 'cap', robe: '#2F6B9A', robe2: '#24557C', hatc: '#E9D9A6', arm: 'clap' }, { hat: 'hijab', hatc: '#C2185B', robe: '#AD1457', robe2: '#880E4F', skin: 2, arm: 'clap' },
-  { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 0, arm: 'clap' }, { hat: 'hijab', hatc: '#2E7D32', robe: '#388E3C', robe2: '#1B5E20', skin: 3, arm: 'clap' }, { hat: 'cap', hatc: '#B71C1C', robe: '#6A4C93', robe2: '#4A3470', skin: 1, arm: 'clap' }];
+  { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 0, arm: 'clap' }, { hat: 'hijab', hatc: '#2E7D32', robe: '#388E3C', robe2: '#1B5E20', skin: 3, arm: 'clap' }, { hat: 'cap', style: 'zanna', hatc: '#7A1F2B', hatc2: '#E9C46A', robe: '#6A4C93', robe2: '#4A3470', skin: 1, arm: 'clap' }];
 export function crowd(n = 5): string { return CROWD.slice(0, n).map((p, i) => `<span class="pp-w" style="--d:${i * .13}s">${person(p)}</span>`).join(''); }
 
 /* ---- the Durbar ---- */
@@ -252,7 +253,7 @@ export function achaba(): string {
 /* a passenger for the ferry */
 export function passenger(i: number): string {
   const P: P[] = [{ hat: 'hijab', hatc: '#6A1B9A', robe: '#8E24AA', robe2: '#6A1B9A', skin: 1 }, { hat: 'cap', hatc: '#E9D9A6', robe: '#00838F', robe2: '#006064', skin: 0 },
-    { hat: 'hijab', hatc: '#EF6C00', robe: '#F57C00', robe2: '#E65100', skin: 2 }, { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 3 }, { hat: 'cap', hatc: '#B71C1C', robe: '#455A64', robe2: '#263238', skin: 1 }];
+    { hat: 'hijab', hatc: '#EF6C00', robe: '#F57C00', robe2: '#E65100', skin: 2 }, { hat: 'turban', robe: '#F4EBD0', robe2: '#D9CBA6', skin: 3 }, { hat: 'cap', style: 'borno', hatc: '#F2E8CF', hatc2: '#A3242C', hatc3: '#1E5B3A', robe: '#455A64', robe2: '#263238', skin: 1 }];
   return person(P[i % P.length]);
 }
 import { SCENES4 } from './scenes4';

@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap, capFor } from './capsArewa';
 /*
  * A painted place for every Arewa game (Sani 2026-10-16: "the game's own background, not the current one"). Same
  * hand as the other scenes: 160×100, sliced to fill any screen, flat shapes with soft gradients, a few slow moving
@@ -37,7 +38,8 @@ const kids = (y, n) => { let s = '<g class="far kids">'; const c = ['#2F6B9A', '
       '<rect x="-.35" y="-7.4" width=".7" height=".9" fill="' + sk + '"/><circle cy="-8.3" r="1.25" fill="' + sk + '"/><circle cx="-.35" cy="-8.6" r=".55" fill="#fff" opacity=".14"/>' +
       '<circle cx="-.35" cy="-8.3" r=".14" fill="#1A0E06"/><circle cx=".45" cy="-8.3" r=".14" fill="#1A0E06"/>' +
       (girl ? '<path d="M-1.5 -8.1 Q-1.6 -10.2 0 -10.1 Q1.6 -10.2 1.5 -8.1 Q.9 -9.3 0 -9.3 Q-.9 -9.3 -1.5 -8.1 Z" fill="' + c[(i + 3) % c.length] + '"/><path d="M1.3 -9.4 l1 -.6 l-.3 1 Z" fill="' + c[(i + 3) % c.length] + '"/>'
-        : '<path d="M-1.2 -8.9 Q-1.2 -10.2 0 -10.2 Q1.2 -10.2 1.2 -8.9 Z" fill="' + (i % 4 === 0 ? '#FFFFFF' : '#C62828') + '"/><path d="M-1.1 -9.3 h2.2" stroke="#000" stroke-width=".18" opacity=".2"/>') +
+        : i % 8 === 2 ? arewaCap('zanna', 0, -8.9, 1.25, '#7A1F2B', '#E9C46A') : i % 8 === 6 ? arewaCap('borno', 0, -8.9, 1.2, '#F2E8CF', '#A3242C', '#1E5B3A')
+          : arewaCap('hula', 0, -8.9, 1.25, i % 8 === 0 ? '#FFFFFF' : '#F4EBD0', i % 8 === 0 ? '#2E5E3A' : '#7A1F2B')) +
       '</g></g>'; }
   return s + '</g>'; };
 const elders = (y, xs) => { const c = ['#E8DFC6', '#5A7FA8', '#F2EEE4', '#8A6C5E', '#B05A80', '#5E8A5E', '#DCCFA8', '#5C6496'];
@@ -45,7 +47,7 @@ const elders = (y, xs) => { const c = ['#E8DFC6', '#5A7FA8', '#F2EEE4', '#8A6C5E
     return '<g transform="translate(' + x + ' ' + (y + (i % 2) * .4) + ')"><path d="M-2.4 0 L-2 -8.6 Q0 -9.6 2 -8.6 L2.4 0 Z" fill="' + col + '"/><path d="M-2.4 0 L-2 -8.6 L-1 -9 L-1.2 0 Z" fill="#fff" opacity=".15"/><path d="M1 -8 L1.6 0" stroke="#000" stroke-width=".3" opacity=".18"/>' +
       '<rect x="-.4" y="-10" width=".8" height="1.2" fill="' + sk + '"/><circle cy="-11" r="1.35" fill="' + sk + '"/>' +
       (w ? '<path d="M-1.8 -10.4 Q-1.8 -13 0 -13 Q1.8 -13 1.8 -10.4 L2.6 -7 L-2.6 -7 Z" fill="' + c[(i + 4) % c.length] + '"/><circle cy="-11" r="1.2" fill="' + sk + '"/>'
-        : '<path d="M-1.5 -11.4 Q-1.6 -13.2 0 -13.2 Q1.6 -13.2 1.5 -11.4 Q0 -12 -1.5 -11.4 Z" fill="' + (i % 2 ? '#FFFFFF' : '#E9D9A6') + '"/>') + '</g>'; }).join('') + '</g>'; };
+        : ((k) => arewaCap(k.cap, 0, -11.5, 1.4, k.capc, k.capc2, k.capc3))(capFor(i))) + '</g>'; }).join('') + '</g>'; };
 /* the old city beyond the palace wall, pale and blue with distance: flat-roofed houses with their zanko, the domes and
    minaret of the central mosque, neem crowns */
 const farCity = () => '<g opacity=".55"><g fill="#C9B8A8">' +
