@@ -25,6 +25,17 @@ const rad = (id, stops, cx = .5, cy = .5, r = .5) => `<radialGradient id="${P}-$
 const at = (x, y, s, inner, cls = '', flip = false) =>
   `<g transform="translate(${n(x)} ${n(y)}) scale(${flip ? -s : s} ${s})">${cls ? `<g class="${cls}">${inner}</g>` : inner}</g>`;
 const url = (id) => `url(#${P}-${id})`;
+/** the sun is high on the upper left: a dark contact patch where a thing meets the ground and a soft shadow thrown to
+    the lower right, foreshortened on the flat ground */
+const shadow = (w, len = 1) => `<ellipse cx="${n(w * .62 * len)}" cy=".4" rx="${n(w * (1 + .55 * len))}" ry="${n(1.3 + .45 * len)}" fill="rgba(74,40,14,.2)"/>` +
+  `<ellipse cx="${n(w * .12)}" cy=".1" rx="${n(w * .82)}" ry="${n(.8 + .25 * len)}" fill="rgba(48,22,6,.32)"/>`;
+/** a sprinkle of marks from a fixed seed, so the mud and the ground have grain without random redraws */
+function grain(x0, x1, y0, y1, k, fill, r = .35, seed = 7) {
+  let s = '', v = seed;
+  const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < k; i++) { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0), rr = r * (.5 + rnd()); s += `<ellipse cx="${n(x)}" cy="${n(y)}" rx="${n(rr * 1.6)}" ry="${n(rr)}"/>`; }
+  return `<g fill="${fill}">${s}</g>`;
+}
 
 /* ---------------- people ---------------- */
 function head(sk, o) {
@@ -106,9 +117,9 @@ function body(o, sk) {
 }
 /** one figure, feet (or seat) at the local origin */
 function person(o) {
-  const sk = SK[o.skin % SK.length], pose = o.pose || 'stand', [hy, sy, sx] = GEO[pose], hs = o.hs || 1;
+  const sk = SK[o.skin % SK.length], pose = o.pose || 'stand', [hy, sy, sx] = GEO[pose], hs = o.hs || .9;
   const sleeve = o.sleeveC || o.robe, sl = o.sleeve || 'long';
-  return `<g class="x-p ${o.cls || ''}"><ellipse cx="0" cy="0" rx="${pose === 'sit' ? 17 : 11}" ry="2" fill="rgba(60,34,14,.28)"/>` +
+  return `<g class="x-p ${o.cls || ''}">${pose === 'stand' ? shadow(8, 2) : shadow(12, 1)}` +
     `<g class="x-bd">${o.back || ''}${body(o, sk)}` +
     `<rect x="-1.8" y="${hy + 3}" width="3.6" height="${n(sy - hy - 2.6)}" fill="${sk}"/>` +
     `<g class="x-hd" style="transform-origin:0px ${sy}px"><g transform="translate(0 ${hy}) scale(${hs})">${head(sk, o)}</g></g>` +
@@ -138,7 +149,7 @@ function hut(x, y, s) {
     `<path d="M0 -31 V-35" stroke="#6B4422" stroke-width=".8"/><circle cy="-35.4" r=".8" fill="#6B4422"/>`);
 }
 function chicken(x, y, s, c, flip, d) {
-  return at(x, y, s, `<ellipse cx="0" cy="0" rx="4" ry=".8" fill="rgba(60,34,14,.25)"/><path d="M-.6 -2.4 L-1 0 M1 -2.4 L1.2 0" stroke="#D9A23A" stroke-width=".45"/>` +
+  return at(x, y, s, shadow(3.4, 1) + `<path d="M-.6 -2.4 L-1 0 M1 -2.4 L1.2 0" stroke="#D9A23A" stroke-width=".45"/>` +
     `<g class="x-pk ${d}"><path d="M-3.6 -5.4 Q-5.6 -9 -3.8 -9.4 Q-2.6 -7 -2 -5.4 Z" fill="${c[1]}"/><ellipse cx="-.4" cy="-4.2" rx="3.6" ry="2.5" fill="${c[0]}"/>` +
     `<path d="M-2.6 -4.6 Q-.6 -2.6 1.6 -4.4" stroke="${c[1]}" stroke-width=".5" fill="none"/><circle cx="2.8" cy="-6.6" r="1.35" fill="${c[0]}"/>` +
     `<path d="M2 -7.8 q.4 -1.2 .9 -.3 q.4 -1 .9 .1 q.3 .4 -.2 .8 Z" fill="#D32F2F"/><path d="M4 -6.8 l1.3 .4 l-1.3 .4 Z" fill="#E8A23A"/><path d="M3.4 -5.6 q.3 .9 -.2 1.2" stroke="#D32F2F" stroke-width=".55" fill="none"/>` +
@@ -146,7 +157,7 @@ function chicken(x, y, s, c, flip, d) {
 }
 function donkey() {
   // side on, facing right, two woven panniers of wet clay across its back
-  return `<ellipse cx="0" cy="0" rx="17" ry="2" fill="rgba(60,34,14,.25)"/>` +
+  return shadow(15, 1.2) +
     `<g fill="#6E6964"><rect x="-12" y="-12" width="2.4" height="11.4" rx="1"/><rect x="9" y="-12" width="2.4" height="11.4" rx="1"/></g>` +
     `<g class="x-tail" style="transform-origin:-13px -17px"><path d="M-13 -17 Q-16 -12 -15 -5" stroke="#6E6964" stroke-width="1" fill="none"/><path d="M-15.6 -6.4 q-.4 2.6 .6 3.4 q.8 -1.4 .4 -3.4 Z" fill="#2E2A26"/></g>` +
     `<ellipse cx="0" cy="-15" rx="13.4" ry="6.6" fill="${url('donk')}"/><ellipse cx="0" cy="-10.6" rx="10" ry="2.4" fill="#D2CAC0" opacity=".6"/>` +
@@ -171,16 +182,16 @@ function baobab() {
     `<g stroke="#7A6248" stroke-width=".3"><path d="M-15 -53 v4 M11 -58 v5 M-3 -63 v3.6"/></g><g fill="#B9A27A"><ellipse cx="-15" cy="-48" rx=".9" ry="1.6"/><ellipse cx="11" cy="-52" rx=".9" ry="1.7"/><ellipse cx="-3" cy="-59" rx=".8" ry="1.5"/></g>`;
 }
 /* ---------------- the building site ---------------- */
-const brick = (x, y, c = '#B5683A') => `<path d="M${x} ${y} h6 l1.2 -1.4 h-6 Z" fill="#D49A68"/><path d="M${x} ${y} h6 v2.4 h-6 Z" fill="${c}"/><path d="M${x + 6} ${y} l1.2 -1.4 v2.4 l-1.2 1.4 Z" fill="#8A4A26"/>`;
+const brick = (x, y, c = '#B5683A') => `<path d="M${x} ${y + 2.4} h6 l2.6 -.6 l-1.4 -1.4 Z" fill="rgba(60,28,8,.3)"/><path d="M${x} ${y} h6 l1.2 -1.4 h-6 Z" fill="#D49A68"/><path d="M${x} ${y} h6 v2.4 h-6 Z" fill="${c}"/><path d="M${x + 6} ${y} l1.2 -1.4 v2.4 l-1.2 1.4 Z" fill="#8A4A26"/>`;
 function neem() {
   const L = [[-22, -50, 13, 9], [0, -60, 16, 10], [22, -50, 13, 9], [-12, -38, 14, 8], [12, -38, 15, 8], [-30, -36, 9, 6], [30, -38, 10, 6], [0, -44, 12, 9]];
-  return `<ellipse cx="0" cy="0" rx="18" ry="2.4" fill="rgba(60,34,14,.25)"/><path d="M-3.4 0 Q-2 -16 -3 -30 L-9 -40 L-7.6 -41 L-1 -33 L0 -44 L2 -44 L2 -33 L9 -42 L10.4 -41 L3.4 -30 Q2.6 -16 4 0 Z" fill="${url('bark')}"/>` +
+  return shadow(14, 2.2) + `<path d="M-3.4 0 Q-2 -16 -3 -30 L-9 -40 L-7.6 -41 L-1 -33 L0 -44 L2 -44 L2 -33 L9 -42 L10.4 -41 L3.4 -30 Q2.6 -16 4 0 Z" fill="${url('bark')}"/>` +
     `<g fill="#3E6B2E">${L.map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`).join('')}</g>` +
     `<g fill="#5A8A3A">${L.map(([x, y, rx, ry]) => `<ellipse cx="${x - 2}" cy="${y - 2.4}" rx="${n(rx * .7)}" ry="${n(ry * .6)}"/>`).join('')}</g>` +
     `<g fill="#79A64C">${L.map(([x, y, rx]) => `<ellipse cx="${n(x - rx * .35)}" cy="${y - 4.6}" rx="${n(rx * .35)}" ry="2"/>`).join('')}</g>`;
 }
 function well() {
-  return `<ellipse cx="0" cy="0" rx="12" ry="2" fill="rgba(60,34,14,.25)"/><path d="M-8.4 -8 V0 Q0 2 8.4 0 V-8 Z" fill="${url('wall')}"/><path d="M3 -8.6 Q6 -8.4 8.4 -8 V0 Q6 1.2 3 1.4 Z" fill="rgba(80,30,10,.2)"/>` +
+  return shadow(9, 1.2) + `<path d="M-8.4 -8 V0 Q0 2 8.4 0 V-8 Z" fill="${url('wall')}"/><path d="M3 -8.6 Q6 -8.4 8.4 -8 V0 Q6 1.2 3 1.4 Z" fill="rgba(80,30,10,.2)"/>` +
     `<ellipse cy="-8" rx="8.4" ry="2" fill="#A35A2C"/><ellipse cy="-7.8" rx="6.6" ry="1.3" fill="#2A160A"/>` +
     `<path d="M-9 -8 V-22 M9 -8 V-22" stroke="#6B4422" stroke-width="1.2"/><path d="M-10.4 -24 L-9 -21.6 L-7.6 -24 M7.6 -24 L9 -21.6 L10.4 -24" stroke="#6B4422" stroke-width=".9" fill="none"/>` +
     `<path d="M-10 -21.8 H10" stroke="#8A5A30" stroke-width="1.3"/><path d="M1 -21.4 V-11" stroke="#D8C49A" stroke-width=".4"/>` +
@@ -191,7 +202,7 @@ function house() {
   // bare courses of tubali stepping down, a ladder against it
   let courses = '';
   for (let r = 0; r < 9; r++) { const y = 140 - r * 3, x1 = r < 5 ? 290 : 290, x0 = 258 + Math.max(0, r - 5) * 7; for (let x = x0 + (r % 2 ? 3.5 : 0); x < x1; x += 7) courses += `<rect x="${n(Math.max(x, x0))}" y="${y - 3}" width="${n(Math.min(6.4, x1 - Math.max(x, x0) - .4))}" height="2.6" rx=".4"/>`; }
-  return `<ellipse cx="290" cy="141" rx="36" ry="2.6" fill="rgba(60,34,14,.28)"/>` +
+  return `<g transform="translate(290 141)">${shadow(32, 1)}</g>` +
     `<path d="M258 141 V126 H265 V122 H272 V119 H279 V116 H290 V98 H322 V141 Z" fill="#8E4A24"/>` +
     `<g fill="#B8673A">${courses}</g>` +
     `<path d="M290 141 V98 H322 V141 Z" fill="${url('wall')}"/><path d="M290 98 H322 V100.6 H290 Z" fill="#A85E2E" opacity=".6"/>` +
@@ -232,8 +243,8 @@ export function buloScene(): string {
   let stack = '';
   for (let r = 0; r < 5; r++) for (let k = 0; k < 4 - (r > 2 ? 1 : 0); k++) stack += brick(300 + k * 3.6 + (r % 2) * 1.8 + (r > 2 ? 1.8 : 0), 150 - r * 2.6);
 
-  const sky = `<rect width="320" height="200" fill="${url('sky')}"/><circle cx="270" cy="42" r="24" fill="${url('sun')}"/><circle cx="270" cy="42" r="8" fill="#FFF4CC"/>` +
-    cloud(40, 34, 1.1, 'd0') + cloud(170, 28, .8, 'd1');
+  const sky = `<rect width="320" height="200" fill="${url('sky')}"/><circle cx="50" cy="40" r="26" fill="${url('sun')}"/><circle cx="50" cy="40" r="8" fill="#FFF4CC"/>` +
+    cloud(116, 32, 1.1, 'd0') + cloud(170, 28, .8, 'd1');
   const land = `<path d="M0 112 Q40 92 84 104 Q120 88 170 102 Q214 90 250 100 Q290 90 320 98 V130 H0 Z" fill="#B9B48C" opacity=".8"/>` +
     `<path d="M120 106 Q150 96 176 106 Z" fill="#A9A47C" opacity=".8"/>` +
     `<path d="M0 124 Q60 114 130 120 Q200 112 320 118 V140 H0 Z" fill="#C8B67E"/>` +
@@ -241,6 +252,8 @@ export function buloScene(): string {
     `<path d="M0 126 Q80 118 160 124 T320 122 V200 H0 Z" fill="${url('ground')}"/>` +
     `<ellipse cx="96" cy="170" rx="96" ry="26" fill="${url('trod')}"/>` +
     `<g fill="#B9884C" opacity=".45"><ellipse cx="170" cy="196" rx="24" ry="1.6"/><ellipse cx="60" cy="140" rx="20" ry="1.2"/></g>` +
+    grain(0, 320, 128, 200, 150, 'rgba(150,96,46,.3)', .45, 3) + grain(0, 320, 128, 200, 60, 'rgba(255,236,200,.35)', .4, 17) +
+    `<g fill="none" stroke="rgba(160,104,52,.25)" stroke-width=".5"><path d="M0 150 Q80 144 150 152 T320 147"/><path d="M0 172 Q90 166 170 176 T320 170"/></g>` +
     `<g stroke="#8B7A3A" stroke-width=".6" fill="none" opacity=".8"><path d="M4 196 q-1 -6 1 -10 M7 196 q1 -7 -1 -11 M312 196 q1 -6 -1 -10 M315 196 q-1 -7 1 -11"/></g>`;
   const pots = at(46, 134, .55, pot('tulu', url('pot'))) + at(54, 135, .5, pot('tukunya', url('blk'), '#C9A27A')) +
     at(207, 133, .45, pot('tulu', url('pot'))) + at(213, 134, .4, pot('tulu', url('pot')));
@@ -253,15 +266,16 @@ export function buloScene(): string {
     rad('sun', [[0, '#FFF6D0', .9], [.4, '#FFE7A0', .5], [1, '#FFE7A0', 0]]) + rad('shade', [[.45, '#000', 0], [1, '#000', .3]], .38, .3, .8) +
     rad('pot', [[0, '#E9A56C'], [.55, '#C0683A'], [1, '#7E3A1A']], .36, .35, .75) + rad('blk', [[0, '#6E5848'], [.6, '#3E2E24'], [1, '#22180F']], .36, .35, .75) +
     `<linearGradient id="${P}-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>` +
+    `<linearGradient id="${P}-haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF2F4" stop-opacity="0"/><stop offset="1" stop-color="#F1E6CC" stop-opacity=".3"/></linearGradient>` +
     '</defs>';
 
   return `<svg class="scene ${P}" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">` + defs + sky + land +
-    hut(180, 124, .8) + hut(198, 126, .66) + house() + at(24, 132, 1.3, neem()) + pots +
-    at(224, 135, 1, well()) + at(234, 137, .5, drawer) + at(287, 117, .46, topman) + at(268.6, 128.6, .5, carrier) +
-    at(16, 156, .7, donkey(), '', false) + stack +
+    hut(180, 124, .8) + hut(198, 126, .66) + `<rect y="60" width="320" height="70" fill="${url('haze')}"/>` + house() + at(24, 132, 1.3, neem()) + pots +
+    at(224, 135, 1, well()) + at(236, 140, .5, drawer) + at(287, 117, .46, topman) + at(268.6, 128.6, .5, carrier) +
+    at(122, 141, .55, donkey(), '', false) + stack +
     `<g transform="translate(228 153)">${mudPit()}${at(-11, 3.4, .62, treaderA)}${at(12, 2.8, .6, treaderB)}<g transform="translate(0 2.2)">${mudFront}</g></g>` +
-    bricks + brick(304, 176, '#8A5634') + brick(306, 181, '#8A5634') + at(290, 174, .72, moulder) +
-    chicken(276, 192, 1.3, ['#F2EDE4', '#3A3A3A'], true, 'd0') +
+    bricks + brick(300, 164, '#8A5634') + brick(303, 168, '#8A5634') + at(287, 158, .66, moulder) +
+    chicken(309, 192, 1.3, ['#F2EDE4', '#3A3A3A'], true, 'd0') +
     '</svg>';
 }
 
@@ -302,7 +316,7 @@ export function buloHouse(): string {
     `<linearGradient id="${Q}-lit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".78" stop-color="#3A1A08" stop-opacity="0"/><stop offset="1" stop-color="#3A1A08" stop-opacity=".28"/></linearGradient>` +
     `<radialGradient id="${Q}-pot" cx=".36" cy=".35" r=".75"><stop offset="0" stop-color="#E9A56C"/><stop offset=".55" stop-color="#C0683A"/><stop offset="1" stop-color="#7E3A1A"/></radialGradient></defs>`;
   return `<svg class="bhouse" viewBox="0 0 200 170" aria-hidden="true">` + defs +
-    `<ellipse cx="100" cy="${G + 1}" rx="92" ry="7" fill="rgba(60,34,14,.28)"/>` +
+    `<ellipse cx="116" cy="${G + 2}" rx="100" ry="7.4" fill="rgba(74,40,14,.22)"/><ellipse cx="100" cy="${G + 1}" rx="86" ry="4" fill="rgba(48,22,6,.3)"/>` +
     // the footing: a trench of trodden mud the house stands on, and the faint shape of the house to come
     `<path d="M18 ${G - 1} H182 L186 ${G + 4} Q100 ${G + 8} 14 ${G + 4} Z" fill="#8E5A34"/><path d="M18 ${G - 1} H182" stroke="#6B3E20" stroke-width="1.2"/>` +
     `<path class="plan" d="M24 ${G} V78 H176 V${G} M82 ${G} V118 Q100 100 118 118 V${G}"/>` +
