@@ -14,6 +14,7 @@ import { bootArt4 } from './art4';
 import { react, restScene, bowl2 } from './rest';
 import { moreGames } from './games2';
 import { buloHouse } from './sc-bulo';
+import { tukPot } from './sc-tukwane';
 import { pickRhythm, playRhythm, playSigh } from './band';
 import * as KL from './kalangu';
 import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } from './kamun';
@@ -498,7 +499,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           var pool = shuffle(w.split('').concat(shuffle('BDEGHKLMPRT'.split('').filter(function (x) { return w.indexOf(x) < 0; })).slice(0, 2)));
           pad.innerHTML = '';
           pool.forEach(function (L) {
-            var b = h('<button type="button" class="pot2">' + KART.pot(L) + '</button>');
+            var b = h('<button type="button" class="pot2">' + tukPot(L) + '</button>');
             b.onclick = function () {
               if (b.disabled || run.dead || busy) return;
               if (L === w[li]) {
@@ -506,7 +507,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
                 var br = io.rect(b), sr = io.rect(slot);
                 b.style.setProperty('--tx', (sr.left + sr.width / 2 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (sr.top + sr.height / 2 - (br.top + br.height / 2)) + 'px');
                 b.classList.add('fly');                                 // the pot lifts off its place into the box
-                run.later(560, function () { slot.innerHTML = '<span class="mp">' + KART.pot(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
+                run.later(560, function () { slot.innerHTML = '<span class="mp">' + tukPot(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
                 if (li >= w.length) { busy = true; run.later(700, function () { run.good(top.querySelector('.spslots')); react(run.scr, 'cheer'); words++; }); nextWord(); }
               } else {
                 // a wrong pot cracks: a crash, the word is marked wrong, and on to the next word
