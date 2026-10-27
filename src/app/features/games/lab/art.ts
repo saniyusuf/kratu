@@ -204,8 +204,8 @@ export function bootArt(): any {
       '<g class="paddle"><path d="M150 14 L182 44" stroke="#7A4A22" stroke-width="2.6" stroke-linecap="round"/><path d="M150 14 L182 44" stroke="#C08A56" stroke-width=".8" stroke-linecap="round" opacity=".6"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/></g>' +
       /* the hull sits in the river: below the waterline it is seen through blue water, with a bright line where it cuts the surface */
       '<path d="M8 43 Q110 57 212 43 Q207 46 200 48 Q110 62 20 48 Q13 46 8 43 Z" fill="url(#kc-sub)"/><path d="M8 43 Q110 57 212 43" stroke="#E9FBFF" stroke-width="1.4" fill="none" opacity=".75"/>' +
-      '<rect x="56" y="29" width="108" height="22" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.4"/><path d="M58 31 H162" stroke="#fff" stroke-width="1" opacity=".5"/><circle cx="61" cy="40" r="1.4" fill="#7A4A22"/><circle cx="159" cy="40" r="1.4" fill="#7A4A22"/>' +
-      '<text x="110" y="47" text-anchor="middle" class="tw">' + w + '</text></svg>';
+      '<rect x="44" y="18" width="132" height="34" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.6"/><path d="M47 20.4 H173" stroke="#fff" stroke-width="1.2" opacity=".5"/><circle cx="49.5" cy="35" r="1.6" fill="#7A4A22"/><circle cx="170.5" cy="35" r="1.6" fill="#7A4A22"/>' +
+      '<text x="110" y="46.5" text-anchor="middle" class="tw">' + w + '</text></svg>';
   };
   /* a clay pot: thick rim, incised band, speckled fired clay, a soft shine, the letter in white chalk */
   A.pot = function (L) {

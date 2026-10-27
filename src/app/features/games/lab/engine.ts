@@ -448,7 +448,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var R = shuffle([['cat', ['CAT', 'CAR', 'CUP', 'COT', 'CAP']], ['dog', ['DOG', 'DIG', 'LOG', 'FOG', 'DOT']], ['sun', ['SUN', 'BUN', 'SUB', 'RUN', 'SUM']], ['bus', ['BUS', 'BUT', 'BUN', 'BUD', 'BUG']], ['cup', ['CUP', 'CAP', 'CUT', 'PUP', 'CUB']]]), r = 0, got = 0, busy = false;
         /* five canoes at once (Sani 2026-10-25: "no more than 5, but on the water"): each lane keeps to open water, and a
            canoe fades in and out where the river meets a bank, so none is ever seen on the sand (top, from, to, seconds) */
-        var LANES = [[30.5, -26, 100, 27, 0, .8], [30.5, -26, 100, 27, .5, .8], [37, -12, 88, 22, .2, .87], [43.5, 20, 64, 15, .6, .94], [50, 31, 46, 11, .35, 1]];   // the last number: further canoes are smaller (Sani 2026-10-27, realism)
+        var LANES = [[30.5, -26, 100, 27, 0, .92], [30.5, -26, 100, 27, .5, .92], [37, -12, 88, 22, .2, .95], [43.5, 20, 64, 15, .6, .97], [50, 31, 46, 11, .35, 1]];   // the last number: further canoes are smaller (Sani 2026-10-27, realism)
         var bank = h('<div class="bank2"><img alt=""></div>'), river = h('<div class="canal2"></div>');
         run.scr.appendChild(h('<div class="kwstand" aria-hidden="true"><i></i><i></i><b></b></div>'));   // the picture's board stands on two posts at the water's edge
         var life = h('<div class="riverlife"><span class="fisher">' + fisherman() + '</span>' + [0, 1, 2].map(function (k) { return '<span class="leap l' + k + '">' + leapFish() + '</span>'; }).join('') + '</div>');

@@ -60,3 +60,5 @@
 .glab .scr.kwale .kwstand i::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2.2cqw;background:linear-gradient(180deg,rgba(34,112,159,.15),rgba(34,112,159,.7));border-radius:0 0 .2cqw .2cqw}
 .glab .scr.kwale .kwstand i::after{content:"";position:absolute;left:50%;bottom:1.9cqw;width:3.4cqw;height:.8cqw;translate:-50% 50%;border-radius:50%;border:.18cqw solid rgba(233,251,255,.8)}
 .glab .scr.kwale .kwstand b{position:absolute;left:12%;right:12%;top:3cqw;height:.9cqw;background:linear-gradient(180deg,#8E5A2C,#5A3416);border-radius:.2cqw}
+/* the word on each canoe's plank is big enough to read on a 7-inch tablet (lead 2026-10-27: never smaller than before) */
+.glab .gbox .scr.kwale .canoe3 .tw{font-size:31px!important;letter-spacing:3px}
