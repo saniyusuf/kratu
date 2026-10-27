@@ -205,8 +205,8 @@ export function tukwaneScene(): string {
   let rows = '';
   const R1 = [['tulu', 'pot'], ['tukunya', 'raw'], ['tulu', 'raw'], ['tukunya', 'pot'], ['tulu', 'blk'], ['tukunya', 'raw'], ['tulu', 'pot'], ['tukunya', 'blk']];
   const dry = (t, f) => shadow(t === 'tulu' ? 5.6 : 6.4, .8) + pot(t, url(f));
-  R1.concat(R1).forEach(([t, f], i) => { rows += at(70 + i * 11.6 + (i % 3) * 1.4, 122.8, .5, dry(t, f)); });
-  [['tukunya', 'pot'], ['tulu', 'raw'], ['tukunya', 'raw'], ['tulu', 'pot'], ['tukunya', 'blk'], ['tulu', 'pot'], ['tukunya', 'raw'], ['tulu', 'blk'], ['tukunya', 'pot']].forEach(([t, f], i) => { rows += at(76 + i * 21.4, 128.6, .58, dry(t, f)); });
+  R1.concat(R1).forEach(([t, f], i) => { rows += at(70 + i * 11.6 + (i % 3) * 1.4, 125.4, .5, dry(t, f)); });
+  [['tukunya', 'pot'], ['tulu', 'raw'], ['tukunya', 'raw'], ['tulu', 'pot'], ['tukunya', 'blk'], ['tulu', 'pot'], ['tukunya', 'raw'], ['tulu', 'blk'], ['tukunya', 'pot']].forEach(([t, f], i) => { rows += at(76 + i * 21.4, 130.6, .58, dry(t, f)); });
 
   const sky = `<rect width="320" height="200" fill="${url('sky')}"/>` +
     `<circle cx="50" cy="42" r="26" fill="${url('sun')}"/><circle cx="50" cy="42" r="7.6" fill="#FFF4CC"/>` +
@@ -258,7 +258,7 @@ export function tukwaneScene(): string {
     hut(16, 100, 1.2) + hut(46, 98, .9) + `<g transform="translate(298 120) scale(1.7 1.36)">${baobab()}</g>` +
     `<rect y="40" width="320" height="78" fill="${url('haze')}"/>` + wall + hut(288, 117, .8) + ground +
     rows + at(297, 134, .85, fireHeap()) + at(17, 130, .95, donkey()) + at(45, 137, .8, carrier) + clay + at(46, 154, .6, shadow(6, .8) + pot('tulu', url('blk'), '#C9A27A')) +
-    at(264, 133, .48, boy) + `<g transform="translate(281 148) scale(.7) translate(-156 -138)">${workA}</g>` + at(281, 148, .7 * .78, potterA) +
+    at(273, 133, .48, boy) + `<g transform="translate(281 148) scale(.7) translate(-156 -138)">${workA}</g>` + at(281, 148, .7 * .78, potterA) +
     `<g transform="translate(305 171) scale(.92) translate(-298 -159)">${workB}</g>` + at(305, 171, .92 * .96, potterB) +
     chicken(14, 178, 1.6, ['#F2EDE4', '#3A3A3A'], false, 'd0') + chicken(34, 190, 1.35, ['#A8562A', '#2E4A2A'], true, 'd1') + chicken(288, 194, 1.5, ['#C9772E', '#5A2A1A'], true, 'd2') +
     '</svg>';
