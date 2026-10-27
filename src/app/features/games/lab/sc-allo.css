@@ -28,10 +28,7 @@
 @keyframes al4-peck{0%,55%,100%{transform:none}65%,80%{transform:rotate(28deg)}}
 .glab .gbg .al4 .x-birds{animation:al4-fly 14s linear infinite}
 @keyframes al4-fly{from{transform:translate(-90px,8px)}to{transform:translate(260px,-14px)}}
-.glab .gbg .al4 .x-crown{animation:al4-crown 6s ease-in-out infinite alternate}
-@keyframes al4-crown{to{transform:rotate(.8deg)}}
-.glab .gbg .al4 .x-cloud{animation:al4-drift 40s linear infinite alternate}
-@keyframes al4-drift{to{transform:translateX(26px)}}
+/* r5: the neem's sway and the cloud drift were too slight to see on a tablet; dropped for cheap tablets */
 
 /* cheer: the children raise their boards high and smile, the malam nods, the goat lifts its head */
 .glab .gbg.cheer .al4 .x-lift{animation:al4-lift 2.5s ease-in-out both}
@@ -64,9 +61,9 @@
 .glab .scr.allog .al4b :is(.al4b-buta,.al4b-tilt,.al4b-pour,.al4b-drops circle,.al4b-wet,.al4b-runs path,.al4b-ink,.al4b-rag){transform-box:fill-box}
 .glab .scr.allog .al4b .al4b-pen{opacity:0}
 .glab .scr.allog .al4b-buta,.glab .scr.allog .al4b-pour,.glab .scr.allog .al4b-drops circle,.glab .scr.allog .al4b-rag,.glab .scr.allog .al4b-runs,.glab .scr.allog .al4b-wet{opacity:0}
-/* writing: each pen segment appears as the pen passes it */
-.glab .scr.allog .allow2.writing .al4b-s{animation:al4b-st var(--dur) linear var(--del) both}
-@keyframes al4b-st{from{opacity:0}to{opacity:1}}
+/* writing: each pen segment appears as the pen passes it (a transition, so nothing lingers once it is written) */
+.glab .scr.allog .al4b-s{opacity:0}
+.glab .scr.allog .allow2.writing .al4b-s{opacity:1;transition:opacity var(--dur) linear var(--del)}
 /* washing (2.2s) */
 .glab .scr.allog .allow2.washing .al4b-buta{animation:al4b-buta 1.5s ease-in-out both}
 @keyframes al4b-buta{0%{opacity:0;transform:translate(20px,-14px)}12%,70%{opacity:1;transform:none}100%{opacity:0;transform:translate(20px,-14px)}}
@@ -94,6 +91,6 @@
 @keyframes al4b-rag{0%,34%{opacity:0;transform:translate(-30px,0)}40%{opacity:1;transform:none}52%{opacity:1;transform:translate(240px,20px) rotate(4deg)}63%{opacity:1;transform:translate(10px,120px)}75%{opacity:1;transform:translate(250px,150px) rotate(-4deg)}86%,100%{opacity:0;transform:translate(300px,170px)}}
 @media (prefers-reduced-motion: reduce){
   .glab .scr.allog .al4b *{animation:none!important}
-  .glab .scr.allog .allow2.writing .al4b-s{opacity:1}
+  .glab .scr.allog .allow2.writing .al4b-s{opacity:1;transition:none}
   .glab .scr.allog .allow2.washing .al4b-ink{opacity:0}
 }

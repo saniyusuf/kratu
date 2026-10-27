@@ -16,8 +16,10 @@ import { arewaCap } from './capsArewa';
 const SK = ['#7A4A26', '#5E3A1C', '#8B5A2B', '#6B4022', '#9A6436'];
 const lg = (id, ...c) => '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' + c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
 const zanko = (x0, x1, y, h = 4) => { let s = ''; for (let x = x0; x <= x1; x += 7) s += '<path d="M' + x + ' ' + y + ' l1.3 -' + h + ' l1.3 ' + h + ' Z"/>'; return s; };
-const relief = (x, y, s = 1) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="none" stroke="#FFF1D6" stroke-width=".55" opacity=".85"><path d="M-5 0 q5 -5 10 0 q-5 5 -10 0 Z"/><circle r="1.2"/><path d="M-7 5 l3.5 -2 l3.5 2 l3.5 -2 l3.5 2"/></g>';
-const cloud = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-cloud" fill="#fff" opacity=".85"><ellipse rx="12" ry="3"/><ellipse cx="7" cy="-1.6" rx="7" ry="3.4"/><ellipse cx="-5" cy="-1" rx="5" ry="2.6"/></g></g>';
+/* zanen dagi: the Hausa interlaced knot in raised plaster, drawn once (defs) and placed with <use> */
+const DAGI = '<path id="al4-dagi" d="M0 -5.6 Q3.2 -2.2 0 0 Q-3.2 -2.2 0 -5.6 Z M5.6 0 Q2.2 3.2 0 0 Q2.2 -3.2 5.6 0 Z M0 5.6 Q-3.2 2.2 0 0 Q3.2 2.2 0 5.6 Z M-5.6 0 Q-2.2 -3.2 0 0 Q-2.2 3.2 -5.6 0 Z M-3.9 -3.9 H3.9 V3.9 H-3.9 Z M-8 7.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4" fill="none" stroke-linejoin="round"/>';
+const relief = (x, y, s = 1) => '<use href="#al4-dagi" transform="translate(' + x + ' ' + (y - 1) + ') scale(' + (s * .8).toFixed(2) + ')"/>';
+const cloud = (x, y, s) => '<path transform="translate(' + x + ' ' + y + ') scale(' + s + ')" d="M-12 0 Q-12 -1.6 -8.4 -2 Q-8 -3.8 -4 -3.4 Q-1 -5.4 3 -4.6 Q7 -6 11 -3 Q13 -1.2 12 0 Q0 2.4 -12 0 Z" fill="#fff" opacity=".8"/>';
 
 /* ---------------- a head, centred on its own origin, radius 5.2 ---------------- */
 function head(o) {
@@ -49,10 +51,11 @@ function head(o) {
 let bn = 0;
 function allo(write) {
   const w = (write || 3);
-  let ink = ''; for (let k = 0; k < w; k++) ink += '<path d="M-3.6 ' + (-13.6 + k * 2.3) + ' q.8 -.9 1.6 0 t1.6 0 q.4 -.8 1.2 -.3 t1.6 .1 q.6 -.6 1.2 0" stroke="#24180E" stroke-width=".42" fill="none" stroke-linecap="round"/>';
-  return '<path d="M-1.6 -16.6 v-1.9 q1.6 -1.7 3.2 0 v1.9 Z" fill="#B3874F" stroke="#6E4A24" stroke-width=".35"/>' +
-    '<path d="M-5.4 -16.6 h10.8 v11 q0 1 -1 1 h-8.8 q-1 0 -1 -1 Z" fill="#C9A272" stroke="#6E4A24" stroke-width=".45"/>' +
-    '<path d="M-4.4 -15.6 h8.8 v9.2 h-8.8 Z" fill="#E9D8B4" opacity=".75"/><path d="M2.4 -15.6 l2 0 l0 9.2 l-5 0 Z" fill="#000" opacity=".06"/>' + ink;
+  let ink = ''; for (let k = 0; k < w; k++) { const y = (-13.2 + k * 2.2).toFixed(1);
+    ink += 'M3.6 ' + y + ' h-1.1 v-1.1 m-.45 1.1 q-.55 .75 -1.1 0 h-.7 m-.35 0 v-.95 m-.3 .95 q-.5 -.85 -1.2 0 h-1.1 m.9 -1.5 h.35 m1.9 -.1 h.3 '; }
+  return '<path d="M-1.7 -16.3 Q-1.9 -19.2 0 -19.4 Q1.9 -19.2 1.7 -16.3 H4.8 Q5.5 -16.3 5.5 -15.6 V-6.4 Q5.5 -4.8 3.9 -4.8 H-3.9 Q-5.5 -4.8 -5.5 -6.4 V-15.6 Q-5.5 -16.3 -4.8 -16.3 Z" fill="#B88A52"/>' +
+    '<path d="M-4.6 -15.4 Q0 -15.9 4.6 -15.4 Q4.9 -10.6 4.5 -5.9 Q0 -5.5 -4.5 -5.9 Q-4.9 -10.6 -4.6 -15.4 Z" fill="#E6D3AA"/><path d="M5.5 -15.6 V-6.4 Q5.5 -4.8 3.9 -4.8 H1 Q4.4 -6 4.4 -15.9 Z" fill="#5A3818" opacity=".28"/>' +
+    '<circle cy="-17.6" r=".45" fill="#3A2210"/><path d="' + ink + '" stroke="#24180E" stroke-width=".4" fill="none" stroke-linecap="round"/>';
 }
 function kid(o) {
   const sk = SK[o.skin % SK.length], g = o.girl;
@@ -94,13 +97,21 @@ function malam() {
 
 /* ---------------- animals and things ---------------- */
 const goat = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-goat">' +
-  '<ellipse cx="0" cy=".6" rx="11" ry="1.6" fill="rgba(40,24,10,.22)"/>' +
-  '<path d="M-9 0 Q-10 -7 -3 -7.6 Q5 -8 8 -4 Q9.6 -1 8 0 Z" fill="#F2EADB"/><path d="M-6 -6.6 Q-1 -9 4 -6.2 Q0 -4 -6 -6.6 Z" fill="#7A4E2C"/>' +
-  '<path d="M-6 0 q-1 -2 1 -2.4 q3 0 4 2.4 Z M2 0 q0 -2.2 3 -2 q2 .6 1.4 2 Z" fill="#E2D6C0"/><path d="M-9 -3 q-2.6 -1 -2.4 -3.4" stroke="#F2EADB" stroke-width="1" fill="none" stroke-linecap="round"/>' +
-  '<g class="x-gh"><path d="M6 -5 Q8 -11 11 -12.4 Q14 -12.6 14.6 -10 Q14.6 -7.6 12.6 -7 Q10 -6 9 -3.6 Z" fill="#F2EADB"/><path d="M11 -12.2 Q9.6 -16 7 -16.6 M12 -12.4 Q11.4 -16.4 9 -17.4" stroke="#8A7458" stroke-width=".8" fill="none" stroke-linecap="round"/>' +
-  '<path d="M10.6 -11 Q8 -10.6 7.4 -8.6 Q9.6 -9.4 10.8 -10.2 Z" fill="#7A4E2C"/><circle cx="12.6" cy="-10.6" r=".5" fill="#1A0E06"/><path d="M13.6 -7.4 q.2 2.2 -.8 3" stroke="#D8CCB4" stroke-width=".8" fill="none"/></g></g></g>';
-const hen = (x, y, s, c = '#B5532A', k = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-hen' + k + '"><ellipse cy=".4" rx="4" ry=".8" fill="rgba(40,24,10,.2)"/><path d="M-4 -3 Q-4.4 -6.6 -2 -5.4 Q0 -4.4 2 -5 L3.4 -5.6 Q4.6 -4 3.4 -2.4 Q1 0 -2 -.6 Q-4 -1.4 -4 -3 Z" fill="' + c + '"/><path d="M-1.6 -3.4 q1.4 1 3 0" stroke="rgba(0,0,0,.25)" stroke-width=".4" fill="none"/>' +
-  '<path d="M3.4 -5.6 l.6 -1 l.5 .8 Z" fill="#D32F2F"/><path d="M4.2 -4.8 l1 .4 l-1 .3 Z" fill="#E8B23A"/><path d="M-.6 -.4 v1 M.8 -.4 v1" stroke="#C99A3A" stroke-width=".35"/></g></g>';
+  '<ellipse cx="0" cy=".5" rx="11.5" ry="1.7" fill="rgba(40,24,10,.3)"/>' +
+  '<path d="M-9.4 -.2 Q-11.2 -3.4 -9.2 -6.4 Q-6.4 -8.8 -.6 -8.4 Q4.6 -8.6 7.4 -6.6 Q9.6 -4.4 9 -1.2 Q8.4 .4 6 .3 L-7.6 .4 Q-9 .4 -9.4 -.2 Z" fill="#9A4A24"/>' +
+  '<path d="M-8.6 -6.2 Q-4 -9 2 -8.2 Q-3 -7.4 -8.6 -5 Z" fill="#C06A38" opacity=".7"/><path d="M-9.6 -1.6 Q0 .2 9 -1.6 Q8.6 .4 6 .3 L-7.6 .4 Q-9.2 .3 -9.6 -1.6 Z" fill="#5A2810" opacity=".45"/>' +
+  '<path d="M-7.6 -1 Q-8 -4.6 -4.4 -5 Q-2 -4.6 -2.2 -1.2" stroke="#7A3518" stroke-width=".6" fill="none"/><path d="M3.6 .3 Q6.6 -.6 10.6 .1 Q11.4 .6 10.4 1 H3.8 Z" fill="#7E3A1A"/><path d="M10.4 .2 l1 .2 v.6 h-1 Z" fill="#2A1A10"/>' +
+  '<path d="M-9.4 -5.8 Q-11.2 -7 -10.6 -9" stroke="#7A3518" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+  '<g class="x-gh"><path d="M5 -6.6 Q6.6 -11.4 9.6 -13 L12.2 -11.6 Q10.4 -8.6 9.2 -4.4 Z" fill="#9A4A24"/><path d="M9.4 -4.6 Q10.2 -8.6 12.2 -11.6 L12.8 -10.8 Q11.2 -8 10.6 -4.4 Z" fill="#5A2810" opacity=".35"/>' +
+  '<path d="M9.4 -13.4 Q12.2 -15 14.6 -12.8 L16.6 -9.6 Q16.8 -8.2 15.4 -8 Q13.6 -8.2 12.6 -9.8 Q11 -10.2 9.6 -11.6 Z" fill="#A8552A"/><path d="M14.4 -10.6 L16.6 -9.6 Q16.8 -8.2 15.4 -8 Q13.6 -8.2 13 -9.6 Z" fill="#6E3016" opacity=".5"/>' +
+  '<path d="M11 -12.4 Q8.4 -12.4 7.4 -9.4 Q9.8 -9.8 11.4 -11.2 Z" fill="#7A3518"/><path d="M10.8 -13.6 Q10.4 -16.4 8.2 -17.4 M12 -13.8 Q12 -16.6 10 -18" stroke="#4A3626" stroke-width=".8" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="13" cy="-11.6" r=".5" fill="#140A04"/><circle cx="15.8" cy="-8.8" r=".3" fill="#2A140A"/><path d="M14.6 -8 q-.1 1.6 -.9 2.2" stroke="#6E3016" stroke-width=".6" fill="none"/></g></g></g>';
+const hen = (x, y, s, c = '#B5532A', k = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-hen' + k + '"><ellipse cy=".4" rx="4.2" ry=".8" fill="rgba(40,24,10,.25)"/>' +
+  '<path d="M-.8 -1 v1.4 h-.8 M1 -1 v1.4 h.8" stroke="#C99A3A" stroke-width=".35" fill="none"/>' +
+  '<path d="M-4.4 -3.6 Q-5.4 -6.6 -4 -8.4 Q-3.2 -6.4 -1.6 -5.6 Q.8 -5 2.2 -5.8 Q2.2 -7.6 3.4 -7.8 Q4.6 -7.8 4.6 -6.4 L5.6 -5.8 L4.6 -5.3 Q4.6 -3.6 3.4 -2.2 Q1.4 -.6 -1.4 -.9 Q-3.8 -1.6 -4.4 -3.6 Z" fill="' + c + '"/>' +
+  '<path d="M-4 -8.4 Q-2.6 -8.6 -2.6 -6.8 M-4.6 -7.4 Q-5.8 -7.6 -5.6 -6" stroke="#2A1A10" stroke-width=".5" fill="none" stroke-linecap="round" opacity=".7"/>' +
+  '<path d="M-2.2 -4.4 Q.4 -5 2.2 -3.8 Q.6 -1.8 -2 -2.6 Z" fill="#000" opacity=".18"/><path d="M-4 -2.2 Q0 -.4 3.4 -2.2 Q1.4 -.6 -1.4 -.9 Q-3.4 -1.4 -4 -2.2 Z" fill="#000" opacity=".15"/>' +
+  '<path d="M2.8 -7.6 l.3 -1 l.5 .6 l.4 -.7 l.3 .9 Z M4.4 -5.2 q.4 1 -.2 1.3 q-.4 -.6 .2 -1.3 Z" fill="#D32F2F"/><path d="M4.6 -6.2 l1 .4 l-1 .2 Z" fill="#E8B23A"/><circle cx="3.7" cy="-6.6" r=".28" fill="#140A04"/></g></g>';
 const pot = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="7" ry="1.3" fill="rgba(40,24,10,.25)"/><path d="M-3 -12 Q-3.4 -10 -5.6 -8.6 Q-8 -5 -5.6 -1.6 Q0 1.2 5.6 -1.6 Q8 -5 5.6 -8.6 Q3.4 -10 3 -12 Z" fill="#B0603A"/>' +
   '<path d="M2 -11 Q4 -9 6 -7 Q7.4 -3.6 5 -1.4 Q3 -.4 1 0 Q5 -4 2 -11 Z" fill="#000" opacity=".15"/><path d="M-6.2 -6 Q0 -4 6.2 -6" stroke="#E6B080" stroke-width=".4" fill="none"/><path d="M-6.4 -4.8 q1 -.8 2 0 t2 0 t2 0 t2 0 t2 0 t2 0" stroke="#7A3A1E" stroke-width=".35" fill="none"/>' +
   '<ellipse cy="-12" rx="3.4" ry=".9" fill="#8A4426"/><path d="M-5 -13.6 Q0 -10 5 -13.6 Q0 -15.2 -5 -13.6 Z" fill="#E2B85A"/><path d="M-5 -13.6 Q0 -10 5 -13.6" stroke="#A8823A" stroke-width=".4" fill="none"/></g>';
@@ -114,9 +125,11 @@ const bird = (x, y, s) => '<path transform="translate(' + x + ' ' + y + ') scale
 export function alloScene(): string {
   // the neem: a wide dark crown of many leaf clusters over the school, the trunk at the right edge
   let leaves = ''; const L = [[214, 30, 20, 13], [238, 18, 24, 15], [266, 10, 26, 16], [296, 14, 26, 17], [318, 26, 18, 14], [226, 48, 16, 10], [252, 40, 22, 13], [282, 36, 24, 14], [310, 48, 16, 12], [200, 42, 12, 8], [262, 58, 14, 7], [292, 58, 14, 8]];
-  L.forEach(([x, y, rx, ry]) => { leaves += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="#3E6B2E"/>'; });
-  let hi = ''; [[232, 12, 14, 7], [262, 4, 16, 7], [296, 8, 14, 7], [246, 32, 12, 6], [280, 28, 14, 6], [214, 24, 10, 5], [310, 38, 9, 5]].forEach(([x, y, rx, ry]) => { hi += '<ellipse cx="' + x + '" cy="' + y + '" rx="' + rx + '" ry="' + ry + '" fill="#5B8C3E"/>'; });
-  let speck = ''; for (let i = 0; i < 46; i++) { const x = 196 + (i * 37) % 128, y = 6 + (i * 23) % 56; speck += '<path d="M' + x + ' ' + y + ' q1.6 -1.6 3 0 q-1.6 1 -3 0 Z" fill="' + (i % 3 ? '#4C7D34' : '#6E9E48') + '"/>'; }
+  const ell = (x, y, rx, ry) => 'M' + (x - rx) + ' ' + y + ' a' + rx + ' ' + ry + ' 0 1 0 ' + 2 * rx + ' 0 a' + rx + ' ' + ry + ' 0 1 0 ' + -2 * rx + ' 0 Z ';
+  leaves = '<path d="' + L.map(([x, y, rx, ry]) => ell(x, y, rx, ry)).join('') + '" fill="#3E6B2E"/>';
+  let hi = '<path d="' + [[232, 12, 14, 7], [262, 4, 16, 7], [296, 8, 14, 7], [246, 32, 12, 6], [280, 28, 14, 6], [214, 24, 10, 5], [310, 38, 9, 5]].map(([x, y, rx, ry]) => ell(x, y, rx, ry)).join('') + '" fill="#5B8C3E"/>';
+  let sp1 = '', sp2 = ''; for (let i = 0; i < 46; i++) { const x = 196 + (i * 37) % 128, y = 6 + (i * 23) % 56, d = 'M' + x + ' ' + y + ' q1.6 -1.6 3 0 q-1.6 1 -3 0 Z'; if (i % 3) sp1 += d; else sp2 += d; }
+  const speck = '<path d="' + sp1 + '" fill="#4C7D34"/><path d="' + sp2 + '" fill="#6E9E48"/>';
   const kids = [
     // back row
     [222, 143, .84, { skin: 2, girl: 1, hat: 'hijab', hatc: '#F2C94C', robe: '#F2C94C', robe2: '#D9A92C', ink: 3, cls: 'k1' }],
@@ -129,7 +142,8 @@ export function alloScene(): string {
   const W = 320, H = 200;
   return '<svg class="scene al4" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('al4-sky', '#8FCBEA', '#CDEAF0', '#F7E8C4') + lg('al4-wall', '#CE8650', '#B4693A') + lg('al4-mos', '#E2B27A', '#C98E56') + lg('al4-g', '#E6C892', '#D7B07A', '#C99C64') +
-    lg('al4-trunk', '#6B4A2E', '#4A3020') +
+    lg('al4-trunk', '#6B4A2E', '#4A3020') + DAGI +
+    '<pattern id="al4-weave" width="3" height="2" patternUnits="userSpaceOnUse"><rect width="3" height="2" fill="#D6AE66"/><path d="M0 0 H1.5 V1 H0 Z M1.5 1 H3 V2 H1.5 Z" fill="#C49650"/><path d="M0 .05 H3" stroke="#E8C88A" stroke-width=".2"/></pattern>' +
     '<radialGradient id="al4-shade" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3A2412" stop-opacity=".3"/><stop offset=".7" stop-color="#3A2412" stop-opacity=".16"/><stop offset="1" stop-color="#3A2412" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="al4-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".45" stop-color="#FFE7A0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></radialGradient></defs>' +
     '<rect width="' + W + '" height="' + H + '" fill="url(#al4-sky)"/><circle cx="58" cy="40" r="26" fill="url(#al4-sun)"/><circle cx="58" cy="40" r="7" fill="#FFF3C6"/>' +
@@ -146,7 +160,8 @@ export function alloScene(): string {
     // the compound wall, red earth, zanko horns, white relief, the zaure entrance
     '<path d="M0 118 V98 H320 V118 Z" fill="url(#al4-wall)"/><g fill="#B4693A">' + zanko(0, 318, 98) + '</g>' +
     '<path d="M126 118 V92 H156 V118 Z" fill="#C27A44"/><g fill="#A9612F">' + zanko(126, 154, 92, 5) + '</g><path d="M134 118 V106 Q141 98 148 106 V118 Z" fill="#3A1E0C"/><path d="M131.6 118 V105.4 Q141 95 150.4 105.4 V118" stroke="#FFF1D6" stroke-width=".8" fill="none"/>' +
-    relief(141, 98.4, .7) + relief(16, 107) + relief(60, 107) + relief(104, 107) + relief(178, 109) + relief(222, 107) +
+    '<g stroke="#5E2E12" stroke-width=".7" opacity=".22" transform="translate(.5 .6)">' + relief(141, 98.4, .7) + relief(16, 107) + relief(60, 107) + relief(104, 107) + relief(178, 109) + relief(222, 107) + '</g>' +
+    '<g stroke="#FFF1D6" stroke-width=".6" opacity=".8">' + relief(141, 98.4, .7) + relief(16, 107) + relief(60, 107) + relief(104, 107) + relief(178, 109) + relief(222, 107) + '</g>' +
     '<path d="M0 116 H320" stroke="#9A5A30" stroke-width="1" opacity=".6"/>' +
     // the ground and the neem's shade
     '<path d="M0 117 H320 V200 H0 Z" fill="url(#al4-g)"/>' +
@@ -162,8 +177,10 @@ export function alloScene(): string {
     // things by the tree: the clay water pot, the goat in the shade
     pot(190, 152, .95) + goat(190, 127, .8) +
     // the mat, the children with their boards, the malam
-    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="#D9B26A"/><g stroke="#B8893E" stroke-width=".5">' + [140, 144, 148, 152, 156, 160, 164, 168, 172, 176].map((y) => '<path d="M' + (208 - (y - 136) * .23).toFixed(1) + ' ' + y + ' H' + (314 + (y - 136) * .09).toFixed(1) + '"/>').join('') + '</g>' +
-    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="none" stroke="#8B5A2B" stroke-width=".9"/><path d="M226 136 L220 180 M266 136 L266 180 M302 136 L306 180" stroke="#A8762E" stroke-width="1.2" opacity=".55"/>' +
+    '<path d="M207 137.4 L315 137.4 L319.6 181.6 L196.6 181.6 Z" fill="rgba(60,36,12,.22)"/>' +
+    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="url(#al4-weave)"/>' +
+    '<path d="M207.1 143 L315.1 143 L315.4 146 L206.4 146 Z M202.6 167 L316.9 167 L317.2 170 L201.9 170 Z" fill="#8E2A1E" opacity=".55"/><path d="M206.4 146 L315.4 146 L315.5 147 L206.2 147 Z M201.9 170 L317.2 170 L317.3 171 L201.7 171 Z" fill="#1E140C" opacity=".4"/>' +
+    '<path d="M208 136 L314 136 L318 180 L198 180 Z" fill="none" stroke="#B08040" stroke-width="1.6" stroke-dasharray="1.2 .8"/>' +
     kids + '<g transform="translate(293 163)">' + malam() + '</g>' +
     tawada(272, 177) + tawada(207, 162) +
     sandal(204, 186, '#2F4F7F', -6) + sandal(212, 187, '#8E3B2A', 4) + sandal(220, 186.4, '#3A3A3A', -2) + sandal(228, 187, '#C2185B', 6) + sandal(236, 186.6, '#5D4037', -3) + sandal(284, 185.6, '#E8E0CC', 2) +
@@ -209,6 +226,11 @@ const LET = {
   Y: [62, ['M4 0 L31 50 L58 0', 'M31 50 V100']],
   Z: [58, ['M6 0 H54 L4 100 H56']],
 };
+/* a segment's path moved by (dx,dy), absolute M L Q only */
+function shift(sg, dx, dy) { const p = (q) => (q[0] + dx).toFixed(1) + ' ' + (q[1] + dy).toFixed(1);
+  const n = sg.d.match(/-?[\d.]+/g).map(Number), b = [n[n.length - 2], n[n.length - 1]];
+  if (/Q/.test(sg.d)) { const q = sg.d.split('Q')[1].trim().split(/\s+/).map(Number); return 'M' + p(sg.a) + ' Q' + p([q[0], q[1]]) + ' ' + p([q[2], q[3]]); }
+  return 'M' + p(sg.a) + ' L' + p(sg.b); }
 /* a stroke as its segments: [{d, a:[x,y], b:[x,y], len}] */
 function segs(d) {
   const t = d.match(/[MLHVQ]|-?[\d.]+/g); let i = 0, x = 0, y = 0; const out = [];
@@ -236,9 +258,11 @@ function board(word) {
   const GAP = 16, wid = W.reduce((s, c) => s + LET[c][0], 0) + GAP * (W.length - 1);
   const sc = Math.min(1.42, 350 / wid), x0 = 215 - wid * sc / 2, y0 = 262 - 50 * sc;
   // the wood: light board, grain running from the handle down, a knot, old wash stains, darker worn edges
-  let grain = '';
-  for (let k = 0; k < 26; k++) { const gx = 14 + k * 16 + rnd() * 8, w1 = 2 + rnd() * 5;
-    grain += '<path d="M' + gx.toFixed(1) + ' 0 Q' + (gx + w1).toFixed(1) + ' 120 ' + (gx - w1 * .6).toFixed(1) + ' 240 T' + (gx + w1 * .4).toFixed(1) + ' 450" stroke="' + (k % 3 ? '#B48550' : '#A2723F') + '" stroke-width="' + (.8 + rnd() * 1.8).toFixed(1) + '" opacity="' + (.18 + rnd() * .25).toFixed(2) + '" fill="none"/>'; }
+  // (r5) the grain lines merged into three paths by tone, for cheap tablets
+  const gr = ['', '', ''];
+  for (let k = 0; k < 26; k++) { const gx = 14 + k * 16 + rnd() * 8, w1 = 2 + rnd() * 5; rnd(); rnd();
+    gr[k % 3] += 'M' + gx.toFixed(1) + ' 0 Q' + (gx + w1).toFixed(1) + ' 120 ' + (gx - w1 * .6).toFixed(1) + ' 240 T' + (gx + w1 * .4).toFixed(1) + ' 450 '; }
+  const grain = '<path d="' + gr[0] + '" stroke="#A2723F" stroke-width="2.2" opacity=".3" fill="none"/><path d="' + gr[1] + '" stroke="#B48550" stroke-width="1.2" opacity=".3" fill="none"/><path d="' + gr[2] + '" stroke="#B48550" stroke-width="2" opacity=".22" fill="none"/>';
   const knot = '<g fill="none" stroke="#9A6A38" opacity=".45"><ellipse cx="352" cy="352" rx="9" ry="20"/><ellipse cx="352" cy="352" rx="15" ry="30" opacity=".6"/><ellipse cx="352" cy="352" rx="21" ry="42" opacity=".35"/></g><ellipse cx="352" cy="352" rx="4" ry="10" fill="#8A5A2C" opacity=".55"/>';
   const stains = '<g fill="#6B4A2A"><ellipse cx="120" cy="170" rx="70" ry="26" opacity=".06"/><ellipse cx="300" cy="330" rx="90" ry="30" opacity=".05"/><ellipse cx="200" cy="390" rx="120" ry="18" opacity=".05"/><path d="M60 300 q30 -6 60 0 t60 0" stroke="#4A3018" stroke-width="5" fill="none" opacity=".05"/></g>';
   // the word: per letter a little lean, rise and size; ink a little darker after each dip
@@ -253,7 +277,8 @@ function board(word) {
       keys.push([t - 70, m(ss[0].a), 1, true]);
       g += '<circle class="al4b-s" style="--del:' + t + 'ms;--dur:40ms" cx="' + (ss[0].a[0] + .6) + '" cy="' + (ss[0].a[1] - .6) + '" r="5" fill="#170C05" opacity=".9"/>';
       ss.forEach((sg) => { const dur = Math.round(22 + sg.len * .55);
-        g += '<g class="al4b-s" style="--del:' + t + 'ms;--dur:' + dur + 'ms"><path d="' + sg.d + '" stroke-width="6.5"/><path d="' + sg.d + '" transform="translate(2.4 -2.4)" stroke-width="6"/><path d="' + sg.d + '" transform="translate(4.6 -4.6)" stroke-width="5"/></g>';
+        // the slanted nib: three offset passes in ONE path (thick where the pen moves across the nib, thin along it)
+        g += '<path class="al4b-s" style="--del:' + t + 'ms;--dur:' + dur + 'ms" d="' + sg.d + ' ' + shift(sg, 2.4, -2.4) + ' ' + shift(sg, 4.6, -4.6) + '" stroke-width="5.8"/>';
         keys.push([t, m(sg.a), 1]); t += dur; keys.push([t, m(sg.b), 1]); });
       const e = ss[ss.length - 1].b; if (rnd() < .5) g += '<circle class="al4b-s" style="--del:' + (t - 20) + 'ms;--dur:40ms" cx="' + (e[0] + 1) + '" cy="' + (e[1] - 1) + '" r="3.8" fill="#1A0E06" opacity=".85"/>';
       tl.push([st, t]); t += 70;
