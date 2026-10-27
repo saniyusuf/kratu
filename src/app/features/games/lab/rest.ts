@@ -33,16 +33,19 @@ export function react(scr: HTMLElement, kind: 'cheer' | 'sad'): void {
 }
 
 /** Hanzarin kasuwa's calabash with the goods' photo standing in it, the photo filling its card edge to edge (Sani
- *  2026-10-25: "full container, no white border"); a thin wooden rim sits on top of the picture */
+ *  2026-10-25: "full container, no white border"). r5 realism: the card stands INSIDE the calabash: the back of the rim
+ *  and the dark hollow are behind it, the front lip and the gourd's belly in front of its foot; the gourd is lit from
+ *  the upper left with a pokerwork band, and its contact shadow sits right under it on the mat. */
 let bowlN = 0;
 export function bowl2(img: string): string {
   const id = 'rb-clip' + (++bowlN);
-  return '<svg viewBox="0 -34 100 104" class="art"><defs><clipPath id="' + id + '"><rect x="9" y="-33" width="82" height="66" rx="10"/></clipPath></defs>' +
-    '<ellipse cx="50" cy="64" rx="44" ry="5" fill="rgba(40,20,6,.35)"/>' +
-    '<path d="M6 30 Q10 64 50 64 Q90 64 94 30 Z" fill="url(#kc-gourd)"/><path d="M14 44 Q50 54 86 44" fill="none" stroke="#7A4A12" stroke-width="1.4" opacity=".6"/>' +
-    '<path d="M18 50 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4" fill="none" stroke="#5E3A0E" stroke-width="1" opacity=".5"/>' +
-    '<ellipse cx="50" cy="30" rx="44" ry="11" fill="#8A5A1E"/><ellipse cx="50" cy="30" rx="40" ry="9" fill="#3E2408"/>' +
-    '<rect x="9" y="-33" width="82" height="66" rx="10" fill="#3E2408"/>' +
-    '<image href="' + img + '" x="9" y="-33" width="82" height="66" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + id + ')"/>' +
-    '<rect x="9" y="-33" width="82" height="66" rx="10" fill="none" stroke="#6B4422" stroke-width="2.2"/></svg>';
+  return '<svg viewBox="0 -34 100 104" class="art"><clipPath id="' + id + '"><rect x="9" y="-33" width="82" height="73" rx="10"/></clipPath>' +
+    '<ellipse cx="50" cy="62.6" rx="40" ry="4.2" fill="rgba(40,20,6,.4)"/>' +
+    '<ellipse cx="50" cy="30" rx="44" ry="11" fill="#9A6424"/><ellipse cx="50" cy="30" rx="39.4" ry="8" fill="#3E2408"/>' +
+    '<image href="' + img + '" x="9" y="-33" width="82" height="73" preserveAspectRatio="xMidYMid slice" clip-path="url(#' + id + ')"/>' +
+    '<rect x="9" y="-33" width="82" height="73" rx="10" fill="none" stroke="#6B4422" stroke-width="2.2"/>' +
+    '<path d="M6 30 Q10 64 50 64 Q90 64 94 30 A44 11 0 0 1 6 30 Z" fill="url(#kc-gourd)"/>' +
+    '<path d="M6 30 A44 11 0 0 0 94 30 L89.4 30 A39.4 8 0 0 1 10.6 30 Z" fill="#C48A44"/><path d="M11 31.4 Q50 41.6 89 31.4" stroke="#F6D58E" stroke-width="1.1" fill="none" opacity=".75"/>' +
+    '<path d="M13 47 Q50 57 87 47 M17 52.4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l5 -4 l5 4 l3 -2.4" fill="none" stroke="#6A3E10" stroke-width="1.1" opacity=".55"/>' +
+    '<path d="M12 42 Q15 54 26 59 Q17 51 16.4 42.6 Z" fill="#FFF4D6" opacity=".3"/></svg>';
 }
