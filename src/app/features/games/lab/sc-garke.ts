@@ -92,9 +92,9 @@ export function garkeScene(): string {
   const herder = (x, y, s, sk, c, flip, cls = '') => person({ x, y, s, skin: sk, c, t: '#E9D9A6', cap: 'malafa', capc: '#D9B464', capc2: '#6B3A1E', al: 'staff', ar: 'down', flip, cls: 'x-w x-hr ' + cls,
     hl: '<path d="M-7.9 -36 L-6.8 1.4" stroke="#6B4422" stroke-width=".9" stroke-linecap="round"/>' });
   const drive = '<g class="gk-drive"><g class="x-du d2"><ellipse cx="16" cy="140" rx="30" ry="4" fill="url(#' + P + '-du)"/></g>' +
-    cowLive(-6, 140, .62, 'rb', 1, 'up', 'gk-wk') + cowLive(8, 141.4, .64, 'wf', 1, 'up', 'gk-wk b') + cowLive(21, 140, .6, 'gu', 1, 'up', 'gk-wk') + cowLive(34, 141.6, .62, 'wf', 1, 'up', 'gk-wk b') +
-    herder(50, 142, .42, 2, '#5D4A86', 1) + '</g>';
-  const oldMan = '<g transform="translate(298 140) scale(.42)"><g class="x-sit"><path d="M-10 0 H12 L13 1.4 H-11Z" fill="#B88B3A" opacity=".8"/>' +
+    cowLive(-8, 140, .8, 'rb', 1, 'up', 'gk-wk') + cowLive(10, 141.4, .82, 'wf', 1, 'up', 'gk-wk b') + cowLive(27, 140, .78, 'gu', 1, 'up', 'gk-wk') + cowLive(44, 141.6, .8, 'wf', 1, 'up', 'gk-wk b') +
+    herder(62, 142, .55, 2, '#5D4A86', 1) + '</g>';
+  const oldMan = '<g transform="translate(298 140) scale(.52)"><g class="x-sit"><path d="M-10 0 H12 L13 1.4 H-11Z" fill="#B88B3A" opacity=".8"/>' +
     person({ x: 0, y: 0, s: 1, skin: 4, dress: 'sit', c: '#E9E2D2', t: '#3F6E8C', cap: 'turban', capc: '#3F6E8C', beard: '#E8E4DC', al: 'front', ar: 'down', cls: 'x-w' }) + '</g></g>';
 
   // the right, beside the kraal: a hut, and the milk woman walking with her calabash
@@ -104,14 +104,14 @@ export function garkeScene(): string {
 
   // below the kraal on the right, the cattle being cattle: two bulls locking horns while a herder leans on his staff and
   // watches, an egret riding a cow's back, a girl milking, a boy leading a calf
-  const fight = '<g class="x-du d1"><ellipse cx="246" cy="152" rx="18" ry="3" fill="url(#' + P + '-du)"/></g>' +
-    '<g class="gk-butt l">' + cowLive(234, 153, 1.05, 'rb', 0, 'drink', 'gk-bull') + '</g><g class="gk-butt r">' + cowLive(259, 153.6, 1.05, 'wf', 1, 'drink', 'gk-bull') + '</g>' +
-    herder(280, 156, .58, 4, '#8A5A2E', 1);
-  const milking = '<g transform="translate(296 176)">' + cowLive(0, 0, .95, 'gu', 1, 'up', 'x-dr') +
+  const fight = '<g class="x-du d1"><ellipse cx="246" cy="152" rx="24" ry="3.6" fill="url(#' + P + '-du)"/></g>' +
+    '<g class="gk-butt l">' + cowLive(230, 153, 1.3, 'rb', 0, 'drink', 'gk-bull') + '</g><g class="gk-butt r">' + cowLive(261, 153.6, 1.3, 'wf', 1, 'drink', 'gk-bull') + '</g>' +
+    herder(284, 157, .72, 4, '#8A5A2E', 1);
+  const milking = '<g transform="translate(298 172) scale(1.25)">' + cowLive(0, 0, .95, 'gu', 1, 'up', 'x-dr') +
     '<g transform="translate(-4 0) scale(.5)"><g class="gk-milk">' + person({ x: 0, y: 0, s: 1, skin: 3, dress: 'sit', c: '#2E7D32', t: '#FFD54A', cap: 'kallabi', capc: '#FFD54A', capc2: '#2E7D32', al: 'front', ar: 'front', cls: 'x-w', flip: 1 }) + '</g></g>' +
     '<path d="M-12 0 Q-12.6 -3.4 -10 -3.6 Q-7.4 -3.4 -8 0Z" fill="#D9A55A"/><ellipse cx="-10" cy="-3.5" rx="2" ry=".5" fill="#FFFDF4"/>' +
     egret(4, -15, .32, 'gk-ride') + '</g>';
-  const lead = '<g transform="translate(200 186)"><g class="gk-lead">' + person({ x: 0, y: 0, s: .5, skin: 0, c: '#F4EBD0', t: '#C62828', cap: 'hula', capc: '#C62828', capc2: '#F4EBD0', al: 'out', ar: 'down', cls: 'x-w x-kid', flip: 1 }) +
+  const lead = '<g transform="translate(214 174) scale(1.4)"><g class="gk-lead">' + person({ x: 0, y: 0, s: .5, skin: 0, c: '#F4EBD0', t: '#C62828', cap: 'hula', capc: '#C62828', capc2: '#F4EBD0', al: 'out', ar: 'down', cls: 'x-w x-kid', flip: 1 }) +
     '<path d="M5.4 -8.4 Q11 -5 15.6 -7.4" stroke="#6B4422" stroke-width=".4" fill="none"/>' + calf(20, 0, .66, 'rb', 0) + '</g></g>';
 
   // the evening light over everything, warm at the bottom
