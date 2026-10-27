@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap, CAPS } from './capsArewa';
 /*
  * Kasuwar dabbobi (was Kasuwar shanu), drawn (Sani 2026-10-25: the same hand as Hawan Sallah; 2026-10-26: a mixed livestock
  * market, goats, rams, a few cattle, poultry as background life). Originally a big open cattle market in the morning, like
@@ -39,8 +40,9 @@ function arm(side, pose, col, sk, hold = '', w = 2.6) {
     '<circle cx="' + hx + '" cy="' + hy + '" r="1.2" fill="' + sk + '"/>' + hold + '</g></g>';
 }
 const CAP = {
-  hula: (c, c2) => '<path d="M-3.6 -32.8 Q-3.8 -37.8 0 -38 Q3.8 -37.8 3.6 -32.8 Z" fill="' + c + '"/><path d="M-3.3 -34.4 l.8 -.9 .8 .9 .8 -.9 .8 .9 .8 -.9 .8 .9 .8 -.9 .8 .9" stroke="' + c2 + '" stroke-width=".4" fill="none"/><path d="M-3.6 -32.8 H3.6" stroke="#000" stroke-opacity=".2" stroke-width=".4"/>',
-  zanna: (c) => '<path d="M-3.7 -32.6 L-3.3 -37.2 Q0 -38.6 3.7 -36.4 L3.7 -32.6 Q0 -33.6 -3.7 -32.6Z" fill="' + c + '"/><path d="M-3.3 -37.2 Q-.2 -35.2 3.7 -36.4" stroke="#000" stroke-opacity=".22" stroke-width=".45" fill="none"/>',
+  hula: (c, c2) => arewaCap('hula', 0, -32.7, 3.75, c, c2),
+  zanna: (c, c2, o) => arewaCap('zanna', 0, -32.7, 3.75, c, c2, '', o.capside || 1),
+  borno: (c, c2, o) => arewaCap('borno', 0, -32.7, 3.75, c, c2, o.capc3),
   turban: (c) => '<path d="M-3.4 -32.6 Q-5.6 -29 -4.2 -25.6" stroke="' + c + '" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M-4.1 -32.2 Q-4.8 -38.8 0 -39 Q4.8 -38.8 4.1 -32.2 Q2 -34.4 0 -34.2 Q-2 -34.4 -4.1 -32.2Z" fill="' + c + '"/><path d="M-3.8 -35.4 Q0 -37.8 3.8 -35.4 M-4 -33.6 Q0 -36.4 4 -33.6" stroke="#000" stroke-opacity=".13" stroke-width=".4" fill="none"/>',
   kallabi: (c, c2) => '<path d="M-4 -32 Q-4.6 -38.4 0 -38.6 Q4.6 -38.4 4 -32 Q2 -34.6 0 -34.4 Q-2 -34.6 -4 -32Z" fill="' + c + '"/><path d="M-2.2 -38 Q-5 -41.8 -1 -40.6 Q0 -43 1.2 -40.6 Q5 -41.8 2.2 -38Z" fill="' + c + '"/><path d="M-3.7 -34.8 Q0 -37.2 3.7 -34.8" stroke="' + c2 + '" stroke-width=".55" fill="none"/>',
   kube: (c) => '<path d="M-3.5 -33 Q-3.4 -36.4 0 -36.6 Q3.4 -36.4 3.5 -33Z" fill="' + c + '"/>',
@@ -58,7 +60,7 @@ const RIGF = '<g id="' + P + '-rf"><path d="M0 -27.2 Q3.4 -27 4.8 -26 L10.6 -2.2
 const WOMF = '<g id="' + P + '-wf"><path d="M0 -27 Q3.2 -26.8 4.4 -26 L5 -15.6 H0Z" fill="#000" opacity=".12"/><path d="M2.6 -15.6 Q1.8 -8 3 -1" stroke="#000" stroke-opacity=".15" stroke-width=".45" fill="none"/><path d="M0 -15.8 Q3.6 -15 5.3 -16 L6.1 -1.2 Q3.4 -.4 0 -.2Z" fill="#000" opacity=".1"/></g>';
 const SACK = '<use href="#' + P + '-ld"/>';
 function head(o, sk) {
-  const cap = CAP[o.cap] ? CAP[o.cap](o.capc, o.capc2) : '';
+  const cap = CAP[o.cap] ? CAP[o.cap](o.capc, o.capc2, o) : '';
   const back = o.cap === 'hijab' ? '<path d="M-4.4 -31 Q-5 -38 0 -38 Q5 -38 4.4 -31 L5.8 -22.6 Q0 -20.6 -5.8 -22.6Z" fill="' + o.capc + '"/>' : '';
   const front = o.cap === 'hijab' ? '<path d="M-4.2 -30.2 Q-4.6 -37 0 -37 Q4.6 -37 4.2 -30.2 Q3.2 -35 0 -35 Q-3.2 -35 -4.2 -30.2Z" fill="' + o.capc + '"/>' : cap;
   return '<g class="x-hd"><circle cy="-28" r="13" fill="none"/>' + back + '<use href="#' + P + '-hb" fill="' + sk + '"/>' +
@@ -211,7 +213,7 @@ export function shanuScene(): string {
   const farHerds = '<g opacity=".9">' +
     cow(46, 104, .5, 'rb', 0) + cow(58, 103, .48, 'wf', 1, 'down') + cow(36, 102.4, .44, 'gu', 0) + herder(28, 105, .32, 0, '#C9B28A', 0) +
     fence(104, 103.6, 36, 4.4, false) + an(110, 101.6, .42, 'gw', 0) + an(117, 102.4, .42, 'gr', 1) + an(124, 101.4, .4, 'gr', 0) + an(131, 102.6, .44, 'gw', 1) + an(136, 101.8, .4, 'gr', 0) + fence(104, 103.6, 36, 3.6, true) +
-    hausa(144, 104, .3, 3, '#5E7FA8', '#F4EBD0') +
+    hausa(144, 104, .3, 3, '#5E7FA8', '#F4EBD0', { capc2: '#7A1F2B' }) +
     fence(186, 103.4, 34, 4.4, false) + an(192, 101.2, .4, 'rb', 0) + an(200, 102.2, .42, 'ru', 1) + an(208, 101.4, .4, 'rb', 1) + an(215, 102, .4, 'ru', 0) + fence(186, 103.4, 34, 3.6, true) + herder(182, 104, .3, 4, '#8A5A2E', 0) +
     '<g opacity=".6">' + [[96, 'wf', 0], [228, 'wf', 1], [236, 'rb', 0], [292, 'wf', 0], [300, 'rb', 1], [20, 'wf', 1]].map(([x, k, f]) => cow(x, 97.6, .3, k, f)).join('') +
     [[150, 'gr', 0], [156, 'gw', 1], [162, 'gr', 1], [246, 'rb', 0], [252, 'ru', 1], [270, 'gw', 0]].map(([x, k, f]) => an(x, 98, .3, k, f)).join('') + '</g></g>';
@@ -226,10 +228,10 @@ export function shanuScene(): string {
     '<g fill="#F4E3B8" opacity=".9"><rect x="47.4" y="111.8" width="1.2" height="2" rx=".2"/><rect x="49.2" y="111.8" width="1.2" height="2" rx=".2"/><rect x="51" y="111.8" width="1.2" height="2" rx=".2"/></g><g fill="#B5651D"><rect x="47.4" y="112.8" width="1.2" height="1"/><rect x="49.2" y="112.8" width="1.2" height="1"/></g></g>' +
     '<path d="M56 124 L57 119 H63 L64 124Z" fill="#4E4A46"/><ellipse cx="60" cy="119" rx="3.4" ry=".9" fill="#E8661A"/><path d="M58.6 118.8 Q59 116.6 61.4 116.4 Q63.6 116.8 62.6 119Z" fill="#37474F"/>' +
     '<g class="x-stm"><path d="M60 115.6 q-1.4 -2.4 0 -4.6 q1.2 -2 0 -4" stroke="#fff" stroke-width=".7" fill="none" opacity=".7" stroke-linecap="round"/><path d="M37 109 q-1 -2 0 -3.6" stroke="#fff" stroke-width=".5" fill="none" opacity=".6"/></g>' +
-    person({ x: 42, y: 116.2, s: .44, skin: 3, c: '#F4EBD0', t: '#C62828', cap: 'hula', capc: '#C62828', capc2: '#F4EBD0', al: 'front', ar: 'down', cls: 'x-w' }) +
+    person({ x: 42, y: 116.2, s: .44, skin: 3, c: '#F4EBD0', t: '#C62828', cap: 'zanna', capc: '#2E5E3A', capc2: '#F4EBD0', al: 'front', ar: 'down', cls: 'x-w' }) +
     '<path d="M30 114 H54 L53 115.6 H31Z" fill="#8B5A2B"/><path d="M32 115.6 V124 M52 115.6 V124" stroke="#6B4422" stroke-width="1"/>' +
     '<path d="M4 120 H26 V121.4 H4Z" fill="#7A4A22"/><path d="M6 121.4 V126 M24 121.4 V126" stroke="#5E3A1C" stroke-width=".9"/>' +
-    '<g class="x-sit">' + person({ x: 12, y: 125.8, s: .5, skin: 1, dress: 'sit', c: '#5E7FA8', t: '#FFD54A', cap: 'zanna', capc: '#B71C1C', beard: '#2A1E14', al: ['M-4.2 -24.8 Q-6.4 -19 -2.6 -17.4', -2.2, -17.4], ar: 'down', cls: 'x-w',
+    '<g class="x-sit">' + person({ x: 12, y: 125.8, s: .5, skin: 1, dress: 'sit', c: '#5E7FA8', t: '#FFD54A', cap: 'borno', capc: '#1F2E5A', capc2: '#E9C46A', capc3: '#B23A2A', beard: '#2A1E14', al: ['M-4.2 -24.8 Q-6.4 -19 -2.6 -17.4', -2.2, -17.4], ar: 'down', cls: 'x-w',
       hl: '<rect x="-3" y="-20" width="1.6" height="2.4" rx=".2" fill="#F4E3B8"/><rect x="-3" y="-18.9" width="1.6" height="1.3" fill="#B5651D"/>' }) + '</g>' +
     '<path d="M4 120 H26" stroke="#5E3A1C" stroke-width=".5"/></g>';
 
@@ -239,7 +241,7 @@ export function shanuScene(): string {
     herder(60, 112, .46, 2, '#E9DDC0', 0);
 
   // the haggling over a white goat: a buyer in babban riga, hand out with his price; the owner (malafa) shakes his head
-  const haggle = person({ x: 118, y: 122, s: .5, skin: 0, dress: 'riga', c: '#F4EBD0', t: '#1565C0', cap: 'hula', capc: '#1565C0', capc2: '#FFD54A', al: 'down', ar: 'front', cls: 'x-w x-shrug' }) +
+  const haggle = person({ x: 118, y: 122, s: .5, skin: 0, dress: 'riga', c: '#F4EBD0', t: '#1565C0', cap: 'hula', capc: '#F6F2E8', capc2: '#1F2E5A', al: 'down', ar: 'front', cls: 'x-w x-shrug' }) +
     herder(129, 122.4, .5, 5, '#6A5A3A', 1) + dabLive(139, 122.6, .5, 'gw', 1, 'g1') +
     person({ x: 107, y: 121.4, s: .46, skin: 2, dress: 'riga', c: '#2E7D32', t: '#F4EBD0', cap: 'turban', capc: '#FFFFFF', beard: '#E8E4DC', al: 'hip', ar: 'hip', cls: 'x-w' });
 
@@ -248,7 +250,7 @@ export function shanuScene(): string {
   const hang = (x, y, r) => '<g transform="translate(' + x + ' ' + y + ') rotate(' + r + ') scale(.34)"><g transform="rotate(180)">' + hen() + '</g><path d="M-4 9 Q-11 14 -9 25 M4 9 Q11 14 9 25" stroke="#7A4A20" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".9"/></g>';
   const poultry = '<g transform="translate(150 120.6) scale(.3)"><g transform="translate(-4 0) scale(.6)">' + turkey('', true) + '</g><g transform="translate(5 0) scale(-.58 .58)">' + turkey('', true) + '</g>' + cage() + '</g>' +
     '<g transform="translate(159 123.4) scale(.25)">' + turkey('x-tk') + '</g>' +
-    hausa(169, 121.4, .5, 4, '#7A6A58', '#8E2A2A', { ar: 'front', al: 'out', cls: 'x-w x-chk', hl: hang(-11.4, -17, 0) + hang(-11, -16.6, 16) }) +
+    hausa(169, 121.4, .5, 4, '#7A6A58', '#7A1F2B', { cap: 'borno', capc2: '#F2C230', capc3: '#1F2E5A', ar: 'front', al: 'out', cls: 'x-w x-chk', hl: hang(-11.4, -17, 0) + hang(-11, -16.6, 16) }) +
     '<g transform="translate(144 125.4) scale(.19)">' + hen('x-pk') + '</g><g transform="translate(164 126.4) scale(-.2 .2)">' + cock() + '</g><g transform="translate(174 126.8) scale(.18)">' + hen('x-pk p2') + '</g>';
 
   // right: a lorry backed up to an earth ramp, a red Bororo bull led up into it, heads and horns over the slats
@@ -274,7 +276,7 @@ export function shanuScene(): string {
     '<path d="M287 104 L306 117 H312 L291 104Z" fill="#A9814E"/><path d="M288 104.4 L307 116.6 M290 104.4 L309.4 116.6" stroke="#7A5530" stroke-width=".5"/>' +
     '<g class="x-up"><g transform="translate(297 111) rotate(33)">' + cowLive(0, 0, .74, 'rb', 1, 'up', 'x-bull') + '</g></g>' +
     herder(311, 119.4, .48, 1, '#E9DDC0', 1, 'x-push') + '</g>';
-  const byLorry = person({ x: 226, y: 118.6, s: .48, skin: 0, dress: 'riga', c: '#7B1FA2', t: '#FFD54A', cap: 'zanna', capc: '#B71C1C', al: 'front', ar: 'front', cls: 'x-w x-shrug',
+  const byLorry = person({ x: 226, y: 118.6, s: .48, skin: 0, dress: 'riga', c: '#7B1FA2', t: '#FFD54A', cap: 'zanna', capc: '#7A1F2B', capc2: '#E9C46A', capside: -1, al: 'front', ar: 'front', cls: 'x-w x-shrug',
       hl: '<rect x="-1.6" y="-19.8" width="2.6" height="1.6" fill="#7FB07A" stroke="#4E7A4A" stroke-width=".2"/>' });
   // the Fulani woman with her calabash of fura, her child beside her, between the goat pen and the rams
   const fulani = person({ x: 96, y: 107, s: .4, skin: 5, dress: 'wom', c: '#1E3A6E', t: '#FFD54A', w: '#2B2B2B', w2: '#C62828', cap: 'kallabi', capc: '#2B2B2B', capc2: '#FFD54A', al: 'head', ar: 'down', cls: 'x-w',
@@ -518,7 +520,7 @@ const place = (id, p) => { const s = SPEC[id]; return [120 + s.k * (p[0] - s.cx)
 /** a game piece: the animal at its post, its tether, and (hidden till it is bought) the buyer with his lead rope */
 export function dabba(id) {
   const s = SPEC[id], [ax, ay] = place(id, s.at), bx = Math.max(ax + 44, 238), hand = [bx - 11.4 * 3.5, 150 - 17 * 3.5], px = Math.min(ax + 6, 232);
-  const buyer = person({ x: bx, y: 150, s: 3.5, skin: [0, 2, 4][id.charCodeAt(1) % 3], dress: 'riga', c: ['#F4EBD0', '#3F6E8C', '#7A6A58'][id.charCodeAt(1) % 3], t: '#C9A15E', cap: 'hula', capc: '#F4EBD0', capc2: '#3F6E8C', al: 'out', ar: 'down', cls: 'x-buyer' });
+  const buyer = person({ x: bx, y: 150, s: 3.5, skin: [0, 2, 4][id.charCodeAt(1) % 3], dress: 'riga', c: ['#F4EBD0', '#3F6E8C', '#7A6A58'][id.charCodeAt(1) % 3], t: '#C9A15E', ...CAPS[[1, 3, 4][id.charCodeAt(1) % 3]], al: 'out', ar: 'down', cls: 'x-buyer' });
   return '<svg class="dab dab-' + id + '" viewBox="0 0 240 160" aria-hidden="true"><defs>' + dabDefs(id) + '</defs>' +
     // (r3, Sani 2026-10-27) tied the way they are at the market: the halter rope runs down to a peg driven into the
     // ground in front of the forefeet; the price board stands on its own stake behind the rump (games2 places it)

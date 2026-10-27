@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Mai suya, drawn (Sani 2026-10-25: "a roadside suya spot at night, the same quality as Hawan Sallah"). 320×200,
  * sliced to fill any landscape screen. Behind: a northern street after Isha, flat-roofed houses with zanko horns, a
@@ -47,8 +48,7 @@ function head(o, sk) {
   let back = '', front = '';
   const cc = o.capc || '#fff', c2 = o.capc2 || '#C62828';
   if (o.cap === 'mayafi' || o.cap === 'hijab') back = '<path d="M-4.6 -35 Q-4.8 -41 0 -41.2 Q4.8 -41 4.6 -35 L6.6 -27.5 Q0 -25.5 -6.6 -27.5 Z" fill="' + cc + '"/>';
-  if (o.cap === 'hula') front = '<path d="M-3.6 -36.3 Q-3.7 -40.8 0 -41 Q3.7 -40.8 3.6 -36.3 Z" fill="' + cc + '"/><path d="M-3.3 -38.2 l.8 -.9 l.8 .9 l.8 -.9 l.8 .9 l.8 -.9 l.8 .9 l.8 -.9 l.6 .7" stroke="' + c2 + '" stroke-width=".42" fill="none"/><path d="M-3.6 -36.4 H3.6" stroke="#000" stroke-opacity=".2" stroke-width=".4"/>';
-  if (o.cap === 'zanna') front = '<path d="M-3.7 -36.2 L-3.4 -40.2 Q0 -42.2 3.6 -40.6 L3.7 -36.2 Q0 -37.2 -3.7 -36.2 Z" fill="' + cc + '"/><path d="M-3.4 -40.2 Q.4 -39 3.6 -40.6 M-1 -39.6 L-.6 -36.8" stroke="' + c2 + '" stroke-width=".4" fill="none"/>';
+  if (o.cap === 'hula' || o.cap === 'zanna' || o.cap === 'borno') front = arewaCap(o.cap, 0, -36.3, 3.7, cc, o.capc2, o.capc3, o.capside || 1);
   if (o.cap === 'turban') front = '<path d="M-4 -35.8 Q-4.4 -41.6 0 -41.8 Q4.4 -41.6 4 -35.8 Q2 -37.8 0 -37.6 Q-2 -37.8 -4 -35.8 Z" fill="' + cc + '"/><path d="M-3.8 -38 Q0 -40.6 3.8 -38.6 M-3.6 -39.8 Q0 -42 3.4 -40.4" stroke="#000" stroke-opacity=".13" stroke-width=".45" fill="none"/>' +
     '<path d="M3.6 -36.4 Q5.6 -32 4.4 -28" stroke="' + cc + '" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
   if (o.cap === 'kallabi') front = '<path d="M-3.9 -35.6 Q-4.4 -40.6 0 -40.8 Q4.4 -40.6 3.9 -35.6 Q0 -38.2 -3.9 -35.6 Z" fill="' + cc + '"/>' +
@@ -214,7 +214,7 @@ export function suyaScene(): string {
   // the customers on the bench
   const bench = '<path d="M244 150 V140 M310 150 V140 M248 150 l-2 -10 M306 150 l2 -10" stroke="#4A3020" stroke-width="1.2"/><path d="M240 138 H316 V141 H240 Z" fill="#8A5A32"/><path d="M240 140 H316 V141 H240 Z" fill="#000" opacity=".3"/>';
   const people = bench +
-    person({ x: 256, y: 150, s: 1.05, kind: 'man', seat: true, sk: SKIN[1], robe: '#E9E4D8', robe2: '#D8D0BE', trim: '#8EA8C8', cap: 'hula', capc: '#F4F1EA', capc2: '#2E7D32', beard: '#1A120C', al: 'lap', ar: 'lap', cls: 'x-cl' }) +
+    person({ x: 256, y: 150, s: 1.05, kind: 'man', seat: true, sk: SKIN[1], robe: '#E9E4D8', robe2: '#D8D0BE', trim: '#8EA8C8', cap: 'borno', capc: '#FFFFFF', capc2: '#1E5B3A', capc3: '#C62828', beard: '#1A120C', al: 'lap', ar: 'lap', cls: 'x-cl' }) +
     person({ x: 275, y: 150, s: 1, kind: 'woman', seat: true, sk: SKIN[4], top: '#7B3F8A', wrap: '#7B3F8A', wrap2: '#F2C230', trim: '#F2C230', cap: 'mayafi', capc: '#C2185B', al: 'lap', ar: 'lap', cls: 'x-cl x-nod' }) +
     person({ x: 294.5, y: 150, s: 1.05, kind: 'man', seat: true, sk: SKIN[3], robe: '#2F5E8A', robe2: '#E9E2CF', trim: '#E8D9A8', cap: 'turban', capc: '#F4F1EA', beard: '#E8E4DC', al: 'lap', ar: 'down', cls: 'x-cl' }) +
     person({ x: 312.5, y: 150, s: .78, child: true, kind: 'boy', sk: SKIN[0], robe: '#C62828', robe2: '#E9E2CF', trim: '#FFD54A', cap: 'hula', capc: '#fff', capc2: '#C62828', al: 'down', ar: 'down', cls: 'x-up x-hop' });
@@ -281,9 +281,7 @@ export function stand(): string {
     '<path d="M104.4 86.6 Q104.8 94 108.6 97 Q112 99.4 115.4 97 Q119.2 94 119.6 86.6 Q119 92.4 116 94.8 Q112 96.4 108 94.8 Q105 92.4 104.4 86.6 Z" fill="#1A100A" opacity=".85"/>' +
     '<path d="M108.8 91.6 Q112 90.2 115.2 91.6 Q112 92.4 108.8 91.6 Z" fill="#1A100A"/><path d="M109.4 93 Q112 94.6 114.6 93" stroke="#5A1E12" stroke-width="1" fill="none" stroke-linecap="round"/>' +
     // the hula, white with a maroon and green stitched band
-    '<path d="M103.2 79.6 Q102.6 67.6 112 67 Q121.4 67.6 120.8 79.6 Q112 77 103.2 79.6 Z" fill="#EFE8D8"/><path d="M114 67.4 Q121.4 68.4 120.8 79.6 Q117.6 78.4 115.2 78.2 Q116.8 72 114 67.4 Z" fill="#000" opacity=".14"/>' +
-    '<path d="M103.6 76.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8" stroke="#8E1F2A" stroke-width=".8" fill="none"/>' +
-    '<path d="M104 73.4 Q112 71.4 120 73.4" stroke="#2E6B3A" stroke-width=".6" fill="none" stroke-dasharray="1.4 1"/><path d="M106 70.4 Q112 69 118 70.4" stroke="#8E1F2A" stroke-width=".5" fill="none"/>';
+    arewaCap('hula', 112, 79.4, 8.9, '#EFE8D8', '#8E1F2A');
   const body = '<path d="M107 98.4 Q99 98.8 93.4 101.8 Q89.4 104.4 89 111 L87.6 156 L136.4 156 L135 111 Q134.6 104.4 130.6 101.8 Q125 98.8 117 98.4 Q112 102.4 107 98.4 Z" fill="#D8CCAE"/>' +
     '<path d="M120 99 Q125 98.8 130.6 101.8 Q134.6 104.4 135 111 L136.4 156 L124 156 Q127 120 120 99 Z" fill="#000" opacity=".16"/>' +
     '<path d="M107.4 98.6 Q112 105 116.6 98.6 M112 103.6 V116" stroke="#8E6A3A" stroke-width=".8" fill="none"/><path d="M108.4 100 Q112 104 115.6 100" stroke="#C9A24A" stroke-width=".5" fill="none" stroke-dasharray="1 .8"/>' +

@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Dalar gyaɗa, drawn (Sani 2026-10-25: the same hand as Hawan Sallah). The groundnut pyramids of Kano in the harmattan:
  * a pale ochre sky with the sun low in the dust, the old city faint on the horizon, great pyramids built of jute sacks,
@@ -36,8 +37,9 @@ function arm(side, pose, col, sk, hold = '', w = 2.6) {
     '<circle cx="' + hx + '" cy="' + hy + '" r="1.2" fill="' + sk + '"/>' + hold + '</g></g>';
 }
 const CAP = {
-  hula: (c, c2) => '<path d="M-3.6 -32.8 Q-3.8 -37.8 0 -38 Q3.8 -37.8 3.6 -32.8 Z" fill="' + c + '"/><path d="M-3.3 -34.4 l.8 -.9 .8 .9 .8 -.9 .8 .9 .8 -.9 .8 .9 .8 -.9 .8 .9" stroke="' + c2 + '" stroke-width=".4" fill="none"/><path d="M-3.6 -32.8 H3.6" stroke="#000" stroke-opacity=".2" stroke-width=".4"/>',
-  zanna: (c) => '<path d="M-3.7 -32.6 L-3.3 -37.2 Q0 -38.6 3.7 -36.4 L3.7 -32.6 Q0 -33.6 -3.7 -32.6Z" fill="' + c + '"/><path d="M-3.3 -37.2 Q-.2 -35.2 3.7 -36.4" stroke="#000" stroke-opacity=".22" stroke-width=".45" fill="none"/>',
+  hula: (c, c2) => arewaCap('hula', 0, -32.7, 3.75, c, c2),
+  zanna: (c, c2, o) => arewaCap('zanna', 0, -32.7, 3.75, c, c2, '', o.capside || 1),
+  borno: (c, c2, o) => arewaCap('borno', 0, -32.7, 3.75, c, c2, o.capc3),
   turban: (c) => '<path d="M-3.4 -32.6 Q-5.6 -29 -4.2 -25.6" stroke="' + c + '" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M-4.1 -32.2 Q-4.8 -38.8 0 -39 Q4.8 -38.8 4.1 -32.2 Q2 -34.4 0 -34.2 Q-2 -34.4 -4.1 -32.2Z" fill="' + c + '"/><path d="M-3.8 -35.4 Q0 -37.8 3.8 -35.4 M-4 -33.6 Q0 -36.4 4 -33.6" stroke="#000" stroke-opacity=".13" stroke-width=".4" fill="none"/>',
   kallabi: (c, c2) => '<path d="M-4 -32 Q-4.6 -38.4 0 -38.6 Q4.6 -38.4 4 -32 Q2 -34.6 0 -34.4 Q-2 -34.6 -4 -32Z" fill="' + c + '"/><path d="M-2.2 -38 Q-5 -41.8 -1 -40.6 Q0 -43 1.2 -40.6 Q5 -41.8 2.2 -38Z" fill="' + c + '"/><path d="M-3.7 -34.8 Q0 -37.2 3.7 -34.8" stroke="' + c2 + '" stroke-width=".55" fill="none"/>',
   kube: (c) => '<path d="M-3.5 -33 Q-3.4 -36.4 0 -36.6 Q3.4 -36.4 3.5 -33Z" fill="' + c + '"/>',
@@ -53,7 +55,7 @@ const RIGF = '<g id="' + P + '-rf"><path d="M0 -27.2 Q3.4 -27 4.8 -26 L10.6 -2.2
 const WOMF = '<g id="' + P + '-wf"><path d="M0 -27 Q3.2 -26.8 4.4 -26 L5 -15.6 H0Z" fill="#000" opacity=".12"/><path d="M2.6 -15.6 Q1.8 -8 3 -1" stroke="#000" stroke-opacity=".15" stroke-width=".45" fill="none"/><path d="M0 -15.8 Q3.6 -15 5.3 -16 L6.1 -1.2 Q3.4 -.4 0 -.2Z" fill="#000" opacity=".1"/></g>';
 const SACK = '<use href="#' + P + '-ld"/>';
 function head(o, sk) {
-  const cap = CAP[o.cap] ? CAP[o.cap](o.capc, o.capc2) : '';
+  const cap = CAP[o.cap] ? CAP[o.cap](o.capc, o.capc2, o) : '';
   const back = o.cap === 'hijab' ? '<path d="M-4.4 -31 Q-5 -38 0 -38 Q5 -38 4.4 -31 L5.8 -22.6 Q0 -20.6 -5.8 -22.6Z" fill="' + o.capc + '"/>' : '';
   const front = o.cap === 'hijab' ? '<path d="M-4.2 -30.2 Q-4.6 -37 0 -37 Q4.6 -37 4.2 -30.2 Q3.2 -35 0 -35 Q-3.2 -35 -4.2 -30.2Z" fill="' + o.capc + '"/>' : cap;
   return '<g class="x-hd"><circle cy="-28" r="13" fill="none"/>' + back + '<use href="#' + P + '-hb" fill="' + sk + '"/>' +
@@ -167,16 +169,16 @@ export function gyadaScene(): string {
     // the scale: a low iron platform, the column, the beam with its sliding weight
     '<path d="M265 126.6 L283 126.6 L282 124.2 L266 124.2Z" fill="#4E5458"/><rect x="279.6" y="108" width="1.6" height="16.4" fill="#5E6468"/><path d="M272 108.6 H284" stroke="#3E4448" stroke-width="1"/><rect class="x-wt" x="276" y="107.4" width="1.6" height="2.4" fill="#C9A227"/><circle cx="283.6" cy="108.6" r=".8" fill="#3E4448"/>' +
     '<use href="#' + P + '-s" x="267" y="120.4" fill="#D8BA80"/><use href="#' + P + '-s" x="273.6" y="120.4" fill="#B89458"/><use href="#' + P + '-s" x="270.2" y="116.6" fill="#D6B676"/>' +
-    person({ x: 272, y: 127, s: .52, skin: 2, c: '#F4EBD0', t: '#2E7D32', cap: 'hula', capc: '#2E5E8C', capc2: '#F4EBD0', al: 'front', ar: ['M-4.2 -24.8 Q-8 -28 -11.4 -31.6', -11.8, -32], flip: true, cls: 'x-w' }) +
+    person({ x: 272, y: 127, s: .52, skin: 2, c: '#F4EBD0', t: '#2E7D32', cap: 'hula', capc: '#F6F2E8', capc2: '#2E5E3A', al: 'front', ar: ['M-4.2 -24.8 Q-8 -28 -11.4 -31.6', -11.8, -32], flip: true, cls: 'x-w' }) +
     // the clerk sits behind a little table, the ledger open in front of him, his pen moving
-    person({ x: 300, y: 124.6, s: .5, skin: 1, c: '#FFFFFF', t: '#1565C0', cap: 'zanna', capc: '#B71C1C', beard: '#2A1E14', al: 'down', ar: 'write', hr: '<path d="M-.2 -16.2 l-1.6 -2.4" stroke="#1A237E" stroke-width=".5"/>', cls: 'x-clerk' }) +
+    person({ x: 300, y: 124.6, s: .5, skin: 1, c: '#FFFFFF', t: '#1565C0', cap: 'zanna', capc: '#7A1F2B', capc2: '#E9C46A', beard: '#2A1E14', al: 'down', ar: 'write', hr: '<path d="M-.2 -16.2 l-1.6 -2.4" stroke="#1A237E" stroke-width=".5"/>', cls: 'x-clerk' }) +
     '<path d="M290 118 H310 L309 119.4 H291Z" fill="#8B5A2B"/><path d="M292 119.4 V127 M308 119.4 V127" stroke="#6B4422" stroke-width=".9"/><path d="M291 119.4 H309 V121 H291Z" fill="#000" opacity=".12"/>' +
     '<path d="M294.4 117.9 L300 116.4 L300 117.9Z M300 116.4 L305.6 117.9 L300 117.9Z" fill="#FBF6E8" stroke="#B8A77E" stroke-width=".2"/><path d="M295.6 117.4 l3 -.7 M301 117 l3 .6" stroke="#5A6A9A" stroke-width=".2"/>' +
     '<rect x="306" y="115.2" width="1.6" height="2.8" rx=".3" fill="#4A6A8A"/></g>';
 
   // men watching the work, one pointing up at the porters
-  const men = person({ x: 176, y: 128, s: .58, skin: 0, dress: 'riga', c: '#F4EBD0', t: '#2E7D32', cap: 'hula', capc: '#7B1FA2', capc2: '#FFD54A', beard: '#E8E4DC', al: 'down', ar: 'point', flip: true, cls: 'x-w' }) +
-    person({ x: 187, y: 128.6, s: .55, skin: 3, c: '#4A7FB5', t: '#F4EBD0', cap: 'zanna', capc: '#C62828', al: 'hip', ar: 'down', cls: 'x-w' }) +
+  const men = person({ x: 176, y: 128, s: .58, skin: 0, dress: 'riga', c: '#F4EBD0', t: '#2E7D32', cap: 'borno', capc: '#F2E8CF', capc2: '#A3242C', capc3: '#1E5B3A', beard: '#E8E4DC', al: 'down', ar: 'point', flip: true, cls: 'x-w' }) +
+    person({ x: 187, y: 128.6, s: .55, skin: 3, c: '#4A7FB5', t: '#F4EBD0', cap: 'zanna', capc: '#1F2E5A', capc2: '#D9B36A', capside: -1, al: 'hip', ar: 'down', cls: 'x-w' }) +
     person({ x: 254, y: 128, s: .55, skin: 5, c: '#D9C79A', t: '#6B4422', cap: 'turban', capc: '#FFFFFF', al: ['M-4.2 -24.8 Q-8 -20 -10 -17.4', -10.4, -17], ar: 'down', flip: true, cls: 'x-w',
       hl: '<path d="M-10.4 -17 Q-14 -14 -17 -15.4" stroke="#6B4422" stroke-width=".4" fill="none"/>' });
 

@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Hanzarin kasuwa, drawn (Sani 2026-10-25: "a busy northern market at mid-morning, the same quality as Hawan Sallah").
  * 320×200, sliced to fill any landscape screen. Far back: the town's red-earth houses with zanko horns, a minaret and
@@ -47,8 +48,7 @@ function head(o, sk) {
   let back = '', front = '';
   const cc = o.capc || '#fff', c2 = o.capc2 || '#C62828';
   if (o.cap === 'mayafi' || o.cap === 'hijab') back = '<path d="M-4.6 -35 Q-4.8 -41 0 -41.2 Q4.8 -41 4.6 -35 L6.6 -27.5 Q0 -25.5 -6.6 -27.5 Z" fill="' + cc + '"/>';
-  if (o.cap === 'hula') front = '<path d="M-3.6 -36.3 Q-3.7 -40.8 0 -41 Q3.7 -40.8 3.6 -36.3 Z" fill="' + cc + '"/><path d="M-3.3 -38.2 l.8 -.9 l.8 .9 l.8 -.9 l.8 .9 l.8 -.9 l.8 .9 l.8 -.9 l.6 .7" stroke="' + c2 + '" stroke-width=".42" fill="none"/><path d="M-3.6 -36.4 H3.6" stroke="#000" stroke-opacity=".2" stroke-width=".4"/>';
-  if (o.cap === 'zanna') front = '<path d="M-3.7 -36.2 L-3.4 -40.2 Q0 -42.2 3.6 -40.6 L3.7 -36.2 Q0 -37.2 -3.7 -36.2 Z" fill="' + cc + '"/><path d="M-3.4 -40.2 Q.4 -39 3.6 -40.6 M-1 -39.6 L-.6 -36.8" stroke="' + c2 + '" stroke-width=".4" fill="none"/>';
+  if (o.cap === 'hula' || o.cap === 'zanna' || o.cap === 'borno') front = arewaCap(o.cap, 0, -36.3, 3.7, cc, o.capc2, o.capc3, o.capside || 1);
   if (o.cap === 'turban') front = '<path d="M-4 -35.8 Q-4.4 -41.6 0 -41.8 Q4.4 -41.6 4 -35.8 Q2 -37.8 0 -37.6 Q-2 -37.8 -4 -35.8 Z" fill="' + cc + '"/><path d="M-3.8 -38 Q0 -40.6 3.8 -38.6 M-3.6 -39.8 Q0 -42 3.4 -40.4" stroke="#000" stroke-opacity=".13" stroke-width=".45" fill="none"/>' +
     '<path d="M3.6 -36.4 Q5.6 -32 4.4 -28" stroke="' + cc + '" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
   if (o.cap === 'kallabi') front = '<path d="M-3.9 -35.6 Q-4.4 -40.6 0 -40.8 Q4.4 -40.6 3.9 -35.6 Q0 -38.2 -3.9 -35.6 Z" fill="' + cc + '"/>' +
@@ -257,7 +257,7 @@ export function kasuwaScene(): string {
     person({ x: 13, y: 119, s: .82, kind: 'woman', seat: true, sk: SKIN[1], top: '#6A4C93', wrap: '#6A4C93', wrap2: '#F2C230', trim: '#F2C230', cap: 'kallabi', capc: '#F2C230', capc2: '#6A4C93', al: 'lap', ar: 'out', cls: 'x-cl',
       hr: '<path d="M-7.6 8 L-4 3.4" stroke="#8B5A2B" stroke-width=".7"/><ellipse cx="-3.6" cy="3" rx="1.6" ry=".9" fill="#5E3A1C"/>', stool: '<path d="M-5 -6 h10 v1.4 h-10 Z M-4 -4.6 v4.6 M4 -4.6 v4.6" fill="#8B5A2B" stroke="#6B4022" stroke-width=".8"/>' });
   // the mai baro pushing his wheelbarrow of onions and sacks
-  const baro = '<g transform="translate(44 150)"><g class="x-baro">' + person({ x: 0, y: 0, s: .95, kind: 'jal', sk: SKIN[2], robe: '#E9E2CF', trim: '#9C8458', cap: 'zanna', capc: '#C62828', capc2: '#7A1A1A', al: 'down', ar: 'down', acl: 'x-ab', acr: 'x-ab', flip: false }) +
+  const baro = '<g transform="translate(44 150)"><g class="x-baro">' + person({ x: 0, y: 0, s: .95, kind: 'jal', sk: SKIN[2], robe: '#E9E2CF', trim: '#9C8458', cap: 'zanna', capc: '#7A1F2B', capc2: '#E9C46A', al: 'down', ar: 'down', acl: 'x-ab', acr: 'x-ab', flip: false }) +
     '<g transform="translate(13.2 0) scale(1.1)">' + barrow('<path d="M5 -15.4 Q4 -21 9 -21.4 Q12 -22 12.6 -16 Z" fill="#D8C49A"/><path d="M12 -15.6 Q12 -21.4 17 -21 Q21 -20 20.4 -16 Z" fill="#CDB888"/>' + onions(12, -21.4, 5, 4)) + '</g></g></g>';
   // the tomato seller in the front corner, her calabashes and basins, her daughter beside her
   const seller = person({ x: 5, y: 176, s: .74, child: true, kind: 'girl', sk: SKIN[4], robe: '#F2C230', trim: '#C62828', cap: 'hijab', capc: '#C62828', al: 'down', ar: 'down', cls: 'x-hop x-up', flip: false }) +
@@ -269,7 +269,7 @@ export function kasuwaScene(): string {
   // the right side: keke napep, the pepper and onion sellers, a man carrying a sack, the donkey
   const right = keke(298, 128, 1) +
     person({ x: 262, y: 132, s: .9, kind: 'woman', sk: SKIN[3], top: '#2F6B9A', wrap: '#2F6B9A', wrap2: '#F4EBD0', trim: '#F4EBD0', cap: 'mayafi', capc: '#E9C46A', al: 'head', ar: 'down', load: headLoad('basin', '#F4F1EA', '#C62828'), acl: 'x-ah', flip: true, cls: 'x-nod' }) +
-    person({ x: 300, y: 166, s: 1, kind: 'man', sk: SKIN[5], robe: '#3E5C8A', robe2: '#E9E2CF', trim: '#E8D9A8', cap: 'hula', capc: '#fff', capc2: '#2E7D32', beard: '#2A1A10', al: 'down', ar: 'hip', cls: 'x-cl', flip: true }) +
+    person({ x: 300, y: 166, s: 1, kind: 'man', sk: SKIN[5], robe: '#3E5C8A', robe2: '#E9E2CF', trim: '#E8D9A8', cap: 'borno', capc: '#F2E8CF', capc2: '#A3242C', capc3: '#1E5B3A', beard: '#2A1A10', al: 'down', ar: 'hip', cls: 'x-cl', flip: true }) +
     donkey(240, 192, .95, true) +
     person({ x: 288, y: 194, s: 1.05, kind: 'woman', seat: true, sk: SKIN[2], top: '#EF6C00', wrap: '#AD1457', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'kallabi', capc: '#AD1457', capc2: '#FFD54A', al: 'front', ar: 'lap', cls: 'x-cl', flip: true,
       stool: '<path d="M-6 -6.4 h12 v1.6 h-12 Z M-5 -4.8 v4.8 M5 -4.8 v4.8" fill="#8B5A2B" stroke="#6B4022" stroke-width=".9"/>' }) +
@@ -277,7 +277,7 @@ export function kasuwaScene(): string {
   // people crossing the back of the square, and the animals
   const mid = person({ x: 64, y: 106, s: .66, kind: 'woman', sk: SKIN[5], top: '#AD1457', wrap: '#AD1457', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'kallabi', capc: '#FFD54A', capc2: '#AD1457', al: 'head', ar: 'down', acl: 'x-ah', load: headLoad('tray'), cls: 'x-walk' }) +
     person({ x: 84, y: 101, s: .64, kind: 'man', sk: SKIN[3], robe: '#F4F1EA', robe2: '#E0D8C4', trim: '#8EA8C8', cap: 'turban', capc: '#F4F1EA', beard: '#E8E4DC', al: 'down', ar: 'down', cls: 'x-nod' }) +
-    person({ x: 236, y: 104, s: .64, kind: 'jal', sk: SKIN[0], robe: '#5E9A3A', trim: '#E8D9A8', cap: 'hula', capc: '#F2C230', capc2: '#C62828', al: 'head', ar: 'down', acl: 'x-ah', load: headLoad('sack'), flip: true }) +
+    person({ x: 236, y: 104, s: .64, kind: 'jal', sk: SKIN[0], robe: '#5E9A3A', trim: '#E8D9A8', cap: 'zanna', capc: '#1F2E5A', capc2: '#D9B36A', capside: -1, al: 'head', ar: 'down', acl: 'x-ah', load: headLoad('sack'), flip: true }) +
     person({ x: 220, y: 101, s: .6, kind: 'boy', child: true, sk: SKIN[4], robe: '#1F5FA8', robe2: '#E9E2CF', trim: '#fff', cap: 'hula', capc: '#fff', capc2: '#1F5FA8', cls: 'x-up x-hop' }) +
     goat(128, 196, .9, '#F2EDE4', '#5A3A22', false, 'x-gr') + goat(196, 194, .8, '#4A3A30', '#2A1E16', true) + chicken(156, 192, .9, '#B5652E', false, 'x-pk') + chicken(168, 196, .8, '#F2EDE4', true, 'x-pk x-pk2') + chicken(112, 112, .7, '#2A2A2A', false);
   return '<svg class="scene ' + PF + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
