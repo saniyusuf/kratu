@@ -29,15 +29,15 @@ const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .5
 const KSK = ['#6B4422', '#5A381C', '#7A4E2A', '#4E3018'];
 const kids = (y, n) => { let s = '<g class="far kids">'; const c = ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00', '#F4EBD0', '#00838F'];
   for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2, col = c[i % c.length], sk = KSK[i % 4], girl = i % 2 === 1, yy = y + (i % 3) * .5;
-    s += '<g transform="translate(' + x.toFixed(1) + ' ' + yy + ')"><ellipse cx=".6" cy=".1" rx="2.6" ry=".5" fill="#5A3A1A" opacity=".28"/><g class="kid' + (i % 3 === 0 ? ' wave4' : '') + '" style="--d:' + ((i % 5) * .09).toFixed(2) + 's">' +
+    s += '<g transform="translate(' + x.toFixed(1) + ' ' + yy + ')"><ellipse cx=".6" cy=".1" rx="2.6" ry=".5" fill="#5A3A1A" opacity=".28"/><g class="kid' + (i % 6 === 0 ? ' wave4' : '') + '" style="--d:' + ((i % 5) * .09).toFixed(2) + 's">' +
       '<path d="M-.9 0 V-2.6 M.9 0 V-2.6" stroke="' + sk + '" stroke-width=".7"/><path d="M-1.5 .1 h1.1 M.5 .1 h1.1" stroke="#2A1A0C" stroke-width=".45"/>' +
       '<path d="M-1.9 ' + (girl ? -1 : -2.2) + ' L-1.4 -6.4 Q0 -7 1.4 -6.4 L1.9 ' + (girl ? -1 : -2.2) + ' Z" fill="' + col + '"/>' +
       '<path d="M-1.9 ' + (girl ? -1 : -2.2) + ' L-1.4 -6.4 L-.4 -6.6 L-.6 ' + (girl ? -1 : -2.2) + ' Z" fill="#fff" opacity=".18"/><path d="M.6 -6 L1 ' + (girl ? -1.2 : -2.4) + '" stroke="#000" stroke-width=".25" opacity=".22"/>' +
       '<path d="M-1.4 -6 L-1.9 -3.4" stroke="' + col + '" stroke-width=".8" stroke-linecap="round"/><circle cx="-1.95" cy="-3.1" r=".4" fill="' + sk + '"/>' +
       '<g class="arm4"><path d="M1.3 -5.8 L2.8 -8.8" stroke="' + col + '" stroke-width=".8" stroke-linecap="round"/><circle cx="2.95" cy="-9.1" r=".45" fill="' + sk + '"/></g>' +
-      '<rect x="-.35" y="-7.4" width=".7" height=".9" fill="' + sk + '"/><circle cy="-8.3" r="1.25" fill="' + sk + '"/><circle cx="-.35" cy="-8.6" r=".55" fill="#fff" opacity=".14"/>' +
-      '<circle cx="-.35" cy="-8.3" r=".14" fill="#1A0E06"/><circle cx=".45" cy="-8.3" r=".14" fill="#1A0E06"/>' +
-      (girl ? '<path d="M-1.5 -8.1 Q-1.6 -10.2 0 -10.1 Q1.6 -10.2 1.5 -8.1 Q.9 -9.3 0 -9.3 Q-.9 -9.3 -1.5 -8.1 Z" fill="' + c[(i + 3) % c.length] + '"/><path d="M1.3 -9.4 l1 -.6 l-.3 1 Z" fill="' + c[(i + 3) % c.length] + '"/>'
+      '<path d="M-.35 -6.5 V-7.3 A1.25 1.3 0 1 1 .35 -7.3 V-6.5 Z" fill="' + sk + '"/><path d="M.3 -9.5 Q1.5 -9 1.25 -8.1 Q1 -7.1 .2 -7 Q.8 -8.2 .3 -9.5 Z" fill="#000" opacity=".2"/>' +
+      '<path d="M-.5 -8.3 h.3 M.3 -8.3 h.3" stroke="#1A0E06" stroke-width=".26"/>' +
+      (girl ? '<path d="M-1.5 -8.1 Q-1.6 -10.2 0 -10.1 Q1.6 -10.2 1.5 -8.1 Q.9 -9.3 0 -9.3 Q-.9 -9.3 -1.5 -8.1 Z M1.3 -9.4 l1 -.6 l-.3 1 Z" fill="' + c[(i + 3) % c.length] + '"/>'
         : i % 8 === 2 ? arewaCap('zanna', 0, -8.9, 1.25, '#7A1F2B', '#E9C46A') : i % 8 === 6 ? arewaCap('borno', 0, -8.9, 1.2, '#F2E8CF', '#A3242C', '#1E5B3A')
           : arewaCap('hula', 0, -8.9, 1.25, i % 8 === 0 ? '#FFFFFF' : '#F4EBD0', i % 8 === 0 ? '#2E5E3A' : '#7A1F2B')) +
       '</g></g>'; }
@@ -61,13 +61,15 @@ const dagi = (x, y, r = 5) => { const k = r * .55, d = 'M' + x + ' ' + (y - r) +
     'M' + (x - r * .7) + ' ' + (y - r * .7) + ' Q' + x + ' ' + (y - r * .15) + ' ' + (x + r * .7) + ' ' + (y - r * .7) + ' Q' + (x + r * .15) + ' ' + y + ' ' + (x + r * .7) + ' ' + (y + r * .7) + ' Q' + x + ' ' + (y + r * .15) + ' ' + (x - r * .7) + ' ' + (y + r * .7) + ' Q' + (x - r * .15) + ' ' + y + ' ' + (x - r * .7) + ' ' + (y - r * .7) + ' Z';
   return '<g fill="none" stroke-linejoin="round"><path d="' + d + '" stroke="#6E3418" stroke-width=".9" opacity=".35" transform="translate(.35 .4)"/><path d="' + d + '" stroke="#FFF1D6" stroke-width=".7" opacity=".85"/><circle cx="' + x + '" cy="' + y + '" r="' + (r * .22) + '" stroke="#FFF1D6" stroke-width=".6" opacity=".85"/></g>'; };
 /* the square: hoof marks and ripples in the sand, pebbles, the wall's own shade at its foot */
-const sand = () => { let s = '<g fill="none" stroke="#B88A50" stroke-width=".3" opacity=".45">';
-  for (let i = 0; i < 26; i++) { const x = (i * 41.3) % 156 + 2, y = 78 + (i * 17.9) % 21, w = 4 + (i % 4) * 2; s += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (w / 2) + ' -.8 ' + w + ' 0"/>'; }
-  s += '</g><g fill="#9C7240" opacity=".4">';
-  for (let i = 0; i < 18; i++) { const x = (i * 29.7 + 11) % 150 + 4, y = 80 + (i * 13.1) % 18; s += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' a.9 .5 0 1 1 1.8 0 Z"/>'; }
-  s += '</g><g fill="#8E6A3E" opacity=".5">';
-  for (let i = 0; i < 30; i++) { const x = (i * 23.9 + 5) % 156 + 2, y = 76 + (i * 11.3) % 23; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (.25 + (i % 3) * .15).toFixed(2) + '" ry=".18"/>'; }
-  return s + '</g>'; };
+/* (r5) each kind of mark is one path now (three shapes in place of seventy-four), and the riders' track is worn into
+   the square: two pale, trodden lanes running back to the gate, narrowing with distance, their edges kicked up */
+const sand = () => { let a = '', b = '', c = '';
+  for (let i = 0; i < 26; i++) { const x = (i * 41.3) % 156 + 2, y = 78 + (i * 17.9) % 21, w = 4 + (i % 4) * 2; a += 'M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (w / 2) + ' -.8 ' + w + ' 0'; }
+  for (let i = 0; i < 18; i++) { const x = (i * 29.7 + 11) % 150 + 4, y = 80 + (i * 13.1) % 18; b += 'M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' a.9 .5 0 1 1 1.8 0 Z'; }
+  for (let i = 0; i < 30; i++) { const x = (i * 23.9 + 5) % 156 + 2, y = 76 + (i * 11.3) % 23, r = .25 + (i % 3) * .15; c += 'M' + (x - r).toFixed(2) + ' ' + y.toFixed(1) + 'a' + r.toFixed(2) + ' .18 0 1 0 ' + (2 * r).toFixed(2) + ' 0a' + r.toFixed(2) + ' .18 0 1 0 ' + (-2 * r).toFixed(2) + ' 0Z'; }
+  return '<path d="M72 70.4 Q50 84 18 100 H58 Q70 84 77 70.4 Z M83 70.4 Q92 84 104 100 H142 Q112 84 88 70.4 Z" fill="#F0D9A8" opacity=".35"/>' +
+    '<path d="M72 70.4 Q50 84 18 100 M77 70.4 Q70 84 58 100 M83 70.4 Q92 84 104 100 M88 70.4 Q112 84 142 100" stroke="#A47A44" stroke-width=".45" fill="none" opacity=".35"/>' +
+    '<path d="' + a + '" fill="none" stroke="#B88A50" stroke-width=".3" opacity=".45"/><path d="' + b + '" fill="#9C7240" opacity=".4"/><path d="' + c + '" fill="#8E6A3E" opacity=".5"/>'; };
 /* the palace gate (Sani 2026-10-23: "guards open gate"): two studded wooden leaves filling the arch, hinged at its
    sides; they swing open (.open on the scene) for a greeted horseman to ride in. The guards who haul them are the
    game's own (games2.ts), drawn in front of the band so they can be seen. */
@@ -81,19 +83,35 @@ const gate = () => gateLeaf('gl', 'M62 70 V46 Q71 36 80 36 V70 Z', 62, 80) + gat
 /* the palace's mud plaster (Sani 2026-10-23: "a bit more realism"): blotches of darker and paler earth, rain streaks
    down from the parapet, a few hairline cracks, the towers rounded by light, and the foot of the wall darkened where
    the rain splashes; all flat shapes at low opacity, no filters */
-const mud = () => { let s = '<g opacity=".9">';
-  for (let i = 0; i < 70; i++) { const x = 8 + (i * 37.3) % 144, y = 32 + (i * 23.7) % 36; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (1 + (i % 4) * .7).toFixed(1) + '" ry="' + (.5 + (i % 3) * .3).toFixed(1) + '" fill="' + (i % 2 ? '#8E4423' : '#DE9464') + '" opacity=".22"/>'; }
-  for (let i = 0; i < 18; i++) { const x = 10 + (i * 53.1) % 140; s += '<path d="M' + x.toFixed(1) + ' ' + (i % 3 ? 31 : 25) + ' v' + (6 + (i % 4) * 3) + '" stroke="#7A3A1C" stroke-width="' + (.6 + (i % 2) * .5) + '" opacity=".14"/>'; }
+/* (r5) the blotches and streaks are two pattern tiles of different sizes laid over each other (so they never line up
+   into a grid) in place of ninety separate shapes: the same earth for a tenth of the drawing work */
+const mudTile = (id, w, h, k) => { let d1 = '', d2 = '', d3 = '';
+  for (let i = 0; i < 7; i++) { const x = (i * 13.7 * k) % w, y = (i * 7.9 * k + 2) % h, rx = 1 + (i % 4) * .7, ry = .5 + (i % 3) * .3;
+    const e = 'M' + (x - rx).toFixed(1) + ' ' + y.toFixed(1) + 'a' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ' 0 1 0 ' + (2 * rx).toFixed(1) + ' 0a' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ' 0 1 0 ' + (-2 * rx).toFixed(1) + ' 0Z';
+    if (i % 2) d1 += e; else d2 += e; }
+  for (let i = 0; i < 3; i++) d3 += 'M' + ((i * 9.3 * k + 3) % w).toFixed(1) + ' ' + (i * 4) + 'v' + (4 + i * 2.5);
+  return '<pattern id="' + id + '" width="' + w + '" height="' + h + '" patternUnits="userSpaceOnUse"><path d="' + d1 + '" fill="#8E4423" opacity=".22"/><path d="' + d2 + '" fill="#DE9464" opacity=".24"/>' +
+    '<path d="' + d3 + '" stroke="#7A3A1C" stroke-width=".7" opacity=".12"/><path d="M0 ' + (h * .5) + ' q' + (w / 4) + ' -.5 ' + (w / 2) + ' 0 t' + (w / 2) + ' 0" stroke="#F0A874" stroke-width=".3" fill="none" opacity=".14"/></pattern>'; };
+const mud = () => { let s = '<defs>' + mudTile('p4-mud1', 26, 15, 1) + mudTile('p4-mud2', 41, 23, 1.7) + '</defs><g opacity=".9">' +
+    '<path d="M6 70 V24 H30 V30 H130 V24 H154 V70 Z" fill="url(#p4-mud1)"/><path d="M6 70 V24 H30 V30 H130 V24 H154 V70 Z" fill="url(#p4-mud2)"/>';
   s += '<path d="M36 52 l2 3 l-1 3 l2 4 M124 56 l-2 3 l1 4 M146 44 l1.5 3 l-1 3" stroke="#6B3418" stroke-width=".35" fill="none" opacity=".5"/>';
   s += '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="url(#p4-tow)"/><path d="M6 70 V61 H154 V70 Z" fill="url(#p4-base)"/>';
   return s + '</g>'; };
 
 /* spectators on a wall top: head and shoulders in bright veils and caps, one or two waving */
+/* (r5) each one a person: a face lit from the upper left with its shaded side and eyes, the women's veils (gyale)
+   framing the face and falling over the shoulders, the men in caps, all leaning on the parapet's edge; a soft shadow
+   on the plaster under them. Fewer shapes than the old blobs had, and only two of them wave. */
 const onWall = (xs, y) => { const c = ['#C2185B', '#FFB300', '#1565C0', '#2E7D32', '#AD1457', '#6A1B9A', '#EF6C00', '#00838F'];
-  return '<g class="onwall">' + xs.map((x, i) => '<g transform="translate(' + x + ' ' + y + ')"' + (i % 4 === 1 ? ' class="wave4"' : '') + '><path d="M-2 0 Q-2 -3.4 0 -3.6 Q2 -3.4 2 0 Z" fill="' + c[i % c.length] + '"/>' +
-    '<circle cy="-4.6" r="1.2" fill="#6B4422"/><path d="M-1.5 -4.4 Q0 -7.2 1.5 -4.4" fill="' + (i % 3 ? c[(i + 3) % c.length] : '#FFFFFF') + '"/>' + (i % 4 === 1 ? '<path class="arm4" d="M1.4 -2.8 L3 -6.4" stroke="' + c[i % c.length] + '" stroke-width=".9" stroke-linecap="round"/>' : '') + '</g>').join('') + '</g>'; };
+  return '<g class="onwall"><path d="M' + (xs[0] - 3) + ' ' + (y + .2) + 'H' + (xs[5] + 3) + 'v.9H' + (xs[0] - 3) + 'Z M' + (xs[6] - 3) + ' ' + (y + .2) + 'H' + (xs[11] + 3) + 'v.9H' + (xs[6] - 3) + 'Z" fill="#5A2A10" opacity=".22"/>' + xs.map((x, i) => { const w = i % 3 !== 2, col = c[i % c.length], sk = KSK[i % 4];
+    return '<g transform="translate(' + x + ' ' + y + ')"' + (i === 1 || i === 9 ? ' class="wave4"' : '') + '>' +
+    (w ? '<path d="M-2.3 0 Q-2.4 -2.6 -1.6 -4.6 Q-1.6 -6.9 0 -7 Q1.6 -6.9 1.6 -4.6 Q2.4 -2.6 2.3 0 Z" fill="' + col + '"/>' : '<path d="M-2.2 0 Q-2.2 -3 0 -3.3 Q2.2 -3 2.2 0 Z" fill="' + col + '"/>') +
+    '<path d="M-1 -3.6 Q-1.2 -5.8 0 -5.9 Q1.2 -5.8 1 -3.6 Q0 -3 -1 -3.6 Z" fill="' + sk + '"/><path d="M.3 -5.8 Q1.3 -5.4 1 -3.6 Q.6 -3.2 .3 -3.3 Q.8 -4.6 .3 -5.8 Z" fill="#000" opacity=".22"/>' +
+    '<path d="M-.55 -4.7 h.3 M.3 -4.7 h.3" stroke="#1A0E06" stroke-width=".22"/>' +
+    (w ? '<path d="M-1.6 -4.4 Q-1.4 -6.3 0 -6.3 Q1.4 -6.3 1.6 -4.4 Q.9 -6 0 -6 Q-.9 -6 -1.6 -4.4 Z" fill="#000" opacity=".2"/>' : arewaCap(i % 2 ? 'hula' : 'zanna', 0, -5.6, .95, i % 2 ? '#F4EBD0' : '#7A1F2B', i % 2 ? '#7A1F2B' : '#E9C46A')) +
+    (i === 1 || i === 9 ? '<path class="arm4" d="M1.6 -1.6 L3 -5.8" stroke="' + col + '" stroke-width=".9" stroke-linecap="round"/>' : '') + '</g>'; }).join('') + '</g>'; };
 /* a long pennant on a pole, streaming in the wind */
-const pennant = (x, y, c) => '<path d="M' + x + ' ' + y + ' V' + (y - 16) + '" stroke="#5A3A1E" stroke-width=".6"/><path class="pen4" d="M' + x + ' ' + (y - 16) + ' Q' + (x + 6) + ' ' + (y - 15) + ' ' + (x + 11) + ' ' + (y - 13) + ' Q' + (x + 6) + ' ' + (y - 12.4) + ' ' + x + ' ' + (y - 11) + ' Z" fill="' + c + '"/>';
+const pennant = (x, y, c, still = false) => '<path d="M' + x + ' ' + y + ' V' + (y - 16) + '" stroke="#5A3A1E" stroke-width=".6"/><path' + (still ? '' : ' class="pen4"') + ' d="M' + x + ' ' + (y - 16) + ' Q' + (x + 6) + ' ' + (y - 15) + ' ' + (x + 11) + ' ' + (y - 13) + ' Q' + (x + 6) + ' ' + (y - 12.4) + ' ' + x + ' ' + (y - 11) + ' Z" fill="' + c + '"/>';
 
 /* a groundnut pyramid built of real sacks (Sani 2026-10-23): rows of jute pillows, each row one sack shorter and set
    half a sack in, so a porter can step up it; the shaded side darker, the tints varied so no two sacks match */
@@ -117,14 +135,19 @@ export const SCENES4: Record<string, string> = {
     '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="#B85C30"/><g fill="#B85C30">' + zanko(6, 28, 24) + zanko(130, 152, 24) + '</g>' +
     mud() + '<path d="M30 24 h3.6 L33.6 70 H30 Z" fill="#5A2A10" opacity=".16"/><path d="M18 30 H142 v1.4 H18 Z" fill="#5A2A10" opacity=".14"/>' +
     toron([[10, 34], [20, 34], [10, 50], [20, 50], [134, 34], [144, 34], [134, 50], [144, 50], [36, 36], [48, 36], [112, 36], [124, 36]]) +
-    '<path d="M62 70 V46 Q80 26 98 46 V70 Z" fill="#3A1E0C"/><path d="M58 70 V45 Q80 21 102 45 V70" fill="none" stroke="#FFF1D6" stroke-width="1.6"/>' +
+    // (r5) through the gate, the palace's inner court in the sun: its far wall and a doorway, the sand lit, the arch's
+    // own shadow across the near part, the soffit dark overhead and the right-hand reveal lit from the upper left
+    '<defs><clipPath id="p4-arch"><path d="M62 70 V46 Q80 26 98 46 V70 Z"/></clipPath>' + lg('p4-void', '#1E0F06', '#3A1E0C', '#5A3418') + '</defs>' +
+    '<g clip-path="url(#p4-arch)"><rect x="62" y="34" width="36" height="36" fill="url(#p4-void)"/><path d="M62 62 V50 Q80 46 98 50 V62 Z" fill="#B8784A"/><path d="M76 62 V54.6 Q78.6 52.4 81.2 54.6 V62 Z" fill="#2A160A"/>' +
+    '<path d="M62 62 H98 V70 H62 Z" fill="#E2BE84"/><path d="M62 70 V60.6 Q74 61.4 84 64 L98 70 Z" fill="#3A1E0C" opacity=".55"/><path d="M62 50 Q80 45.6 98 50 V46 Q80 30 62 46 Z" fill="#1E0F06" opacity=".7"/>' +
+    '<path d="M94.6 70 V46.6 Q96.4 48 98 46 V70 Z" fill="#D88A56"/><path d="M62 70 V46 Q63.6 48 65.4 46.8 V70 Z" fill="#2A140A" opacity=".8"/></g><path d="M58 70 V45 Q80 21 102 45 V70" fill="none" stroke="#FFF1D6" stroke-width="1.6"/>' +
     '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + gate() + dagi(41, 46, 5) + dagi(119, 46, 5) + dagi(18, 41, 4) + dagi(142, 41, 4) +
     '<g class="bunting"><path d="M0 18 Q80 32 160 18" fill="none" stroke="#5A3A1E" stroke-width=".5"/>' +
     [8, 20, 32, 44, 56, 68, 80, 92, 104, 116, 128, 140, 152].map((x, i) => '<path d="M' + x + ' ' + (18 + Math.sin(x / 160 * Math.PI) * 13.5).toFixed(1) + ' l2.6 5 l2.6 -5 Z" fill="' + ['#C62828', '#2E7D32', '#FFD54A'][i % 3] + '"/>').join('') + '</g>' +
     // Sallah day on the palace wall (Sani 2026-10-23: more of the Hawan Sallah behind): women in bright veils watching
     // from the parapet, the emir's pennants on the towers, a second line of spectators under shades at the back
     onWall([22, 26, 31, 36, 41, 46, 112, 117, 122, 127, 132, 137], 30) +
-    pennant(14, 24, '#2E7D32') + pennant(150, 24, '#C62828') + pennant(28, 24, '#C62828') + pennant(136, 24, '#2E7D32') +
+    pennant(14, 24, '#2E7D32') + pennant(150, 24, '#C62828') + pennant(28, 24, '#C62828', true) + pennant(136, 24, '#2E7D32', true) +
     '<path d="M0 70 H160 V100 H0 Z" fill="url(#p4-ground)"/><path d="M0 70 H160 V73.5 Q80 72.4 0 73.5 Z" fill="#6E4A22" opacity=".22"/>' + sand() +
     elders(72.6, [9, 17, 25, 33, 45, 53, 107, 115, 123, 135, 143, 151]) + kids(74, 20) +
     '<g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="90" rx="18" ry="1.6"/><ellipse cx="124" cy="86" rx="14" ry="1.2"/></g>' +

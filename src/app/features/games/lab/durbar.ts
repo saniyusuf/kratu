@@ -338,13 +338,34 @@ export function emirThrone(): string {
 }
 
 /* the Sallah around them: kakaki players with their long trumpets, a drummer, the emir's guards (dogarai) */
+/* (r5, Sani 2026-10-27 "realism, keep performance in mind"): real men now, about seven heads tall, where they were
+   cut-outs with a ball for a head: a babban riga flaring to the ankles with its shaded side, folds and embroidered
+   neck, sandalled feet, a face lit from the upper left (eyes, nose, mouth) under a wound turban, and a soft shadow on
+   the sand. The kakaki is a long thin brass pipe with a flared bell held to the lips with both hands; the drummer
+   beats a ganga hung at his waist with a crooked stick (only the arm and stick move). Few shapes each, no filters. */
 export function sallahBand(): string {
-  const man = (x, robe, hat, inner) => `<g transform="translate(${x} 0)"><path d="M-7 60 L-5 30 Q0 24 5 30 L7 60 Z" fill="${robe}"/><circle cx="0" cy="22" r="5" fill="#5E3A1C"/>` +
-    `<path d="M-6 20 Q0 10 6 20 Z" fill="${hat}"/>${inner}</g>`;
-  const kakaki = (x, robe) => man(x, robe, '#FFFFFF', `<g class="kakaki"><path d="M3 30 L34 -14" stroke="#D9B44A" stroke-width="2.4"/><path d="M32 -12 l8 -10 l4 6 Z" fill="#E8C35A"/><path d="M2 32 L-3 38 M4 30 Q8 34 10 26" stroke="${robe}" stroke-width="3" stroke-linecap="round"/></g>`);
-  const drummer = (x) => man(x, '#B71C1C', '#FFD54A', `<g class="drumarm"><ellipse cx="9" cy="42" rx="5" ry="7" fill="#8B5A2B"/><ellipse cx="9" cy="36" rx="5" ry="1.6" fill="#F1E2C0"/><path d="M4 30 Q12 26 14 32" stroke="#B71C1C" stroke-width="3" fill="none"/></g>`);
-  const dogari = (x) => man(x, '#C62828', '#2E7D32', `<path d="M-6 36 h12 M-6 44 h12" stroke="#2E7D32" stroke-width="3"/><path d="M9 0 L9 62" stroke="#6B4422" stroke-width="1.6"/><path d="M7 2 l2 -8 l2 8 Z" fill="#B0BEC5"/>`);
-  return `<svg class="sallah" viewBox="0 -28 220 92" aria-hidden="true">${dogari(14)}${kakaki(44, '#C62828')}${kakaki(76, '#2E7D32')}${drummer(110)}${kakaki(140, '#1565C0')}${dogari(200)}</svg>`;
+  const ink = '#1A0E06';
+  const man = (x, robe, tur, inner, sk, front = '') => { const skd = tone(sk, -.3);
+    return `<g transform="translate(${x} 0)"><ellipse cx="2" cy="60.4" rx="10" ry="1.5" fill="#5A3A1A" opacity=".3"/>` +
+      `<path d="M-3.6 59.7 h3 M.8 59.7 h3" stroke="#3A2414" stroke-width="1.5" stroke-linecap="round"/>${inner}` +
+      `<path d="M-4.8 27.6 Q0 25.8 4.8 27.6 L6.6 31 Q8.8 44 9.6 59.4 Q0 60.8 -9.6 59.4 Q-8.8 44 -6.6 31 Z" fill="${robe}"/>` +
+      `<path d="M1.8 28 Q5.8 27.8 6.6 31 Q8.8 44 9.6 59.4 Q6.4 60.2 3.6 60.2 Q4.6 44 1.8 28 Z" fill="#000" opacity=".17"/>` +
+      `<path d="M-2.6 34 Q-4.2 46 -5.2 59.4 M-.2 40 Q.2 50 .6 59.8 M-6.4 33 Q-7.8 45 -8.6 58" stroke="#000" stroke-opacity=".12" stroke-width=".5" fill="none"/>` +
+      `<path d="M-5.6 31 Q-7.2 44 -8 57" stroke="#fff" stroke-opacity=".24" stroke-width=".9" fill="none"/><path d="M-2.2 27.2 Q0 31.6 2.2 27.2" stroke="#E9C46A" stroke-width=".55" fill="none"/>` +
+      `<path d="M-1.3 24.4 h2.6 v3.2 h-2.6 Z" fill="${skd}"/><ellipse cx="0" cy="21.4" rx="2.9" ry="3.5" fill="${sk}"/>` +
+      `<path d="M.5 17.9 Q3.5 19 2.9 21.4 Q2.6 24.5 0 24.9 Q1.7 22 .5 17.9 Z" fill="#000" opacity=".2"/>` +
+      `<path d="M-1.7 20.8 h1 M.7 20.8 h1 M0 21.3 l-.4 1.4 h.8 M-.9 23.4 Q0 23.9 .9 23.4" stroke="${ink}" stroke-width=".4" fill="none" stroke-linecap="round"/>` +
+      `<path d="M-3.3 20.2 Q-3.7 15.2 0 14.8 Q3.7 15.2 3.3 20.2 Q0 18.7 -3.3 20.2 Z" fill="${tur}"/><path d="M-3 18.5 Q0 16.9 3.1 18.7 M-2.5 16.6 Q0 15.6 2.8 17" stroke="#000" stroke-opacity=".16" stroke-width=".45" fill="none"/>${front}</g>`; };
+  const hand = (x, y, sk) => `<ellipse cx="${x}" cy="${y}" rx="1.3" ry="1.1" fill="${sk}"/>`;
+  const kakaki = (x, robe, sk) => man(x, robe, '#FFFFFF', '', sk, `<g class="kakaki"><path d="M1.2 23.2 L36 -16" stroke="#B8902E" stroke-width="1.5" stroke-linecap="round"/><path d="M1.6 22.6 L35.6 -16.4" stroke="#F6DE8C" stroke-width=".45"/>` +
+    `<path d="M33.6 -13.6 Q36 -15 38.6 -21.4 L42.6 -17.4 Q36.8 -15.6 35.8 -12.6 Z" fill="#D9B44A"/><path d="M38.6 -21.4 L42.6 -17.4" stroke="#8A6A1E" stroke-width=".7"/>` +
+    `<path d="M-5 31 Q-1 27.6 3.6 26.4 M5.4 30.6 Q8.4 25 9 17.6" stroke="${robe}" stroke-width="3.4" stroke-linecap="round" fill="none"/>${hand(3.8, 25.4, sk)}${hand(9.2, 16.8, sk)}</g>`);
+  const drummer = (x, sk) => man(x, '#B71C1C', '#F4EBD0', '', sk, `<path d="M-6 38 Q0 41 6 38 L5.6 46 Q0 48.6 -5.6 46 Z" fill="#7A4A22"/><path d="M-6 38 Q0 41 6 38" stroke="#F1E2C0" stroke-width="1.2" fill="none"/>` +
+    `<path d="M-5 39.6 L-4.2 45.6 M-2 40.4 L-1.6 46.8 M1.4 40.4 L1.2 46.8 M4.4 39.6 L4 45.6" stroke="#3A2414" stroke-width=".35"/><path d="M-4.6 28.4 L5 39" stroke="#5A3416" stroke-width=".6"/>` +
+    `<g class="drumarm"><path d="M5.4 30.6 Q9.6 33 8.6 36.6" stroke="#B71C1C" stroke-width="3.4" stroke-linecap="round" fill="none"/>${hand(8.4, 37, sk)}<path d="M8.6 37.4 Q6 37.8 3.4 39.2" stroke="#4E2A10" stroke-width=".8" stroke-linecap="round" fill="none"/></g>`);
+  const dogari = (x, sk) => man(x, '#C62828', '#2E7D32', `<path d="M9.4 -4 L9.4 61" stroke="#6B4422" stroke-width="1.1"/><path d="M8.2 -3.6 l1.2 -6.4 l1.2 6.4 Z" fill="#B0BEC5"/>`, sk,
+    `<path d="M-7.6 40 Q0 42.4 7.8 40 L7.9 42.6 Q0 45 -7.7 42.6 Z" fill="#2E7D32"/><path d="M5.4 30.6 Q8.8 34 9 38" stroke="#C62828" stroke-width="3.4" stroke-linecap="round" fill="none"/>${hand(9.3, 38.6, sk)}`);
+  return `<svg class="sallah" viewBox="0 -28 220 92" aria-hidden="true">${dogari(14, SKIN[1])}${kakaki(44, '#C62828', SKIN[0])}${kakaki(76, '#2E7D32', SKIN[3])}${drummer(110, SKIN[2])}${kakaki(140, '#1565C0', SKIN[1])}${dogari(200, SKIN[3])}</svg>`;
 }
 
 /*
