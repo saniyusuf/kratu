@@ -68,12 +68,13 @@ function head(o, sk) {
   const ld = o.load ? '<g transform="translate(30 3)">' + o.load + '</g>' : '';
   return '<g class="x-head" style="transform-origin:30px 37px">' + back +
     '<path d="M26 32 h8 v10 h-8 Z" fill="' + dk(sk, 0.1) + '"/>' +
-    '<circle cx="19.3" cy="26" r="2.3" fill="' + sk + '"/><circle cx="40.7" cy="26" r="2.3" fill="' + sk + '"/>' +
-    '<circle cx="30" cy="' + cy + '" r="10.8" fill="' + sk + '"/><circle cx="30" cy="' + cy + '" r="10.8" fill="' + u('sh') + '"/>' +
-    '<g fill="#1A0E06"><ellipse cx="25.8" cy="24.2" rx="1.35" ry="1.7"/><ellipse cx="34.2" cy="24.2" rx="1.35" ry="1.7"/></g><g fill="#fff"><circle cx="26.2" cy="23.5" r=".45"/><circle cx="34.6" cy="23.5" r=".45"/></g>' +
-    '<path d="M23.4 20.8 q2.4 -1.3 4.6 -.1 M32 20.7 q2.2 -1.2 4.6 .1" stroke="#1A0E06" stroke-width=".9" fill="none" stroke-linecap="round"/>' +
-    '<path d="M30.2 25.4 q1.8 2.6 -.2 3.3" stroke="' + dk(sk, 0.4) + '" stroke-width=".9" fill="none" stroke-linecap="round"/>' +
-    '<g fill="' + lt(sk, 0.3) + '" opacity=".35"><ellipse cx="23.6" cy="28.4" rx="2" ry="1.2"/><ellipse cx="36.4" cy="28.4" rx="2" ry="1.2"/></g>' +
+    '<path d="M19.6 23.6 q-2.6 .2 -2.2 2.8 q.4 2.4 2.6 2 Z M40.4 23.6 q2.6 .2 2.2 2.8 q-.4 2.4 -2.6 2 Z" fill="' + dk(sk, 0.08) + '"/>' +
+    '<path d="M30 ' + (cy - 11.4) + ' C36.6 ' + (cy - 11.4) + ' 40.8 ' + (cy - 6.2) + ' 40.6 ' + cy + ' C40.4 ' + (cy + 6.4) + ' 36.4 ' + (cy + 11.8) + ' 30 ' + (cy + 11.8) + ' C23.6 ' + (cy + 11.8) + ' 19.6 ' + (cy + 6.4) + ' 19.4 ' + cy + ' C19.2 ' + (cy - 6.2) + ' 23.4 ' + (cy - 11.4) + ' 30 ' + (cy - 11.4) + ' Z" fill="' + sk + '"/>' +
+    '<path d="M36.6 15.6 Q41.4 20 40.4 27.4 Q39 34.4 31.4 36.6 Q37 32 37.6 25.6 Q38 20 36.6 15.6 Z" fill="' + dk(sk, 0.28) + '" opacity=".7"/>' +
+    '<path d="M23 18.6 q3.8 -3.6 9 -3 q-5 .8 -7.6 4 Z M21.8 27 q1.6 -1.2 3.2 0 q-1.6 1.6 -3.2 0 Z" fill="' + lt(sk, 0.4) + '" opacity=".45"/>' +
+    '<path d="M24.3 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z M32.7 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z" fill="#1A0E06"/><path d="M25.9 23.3 h.7 v.7 h-.7 Z M34.3 23.3 h.7 v.7 h-.7 Z" fill="#fff" opacity=".85"/>' +
+    '<path d="M23.2 21 q2.4 -1.4 4.8 -.2 M32 20.8 q2.4 -1.2 4.8 .2" stroke="#1A0E06" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+    '<path d="M29.8 23.4 q.4 2.4 .8 3.4 M27.4 27.6 q1.2 1.2 2.6 .5 q1.4 .7 2.6 -.5" stroke="' + dk(sk, 0.45) + '" stroke-width=".85" fill="none" stroke-linecap="round"/>' +
     '<path class="x-ms" d="M26.2 30.4 Q30 33.8 33.8 30.4" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
     '<path class="x-mf" d="M26.6 32.6 Q30 30 33.4 32.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0"/>' +
     (o.beard ? '<path d="M21.4 28 Q22 37.6 30 38.4 Q38 37.6 38.6 28 Q36 33.4 30 33.4 Q24 33.4 21.4 28 Z" fill="' + (o.beard === 'w' ? '#E8E4DC' : '#24160C') + '"/>' : '') +
@@ -144,18 +145,20 @@ const reeds = (x, y, n, s = 1) => { let p = ''; for (let i = 0; i < n; i++) { co
   return '<path d="' + p + '" stroke="#5F8A3A" stroke-width="' + f1(0.7 * s) + '" fill="none" stroke-linecap="round"/>' + tops; };
 
 /* animals */
-/** a Zebu cow facing left with its head down to drink; local feet on y 0, about 36 wide */
+/** a Zebu (Bunaji / White Fulani) cow facing left, head down to drink: a hump over the shoulders, a dewlap, lyre horns,
+ *  jointed legs (the far pair darker), the belly in shade and the back in the morning light; local feet on y 0, ~40 wide */
 const cow = (x, y, s, c, cls = '') => { const d = dk(c, 0.2);
   return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-cow ' + cls + '">' +
-    '<path d="M8 -12 v12 M12 -12 v12 M26 -12 v12 M30 -12 v12" stroke="' + d + '" stroke-width="2.4" stroke-linecap="round"/>' +
-    '<path d="M6 -22 Q8 -27 14 -27 Q15 -31 19 -30 Q21 -26 32 -26 Q38 -25 38 -18 Q38 -11 32 -11 L10 -11 Q5 -12 5 -16 Z" fill="' + c + '"/>' +
-    '<path d="M14 -27 Q15 -31 19 -30 Q20 -27 19 -25 Z" fill="' + d + '"/><path d="M20 -12 Q28 -10 32 -11 Q38 -11 38 -18 Q36 -14 30 -13 Z" fill="' + d + '" opacity=".6"/>' +
-    '<path d="M38 -22 Q42 -18 40 -8" stroke="' + d + '" stroke-width="1" fill="none"/><path d="M39.4 -9 l1.6 3 l-2.6 -.4 Z" fill="#2A1A10"/>' +
-    '<path d="M7 -20 Q2 -16 -1 -8 L2 -6 Q5 -12 9 -15 Z" fill="' + c + '"/><path d="M7 -14 Q8 -9 6 -8" stroke="' + d + '" stroke-width="1.6" fill="none"/>' +
-    '<path d="M-3 -8 Q-4 -3 -1 -2 Q2 -2 3 -6 Q2 -9 -1 -9 Z" fill="' + c + '"/><ellipse cx="-1.6" cy="-2.6" rx="1.6" ry="1" fill="' + dk(c, 0.4) + '"/><circle cx="0" cy="-6.6" r=".5" fill="#1A0E06"/>' +
-    '<path d="M1 -8.6 Q-2 -14 -6 -13 Q-4 -11.6 -3 -9 M2 -8.4 Q6 -13 10 -12 Q7.6 -10.6 4 -8" stroke="#EDE3C8" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
-    '<path d="M3 -8 l2.6 -1 l-.6 1.8 Z" fill="' + d + '"/></g>' +
-    '<ellipse cx="18" cy="0" rx="18" ry="1.6" fill="#fff" opacity=".4"/></g>'; };
+    '<path d="M12.4 -12 L12.6 -5 L12.4 0 h2.2 L14.8 -5 L15.6 -12 Z M26.8 -12 Q27.8 -8 27.4 -5 L27.2 0 h2.2 L29.8 -5 Q31 -9 30.6 -12 Z" fill="' + dk(c, 0.34) + '"/>' +
+    '<path d="M8.4 -12 L9 -5 Q9.2 -2.6 9 0 h2.4 Q11.4 -2.6 11.8 -5 L13 -12 Z M30 -13 Q31.2 -8 30.6 -5 L30.4 0 h2.4 L33 -5 Q34.8 -9 35.8 -13 Z" fill="' + dk(c, 0.1) + '"/>' +
+    '<path d="M12 -11 Q8 -10.4 6.4 -12.6 Q4.6 -9.4 2.6 -6.6 L-1.6 -1.8 Q-3.4 0 -4.6 -.6 Q-5.6 -1.4 -4.8 -2.8 L-1 -8.4 Q.4 -10.6 2.4 -11.4 Q5.4 -14 8 -18 Q9.4 -20.4 10 -21 Q11 -27.4 15 -27.8 Q18 -28.6 20 -25.8 Q28 -26.2 34 -25.2 Q38.6 -24.2 38.8 -18.6 Q38.6 -13 35 -11.6 Q24 -10 12 -11 Z" fill="' + c + '"/>' +
+    '<path d="M12 -11 Q24 -10 35 -11.6 Q38.6 -13 38.8 -18.4 Q34 -14 24 -14.6 Q14 -15 7 -13.4 Q8 -10.6 12 -11 Z M15 -27.8 Q18 -28.6 20 -25.8 Q17 -24 14 -23.4 Z M-1.6 -1.8 L2.6 -6.6 Q1 -3.4 -1.6 -1.8 Z" fill="#1a0e06" opacity=".2"/>' +
+    '<path d="M10.6 -21.4 Q11.6 -27 15 -27.4 Q12.6 -25 12.4 -21.6 Q20 -24.4 33.6 -24.6 Q26 -23 18 -22.4 Q13 -21.8 10.6 -21.4 Z" fill="#fff" opacity=".22"/>' +
+    '<path d="M38.4 -21.6 Q41.4 -16 40.4 -7.4" stroke="' + d + '" stroke-width=".9" fill="none"/><path d="M40.4 -8.6 q1.4 2.6 .4 4.4 q-1.6 -.6 -1.6 -2.6 Z" fill="#2A1A10"/>' +
+    '<ellipse cx="-3.8" cy="-1.4" rx="1.6" ry="1.1" fill="' + dk(c, 0.45) + '"/><circle cx=".4" cy="-7.4" r=".6" fill="#1A0E06"/>' +
+    '<path d="M1.6 -11.2 Q-.6 -13.6 -.2 -16 Q0 -17.2 -1 -17.8 M3 -11.4 Q5.4 -13.2 5.8 -15.6 Q6 -16.8 7 -17.2" stroke="#EDE3C8" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+    '<path d="M3 -10 l3.6 .6 l-2.4 1.6 Z" fill="' + d + '"/></g>' +
+    '<ellipse cx="18" cy="0" rx="18" ry="1.6" fill="#fff" opacity=".3"/></g>'; };
 /** an egret (white) or heron (grey) standing, facing left; local feet on y 0 */
 const wader = (x, y, s, heron, cls = '') => { const b = heron ? '#8E98A0' : '#FBFBF6', b2 = heron ? '#6C757C' : '#DCDDD6';
   return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-egret ' + cls + '">' +
@@ -174,10 +177,12 @@ const basin = (x, y, w, c = '#2E8B7A') => '<g><path d="M' + f1(x - w / 2) + ' ' 
   '<path d="M' + f1(x - w / 2) + ' ' + y + ' Q' + x + ' ' + f1(y + w * 0.08) + ' ' + f1(x + w / 2) + ' ' + y + '" stroke="' + lt(c, 0.35) + '" stroke-width="' + f1(w * 0.04) + '" fill="none"/>' +
   '<g fill="#FFD54A">' + [-0.3, -0.1, 0.1, 0.3].map((k) => '<circle cx="' + f1(x + k * w) + '" cy="' + f1(y + w * 0.2) + '" r="' + f1(w * 0.03) + '"/>').join('') + '</g></g>';
 /** a cloth spread on a rock */
-const rockCloth = (x, y, w, rock, cloth, cloth2) => '<g><path d="M' + f1(x - w / 2) + ' ' + y + ' Q' + f1(x - w * 0.46) + ' ' + f1(y - w * 0.34) + ' ' + f1(x - w * 0.1) + ' ' + f1(y - w * 0.4) + ' Q' + f1(x + w * 0.4) + ' ' + f1(y - w * 0.42) + ' ' + f1(x + w / 2) + ' ' + y + ' Z" fill="' + rock + '"/>' +
-  '<path d="M' + f1(x + w * 0.1) + ' ' + f1(y - w * 0.41) + ' Q' + f1(x + w * 0.42) + ' ' + f1(y - w * 0.4) + ' ' + f1(x + w / 2) + ' ' + y + ' L' + f1(x + w * 0.1) + ' ' + y + ' Z" fill="' + dk(rock, 0.18) + '"/>' +
-  (cloth ? '<path d="M' + f1(x - w * 0.42) + ' ' + f1(y - w * 0.1) + ' Q' + f1(x - w * 0.38) + ' ' + f1(y - w * 0.36) + ' ' + f1(x - w * 0.06) + ' ' + f1(y - w * 0.4) + ' Q' + f1(x + w * 0.3) + ' ' + f1(y - w * 0.42) + ' ' + f1(x + w * 0.4) + ' ' + f1(y - w * 0.14) + ' L' + f1(x + w * 0.36) + ' ' + f1(y - w * 0.02) + ' L' + f1(x - w * 0.38) + ' ' + f1(y + w * 0.02) + ' Z" fill="' + cloth + '"/>' +
-  '<path d="M' + f1(x - w * 0.38) + ' ' + f1(y - w * 0.2) + ' Q' + x + ' ' + f1(y - w * 0.32) + ' ' + f1(x + w * 0.38) + ' ' + f1(y - w * 0.22) + ' M' + f1(x - w * 0.38) + ' ' + f1(y - w * 0.08) + ' Q' + x + ' ' + f1(y - w * 0.18) + ' ' + f1(x + w * 0.38) + ' ' + f1(y - w * 0.08) + '" stroke="' + cloth2 + '" stroke-width="' + f1(w * 0.05) + '" fill="none"/>' : '') + '</g>';
+const rockCloth = (x, y, w, rock, cloth, cloth2) => '<g transform="translate(' + x + ' ' + y + ') scale(' + f1(w / 26) + ')"><ellipse cx="1" cy=".6" rx="15" ry="1.8" fill="rgba(40,24,10,.3)"/>' +
+  '<path d="M-13 0 Q-13.6 -5 -9.6 -8.4 Q-5 -11.6 1 -11 Q8 -10.6 11.6 -6 Q13.8 -2.6 13 0 Q0 1.6 -13 0 Z" fill="' + rock + '"/>' +
+  '<path d="M4 -10.8 Q9.6 -9.4 11.6 -6 Q13.8 -2.6 13 0 Q4 1.2 -6 .8 Q6 -1 4 -10.8 Z" fill="' + dk(rock, 0.25) + '"/>' +
+  (cloth ? '<path d="M-10.4 -6.6 Q-6 -11 1 -10.6 Q7.6 -10.2 10.6 -6.4 L11.6 -2.4 Q9.6 -1 8.4 -2.8 Q7 -.6 5 -2 Q3 -.4 1 -1.8 Q-1.6 -.2 -3.6 -1.8 Q-5.6 -.4 -7.6 -2.2 Q-9.4 -.8 -11 -2.6 Z" fill="' + cloth + '"/>' +
+  '<path d="M-10.6 -5.2 Q0 -9.6 11 -5 M-11 -3.6 Q0 -7.8 11.3 -3.2" stroke="' + cloth2 + '" stroke-width="1" fill="none"/>' +
+  '<path d="M3 -10.4 Q8 -9.6 10.6 -6.4 L11.6 -2.4 Q9.6 -1 8.4 -2.8 Q7 -.6 5 -2 Q6 -6 3 -10.4 Z M-6 -2 Q-4 -6 -2 -9.8 Q-3 -5 -3.6 -1.8 Z" fill="#1a0e06" opacity=".2"/>' : '') + '</g>';
 /** a dugout canoe, centre (x, y), length l */
 const canoe = (x, y, l, c = '#7A4A26') => '<g><path d="M' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + f1(x - l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + x + ' ' + f1(y + l * 0.07) + ' Q' + f1(x + l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + f1(x + l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + x + ' ' + f1(y - l * 0.01) + ' ' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Z" fill="' + c + '"/>' +
   '<path d="M' + f1(x - l * 0.46) + ' ' + f1(y - l * 0.055) + ' Q' + x + ' ' + f1(y + l * 0.02) + ' ' + f1(x + l * 0.46) + ' ' + f1(y - l * 0.055) + '" stroke="' + lt(c, 0.3) + '" stroke-width="' + f1(l * 0.012) + '" fill="none"/>' +
@@ -216,7 +221,7 @@ export function kogiScene(): string {
     cow(20, 111, 0.62, '#EDE6D6', 'c1') + cow(48, 113, 0.7, '#9A4A26', 'c2') + cow(80, 110.6, 0.6, '#3A2A22', 'c3') +
     wader(44, 99.6, 0.34, false, 'e1') + wader(104, 112, 0.42, false, 'e2') + wader(10, 112.6, 0.38, false, 'e3') +
     '<path d="M0 109.4 Q60 108.4 106 109.4 Q114 112 106 115.4 H0 Z" fill="#8EC6DA" opacity=".5"/>' +
-    '<g fill="none" stroke="#E8F6FB" stroke-width=".45" opacity=".9"><ellipse cx="19.6" cy="110" rx="3" ry=".7"/><ellipse cx="47.6" cy="112" rx="3.2" ry=".7"/><ellipse cx="79.6" cy="109.8" rx="3" ry=".7"/></g>' +
+    '<path d="M16.6 110 q3 -.8 6 0 M44.4 112 q3.2 -.8 6.4 0 M76.6 109.8 q3 -.8 6 0" fill="none" stroke="#E8F6FB" stroke-width=".4" stroke-linecap="round" opacity=".6"/>' +
     person(116, 109.4, 19, { kind: 'boy', skin: 2, robe: '#C9A46A', trou: '#8A6A44', hat: 'malafa', hatc: '#D8B46A', hatc2: '#6B3A1E', al: 'staff', ar: 'hip', arc: 'x-wv',
       behind: '<path d="M9 22 L9 136" stroke="#6B4A22" stroke-width="2.4" stroke-linecap="round"/>' }) + '</g>';
   // the fisherman casting his net from a small canoe
@@ -228,7 +233,8 @@ export function kogiScene(): string {
     person(1, 1, 18, { kind: 'man', skin: 4, robe: '#3E6E8E', trou: '#3E6E8E', hat: 'hula', hatc: '#F4EBD0', al: 'down', ar: 'wave' }) + '</g>' +
     '<ellipse cx="0" cy="4" rx="17" ry="1.4" fill="#fff" opacity=".35"/></g>';
   // the near bank on the left: rocks with clothes, the washing women
-  const nearL = '<path d="M0 158 Q34 160 62 170 Q92 180 116 200 L120 212 H0 Z" fill="' + u('sand') + '"/><path d="M0 158 Q34 160 62 170 Q92 180 116 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
+  const nearL = '<path d="M0 158 Q34 160 62 170 Q92 180 116 200 L120 212 H0 Z" fill="' + u('sand') + '"/><path d="M0 158 Q34 160 62 170 Q92 180 116 200 L120 212 H0 Z" fill="' + u('grit') + '"/>' +
+    '<path d="M0 158 Q34 160 62 170 Q92 180 116 200 L108 200 Q86 183 58 173.6 Q30 164.6 0 163 Z" fill="#8A6A3E" opacity=".3"/><path d="M0 158 Q34 160 62 170 Q92 180 116 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
     '<path d="M60 168 Q84 176 104 192" stroke="#fff" stroke-width=".8" fill="none" opacity=".55"/>' +
     reeds(1, 162, 6, 1.1) +
     rockCloth(22, 176, 26, '#9A8C7A', '#C2185B', '#FFD54A') + rockCloth(44, 182, 18, '#8A7E6E', '#1E88E5', '#fff') + rockCloth(8, 186, 18, '#A49684', '#FFB300', '#2E7D32') +
@@ -245,12 +251,13 @@ export function kogiScene(): string {
   const splash = (x, y) => '<g class="x-splash"><g fill="#E8F6FB">' +
     '<path d="M' + (x - 4) + ' ' + y + ' q-2 -5 -5 -6 q4 1 6 5 Z M' + (x + 4) + ' ' + y + ' q2 -5 5 -6 q-4 1 -6 5 Z"/><circle cx="' + (x - 6) + '" cy="' + (y - 8) + '" r=".8"/><circle cx="' + (x + 7) + '" cy="' + (y - 9) + '" r=".7"/><circle cx="' + (x + 1) + '" cy="' + (y - 10) + '" r=".9"/></g></g>';
   const kid = (x, y, h, o) => '<g class="x-kid">' + person(x, y, h, o) + '</g>';
-  const nearR = '<path d="M320 156 Q300 160 284 172 Q266 184 258 200 L254 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 156 Q300 160 284 172 Q266 184 258 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
+  const nearR = '<path d="M320 156 Q300 160 284 172 Q266 184 258 200 L254 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 156 Q300 160 284 172 Q266 184 258 200 L254 212 H320 Z" fill="' + u('grit') + '"/>' +
+    '<path d="M320 156 Q300 160 284 172 Q266 184 258 200 L265 200 Q272 187 289 175.6 Q303 165 320 161 Z" fill="#8A6A3E" opacity=".3"/><path d="M320 156 Q300 160 284 172 Q266 184 258 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
     // the two children in the water up to their waists
     kid(232, 199, 30, { kind: 'boy', skin: 0, robe: '#E53935', trou: '#E53935', hat: 'hair', al: 'splash', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k1' }) +
     kid(254, 198, 27, { kind: 'woman', skin: 2, robe: '#FFD54A', wrap: '#1E88E5', wrap2: '#FFD54A', hat: 'braids', al: 'wave', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k2' }) +
     '<path d="M212 187 Q244 184.6 274 187 L276 212 H210 Z" fill="' + u('water2') + '"/>' +
-    '<g fill="none" stroke="#E8F6FB" stroke-width=".7" opacity=".85"><ellipse cx="232" cy="187.2" rx="8" ry="1.6"/><ellipse cx="254" cy="187" rx="7" ry="1.4"/><ellipse cx="243" cy="190" rx="22" ry="3" opacity=".5"/></g>' +
+    '<path d="M223 187.6 q9 -1.6 18 0 M246 187.4 q8 -1.4 16 0 M222 191 q21 3.4 44 0" fill="none" stroke="#E8F6FB" stroke-width=".5" stroke-linecap="round" opacity=".6"/><path d="M224 188.4 q8 1.6 16 0 Z M247 188.2 q7 1.4 14 0 Z" fill="#1C5A82" opacity=".35"/>' +
     splash(221, 187) + splash(265, 187) +
     // a boy on the bank about to jump in
     person(272, 182, 26, { kind: 'boy', skin: 4, robe: '#1E88E5', trou: '#E8DFC8', hat: 'hair', al: 'wave', ar: 'wave', alc: 'x-wv', arc: 'x-wv' }) +
@@ -259,7 +266,7 @@ export function kogiScene(): string {
     lg('sky', ['#8FCBEA', '#BFE0EE', '#F4E7C8', '#FBDDB0']) + lg('bank', ['#B7A86A', '#9C9A58', '#C9B47A']) + lg('sand', ['#E8D29A', '#D8B87A', '#C9A266']) +
     lg('water', ['#8EC6DA', '#4FA3CC', '#2F84B6', '#22709F'], 104, 200, true) + lg('water2', ['#8EC6DA', '#4FA3CC', '#2F84B6', '#22709F'], 111, 207, true) +
     '<radialGradient id="' + P + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".4" stop-color="#FFE9A0" stop-opacity=".7"/><stop offset="1" stop-color="#FFE9A0" stop-opacity="0"/></radialGradient>' +
-    '<radialGradient id="' + P + '-sh" cx=".38" cy=".32" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></radialGradient>' +
+    '<pattern id="' + P + '-grit" width="23" height="13" patternUnits="userSpaceOnUse"><path d="M2 2.2 h.5 v.4 h-.5 Z M13.6 1 h.4 v.5 h-.4 Z M8 6.4 h.6 v.4 h-.6 Z M19 8.6 h.4 v.4 h-.4 Z M4.6 11 h.5 v.4 h-.5 Z M15 11.6 h.6 v.3 h-.6 Z M1 7.6 q2.6 -.9 5.2 0 M11 4 q3 -1 6 .1 M14.4 9.6 q2.4 -.8 4.6 .2" fill="#6E5028" fill-opacity=".4" stroke="#FFF4D8" stroke-opacity=".28" stroke-width=".3"/></pattern>' +
     '<clipPath id="' + P + '-kneel"><rect x="40" y="120" width="70" height="60"/></clipPath></defs>' +
     '<rect width="320" height="200" fill="' + u('sky') + '"/><circle cx="44" cy="50" r="34" fill="' + u('sun') + '"/><circle cx="44" cy="50" r="10" fill="#FFF3C4"/>' +
     cloud(64, 34, 1) + cloud(200, 22, 0.8) + cloud(300, 66, 0.6) +

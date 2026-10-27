@@ -178,6 +178,8 @@ export function bootArt(): any {
   var D = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
     '<pattern id="kc-grain" width="40" height="6" patternUnits="userSpaceOnUse"><path d="M0 2 Q10 0 20 2 T40 2" fill="none" stroke="#3E2410" stroke-opacity=".28" stroke-width=".7"/><path d="M0 5 Q12 3.6 24 5 T40 5" fill="none" stroke="#F0C48A" stroke-opacity=".2" stroke-width=".6"/></pattern>' +
     '<linearGradient id="kc-hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9773E"/><stop offset=".45" stop-color="#8A4E22"/><stop offset="1" stop-color="#4E2A0E"/></linearGradient>' +
+    '<linearGradient id="kc-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE2B8" stop-opacity=".2"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".36"/></linearGradient>' +
+    '<linearGradient id="kc-sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E6E92" stop-opacity=".55"/><stop offset="1" stop-color="#1C5A82" stop-opacity=".95"/></linearGradient>' +
     '<linearGradient id="kc-inner" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A1E08"/><stop offset="1" stop-color="#6B3E1C"/></linearGradient>' +
     '<linearGradient id="kc-refl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4E2A0E" stop-opacity=".45"/><stop offset="1" stop-color="#4E2A0E" stop-opacity="0"/></linearGradient>' +
     '<pattern id="kc-speck" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="2" r=".55" fill="#5E2A0C" opacity=".35"/><circle cx="5" cy="5.4" r=".45" fill="#FFD9B8" opacity=".35"/></pattern>' +
@@ -188,23 +190,28 @@ export function bootArt(): any {
     '</defs></svg>';
   document.body.insertAdjacentHTML('afterbegin', D);
   var A = window.KART;
-  /* a dugout canoe: carved ends, a hull with grain, ribs and a seat inside, a paddle across, its reflection and wake below */
+  /* a dugout canoe seen a little from above (r5 realism): the far gunwale and the dark hollow inside show, the near side
+     carries the grain and the light from the upper left, the hull sits IN the water (darker below the waterline, a soft
+     contact shadow, a broken reflection). The word is on a weathered plank lashed across it. Gradients live in the
+     shared defs above, so five canoes do not repeat them; nothing in it is animated. */
   A.canoe = function (w) {
-    return '<svg viewBox="0 0 220 90" class="art canoe3"><defs><linearGradient id="kc-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE2B8" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>' +
-      '<linearGradient id="kc-sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A8FBE" stop-opacity=".5"/><stop offset="1" stop-color="#22709F" stop-opacity=".92"/></linearGradient></defs>' +
-      '<g class="refl" opacity=".9"><path d="M10 50 Q110 80 210 50 Q200 66 110 70 Q20 66 10 50 Z" fill="url(#kc-refl)" transform="translate(0 30) scale(1 -.55) translate(0 -64)"/></g>' +
-      '<path class="wake" d="M0 62 Q8 58 16 62 M-14 66 Q-4 61 6 66 M-26 70 Q-14 65 -4 70" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>' +
-      '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-hull)"/>' +
-      '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-grain)"/>' +
-      '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-side)"/><path d="M12 33 Q60 41 120 41" stroke="#E7B27A" stroke-width="1.3" opacity=".45" fill="none"/>' +
-      '<path d="M24 28 L196 28 Q190 36 110 37 Q30 36 24 28 Z" fill="url(#kc-inner)"/>' +
-      '<path d="M60 29 V35 M100 29 V37 M140 29 V37 M178 29 V34" stroke="#2A1404" stroke-width="2" opacity=".6"/>' +
-      '<rect x="92" y="27" width="34" height="5" rx="1.5" fill="#C98A55"/>' +
-      '<path d="M24 28 L196 28" stroke="#E2AA6A" stroke-width="1.6"/><path d="M2 26 Q14 20 24 28 M196 28 Q206 20 218 26" fill="none" stroke="#E2AA6A" stroke-width="1.6"/>' +
-      '<g class="paddle"><path d="M150 14 L182 44" stroke="#7A4A22" stroke-width="2.6" stroke-linecap="round"/><path d="M150 14 L182 44" stroke="#C08A56" stroke-width=".8" stroke-linecap="round" opacity=".6"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/></g>' +
-      /* the hull sits in the river: below the waterline it is seen through blue water, with a bright line where it cuts the surface */
-      '<path d="M8 43 Q110 57 212 43 Q207 46 200 48 Q110 62 20 48 Q13 46 8 43 Z" fill="url(#kc-sub)"/><path d="M8 43 Q110 57 212 43" stroke="#E9FBFF" stroke-width="1.4" fill="none" opacity=".75"/>' +
-      '<rect x="44" y="18" width="132" height="34" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.6"/><path d="M47 20.4 H173" stroke="#fff" stroke-width="1.2" opacity=".5"/><circle cx="49.5" cy="35" r="1.6" fill="#7A4A22"/><circle cx="170.5" cy="35" r="1.6" fill="#7A4A22"/>' +
+    return '<svg viewBox="0 0 220 90" class="art canoe3">' +
+      '<path d="M14 50 Q110 62 206 50 Q196 66 110 72 Q24 66 14 50 Z M30 63 h40 v1.2 h-40 Z M128 66 h44 v1.2 h-44 Z" fill="url(#kc-refl)" fill-rule="evenodd"/>' +
+      '<path d="M4 47 Q110 60 216 47 Q204 54 110 57 Q16 54 4 47 Z" fill="#163E5A" opacity=".35"/>' +
+      '<path d="M3 25 Q12 17 24 24 Q110 15 196 24 Q208 17 217 25 Q213 39 201 47 Q110 59 19 47 Q7 39 3 25 Z" fill="url(#kc-hull)"/>' +
+      '<path d="M3 25 Q12 17 24 24 Q110 15 196 24 Q208 17 217 25 Q213 39 201 47 Q110 59 19 47 Q7 39 3 25 Z" fill="url(#kc-grain)"/>' +
+      '<path d="M3 25 Q12 17 24 24 Q110 15 196 24 Q208 17 217 25 Q213 39 201 47 Q110 59 19 47 Q7 39 3 25 Z" fill="url(#kc-side)"/>' +
+      '<path d="M22 25.5 Q110 16.5 198 25.5 Q110 33 22 25.5 Z" fill="url(#kc-inner)"/><path d="M24 24.6 Q110 16.4 196 24.6 Q110 19.6 24 24.6 Z" fill="#B47A44" opacity=".75"/>' +
+      '<path d="M30 23.2 v4.6 M37 22.4 v5.6 M183 22.4 v5.6 M190 23.2 v4.6" stroke="#5A3214" stroke-width="1.6" opacity=".8"/>' +
+      '<path d="M3 25 Q12 17 24 24 Q110 15 196 24 Q208 17 217 25 M22 25.5 Q110 33 198 25.5" fill="none" stroke="#E6B47A" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<path d="M10 36 Q60 44 120 44.6" stroke="#F2C890" stroke-width="1.4" opacity=".4" fill="none"/>' +
+      '<path d="M150 12 L182 44" stroke="#8A5428" stroke-width="2.8" stroke-linecap="round"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/>' +
+      '<path d="M8 43 Q110 56 212 43 Q207 46 200 48 Q110 61 20 48 Q13 46 8 43 Z" fill="url(#kc-sub)"/><path d="M6 43.4 Q110 56.6 214 43.4" stroke="#E9FBFF" stroke-width="1.2" fill="none" opacity=".7"/>' +
+      '<path d="M-20 58 Q-8 54 4 57 M-34 62 Q-20 58 -6 61 M212 55 Q222 52 232 55" fill="none" stroke="#E9FBFF" stroke-opacity=".45" stroke-width="1"/>' +
+      '<rect x="44" y="18" width="132" height="34" rx="3" fill="#F4E3BE" stroke="#6E4220" stroke-width="1.6"/>' +
+      '<path d="M53 15.6 q-1.6 20 -.4 40 M167 15.6 q1.6 20 .4 40" stroke="#B8955C" stroke-width="2.4" fill="none" stroke-dasharray="1.8 1"/>' +
+      '<path d="M46 23 Q90 21 174 24 M46 40 Q100 42 174 39 M60 30 q14 -2 26 1 M136 47 q12 1 22 -1" fill="none" stroke="#B89466" stroke-width=".7" opacity=".55"/>' +
+      '<path d="M45 49 H175 V50.4 Q174 51 172 51 H48 Q45.6 51 45 50 Z M48 33.6 h3 v3 h-3 Z M169 33.6 h3 v3 h-3 Z" fill="#5A3416" opacity=".55"/>' +
       '<text x="110" y="46.5" text-anchor="middle" class="tw">' + w + '</text></svg>';
   };
   /* a clay pot: thick rim, incised band, speckled fired clay, a soft shine, the letter in white chalk */
