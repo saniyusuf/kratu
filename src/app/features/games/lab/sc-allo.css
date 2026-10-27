@@ -57,7 +57,7 @@
 
 /* ---- the big allo board (sc-allo.ts board/alloWrite/alloWash, Sani 2026-10-26): left of Laila, under the top bar;
    the progress dots move to the right so the board can be tall. Transform and opacity only. ---- */
-.glab .scr.allog>.astage{position:absolute;left:1cqw;top:9.6cqw;width:42cqw;height:45cqw;margin:0;display:block}
+.glab .scr.allog>.astage{position:absolute;left:1cqw;top:9.2cqw;width:42cqw;height:50.6cqw;margin:0;display:block}   /* r3: taller, the board now stands on its frame in the sand */
 .glab .scr.allog>.astage .allow2{width:100%;height:100%}
 .glab .scr.allog>.seats{left:auto;right:3cqw;transform:none}
 .glab .scr.allog .al4b{display:block;width:100%;height:100%;overflow:visible}

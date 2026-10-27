@@ -279,14 +279,33 @@ function board(word) {
   const rag = '<g class="al4b-rag"><g transform="translate(70 150)"><path d="M-74 66 Q-44 44 -20 20 L0 34 Q-26 62 -54 86 Z" fill="#7A4A26"/><path d="M-92 74 Q-76 54 -64 56 L-42 86 Q-58 96 -78 102 Z" fill="#F4F1E8"/><path d="M-64 56 L-42 86" stroke="#D8D2C2" stroke-width="2"/>' +
     '<path d="M-36 -8 Q-10 -30 30 -20 Q52 -10 44 16 Q34 40 4 42 Q-30 42 -40 20 Q-46 4 -36 -8 Z" fill="#F2EDE2"/><path d="M-30 -2 Q0 -20 38 -10 M-36 16 Q0 4 42 12" stroke="#2F4A7F" stroke-width="5" fill="none" opacity=".8"/><path d="M-20 30 Q4 36 30 26" stroke="#CFC6B2" stroke-width="3" fill="none"/>' +
     '<path d="M-24 22 Q-26 4 -8 -2 L18 -4 Q30 2 26 16 Q20 30 0 32 Q-18 32 -24 22 Z" fill="#7A4A26"/><g fill="#86532C" stroke="#5E3A1C" stroke-width="1.2"><ellipse cx="-6" cy="-4" rx="7" ry="5.5"/><ellipse cx="6" cy="-6" rx="7" ry="5.5"/><ellipse cx="18" cy="-4" rx="6.5" ry="5"/><ellipse cx="27" cy="3" rx="5.5" ry="4.5"/></g><path d="M-22 14 Q-34 6 -30 -6 Q-24 -8 -18 2" fill="#86532C" stroke="#5E3A1C" stroke-width="1.2"/><path d="M-14 -2 Q-12 -10 -4 -10 M8 -11 h6" stroke="#B07A48" stroke-width="1.4" fill="none" opacity=".7"/></g></g>';
-  const svg = '<svg class="al4b" viewBox="0 0 430 450" aria-hidden="true">' + style +
-    '<defs><linearGradient id="al4b-wd' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8C893"/><stop offset=".55" stop-color="#DBB57A"/><stop offset="1" stop-color="#C99C5E"/></linearGradient>' +
+  /* (r3, Sani 2026-10-27 "more real"): the writing face is coated with white clay (farar kasa), unevenly, the wood
+     showing round it; the board has thickness, a hole in its handle with a leather thong, and it stands on a wooden
+     frame planted in the sand: two legs and a ledge in front, two behind, soft shadows where they meet the ground */
+  const blob = (rx, ry, j) => { const P = []; for (let k = 0; k < 18; k++) { const a = k / 18 * Math.PI * 2, rr = 1 + (rnd() - .5) * j; P.push([215 + Math.cos(a) * rx * rr, 262 + Math.sin(a) * ry * rr]); }
+    const mid = (a, b) => [((a[0] + b[0]) / 2).toFixed(1), ((a[1] + b[1]) / 2).toFixed(1)];
+    let d = 'M' + mid(P[17], P[0]).join(' '); P.forEach((q, k) => { d += ' Q' + q[0].toFixed(1) + ' ' + q[1].toFixed(1) + ' ' + mid(q, P[(k + 1) % 18]).join(' '); }); return d + ' Z'; };
+  const clay = blob(200, 156, .1), clay2 = blob(184, 140, .08);
+  const legC = (x0, y0, x1, y1, w, c, hi) => '<path d="M' + (x0 - w / 2) + ' ' + y0 + ' L' + (x1 - w / 2) + ' ' + y1 + ' L' + (x1 + w / 2) + ' ' + y1 + ' L' + (x0 + w / 2) + ' ' + y0 + ' Z" fill="' + c + '"/>' +
+    (hi ? '<path d="M' + (x0 - w / 2 + 1.5) + ' ' + y0 + ' L' + (x1 - w / 2 + 1.5) + ' ' + y1 + '" stroke="#C99A60" stroke-width="2" opacity=".6"/>' : '');
+  const ground = '<ellipse cx="222" cy="511" rx="200" ry="11" fill="rgba(60,36,12,.16)"/><ellipse cx="222" cy="510" rx="150" ry="5" fill="rgba(60,36,12,.22)"/>' +
+    '<path d="M86 512 L344 512 L404 524 L120 524 Z" fill="rgba(70,40,14,.12)"/>' +
+    [[150, 503], [292, 503], [90, 512], [342, 512]].map(([x, y]) => '<ellipse cx="' + (x + 4) + '" cy="' + (y + 1) + '" rx="14" ry="3" fill="rgba(50,28,8,.35)"/>').join('') +
+    '<g fill="#B88A50" opacity=".5"><ellipse cx="70" cy="516" rx="6" ry="1.4"/><ellipse cx="380" cy="508" rx="5" ry="1.2"/><ellipse cx="250" cy="518" rx="4" ry="1"/></g>';
+  const back = legC(176, 320, 150, 504, 9, '#5A3818', false) + legC(254, 320, 292, 504, 9, '#4E3014', false) + '<path d="M156 470 H286" stroke="#4E3014" stroke-width="6"/>';
+  const front = legC(118, 442, 90, 514, 12, '#7A4E26', true) + legC(312, 442, 342, 514, 12, '#6A4220', true) +
+    '<path d="M60 438 H372 V452 H60 Z" fill="#7E5228"/><path d="M60 438 H372 V442 H60 Z" fill="#B88850"/><path d="M60 450 H372 V452 H60 Z" fill="#4A2E12"/>' +
+    '<path d="M60 452 H372 L380 466 H68 Z" fill="rgba(40,24,8,.18)"/>' +
+    '<g fill="#3A2410"><circle cx="118" cy="445" r="2.2"/><circle cx="312" cy="445" r="2.2"/></g>';
+  const svg = '<svg class="al4b" viewBox="0 0 430 520" aria-hidden="true">' + style +
+    '<defs><linearGradient id="al4b-wd' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDB57E"/><stop offset=".55" stop-color="#CDA066"/><stop offset="1" stop-color="#B0814A"/></linearGradient>' +
     '<radialGradient id="al4b-ed' + id + '" cx=".5" cy=".55" r=".62"><stop offset=".62" stop-color="#6E4520" stop-opacity="0"/><stop offset="1" stop-color="#6E4520" stop-opacity=".38"/></radialGradient>' +
     '<linearGradient id="al4b-wt' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CDEBF7" stop-opacity=".55"/><stop offset="1" stop-color="#8CC0DA" stop-opacity=".35"/></linearGradient>' +
     '<clipPath id="al4b-cl' + id + '"><path d="' + BODY + '"/></clipPath></defs>' +
-    '<ellipse cx="215" cy="444" rx="180" ry="6" fill="rgba(40,24,10,.28)"/>' +
+    ground + back + '<path d="' + BODY + '" fill="#5E3A18" transform="translate(6 7)"/>' +
     '<path d="' + BODY + '" fill="url(#al4b-wd' + id + ')"/>' +
     '<g clip-path="url(#al4b-cl' + id + ')">' + grain + knot + stains +
+    '<path d="' + clay + '" fill="#F3E9D2" opacity=".22"/><path d="' + clay2 + '" fill="#F3E9D2" opacity=".3"/>' +
     '<path d="' + BODY + '" fill="url(#al4b-ed' + id + ')"/><path d="' + BODY + '" fill="none" stroke="#8C5E30" stroke-width="12" opacity=".35"/>' +
     '<ellipse cx="130" cy="130" rx="110" ry="50" fill="#fff" opacity=".1"/>' +
     '<g class="al4b-ink" fill="none" stroke="#2A190C" stroke-linecap="round" stroke-linejoin="round">' + ink + '</g>' +
@@ -294,6 +313,9 @@ function board(word) {
     '<g class="al4b-wet"><path d="' + BODY + '" fill="url(#al4b-wt' + id + ')"/><g stroke="#fff" stroke-linecap="round" fill="none" opacity=".45">' + [60, 130, 190, 260, 330, 380].map((x, k) => '<path d="M' + x + ' 70 q' + (k % 2 ? 6 : -6) + ' 120 0 ' + (220 + k * 23) + '" stroke-width="' + (2 + k % 3) + '"/>').join('') + '</g></g></g>' +
     '<path d="' + BODY + '" fill="none" stroke="#7A4E26" stroke-width="2.4"/>' +
     '<path d="M180 22 Q215 12 250 22" stroke="#fff" stroke-width="3" opacity=".25" fill="none" stroke-linecap="round"/>' +
+    '<path d="M14 400 V90 Q14 68 34 68" stroke="#FFF1D6" stroke-width="3" opacity=".3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="215" cy="26" r="7" fill="#3A2210"/><circle cx="216" cy="27.4" r="5" fill="#1E1208"/><path d="M211.4 28 Q205 50 215 56 Q225 50 218.6 28" stroke="#5A3418" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M215 56 l-3 12 M215 56 l3 11" stroke="#5A3418" stroke-width="2.6" stroke-linecap="round"/>' +
+    front +
     buta + rag + pen + '</svg>';
   return { svg, tl };
 }
