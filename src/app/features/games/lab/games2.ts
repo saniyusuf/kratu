@@ -645,8 +645,8 @@ export function moreGames(c: any): Record<string, any> {
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="wsbd">' + wsBoard() + '</div><div class="env">' + envelopeArt() + '</div><div class="wsbd wspin">' + wsPins() + '</div><div class="achw">' + postRider() + '</div></div>');
         const snd = wasikaSound(run), fin = (r) => { snd.close(); done(r); };
-        const key = (L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>';   // A–M on the left, N–Z on the right, Laila between them
-        const kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
+        const key = (L) => '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>';   // the lessons' keys (design.css); A–M on the left, N–Z on the right, Laila between them
+        const kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
         run.clock(150, () => fin({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
@@ -683,7 +683,7 @@ export function moreGames(c: any): Record<string, any> {
         }, () => W[wi].toUpperCase().slice(li).split(''));
         const ready = () => !run.dead && !box.busy;
         const typed = (L, b) => { run.auto = false; take([L], b); };
-        kb.addEventListener('click', (e) => { const b = e.target.closest('.mk'); if (b && ready()) typed(b.dataset.l, b); });
+        kb.addEventListener('click', (e) => { const b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
         const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
           const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
         document.addEventListener('keydown', onKey);

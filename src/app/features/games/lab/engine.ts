@@ -534,9 +534,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var top = h('<div class="sp hs"><span class="sppic"><img alt=""></span><div class="spslots"></div><span class="hpct"><b>0</b>%</span></div>');
         /* the house is the red-earth Hausa house of the scene behind (sc-bulo.ts buloHouse, Sani 2026-10-26) */
         var site = h('<div class="site">' + buloHouse() + '</div>');
-        /* the A–Z keys as in Marubucin wasiƙa: A–M left, N–Z right, Laila between them */
-        var ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), key = function (L) { return '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>'; };
-        var kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
+        /* the lessons' A–Z keys (abcgrid/abckey, design.css) as in Marubucin wasiƙa: A–M left, N–Z right, Laila between them */
+        var ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), key = function (L) { return '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>'; };
+        var kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         var box = micBox(run);
         var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site);
         run.scr.appendChild(top); run.scr.appendChild(hrow); run.scr.appendChild(kb); run.scr.appendChild(box);
@@ -589,7 +589,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         }, function () { return W[wi].toUpperCase().slice(li).split(''); });
         var ready = function () { return !run.dead && !box.busy; };
         var typed = function (L, b) { run.auto = false; take([L], b); };
-        kb.addEventListener('click', function (e) { var b = e.target.closest('.mk'); if (b && ready()) typed(b.dataset.l, b); });
+        kb.addEventListener('click', function (e) { var b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
         var onKey = function (e) { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
           var L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
         document.addEventListener('keydown', onKey);
