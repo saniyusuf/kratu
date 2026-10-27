@@ -8,9 +8,7 @@
 .glab .gbg .tk4 .x-sm{transform-origin:50% 50%;opacity:0;animation:tk4-smoke 7.5s ease-out infinite}
 .glab .gbg .tk4 .x-sm.d1{animation-delay:-2.5s}.glab .gbg .tk4 .x-sm.d2{animation-delay:-5s}
 @keyframes tk4-smoke{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:.85}100%{opacity:0;transform:translate(6px,-62px) scale(2.2)}}
-.glab .gbg .tk4 .x-cl{animation:tk4-cloud 14s ease-in-out infinite alternate}
-.glab .gbg .tk4 .x-cl.d1{animation-duration:11s;animation-delay:-4s}
-@keyframes tk4-cloud{to{transform:translateX(9px)}}
+/* r5: the clouds no longer drift (9px behind the clock bar: nobody saw it; one less loop for cheap tablets) */
 .glab .gbg .tk4 .x-pk{transform-origin:20% 100%;animation:tk4-peck 3.4s ease-in-out infinite}
 .glab .gbg .tk4 .x-pk.d1{animation-delay:-1.2s;animation-duration:4.2s}.glab .gbg .tk4 .x-pk.d2{animation-delay:-2.3s;animation-duration:3.8s}
 @keyframes tk4-peck{0%,55%,100%{transform:none}65%,75%{transform:rotate(32deg)}70%{transform:rotate(26deg)}}

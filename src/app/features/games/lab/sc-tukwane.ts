@@ -31,8 +31,10 @@ const shadow = (w, len = 1) => `<ellipse cx="${n(w * .62 * len)}" cy=".4" rx="${
 function grain(x0, x1, y0, y1, k, fill, r = .35, seed = 7) {
   let s = '', v = seed;
   const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
-  for (let i = 0; i < k; i++) { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0), rr = r * (.5 + rnd()); s += `<ellipse cx="${n(x)}" cy="${n(y)}" rx="${n(rr * 1.6)}" ry="${n(rr)}"/>`; }
-  return `<g fill="${fill}">${s}</g>`;
+  // (r5) one path of tiny ellipses instead of hundreds of <ellipse> elements: the same grain, far fewer nodes
+  for (let i = 0; i < k; i++) { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0), rr = r * (.5 + rnd()), rx = n(rr * 1.6), ry = n(rr);
+    s += `M${n(x - rx)} ${n(y)}a${rx} ${ry} 0 1 0 ${n(2 * rx)} 0a${rx} ${ry} 0 1 0 ${n(-2 * rx)} 0Z`; }
+  return `<path d="${s}" fill="${fill}"/>`;
 }
 
 /* ---------------- people ---------------- */
@@ -92,10 +94,11 @@ function body(o, sk) {
     `<path d="M-6.5 -31 Q0 -33.4 6.5 -31 L8 -12.6 Q0 -11 -8 -12.6 Z" fill="${o.robe}"/><path d="M-2.6 -31.8 Q0 -28.6 2.6 -31.8" stroke="${t}" stroke-width=".7" fill="none"/>` +
     side('M-6.5 -31 Q0 -33.4 6.5 -31 L8 -12.6 L11 0 Q0 1.2 -10.4 0 L-8 -12.6 Z');
   if (o.kind === 'woman') {
-    const sil = 'M-7 -45 Q0 -47.6 7 -45 L8.6 -28.6 L9 -28.6 L10.2 -1.4 Q0 .4 -10.2 -1.4 L-9 -28.6 L-8.6 -28.6 Z';
+    // (r5) the zani wraps the hips and narrows to the ankles, the near knee pressing the cloth as she walks
+    const sil = 'M-7 -45 Q0 -47.6 7 -45 L8.6 -28.6 L9 -28.6 Q10.6 -20 9.6 -12 Q8.6 -5 8.4 -1.2 Q0 .2 -8 -1.2 Q-8.4 -8 -9.6 -14 Q-10.2 -22 -9 -28.6 L-8.6 -28.6 Z';
     return feet() + `<path d="M-7 -45 Q0 -47.6 7 -45 L8.6 -26.5 L-8.6 -26.5 Z" fill="${o.robe}"/><path d="M-2.6 -45.6 Q0 -42.2 2.6 -45.6" stroke="${t}" stroke-width=".7" fill="none"/>` +
-      `<path d="M-9 -28.6 L9 -28.6 L10.2 -1.4 Q0 .4 -10.2 -1.4 Z" fill="${o.wrap}"/><path d="M-9 -28.6 L9 -28.6 L9.15 -25.6 L-9.15 -25.6 Z" fill="${o.wrap2}"/>` +
-      `<path d="M-9.7 -15 H9.7 M-10 -6 H10" stroke="${o.wrap2}" stroke-width=".9"/><g fill="${o.wrap2}">${[-7, -3.5, 0, 3.5, 7].map((x) => `<path d="M${x} -12.2 l1.2 1.2 l-1.2 1.2 l-1.2 -1.2 Z"/>`).join('')}</g>` +
+      `<path d="M-9 -28.6 L9 -28.6 Q10.6 -20 9.6 -12 Q8.6 -5 8.4 -1.2 Q0 .2 -8 -1.2 Q-8.4 -8 -9.6 -14 Q-10.2 -22 -9 -28.6 Z" fill="${o.wrap}"/><path d="M-9 -28.6 L9 -28.6 L9.15 -25.6 L-9.15 -25.6 Z" fill="${o.wrap2}"/>` +
+      `<path d="M-9.6 -15 Q0 -14 9.8 -15.6 M-8.6 -6 Q0 -5 8.9 -6.4" stroke="${o.wrap2}" stroke-width=".9" fill="none"/><path d="M-1 -26 Q1.6 -16 3.4 -11 Q1 -6 1.6 -1 M-5 -27 Q-4 -18 -6.6 -9" stroke="rgba(0,0,0,.16)" stroke-width=".55" fill="none"/><g fill="${o.wrap2}">${[-7, -3.5, 0, 3.5, 7].map((x) => `<path d="M${x} -12.2 l1.2 1.2 l-1.2 1.2 l-1.2 -1.2 Z"/>`).join('')}</g>` +
       `<path d="M3.6 -25 Q2.6 -12 4.8 -1.2 M-6 -40 Q-5 -34 -6.6 -28" stroke="rgba(0,0,0,.17)" stroke-width=".55" fill="none"/>` + side(sil);
   }
   if (o.kind === 'child') return feet() + `<path d="M-4.2 -9.6 h2.6 v8.4 h-2.6 Z M1.6 -9.6 h2.6 v8.4 h-2.6 Z" fill="${sk}"/>` +
@@ -141,20 +144,23 @@ function hut(x, y, s) {
     `<path d="M0 -31 V-35" stroke="#6B4422" stroke-width=".8"/><circle cy="-35.4" r=".8" fill="#6B4422"/>`);
 }
 function chicken(x, y, s, c, flip, d) {
-  return at(x, y, s, shadow(3.4, 1) + `<path d="M-.6 -2.4 L-1 0 M1 -2.4 L1.2 0" stroke="#D9A23A" stroke-width=".45"/>` +
-    `<g class="x-pk ${d}"><path d="M-3.6 -5.4 Q-5.6 -9 -3.8 -9.4 Q-2.6 -7 -2 -5.4 Z" fill="${c[1]}"/><ellipse cx="-.4" cy="-4.2" rx="3.6" ry="2.5" fill="${c[0]}"/>` +
-    `<path d="M-2.6 -4.6 Q-.6 -2.6 1.6 -4.4" stroke="${c[1]}" stroke-width=".5" fill="none"/><circle cx="2.8" cy="-6.6" r="1.35" fill="${c[0]}"/>` +
-    `<path d="M2 -7.8 q.4 -1.2 .9 -.3 q.4 -1 .9 .1 q.3 .4 -.2 .8 Z" fill="#D32F2F"/><path d="M4 -6.8 l1.3 .4 l-1.3 .4 Z" fill="#E8A23A"/><path d="M3.4 -5.6 q.3 .9 -.2 1.2" stroke="#D32F2F" stroke-width=".55" fill="none"/>` +
-    `<circle cx="3.1" cy="-6.9" r=".26" fill="#1A0E06"/></g>`, '', flip);
+  return at(x, y, s, shadow(3.4, 1) + `<path d="M-.6 -2 L-.9 0 h-.8 M1 -2 L1.2 0 h.8" stroke="#D9A23A" stroke-width=".45" fill="none"/>` +
+    `<g class="x-pk ${d}"><path d="M-3.8 -4.6 Q-5.8 -8.6 -4.2 -10 Q-3.6 -7.6 -1.8 -6 Z" fill="${c[1]}"/><path d="M-4.2 -10 Q-2.4 -10.6 -2.2 -8.4 M-4.8 -9 Q-6.4 -8.6 -6 -6.6" stroke="${c[1]}" stroke-width=".5" fill="none" stroke-linecap="round"/>` +
+    `<path d="M-4.2 -4.4 Q-4.4 -6.4 -2.6 -6.6 Q.6 -6.8 1.8 -6.4 Q1.6 -8.4 2.8 -8.4 Q4.2 -8.4 4.2 -7 L5.2 -6.6 L4.2 -6.1 Q4.2 -4.4 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.6 -2.4 -4.2 -4.4 Z" fill="${c[0]}"/>` +
+    `<path d="M-2.4 -5.2 Q.4 -6 2 -4.6 Q.4 -2.8 -2.2 -3.6 Z M-3.8 -3.2 Q0 -1.6 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.2 -2.2 -3.8 -3.2 Z" fill="#000" opacity=".16"/>` +
+    `<path d="M2.4 -8.2 l.3 -1 l.5 .6 l.4 -.7 l.3 .9 Z M4 -5.9 q.4 1 -.2 1.3 q-.4 -.6 .2 -1.3 Z" fill="#D32F2F"/><path d="M4.2 -7 l1 .4 l-1 .2 Z" fill="#E8A23A"/>` +
+    `<circle cx="3.4" cy="-7.4" r=".26" fill="#1A0E06"/></g>`, '', flip);
 }
 function donkey() {
   // side on, facing right, two woven panniers of wet clay across its back
   return shadow(15, 1.2) +
-    `<g fill="#6E6964"><rect x="-12" y="-12" width="2.4" height="11.4" rx="1"/><rect x="9" y="-12" width="2.4" height="11.4" rx="1"/></g>` +
+    `<path d="M-11.6 -13 Q-12.6 -7 -11 -4.4 L-11.4 -1.2 h2 L-9.4 -4.6 Q-9.6 -9 -9 -13 Z M8.6 -13 Q9 -7 8.6 -1.2 h2 Q10.6 -7 11.2 -13 Z" fill="#625D58"/>` +
     `<g class="x-tail" style="transform-origin:-13px -17px"><path d="M-13 -17 Q-16 -12 -15 -5" stroke="#6E6964" stroke-width="1" fill="none"/><path d="M-15.6 -6.4 q-.4 2.6 .6 3.4 q.8 -1.4 .4 -3.4 Z" fill="#2E2A26"/></g>` +
-    `<ellipse cx="0" cy="-15" rx="13.4" ry="6.6" fill="${url('donk')}"/><ellipse cx="0" cy="-10.6" rx="10" ry="2.4" fill="#D2CAC0" opacity=".6"/>` +
-    `<g fill="#8E8A86"><rect x="-8" y="-12" width="2.6" height="11.4" rx="1"/><rect x="5.6" y="-12" width="2.6" height="11.4" rx="1"/></g>` +
-    `<g fill="#2E2A26"><rect x="-12" y="-1.4" width="2.4" height="1.4"/><rect x="9" y="-1.4" width="2.4" height="1.4"/><rect x="-8" y="-1.4" width="2.6" height="1.4"/><rect x="5.6" y="-1.4" width="2.6" height="1.4"/></g>` +
+    `<path d="M-13 -17 Q-14.4 -21.4 -10 -21.8 Q-4 -20.6 2 -21.4 Q8 -22.2 10.8 -19 Q12.8 -15 10.2 -11.4 Q4 -9.4 -2 -10 Q-9 -9.6 -12 -11.6 Q-14 -13.6 -13 -17 Z" fill="${url('donk')}"/>` +
+    `<path d="M-11.4 -11.8 Q-4 -9.6 4 -10 Q8 -10.4 10.2 -11.4 Q6 -12.6 0 -12.2 Q-6 -12.4 -11.4 -11.8 Z" fill="#D2CAC0" opacity=".55"/><path d="M8.6 -21 Q9.6 -17 8.4 -13.6" stroke="#3E3A36" stroke-width=".7" fill="none" opacity=".5"/>` +
+    `<path d="M-8.4 -13.6 Q-9.4 -7.6 -7.8 -4.6 L-8.2 -1.2 h2.2 L-5.8 -4.8 Q-5.8 -9 -4.8 -13 Z M5 -12.6 Q5.8 -7 5.4 -1.2 h2.2 Q7.6 -7 8.2 -13 Z" fill="#8E8A86"/>` +
+    `<path d="M-7.6 -6 Q-7 -5.4 -6 -5.6 M5.6 -6 Q6.4 -5.4 7.4 -5.8" stroke="#5E5954" stroke-width=".4" fill="none"/>` +
+    `<path d="M-11.6 -1.4 h2.2 v1.4 h-2.6 Z M8.6 -1.4 h2 v1.4 h-2.2 Z M-8.4 -1.4 h2.4 v1.4 h-2.6 Z M5.4 -1.4 h2.2 v1.4 h-2.4 Z" fill="#2E2A26"/>` +
     `<path d="M8 -18 Q11 -26 16 -28 L20 -23.6 Q15 -21 12.6 -12.6 Z" fill="#8A8580"/><path d="M9 -19 Q12 -26 16.4 -28" stroke="#2E2A26" stroke-width="1.3" fill="none"/>` +
     `<g class="x-ear" style="transform-origin:17px -28px"><path d="M15.6 -28 L14.4 -35.6 L17.2 -28.4 Z M17.4 -28.4 L18.8 -36 L19 -28 Z" fill="#7A7570"/><path d="M15.2 -29 L14.8 -33.6 M18.2 -29 L18.6 -33.6" stroke="#2E2A26" stroke-width=".4"/></g>` +
     `<path d="M15 -28.4 Q19.4 -30.4 23.2 -24 Q25.2 -20 22 -19 Q19 -19 16 -22 Z" fill="#8E8A86"/><ellipse cx="22.6" cy="-20.6" rx="2.1" ry="1.6" fill="#D8D0C4"/>` +
@@ -230,10 +236,15 @@ export function tukwaneScene(): string {
     `<g fill="none" stroke="rgba(160,104,52,.28)" stroke-width=".5"><path d="M0 150 Q80 144 150 152 T320 147"/><path d="M0 172 Q90 166 170 176 T320 170"/></g>` +
     `<g fill="#A86E3A" opacity=".55"><path d="M118 186 l2.4 -1 l1.2 1.6 Z M204 183 l2 -1.4 l1 1.8 Z M150 196 l2.6 -.6 l.6 1.4 Z"/><circle cx="72" cy="196" r=".7"/><circle cx="268" cy="188" r=".6"/></g>`;
   // the clay pile with a hoe and a water pot, at the left
-  const clay = `<ellipse cx="28" cy="152.6" rx="21" ry="2.4" fill="rgba(60,34,14,.25)"/><path d="M8 152 Q12 140 22 139 Q28 136 34 140 Q44 142 47 152 Z" fill="${url('clay')}"/>` +
-    `<g fill="#9C8068"><ellipse cx="18" cy="143" rx="3.4" ry="1.6"/><ellipse cx="30" cy="140" rx="3" ry="1.4"/><ellipse cx="39" cy="145" rx="2.6" ry="1.2"/></g><path d="M14 148 q6 -3 12 0 M28 149 q5 -2.4 10 0" stroke="#6E5644" stroke-width=".5" fill="none"/>` +
-    `<path d="M14 141 L3 126" stroke="#6B4422" stroke-width="1.1"/><path d="M16.4 140 q-2.6 -1.2 -4 2 l2.8 1.6 Z" fill="#5A5450"/>` +
-    `<g fill="#fff" opacity=".18"><ellipse cx="22" cy="142" rx="5" ry="1.2"/><ellipse cx="36" cy="144" rx="3" ry=".9"/></g>`;
+  const clay = `<ellipse cx="29" cy="153" rx="23" ry="2.6" fill="rgba(60,34,14,.28)"/><ellipse cx="17" cy="156.4" rx="6" ry="1.2" fill="#9EC3D0" opacity=".55"/><path d="M13 156.2 q4 -.6 8 0" stroke="#fff" stroke-width=".35" opacity=".5" fill="none"/>` +
+    `<path d="M6 152.4 Q8 147 11 145.6 Q12 141.6 16.4 141 Q19 137.4 24 138.2 Q28 135.6 32.4 137.8 Q37 137.6 38.6 141.4 Q43.4 142.4 44.4 147 Q47.6 149 48 152.4 Q27 154.4 6 152.4 Z" fill="${url('clay')}"/>` +
+    `<path d="M32.4 137.8 Q37 137.6 38.6 141.4 Q43.4 142.4 44.4 147 Q47.6 149 48 152.4 Q40 153.4 33 153.2 Q38 146 32.4 137.8 Z" fill="#3E2A1E" opacity=".35"/>` +
+    `<path d="M20 147 q3 -2.6 6.4 -.6 q-3 1.4 -6.4 .6 Z M30 143.6 q2.4 -1.8 5 -.2 q-2.6 1 -5 .2 Z" fill="#4E3828"/>` +
+    `<path d="M11.6 145.2 Q13.6 142.2 16.8 141.6 M17.6 140.4 Q21 138 24.4 138.6 M26 137.6 Q29 136.4 31.6 137.8" stroke="#CDB49C" stroke-width=".8" fill="none" opacity=".6" stroke-linecap="round"/>` +
+    `<path d="M9.6 150.4 l2 -1 l1.2 1.2 M14 151.2 l1.6 -.9 l.8 .9 M38 151 l1.4 -1" stroke="#4E3828" stroke-width=".35" fill="none"/>` +
+    `<path d="M3.4 153.6 q1 -1.8 2.8 -.6 q.2 1 -2.8 .6 Z M48.4 153.8 q1.4 -2 3.2 -.4 q-.4 .8 -3.2 .4 Z M41 155 q.8 -1.2 2 -.3 Z" fill="#6E5040"/>` +
+    `<path d="M19.6 139.6 L7 125.4" stroke="#6B4422" stroke-width="1.2" stroke-linecap="round"/><path d="M19.2 139.2 L7.2 125.8" stroke="#A8764A" stroke-width=".35"/>` +
+    `<path d="M18.6 141.8 Q16.4 139.6 18.4 138 L21.6 140.8 Q20.6 142.6 18.6 141.8 Z" fill="#4E4A46"/><path d="M18.4 138 L21.6 140.8" stroke="#A9A39C" stroke-width=".35"/>`;
   // potter A's mat, calabash of water and a finished pot beside her
   const workA = `<path d="M136 137 L176 137 L180 142 L132 142 Z" fill="#D8B46A"/><g stroke="#B08A44" stroke-width=".35"><path d="M140 137 l-2 5 M148 137 l-1 5 M156 137 v5 M164 137 l1 5 M172 137 l2 5"/></g>` +
     `<path d="M168 140 q0 4 5 4 q5 0 5 -4 Z" fill="#E2B04E"/><ellipse cx="173" cy="140" rx="5" ry="1.2" fill="#6EA8C8"/>`;
