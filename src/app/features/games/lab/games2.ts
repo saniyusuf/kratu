@@ -14,7 +14,7 @@ import { react as reactScene } from './rest';
 import { kraalBack, kraalFront, kraalCow, countBell, happyHerd } from './sc-garke';
 import { gyLorry, gySacks, gyLorryLoad } from './sc-gyada';
 import { alloWrite, alloWash } from './sc-allo';
-import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
+import { postRider, envelopeArt, inkLetter, splat, wasikaSound, wsBoard, wsPins } from './sc-wasika';
 import * as JR from './sc-jirgi';
 import * as SY from './sc-suya';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
@@ -643,7 +643,7 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="env">' + envelopeArt() + '</div><div class="achw">' + postRider() + '</div></div>');
+        const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="wsbd">' + wsBoard() + '</div><div class="env">' + envelopeArt() + '</div><div class="wsbd wspin">' + wsPins() + '</div><div class="achw">' + postRider() + '</div></div>');
         const snd = wasikaSound(run), fin = (r) => { snd.close(); done(r); };
         const key = (L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>';   // A–M on the left, N–Z on the right, Laila between them
         const kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');

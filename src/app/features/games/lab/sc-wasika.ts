@@ -409,3 +409,36 @@ export function wasikaSound(run) {
     close() { try { ac && ac.close(); } catch (e) { /* closed */ } ac = null; },
   };
 }
+
+/* (r3, Sani 2026-10-27 "more real"): the big letter no longer hangs in the sky. It is pinned to a wooden notice board
+   that stands on two posts on the pavement in front of the post office: a stained frame lit from the upper right (the
+   scene's sun), a plank backing with its grain and seams, the posts set in concrete collars, their shadows falling to
+   the left on the pavement. wsBoard() goes behind the envelope, wsPins() (two brass drawing pins) in front of it.
+   Both are 670×378 user units over the same box (16.5–83.5cqw × 10–47.8cqw); the envelope covers 25–645 × 24–280. */
+export function wsBoard(): string {
+  const R = rnd(17); let grain = '';
+  for (let i = 0; i < 40; i++) { const x = 16 + R() * 636, y = 14 + R() * 278, l = 20 + R() * 60; grain += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (R() * 4 - 2).toFixed(1) + ' ' + (l / 2).toFixed(1) + ' 0 ' + l.toFixed(1) + '" stroke="#6E4E2C" stroke-width=".8" fill="none" opacity=".35"/>'; }
+  let seams = ''; for (let x = 66; x < 650; x += 52) seams += '<path d="M' + x + ' 14 V292" stroke="#5A3C20" stroke-width="1.6" opacity=".55"/><path d="M' + (x + 1.6) + ' 14 V292" stroke="#D2B084" stroke-width=".8" opacity=".4"/>';
+  let fgrain = ''; for (let i = 0; i < 6; i++) fgrain += '<path d="M2 ' + (3 + i * 1.8) + ' Q335 ' + (1 + i * 1.8 + (i % 2) * 2) + ' 668 ' + (3 + i * 1.8) + '" stroke="#2E1C0E" stroke-width=".5" fill="none" opacity=".3"/>';
+  const post = (x) => '<path d="M' + x + ' 296 H' + (x + 20) + ' V370 H' + x + ' Z" fill="url(#ws5-post)"/><path d="M' + x + ' 296 H' + (x + 20) + ' V306 H' + x + ' Z" fill="#000" opacity=".35"/>' +
+    '<path d="M' + (x - 30) + ' 376 L' + (x - 2) + ' 368 H' + (x + 22) + ' L' + (x - 8) + ' 377 Z" fill="rgba(40,28,14,.28)"/>' +
+    '<path d="M' + (x - 7) + ' 370 Q' + (x + 10) + ' 364 ' + (x + 27) + ' 370 V374 Q' + (x + 10) + ' 378 ' + (x - 7) + ' 374 Z" fill="#B9B2A4"/><path d="M' + (x - 7) + ' 370 Q' + (x + 10) + ' 364 ' + (x + 27) + ' 370" stroke="#E2DCCE" stroke-width="1.4" fill="none"/>';
+  return '<svg class="ws5b" viewBox="0 0 670 378" aria-hidden="true"><defs>' + lgx('ws5-post', '#3E2814', '#5A3A1E', '#7A5230') + lg('ws5-back', '#B48C5E', '#A07A4E', '#8E6A42') +
+    lg('ws5-fr', '#7A5232', '#5A3A20', '#4A2E18') + '<radialGradient id="ws5-lit" cx=".85" cy="0" r="1"><stop offset="0" stop-color="#FFF4D8" stop-opacity=".22"/><stop offset="1" stop-color="#FFF4D8" stop-opacity="0"/></radialGradient></defs>' +
+    post(70) + post(580) +
+    '<rect x="0" y="0" width="670" height="306" rx="4" fill="url(#ws5-fr)"/>' + fgrain +
+    '<rect x="14" y="12" width="642" height="282" fill="url(#ws5-back)"/>' + seams + grain +
+    '<rect x="14" y="12" width="642" height="282" fill="url(#ws5-lit)"/>' +
+    '<path d="M14 12 H656 V20 H14 Z M14 12 H22 V294 H14 Z" fill="#000" opacity=".22"/>' +
+    '<path d="M0 0 H670" stroke="#B88A5C" stroke-width="3"/><path d="M670 2 V304" stroke="#9A7046" stroke-width="2.4"/><path d="M0 305 H670" stroke="#2A1A0C" stroke-width="2.4"/>' +
+    // the corners of older notices peep out from behind the letter
+    '<path d="M18 252 L60 248 L62 294 L18 294 Z" fill="#EFE6C8" opacity=".9"/><path d="M26 262 h28 M26 270 h22 M26 278 h26" stroke="#8A7E64" stroke-width="1.4"/>' +
+    '<path d="M612 14 L656 14 L656 54 L616 58 Z" fill="#E8DFF0" opacity=".85"/><path d="M620 28 h28 M622 36 h24" stroke="#7A6E8A" stroke-width="1.4"/>' +
+    '<g fill="#8A8A90"><circle cx="24" cy="22" r="2.2"/><circle cx="646" cy="22" r="2.2"/><circle cx="24" cy="284" r="2.2"/><circle cx="646" cy="284" r="2.2"/></g>' +
+    '</svg>';
+}
+export function wsPins(): string {
+  const pin = (x, y) => '<g transform="translate(' + x + ' ' + y + ')"><ellipse cx="-4" cy="5" rx="9" ry="4" fill="#000" opacity=".22"/><circle r="8" fill="#B8862A"/><circle r="8" fill="url(#ws5-pin)"/><circle cx="-2.4" cy="-2.6" r="2.4" fill="#FFF3C0" opacity=".8"/></g>';
+  return '<svg class="ws5p" viewBox="0 0 670 378" aria-hidden="true"><defs><radialGradient id="ws5-pin" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#F6D77A"/><stop offset="1" stop-color="#7A5214"/></radialGradient></defs>' +
+    pin(40, 36) + pin(630, 36) + '</svg>';
+}
