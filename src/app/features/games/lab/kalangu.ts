@@ -91,7 +91,7 @@ export function kalanguScene(): string {
     toron([[8, 49], [26, 49], [50, 49], [106, 49], [124, 49], [150, 49], [64, 43], [94, 43]]) +
     dagi(20, 56, 4.4) + dagi(44, 56, 4.4) + dagi(116, 56, 4.4) + dagi(140, 56, 4.4) + dagi(80, 31, 3.6) +
     // (r5) two small windows with a wooden lattice set deep in the wall: the recess dark at the top, the sill lit
-    '<path d="M108 58 h8 v6 h-8 Z M30 58 h8 v6 h-8 Z" fill="#2A160A"/><path d="M110.6 58 v6 M113.4 58 v6 M108 61 h8 M32.6 58 v6 M35.4 58 v6 M30 61 h8" stroke="#8A5A30" stroke-width=".5"/><path d="M108 58 h8 v1.2 h-8 Z M30 58 h8 v1.2 h-8 Z" fill="#000" opacity=".35"/><path d="M107.4 64.2 h9.2 M29.4 64.2 h9.2" stroke="#F0B884" stroke-width=".7"/><path d="M108 58 h8 M30 58 h8" stroke="#FFF1D6" stroke-width=".5"/>' +
+    '<path d="M108 58 h8 v6 h-8 Z M30 58 h8 v6 h-8 Z" fill="#2A160A"/><path d="M110.6 58 v6 M113.4 58 v6 M108 61 h8 M32.6 58 v6 M35.4 58 v6 M30 61 h8" stroke="#6A4022" stroke-width=".4"/><path d="M108 58 h8 v1.2 h-8 Z M30 58 h8 v1.2 h-8 Z" fill="#000" opacity=".35"/><path d="M107.4 64.2 h9.2 M29.4 64.2 h9.2" stroke="#F0B884" stroke-width=".7"/><path d="M108 58 h8 M30 58 h8" stroke="#FFF1D6" stroke-width=".5"/>' +
     // the bunting across the square
     '<g class="kl-bunting"><path d="M0 12 Q80 24 160 12" fill="none" stroke="#5A3A1E" stroke-width=".45"/>' + flags + '</g>' +
     // the ground, the trodden dancing ring, the neighbours along the wall
