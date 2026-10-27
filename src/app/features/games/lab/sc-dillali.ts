@@ -23,7 +23,7 @@ const baobab = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(
   '<path d="M-8 0 Q-10 -14 -5 -25 H5 Q10 -14 8 0 Z" fill="#8E8072"/><path d="M1 -25 H5 Q10 -14 8 0 H3 Q5 -12 1 -25 Z" fill="#000" opacity=".12"/>' +
   '<g fill="#6F8F4A" opacity=".9"><ellipse cx="-8" cy="-34" rx="6" ry="3"/><ellipse cx="2" cy="-37" rx="7" ry="3.2"/><ellipse cx="10" cy="-34" rx="5" ry="2.6"/></g></g>';
 /* a thorn fence (zariba) round the livestock corner */
-const zariba = (x0, x1, y) => { let s = '<g stroke="#7A5A34" stroke-width=".7" fill="none" stroke-linecap="round">'; for (let x = x0; x < x1; x += 3) s += '<path d="M' + x + ' ' + y + ' l1.5 -5 l1.5 5 M' + (x + .5) + ' ' + (y - 2.6) + ' l2 -.6"/>'; return s + '</g>'; };
+const zariba = (x0, x1, y) => { let s = ''; for (let x = x0; x < x1; x += 3) s += 'M' + x + ' ' + y + ' l1.5 -5 l1.5 5 M' + (x + .5) + ' ' + (y - 2.6) + ' l2 -.6 '; return '<path d="' + s + '" stroke="#7A5A34" stroke-width=".7" fill="none" stroke-linecap="round"/>'; };   // r5: one path, not one per post
 /* a camel resting on its knees, chewing */
 const camelDown = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="14" ry="1.6" fill="#3A2410" opacity=".22"/>' +
   '<path d="M-13 0 Q-14 -8 -8 -10 Q-3 -18 3 -11 Q8 -10 10 -5 L11 0 Z" fill="#C49A60"/><path d="M-2 -11 Q2 -15 4 -10 Z" fill="#B71C1C"/><path d="M-3 -11.6 h7" stroke="#FFD54A" stroke-width=".6"/>' +
@@ -34,7 +34,7 @@ const ram = (x, y, s, flip, cls = '') => goat(x, y, s, '#F4EFE6', '#8A7A66', fli
 /* a string of bunting between two posts; each flag sways a little */
 const bunting = (x0, x1, y, sag) => { const cs = ['#D7261E', '#F2C230', '#2E7D32', '#1F5FA8', '#EF6C00']; let s = '<path d="M' + x0 + ' ' + y + ' Q' + ((x0 + x1) / 2) + ' ' + (y + sag) + ' ' + x1 + ' ' + y + '" stroke="#5E4A3A" stroke-width=".35" fill="none"/>';
   const n = Math.floor((x1 - x0) / 6); for (let i = 1; i < n; i++) { const t = i / n, x = x0 + (x1 - x0) * t, yy = y + sag * 4 * t * (1 - t) * .5 * 2 * .5 + sag * (4 * t * (1 - t)) * .5;
-    s += '<g class="x-flag" style="animation-delay:-' + (i * .37).toFixed(2) + 's"><path d="M' + x.toFixed(1) + ' ' + yy.toFixed(1) + ' l1.6 3.4 l1.6 -3.4 Z" fill="' + cs[i % cs.length] + '"/></g>'; }
+    s += '<path class="x-flag" style="animation-delay:-' + (i * .37).toFixed(2) + 's" d="M' + x.toFixed(1) + ' ' + yy.toFixed(1) + ' l1.6 3.4 l1.6 -3.4 Z" fill="' + cs[i % cs.length] + '"/>'; }   // r5: no wrapper per flag
   return s; };
 
 export function dillaliScene(): string {
@@ -66,7 +66,9 @@ export function dillaliScene(): string {
   const far = crowd(184, 264, 92, 10, 3);
   // a kosai seller's smoke at the back corner, and the hens
   const smoke = '<g class="x-smoke"><circle cx="122" cy="84" r="2.6" fill="#E8E2D8" opacity=".55"/><circle cx="124" cy="78" r="3.4" fill="#E8E2D8" opacity=".4"/><circle cx="121" cy="72" r="4.4" fill="#E8E2D8" opacity=".25"/></g>' +
-    '<path d="M116 92 Q116 88 122 88 Q128 88 128 92 Z" fill="#2A2A2A"/>' +
+    /* the kosai seller's wide frying pan on three stones, oil shining, the fire under it (r5: it read as a black dome) */
+    '<path d="M115.4 92 h2 v-1.8 h-2 Z M120.8 92.2 h2.2 v-2 h-2.2 Z M126.4 92 h2 v-1.8 h-2 Z" fill="#7A6A5A"/><path d="M118 91.8 q1.6 -1.8 2.6 0 M123.4 91.8 q1.2 -1.6 2.4 0" stroke="#F07B22" stroke-width=".7" fill="none"/>' +
+    '<path d="M114.4 88.4 Q122 87 129.6 88.4 Q128.4 90.6 122 90.6 Q115.6 90.6 114.4 88.4 Z" fill="#2A2A2A"/><path d="M115.6 88.4 Q122 87.6 128.4 88.4" stroke="#D9B060" stroke-width=".6" fill="none"/>' +
     person({ x: 112, y: 96, s: .5, kind: 'woman', seat: true, sk: SKIN[1], top: '#6A4C93', wrap: '#6A4C93', wrap2: '#F2C230', trim: '#F2C230', cap: 'kallabi', capc: '#F2C230', capc2: '#6A4C93', al: 'lap', ar: 'out', cls: 'x-cl' });
   // two buyers at the cloth shed, leaning in to look at the goods, and the seller nodding
   const lookers = '<g class="x-look">' + person({ x: 196, y: 98, s: .6, kind: 'man', sk: SKIN[3], robe: '#F4F1EA', robe2: '#E0D8C4', trim: '#8EA8C8', cap: 'turban', capc: '#F4F1EA', beard: '#E8E4DC', al: 'front', ar: 'down', flip: true }) + '</g>' +
@@ -88,9 +90,9 @@ export function dillaliScene(): string {
     '<g opacity=".95">' + kwarya(196, 106, 4.6, tomatoes(196, 103, 4)) + kwano(208, 106, 4.2, '#F4F1EA', '#1F5FA8', peppers(208, 103.4, 3.8)) + '</g>';
   return '<svg class="scene ' + PF + ' dl4" viewBox="53 30 214 134" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('dsky', '#86C8EA', '#BFE3F1', '#F6EBCF') + lg('dgr', '#E4C795', '#D7B27A', '#C99E64') + lg('dhaze', 'rgba(232,240,246,0)', 'rgba(232,240,246,.38)', 'rgba(232,240,246,0)') + lg('dnear', 'rgba(120,80,40,0)', 'rgba(120,80,40,0)', 'rgba(110,70,32,.22)') +
-    '<pattern id="' + PF + '-rip" width="14" height="5" patternUnits="userSpaceOnUse"><path d="M0 3 Q3.5 1.6 7 3 T14 3" stroke="#B48A52" stroke-width=".35" fill="none" opacity=".6"/><path d="M2 4.6 Q5 3.6 8 4.6" stroke="#F2DDB4" stroke-width=".3" fill="none" opacity=".7"/><circle cx="11" cy="1" r=".22" fill="#9A7444"/></pattern>' +
+    '<pattern id="' + PF + '-rip" width="41" height="23" patternUnits="userSpaceOnUse"><path d="M3 4 q2.4 -.9 4.6 .2 M24 15 q3 -1 5.6 .3 M14 20 q1.6 -.6 3.2 0 M30 6.4 q1.4 -.4 2.6 .2" stroke="#B48A52" stroke-width=".35" fill="none" opacity=".7"/><path d="M10 6 h.6 v.4 h-.6 Z M31 3 h.5 v.5 h-.5 Z M36 12.6 h.7 v.4 h-.7 Z M6 16 h.4 v.4 h-.4 Z M20 9 h.5 v.4 h-.5 Z M33 19 q.8 -1.6 1.6 0 q0 1.6 -.8 1.8 q-.8 -.2 -.8 -1.8 Z M35.6 21.2 q.8 -1.6 1.6 0 q0 1.4 -.8 1.6 q-.8 -.2 -.8 -1.6 Z" fill="#8E6A3C" opacity=".55"/><path d="M27 8 h.6 v.3 h-.6 Z M2 11 h.5 v.3 h-.5 Z M17 2 h.5 v.3 h-.5 Z M12 14 h.6 v.3 h-.6 Z" fill="#F6E4C0"/></pattern>' +
     '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#AEB7BC"/><rect width=".4" height="6" fill="#7E888E"/><rect x=".5" width=".5" height="6" fill="#C8D0D4"/></pattern>' +
     KW.defs() + '<radialGradient id="' + PF + '-dsun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFF1B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>' +
-    '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient></defs>' +
+    '</defs>' +
     sky + town + ground + pen + stalls + '<rect x="0" y="40" width="320" height="64" fill="' + U('dhaze') + '"/>' + far + smoke + lookers + animals + road + stopper + basin + ramMan + baro + '</svg>';
 }

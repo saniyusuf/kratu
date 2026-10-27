@@ -18,6 +18,7 @@ const PF = 'kw4';
 const SKIN = ['#7A4A26', '#5E3A1C', '#8B5A2B', '#6B4022', '#94603A', '#53321A'];
 const lg = (id, ...c) => '<linearGradient id="' + PF + '-' + id + '" x1="0" y1="0" x2="0" y2="1">' + c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
 const U = (id) => 'url(#' + PF + '-' + id + ')';
+const mixc = (a, b, t) => { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
 const n2 = (v) => +v.toFixed(2), n1 = (v) => +v.toFixed(1);
 
 /* ---------------- people ---------------- */
@@ -36,14 +37,16 @@ function arm(side, pose, sleeve, sk, hold = '', cls = 'x-a', w = 3.2) {
     '<circle cx="' + hx + '" cy="' + hy + '" r="1.3" fill="' + sk + '"/>' + hold + '</g></g>';
 }
 const headDef = '<g id="' + PF + '-hd">' + '<rect x="-1.2" y="-33" width="2.4" height="3" fill="currentColor"/><rect x="-1.2" y="-33" width="2.4" height="3" fill="#000" opacity=".18"/>' +
-    '<ellipse cx="-3.7" cy="-35" rx=".7" ry="1" fill="currentColor"/><ellipse cx="3.7" cy="-35" rx=".7" ry="1" fill="currentColor"/>' +
-    '<circle cy="-35.2" r="3.75" fill="currentColor"/><circle cy="-35.2" r="3.75" fill="' + U('sh') + '"/>' +
+    '<path d="M-4.4 -35 a.7 1 0 1 0 1.4 0 a.7 1 0 1 0 -1.4 0 Z M3 -35 a.7 1 0 1 0 1.4 0 a.7 1 0 1 0 -1.4 0 Z" fill="currentColor"/>' +
+    /* r5: an oval face with a jaw, the shadow side to the right and a little light on the brow (sun upper left) */
+    '<path d="M0 -39.1 C2.3 -39.1 3.8 -37.4 3.75 -35.2 C3.7 -33 2.3 -31.1 0 -31.1 C-2.3 -31.1 -3.7 -33 -3.75 -35.2 C-3.8 -37.4 -2.3 -39.1 0 -39.1 Z" fill="currentColor"/>' +
+    '<path d="M1.6 -38.6 Q3.9 -37.4 3.75 -35 Q3.6 -32.2 .6 -31.2 Q2.6 -33 2.7 -35.2 Q2.7 -37.4 1.6 -38.6 Z" fill="#000" opacity=".25"/><path d="M-2.6 -37.6 q1.4 -1.3 3.2 -1.1 q-1.8 .3 -2.7 1.4 Z" fill="#fff" opacity=".2"/>' +
   '<g style="opacity:var(--eo,1)" fill="#1A0E06"><circle cx="-1.35" cy="-35.5" r=".46"/><circle cx="1.35" cy="-35.5" r=".46"/></g>' +
   '<g style="opacity:var(--eh,0)" fill="none" stroke="#1A0E06" stroke-width=".4" stroke-linecap="round"><path d="M-2 -35.3 q.65 -.8 1.3 0 M.7 -35.3 q.65 -.8 1.3 0"/></g>' +
   '<path style="opacity:var(--ms,1)" d="M-1.2 -33.4 Q0 -32.3 1.2 -33.4" stroke="#3A1A0A" stroke-width=".42" fill="none" stroke-linecap="round"/>' +
   '<path style="opacity:var(--mf,0)" d="M-1.1 -32.7 Q0 -33.6 1.1 -32.7" stroke="#3A1A0A" stroke-width=".42" fill="none" stroke-linecap="round"/>' +
   '<path d="M-2.1 -36.6 l1.3 -.25 M2.1 -36.6 l-1.3 -.25" stroke="#1A0E06" stroke-width=".3" stroke-linecap="round"/>' +
-    '<path d="M.1 -35 q.6 1.1 -.3 1.3" stroke="#000" stroke-opacity=".3" stroke-width=".3" fill="none"/>' + '</g>';
+    '<path d="M-.1 -35.6 q.3 .9 .4 1.6 M-.9 -33.9 q.4 .4 .9 .2 q.5 .2 .9 -.2" stroke="#000" stroke-opacity=".35" stroke-width=".28" fill="none" stroke-linecap="round"/>' + '</g>';
 function head(o, sk) {
   let back = '', front = '';
   const cc = o.capc || '#fff', c2 = o.capc2 || '#C62828';
@@ -155,13 +158,16 @@ const LOADS = { basin: '-lb', tray: '-lt', sack: '-ls' };
 const loadDefs = () => '<g id="' + PF + '-lb">' + headLoadRaw('basin', '#F4F1EA', '#1F5FA8') + '</g><g id="' + PF + '-lr">' + headLoadRaw('basin', '#F4F1EA', '#C62828') + '</g><g id="' + PF + '-lt">' + headLoadRaw('tray') + '</g><g id="' + PF + '-ls">' + headLoadRaw('sack') + '</g>' +
   '<path id="' + PF + '-hu" d="M-3.6 -36.3 Q-3.7 -40.8 0 -41 Q3.7 -40.8 3.6 -36.3 Z" fill="currentColor"/><path id="' + PF + '-kt" d="M-4 -35.6 Q-4.4 -40.6 0 -40.8 Q4.4 -40.6 4 -35.6 Q0 -38 -4 -35.6 Z" fill="currentColor"/>';
 const headLoad = (kind, c, rim) => '<use href="#' + PF + (kind === 'basin' && rim === '#C62828' ? '-lr' : LOADS[kind]) + '"/>';
-const goat = (x, y, s, c = '#F2EDE4', c2 = '#5A3A22', flip = false, cls = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + (flip ? -s : s) + ' ' + s + ')"><ellipse cy=".3" rx="8" ry="1.3" fill="#3A2410" opacity=".2"/><g class="x-goat ' + cls + '">' +
-  '<path d="M-5.4 -6 L-5.8 0 M-3.6 -6 L-3.2 0 M3.4 -6 L3.2 0 M5 -6 L5.6 0" stroke="' + c2 + '" stroke-width=".9" stroke-linecap="round"/>' +
-  '<path d="M-7 -9 Q-7.6 -12 -5 -12.4 L4 -12.6 Q6.6 -12.4 6.4 -9 Q6 -5.6 3 -5.6 L-4.6 -5.6 Q-7 -5.8 -7 -9 Z" fill="' + c + '"/><path d="M-6 -7.4 Q0 -5 6 -7.6 Q5.4 -5.6 3 -5.6 L-4.6 -5.6 Q-6 -5.8 -6 -7.4 Z" fill="#000" opacity=".1"/>' +
-  '<path d="M-1 -12.4 Q1 -10 0 -6.2 Q2.6 -9 2 -12.4 Z" fill="' + c2 + '" opacity=".7"/><path d="M-7 -11 l-1.6 -2.2" stroke="' + c + '" stroke-width=".9" stroke-linecap="round"/>' +
-  '<g class="x-gh"><circle cx="6" cy="-11.4" r="5" fill="none"/><path d="M5 -11 Q6.2 -15.4 8.4 -15.4 Q10.4 -15 10.8 -12.4 L10.6 -11.2 Q9.6 -10.4 8.6 -11.2 L7 -10 Z" fill="' + c + '"/>' +
-  '<path d="M7.6 -15.2 Q6.4 -18 4.6 -18.2 M8.4 -15.4 Q7.8 -17.6 6.6 -18.4" stroke="#6B5A44" stroke-width=".55" fill="none" stroke-linecap="round"/><path d="M7.2 -14.4 l-2.4 .8 l1.6 .6 Z" fill="' + c2 + '"/>' +
-  '<circle cx="9" cy="-13.6" r=".4" fill="#1A0E06"/><path d="M10 -11 l-.2 1.8 l-.6 -1.4" fill="' + c + '" stroke="' + c + '" stroke-width=".4"/></g></g></g>';
+const goat = (x, y, s, c = '#F2EDE4', c2 = '#5A3A22', flip = false, cls = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + (flip ? -s : s) + ' ' + s + ')"><ellipse cy=".3" rx="8" ry="1.3" fill="#3A2410" opacity=".22"/><g class="x-goat ' + cls + '">' +
+  '<path d="M-4.4 -6.4 L-4.6 0 h.9 L-3.4 -6.4 Z M4.2 -6.4 L4.6 0 h.9 L5.2 -6.4 Z" fill="' + mixc(c, '#1a0e06', .42) + '"/>' +
+  '<path d="M-7.2 -9.4 Q-7.4 -12.2 -5.2 -12.6 Q0 -12 4 -12.8 Q6.4 -13 6.8 -10.4 Q6.8 -7.6 5 -6.6 Q0 -5.4 -4.4 -6.4 Q-7 -6.8 -7.2 -9.4 Z" fill="' + c + '"/>' +
+  '<path d="M-6.6 -7 Q-7.4 -4 -6.4 -2.6 L-6.6 0 h1 L-5.4 -2.6 Q-4.8 -5 -4.6 -7 Z M2.6 -7 L2.8 -2.6 L2.6 0 h1 L3.8 -2.6 L4.2 -7 Z" fill="' + mixc(c, '#1a0e06', .16) + '"/>' +
+  '<path d="M-6.4 -7.6 Q0 -5.2 6.2 -7.8 Q5.4 -6.2 3 -6 L-4.4 -6.4 Q-6 -6.6 -6.4 -7.6 Z M-1 -12.2 Q1 -10 0 -6.6 Q2.6 -9 2 -12.4 Z" fill="' + c2 + '" opacity=".45"/>' +
+  '<path d="M-7 -11.2 l-1.4 -2.4" stroke="' + c + '" stroke-width=".9" stroke-linecap="round"/>' +
+  '<g class="x-gh"><circle cx="6" cy="-11.4" r="5" fill="none"/><path d="M4.4 -11.6 Q5.6 -14 7.4 -15.4 Q9 -16 10.2 -14.6 L11.6 -11.8 Q11.6 -10.6 10.6 -10.6 Q9.6 -11 8.8 -11.6 L6.6 -9.6 Q5.6 -8.6 4.6 -8.8 Z" fill="' + c + '"/>' +
+  '<path d="M7.6 -14.8 Q6 -14.6 5.2 -12.2 Q6.8 -12.8 7.8 -13.8 Z" fill="' + mixc(c, '#1a0e06', .25) + '"/>' +
+  '<path d="M7.8 -15.4 Q7 -17.8 5 -18.4 M8.4 -15.6 Q8 -17.4 6.6 -18.6 M9.8 -10.8 q.3 1.6 -.3 2.6" stroke="#6B5A44" stroke-width=".55" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="9.2" cy="-14" r=".4" fill="#1A0E06"/></g></g></g>';
 const chicken = (x, y, s, c = '#B5652E', flip = false, cls = '') => '<g transform="translate(' + x + ' ' + y + ') scale(' + (flip ? -s : s) + ' ' + s + ')"><ellipse cy=".2" rx="3.6" ry=".7" fill="#3A2410" opacity=".2"/><g class="x-hen ' + cls + '"><circle cx="0" cy="-2.6" r="6" fill="none"/>' +
   '<path d="M-.6 -2.6 V0 M.8 -2.6 V0" stroke="#D99A2B" stroke-width=".45"/><path d="M-3.6 -5.4 Q-4.8 -8.6 -2.6 -8 Q-1 -3.6 2.4 -4.2 L3 -6.6 Q3.4 -8.2 4.6 -7.6 L5.2 -6.4 Q4.4 -2.2 1.4 -2.2 Q-3 -2.2 -3.6 -5.4 Z" fill="' + c + '"/>' +
   '<path d="M-2.6 -4.4 Q0 -3 2 -4" stroke="#000" stroke-opacity=".2" stroke-width=".4" fill="none"/><path d="M5.1 -6.8 l1 .3 l-1 .4 Z" fill="#E8A21E"/><path d="M3.6 -8 q.4 -.9 .9 -.2 q.4 -.8 .7 .1" fill="#D7261E"/><circle cx="4.3" cy="-7" r=".25" fill="#1A0E06"/></g></g>';
@@ -207,13 +213,18 @@ const crowd = (x0, x1, y, step = 8.4, k0 = 0) => { const C = ['#2F6B9A', '#AD145
       '<use href="#' + PF + '-hd" color="' + sk + '"/>' + '<use href="#' + PF + (w ? '-kt" color="' + c2 : '-hu" color="' + (k % 3 ? '#fff' : c2)) + '"/>' +
       (k % 3 === 0 ? (w ? headLoad('basin', '#F4F1EA', '#1F5FA8') : headLoad('sack')) : '') + '</g>'; }
   return s; };
-const keke = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="17" ry="1.8" fill="#2A1C10" opacity=".25"/>' +
-  '<path d="M-14 -6 Q-15 -20 -10 -24 L8 -25 Q14 -25 15 -18 L16 -6 Z" fill="#F2C230"/><path d="M-14 -6 L16 -6 L15.6 -10 L-14.4 -10 Z" fill="#2E7D32"/>' +
-  '<path d="M-12 -24.6 Q-12 -29 -6 -29 L10 -29 Q14 -29 14 -25 Z" fill="#1F1F1F"/><path d="M-10.6 -21 L-2 -21.6 L-2 -11.6 L-11.6 -11.6 Q-12 -17 -10.6 -21 Z" fill="#2A2A2A" opacity=".85"/>' +
-  '<path d="M0 -21.6 L9 -22 Q12.4 -22 13 -18 L13.4 -11.6 L0 -11.6 Z" fill="#9FC6D8" opacity=".75"/><path d="M5 -21.6 L4.4 -11.6" stroke="#5A6A70" stroke-width=".6"/>' +
-  '<path d="M15 -16 L18 -15.4 L18.2 -9 L15.8 -8" fill="#F2C230"/><circle cx="17.6" cy="-13" r="1.1" fill="#FFF6C8"/><path d="M-14.6 -8 h-2 v2 h2" fill="#C62828"/>' +
-  '<circle cx="-9" cy="-3" r="3.2" fill="#1A1A1A"/><circle cx="-9" cy="-3" r="1.3" fill="#9A9A9A"/><circle cx="12" cy="-3" r="3.2" fill="#1A1A1A"/><circle cx="12" cy="-3" r="1.3" fill="#9A9A9A"/>' +
-  '<path d="M-6 -24 Q2 -24.8 10 -24.4" stroke="#fff" stroke-opacity=".25" stroke-width=".6" fill="none"/></g>';
+/* a keke napep (r5): the canvas top on its pillars, the open side with the bench inside, a slanted windscreen and a
+   rounded nose over the single front wheel, the green skirt; the two rear wheels read as one */
+const keke = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="2" cy=".4" rx="18" ry="1.8" fill="#2A1C10" opacity=".25"/>' +
+  '<path d="M-12.6 -21 L5.6 -21.6 L6 -15 L-12.8 -15 Z" fill="#262626"/><path d="M-11.8 -15 v-4.4 q0 -.8 .8 -.8 h5.6 v5.2 Z" fill="#7A5434"/>' +
+  '<path d="M-14.6 -6 L-14.4 -13.4 Q-14 -15.4 -12 -15.4 L5 -15.4 Q9.6 -15.6 11.6 -19.6 L13 -22 Q16.8 -21.6 17.4 -16.8 L18.2 -9 Q18.2 -6 16 -6 Z" fill="#F2C230"/>' +
+  '<path d="M7.6 -21.8 L13 -22 Q15.4 -20.8 15.8 -17.6 L11.4 -17.4 Q10 -17.6 7.6 -21.8 Z" fill="#9FC6D8" opacity=".85"/>' +
+  '<path d="M-12.6 -21.4 L-12.8 -15.4 M5.6 -21.8 L5.8 -15.6" stroke="#1F1F1F" stroke-width="1.1"/>' +
+  '<path d="M-13 -21 Q-13.4 -27.6 -7 -28.2 L8.4 -28.2 Q13.4 -27.8 13.8 -22.6 L13 -21.4 L-12.6 -20.8 Z" fill="#1F1F1F"/>' +
+  '<path d="M-14.6 -6 L18.2 -6 L18 -9.4 L-14.6 -9.4 Z" fill="#2E7D32"/><path d="M-14.4 -12.4 Q2 -13 17.6 -12.8" stroke="#fff" stroke-opacity=".35" stroke-width=".6" fill="none"/>' +
+  '<circle cx="17.2" cy="-14" r="1.1" fill="#FFF6C8"/><path d="M-14.6 -8 h-1.8 v2 h1.8 Z" fill="#C62828"/>' +
+  '<path d="M-12.2 -3 a3.2 3.2 0 1 0 6.4 0 a3.2 3.2 0 1 0 -6.4 0 Z M11.6 -2.8 a2.9 2.9 0 1 0 5.8 0 a2.9 2.9 0 1 0 -5.8 0 Z" fill="#1A1A1A"/><path d="M-10.3 -3 a1.3 1.3 0 1 0 2.6 0 a1.3 1.3 0 1 0 -2.6 0 Z M13.3 -2.8 a1.2 1.2 0 1 0 2.4 0 a1.2 1.2 0 1 0 -2.4 0 Z" fill="#9A9A9A"/>' +
+  '<path d="M-6 -27.4 Q2 -28 10 -27.6" stroke="#fff" stroke-opacity=".22" stroke-width=".6" fill="none"/></g>';
 const barrow = (sacks) => '<g><path d="M4 -8 L16 -9 L22 -16 L2 -15 Z" fill="#6E7E86"/><path d="M2 -15 L22 -16 L21.4 -14.6 L2.6 -13.6 Z" fill="#8E9EA6"/><path d="M4 -8 L16 -9 L19 -12.6 L3.6 -11.6 Z" fill="#000" opacity=".15"/>' +
   sacks + '<path d="M-6 -14.6 L18 -8.4 M6 -8.2 L5 -.8 M15 -9 L16 -2" stroke="#5E3A1C" stroke-width=".9" stroke-linecap="round"/>' +
   '<circle cx="19" cy="-3.6" r="3.6" fill="#1A1A1A"/><circle cx="19" cy="-3.6" r="1.4" fill="#8A8A8A"/></g>';
@@ -284,7 +295,7 @@ export function kasuwaScene(): string {
     lg('sky', '#7EC3E8', '#B8E0F0', '#F6EBCF') + lg('gr', '#E4C795', '#D7B27A', '#C99E64') + lg('haze', 'rgba(232,240,246,0)', 'rgba(232,240,246,.36)', 'rgba(232,240,246,0)') + lg('near', 'rgba(120,80,40,0)', 'rgba(120,80,40,0)', 'rgba(110,70,32,.2)') +
     '<pattern id="' + PF + '-rip" width="14" height="5" patternUnits="userSpaceOnUse"><path d="M0 3 Q3.5 1.6 7 3 T14 3" stroke="#B48A52" stroke-width=".35" fill="none" opacity=".6"/><path d="M2 4.6 Q5 3.6 8 4.6" stroke="#F2DDB4" stroke-width=".3" fill="none" opacity=".7"/><circle cx="11" cy="1" r=".22" fill="#9A7444"/></pattern>' +
     '' + '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#AEB7BC"/><rect width=".4" height="6" fill="#7E888E"/><rect x=".5" width=".5" height="6" fill="#C8D0D4"/></pattern>' + crowdDefs + headDef + clothesDef() + loadDefs() + '<radialGradient id="' + PF + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFF1B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>' +
-    '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient></defs>' +
+    '</defs>' +
     sky + town + stalls + ground + '<rect x="0" y="36" width="320" height="62" fill="' + U('haze') + '"/>' + far + mid + kosai + baro + right + seller + '</svg>';
 }
 

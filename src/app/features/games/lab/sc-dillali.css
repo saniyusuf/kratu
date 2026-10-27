@@ -18,11 +18,10 @@
 .glab .gbg .dl4 .x-look{transform-box:fill-box;transform-origin:50% 100%;animation:dl4-look 7s ease-in-out infinite}
 .glab .gbg .dl4 .x-look2{animation-duration:9s;animation-delay:-3s}
 @keyframes dl4-look{0%,30%,100%{transform:none}45%,75%{transform:rotate(-7deg)}}
-/* the bunting flutters, the birds drift, the camel chews */
+/* the bunting flutters, the birds drift */
 .glab .gbg .dl4 .x-flag{transform-box:fill-box;transform-origin:50% 0;animation:dl4-flag 2.4s ease-in-out infinite alternate}
 @keyframes dl4-flag{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
 .glab .gbg .dl4 .x-birds{animation:dl4-birds 50s linear infinite}
 @keyframes dl4-birds{from{transform:translateX(-120px)}to{transform:translateX(260px)}}
-.glab .gbg .dl4 .x-chew{transform-box:fill-box;transform-origin:0 50%;animation:dl4-chew .6s ease-in-out infinite alternate}
-@keyframes dl4-chew{to{transform:translateY(.5px)}}
+/* (r5: the camel's half-pixel chew is gone; nobody could see it) */
 @media (prefers-reduced-motion: reduce){.glab .gbg .dl4 *{animation:none!important}}
