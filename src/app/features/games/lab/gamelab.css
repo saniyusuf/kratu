@@ -945,7 +945,7 @@
 .glab .dur .r-smile,.glab .dur .r-eyes-happy,.glab .dur .e-smile,.glab .dur .e-rest,.glab .dur .e-brow.calm{transition:opacity .3s}
 .glab .emirw.cross .e-smile,.glab .emirw.cross .e-rest,.glab .emirw.cross .e-brow.calm{opacity:0}.glab .emirw.cross .e-frown,.glab .emirw.cross .e-fold,.glab .emirw.cross .e-brow.cross{opacity:1}
 .glab .dur .e-head{transform-box:fill-box;transform-origin:50% 90%;transition:transform .5s}
-.glab .emirw.cross .e-head{transform:rotate(-12deg) translateX(-3px)}.glab .emirw.cross .e-pupils{transform:translateX(-3px)}
+.glab .emirw.cross .e-head{transform:rotate(-12deg) translateX(-3px)}.glab .emirw.cross .e-pupils{transform:translateX(-1.1px)}
 .glab .emirw.pleased .e-head{animation:g-enod .5s ease-in-out 2}@keyframes g-enod{50%{transform:rotate(4deg) translateY(2px)}}
 .glab .rw.sad .r-smile,.glab .rw.sad .r-eyes-happy{opacity:0}.glab .rw.sad .r-frown,.glab .rw.sad .r-eyes-sad{opacity:1}
 .glab .dur .hhead{transform-box:view-box;transform-origin:186px 112px;transition:transform .5s}.glab .rw.sad .hhead{transform:rotate(16deg)}
@@ -1310,7 +1310,7 @@
 .glab .scr.durbar .gg svg{width:100%;height:100%;display:block}.glab .scr.durbar .gg.r svg{transform:scaleX(-1)}
 .glab .scr.durbar .dstage.open .gg.l{transform:translateX(-1.8cqw) rotate(-7deg)}.glab .scr.durbar .dstage.open .gg.r{transform:translateX(1.8cqw) rotate(7deg)}
 /* the emir waves his approval (Sani 2026-10-23): the raised arm shows while the resting one hides, the palm waves from the elbow */
-.glab .dur .e-wave{opacity:0}.glab .dur .e-fore{transform-box:view-box;transform-origin:56px 106px}
+.glab .dur .e-wave{opacity:0}.glab .dur .e-fore{transform-box:view-box;transform-origin:57px 111px}
 .glab .emirw.pleased .e-wave{animation:g-ewave 2.6s ease-in-out forwards}.glab .emirw.pleased .e-fore{animation:g-efore 2.6s ease-in-out forwards}.glab .emirw.pleased .e-armL{animation:g-earm 2.6s ease-in-out forwards}
 @keyframes g-ewave{0%,100%{opacity:0}8%,86%{opacity:1}94%{opacity:0}}
 @keyframes g-earm{0%,100%{opacity:1}8%,86%{opacity:0}94%{opacity:1}}
