@@ -35,8 +35,20 @@ export function durbarRider(L: string, vi = 0): string {
   let tassels = ''; [[190, 72], [196, 62], [201, 54], [186, 84]].forEach(([x, y], k) => { const c = [v.cap[0], v.cap[1], v.cap[2], v.plume][k]; tassels += `<path d="M${x} ${y} l-2 13" stroke="${c}" stroke-width="2.4" stroke-linecap="round"/><circle cx="${x - 2}" cy="${y + 14}" r="2" fill="${c}"/>`; });
   let mane = ''; for (let k = 0; k < 9; k++) { const t = k / 8, x = 206 - t * 30, y = 46 + t * 52; mane += `<path d="M${x} ${y} q-7 3 -9 10" stroke="${v.mane}" stroke-width="3" fill="none" stroke-linecap="round"/>`; }
   let tail = ''; for (let k = 0; k < 6; k++) tail += `<path d="M80 106 Q${58 - k * 2} ${118 + k * 3} ${54 + k * 3} ${168 + k * 4}" stroke="${v.mane}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
-  const leg = (cls, d, c) => `<path class="lg ${cls}" d="${d}" fill="${c}"/>`;
-  const hoof = (x) => `<path d="M${x - 1} 204 h11 l1 6 h-13 Z" fill="#1A0E06"/>`;
+  /* (r3, Sani 2026-10-27 "more real") a horse's leg, not a post: the forearm or the gaskin full and muscled, the knee
+     (front) or the point of the hock (hind) standing out, the slim cannon bone, the round fetlock with its tuft of hair,
+     the pastern sloping forward into a hoof with a lighter wall; the hoof moves with its leg. A white sock on some. */
+  const SOCK = [false, true, false, true, false, false][vi % RIDERS.length];
+  const leg = (cls, x, front, c, near) => {
+    const d = front
+      ? `M${x - 7} 130 C${x - 9} 146 ${x - 7} 158 ${x - 6} 166 Q${x - 7} 171 ${x - 5} 174 C${x - 4} 184 ${x - 4} 191 ${x - 4} 197 Q${x - 5} 202 ${x - 1} 205 L${x + 8} 205 Q${x + 7} 200 ${x + 4} 196 C${x + 4} 189 ${x + 4} 182 ${x + 5} 174 Q${x + 7} 170 ${x + 6} 165 C${x + 8} 152 ${x + 9} 142 ${x + 8} 130 Z`
+      : `M${x - 10} 126 C${x - 14} 146 ${x - 14} 160 ${x - 9} 170 Q${x - 10} 175 ${x - 6} 178 C${x - 5} 186 ${x - 5} 192 ${x - 5} 197 Q${x - 6} 202 ${x - 2} 205 L${x + 7} 205 Q${x + 6} 200 ${x + 3} 196 C${x + 3} 189 ${x + 2} 182 ${x + 3} 174 C${x + 8} 160 ${x + 12} 146 ${x + 10} 128 Z`;
+    const sock = SOCK && near ? `<path d="M${x - 5} 186 C${x - 4} 191 ${x - 4} 194 ${x - 4} 197 Q${x - 5} 202 ${x - 1} 205 L${x + 7} 205 Q${x + 6} 200 ${x + 3.5} 196 C${x + 3.5} 192 ${x + 3.5} 189 ${x + 4} 186 Z" fill="#F2EEE6"/>` : '';
+    return `<g class="lg ${cls}"><path d="${d}" fill="${c}"/>${sock}` +
+      `<path d="M${x + (front ? 6 : 8)} ${front ? 134 : 132} C${x + (front ? 7 : 9)} 150 ${x + (front ? 5 : 3)} 166 ${x + 4} 176" stroke="#000" stroke-opacity=".18" stroke-width="2.4" fill="none" stroke-linecap="round"/>` +
+      `<path d="M${x - 4} 199 q-2 4 1 6" stroke="${v.mane}" stroke-width="1.6" fill="none" opacity=".7"/>` +
+      `<path d="M${x - 2} 204 h10 l2 7 h-14 Z" fill="#2A1C12"/><path d="M${x - 2} 204 h10 l.6 2 h-11 Z" fill="#5A4636"/></g>`;
+  };
   return `<svg class="rider dur" viewBox="-54 -116 316 342" aria-hidden="true"><defs>` +
     `<linearGradient id="${id}c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${v.coat[0]}"/><stop offset="1" stop-color="${v.coat[1]}"/></linearGradient></defs>` +
     `<ellipse cx="140" cy="213" rx="104" ry="9" fill="url(#k4-shadow)"/>` +
@@ -51,20 +63,26 @@ export function durbarRider(L: string, vi = 0): string {
     `<path d="M115 -94 Q60 -104 -40 -92 M-40 14 Q60 4 116 14" stroke="${v.flag[1]}" stroke-width="4" fill="none"/>` +
     `<text x="41" y="-1" text-anchor="middle" class="flagL">${L}</text></g></g>` +
     `<g class="tail">${tail}</g>` +
-    leg('b', 'M106 130 C104 150 112 160 110 176 L108 204 L118 204 L120 176 C124 160 122 146 124 132 Z', v.coat[1]) + hoof(108) +
-    `<g class="fleg">` + leg('d', 'M186 132 L190 174 L188 204 L198 204 L200 174 L200 134 Z', v.coat[1]) + hoof(188) + `</g>` +
+    leg('b', 114, false, v.coat[1], false) +
+    `<g class="fleg">` + leg('d', 193, true, v.coat[1], false) + `</g>` +
     `<path d="M80 112 C78 92 94 84 114 84 C142 82 162 80 178 86 C194 92 204 104 202 122 C200 138 188 144 174 142 L106 144 C90 144 80 132 80 112 Z" fill="url(#${id}c)"/>` +
     `<ellipse cx="98" cy="108" rx="24" ry="26" fill="url(#${id}c)"/>` +
     `<path d="M80 112 C78 92 94 84 114 84 C142 82 162 80 178 86 C194 92 204 104 202 122 C200 138 188 144 174 142 L106 144 C90 144 80 132 80 112 Z" fill="url(#k4-sheen)"/>` +
-    leg('a', 'M90 128 C88 150 96 160 94 176 L92 204 L102 204 L104 176 C108 160 106 146 108 132 Z', v.coat[0]) + hoof(92) +
-    `<g class="fleg">` + leg('c', 'M172 132 L176 174 L174 204 L184 204 L186 174 L186 134 Z', v.coat[0]) + hoof(174) + `</g>` +
+    `<path d="M78 104 Q82 88 98 84" stroke="#fff" stroke-opacity=".22" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M178 90 Q196 98 200 116" stroke="#fff" stroke-opacity=".18" stroke-width="2.6" fill="none" stroke-linecap="round"/>` +
+    `<path d="M180 132 Q196 132 202 120 Q200 138 186 143 Z" fill="#000" opacity=".22"/><path d="M80 118 Q84 138 102 144 L90 144 Q80 136 80 118 Z" fill="#000" opacity=".2"/>` +
+    leg('a', 98, false, v.coat[0], true) +
+    `<g class="fleg">` + leg('c', 179, true, v.coat[0], true) + `</g>` +
     `<path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z" fill="${v.cap[0]}"/><clipPath id="${id}k"><path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z"/></clipPath>` +
-    `<g clip-path="url(#${id}k)">${pat}</g><path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z" fill="none" stroke="${v.cap[2]}" stroke-width="3"/>` + fringe +
+    `<g clip-path="url(#${id}k)">${pat}</g><path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z" fill="none" stroke="${v.cap[2]}" stroke-width="3"/>` +
+    `<path d="M84 92 L174 90 Q184 116 176 150 L88 151 Q78 120 84 92 Z" fill="url(#k4-cloth)"/><path d="M104 96 Q101 122 106 150 M128 94 Q126 122 130 150 M152 94 Q154 122 150 150" stroke="#000" stroke-opacity=".14" stroke-width="2.2" fill="none"/>` +
+    `<path d="M88 152 Q132 160 176 152 L176 157 Q132 164 88 157 Z" fill="#000" opacity=".16"/>` + fringe +
     disc(92, 96) + disc(130, 92) + disc(168, 94) + disc(90, 146) + disc(132, 148) + disc(172, 146) +
     `<g class="hhead"><path d="M174 100 C180 78 194 60 208 48 L224 56 C218 72 212 92 200 120 Z" fill="url(#${id}c)"/>${mane}${tassels}` +
     `<path d="M206 46 C212 38 224 36 234 42 L248 58 C252 64 248 70 240 69 L226 66 C216 64 208 58 206 46 Z" fill="${v.coat[0]}"/>` +
     `<path d="M226 66 C232 70 240 70 246 66" stroke="${v.coat[1]}" stroke-width="2" fill="none"/><path d="M212 40 L214 26 L220 39 Z M218 38 L222 26 L226 40 Z" fill="${v.coat[1]}"/>` +
     `<circle cx="227" cy="48" r="2.4" fill="#1A0E06"/><path d="M223 45 q4 -3 8 0" stroke="${v.coat[1]}" stroke-width="1.2" fill="none"/><ellipse cx="244" cy="61" rx="2" ry="1.4" fill="#1A0E06"/>` +
+    `<circle cx="227.8" cy="47.2" r=".8" fill="#fff" opacity=".85"/><path d="M241 58 q4 1 4 5" stroke="#000" stroke-opacity=".35" stroke-width="1" fill="none"/><path d="M214 52 Q220 64 232 66" stroke="#000" stroke-opacity=".18" stroke-width="2" fill="none"/><path d="M210 44 Q222 38 234 42" stroke="#fff" stroke-opacity=".2" stroke-width="1.6" fill="none"/>` +
+    `<path d="M176 100 C182 82 194 66 206 54" stroke="#fff" stroke-opacity=".16" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M198 118 C206 96 214 80 222 60" stroke="#000" stroke-opacity=".2" stroke-width="3" fill="none"/>` +
     `<path d="M212 44 L246 58 M224 40 L228 66 M234 44 L240 64" stroke="${v.cap[0]}" stroke-width="2.2"/>` + disc(228, 52, 2) + disc(238, 56, 1.7) + disc(220, 46, 1.7) +
     `<path d="M216 38 Q222 30 230 36" stroke="${v.cap[1]}" stroke-width="3" fill="none"/>` +
     `<path class="plume" d="M216 30 Q206 6 216 -8 Q226 8 220 30 Z" fill="${v.plume}"/><path d="M217 28 Q213 12 216 0" stroke="${v.cap[2]}" stroke-width="1.6" fill="none"/></g>` +
@@ -80,7 +98,7 @@ export function durbarRider(L: string, vi = 0): string {
     (v.spear
       ? `<g class="sword"><path d="M132 44 Q118 30 112 16" stroke="${v.robe}" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="111" cy="14" r="4" fill="${sk}"/><path d="M104 40 L118 -18" stroke="#6B4422" stroke-width="2.6"/><path d="M116 -18 l3 -10 l3 10 Z" fill="url(#k4-steel)"/></g>`
       : `<g class="sword"><path d="M132 44 Q118 30 112 16" stroke="${v.robe}" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="111" cy="14" r="4" fill="${sk}"/><path d="M110 12 L96 -16" stroke="url(#k4-steel)" stroke-width="3.4" stroke-linecap="round"/><path d="M105 13 h10" stroke="#C9A227" stroke-width="3"/></g>`) +
-    `<rect x="133" y="22" width="9" height="10" fill="${sk}"/><circle cx="138" cy="14" r="11" fill="${sk}"/><circle cx="138" cy="14" r="11" fill="url(#k4-shade)"/>` +
+    `<rect x="133" y="22" width="9" height="10" fill="${sk}"/><circle cx="138" cy="14" r="11" fill="${sk}"/><circle cx="138" cy="14" r="11" fill="url(#k4-shade)"/><path d="M133 22 h9 v3 q-4.5 2 -9 0 Z" fill="#000" opacity=".22"/><path d="M137.6 13.6 q-1.6 3.2 .2 4.2 q1.8 .3 2.4 -.6" stroke="#000" stroke-opacity=".3" stroke-width="1" fill="none"/>` +
     `<g class="r-eyes-happy" fill="none" stroke="#1A0E06" stroke-width="1.6" stroke-linecap="round"><path d="M132 13 q2 -2 4 0 M140 13 q2 -2 4 0"/></g>` +
     `<g class="r-eyes-sad" fill="#1A0E06"><circle cx="134" cy="13" r="1.5"/><circle cx="142" cy="13" r="1.5"/><path d="M131 9 l5 2 M145 9 l-5 2" stroke="#1A0E06" stroke-width="1.2"/></g>` +
     `<path class="r-smile" d="M133 19 Q138 24 143 19" stroke="#3A1A0A" stroke-width="1.8" fill="none" stroke-linecap="round"/>` +

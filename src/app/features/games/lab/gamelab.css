@@ -1258,7 +1258,7 @@
 
 /* Hawan Sallah, Sani 2026-10-23: the letter's banner is huge (it is drawn inside the rider, so it scales with the
    screen), the emir has his court about him, the letters on the row float */
-.glab .scr.durbar .rw{width:42cqw;height:45.4cqw;left:5.5cqw}   /* clear of the door now the flag is bigger */
+.glab .scr.durbar .rw{width:39cqw;height:42.2cqw;left:4cqw}   /* clear of the door now the flag is bigger; r3 durbar: the horse's head stays clear of Laila */
 .glab .scr.durbar .flagL{font:800 122px var(--disp);fill:#2A1A0A;stroke:none;animation:g-lfloat 2.4s ease-in-out infinite}
 .glab .scr.durbar .rider .cloth{transform-origin:100% 50%;animation:g-flag2 1.6s ease-in-out infinite alternate}
 @keyframes g-flag2{to{transform:skewY(-2.5deg) scaleY(.97)}}

@@ -22,10 +22,49 @@ const people = (y, n, dark) => { let s = '<g class="far" opacity="' + (dark ? .5
 /* the children along the palace square (Sani 2026-10-23: "the kids should also wave"): the same small figures, each
    with a raised arm; every third waves all the time, and when a horseman is greeted (.cheer on the scene) they all
    wave and hop. The arm and the hop sit on inner groups so CSS never overrides the placing transform. */
-const kids = (y, n) => { let s = '<g class="far kids" opacity=".85">'; const c = ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00'];
-  for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2, col = c[i % c.length];
-    s += '<g transform="translate(' + x.toFixed(1) + ' ' + y + ')"><g class="kid' + (i % 3 === 0 ? ' wave4' : '') + '" style="--d:' + ((i % 5) * .09).toFixed(2) + 's"><path d="M-2.4 0 L-1.6 -6 L1.6 -6 L2.4 0 Z" fill="' + col + '"/>' +
-      '<g class="arm4"><path d="M1.3 -5.4 L3 -9" stroke="' + col + '" stroke-width="1" stroke-linecap="round"/><circle cx="3.1" cy="-9.2" r=".55" fill="#6B4422"/></g><circle cy="-7.4" r="1.5" fill="#6B4422"/></g></g>'; }
+/* (r3, Sani 2026-10-27 "more real"): each child is a little person now, about five heads tall: bare legs and feet, a
+   kaftan or a wrapper with its fold, the far arm at the side, a hula cap or a headscarf, the face lit from the upper
+   left, and a soft shadow on the sand under the feet. Behind them a row of grown-ups, a head taller and a little paler. */
+const KSK = ['#6B4422', '#5A381C', '#7A4E2A', '#4E3018'];
+const kids = (y, n) => { let s = '<g class="far kids">'; const c = ['#2F6B9A', '#AD1457', '#E9D9A6', '#2E7D32', '#6A4C93', '#EF6C00', '#F4EBD0', '#00838F'];
+  for (let i = 0; i < n; i++) { const x = 4 + i * (152 / n) + (i % 2) * 2, col = c[i % c.length], sk = KSK[i % 4], girl = i % 2 === 1, yy = y + (i % 3) * .5;
+    s += '<g transform="translate(' + x.toFixed(1) + ' ' + yy + ')"><ellipse cx=".6" cy=".1" rx="2.6" ry=".5" fill="#5A3A1A" opacity=".28"/><g class="kid' + (i % 3 === 0 ? ' wave4' : '') + '" style="--d:' + ((i % 5) * .09).toFixed(2) + 's">' +
+      '<path d="M-.9 0 V-2.6 M.9 0 V-2.6" stroke="' + sk + '" stroke-width=".7"/><path d="M-1.5 .1 h1.1 M.5 .1 h1.1" stroke="#2A1A0C" stroke-width=".45"/>' +
+      '<path d="M-1.9 ' + (girl ? -1 : -2.2) + ' L-1.4 -6.4 Q0 -7 1.4 -6.4 L1.9 ' + (girl ? -1 : -2.2) + ' Z" fill="' + col + '"/>' +
+      '<path d="M-1.9 ' + (girl ? -1 : -2.2) + ' L-1.4 -6.4 L-.4 -6.6 L-.6 ' + (girl ? -1 : -2.2) + ' Z" fill="#fff" opacity=".18"/><path d="M.6 -6 L1 ' + (girl ? -1.2 : -2.4) + '" stroke="#000" stroke-width=".25" opacity=".22"/>' +
+      '<path d="M-1.4 -6 L-1.9 -3.4" stroke="' + col + '" stroke-width=".8" stroke-linecap="round"/><circle cx="-1.95" cy="-3.1" r=".4" fill="' + sk + '"/>' +
+      '<g class="arm4"><path d="M1.3 -5.8 L2.8 -8.8" stroke="' + col + '" stroke-width=".8" stroke-linecap="round"/><circle cx="2.95" cy="-9.1" r=".45" fill="' + sk + '"/></g>' +
+      '<rect x="-.35" y="-7.4" width=".7" height=".9" fill="' + sk + '"/><circle cy="-8.3" r="1.25" fill="' + sk + '"/><circle cx="-.35" cy="-8.6" r=".55" fill="#fff" opacity=".14"/>' +
+      '<circle cx="-.35" cy="-8.3" r=".14" fill="#1A0E06"/><circle cx=".45" cy="-8.3" r=".14" fill="#1A0E06"/>' +
+      (girl ? '<path d="M-1.5 -8.1 Q-1.6 -10.2 0 -10.1 Q1.6 -10.2 1.5 -8.1 Q.9 -9.3 0 -9.3 Q-.9 -9.3 -1.5 -8.1 Z" fill="' + c[(i + 3) % c.length] + '"/><path d="M1.3 -9.4 l1 -.6 l-.3 1 Z" fill="' + c[(i + 3) % c.length] + '"/>'
+        : '<path d="M-1.2 -8.9 Q-1.2 -10.2 0 -10.2 Q1.2 -10.2 1.2 -8.9 Z" fill="' + (i % 4 === 0 ? '#FFFFFF' : '#C62828') + '"/><path d="M-1.1 -9.3 h2.2" stroke="#000" stroke-width=".18" opacity=".2"/>') +
+      '</g></g>'; }
+  return s + '</g>'; };
+const elders = (y, xs) => { const c = ['#E8DFC6', '#5A7FA8', '#F2EEE4', '#8A6C5E', '#B05A80', '#5E8A5E', '#DCCFA8', '#5C6496'];
+  return '<g class="far">' + xs.map((x, i) => { const col = c[i % c.length], sk = KSK[(i + 1) % 4], w = i % 3 === 1;
+    return '<g transform="translate(' + x + ' ' + (y + (i % 2) * .4) + ')"><path d="M-2.4 0 L-2 -8.6 Q0 -9.6 2 -8.6 L2.4 0 Z" fill="' + col + '"/><path d="M-2.4 0 L-2 -8.6 L-1 -9 L-1.2 0 Z" fill="#fff" opacity=".15"/><path d="M1 -8 L1.6 0" stroke="#000" stroke-width=".3" opacity=".18"/>' +
+      '<rect x="-.4" y="-10" width=".8" height="1.2" fill="' + sk + '"/><circle cy="-11" r="1.35" fill="' + sk + '"/>' +
+      (w ? '<path d="M-1.8 -10.4 Q-1.8 -13 0 -13 Q1.8 -13 1.8 -10.4 L2.6 -7 L-2.6 -7 Z" fill="' + c[(i + 4) % c.length] + '"/><circle cy="-11" r="1.2" fill="' + sk + '"/>'
+        : '<path d="M-1.5 -11.4 Q-1.6 -13.2 0 -13.2 Q1.6 -13.2 1.5 -11.4 Q0 -12 -1.5 -11.4 Z" fill="' + (i % 2 ? '#FFFFFF' : '#E9D9A6') + '"/>') + '</g>'; }).join('') + '</g>'; };
+/* the old city beyond the palace wall, pale and blue with distance: flat-roofed houses with their zanko, the domes and
+   minaret of the central mosque, neem crowns */
+const farCity = () => '<g opacity=".55"><g fill="#C9B8A8">' +
+  '<path d="M30 30 V26.6 H40 V30 Z M42 30 V25.4 H50 V30 Z M108 30 V26 H118 V30 Z M118 30 V27 H128 V30 Z M52 30 V27.2 H60 V30 Z"/>' + zanko(30, 48, 25.4) + zanko(108, 126, 26) +
+  '<path d="M84 30 V22 Q88 17 92 22 V30 Z M66 30 V24 Q70 19.6 74 24 V30 Z"/><rect x="96" y="12" width="2.6" height="18"/><path d="M95.6 12 h3.4 l-1.7 -3 Z"/><rect x="95.4" y="18" width="3.8" height=".8"/></g>' +
+  '<g fill="#AFC0B0"><ellipse cx="62" cy="27.6" rx="5" ry="3"/><ellipse cx="102" cy="27" rx="5.6" ry="3.4"/><ellipse cx="80" cy="28" rx="4" ry="2.4"/></g></g>';
+/* toron giginya: the palm-wood beams that stand out of every Hausa wall, each throwing a short shadow down and right */
+const toron = (pts) => '<g>' + pts.map(([x, y]) => '<path d="M' + (x + .5) + ' ' + (y + .6) + ' l2 .3 l-.4 1.6 l-1.6 -.3 Z" fill="#6E3418" opacity=".35"/><rect x="' + (x - .6) + '" y="' + (y - .5) + '" width="2.2" height="1.1" rx=".3" fill="#5A3416"/><rect x="' + (x - .6) + '" y="' + (y - .5) + '" width="2.2" height=".35" fill="#8A5A30"/>').join('') + '</g>';
+/* the dagi knot in raised white plaster: a darker copy under it, down and right, makes it stand out of the wall */
+const dagi = (x, y, r = 5) => { const k = r * .55, d = 'M' + x + ' ' + (y - r) + ' Q' + (x + k) + ' ' + (y - k) + ' ' + (x + r) + ' ' + y + ' Q' + (x + k) + ' ' + (y + k) + ' ' + x + ' ' + (y + r) + ' Q' + (x - k) + ' ' + (y + k) + ' ' + (x - r) + ' ' + y + ' Q' + (x - k) + ' ' + (y - k) + ' ' + x + ' ' + (y - r) + ' Z' +
+    'M' + (x - r * .7) + ' ' + (y - r * .7) + ' Q' + x + ' ' + (y - r * .15) + ' ' + (x + r * .7) + ' ' + (y - r * .7) + ' Q' + (x + r * .15) + ' ' + y + ' ' + (x + r * .7) + ' ' + (y + r * .7) + ' Q' + x + ' ' + (y + r * .15) + ' ' + (x - r * .7) + ' ' + (y + r * .7) + ' Q' + (x - r * .15) + ' ' + y + ' ' + (x - r * .7) + ' ' + (y - r * .7) + ' Z';
+  return '<g fill="none" stroke-linejoin="round"><path d="' + d + '" stroke="#6E3418" stroke-width=".9" opacity=".35" transform="translate(.35 .4)"/><path d="' + d + '" stroke="#FFF1D6" stroke-width=".7" opacity=".85"/><circle cx="' + x + '" cy="' + y + '" r="' + (r * .22) + '" stroke="#FFF1D6" stroke-width=".6" opacity=".85"/></g>'; };
+/* the square: hoof marks and ripples in the sand, pebbles, the wall's own shade at its foot */
+const sand = () => { let s = '<g fill="none" stroke="#B88A50" stroke-width=".3" opacity=".45">';
+  for (let i = 0; i < 26; i++) { const x = (i * 41.3) % 156 + 2, y = 78 + (i * 17.9) % 21, w = 4 + (i % 4) * 2; s += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (w / 2) + ' -.8 ' + w + ' 0"/>'; }
+  s += '</g><g fill="#9C7240" opacity=".4">';
+  for (let i = 0; i < 18; i++) { const x = (i * 29.7 + 11) % 150 + 4, y = 80 + (i * 13.1) % 18; s += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' a.9 .5 0 1 1 1.8 0 Z"/>'; }
+  s += '</g><g fill="#8E6A3E" opacity=".5">';
+  for (let i = 0; i < 30; i++) { const x = (i * 23.9 + 5) % 156 + 2, y = 76 + (i * 11.3) % 23; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (.25 + (i % 3) * .15).toFixed(2) + '" ry=".18"/>'; }
   return s + '</g>'; };
 /* the palace gate (Sani 2026-10-23: "guards open gate"): two studded wooden leaves filling the arch, hinged at its
    sides; they swing open (.open on the scene) for a greeted horseman to ride in. The guards who haul them are the
@@ -70,20 +109,22 @@ export const SCENES4: Record<string, string> = {
   /* Hawan Sallah: the emir's palace gate on Sallah day, bunting across the square */
   palace: head + '<defs>' + lg('p4-sky', '#7EC8EC', '#CDE9F2', '#F6E7C4') + lg('p4-wall', '#C8693A', '#A9522B') + lg('p4-ground', '#E3C48C', '#C99E62') + lg('p4-haze', 'rgba(255,243,220,0)', 'rgba(255,243,220,.55)') + lg('p4-base', 'rgba(90,40,16,0)', 'rgba(90,40,16,.5)') +
     '<linearGradient id="p4-tow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>' +
-    '<rect width="160" height="100" fill="url(#p4-sky)"/>' + cloud(26, 12, .8) + cloud(128, 9, .7) +
+    '<rect width="160" height="100" fill="url(#p4-sky)"/><defs>' + rg('p4-sun', '#FFF8E0', '#FFF8E0') + '</defs><circle cx="8" cy="2" r="34" fill="url(#p4-sun)" opacity=".7"/>' + cloud(26, 12, .8) + cloud(128, 9, .7) + farCity() +
     '<rect width="160" height="72" fill="url(#p4-haze)"/>' +
     '<path d="M18 70 V30 H142 V70 Z" fill="url(#p4-wall)"/><g fill="#A9522B">' + zanko(18, 140, 30) + '</g>' +
     '<path d="M6 70 V24 H30 V70 Z M130 70 V24 H154 V70 Z" fill="#B85C30"/><g fill="#B85C30">' + zanko(6, 28, 24) + zanko(130, 152, 24) + '</g>' +
-    mud() +
+    mud() + '<path d="M30 24 h3.6 L33.6 70 H30 Z" fill="#5A2A10" opacity=".16"/><path d="M18 30 H142 v1.4 H18 Z" fill="#5A2A10" opacity=".14"/>' +
+    toron([[10, 34], [20, 34], [10, 50], [20, 50], [134, 34], [144, 34], [134, 50], [144, 50], [36, 36], [48, 36], [112, 36], [124, 36]]) +
     '<path d="M62 70 V46 Q80 26 98 46 V70 Z" fill="#3A1E0C"/><path d="M58 70 V45 Q80 21 102 45 V70" fill="none" stroke="#FFF1D6" stroke-width="1.6"/>' +
-    '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + gate() + relief(40, 44) + relief(120, 44) + relief(18, 38) + relief(142, 38) +
+    '<path d="M54 70 V44 Q80 16 106 44 V70" fill="none" stroke="#2E7D32" stroke-width="1.2"/>' + gate() + dagi(41, 46, 5) + dagi(119, 46, 5) + dagi(18, 41, 4) + dagi(142, 41, 4) +
     '<g class="bunting"><path d="M0 18 Q80 32 160 18" fill="none" stroke="#5A3A1E" stroke-width=".5"/>' +
     [8, 20, 32, 44, 56, 68, 80, 92, 104, 116, 128, 140, 152].map((x, i) => '<path d="M' + x + ' ' + (18 + Math.sin(x / 160 * Math.PI) * 13.5).toFixed(1) + ' l2.6 5 l2.6 -5 Z" fill="' + ['#C62828', '#2E7D32', '#FFD54A'][i % 3] + '"/>').join('') + '</g>' +
     // Sallah day on the palace wall (Sani 2026-10-23: more of the Hawan Sallah behind): women in bright veils watching
     // from the parapet, the emir's pennants on the towers, a second line of spectators under shades at the back
     onWall([22, 26, 31, 36, 41, 46, 112, 117, 122, 127, 132, 137], 30) +
     pennant(14, 24, '#2E7D32') + pennant(150, 24, '#C62828') + pennant(28, 24, '#C62828') + pennant(136, 24, '#2E7D32') +
-    '<path d="M0 70 H160 V100 H0 Z" fill="url(#p4-ground)"/>' + kids(74, 20) +
+    '<path d="M0 70 H160 V100 H0 Z" fill="url(#p4-ground)"/><path d="M0 70 H160 V73.5 Q80 72.4 0 73.5 Z" fill="#6E4A22" opacity=".22"/>' + sand() +
+    elders(72.6, [9, 17, 25, 33, 45, 53, 107, 115, 123, 135, 143, 151]) + kids(74, 20) +
     '<g fill="#B98A50" opacity=".45"><ellipse cx="40" cy="90" rx="18" ry="1.6"/><ellipse cx="124" cy="86" rx="14" ry="1.2"/></g>' +
     '<g class="dustdrift" fill="#E9D3A6" opacity=".35"><ellipse cx="20" cy="80" rx="10" ry="2"/><ellipse cx="70" cy="84" rx="8" ry="1.6"/><ellipse cx="146" cy="82" rx="9" ry="1.8"/></g></svg>',
 
