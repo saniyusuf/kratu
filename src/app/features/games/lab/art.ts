@@ -190,18 +190,22 @@ export function bootArt(): any {
   var A = window.KART;
   /* a dugout canoe: carved ends, a hull with grain, ribs and a seat inside, a paddle across, its reflection and wake below */
   A.canoe = function (w) {
-    return '<svg viewBox="0 0 220 90" class="art canoe3">' +
+    return '<svg viewBox="0 0 220 90" class="art canoe3"><defs><linearGradient id="kc-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE2B8" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>' +
+      '<linearGradient id="kc-sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A8FBE" stop-opacity=".5"/><stop offset="1" stop-color="#22709F" stop-opacity=".92"/></linearGradient></defs>' +
       '<g class="refl" opacity=".9"><path d="M10 50 Q110 80 210 50 Q200 66 110 70 Q20 66 10 50 Z" fill="url(#kc-refl)" transform="translate(0 30) scale(1 -.55) translate(0 -64)"/></g>' +
       '<path class="wake" d="M0 62 Q8 58 16 62 M-14 66 Q-4 61 6 66 M-26 70 Q-14 65 -4 70" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>' +
       '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-hull)"/>' +
       '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-grain)"/>' +
+      '<path d="M2 26 Q14 20 24 28 L196 28 Q206 20 218 26 Q212 40 200 48 Q110 62 20 48 Q8 40 2 26 Z" fill="url(#kc-side)"/><path d="M12 33 Q60 41 120 41" stroke="#E7B27A" stroke-width="1.3" opacity=".45" fill="none"/>' +
       '<path d="M24 28 L196 28 Q190 36 110 37 Q30 36 24 28 Z" fill="url(#kc-inner)"/>' +
       '<path d="M60 29 V35 M100 29 V37 M140 29 V37 M178 29 V34" stroke="#2A1404" stroke-width="2" opacity=".6"/>' +
       '<rect x="92" y="27" width="34" height="5" rx="1.5" fill="#C98A55"/>' +
       '<path d="M24 28 L196 28" stroke="#E2AA6A" stroke-width="1.6"/><path d="M2 26 Q14 20 24 28 M196 28 Q206 20 218 26" fill="none" stroke="#E2AA6A" stroke-width="1.6"/>' +
-      '<g class="paddle"><path d="M150 14 L182 44" stroke="#7A4A22" stroke-width="2.6" stroke-linecap="round"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/></g>' +
-      '<rect x="56" y="29" width="108" height="26" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.4"/><circle cx="61" cy="42" r="1.4" fill="#7A4A22"/><circle cx="159" cy="42" r="1.4" fill="#7A4A22"/>' +
-      '<text x="110" y="50" text-anchor="middle" class="tw">' + w + '</text></svg>';
+      '<g class="paddle"><path d="M150 14 L182 44" stroke="#7A4A22" stroke-width="2.6" stroke-linecap="round"/><path d="M150 14 L182 44" stroke="#C08A56" stroke-width=".8" stroke-linecap="round" opacity=".6"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/></g>' +
+      /* the hull sits in the river: below the waterline it is seen through blue water, with a bright line where it cuts the surface */
+      '<path d="M8 43 Q110 57 212 43 Q207 46 200 48 Q110 62 20 48 Q13 46 8 43 Z" fill="url(#kc-sub)"/><path d="M8 43 Q110 57 212 43" stroke="#E9FBFF" stroke-width="1.4" fill="none" opacity=".75"/>' +
+      '<rect x="56" y="29" width="108" height="22" rx="4" fill="#F4E3BE" stroke="#7A4A22" stroke-width="1.4"/><path d="M58 31 H162" stroke="#fff" stroke-width="1" opacity=".5"/><circle cx="61" cy="40" r="1.4" fill="#7A4A22"/><circle cx="159" cy="40" r="1.4" fill="#7A4A22"/>' +
+      '<text x="110" y="47" text-anchor="middle" class="tw">' + w + '</text></svg>';
   };
   /* a clay pot: thick rim, incised band, speckled fired clay, a soft shine, the letter in white chalk */
   A.pot = function (L) {

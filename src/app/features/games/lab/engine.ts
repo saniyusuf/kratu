@@ -448,8 +448,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var R = shuffle([['cat', ['CAT', 'CAR', 'CUP', 'COT', 'CAP']], ['dog', ['DOG', 'DIG', 'LOG', 'FOG', 'DOT']], ['sun', ['SUN', 'BUN', 'SUB', 'RUN', 'SUM']], ['bus', ['BUS', 'BUT', 'BUN', 'BUD', 'BUG']], ['cup', ['CUP', 'CAP', 'CUT', 'PUP', 'CUB']]]), r = 0, got = 0, busy = false;
         /* five canoes at once (Sani 2026-10-25: "no more than 5, but on the water"): each lane keeps to open water, and a
            canoe fades in and out where the river meets a bank, so none is ever seen on the sand (top, from, to, seconds) */
-        var LANES = [[30.5, -26, 100, 27, 0], [30.5, -26, 100, 27, .5], [37, -12, 88, 22, .2], [43.5, 20, 64, 15, .6], [50, 31, 55, 11, .35]];
+        var LANES = [[30.5, -26, 100, 27, 0, .8], [30.5, -26, 100, 27, .5, .8], [37, -12, 88, 22, .2, .87], [43.5, 20, 64, 15, .6, .94], [50, 31, 46, 11, .35, 1]];   // the last number: further canoes are smaller (Sani 2026-10-27, realism)
         var bank = h('<div class="bank2"><img alt=""></div>'), river = h('<div class="canal2"></div>');
+        run.scr.appendChild(h('<div class="kwstand" aria-hidden="true"><i></i><i></i><b></b></div>'));   // the picture's board stands on two posts at the water's edge
         var life = h('<div class="riverlife"><span class="fisher">' + fisherman() + '</span>' + [0, 1, 2].map(function (k) { return '<span class="leap l' + k + '">' + leapFish() + '</span>'; }).join('') + '</div>');
         run.scr.appendChild(life); run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: got, part: got / 5, misses: run.miss }); });
         run.remind = function () { say(line(gid, 'how'), run); };
@@ -459,7 +460,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         function round() {
           busy = false; var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var L = LANES[k], c = h('<button type="button" class="canoe2 lane" style="top:' + L[0] + 'cqw;--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
+            var L = LANES[k], c = h('<button type="button" class="canoe2 lane" style="top:' + L[0] + 'cqw;--k:' + L[5] + ';--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
               if (run.dead || busy) return; busy = true;
               if (w === item[0].toUpperCase()) {

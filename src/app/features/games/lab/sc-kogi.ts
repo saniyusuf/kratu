@@ -246,23 +246,23 @@ export function kogiScene(): string {
   const splash = (x, y) => '<g class="x-splash"><g fill="#E8F6FB">' +
     '<path d="M' + (x - 4) + ' ' + y + ' q-2 -5 -5 -6 q4 1 6 5 Z M' + (x + 4) + ' ' + y + ' q2 -5 5 -6 q-4 1 -6 5 Z"/><circle cx="' + (x - 6) + '" cy="' + (y - 8) + '" r=".8"/><circle cx="' + (x + 7) + '" cy="' + (y - 9) + '" r=".7"/><circle cx="' + (x + 1) + '" cy="' + (y - 10) + '" r=".9"/></g></g>';
   const kid = (x, y, h, o) => '<g class="x-kid">' + person(x, y, h, o) + '</g>';
-  const nearR = '<path d="M320 156 Q288 160 266 172 Q246 184 238 200 L234 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 156 Q288 160 266 172 Q246 184 238 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
+  const nearR = '<path d="M320 156 Q300 160 284 172 Q266 184 258 200 L254 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 156 Q300 160 284 172 Q266 184 258 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
     // the two children in the water up to their waists
-    kid(214, 199, 30, { kind: 'boy', skin: 0, robe: '#E53935', trou: '#E53935', hat: 'hair', al: 'splash', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k1' }) +
-    kid(238, 198, 27, { kind: 'woman', skin: 2, robe: '#FFD54A', wrap: '#1E88E5', wrap2: '#FFD54A', hat: 'braids', al: 'wave', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k2' }) +
-    '<path d="M194 187 Q226 184.6 256 187 L258 212 H192 Z" fill="' + u('water2') + '"/>' +
-    '<g fill="none" stroke="#E8F6FB" stroke-width=".7" opacity=".85"><ellipse cx="214" cy="187.2" rx="8" ry="1.6"/><ellipse cx="238" cy="187" rx="7" ry="1.4"/><ellipse cx="226" cy="190" rx="22" ry="3" opacity=".5"/></g>' +
-    splash(203, 187) + splash(249, 187) +
+    kid(232, 199, 30, { kind: 'boy', skin: 0, robe: '#E53935', trou: '#E53935', hat: 'hair', al: 'splash', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k1' }) +
+    kid(254, 198, 27, { kind: 'woman', skin: 2, robe: '#FFD54A', wrap: '#1E88E5', wrap2: '#FFD54A', hat: 'braids', al: 'wave', ar: 'splash', alc: 'x-wv', arc: 'x-wv', cls: 'k2' }) +
+    '<path d="M212 187 Q244 184.6 274 187 L276 212 H210 Z" fill="' + u('water2') + '"/>' +
+    '<g fill="none" stroke="#E8F6FB" stroke-width=".7" opacity=".85"><ellipse cx="232" cy="187.2" rx="8" ry="1.6"/><ellipse cx="254" cy="187" rx="7" ry="1.4"/><ellipse cx="243" cy="190" rx="22" ry="3" opacity=".5"/></g>' +
+    splash(221, 187) + splash(265, 187) +
     // a boy on the bank about to jump in
     person(272, 182, 26, { kind: 'boy', skin: 4, robe: '#1E88E5', trou: '#E8DFC8', hat: 'hair', al: 'wave', ar: 'wave', alc: 'x-wv', arc: 'x-wv' }) +
-    wader(294, 176, 0.9, true, 'h1') + reeds(300, 182, 8, 1.2) + reeds(250, 194, 5, 1);
+    wader(294, 176, 0.9, true, 'h1') + reeds(300, 182, 8, 1.2) + reeds(206, 197, 5, 1);
   return '<svg class="scene ' + P + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('sky', ['#8FCBEA', '#BFE0EE', '#F4E7C8', '#FBDDB0']) + lg('bank', ['#B7A86A', '#9C9A58', '#C9B47A']) + lg('sand', ['#E8D29A', '#D8B87A', '#C9A266']) +
     lg('water', ['#8EC6DA', '#4FA3CC', '#2F84B6', '#22709F'], 104, 200, true) + lg('water2', ['#8EC6DA', '#4FA3CC', '#2F84B6', '#22709F'], 111, 207, true) +
     '<radialGradient id="' + P + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".4" stop-color="#FFE9A0" stop-opacity=".7"/><stop offset="1" stop-color="#FFE9A0" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + P + '-sh" cx=".38" cy=".32" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></radialGradient>' +
     '<clipPath id="' + P + '-kneel"><rect x="40" y="120" width="70" height="60"/></clipPath></defs>' +
-    '<rect width="320" height="200" fill="' + u('sky') + '"/><circle cx="272" cy="46" r="34" fill="' + u('sun') + '"/><circle cx="272" cy="46" r="10" fill="#FFF3C4"/>' +
+    '<rect width="320" height="200" fill="' + u('sky') + '"/><circle cx="44" cy="50" r="34" fill="' + u('sun') + '"/><circle cx="44" cy="50" r="10" fill="#FFF3C4"/>' +
     cloud(64, 34, 1) + cloud(200, 22, 0.8) + cloud(300, 66, 0.6) +
     bird(92, 52, 1, 'b1') + bird(102, 47, 0.8, 'b2') + bird(212, 58, 0.9, 'b3') +
     village +
@@ -272,7 +272,7 @@ export function kogiScene(): string {
     '<g class="x-mist"><path d="M0 110 Q60 106 130 110 Q200 113 320 108 V116 Q200 118 120 115 Q60 113 0 117 Z" fill="#fff" opacity=".22"/></g>' +
     '<g opacity=".22" stroke="#C98A55" stroke-width="1.2" stroke-linecap="round"><path d="M215 108.6 h34 M227.6 111.4 h8.8 M228.4 114.6 h7 M229.4 118 h5.4 M230.4 121.6 h3.4 M231 125 h2"/></g>' +
     // the sun's road on the water
-    '<g class="x-glint" fill="#FFF6D6"><path d="M262 116 h20 v.8 h-20 Z M258 121 h28 v.8 h-28 Z M266 126 h18 v.8 h-18 Z M256 133 h22 v.8 h-22 Z M270 140 h16 v.8 h-16 Z"/></g>' +
+    '<g class="x-glint" fill="#FFF6D6"><path d="M34 116 h20 v.8 h-20 Z M30 121 h28 v.8 h-28 Z M38 126 h18 v.8 h-18 Z M28 133 h22 v.8 h-22 Z M42 140 h16 v.8 h-16 Z"/></g>' +
     '<g stroke="#D4EDF6" stroke-width=".6" fill="none" opacity=".6" stroke-linecap="round"><path d="M20 128 q5 -1.6 10 0 M60 140 q5 -1.6 10 0 M150 124 q5 -1.6 10 0 M190 146 q5 -1.6 10 0 M120 158 q5 -1.6 10 0 M30 150 q5 -1.6 10 0 M170 170 q5 -1.6 10 0 M220 154 q5 -1.6 10 0 M300 140 q5 -1.6 10 0 M100 186 q5 -1.6 10 0 M150 192 q5 -1.6 10 0"/></g>' +
     nets + herd + fisher + '<g transform="translate(0 -7)">' + nearL + nearR + '</g></svg>';
 }

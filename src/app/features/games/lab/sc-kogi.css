@@ -50,3 +50,13 @@
 @media (prefers-reduced-motion: reduce){
   .glab .gbg .kg4 *{animation:none!important}
 }
+
+/* r3 realism (2026-10-27): further canoes are smaller (engine.ts LANES sets --k), each keeps its centre on its lane;
+   the glowing picture is a board standing on two posts at the far water's edge, the posts wet where they enter the river */
+.glab .gbox .scr.kwale .canoe2.lane{width:calc(24cqw * var(--k,1))!important;height:calc(9.8cqw * var(--k,1))!important;margin-left:calc(12cqw * (1 - var(--k,1)))}
+.glab .scr.kwale .kwstand{position:absolute;left:50%;top:27cqw;width:17cqw;height:8.4cqw;translate:-50% 0;z-index:1;pointer-events:none}
+.glab .scr.kwale .kwstand i{position:absolute;bottom:0;left:9%;width:1.1cqw;height:100%;border-radius:.2cqw;background:linear-gradient(90deg,#A8743F,#7A4A22 55%,#4A2C12)}
+.glab .scr.kwale .kwstand i+i{left:auto;right:9%}
+.glab .scr.kwale .kwstand i::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2.2cqw;background:linear-gradient(180deg,rgba(34,112,159,.15),rgba(34,112,159,.7));border-radius:0 0 .2cqw .2cqw}
+.glab .scr.kwale .kwstand i::after{content:"";position:absolute;left:50%;bottom:1.9cqw;width:3.4cqw;height:.8cqw;translate:-50% 50%;border-radius:50%;border:.18cqw solid rgba(233,251,255,.8)}
+.glab .scr.kwale .kwstand b{position:absolute;left:12%;right:12%;top:3cqw;height:.9cqw;background:linear-gradient(180deg,#8E5A2C,#5A3416);border-radius:.2cqw}
