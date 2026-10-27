@@ -167,13 +167,16 @@ export const SCENES4: Record<string, string> = {
      orange over the horizon; far off, neem trees, a palm, a minaret and the electricity poles; the ground is red earth.
      The road with its passers-by is drawn by the game itself (teastall.ts), just below the horizon at y≈47. */
   teanight: head + '<defs>' + lg('tn-sky', '#1C2156', '#4A3A78', '#B8607A', '#F0A060') + lg('tn-g', '#A86A42', '#7A4A30') + rg('tn-sun', '#FFC27A', '#FFC27A') + '</defs>' +
-    '<rect width="160" height="100" fill="url(#tn-sky)"/>' + stars(22, 20) + '<circle cx="128" cy="11" r="4.4" fill="#FFF3C4"/><circle cx="129.8" cy="9.8" r="3.9" fill="#2A2A66"/>' +
+    /* r5 (cheap tablets): the same 22 stars, but only every fourth twinkles; the rest are one still path */
+    '<rect width="160" height="100" fill="url(#tn-sky)"/>' + (() => { let d = '', t = ''; for (let i = 0; i < 22; i++) { const x = (i * 37.7) % 160, y = ((i * 13.3) % 20).toFixed(1), r = i % 3 ? .35 : .6;
+      if (i % 4) d += 'M' + (x - r).toFixed(2) + ' ' + y + 'a' + r + ' ' + r + ' 0 1 0 ' + 2 * r + ' 0a' + r + ' ' + r + ' 0 1 0 ' + -2 * r + ' 0'; else t += '<circle cx="' + x.toFixed(1) + '" cy="' + y + '" r="' + r + '" fill="#fff"/>'; }
+      return '<path d="' + d + '" fill="#fff" opacity=".8"/><g class="twinkle">' + t + '</g>'; })() + '<circle cx="128" cy="11" r="4.4" fill="#FFF3C4"/><circle cx="129.8" cy="9.8" r="3.9" fill="#2A2A66"/>' +
     '<ellipse cx="96" cy="48" rx="60" ry="12" fill="url(#tn-sun)" opacity=".45"/>' +
     '<g fill="#3B2A4E" opacity=".9"><rect x="104" y="30" width="2.4" height="17"/><path d="M103.2 30 h4 l-.6 -2 h-2.8 Z"/><ellipse cx="105.2" cy="27.4" rx="1.6" ry="2"/><path d="M105.2 25 v-1.6"/>' +
     '<path d="M60 47 V41 h14 v6 Z M78 47 V43 h10 v4 Z M120 47 V42 h12 v5 Z"/></g>' +
     neem(18, 47, .55, '#2E2A48', '#3A3458') + neem(46, 47, .4, '#2E2A48', '#3A3458') + neem(146, 47, .5, '#2E2A48', '#3A3458') + dum(92, 47, .55) +
     '<g stroke="#2A2238" stroke-width=".6" fill="none"><path d="M8 47 V31 M30 47 V31 M52 47 V31"/><path d="M6 32 h4 M28 32 h4 M50 32 h4"/><path d="M8 32.4 Q19 35 30 32.4 Q41 35 52 32.4 Q60 34 68 33"/></g>' +
-    '<path d="M0 47 H160 V100 H0 Z" fill="url(#tn-g)"/><g fill="#6E4028" opacity=".6"><ellipse cx="30" cy="86" rx="16" ry="1.4"/><ellipse cx="124" cy="92" rx="20" ry="1.6"/><ellipse cx="80" cy="96" rx="14" ry="1.2"/></g></svg>',
+    '<path d="M0 47 H160 V100 H0 Z" fill="url(#tn-g)"/><pattern id="tn-dirt" width="37" height="17" patternUnits="userSpaceOnUse"><path d="M2 2 h.3 v.25 h-.3 Z M21 1 h.25 v.25 h-.25 Z M9 7 h.35 v.25 h-.35 Z M30 9 h.25 v.25 h-.25 Z M15 13 h.3 v.25 h-.3 Z M4 10.6 q2 -.6 4 0 M24 5 q2.4 -.7 4.8 .1 M28 14.6 q1.6 -.5 3.2 0" fill="#5A3020" fill-opacity=".35" stroke="#C9875A" stroke-opacity=".22" stroke-width=".22"/></pattern><path d="M0 49 H160 V100 H0 Z" fill="url(#tn-dirt)"/><g fill="#6E4028" opacity=".6"><ellipse cx="30" cy="86" rx="16" ry="1.4"/><ellipse cx="124" cy="92" rx="20" ry="1.6"/><ellipse cx="80" cy="96" rx="14" ry="1.2"/></g></svg>',
 
   /* Dalar gyaɗa: Kano's groundnut pyramids in the harmattan haze, lorries waiting */
   pyramids: head + '<defs>' + lg('py-sky', '#E9D6AE', '#F3E6C8') + lg('py-g', '#D8B57C', '#BC9157') + '</defs>' +

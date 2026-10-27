@@ -82,7 +82,7 @@ export function teaStall(): string {
     `<g class="splash"><circle cx="246" cy="136" r="1.2" fill="#C98A4A"/><circle cx="258" cy="135" r="1" fill="#C98A4A"/><circle cx="252" cy="133" r="1.1" fill="#E9CFA6"/></g>` +
     `<rect class="stream" x="249.6" y="72" width="3.4" height="70" rx="1.7" fill="#A8652F"/><rect class="stream" x="250.4" y="72" width="1" height="70" fill="#E0A66A" opacity=".8"/>` +
     `<g class="tsteam"><circle cx="248" cy="126" r="4" fill="#fff" opacity=".4"/><circle cx="256" cy="112" r="5.4" fill="#fff" opacity=".28"/><circle cx="250" cy="98" r="6.4" fill="#fff" opacity=".18"/></g>` +
-    `<g class="pour">${arm(232, 114, 258, 100, 236, 70, SL, S)}<g transform="rotate(28 244 66)"><path d="M234 52 L254 52 L251 74 L237 74 Z" fill="url(#ts-steel)"/></g></g></g>` +
+    `<g class="pour">${arm(232, 114, 248, 100, 246, 72, SL, S)}<g transform="rotate(28 244 66)"><path d="M234 52 L254 52 L251 74 L237 74 Z" fill="url(#ts-steel)"/></g></g></g>` +
     // handing a fresh cup to the man at the end of the table
     `<g class="p-give">${arm(188, 114, 150, 128, 130, 150, SL, S)}${arm(232, 114, 246, 150, 238, 180, SL, S)}${frothy(121, 146)}</g>` +
     // cracking an egg over the pan
@@ -124,13 +124,13 @@ export function teaStall(): string {
 /* one man sitting on the bench, seen from the front, without his arms (the bench draws them pose by pose) */
 function sitter(x: number, o: { cap: 'hula' | 'zanna' | 'borno'; robe: string; skin: number; beard?: boolean }): string {
   const sk = SK[o.skin];
-  return `<path d="M${x - 14} 184 L${x - 12} 236 M${x + 12} 184 L${x + 12} 236" stroke="${o.robe}" stroke-width="11" stroke-linecap="round"/>` +
-    `<path d="M${x - 10} 186 L${x - 9} 236 M${x + 15} 186 L${x + 15} 236" stroke="#000" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>` +
+  return `<path d="M${x - 13} 190 L${x - 12} 236 M${x + 12} 190 L${x + 12} 236" stroke="${o.robe}" stroke-width="11" stroke-linecap="round"/>` +
+    `<path d="M${x - 9} 192 L${x - 9} 236 M${x + 15} 192 L${x + 15} 236" stroke="#000" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>` +
     `<path d="M${x - 20} 236 h12 v6 h-14 Z M${x + 6} 236 h14 v6 h-12 Z" fill="#3A2A1E"/>` +
-    `<path d="M${x - 18} 118 Q${x} 110 ${x + 18} 118 L${x + 22} 184 L${x - 22} 184 Z" fill="${o.robe}"/>` +
+    `<path d="M${x - 18} 118 Q${x} 110 ${x + 18} 118 L${x + 22} 184 Q${x + 23} 195 ${x + 12} 194 Q${x + 2} 194 ${x} 189 Q${x - 2} 194 ${x - 12} 194 Q${x - 23} 195 ${x - 22} 184 Z" fill="${o.robe}"/>` +
     `<path d="M${x + 3} 112 Q${x + 14} 113 ${x + 18} 118 L${x + 22} 184 L${x + 5} 184 Q${x + 8} 150 ${x + 3} 112 Z" fill="#000" opacity=".17"/>` +
     `<path d="M${x - 9} 128 Q${x - 12} 156 ${x - 14} 184 M${x - 1} 132 Q${x - 1} 160 ${x - 2} 184 M${x + 9} 130 Q${x + 12} 158 ${x + 14} 184" stroke="#000" stroke-opacity=".14" stroke-width="1.4" fill="none"/>` +
-    `<path d="M${x - 22} 184 L${x + 22} 184 L${x + 21} 188 L${x - 21} 188 Z" fill="#000" opacity=".16"/>` +
+    `<path d="M${x - 22} 184 Q${x} 180 ${x + 22} 184 Q${x + 23} 195 ${x + 12} 194 Q${x + 4} 194 ${x} 189 Q${x - 4} 194 ${x - 12} 194 Q${x - 23} 195 ${x - 22} 184 Z" fill="#000" opacity=".14"/>` +
     `<rect x="${x - 5}" y="104" width="10" height="10" fill="${sk}"/>` + face(x, 96, 13, sk) +
     (o.beard ? `<path d="M${x - 9} 101 Q${x} 116 ${x + 9} 101 Q${x} 108 ${x - 9} 101 Z" fill="#E8E2D6"/>` : '') +
     (o.cap === 'zanna' ? zanna(x, 96, 13) : o.cap === 'borno' ? borno(x, 96, 13) : hula(x, 96, 13));
