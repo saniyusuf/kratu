@@ -1,0 +1,28 @@
+/* ---- Dillalin kasuwa's square (sc-dillali.ts). The svg is both .kw4 and .dl4: sc-kasuwa.css moves the shared
+   people (cheer, frown, pecking hens, grazing rams, smoke, clouds); this adds the square's own life. Transform and
+   opacity only; keyframes dl4-…. ---- */
+.glab .gbg .dl4 .x-tr{will-change:transform}
+/* crossing the square: a full pass each, at their own pace, so the square never looks the same twice */
+.glab .gbg .dl4 .x-tr1{animation:dl4-lr 28s linear -6s infinite}
+.glab .gbg .dl4 .x-tr2{animation:dl4-rl 23s linear -19s infinite}
+.glab .gbg .dl4 .x-tr3{animation:dl4-lr 34s linear -30s infinite}
+.glab .gbg .dl4 .x-tr4{animation:dl4-rl 11s linear -4s infinite}
+@keyframes dl4-lr{from{transform:translateX(30px)}to{transform:translateX(296px)}}
+@keyframes dl4-rl{from{transform:translateX(296px)}to{transform:translateX(30px)}}
+/* a buyer walks in, stops at the goods to look (bends in), then walks on */
+.glab .gbg .dl4 .x-tr5{animation:dl4-stop 26s linear -2s infinite}
+@keyframes dl4-stop{0%{transform:translateX(40px)}25%,55%{transform:translateX(98px)}100%{transform:translateX(296px)}}
+.glab .gbg .dl4 .x-stoop{transform-box:fill-box;transform-origin:50% 100%;animation:dl4-stoop 26s linear -2s infinite}
+@keyframes dl4-stoop{0%,26%{transform:none}30%,51%{transform:rotate(8deg)}54%,100%{transform:none}}
+/* the two at the sheds lean in to look and stand back again */
+.glab .gbg .dl4 .x-look{transform-box:fill-box;transform-origin:50% 100%;animation:dl4-look 7s ease-in-out infinite}
+.glab .gbg .dl4 .x-look2{animation-duration:9s;animation-delay:-3s}
+@keyframes dl4-look{0%,30%,100%{transform:none}45%,75%{transform:rotate(-7deg)}}
+/* the bunting flutters, the birds drift, the camel chews */
+.glab .gbg .dl4 .x-flag{transform-box:fill-box;transform-origin:50% 0;animation:dl4-flag 2.4s ease-in-out infinite alternate}
+@keyframes dl4-flag{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+.glab .gbg .dl4 .x-birds{animation:dl4-birds 50s linear infinite}
+@keyframes dl4-birds{from{transform:translateX(-120px)}to{transform:translateX(260px)}}
+.glab .gbg .dl4 .x-chew{transform-box:fill-box;transform-origin:0 50%;animation:dl4-chew .6s ease-in-out infinite alternate}
+@keyframes dl4-chew{to{transform:translateY(.5px)}}
+@media (prefers-reduced-motion: reduce){.glab .gbg .dl4 *{animation:none!important}}

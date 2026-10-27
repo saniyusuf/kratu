@@ -5042,19 +5042,40 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka ƙirga shanun da Turanci yayin da suke shiga garke, ɗaya bayan ɗaya.",
-   "f": "Ki ƙirga shanun da Turanci yayin da suke shiga garke, ɗaya bayan ɗaya."
+   "m": "Ka ƙirga shanun da ke cikin garke, ka faɗi yawansu da Turanci.",
+   "f": "Ki ƙirga shanun da ke cikin garke, ki faɗi yawansu da Turanci."
   },
-  "en": "Count the cows in English as they go into the pen, one by one.",
+  "en": "Count the cows in the pen and say how many in English.",
   "screens": [
    "Wasanni · Ƙirgen shanu"
   ],
-  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "said_when": "The reminder after 10 s of quiet.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "review": "unreviewed: Claude draft 26 Oct (count the herd), for Sani to hear and correct",
   "recorded": {
-   "m": "64d99e28fb",
-   "f": "3944b8b003"
+   "m": "b2560899ee",
+   "f": "547d956f90"
+  }
+ },
+ {
+  "key": "s_g_garke_eg1",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga yadda ake wasan: ka ƙirga shanun da ke cikin garke, sai ka faɗi yawansu da Turanci.",
+   "f": "Ga yadda ake wasan: ki ƙirga shanun da ke cikin garke, sai ki faɗi yawansu da Turanci."
+  },
+  "en": "Here is how the game works: count the cows in the pen, then say how many in English.",
+  "screens": [
+   "Wasanni · Ƙirgen shanu"
+  ],
+  "said_when": "The example, once three cows are in the pen, the pointing hand on it; then the count runs up on them without words. Then s_g_durbar_ready.",
+  "status": "live",
+  "review": "unreviewed: Claude draft 26 Oct, for Sani to hear and correct",
+  "recorded": {
+   "m": "6712b13df1",
+   "f": "eb7fb78b71"
   }
  },
  {
@@ -5116,8 +5137,8 @@
   "status": "live",
   "review": "unreviewed: Claude draft, Arewa games 16 Oct",
   "recorded": {
-   "m": "17db94f5db",
-   "f": "57562c2228"
+   "m": "65d64b0cf4",
+   "f": "5967e0b99a"
   }
  },
  {
@@ -5135,10 +5156,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "review": "unreviewed: Claude draft 26 Oct (say or type; \"allo\" for the keys as in Misali · rubutu), for Sani to hear",
   "recorded": {
-   "m": "660a6e5680",
-   "f": "1c909b7201"
+   "m": "cf12b1daf9",
+   "f": "aa7269e92b"
   }
  },
  {

@@ -1,0 +1,61 @@
+/* ---- Dillalin kasuwa (games2.ts 'j-dillali', market.ts). Sani 2026-10-25: the real photo, big, in the middle above
+   Laila, with a clock under it for saying its name; the dillali beside it, a shopper who walks up to look and takes
+   the drawing away, coins on a sale and a red cross on a miss. The square behind is sc-dillali.ts. Keyframes g-dl…;
+   transform and opacity only. ---- */
+
+/* the board: the photo, its clock underneath; the drawing and the coins appear in the photo's place */
+.glab .scr.dillali>.mkboard{position:absolute;left:50%;top:10cqw;width:26cqw;margin-left:-13cqw;z-index:4}
+.glab .mkgoods{position:relative;width:26cqw;height:24cqw;opacity:0;transform:translateY(3cqw) scale(.9)}
+.glab .mkgoods.up{opacity:1;transform:none;transition:transform .45s cubic-bezier(.3,1.4,.5,1),opacity .3s}
+.glab .mkcard{position:absolute;inset:0;display:block;transform-origin:50% 50%;transition:transform .25s ease-in}
+.glab .mkframe{position:absolute;inset:0;border-radius:1.6cqw;overflow:hidden;background:#6B4422;border:.8cqw solid #8B5A2B;box-shadow:0 .9cqw 1cqw rgba(30,20,8,.4),inset 0 0 0 .2cqw #5E3A1C}
+.glab .mkframe img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .3s}
+.glab .mkgoods.turn .mkcard{transform:scaleX(0)}
+.glab .mkgoods .mkx{position:absolute;inset:0;opacity:0}
+.glab .mkgoods .mkx::before,.glab .mkgoods .mkx::after{content:"";position:absolute;left:20%;right:20%;top:calc(50% - 1cqw);height:2cqw;border-radius:1.2cqw;background:#E53935;box-shadow:0 0 0 .4cqw #fff}
+.glab .mkgoods .mkx::before{transform:rotate(45deg)}.glab .mkgoods .mkx::after{transform:rotate(-45deg)}
+.glab .mkgoods.wrong .mkx{animation:g-dlstamp .35s cubic-bezier(.3,1.6,.5,1) forwards}@keyframes g-dlstamp{from{opacity:0;transform:scale(1.8)}to{opacity:1;transform:none}}
+.glab .mkgoods.wrong .mkframe img{filter:grayscale(.6) brightness(.9)}
+.glab .mkgoods.wrong .mkcard{animation:g-shk .4s .1s}
+.glab .mkgoods.back{opacity:0;transform:translateY(5cqw) scale(.85);transition:transform .8s ease-in,opacity .6s .2s}
+
+/* the clock for saying it: a bar that empties, amber at half, red and pulsing near the end; it rests while Laila listens */
+.glab .mktime{position:relative;height:1.5cqw;margin-top:.7cqw;border-radius:1cqw;background:rgba(255,250,235,.92);box-shadow:0 .3cqw .5cqw rgba(30,20,8,.25);overflow:hidden;opacity:0;transition:opacity .3s}
+.glab .mktime.on{opacity:1}
+.glab .mktime i{position:absolute;inset:.25cqw;border-radius:.8cqw;background:#43A047;transform-origin:0 50%;transform:scaleX(var(--left,1));transition:background-color .4s}
+.glab .mktime.warn i{background:#F9A825}
+.glab .mktime.late i{background:#E53935}.glab .mktime.late{animation:g-dllate .5s ease-in-out infinite alternate}@keyframes g-dllate{to{transform:scale(1.04)}}
+.glab .mktime.rest i{opacity:.55}
+
+/* the drawing the photo turns into, then carried down to the shopper */
+.glab .mkdrawn{position:absolute;left:3cqw;top:2cqw;width:20cqw;height:20cqw;opacity:0;pointer-events:none}
+.glab .mkdrawn svg{width:100%;height:100%;display:block;overflow:visible}
+.glab .mkdrawn.pop{opacity:1;animation:g-dldrawn .5s cubic-bezier(.3,1.6,.5,1) both}@keyframes g-dldrawn{from{transform:scaleX(0) scaleY(.7)}}
+.glab .mkdrawn.pop::before{content:"";position:absolute;inset:-3cqw;border-radius:50%;background:radial-gradient(circle,rgba(255,236,150,.9),rgba(255,236,150,0) 70%);z-index:-1;animation:g-dlglow 1s ease-out both}@keyframes g-dlglow{from{transform:scale(.3);opacity:1}to{transform:scale(1.2);opacity:0}}
+.glab .mkdrawn.taken{opacity:0;transform:translate(16cqw,22cqw) scale(.35);transition:transform .45s ease-in,opacity .2s .3s}
+
+/* coins leaping up from the sale, and a gold ring */
+.glab .mkfx{position:absolute;left:13cqw;top:12cqw;width:0;height:0;pointer-events:none}
+.glab .mkfx .cn{position:absolute;left:-1.3cqw;top:-1.3cqw;width:2.6cqw;height:2.6cqw;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF3B0,#F2B600 55%,#B88400);box-shadow:0 0 0 .2cqw #9A6F00 inset;opacity:0;animation:g-dlcoin .95s cubic-bezier(.2,.7,.4,1) forwards;animation-delay:calc(var(--k) * .05s)}
+@keyframes g-dlcoin{0%{opacity:1;transform:translate(0,0) scale(.6)}45%{opacity:1;transform:translate(calc(var(--x) * 1.6),-13cqw) scale(1) rotateY(180deg)}100%{opacity:0;transform:translate(calc(var(--x) * 2.2),-8cqw) scale(.9) rotateY(360deg)}}
+.glab .mkfx .mkring{position:absolute;left:-13cqw;top:-13cqw;width:26cqw;height:26cqw;border-radius:50%;border:.7cqw solid #FFD54A;opacity:0;animation:g-dlring .7s ease-out forwards}@keyframes g-dlring{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.15)}}
+
+/* the tally goes top right, out of the board's way */
+.glab .scr.dillali>.tally{left:auto;right:4cqw;transform:none}
+.glab .scr.dillali>.tally.pop{animation:g-dltpop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes g-dltpop{50%{transform:scale(1.2)}}
+
+/* the stage: the dillali stands beside the board with his hand up to it, the shopper comes in on the other side, the
+   crowd on the right; the old stall table is gone and the middle bottom is Laila's */
+.glab .scr.dillali .dstage.mk .dillw{left:19cqw;width:18cqw;height:32cqw}
+.glab .scr.dillali .dstage.mk .stall{left:0;width:100%;height:100%}
+.glab .scr.dillali .dstage.mk .stall::before{display:none}
+.glab .scr.dillali .dstage.mk .crowd{left:72cqw}
+.glab .scr.dillali .dealw .deal{left:58cqw}
+.glab .scr.dillali .dealw .deal.act-lead{left:46cqw}
+.glab .scr.dillali .dealw .deal.act-pray{left:50cqw}
+.glab .deal.look .buyer{transform-origin:50% 100%;animation:g-dllean .5s 1.3s ease-in-out forwards}@keyframes g-dllean{to{transform:rotate(-5deg)}}
+.glab .deal.look{animation:g-dlarrive 1.3s ease-out both}@keyframes g-dlarrive{from{transform:translateX(34cqw)}}
+.glab .deal.look .bob{display:block;width:100%;height:100%;animation:g-dlbob .32s ease-in-out 4 alternate}@keyframes g-dlbob{to{transform:translateY(-.5cqw)}}
+.glab .deal.look.away{animation:g-dlleave 1.8s ease-in forwards}@keyframes g-dlleave{0%{transform:scaleX(-1)}100%{transform:translateX(40cqw) scaleX(-1)}}
+.glab .deal.look.away .buyer{animation:none}.glab .deal.look.away .bob{animation:g-dlbob2 .32s ease-in-out 6 alternate}@keyframes g-dlbob2{to{transform:translateY(-.5cqw)}}
+@media (prefers-reduced-motion:reduce){.glab .mktime.late,.glab .deal.look,.glab .deal.look *{animation:none!important}}

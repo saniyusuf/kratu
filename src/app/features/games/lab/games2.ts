@@ -6,11 +6,12 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
-import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, marketLife, coinClink, aaNo } from './market';
+import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, coinClink, aaNo } from './market';
 import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
-import { dabba, dabSound } from './sc-shanu';
+import { dabba, dabSound, dabbaAlone } from './sc-shanu';
 import { react as reactScene } from './rest';
+import { kraalBack, kraalFront, kraalCow, countBell, happyHerd } from './sc-garke';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
 import * as JR from './sc-jirgi';
@@ -186,43 +187,77 @@ export function moreGames(c: any): Record<string, any> {
     'j-dillali': { title: 'Dillalin kasuwa', cls: 'dillali', scene: 'kurmi',
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: (r) => r.right >= 6 ? 'Named everything the dillali held up: those groups would be skipped.' : 'Named ' + r.right + ' of 6: the groups with misses would be taught.',
-      /* Dillalin kasuwa (Sani 2026-10-25): the dillali holds up the real photo, and a shopper walks up to look at it.
-         Named right: the photo turns into its drawing with a burst of coins and their clink, and the shopper takes it
-         the way people do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) while the
-         crowd claps. Wrong: a red cross on the photo, the shopper's low "a'a", and they walk off without buying; the
-         photo goes back and its name is never said. Behind the stall the market carries on: wheelbarrows, a woman with
-         a basin of oranges, people stopping at the stalls to look and moving on. */
+      /* Dillalin kasuwa (Sani 2026-10-25): the dillali holds up the real photo, big, in the middle above Laila, and a
+         shopper walks up to look at it. A clock under the photo gives ten seconds to say its name (it keeps running
+         while Laila listens, but only runs out between listens, so a word being said is always heard to the end); after
+         the first press Laila listens by herself, as in the other market games. Named right: the photo turns into its
+         drawing with a burst of coins and their clink, the drawing goes down to the shopper, who takes it the way people
+         do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) while the crowd claps.
+         Wrong or out of time: a red cross on the photo, the shopper's low "a'a", and they walk off without buying; the
+         photo drops away and its name is never said. The square behind is sc-dillali.ts. */
       play(run, done) {
         const G = [['ram', 'goat', 'chicken', 'camel', 'donkey'], ['millet', 'groundnut', 'mango', 'bread', 'onion'], ['calabash', 'pot', 'mat', 'kettle', 'broom'], ['kaftan', 'cap', 'turban', 'shoe', 'umbrella']];
         const items = shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6), among = G.flat();
-        let r = 0, sold = 0;
-        const st = h('<div class="dstage mk">' + marketLife() + '<div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="goods"></div><div class="mkdrawn"></div><div class="dealw"></div><div class="mkfx"></div></div><div class="crowd">' + A.crowd(4) + '</div></div>');
+        const LIMIT = 10000;   // ms to say each thing
+        let r = 0, sold = 0, tick = 0;
+        const st = h('<div class="dstage mk"><div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + A.crowd(3) + '</div></div>');
+        const board = h('<div class="mkboard"><div class="mkgoods"></div><div class="mkdrawn"></div><div class="mkfx"></div><div class="mktime"><i></i></div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
         const box = micBox(run);
-        run.scr.appendChild(st); run.scr.appendChild(tally); run.scr.appendChild(box);
+        run.scr.appendChild(st); run.scr.appendChild(board); run.scr.appendChild(tally); run.scr.appendChild(box);
         run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
-        const goods = st.querySelector('.goods'), drawn = st.querySelector('.mkdrawn'), dealw = st.querySelector('.dealw'), fx = st.querySelector('.mkfx'), crowdEl = st.querySelector('.crowd');
+        const goods = board.querySelector('.mkgoods'), drawn = board.querySelector('.mkdrawn'), fx = board.querySelector('.mkfx'), clock = board.querySelector('.mktime');
+        const dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
+        const stopClock = () => { clearInterval(tick); tick = 0; clock.classList.remove('on', 'warn', 'late', 'rest'); };
         function next() {
           const w = items[r]; st.classList.remove('sad'); fx.innerHTML = ''; drawn.className = 'mkdrawn'; drawn.innerHTML = '';
-          goods.className = 'goods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up');
+          goods.className = 'mkgoods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up');
           dealw.innerHTML = inspector(r); const look = dealw.firstElementChild;
-          speakRound(run, box, w, among, () => {
+          let left = LIMIT, over = false, quiet = 0;
+          const end = () => { if (over) return false; over = true; stopClock(); box.busy = true; return true; };
+          function onRight() {
             sold++; run.good(goods); tally.querySelector('b').textContent = sold; bump(tally, 'pop', 600);
             // the photo turns over into its drawing, coins leap and clink
             goods.classList.add('turn'); fx.innerHTML = coinBurst(); later(run, 250, coinClink);
             later(run, 260, () => { drawn.innerHTML = GOODS[w].svg(); drawn.classList.add('pop'); });
-            // then the shopper takes it away
-            later(run, 1100, () => { drawn.classList.add('taken'); dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600);
+            // the drawing goes down to the shopper, who takes it away
+            later(run, 1100, () => { drawn.classList.add('taken'); });
+            later(run, 1450, () => { dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600);
               later(run, 60, () => dealw.firstElementChild && dealw.firstElementChild.classList.add('run')); });
-            step(1100 + (ACT_MS[GOODS[w].act] || 3000));
-          }, () => {
+            step(1450 + (ACT_MS[GOODS[w].act] || 3000));
+          }
+          function onMiss() {
             goods.classList.add('wrong'); st.classList.add('sad'); bump(crowdEl, 'grumble', 1400); later(run, 450, aaNo);
             later(run, 700, () => look && look.classList.add('away'));
-            later(run, 1300, () => goods.classList.add('back')); step(2900);
-          });
+            later(run, 1400, () => goods.classList.add('back')); step(2900);
+          }
+          const miss = () => { if (!end()) return; run.bad(); box.nope(); react(run, 'sad'); onMiss(); };
+          // the clock starts once Laila has finished speaking
+          Promise.resolve(run.said).then(() => later(run, 300, () => {
+            if (over || run.dead) return;
+            clock.style.setProperty('--left', '1'); clock.classList.add('on'); clearInterval(tick);
+            tick = setInterval(() => {
+              if (run.dead) { clearInterval(tick); return; }
+              left -= 100; const f = Math.max(0, left / LIMIT);
+              clock.style.setProperty('--left', f.toFixed(3)); clock.classList.toggle('warn', f <= .5 && f > .25); clock.classList.toggle('late', f <= .25);
+              if (left <= 0 && !run.listening) miss();
+            }, 100);
+          }));
+          box.listen(() => { run.auto = true; return { target: w, among, match: (raw) => io.match(raw, w, among) }; }, (res) => {
+            if (over) return;
+            if (res.value === null && !res.raw) {
+              if (left <= 0) { miss(); return; }
+              if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; }
+              run.auto = false; box.cue(); return;
+            }
+            if (!end()) return;
+            if (res.value === w) { box.yay(); react(run, 'cheer'); onRight(); return; }
+            run.bad(); box.nope(); react(run, 'sad'); onMiss();
+          }, () => w);
+          autoGo(run, box);
         }
-        function step(ms) { later(run, ms, () => { r++; if (r >= 6) done({ right: sold, finished: true, part: sold / 6 }); else next(); }); }
+        function step(ms) { later(run, ms, () => { r++; if (r >= 6) { stopClock(); done({ right: sold, finished: true, part: sold / 6 }); } else next(); }); }
         next();
       } },
 
@@ -240,11 +275,21 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7), WAIT = 15000; let r = 0, got = 0, last = -1;
         const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div>' +
+          CUSTOMERS.map((c) => '<div class="tgot" style="left:' + c.x + 'cqw;bottom:' + c.hand + 'cqw"></div>').join('') +
+          '<div class="twaiter">' + waiter() + '<div class="ttray"></div></div>' +
           '<div class="tcard"></div><div class="twait"><i></i></div><div class="tbub"></div><div class="tserve"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
         const card = st.querySelector('.tcard'), bar = st.querySelector('.twait'), fill = bar.firstElementChild, bub = st.querySelector('.tbub'), sv = st.querySelector('.tserve');
+        const helper = st.querySelector('.twaiter'), tray = st.querySelector('.ttray'), gots = st.querySelectorAll('.tgot');
+        /** the served thing flies from the picture to a point on the stage (cqw from the left, cqw from the bottom) */
+        function fly(x, y) {
+          const R = st.getBoundingClientRect(), S = sv.getBoundingClientRect(), u = R.width / 100;   // in the stage's own units
+          sv.style.setProperty('--dx', ((R.left + x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - y * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
+          void sv.offsetWidth; sv.classList.add('show'); later(run, 700, () => sv.classList.add('fly'));
+        }
+        function hand(who, w) { const g = gots[who]; g.className = 'tgot'; g.innerHTML = served(w); void g.offsetWidth; g.classList.add('on'); }
         function next() {
           const w = ORDER[r], who = shuffle([0, 1, 2, 3].filter((k) => k !== last))[0], c = CUSTOMERS[who]; last = who;
           let left = WAIT, over = false;
@@ -282,21 +327,11 @@ export function moreGames(c: any): Record<string, any> {
         next();
       } },
 
-          CUSTOMERS.map((c) => '<div class="tgot" style="left:' + c.x + 'cqw;bottom:' + c.hand + 'cqw"></div>').join('') +
-          '<div class="twaiter">' + waiter() + '<div class="ttray"></div></div>' +
     /* ---------------- Lambobi: the groundnut pyramids (tap) ---------------- */
     'j-gyada': { title: 'Dalar gyaɗa', cls: 'gyada', scene: 'pyramids', tap: true,
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
       place: (r) => r.right >= 8 ? 'Matched every number to its stack, to twenty: Lambobi would start at the tens.' : 'Matched ' + r.right + ' of 8: Lambobi would start ' + (r.reached > 10 ? 'at 11 to 20.' : 'at 1 to 10.'),
       /* Laila says a number; the child taps the pile of groundnut sacks that has that many. Right: the sacks are loaded
-        const helper = st.querySelector('.twaiter'), tray = st.querySelector('.ttray'), gots = st.querySelectorAll('.tgot');
-        /** the served thing flies from the picture to a point on the stage (cqw from the left, cqw from the bottom) */
-        function fly(x, y) {
-          const R = st.getBoundingClientRect(), S = sv.getBoundingClientRect(), u = R.width / 100;   // in the stage's own units
-          sv.style.setProperty('--dx', ((R.left + x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - y * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
-          void sv.offsetWidth; sv.classList.add('show'); later(run, 700, () => sv.classList.add('fly'));
-        }
-        function hand(who, w) { const g = gots[who]; g.className = 'tgot'; g.innerHTML = served(w); void g.offsetWidth; g.classList.add('on'); }
          onto the back of the lorry one by one, the horn sounds and it speeds off in a cloud of dust. Wrong: the lorry
          drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {
@@ -364,8 +399,8 @@ export function moreGames(c: any): Record<string, any> {
         const TENS = [20, 30, 40, 50, 60, 70, 80, 90], HUN = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
         const P = shuffle(TENS).slice(0, 3).concat(shuffle(HUN).slice(0, 5)); let r = 0, got = 0, hundreds = 0, busy = false, v = 0;
         const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><span class="tally"><span class="coin s">Z</span> <b>0</b> / 8</span></div>');
-        const yard = h('<div class="yard"><div class="pen4"></div><span class="eg e1">' + egret() + '</span><span class="eg e2">' + egret() + '</span><span class="eg e3">' + egret() + '</span><div class="buyer2">' + herdsman() + '</div></div>');
-        const pen = yard.querySelector('.pen4'), buyer = yard.querySelector('.buyer2');
+        const yard = h('<div class="yard"><div class="pen4"></div><span class="eg e1">' + egret() + '</span><span class="eg e2">' + egret() + '</span><span class="eg e3">' + egret() + '</span></div>');
+        const pen = yard.querySelector('.pen4');
         run.scr.appendChild(yard); run.scr.appendChild(top);
         run.clock(150, () => done({ right: got, part: got / 8, hundreds }));
         const sayP = () => say(K.en['n' + P[r]], run);
@@ -399,47 +434,107 @@ export function moreGames(c: any): Record<string, any> {
       } },
 
     /* ---------------- Lambobi: counting the herd (speaking) ---------------- */
-    /* Ƙirgen shanu (Sani 2026-10-22): White Fulani and Red Bororo cattle graze on the open grass and drift slowly
-       forward; the herdsman walks behind them with his staff upright. Say the number and the front cow ambles into the
-       pen to its cowbell; a wrong count and she lifts her head, shakes it and lows, and the herdsman shakes his head. */
-    'j-garke': { title: 'Ƙirgen shanu', cls: 'garke', scene: 'camp',
+    /* Ƙirgen shanu (Sani 2026-10-22, reworked 2026-10-26: "surely it should be about counting the shanu"): a Fulani camp
+       at dusk (sc-garke.ts). Each round the herdsman brings a herd into the garke, a few cows at a time, and the gate is
+       closed; the child counts the cows in the pen and says how many in English. Laila listens by herself (the
+       Durbar's microphone: no press). Right: the number is heard, each cow lows in turn as the count runs up on the
+       pen, the camp cheers and the herd goes out to graze. Wrong: the cows low unhappily, the herdsman shakes his head,
+       the camp frowns, and the herd goes out uncounted; the number is never said. Two wrong counts end the game.
+       An example first, with no score and no clock (Hawan Sallah's way): three cows go in with the pointing hand on the
+       pen while Laila says how to play, the count runs up on the cows without a word, then she asks to be pressed. */
+    'j-garke': { title: 'Ƙirgen shanu', cls: 'garke', scene: 'camp', noHow: true,   // the example teaches it; "how" stays the reminder
       placeNo: 'Lambobi would start at 1 to 5, with the lessons.',
-      place: (r) => r.finished ? 'Counted the herd to ten and the big herd in tens to fifty: Lambobi would start at the hundreds.' : 'Counted to <b>' + r.reached + '</b>: Lambobi would start ' + (r.reached < 5 ? 'at 1 to 5.' : r.reached <= 10 ? 'at 6 to 10.' : 'at the tens.'),
+      place: (r) => r.reached >= 10 && !r.misses ? 'Counted every herd, up to ten: Lambobi would start at the tens.' : 'Counted herds up to <b>' + (r.reached || 0) + '</b>: Lambobi would start ' + (r.reached < 5 ? 'at 1 to 5.' : 'at 6 to 10.'),
       play(run, done) {
-        const STEPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50], WORD = (n) => K.enText['n' + n].toLowerCase(), AMONG = STEPS.map(WORD).concat(['eleven', 'twelve', 'sixty', 'hundred']);
-        let s = 0, reached = 0, wrong = 0, v = 0;
+        const WORD = (n) => K.enText['n' + n].toLowerCase(), AMONG = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(WORD);
+        // seven herds, growing: two or three cows first, nine or ten at the end, never the same size twice running
+        const RANGE = [[2, 3], [3, 5], [4, 6], [5, 7], [6, 8], [7, 9], [9, 10]], SIZES = [];
+        RANGE.forEach(([a, b]) => { let n; do n = a + Math.floor(Math.random() * (b - a + 1)); while (n === SIZES[SIZES.length - 1]); SIZES.push(n); });
+        let r = 0, reached = 0, misses = 0, v = 0;
         const grass = [[4, 2, 0], [16, 6, 1], [27, 1, 2], [36, 5, 0], [47, 2, 1], [56, 7, 2], [9, 9, 1], [31, 9, 2]].map(([x, y, k]) => '<i class="tf" style="left:' + x + 'cqw;bottom:' + y + 'cqw">' + tuft(k) + '</i>').join('');
-        const st = h('<div class="gstage herd"><div class="field">' + grass + '</div><div class="queue"></div><div class="hman">' + herdsman() + '</div><div class="pen3">' + A.zariba() + '<div class="inpen"></div><b class="cnt2">0</b></div></div>');
+        const st = h('<div class="gstage herd"><div class="field">' + grass + '</div><div class="queue"></div><div class="hman">' + herdsman() + '</div><div class="gkraal">' + kraalBack() + '<div class="gkpen"></div>' + kraalFront() + '<b class="cnt2">0</b></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
-        run.clock(150, () => done({ right: s, part: s / STEPS.length, reached }));
         run.remind = () => say(line('j-garke', 'how'), run);
-        const queue = st.querySelector('.queue'), inpen = st.querySelector('.inpen'), cnt = st.querySelector('.cnt2'), hman = st.querySelector('.hman');
-        // each cow grazes on its own clock, so the herd never nods in step
-        const cow = (ten) => '<span class="qcow' + (ten ? ' ten' : '') + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's">' + zebu(v++) + (ten ? '<b>×10</b>' : '') + '</span>';
-        function fill() { queue.innerHTML = ''; for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', cow(s >= 10)); }
+        const queue = st.querySelector('.queue'), pen = st.querySelector('.gkpen'), pen3 = st.querySelector('.gkraal'), cnt = st.querySelector('.cnt2'), hman = st.querySelector('.hman');
+        const lbtn = box.querySelector('.x-laila'); lbtn.classList.remove('cue');   // no cue until the example is over
+        /** a line not recorded yet is skipped, or its stand-in said instead */
+        const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
+        // the grazing herd on the left, where the cows come from; each grazes on its own clock
+        const gz = () => '--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's';
+        for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', '<span class="qcow" style="' + gz() + '">' + zebu(v++) + '</span>');
+        // ten places in the kraal: the near row (two each side, the middle left clear over Laila) fills first, then the far row
+        // of six, so every cow can be seen and counted
+        const SLOT = [6.5, 16, 37.5, 47].map((x) => [x, 2.8]).concat([0, 1, 2, 3, 4, 5].map((k) => [6.4 + k * 8.2, 8.8]));
+        /** the herdsman brings n cows into the pen, one after another, each to her place, a clonk of her bell as she settles */
+        function bringIn(n, then) {
+          pen.innerHTML = ''; cnt.textContent = '?'; pen3.classList.remove('done', 'sad'); hman.classList.add('step');
+          for (let k = 0; k < n; k++) later(run, k * 420, () => { if (run.dead) return;
+            const [x, y] = SLOT[k], c = h('<span class="gc' + (y > 5 ? ' back' : '') + '" style="left:' + x + 'cqw;bottom:' + y + 'cqw;--dx:' + (-(x + 10)) + 'cqw;' + gz() + '">' + kraalCow(v++) + '</span>');
+            pen.appendChild(c); if (k % 2 === 0) cowbell(1);
+          });
+          later(run, n * 420 + 900, () => { hman.classList.remove('step'); if (!run.dead) then(); });
+        }
+        /** the count runs up on the cows themselves, one after another, the number on the pen following it */
+        function countUp(n, ms, then, bells = false) {
+          [...pen.children].forEach((c, k) => later(run, k * ms, () => { if (run.dead) return; c.insertAdjacentHTML('beforeend', '<b class="gn">' + (k + 1) + '</b>'); c.classList.add('lo'); cnt.textContent = String(k + 1); bump(cnt, 'pop'); if (bells) countBell(k); }));
+          later(run, n * ms + 500, () => { if (!run.dead) then(); });
+        }
+        /** the herd goes out of the pen to graze, and the pen is empty for the next */
+        function letOut(then) {
+          pen.classList.add('out'); later(run, 1300, () => { pen.classList.remove('out'); pen.innerHTML = ''; cnt.textContent = '0'; if (!run.dead) then(); });
+        }
+        /*
+         * The example: three cows go in, the pointing hand on the pen while Laila says the one line; then the count runs up
+         * on them without a word, and they go out. Then Laila asks to be pressed.
+         */
+        function example() {
+          box.busy = true;
+          later(run, 400, () => bringIn(3, () => {
+            const hand = h('<span class="gkhand">👇🏾</span>'); pen3.appendChild(hand);
+            sayIf('s_g_garke_eg1').then(() => { hand.remove(); if (run.dead) return;
+              countUp(3, 700, () => { pen3.classList.add('done'); later(run, 900, () => letOut(ready)); });
+            });
+          }));
+        }
+        /** "press Laila to start": said again 10 s later if she is not pressed, then every 20 s until she is */
+        function ready() {
+          let nag = null;
+          const ask = () => sayIf('s_g_durbar_ready', 'app_w_tap_white');
+          const again = (ms) => { nag = later(run, ms, () => { if (run.dead || !lbtn.onclick) return; ask().then(() => { if (!run.dead && lbtn.onclick) again(20000); }); }); };
+          ask().then(() => { if (run.dead) return;
+            box.busy = false; lbtn.classList.add('cue');
+            lbtn.onclick = () => { if (run.dead) return; lbtn.onclick = null; clearTimeout(nag); lbtn.classList.remove('cue'); io.hush();
+              run.clock(150, () => done({ right: run.right, part: run.right / SIZES.length, reached, misses }));
+              next(); };
+            again(10000);
+          });
+        }
+        /*
+         * Each herd: the cows go in, then Laila listens by herself for up to 8 s. A try that is not the number keeps the
+         * microphone open; two of them, or the time running out after something was said, is a wrong count. Silence the
+         * first time is forgiven once: she listens again by herself.
+         */
         function next() {
-          if (s === 10) { inpen.innerHTML = ''; cnt.textContent = '0'; }
-          if (s === 0 || s === 10) fill();
-          const n = STEPS[s], w = WORD(n); wrong = 0;
-          box.cue();
-          box.listen(() => ({ target: w, among: AMONG, match: (raw) => io.match(raw, w, AMONG) }), (r) => {
-            if (r.value === null && !r.raw) { box.cue(); return; }
-            if (r.value === w) { box.busy = true; box.yay(); reached = n; walkIn(n); return; }
-            wrong++; run.bad(); box.nope(); moo();
-            const c = queue.firstChild; c.classList.add('no'); st.classList.add('cross'); later(run, 1400, () => { st.classList.remove('cross'); c.classList.remove('no'); });
-            if (wrong >= 1) { box.busy = true; later(run, 1500, () => { done({ right: s, part: s / STEPS.length, reached }); }); }
-            else box.cue();
-          }, () => w);
+          const n = SIZES[r], w = WORD(n); let quiet = 0;
+          bringIn(n, () => {
+            pen3.classList.add('ask');
+            box.listen(() => ({ target: w, among: AMONG, match: (raw) => io.match(raw, w, AMONG), until: w, maxWrong: 2, limit: 8000 }), (res) => {
+              if (res.value === null && !res.raw && quiet++ < 1) { box.busy = false; later(run, 400, () => { if (!run.dead) box.go(); }); return; }
+              box.busy = true; pen3.classList.remove('ask');
+              if (res.value === w) {
+                box.yay(); run.good(pen); react(run, 'cheer'); reached = Math.max(reached, n);
+                // the number is heard, then the bells clonk up the herd and they low together, content
+                say(K.en['n' + n], run).then(() => { if (run.dead) return; countUp(n, 300, () => { happyHerd(); pen3.classList.add('done'); later(run, 1600, () => letOut(step)); }, true); });
+                return;
+              }
+              misses++; run.bad(); box.nope(); react(run, 'sad'); moo(); pen3.classList.add('sad'); st.classList.add('cross');
+              later(run, 1500, () => { st.classList.remove('cross'); letOut(misses >= 2 ? () => done({ right: run.right, part: run.right / SIZES.length, reached, misses }) : step); });
+            }, () => w);
+            box.busy = false; box.go();
+          });
         }
-        // the front cow ambles into the pen (slowly, legs stepping), the herdsman walks a few steps after her
-        function walkIn(n) {
-          const c = queue.firstChild; run.good(c); c.classList.add('zgo'); hman.classList.add('step'); cowbell(3);
-          later(run, 2900, () => { c.remove(); hman.classList.remove('step');
-            inpen.insertAdjacentHTML('beforeend', '<span class="pc" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's">' + zebu(v++) + '</span>'); cnt.textContent = n; bump(cnt, 'pop');
-            queue.insertAdjacentHTML('beforeend', cow(s + 1 >= 10));
-            s++; if (s >= STEPS.length) done({ right: s, finished: true, part: 1, reached }); else next(); });
-        }
-        next();
+        function step() { r++; if (r >= SIZES.length) done({ right: run.right, finished: true, part: run.right / SIZES.length, reached, misses }); else next(); }
+        example();
       } },
 
     /* ---------------- Lambobi: the suya seller (speaking) ---------------- */
@@ -548,7 +643,7 @@ export function moreGames(c: any): Record<string, any> {
         const key = (L) => '<button type="button" class="mk" data-l="' + L + '">' + L + '</button>';   // A–M on the left, N–Z on the right, Laila between them
         const kb = h('<div class="mkb"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
-        run.clock(150, () => done({ right: words, part: words / W.length }));
+        run.clock(150, () => fin({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
         const env = st.querySelector('.env'), hand = env.querySelector('.hand2'), ach = st.querySelector('.achw');
         function word() {
@@ -556,7 +651,7 @@ export function moreGames(c: any): Record<string, any> {
           hand.innerHTML = w.split('').map(() => '<span></span>').join(''); box.cue();
           later(run, 300, () => { sayW(run, K.en[W[wi]]); if (run.auto) autoGo(run, box); });   // after a spoken word, Laila listens by herself
         }
-        function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
+        function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) fin({ right: words, finished: true, part: words / W.length }); else word(); }); }
         // the same for a spoken run of letters and for a key: right letters are inked in order, the first wrong one ends the word
         function take(letters, key) {
           const w = W[wi].toUpperCase();

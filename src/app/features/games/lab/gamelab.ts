@@ -53,7 +53,7 @@ const LINES: Record<string, { ask: string; how: string }> = {
   imports: [Door, Ear],
   host: { class: 's lesson gamelab' },
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./gamelab.css', './kalangu.css', './teastall.css', './kamun.css', './rest.css', './sc-kogi.css', './sc-jirgi.css', './sc-allo.css', './sc-wasika.css', './sc-tukwane.css', './sc-bulo.css', './sc-kasuwa.css', './sc-suya.css', './sc-gyada.css', './sc-shanu.css'],
+  styleUrls: ['./gamelab.css', './kalangu.css', './teastall.css', './kamun.css', './rest.css', './sc-kogi.css', './sc-jirgi.css', './sc-allo.css', './sc-wasika.css', './sc-tukwane.css', './sc-bulo.css', './sc-kasuwa.css', './sc-suya.css', './sc-gyada.css', './sc-shanu.css', './sc-garke.css', './dillali.css', './sc-dillali.css'],
   template: `<div #frame class="glab nofit"><div class="gbg"></div><div class="gbox"><div class="scr"></div></div></div><app-door (pressed)="leave()" /><app-ear (pressed)="again()" />`,
 })
 export class GameLabScreen implements OnInit, OnDestroy {

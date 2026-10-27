@@ -284,3 +284,7 @@ export function kasuwaScene(): string {
     '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient></defs>' +
     sky + town + stalls + ground + far + mid + kosai + baro + right + seller + '</svg>';
 }
+
+/* the parts, shared with Dillalin kasuwa's square (sc-dillali.ts): same people, animals and market things, same faces */
+export const KW = { person, goat, chicken, donkey, keke, barrow, kwarya, kwano, tomatoes, peppers, onions, headLoad, crowd, shed, heaps, cloth, umbrella, house, neem, dum, SKIN, U, lg,
+  defs: () => crowdDefs + headDef + clothesDef() + loadDefs() };

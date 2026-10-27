@@ -1,0 +1,79 @@
+/* ---- Ƙirgen shanu, drawn (Sani 2026-10-26): the Fulani camp at dusk behind the game's herd. The svg carries .sh4 too,
+   so sc-shanu.css makes its people cheer and frown; these are its own loops. Transform and opacity only, keyframes gk-… ---- */
+.glab .gbg .gk :is(.gk-sun,.gk-smoke,.gk-fl,.gk-pound,.gk-walk,.gk-bob,.gk-milk,.gk-lead,.gk-wb,.gk-birds,.gk-far,.gk-pnd .x-al,.gk-pnd .x-ar){transform-box:fill-box}
+.glab .gbg .gk .gk-sun{transform-origin:50% 50%;animation:gk-glow 6s ease-in-out infinite alternate}
+@keyframes gk-glow{from{opacity:.75;transform:scale(.96)}to{opacity:1;transform:scale(1.05)}}
+.glab .gbg .gk .gk-smoke{transform-origin:50% 100%;animation:gk-smoke 4.4s ease-out infinite}
+.glab .gbg .gk .gk-smoke.s2{animation-duration:5.2s;animation-delay:-2.4s}
+@keyframes gk-smoke{0%{transform:translate(0,2px) scale(.6);opacity:0}25%{opacity:.9}100%{transform:translate(5px,-9px) scale(1.25);opacity:0}}
+.glab .gbg .gk .gk-fl{transform-origin:50% 100%;animation:gk-fl .32s ease-in-out infinite alternate}
+@keyframes gk-fl{from{transform:scaleY(.82) skewX(-4deg)}to{transform:scaleY(1.1) skewX(5deg)}}
+/* the pounding: the pestle and both hands lift and drop together */
+.glab .gbg .gk .gk-pound{animation:gk-pound .9s cubic-bezier(.5,0,.8,.4) infinite}
+.glab .gbg .gk .gk-pnd :is(.x-al,.x-ar){transform-origin:50% 50%;animation:gk-parm .9s cubic-bezier(.5,0,.8,.4) infinite}
+@keyframes gk-pound{0%,100%{transform:translateY(0)}45%{transform:translateY(-5px)}}
+@keyframes gk-parm{0%,100%{transform:translateY(0)}45%{transform:translateY(-5px)}}
+/* the milk woman walks slowly across behind the pen and back, her step bobbing */
+.glab .gbg .gk .gk-walk{animation:gk-walk 34s ease-in-out infinite alternate}
+@keyframes gk-walk{from{transform:translateX(-22px)}to{transform:translateX(16px)}}
+.glab .gbg .gk .gk-bob{animation:gk-bob .7s ease-in-out infinite alternate}
+@keyframes gk-bob{to{transform:translateY(-.5px)}}
+.glab .gbg .gk .gk-milk{transform-origin:50% 100%;animation:gk-milk .6s ease-in-out infinite alternate}
+@keyframes gk-milk{to{transform:translateY(.6px) rotate(1deg)}}
+.glab .gbg .gk .gk-lead{animation:gk-lead 22s ease-in-out infinite alternate}
+@keyframes gk-lead{from{transform:translateX(-6px)}to{transform:translateX(10px)}}
+/* the birds fly home across the sky, their wings beating */
+.glab .gbg .gk .gk-birds{animation:gk-fly 46s linear infinite}
+.glab .gbg .gk .gk-birds.b2{animation-duration:58s;animation-delay:-30s}
+@keyframes gk-fly{0%{transform:translate(-120px,10px);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translate(260px,-14px);opacity:0}}
+.glab .gbg .gk .gk-wb{transform-origin:50% 100%;animation:gk-wb .5s ease-in-out infinite alternate}
+@keyframes gk-wb{to{transform:scaleY(-.5)}}
+.glab .gbg .gk .gk-far{animation:gk-far 60s linear infinite alternate}
+@keyframes gk-far{from{transform:translateX(10px)}to{transform:translateX(-30px)}}
+
+/* below the kraal: the herd being driven home across and out of sight, the two bulls locking horns, an egret riding a cow */
+.glab .gbg .gk :is(.gk-drive,.gk-wk,.gk-butt,.gk-ride){transform-box:fill-box}
+.glab .gbg .gk .gk-drive{animation:gk-drive 40s linear infinite}
+@keyframes gk-drive{0%{transform:translateX(14px);opacity:0}8%{opacity:1}80%{opacity:1}100%{transform:translateX(-70px);opacity:0}}
+.glab .gbg .gk .gk-wk{transform-origin:50% 100%;animation:gk-wk .7s ease-in-out infinite alternate}.glab .gbg .gk .gk-wk.b{animation-delay:-.35s}
+@keyframes gk-wk{from{transform:translateY(0) rotate(-1deg)}to{transform:translateY(-.6px) rotate(1deg)}}
+.glab .gbg .gk .gk-butt.l{animation:gk-butl 2.4s ease-in-out infinite}.glab .gbg .gk .gk-butt.r{animation:gk-butr 2.4s ease-in-out infinite}
+@keyframes gk-butl{0%,30%,100%{transform:translateX(0)}42%{transform:translateX(-2.4px)}50%{transform:translateX(1.6px)}58%,70%{transform:translateX(.4px)}}
+@keyframes gk-butr{0%,30%,100%{transform:translateX(0)}42%{transform:translateX(2.4px)}50%{transform:translateX(-1.6px)}58%,70%{transform:translateX(-.4px)}}
+.glab .gbg .gk .gk-ride{animation:none}
+@media (prefers-reduced-motion:reduce){.glab .gbg .gk *{animation:none!important}}
+
+/* ---- the game (Sani 2026-10-26: count the herd, the kraal in the middle and big): a wide thorn kraal centred above
+   Laila, the cows in it in two rows of five (the near row filled first) so each one can be seen and counted; the
+   herdsman stands at its gate on the left; the grazing herd they come from is small, bottom left. The kraal sits in the
+   middle of the screen just above Laila, and its near row leaves a gap over her, so her bubble never hides a cow ---- */
+.glab .scr.garke .herd .gkraal{position:absolute;left:50%;bottom:16cqw;width:64cqw;height:18cqw;transform:translateX(-50%);z-index:2}
+.glab .scr.garke .herd .gkraal>svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.glab .scr.garke .herd .gkraal>.kfront{z-index:3;pointer-events:none}
+.glab .scr.garke .herd .gkpen{position:absolute;inset:0;z-index:2}
+.glab .scr.garke .herd .gkraal .cnt2{right:1cqw;top:-2cqw;z-index:4}
+.glab .scr.garke .herd .hman{left:7cqw;bottom:15cqw;width:8cqw;height:16cqw;z-index:3}
+.glab .scr.garke .herd .queue{left:3cqw;bottom:1cqw}
+.glab .scr.garke .herd .qcow{width:8cqw;height:5.3cqw}.glab .scr.garke .herd .qcow+.qcow{margin-right:-2cqw}
+.glab .scr.garke .herd .gc{position:absolute;width:11cqw;height:7.3cqw;z-index:2;animation:g-gkin .9s ease-out both}
+.glab .scr.garke .herd .gc.back{z-index:1;width:9.8cqw;height:6.5cqw}
+.glab .scr.garke .herd .gc>.dab{display:block;width:100%;height:100%;overflow:visible}
+/* the market's cows (sc-shanu's dabbaAlone): they breathe, flick their tails, twitch an ear, lift their heads now and then */
+.glab .scr.garke .gc .dab :is(.d-all,.d-up,.d-hd,.d-tl,.d-ear,.d-lg){transform-box:view-box}
+.glab .scr.garke .gc .dab .d-up{animation:sh4-breathe 3.4s ease-in-out var(--gd,0s) infinite alternate}
+.glab .scr.garke .gc .dab .d-tl{animation:sh4-flick var(--gs,6s) ease-in-out var(--gd,0s) infinite}
+.glab .scr.garke .gc .dab .d-ear{animation:sh4-ear 7s ease-in-out var(--gd,0s) infinite}
+.glab .scr.garke .gc .dab .d-hd{animation:sh4-look calc(var(--gs,6s) * 1.7) ease-in-out var(--gd,0s) infinite}
+@keyframes g-gkin{from{transform:translateX(var(--dx));opacity:0}35%{opacity:1}to{transform:none;opacity:1}}
+.glab .scr.garke .herd .gc .gn{position:absolute;left:55%;top:-3.6cqw;translate:-50% 0;width:3.6cqw;height:3.6cqw;display:grid;place-items:center;border-radius:50%;
+  font:800 2.4cqw/1 var(--disp);color:#fff;background:#1FA187;box-shadow:0 2px 0 rgba(0,0,0,.2);animation:g-gkpop .35s ease-out}
+@keyframes g-gkpop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.glab .scr.garke .herd .gc.lo .d-hd{animation:none;transform:rotate(-6deg);transition:transform .25s}
+.glab .scr.garke .herd .gkraal.sad .gc .d-hd{animation:g-zno .28s ease-in-out 5 alternate}
+.glab .scr.garke .herd .gkpen.out .gc{transition:transform 1.2s ease-in,opacity 1.2s;transform:translateX(20cqw);opacity:0}
+/* while Laila listens, the number on the kraal asks the question */
+.glab .scr.garke .herd .gkraal.ask .cnt2{animation:g-gkask 1s ease-in-out infinite}
+@keyframes g-gkask{50%{transform:scale(1.12)}}
+.glab .scr.garke .herd .gkraal .gkhand{position:absolute;left:46%;top:9cqw;transform:translate(-50%,-100%);z-index:5;font-size:6cqw;line-height:1;pointer-events:none;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.25));animation:g-gkhand .8s ease-in-out infinite}
+@keyframes g-gkhand{0%,100%{translate:0 0}50%{translate:0 -1cqw}}

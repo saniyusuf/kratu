@@ -540,3 +540,8 @@ export function dabSound(id, happy) {
   env.gain.setValueAtTime(.0001, t); env.gain.exponentialRampToValueAtTime(goat ? .2 : .24, t + .06); env.gain.setValueAtTime(goat ? .2 : .24, t + d - .2); env.gain.exponentialRampToValueAtTime(.0001, t + d);
   o.connect(bp).connect(lp).connect(am).connect(env).connect(dac.destination); o.start(t); lfo.start(t); o.stop(t + d + .05); lfo.stop(t + d + .05);
 }
+
+/** the animal alone, as the market draws it (Ƙirgen shanu’s counted cows, sc-garke): no post, tether or buyer */
+export function dabbaAlone(id) { const s = SPEC[id]; return '<svg class="dab dab-' + id + '" viewBox="0 0 240 160" aria-hidden="true"><defs>' + dabDefs(id) + '</defs><g class="d-all" style="transform-origin:120px 150px"><g transform="translate(120 150) scale(' + s.k + ') translate(' + (-s.cx) + ' -150)">' + dabArt(id) + '</g></g></svg>'; }
+/** the market’s animal table, so Ƙirgen shanu (sc-garke) can add its bulls and other breeds drawn the same way */
+export const dabSpec = SPEC;

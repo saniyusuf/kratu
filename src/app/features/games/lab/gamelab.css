@@ -1256,64 +1256,6 @@
 .glab .scene .psk{animation-name:g-psk;animation-timing-function:linear;animation-iteration-count:infinite;opacity:0}
 @keyframes g-psk{0%,62%{opacity:0}64%,97%{opacity:1}100%{opacity:0}}
 
-/* Dillalin kasuwa, again (Sani 2026-10-25): the real photo on an easel, a shopper who comes to look, the drawing they take,
-   coins on a sale and a red cross on a miss, and the market moving behind the stall */
-.glab .scr.dillali .dstage.mk .goods{left:1cqw;bottom:3cqw;width:17cqw;height:20cqw}
-.glab .scr.dillali .goods.taken{opacity:1}
-.glab .mkcard{position:absolute;inset:0;display:block;transform-origin:50% 60%;transition:transform .25s ease-in}
-.glab .mkframe{position:absolute;left:0;right:0;top:0;height:15.5cqw;border-radius:1.2cqw;overflow:hidden;background:#6B4422;border:.7cqw solid #8B5A2B;box-shadow:0 .7cqw .8cqw rgba(30,20,8,.35),inset 0 0 0 .2cqw #5E3A1C}
-.glab .mkframe img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .3s}
-.glab .pleg{position:absolute;left:3cqw;right:3cqw;top:15cqw;bottom:0;background:linear-gradient(100deg,transparent 12%,#6B4422 12% 20%,transparent 20% 80%,#6B4422 80% 88%,transparent 88%)}
-.glab .goods.turn .mkcard{transform:scaleX(0)}
-.glab .goods .mkx{position:absolute;inset:0;opacity:0}
-.glab .goods .mkx::before,.glab .goods .mkx::after{content:"";position:absolute;left:22%;right:22%;top:calc(50% - .7cqw);height:1.4cqw;border-radius:1cqw;background:#E53935;box-shadow:0 0 0 .3cqw #fff}
-.glab .goods .mkx::before{transform:rotate(45deg)}.glab .goods .mkx::after{transform:rotate(-45deg)}
-.glab .goods.wrong .mkx{animation:g-stamp .35s cubic-bezier(.3,1.6,.5,1) forwards}@keyframes g-stamp{from{opacity:0;transform:scale(1.8)}to{opacity:1;transform:none}}
-.glab .goods.wrong .mkframe img{filter:grayscale(.6) brightness(.9)}
-.glab .goods.wrong .mkcard{animation:g-shk .4s .1s}
-.glab .scr.dillali .goods.back{transform:translateX(-40cqw);opacity:0;transition:transform 1.2s ease-in,opacity .5s .7s}
-/* the drawing the photo turns into, in the same place */
-.glab .mkdrawn{position:absolute;left:1.5cqw;bottom:6cqw;width:15cqw;height:15cqw;opacity:0;pointer-events:none}
-.glab .mkdrawn svg{width:100%;height:100%;display:block;overflow:visible}
-.glab .mkdrawn.pop{opacity:1;animation:g-drawn .5s cubic-bezier(.3,1.6,.5,1) both}@keyframes g-drawn{from{transform:scaleX(0) scaleY(.7)}}
-.glab .mkdrawn.pop::before{content:"";position:absolute;inset:-2cqw;border-radius:50%;background:radial-gradient(circle,rgba(255,236,150,.85),rgba(255,236,150,0) 70%);z-index:-1;animation:g-glow 1s ease-out both}@keyframes g-glow{from{transform:scale(.3);opacity:1}to{transform:scale(1.2);opacity:0}}
-.glab .mkdrawn.taken{opacity:0;transition:opacity .2s}
-/* coins leaping up from the sale, and a gold ring */
-.glab .mkfx{position:absolute;left:9cqw;bottom:13cqw;width:0;height:0;pointer-events:none}
-.glab .mkfx .cn{position:absolute;left:-1.2cqw;top:-1.2cqw;width:2.4cqw;height:2.4cqw;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF3B0,#F2B600 55%,#B88400);box-shadow:0 0 0 .2cqw #9A6F00 inset;opacity:0;animation:g-coin .95s cubic-bezier(.2,.7,.4,1) forwards;animation-delay:calc(var(--k) * .05s)}
-@keyframes g-coin{0%{opacity:1;transform:translate(0,0) scale(.6)}45%{opacity:1;transform:translate(var(--x),-11cqw) scale(1) rotateY(180deg)}100%{opacity:0;transform:translate(calc(var(--x) * 1.4),-6cqw) scale(.9) rotateY(360deg)}}
-.glab .mkfx .mkring{position:absolute;left:-9cqw;top:-9cqw;width:18cqw;height:18cqw;border-radius:50%;border:.6cqw solid #FFD54A;opacity:0;animation:g-mkring .7s ease-out forwards}@keyframes g-mkring{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.2)}}
-.glab .scr.dillali>.tally.pop{animation:g-tpop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes g-tpop{50%{transform:translateX(-50%) scale(1.2)}}
-/* the shopper who comes to look, and the sale itself, stand just right of the easel */
-.glab .scr.dillali .deal.look,.glab .scr.dillali .deal.act-arm,.glab .scr.dillali .deal.act-head,.glab .scr.dillali .deal.act-hand,.glab .scr.dillali .deal.act-eat,.glab .scr.dillali .deal.act-sweep,.glab .scr.dillali .deal.act-wear,.glab .scr.dillali .deal.act-umbrella{left:17.5cqw}
-.glab .deal.look .buyer{transform-origin:50% 100%;animation:g-lean .5s 1.3s ease-in-out forwards}@keyframes g-lean{to{transform:rotate(-5deg)}}
-.glab .deal.look{animation:g-arrive 1.3s ease-out both}@keyframes g-arrive{from{transform:translateX(-30cqw)}}
-.glab .deal.look .bob{display:block;width:100%;height:100%;animation:g-mkbob .32s ease-in-out 4 alternate}@keyframes g-mkbob{to{transform:translateY(-.5cqw)}}
-.glab .deal.look.away{animation:g-mkleave 1.8s ease-in forwards}@keyframes g-mkleave{0%{transform:scaleX(-1)}100%{transform:scaleX(-1) translateX(36cqw)}}
-.glab .deal.look.away .buyer{animation:none}.glab .deal.look.away .bob{animation:g-mkbob2 .32s ease-in-out 6 alternate}@keyframes g-mkbob2{to{transform:translateY(-.5cqw)}}
-/* the market behind the stall: porters with wheelbarrows, a woman with a basin, shoppers stopping to look */
-.glab .mklife{position:absolute;left:0;right:0;bottom:7cqw;height:12cqw;pointer-events:none;overflow:visible}
-.glab .mklife>span{position:absolute;bottom:0;left:0;display:block}
-.glab .mklife svg{width:100%;height:100%;display:block;overflow:visible}
-.glab .mklife .bob{display:block;width:100%;height:100%;animation:g-mkbob .4s ease-in-out infinite alternate}
-.glab .mklife .mwheel{transform-box:fill-box;transform-origin:center;animation:g-spin 1s linear infinite}
-.glab .mklife .wb{width:13cqw;height:10cqw}
-.glab .mklife .wb1{animation:g-mkr 30s linear -11s infinite}
-.glab .mklife .wb2{animation:g-mkl 36s linear -27s infinite}.glab .mklife .wb2 svg{transform:scaleX(-1)}
-.glab .mklife .bw{width:6cqw;height:11.5cqw;animation:g-mkl 26s linear -6s infinite}
-@keyframes g-mkr{from{transform:translateX(-16cqw)}to{transform:translateX(104cqw)}}
-@keyframes g-mkl{from{transform:translateX(104cqw)}to{transform:translateX(-16cqw)}}
-.glab .mklife .sh{width:5.6cqw;height:10cqw}
-.glab .mklife .lean{display:block;width:100%;height:100%;transform-origin:50% 100%}
-.glab .mklife .sh1{animation:g-sh1 22s linear -3s infinite}.glab .mklife .sh1 .lean{animation:g-shlean 22s linear -3s infinite}
-.glab .mklife .sh2{animation:g-sh2 27s linear -15s infinite}.glab .mklife .sh2 .lean{animation:g-shlean 27s linear -15s infinite}
-.glab .mklife .sh3{animation:g-sh3 25s linear -9s infinite}.glab .mklife .sh3 .lean{animation:g-shleanl 25s linear -9s infinite}
-@keyframes g-sh1{0%{transform:translateX(-8cqw)}30%,55%{transform:translateX(58cqw)}100%{transform:translateX(106cqw)}}
-@keyframes g-sh2{0%{transform:translateX(-8cqw)}38%,62%{transform:translateX(83cqw)}100%{transform:translateX(106cqw)}}
-@keyframes g-sh3{0%{transform:translateX(106cqw) scaleX(-1)}30%,56%{transform:translateX(70cqw) scaleX(-1)}100%{transform:translateX(-8cqw) scaleX(-1)}}
-@keyframes g-shlean{0%,32%{transform:none}36%,50%{transform:rotate(6deg)}53%,100%{transform:none}}
-@keyframes g-shleanl{0%,32%{transform:none}36%,52%{transform:rotate(6deg)}55%,100%{transform:none}}
-@media (prefers-reduced-motion:reduce){.glab .mklife *,.glab .mklife>span{animation:none!important}}
 /* Hawan Sallah, Sani 2026-10-23: the letter's banner is huge (it is drawn inside the rider, so it scales with the
    screen), the emir has his court about him, the letters on the row float */
 .glab .scr.durbar .rw{width:42cqw;height:45.4cqw;left:5.5cqw}   /* clear of the door now the flag is bigger */

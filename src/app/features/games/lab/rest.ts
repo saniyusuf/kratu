@@ -14,11 +14,14 @@ import { kasuwaScene } from './sc-kasuwa';
 import { suyaScene } from './sc-suya';
 import { gyadaScene } from './sc-gyada';
 import { shanuScene } from './sc-shanu';
+import { garkeScene } from './sc-garke';
+import { dillaliScene } from './sc-dillali';
 
 /** the drawn background of each reworked game, by game id (sc-*.ts, wired in as each is drawn) */
 const SCENE: Record<string, () => string> = {
   'j-karatu': kogiScene, 'j-jirgi': jirgiScene, 'j-allo': alloScene, 'j-marubuci': wasikaScene, 'j-rubutu': tukwaneScene, 'j-rubutu-say': buloScene,
-  'j-nemo': kasuwaScene, 'j-suya': suyaScene, 'j-gyada': gyadaScene, 'j-shanu': shanuScene,
+  'j-nemo': kasuwaScene, 'j-suya': suyaScene, 'j-gyada': gyadaScene, 'j-shanu': shanuScene, 'j-garke': garkeScene,
+  'j-dillali': dillaliScene,
 };
 export function restScene(gid: string): string | null { const f = SCENE[gid]; return f ? f() : null; }
 
