@@ -53,3 +53,41 @@
 @media (prefers-reduced-motion: reduce){
   .glab .gbg .kw4 *{animation:none!important;transition:none!important}
 }
+
+/* ---- Hanzarin kasuwa's stall, realism pass (Sani 2026-10-27): nothing floats. The goods' mat lies on a wooden
+   counter whose plank front runs down out of the picture (so nobody's feet show under it); the customer is a framed
+   photo nailed to a post that stands in front of the stall, the clock and the tally on a board under it; the speech
+   mark is a small drawn bubble, not an emoji. Lit from the upper left, like the square. ---- */
+.glab .scr.market2 .shop .mat2{position:relative;
+  background:repeating-linear-gradient(45deg,rgba(110,70,26,.28) 0 .32cqw,rgba(0,0,0,0) .32cqw 1.25cqw),repeating-linear-gradient(-45deg,rgba(255,238,196,.2) 0 .32cqw,rgba(0,0,0,0) .32cqw 1.25cqw),linear-gradient(160deg,#D8AC6C,#C49254 55%,#A97A3E)!important;
+  box-shadow:inset 0 0 0 .55cqw #8B5A2B,inset 0 0 0 .8cqw rgba(60,34,10,.35),0 .9cqw 0 #6B4422,0 1.4cqw 1.4cqw rgba(30,18,6,.45)!important}
+.glab .scr.market2 .shop .mat2::after{content:"";position:absolute;left:-1.6cqw;right:-1.6cqw;top:calc(100% + .6cqw);height:60cqh;pointer-events:none;
+  background:linear-gradient(rgba(30,16,4,.45),rgba(30,16,4,0) 2.2cqw),linear-gradient(90deg,rgba(255,240,210,.12),rgba(0,0,0,0) 30%,rgba(0,0,0,.22)),
+    repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 .3cqw,rgba(70,40,14,.14) .3cqw .4cqw,rgba(0,0,0,0) .4cqw 1.1cqw),
+    repeating-linear-gradient(90deg,#9A6A36 0 8.6cqw,#4E3016 8.6cqw 9cqw,#8E5F2E 9cqw 17.6cqw,#4E3016 17.6cqw 18cqw);
+  border-top:1.3cqw solid #7A4E26;box-shadow:inset 0 .3cqw 0 rgba(255,220,170,.35)}
+.glab .scr.market2 .shop .mat2::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,rgba(255,244,214,.16),rgba(0,0,0,0) 45%,rgba(40,20,4,.16))}
+
+/* the customer's post and frame */
+.glab .scr.market2 .shop .buyer{position:relative;z-index:0}
+.glab .scr.market2 .shop .buyer::before{content:"";position:absolute;left:calc(50% - 1cqw);width:2cqw;top:3cqw;height:100cqh;z-index:-1;border-radius:.3cqw .3cqw 0 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 .3cqw,rgba(60,30,8,.2) .3cqw .4cqw),linear-gradient(90deg,#B07C44,#8B5A2B 55%,#5A381A);box-shadow:.5cqw 0 .8cqw rgba(30,18,6,.3)}
+.glab .scr.market2 .buyer .cust{position:relative;animation:none!important;transform:none!important}
+.glab .scr.market2 .buyer .cust .person{width:14cqw!important;height:17.5cqw!important;border-radius:.6cqw!important;transform:none!important;overflow:hidden;
+  border:.8cqw solid;border-color:#B07C44 #6B4422 #5A381A #A06C38;background:#3E2408!important;
+  box-shadow:.8cqw 1cqw 1.2cqw rgba(30,18,6,.42),inset 0 0 0 .2cqw #4E3016!important}
+.glab .scr.market2 .buyer .cust .person img{transition:opacity .35s,transform .35s}
+.glab .scr.market2 .buyer .cust.come .person img{animation:kw4-pin .45s ease-out both}@keyframes kw4-pin{from{opacity:0;transform:scale(1.08)}}
+.glab .scr.market2 .buyer .cust.leave .person img{opacity:0;transform:translateX(3cqw)}
+/* a nail at the top of the frame */
+.glab .scr.market2 .buyer .cust::before{content:"";position:absolute;left:calc(50% - .5cqw);top:-.25cqw;width:1cqw;height:1cqw;border-radius:50%;z-index:1;background:radial-gradient(circle at 35% 35%,#E8E2D6,#7C746A 60%,#4A443E)}
+/* the speech bubble at the frame's upper right */
+.glab .scr.market2 .buyer .cust .ask{position:absolute;left:-3.2cqw;top:-1.6cqw;width:5.4cqw;height:3.8cqw;border-radius:50%;background:#FFFDF7!important;box-shadow:.3cqw .4cqw .6cqw rgba(30,18,6,.3);z-index:2}
+.glab .scr.market2 .buyer .cust .ask::before{content:"";position:absolute;left:1.2cqw;top:1.55cqw;width:.7cqw;height:.7cqw;border-radius:50%;background:#5A3A1E;box-shadow:1.2cqw 0 0 #5A3A1E,2.4cqw 0 0 #5A3A1E;font-size:0}
+.glab .scr.market2 .buyer .cust .ask::after{content:"";position:absolute;right:.6cqw;bottom:-.7cqw;border:.7cqw solid transparent;border-top-color:#FFFDF7;border-right-width:0;transform:skewX(-20deg)}
+.glab .scr.market2 .buyer .cust.sad .ask{background:#FFCDD2!important}.glab .scr.market2 .buyer .cust.sad .ask::after{border-top-color:#FFCDD2}
+/* the clock and the tally on a board nailed under the frame */
+.glab .scr.market2 .buyer .cust .pat{width:13cqw!important;height:1.5cqw;border:.3cqw solid #5A381A;background:#F3E6C4;box-shadow:.3cqw .4cqw .5cqw rgba(30,18,6,.3)}
+.glab .scr.market2 .buyer .sold{position:relative;margin-top:1cqw;padding:.5cqw 1.6cqw .5cqw 1cqw;border-radius:.5cqw;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 .5cqw,rgba(90,56,26,.12) .5cqw .6cqw),linear-gradient(#F5E9CB,#E2CFA2);box-shadow:inset 0 0 0 .25cqw #8B5A2B,.5cqw .6cqw .8cqw rgba(30,18,6,.35)}
+@media (prefers-reduced-motion: reduce){.glab .scr.market2 .buyer .cust .person img{animation:none!important;transition:none!important}}

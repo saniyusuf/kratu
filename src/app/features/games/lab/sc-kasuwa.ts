@@ -219,7 +219,7 @@ const barrow = (sacks) => '<g><path d="M4 -8 L16 -9 L22 -16 L2 -15 Z" fill="#6E7
   '<circle cx="19" cy="-3.6" r="3.6" fill="#1A1A1A"/><circle cx="19" cy="-3.6" r="1.4" fill="#8A8A8A"/></g>';
 
 export function kasuwaScene(): string {
-  const sky = '<rect width="320" height="200" fill="' + U('sky') + '"/><circle cx="262" cy="16" r="26" fill="' + U('sun') + '"/><circle cx="262" cy="16" r="7" fill="#FFF8DC"/>' +
+  const sky = '<rect width="320" height="200" fill="' + U('sky') + '"/><circle cx="50" cy="16" r="30" fill="' + U('sun') + '"/><circle cx="50" cy="16" r="7" fill="#FFF8DC"/>' +
     '<g class="x-cloud"><g fill="#fff" opacity=".85" transform="translate(70 30)"><ellipse rx="16" ry="3.6"/><ellipse cx="8" cy="-2" rx="9" ry="4.2"/><ellipse cx="-6" cy="-1.4" rx="7" ry="3.2"/></g></g>' +
     '<g class="x-cloud x-c2"><g fill="#fff" opacity=".7" transform="translate(196 22)"><ellipse rx="13" ry="3"/><ellipse cx="6" cy="-1.8" rx="7" ry="3.4"/></g></g>';
   // the town behind: red-earth houses, the minaret and its dome, trees
@@ -243,7 +243,9 @@ export function kasuwaScene(): string {
   const ground = '<path d="M0 80 H320 V200 H0 Z" fill="' + U('gr') + '"/><path d="M0 84 Q160 80 320 84 V88 Q160 84 0 88 Z" fill="#B98A50" opacity=".25"/>' +
     '<path d="M60 200 Q96 150 130 126 Q160 104 190 126 Q226 150 262 200 Z" fill="#F1DDB2" opacity=".3"/><ellipse cx="160" cy="150" rx="70" ry="30" fill="#F1DDB2" opacity=".18"/>' +
     '<g fill="#A57A44" opacity=".35"><ellipse cx="40" cy="120" rx="14" ry="1"/><ellipse cx="280" cy="128" rx="16" ry="1"/><ellipse cx="120" cy="150" rx="10" ry=".8"/><ellipse cx="210" cy="170" rx="14" ry="1"/><circle cx="96" cy="132" r=".8"/><circle cx="230" cy="114" r=".7"/><circle cx="150" cy="186" r=".9"/><circle cx="60" cy="176" r=".8"/></g>' +
-    '<path d="M100 196 Q112 186 130 184 M220 192 Q236 182 254 182" stroke="#A57A44" stroke-opacity=".3" stroke-width=".8" fill="none"/>';
+    '<path d="M100 196 Q112 186 130 184 M220 192 Q236 182 254 182" stroke="#A57A44" stroke-opacity=".3" stroke-width=".8" fill="none"/>' +
+    // sand ripples, and the near ground a little darker (Sani 2026-10-27, realism)
+    '<rect x="0" y="98" width="320" height="102" fill="url(#' + PF + '-rip)" opacity=".5"/><rect x="0" y="80" width="320" height="120" fill="' + U('near') + '"/>';
   const far = crowd(2, 316, 86.6, 10.4);
   // the mai kosai under her shade on the left: a seated woman frying, a tray of golden kosai, smoke rising
   const kosai = '<g><path d="M2 118 V94 M40 118 V94" stroke="#6B4A2E" stroke-width="1.3"/><path d="M-2 95 L4 89 H44 L40 95 Z" fill="#B9A06A"/><path d="M-2 95 L4 89 H44 L40 95 Z" fill="none" stroke="#8E7A4A" stroke-width=".4"/>' +
@@ -279,10 +281,11 @@ export function kasuwaScene(): string {
     person({ x: 220, y: 101, s: .6, kind: 'boy', child: true, sk: SKIN[4], robe: '#1F5FA8', robe2: '#E9E2CF', trim: '#fff', cap: 'hula', capc: '#fff', capc2: '#1F5FA8', cls: 'x-up x-hop' }) +
     goat(128, 196, .9, '#F2EDE4', '#5A3A22', false, 'x-gr') + goat(196, 194, .8, '#4A3A30', '#2A1E16', true) + chicken(156, 192, .9, '#B5652E', false, 'x-pk') + chicken(168, 196, .8, '#F2EDE4', true, 'x-pk x-pk2') + chicken(112, 112, .7, '#2A2A2A', false);
   return '<svg class="scene ' + PF + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
-    lg('sky', '#7EC3E8', '#B8E0F0', '#F6EBCF') + lg('gr', '#E4C795', '#D7B27A', '#C99E64') +
+    lg('sky', '#7EC3E8', '#B8E0F0', '#F6EBCF') + lg('gr', '#E4C795', '#D7B27A', '#C99E64') + lg('haze', 'rgba(232,240,246,0)', 'rgba(232,240,246,.36)', 'rgba(232,240,246,0)') + lg('near', 'rgba(120,80,40,0)', 'rgba(120,80,40,0)', 'rgba(110,70,32,.2)') +
+    '<pattern id="' + PF + '-rip" width="14" height="5" patternUnits="userSpaceOnUse"><path d="M0 3 Q3.5 1.6 7 3 T14 3" stroke="#B48A52" stroke-width=".35" fill="none" opacity=".6"/><path d="M2 4.6 Q5 3.6 8 4.6" stroke="#F2DDB4" stroke-width=".3" fill="none" opacity=".7"/><circle cx="11" cy="1" r=".22" fill="#9A7444"/></pattern>' +
     '' + '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#AEB7BC"/><rect width=".4" height="6" fill="#7E888E"/><rect x=".5" width=".5" height="6" fill="#C8D0D4"/></pattern>' + crowdDefs + headDef + clothesDef() + loadDefs() + '<radialGradient id="' + PF + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFF1B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient></defs>' +
-    sky + town + stalls + ground + far + mid + kosai + baro + right + seller + '</svg>';
+    sky + town + stalls + ground + '<rect x="0" y="36" width="320" height="62" fill="' + U('haze') + '"/>' + far + mid + kosai + baro + right + seller + '</svg>';
 }
 
 /* the parts, shared with Dillalin kasuwa's square (sc-dillali.ts): same people, animals and market things, same faces */
