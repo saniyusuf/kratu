@@ -59,7 +59,7 @@
    the yard behind Laila (feet on the ground, shadow to the lower right like the scene's sun). The picture stays as big as
    Sani asked (28cqw): it is nailed to the board's left end and hangs below the planks, so the board itself stays above
    the builders' heads on the right */
-.glab .scr.mud2>.sp.hs{display:block!important;position:absolute!important;left:26.5cqw;width:55cqw;top:9.4cqw;height:19.6cqw;margin:0!important;z-index:1!important;
+.glab .scr.mud2>.sp.hs{display:block!important;position:absolute!important;left:28.3cqw;width:54.2cqw;top:9.4cqw;height:19.6cqw;margin:0!important;z-index:1!important;
   border-radius:.5cqw;background:
     linear-gradient(98deg,rgba(255,240,210,.22),rgba(255,240,210,0) 42%,rgba(40,18,4,.25)),
     repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 5.9cqw,rgba(48,24,8,.6) 5.9cqw 6.1cqw),
@@ -72,13 +72,13 @@
   background:radial-gradient(closest-side,rgba(48,22,6,.45),rgba(48,22,6,0)) 1cqw 0/3.4cqw 100% no-repeat,radial-gradient(closest-side,rgba(48,22,6,.45),rgba(48,22,6,0)) calc(100% - 2.4cqw) 0/3.4cqw 100% no-repeat}
 .glab .scr.mud2 .sppic{position:absolute;left:1.2cqw;top:1.2cqw;width:28cqw!important;height:28cqw;margin:0!important;transform:rotate(-1deg)!important;border-radius:1.4cqw;z-index:2;
   box-shadow:0 0 0 .5cqw #6B4422,0 0 0 .75cqw #3E2408,.7cqw .9cqw 1cqw rgba(30,12,2,.5)!important}
-.glab .scr.mud2 .spslots{position:absolute;left:30.6cqw;width:23.6cqw;top:2.2cqw;justify-content:center;gap:1cqw;margin:0;z-index:2}
+.glab .scr.mud2 .spslots{position:absolute;left:30.2cqw;width:23.2cqw;top:2.2cqw;justify-content:center;gap:.6cqw;margin:0;z-index:2}
 .glab .scr.mud2 .spslots>span{width:7.2cqw;height:8.6cqw;font-size:5.4cqw;background:rgba(40,20,6,.25);border:.3cqw dashed rgba(255,240,214,.85);border-radius:.8cqw;color:#3B2008}
 .glab .scr.mud2 .spslots>span.on{background:linear-gradient(180deg,#F6E7C8,#E6CC9C)!important;border:.3cqw solid #5A3416!important;box-shadow:.4cqw .5cqw .6cqw rgba(30,12,2,.45)}
 .glab .scr.mud2 .spslots.wrongw>span{border-color:#E53935!important}
-.glab .scr.mud2 .hpct{position:absolute;left:30.6cqw;width:23.6cqw;top:12.4cqw;margin:0;z-index:2;font-size:4.4cqw;color:#FFF3DC;text-shadow:0 .2cqw .3cqw rgba(30,12,2,.6);opacity:.95}
-.glab .scr.mud2>.hrow{position:absolute;left:1cqw;bottom:14.6cqw;margin:0!important;display:block;z-index:1}
-.glab .scr.mud2 .site{width:32cqw!important;margin:0!important}
+.glab .scr.mud2 .hpct{position:absolute;left:30.2cqw;width:23.2cqw;top:12.4cqw;margin:0;z-index:2;font-size:4.4cqw;color:#FFF3DC;text-shadow:0 .2cqw .3cqw rgba(30,12,2,.6);opacity:.95}
+.glab .scr.mud2>.hrow{position:absolute;left:0;bottom:14.6cqw;margin:0!important;display:block;z-index:1}
+.glab .scr.mud2 .site{width:30cqw!important;margin:0!important}
 
 /* the keys (copied from .scr.marubg in rest.css), pulled in from the sides so the settings gear (bottom left) never covers a key */
 .glab .scr.mud2>.mkb{top:auto!important;bottom:2.4cqw!important;left:8cqw!important;right:8cqw!important;transform:none!important;display:flex!important;justify-content:space-between;
