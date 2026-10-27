@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Kwale-kwale (the canoes): a wide northern river at morning, like the Sokoto or the Hadejia.
  * The far bank: a village of round thatched huts and rumbu granaries, a red-earth wall, a minaret, dum palms, a neem,
@@ -53,9 +54,7 @@ function head(o, sk) {
   let back = '', front = '';
   const hc = o.hatc || '#F4EBD0', hc2 = o.hatc2 || '#C62828';
   if (o.hat === 'hijab') back = '<path d="M16 30 Q13 8 30 7.5 Q47 8 44 30 L50 60 Q30 68 10 60 Z" fill="' + hc + '"/><path d="M30 40 Q42 44 50 60" stroke="' + dk(hc, 0.18) + '" stroke-width="1.2" fill="none"/>';
-  if (o.hat === 'hula') front = '<path d="M19 19 Q18.6 5.5 30 5 Q41.4 5.5 41 19 Z" fill="' + hc + '"/><path d="M19 19 Q30 16 41 19" stroke="' + dk(hc, 0.2) + '" stroke-width="1.4" fill="none"/>' +
-    '<path d="M20.5 14 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4" stroke="' + hc2 + '" stroke-width="1.1" fill="none"/><path d="M33 6 Q38 8 40 15" stroke="#fff" stroke-width="1" opacity=".35" fill="none"/>';
-  if (o.hat === 'zanna') front = '<path d="M18.6 19.5 L19.6 6 Q30 2.6 40.4 6 L41.4 19.5 Z" fill="' + hc + '"/><path d="M19.6 6 Q24 12 21 19.5" stroke="' + dk(hc, 0.3) + '" stroke-width="1.2" fill="none"/><path d="M18.6 19.5 H41.4" stroke="' + dk(hc, 0.3) + '" stroke-width="1.3"/>';
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') front = arewaCap(o.hat, 30, 19, 11.3, hc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'turban') front = '<path d="M17 21 Q15.6 3 30 2.4 Q44.4 3 43 21 Q36 15 30 15.6 Q24 15 17 21 Z" fill="' + hc + '"/><path d="M18 13 Q30 5 42 13 M18 17.4 Q30 9.4 42 17.4" stroke="' + dk(hc, 0.16) + '" stroke-width="1.2" fill="none"/><path d="M41 19 Q47 30 43 44" stroke="' + hc + '" stroke-width="4" fill="none" stroke-linecap="round"/>';
   if (o.hat === 'kallabi') front = '<path d="M17 22 Q14 5 30 4 Q46 5 43 22 Q36 14.6 30 15.4 Q24 14.6 17 22 Z" fill="' + hc + '"/>' +
     '<path d="M22 8 Q14 -5 26 -3 Q30 -10 34.6 -3 Q46 -6 38 8 Z" fill="' + hc + '"/><path d="M26 -3 Q28.6 3 30 6.6 M34.6 -3 Q32 3 31 6.6" stroke="' + dk(hc, 0.3) + '" stroke-width="1" fill="none"/>' +

@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Kalangu, drawn (Sani 2026-10-25: "the same quality as Hawan Sallah, with dancers"). A village square in the late
  * afternoon: a compound wall with zanko horns and white relief, a baobab, neighbours sitting along the wall, bunting.
@@ -85,7 +86,7 @@ export function kalanguScene(): string {
 /* ---------------- people ---------------- */
 interface Fig {
   kind: 'man' | 'woman' | 'girl'; skin: number; robe: string; robe2: string; trim: string;
-  hat?: 'hula' | 'turban' | 'kallabi' | 'hijab'; hatc?: string; hatc2?: string;
+  hat?: 'hula' | 'zanna' | 'borno' | 'turban' | 'kallabi' | 'hijab'; hatc?: string; hatc2?: string; hatc3?: string; capside?: number;
   wrap?: string; wrap2?: string; shawl?: string;
   al?: string; ar?: string;              // arm paths (shoulder first) or a pose name
   hl?: string; hr?: string;              // what each hand holds (drawn inside the arm, so it moves with it)
@@ -110,7 +111,7 @@ function head(o: Fig, sk) {
   const girl = o.kind === 'girl';
   let back = '', front = '';
   if (o.hat === 'hijab') back = `<path d="M16 32 Q14 8 30 8 Q46 8 44 32 L48 52 Q30 58 12 52 Z" fill="${o.hatc}"/>`;
-  if (o.hat === 'hula') front = `<path d="M18.5 19 Q18 5 30 4 Q42 5 41.5 19 Z" fill="${o.hatc}"/><path d="M19.5 15 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l3 3 l3 -3 l2 2" stroke="${o.hatc2}" stroke-width="1.3" fill="none"/><path d="M18.5 19 H41.5" stroke="rgba(0,0,0,.2)" stroke-width="1.2"/>`;
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') front = arewaCap(o.hat, 30, 19, 11.6, o.hatc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'turban') front = `<path d="M17 20 Q16 4 30 3 Q44 4 43 20 Q36 14 30 15 Q24 14 17 20 Z" fill="${o.hatc}"/><path d="M18 12 Q30 5 42 12 M18 16 Q30 9 42 16" stroke="rgba(0,0,0,.14)" stroke-width="1.2" fill="none"/><path d="M19 18 Q14 30 18 40" stroke="${o.hatc}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   if (o.hat === 'kallabi') front = `<path d="M17 21 Q14 5 30 4 Q46 5 43 21 Q36 14 30 15 Q24 14 17 21 Z" fill="${o.hatc}"/>` +
     `<path d="M23 7 Q16 -6 27 -3 Q30 -10 34 -3 Q45 -7 37 7 Z" fill="${o.hatc}"/><path d="M27 -3 Q29 3 30 6 M34 -3 Q32 3 31 6" stroke="${o.hatc2}" stroke-width="1" fill="none"/>` +
@@ -167,7 +168,7 @@ export function dancers(): string {
   const fan = (x, y) => `<g transform="translate(${x} ${y})"><path d="M0 0 L-8 -14 Q0 -19 8 -14 Z" fill="#E8C35A"/><path d="M0 0 L-4 -16 M0 0 L0 -17 M0 0 L4 -16" stroke="#A8862E" stroke-width=".7"/><path d="M-8 -14 Q0 -19 8 -14" stroke="#C62828" stroke-width="1.4" fill="none"/></g>`;
   const D: [Fig, number][] = [
     [{ kind: 'woman', skin: 0, robe: '#FFB300', robe2: '#C77800', trim: '#C2185B', wrap: '#C2185B', wrap2: '#FFD54A', shawl: '#7B1FA2', hat: 'kallabi', hatc: '#C2185B', hatc2: '#FFD54A', al: 'up', ar: 'out', hl: hanky(10, 4, '#FFFFFF') }, 1],
-    [{ kind: 'man', skin: 1, robe: '#F4EBD0', robe2: '#B8A77E', trim: '#2E7D32', hat: 'hula', hatc: '#6A1B9A', hatc2: '#FFD54A', al: 'out', ar: 'up' }, 1],
+    [{ kind: 'man', skin: 1, robe: '#F4EBD0', robe2: '#B8A77E', trim: '#2E7D32', hat: 'zanna', hatc: '#7A1F2B', hatc2: '#E9C46A', al: 'out', ar: 'up' }, 1],
     [{ kind: 'girl', skin: 2, robe: '#00897B', robe2: '#004D40', trim: '#FFD54A', hat: 'hijab', hatc: '#FFE082', al: 'clap', ar: 'clap' }, .8],
     [{ kind: 'man', skin: 3, robe: '#1565C0', robe2: '#0D3C80', trim: '#FFD54A', hat: 'turban', hatc: '#FFFFFF', beard: true, al: 'hip', ar: 'high', hr: fan(42, 12) }, 1],
   ];
@@ -193,7 +194,7 @@ export function band(): string {
     al: 'M16 46 Q30 42 42 21|42,21', ar: 'M44 46 Q60 30 52 8|52,8',
     behind: '<g class="kl-horn" style="transform-origin:34px 30px"><path d="M33 31 L104 -62" stroke="url(#k4-steel)" stroke-width="3.2" stroke-linecap="round"/>' +
       '<path d="M100 -56 L114 -78 L120 -70 Z" fill="#E8C35A" stroke="#A8862E" stroke-width=".8"/><circle cx="66" cy="-12" r="2.2" fill="#E8C35A"/><path d="M58 -2 l10 -14" stroke="#C62828" stroke-width="2.6"/></g>' });
-  const ganga = figure({ kind: 'man', skin: 2, robe: '#F4EBD0', robe2: '#B8A77E', trim: '#1565C0', hat: 'hula', hatc: '#C62828', hatc2: '#FFFFFF',
+  const ganga = figure({ kind: 'man', skin: 2, robe: '#F4EBD0', robe2: '#B8A77E', trim: '#1565C0', hat: 'borno', hatc: '#F2E8CF', hatc2: '#A3242C', hatc3: '#1E5B3A',
     behind: '<path d="M18 44 L50 86" stroke="#6B4422" stroke-width="2.4"/>',
     al: 'M16 46 Q8 70 34 76|36,76', ar: 'M44 46 Q58 54 56 64|56,66',
     hl: '<path d="M36 76 L48 66" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>', hr: '<path d="M56 66 L52 78" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>',
@@ -201,7 +202,7 @@ export function band(): string {
       '<path d="M34 84 L60 100 M34 100 L60 84" stroke="#F1E2C0" stroke-width=".8"/><ellipse cx="47" cy="78" rx="13" ry="3.4" fill="#F1E2C0" stroke="#8B5A2B" stroke-width=".8"/>' +
       '<ellipse cx="47" cy="106" rx="13" ry="3" fill="#5E3A1C"/></g>' });
   return `<span class="kl-bm k">${kakaki}</span>` +
-    `<span class="kl-bm d1">${kal({ skin: 1, robe: '#1565C0', robe2: '#0D3C80', trim: '#FFD54A', hat: 'hula', hatc: '#FFD54A', hatc2: '#2E7D32' })}</span>` +
+    `<span class="kl-bm d1">${kal({ skin: 1, robe: '#1565C0', robe2: '#0D3C80', trim: '#FFD54A', hat: 'hula', hatc: '#F6F2E8', hatc2: '#2E5E3A' })}</span>` +
     `<span class="kl-bm d2">${kal({ skin: 3, robe: '#2E7D32', robe2: '#14501F', trim: '#FFFFFF', hat: 'turban', hatc: '#F4EBD0' })}</span>` +
     `<span class="kl-bm g">${ganga}</span>` +
     `<span class="kl-notes"><i>♪</i><i>♫</i><i>♪</i><i>♫</i></span>`;

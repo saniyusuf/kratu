@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Jirgin ruwa (the ferry): a river crossing point in the morning. The far bank is a busy market town at its landing:
  * zinc-roofed and mat-roofed stalls of tomatoes, peppers and grain, umbrellas, market folk, a mosque with its minaret,
@@ -54,9 +55,7 @@ function head(o, sk) {
   let back = '', front = '';
   const hc = o.hatc || '#F4EBD0', hc2 = o.hatc2 || '#C62828';
   if (o.hat === 'hijab') back = '<path d="M16 30 Q13 8 30 7.5 Q47 8 44 30 L50 60 Q30 68 10 60 Z" fill="' + hc + '"/><path d="M30 40 Q42 44 50 60" stroke="' + dk(hc, 0.18) + '" stroke-width="1.2" fill="none"/>';
-  if (o.hat === 'hula') front = '<path d="M19 19 Q18.6 5.5 30 5 Q41.4 5.5 41 19 Z" fill="' + hc + '"/><path d="M19 19 Q30 16 41 19" stroke="' + dk(hc, 0.2) + '" stroke-width="1.4" fill="none"/>' +
-    '<path d="M20.5 14 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4 l2.4 -2.4 l2.4 2.4" stroke="' + hc2 + '" stroke-width="1.1" fill="none"/><path d="M33 6 Q38 8 40 15" stroke="#fff" stroke-width="1" opacity=".35" fill="none"/>';
-  if (o.hat === 'zanna') front = '<path d="M18.6 19.5 L19.6 6 Q30 2.6 40.4 6 L41.4 19.5 Z" fill="' + hc + '"/><path d="M19.6 6 Q24 12 21 19.5" stroke="' + dk(hc, 0.3) + '" stroke-width="1.2" fill="none"/><path d="M18.6 19.5 H41.4" stroke="' + dk(hc, 0.3) + '" stroke-width="1.3"/>';
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') front = arewaCap(o.hat, 30, 19, 11.3, hc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'turban') front = '<path d="M17 21 Q15.6 3 30 2.4 Q44.4 3 43 21 Q36 15 30 15.6 Q24 15 17 21 Z" fill="' + hc + '"/><path d="M18 13 Q30 5 42 13 M18 17.4 Q30 9.4 42 17.4" stroke="' + dk(hc, 0.16) + '" stroke-width="1.2" fill="none"/><path d="M41 19 Q47 30 43 44" stroke="' + hc + '" stroke-width="4" fill="none" stroke-linecap="round"/>';
   if (o.hat === 'kallabi') front = '<path d="M17 22 Q14 5 30 4 Q46 5 43 22 Q36 14.6 30 15.4 Q24 14.6 17 22 Z" fill="' + hc + '"/>' +
     '<path d="M22 8 Q14 -5 26 -3 Q30 -10 34.6 -3 Q46 -6 38 8 Z" fill="' + hc + '"/><path d="M26 -3 Q28.6 3 30 6.6 M34.6 -3 Q32 3 31 6.6" stroke="' + dk(hc, 0.3) + '" stroke-width="1" fill="none"/>' +
@@ -240,7 +239,7 @@ export function jirgiScene(): string {
     '<g fill="#52833A"><ellipse cx="262" cy="74" rx="14" ry="6"/><ellipse cx="290" cy="63" rx="17" ry="7"/><ellipse cx="314" cy="72" rx="12" ry="6"/></g>' +
     '<g fill="#6A9C46"><ellipse cx="286" cy="59" rx="9" ry="3.6"/><ellipse cx="258" cy="71" rx="7" ry="2.8"/><ellipse cx="308" cy="66" rx="6" ry="2.6"/></g></g>' +
     // the tea seller behind his little table: kettle, glasses, the charcoal stove
-    person(304, 166, 25, { kind: 'man', skin: 1, robe: '#F4EBD0', trim: '#8A6A3E', hat: 'zanna', hatc: '#8E2A2A', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', beard: 'w' }) +
+    person(304, 166, 25, { kind: 'man', skin: 1, robe: '#F4EBD0', trim: '#8A6A3E', hat: 'borno', hatc: '#7A1F2B', hatc2: '#F2C230', hatc3: '#1F2E5A', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', beard: 'w' }) +
     '<g><path d="M292 160 h20 v1.6 h-20 Z" fill="#8A5A2E"/><path d="M294 161.6 v7 M310 161.6 v7" stroke="#6B4422" stroke-width="1.1"/>' +
     '<g fill="#F2E6B8" opacity=".9"><path d="M296 160 h1.6 l-.2 -2.6 h-1.2 Z M299 160 h1.6 l-.2 -2.6 h-1.2 Z"/></g><g fill="#B5541E"><rect x="296.2" y="158.6" width="1.2" height="1.4"/><rect x="299.2" y="158.6" width="1.2" height="1.4"/></g>' +
     '<path d="M303 160 Q302 155 305.6 155 Q309 155 308.4 160 Z" fill="#2E7D32"/><path d="M308.4 157 l2.6 -2" stroke="#2E7D32" stroke-width=".9"/><path d="M304.4 155 q1.2 -1.4 2.4 0" stroke="#1F5A22" stroke-width=".7" fill="none"/></g>' +
@@ -250,7 +249,7 @@ export function jirgiScene(): string {
     '<path d="M225 166.8 Q226 174 219.4 173" stroke="#A8864A" stroke-width=".5" fill="none"/>' +
     person(230, 180, 24, { kind: 'boy', skin: 3, robe: '#2E7D32', trou: '#E8DFC8', hat: 'hula', hatc: '#F4EBD0', hatc2: '#2E7D32', al: 'fwd', ar: 'down', arc: 'x-wv', cls: 'p1' }) +
     person(247, 179, 34, { kind: 'woman', skin: 0, robe: '#C2185B', wrap: '#FFB300', wrap2: '#6A1B9A', hat: 'kallabi', hatc: '#FFB300', hatc2: '#C2185B', al: 'load', ar: 'down', arc: 'x-wv', load: headBasin('#1E88E5', ['#E53935', '#C62828', '#43A047', '#FB8C00']), cls: 'p2' }) +
-    person(272, 177, 34, { kind: 'man', skin: 5, robe: '#E8E1CF', robe2: '#D4CBB4', trim: '#3E6E8E', hat: 'hula', hatc: '#3E6E8E', hatc2: '#F4EBD0', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', cls: 'p3' }) +
+    person(272, 177, 34, { kind: 'man', skin: 5, robe: '#E8E1CF', robe2: '#D4CBB4', trim: '#3E6E8E', hat: 'zanna', hatc: '#1F2E5A', hatc2: '#E9E2CF', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', cls: 'p3' }) +
     bicycle(283, 172, 5.2) +
     person(259, 188, 32, { kind: 'man', skin: 2, robe: '#4E6E3A', trou: '#D8CFB8', hat: 'turban', hatc: '#F4EBD0', al: 'down', ar: 'load', alc: 'x-wv', front: sack, cls: 'p4' });
   // the near-left sand under the game's jetty
@@ -291,10 +290,10 @@ const seam = (t) => { let s = ''; for (let x = XB + 4; x <= XS; x += 6) s += (s 
 /** the people in the boat: who waits on the jetty (k) and the same person sitting in the boat once they board */
 const WAIT = [
   { kind: 'woman', skin: 1, robe: '#8E24AA', wrap: '#4A148C', wrap2: '#FFD54A', hat: 'hijab', hatc: '#6A1B9A' },
-  { kind: 'man', skin: 0, robe: '#00838F', trou: '#E8DFC8', trim: '#F4EBD0', hat: 'hula', hatc: '#E9D9A6', hatc2: '#00838F' },
+  { kind: 'man', skin: 0, robe: '#00838F', trou: '#E8DFC8', trim: '#F4EBD0', hat: 'hula', hatc: '#F6F2E8', hatc2: '#7A1F2B' },
   { kind: 'woman', skin: 2, robe: '#F57C00', wrap: '#2E7D32', wrap2: '#FFF3C4', hat: 'kallabi', hatc: '#EF6C00', hatc2: '#2E7D32' },
   { kind: 'man', skin: 3, robe: '#F4EBD0', robe2: '#D9CBA6', trim: '#8A6A3E', hat: 'turban', hatc: '#FFFFFF', beard: 'd' },
-  { kind: 'man', skin: 5, robe: '#455A64', trou: '#CFD8DC', trim: '#F4EBD0', hat: 'zanna', hatc: '#B71C1C' },
+  { kind: 'man', skin: 5, robe: '#455A64', trou: '#CFD8DC', trim: '#F4EBD0', hat: 'zanna', hatc: '#7A1F2B', hatc2: '#E9C46A' },
 ];
 /* a sad face that shows only on .x-sad: brows that slope down and a tear on each cheek */
 const SADFACE = '<g class="x-sadf" opacity="0"><path d="M23 20 q2.6 -.4 4.8 1.4 M37 20 q-2.6 -.4 -4.8 1.4" stroke="#1A0E06" stroke-width="1" fill="none" stroke-linecap="round"/>' +
@@ -313,7 +312,7 @@ function boatBody(o) {
     '<g stroke="#6B4422" stroke-width="3.2" stroke-linecap="round"><path d="M104 70 V30 M212 76 V24 M300 78 V26"/></g>' +
     '<path d="' + inner() + '" fill="#4A2E18"/><path d="' + inner(true) + '" stroke="#7A4A26" stroke-width="2" fill="none"/>';
   if (o.crowd) s += [[132, 1, '#C62828'], [168, 3, '#1E88E5'], [196, 0, '#F4EBD0'], [236, 2, '#2E7D32'], [266, 4, '#FFB300']].map(([x, k, c], i) =>
-    person(x, gun(x) + 34, 68, { kind: i % 2 ? 'man' : 'woman', skin: k, robe: c, hat: i % 2 ? 'hula' : 'hijab', hatc: i % 2 ? '#F4EBD0' : c, wrap: '#2F6B9A' })).join('');
+    person(x, gun(x) + 34, 68, { kind: i % 2 ? 'man' : 'woman', skin: k, robe: c, hat: i % 2 ? (i === 1 ? 'borno' : 'hula') : 'hijab', hatc: i % 2 ? '#F4EBD0' : c, wrap: '#2F6B9A' })).join('');
   if (o.pax != null) s += '<g class="eb-pax">' + person(118, gun(118) + 34, 68, Object.assign(waitO(o.pax), { al: 'down', ar: 'down', arc: 'x-wv' })) + '</g>';
   s += '<g class="eb-drv">' + person(322, gun(322) + 30, 64, { kind: 'man', skin: 4, robe: '#5D6B7A', trou: '#5D6B7A', hat: 'turban', hatc: '#EDE6D6', ar: 'fwd', al: 'down', beard: 'd' }) + '</g>';
   // the hull: painted planks, tarred below, a dark rail along the top, the transom at the stern

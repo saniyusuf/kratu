@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Ginin bulo, drawn (Sani 2026-10-25). Magina at work on a building site in a Hausa village, savanna and low hills
  * behind. Left: a neem tree with water pots in its shade and a donkey. Behind the game's own mud house and Laila:
@@ -48,8 +49,7 @@ function head(sk, o) {
   if (o.hat === 'kallabi') front = `<path d="M-5.4 -.4 Q-6 -6.8 0 -6.8 Q6 -6.8 5.4 -.4 Q0 -4.2 -5.4 -.4 Z" fill="${hc}"/>` +
     `<path d="M-1.6 -6.2 Q-6.2 -11 -1.4 -9.8 Q0 -12.8 1.6 -9.8 Q6.4 -10.8 2 -6.2 Z" fill="${hc}"/><path d="M-1.4 -9.8 Q-.6 -8 -.4 -6.6 M1.6 -9.8 Q.8 -8 .4 -6.6" stroke="${h2}" stroke-width=".45" fill="none"/>` +
     `<path d="M-5.1 -2.2 Q0 -5.6 5.1 -2.2" stroke="${h2}" stroke-width=".7" fill="none"/><path d="M-4 -4.6 Q0 -6.4 4 -4.6" stroke="rgba(0,0,0,.18)" stroke-width=".4" fill="none"/>`;
-  if (o.hat === 'hula') front = `<path d="M-4.9 -1.8 Q-5 -7.4 0 -7.4 Q5 -7.4 4.9 -1.8 Z" fill="${hc}"/>` +
-    `<path d="M-4.5 -3.6 l1.1 -1.2 l1.1 1.2 l1.1 -1.2 l1.1 1.2 l1.1 -1.2 l1.1 1.2 l1.1 -1.2 l.8 .9" stroke="${h2}" stroke-width=".5" fill="none"/><path d="M-4.9 -1.8 H4.9" stroke="rgba(0,0,0,.25)" stroke-width=".5"/>`;
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') front = arewaCap(o.hat, 0, -1.8, 5, hc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'hair') front = `<path d="M-4.9 -1.4 Q-5.2 -5.8 0 -5.8 Q5.2 -5.8 4.9 -1.4 Q2.4 -3.8 0 -3.6 Q-2.4 -3.8 -4.9 -1.4 Z" fill="#1E120A"/>`;
   return back +
     `<circle cx="-4.9" cy=".4" r="1.1" fill="${sk}"/><circle cx="4.9" cy=".4" r="1.1" fill="${sk}"/>` +
@@ -221,7 +221,7 @@ const mudFront = `<path d="M-29.4 .4 Q-20 -4.6 -10 -3.4 Q0 -2.4 10 -3.6 Q20 -4.6
   `<g fill="#9A6440"><circle cx="-21" cy="-1.6" r=".8"/><circle cx="-17" cy="-2.8" r=".5"/><circle cx="7" cy="-2.6" r=".7"/><circle cx="11" cy="-3.4" r=".5"/></g>`;
 
 export function buloScene(): string {
-  const treaderA = person({ kind: 'work', skin: 1, robe: '#E8DCC0', trim: '#1565C0', pants: '#5A6E7A', legs: '#6E4428', hat: 'hula', hatc: '#B23A2A', hatc2: '#F4EBD0', mud: 1,
+  const treaderA = person({ kind: 'work', skin: 1, robe: '#E8DCC0', trim: '#1565C0', pants: '#5A6E7A', legs: '#6E4428', hat: 'zanna', hatc: '#7A1F2B', hatc2: '#F4EBD0', mud: 1,
     cls: 'cheerup ta', up: 1, hh: 1, sleeve: 'short', al: [-12, -36, -11, -26], ar: [12, -36, 11, -26] });
   const treaderB = person({ kind: 'work', skin: 3, robe: '#3F7A5A', trim: '#F2C14E', pants: '#8A6A4A', legs: '#6E4428', hat: 'hair', mud: 1,
     cls: 'cheerup tb', up: 1, sleeve: 'short', al: [-12, -36, -10.4, -25.4], ar: [13, -38, 12.6, -28] });
@@ -231,7 +231,7 @@ export function buloScene(): string {
     al: [-12, -54, -6.6, -60.4], ar: [12, -54, 6.6, -60.4] });
   const topman = person({ kind: 'work', skin: 2, robe: '#F4EBD0', trim: '#2E7D32', pants: '#6A5A8A', hat: 'hula', hatc: '#2E7D32', hatc2: '#FFD54A',
     cls: 'cheerup tm', up: 1, sleeve: 'short', al: [-12, -36, -12, -28], ar: [14, -40, 14, -52] });
-  const moulder = person({ pose: 'kneel', kind: 'work', skin: 4, robe: '#2F6B9A', trim: '#FFE08A', pants: '#7A6A52', hat: 'hula', hatc: '#F4EBD0', hatc2: '#B23A2A', beard: 1,
+  const moulder = person({ pose: 'kneel', kind: 'work', skin: 4, robe: '#2F6B9A', trim: '#FFE08A', pants: '#7A6A52', hat: 'borno', hatc: '#F2E8CF', hatc2: '#B23A2A', hatc3: '#1E5B3A', beard: 1,
     cls: 'cheerup mo', up: 1, sleeve: 'short',
     front: `<path d="M-11 -2 h22 v4 h-22 Z" fill="#8A5A30"/><path d="M-10 -2 h9.4 v3.2 h-9.4 Z M1 -2 h9 v3.2 h-9 Z" fill="#7A4E30"/><path d="M-11 -2 h22" stroke="#C9965A" stroke-width=".6"/><path d="M-12 -.4 h-3 M12 -.4 h3" stroke="#8A5A30" stroke-width="1.2" stroke-linecap="round"/>`,
     al: [-12, -18, -6, -3], ar: [12, -18, 6, -3] });
