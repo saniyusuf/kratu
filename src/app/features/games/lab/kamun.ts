@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Kamun kifi at Argungu (Sani 2026-10-25): the river on festival day. The far bank is crowded under bunting and
  * canopies, fishermen stand waist-deep with their hand nets and calabash floats, and one fisherman stands close by in
@@ -209,8 +210,7 @@ export function fisherman(): string {
         '<circle cx="59.1" cy="18.5" r=".85" fill="#120A04"/><circle cx="64.9" cy="18.5" r=".85" fill="#120A04"/><circle cx="59.4" cy="18.2" r=".25" fill="#fff"/><circle cx="65.2" cy="18.2" r=".25" fill="#fff"/>' +
         '<path d="M57 16.2 Q58.9 15.2 60.6 16 M63.4 16 Q65.1 15.2 67 16.2" stroke="#120A04" stroke-width=".55" fill="none" stroke-linecap="round"/>' +
         '<path d="M62 19 Q61 21.6 61.2 22 Q62 22.4 62.9 22" stroke="#3E2410" stroke-width=".5" fill="none"/>' +
-        '<path d="M54.2 13.6 Q54.2 4.4 62 4.2 Q69.8 4.4 69.8 13.6 Z" fill="#F4EFE4"/><path d="M54.2 13.4 H69.8" stroke="#D9CFB8" stroke-width="1.2"/>' +
-        '<path d="M55 11 H69 M55.8 8.2 H68.2" stroke="#2E7D32" stroke-width=".7" stroke-dasharray="1.2 .8"/><path d="M57.4 6 H66.6" stroke="#C62828" stroke-width=".6" stroke-dasharray="1 .8"/></g>' +
+        arewaCap('hula', 62, 13.4, 7.9, '#F4EFE4', '#2E7D32') + '</g>' +
     '</g>' +
     '<g class="homa">' +
       '<path d="M54 38 Q46 46 42 52 M70 38 Q60 50 48 56" stroke="' + SK + '" stroke-width="5" fill="none" stroke-linecap="round"/>' +

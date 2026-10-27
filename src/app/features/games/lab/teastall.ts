@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Mai shayi by the roadside in the evening (Sani 2026-10-23, reworked 2026-10-25: a stand by the road, not a shop).
  * The tea seller stands behind his table under a bulb on a pole. Most of the time he pulls tea, pouring it in a long
@@ -31,10 +32,10 @@ const face = (x, y, r, sk) => `<ellipse cx="${x - r * .97}" cy="${y + r * .08}" 
   `<path d="M${x + r * .02} ${y - r * .02} Q${x - r * .04} ${y + r * .26} ${x - r * .14} ${y + r * .3} Q${x} ${y + r * .38} ${x + r * .14} ${y + r * .3}" stroke="#000" stroke-opacity=".35" stroke-width="${r * .06}" fill="none" stroke-linecap="round"/>` +
   `<path class="sm-happy" d="M${x - 5} ${y + 6} Q${x} ${y + 10} ${x + 5} ${y + 6}" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +
   `<path class="sm-sad" d="M${x - 5} ${y + 9} Q${x} ${y + 5} ${x + 5} ${y + 9}" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
-/* caps: the white hula, the embroidered red zanna */
-const hula = (x, y, r) => `<path d="M${x - r * .8} ${y - r * .45} Q${x - r * .75} ${y - r * 1.4} ${x} ${y - r * 1.4} Q${x + r * .75} ${y - r * 1.4} ${x + r * .8} ${y - r * .45} Z" fill="#F4EBD0"/><path d="M${x - r * .7} ${y - r * .8} h${r * 1.4}" stroke="#C9A15E" stroke-width="1.1"/>`;
-const zanna = (x, y, r) => `<path d="M${x - r * .85} ${y - r * .4} Q${x - r * .8} ${y - r * 1.45} ${x} ${y - r * 1.45} Q${x + r * .8} ${y - r * 1.45} ${x + r * .85} ${y - r * .4} Z" fill="#9E1C1C"/>` +
-  `<path d="M${x - r * .8} ${y - r * .75} l${r * .2} -${r * .3} l${r * .2} ${r * .3} l${r * .2} -${r * .3} l${r * .2} ${r * .3} l${r * .2} -${r * .3} l${r * .2} ${r * .3} l${r * .2} -${r * .3} l${r * .2} ${r * .3}" stroke="#1A1A1A" stroke-width="1.2" fill="none"/>`;
+/* caps (capsArewa.ts): the embroidered cream hula, the folded maroon zanna, the tall Borno cap */
+const hula = (x, y, r) => arewaCap('hula', x, y - r * .42, r * .82, '#F4EBD0', '#7A1F2B');
+const zanna = (x, y, r) => arewaCap('zanna', x, y - r * .4, r * .86, '#7A1F2B', '#E9C46A');
+const borno = (x, y, r) => arewaCap('borno', x, y - r * .42, r * .84, '#1F2E5A', '#E9C46A', '#B23A2A');
 
 /* the stand: the bulb on its pole, the man at the end of the table, the seller, his table, stove, kettle and goods */
 export function teaStall(): string {
@@ -121,7 +122,7 @@ export function teaStall(): string {
 }
 
 /* one man sitting on the bench, seen from the front, without his arms (the bench draws them pose by pose) */
-function sitter(x: number, o: { cap: 'hula' | 'zanna'; robe: string; skin: number; beard?: boolean }): string {
+function sitter(x: number, o: { cap: 'hula' | 'zanna' | 'borno'; robe: string; skin: number; beard?: boolean }): string {
   const sk = SK[o.skin];
   return `<path d="M${x - 14} 184 L${x - 12} 236 M${x + 12} 184 L${x + 12} 236" stroke="${o.robe}" stroke-width="11" stroke-linecap="round"/>` +
     `<path d="M${x - 10} 186 L${x - 9} 236 M${x + 15} 186 L${x + 15} 236" stroke="#000" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>` +
@@ -132,7 +133,7 @@ function sitter(x: number, o: { cap: 'hula' | 'zanna'; robe: string; skin: numbe
     `<path d="M${x - 22} 184 L${x + 22} 184 L${x + 21} 188 L${x - 21} 188 Z" fill="#000" opacity=".16"/>` +
     `<rect x="${x - 5}" y="104" width="10" height="10" fill="${sk}"/>` + face(x, 96, 13, sk) +
     (o.beard ? `<path d="M${x - 9} 101 Q${x} 116 ${x + 9} 101 Q${x} 108 ${x - 9} 101 Z" fill="#E8E2D6"/>` : '') +
-    (o.cap === 'zanna' ? zanna(x, 96, 13) : hula(x, 96, 13));
+    (o.cap === 'zanna' ? zanna(x, 96, 13) : o.cap === 'borno' ? borno(x, 96, 13) : hula(x, 96, 13));
 }
 
 /* the bench: three men with their tea; a cup is passed along from the first to the last, who drinks it */
@@ -151,7 +152,7 @@ export function umbrellaBench(): string {
     `<g class="a-reach">${arm(A + 16, 124, A + 28, 136, 106, 149, ra, ka)}</g>` +
     `<g class="a-rest">${arm(A + 16, 124, A + 24, 150, A + 10, 164, ra, ka)}</g></g>` +
     // the second man, the elder in the zanna: takes the cup from the left and passes it on to the right
-    `<g class="sitter">` + sitter(B, { cap: 'zanna', robe: '#8D6E63', skin: 3, beard: true }) +
+    `<g class="sitter">` + sitter(B, { cap: 'borno', robe: '#8D6E63', skin: 3, beard: true }) +
     `<g class="b-lreach">${arm(B - 16, 124, B - 28, 136, 116, 149, rb, kb)}</g>` +
     `<g class="b-lhold">${arm(B - 16, 124, B - 22, 150, B - 4, 156, rb, kb)}${frothy(B - 2, 148)}</g>` +
     `<g class="b-lrest">${arm(B - 16, 124, B - 24, 150, B - 10, 164, rb, kb)}</g>` +
@@ -250,7 +251,7 @@ export function waiter(): string {
     `<ellipse cx="59" cy="35.4" rx="15" ry="3" fill="#B0BEC5"/><ellipse cx="59" cy="34.6" rx="13" ry="2" fill="#CFD8DC"/>` +
     `<rect x="31" y="40" width="8" height="8" fill="${sk}"/><circle cx="35" cy="32" r="11" fill="${sk}"/><circle cx="31" cy="31" r="1.4" fill="#1A0E06"/><circle cx="39" cy="31" r="1.4" fill="#1A0E06"/>` +
     `<path d="M30 37.6 Q35 40.4 40 37.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M26 36 Q35 46 44 36 Q40 44 35 44 Q30 44 26 36 Z" fill="#2A1A10" opacity=".85"/>` +
-    `<path d="M25 28 Q25 18 35 18 Q45 18 45 28 Z" fill="#F4EBD0"/><path d="M26 24 h18" stroke="#C9A15E" stroke-width="1"/></svg>`;
+    arewaCap('hula', 35, 27.6, 10.2, '#F4EBD0', '#2E5E3A') + `</svg>`;
 }
 
 /* the tea seller's pleasure: two quick taps of the spoon on the cup */
