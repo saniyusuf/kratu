@@ -69,12 +69,13 @@ function head(o, sk) {
   const ld = o.load ? '<g transform="translate(30 4) scale(1.4)">' + o.load + '</g>' : '';
   return '<g class="x-head" style="transform-origin:30px 37px">' + back +
     '<path d="M26 32 h8 v10 h-8 Z" fill="' + dk(sk, 0.1) + '"/>' +
-    '<circle cx="19.3" cy="26" r="2.3" fill="' + sk + '"/><circle cx="40.7" cy="26" r="2.3" fill="' + sk + '"/>' +
-    '<circle cx="30" cy="' + cy + '" r="10.8" fill="' + sk + '"/><circle cx="30" cy="' + cy + '" r="10.8" fill="' + u('sh') + '"/>' +
-    '<g fill="#1A0E06"><ellipse cx="25.8" cy="24.2" rx="1.35" ry="1.7"/><ellipse cx="34.2" cy="24.2" rx="1.35" ry="1.7"/></g><g fill="#fff"><circle cx="26.2" cy="23.5" r=".45"/><circle cx="34.6" cy="23.5" r=".45"/></g>' +
-    '<path d="M23.4 20.8 q2.4 -1.3 4.6 -.1 M32 20.7 q2.2 -1.2 4.6 .1" stroke="#1A0E06" stroke-width=".9" fill="none" stroke-linecap="round"/>' +
-    '<path d="M30.2 25.4 q1.8 2.6 -.2 3.3" stroke="' + dk(sk, 0.4) + '" stroke-width=".9" fill="none" stroke-linecap="round"/>' +
-    '<g fill="' + lt(sk, 0.3) + '" opacity=".35"><ellipse cx="23.6" cy="28.4" rx="2" ry="1.2"/><ellipse cx="36.4" cy="28.4" rx="2" ry="1.2"/></g>' +
+    '<path d="M19.6 23.6 q-2.6 .2 -2.2 2.8 q.4 2.4 2.6 2 Z M40.4 23.6 q2.6 .2 2.2 2.8 q-.4 2.4 -2.6 2 Z" fill="' + dk(sk, 0.08) + '"/>' +
+    '<path d="M30 ' + (cy - 11.4) + ' C36.6 ' + (cy - 11.4) + ' 40.8 ' + (cy - 6.2) + ' 40.6 ' + cy + ' C40.4 ' + (cy + 6.4) + ' 36.4 ' + (cy + 11.8) + ' 30 ' + (cy + 11.8) + ' C23.6 ' + (cy + 11.8) + ' 19.6 ' + (cy + 6.4) + ' 19.4 ' + cy + ' C19.2 ' + (cy - 6.2) + ' 23.4 ' + (cy - 11.4) + ' 30 ' + (cy - 11.4) + ' Z" fill="' + sk + '"/>' +
+    '<path d="M36.6 15.6 Q41.4 20 40.4 27.4 Q39 34.4 31.4 36.6 Q37 32 37.6 25.6 Q38 20 36.6 15.6 Z" fill="' + dk(sk, 0.28) + '" opacity=".7"/>' +
+    '<path d="M23 18.6 q3.8 -3.6 9 -3 q-5 .8 -7.6 4 Z M21.8 27 q1.6 -1.2 3.2 0 q-1.6 1.6 -3.2 0 Z" fill="' + lt(sk, 0.4) + '" opacity=".45"/>' +
+    '<path d="M24.3 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z M32.7 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z" fill="#1A0E06"/><path d="M25.9 23.3 h.7 v.7 h-.7 Z M34.3 23.3 h.7 v.7 h-.7 Z" fill="#fff" opacity=".85"/>' +
+    '<path d="M23.2 21 q2.4 -1.4 4.8 -.2 M32 20.8 q2.4 -1.2 4.8 .2" stroke="#1A0E06" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+    '<path d="M29.8 23.4 q.4 2.4 .8 3.4 M27.4 27.6 q1.2 1.2 2.6 .5 q1.4 .7 2.6 -.5" stroke="' + dk(sk, 0.45) + '" stroke-width=".85" fill="none" stroke-linecap="round"/>' +
     '<path class="x-ms" d="M26.2 30.4 Q30 33.8 33.8 30.4" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
     '<path class="x-mf" d="M26.6 32.6 Q30 30 33.4 32.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0"/>' +
     (o.beard ? '<path d="M21.4 28 Q22 37.6 30 38.4 Q38 37.6 38.6 28 Q36 33.4 30 33.4 Q24 33.4 21.4 28 Z" fill="' + (o.beard === 'w' ? '#E8E4DC' : '#24160C') + '"/>' : '') +
@@ -197,14 +198,16 @@ const bicycle = (x, y, r) => { const L = r * 3.1, rx = x + L;
     '<path d="M' + f1(rx - r * 0.6) + ' ' + f1(y - r * 1.1) + ' Q' + f1(rx - r * 0.7) + ' ' + f1(y - r * 2.4) + ' ' + f1(rx + r * 0.3) + ' ' + f1(y - r * 2.5) + ' Q' + f1(rx + r * 1.2) + ' ' + f1(y - r * 2.3) + ' ' + f1(rx + r * 1.1) + ' ' + f1(y - r * 1.1) + ' Z" fill="#E6D6A8"/>' +
     '<path d="M' + f1(rx - r * 0.5) + ' ' + f1(y - r * 1.8) + ' Q' + f1(rx + r * 0.3) + ' ' + f1(y - r * 2) + ' ' + f1(rx + r * 1.1) + ' ' + f1(y - r * 1.7) + '" stroke="#B8A26E" stroke-width=".4" fill="none"/>' +
     '<circle cx="' + f1(bx) + '" cy="' + by + '" r=".9" fill="#555"/></g>'; };
-/** a goat facing left, feet on y */
-const goat = (x, y, s, c = '#F2EEE6', c2 = '#5A3A22') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-goat">' +
-  '<path d="M2 -6 v6 M4.4 -6 v6 M11 -6 v6 M13.4 -6 v6" stroke="' + dk(c, 0.35) + '" stroke-width="1.2" stroke-linecap="round"/>' +
-  '<path d="M1 -9 Q1 -13 6 -13 L13 -13 Q16.6 -13 16 -9 Q15.4 -5.6 12 -5.6 L4 -5.6 Q1 -5.6 1 -9 Z" fill="' + c + '"/><path d="M8 -13 Q12 -12.4 13 -10 Q11 -8 8 -9 Z" fill="' + c2 + '"/>' +
-  '<path d="M15.6 -11.6 l2 -2.4" stroke="' + c + '" stroke-width="1.1" stroke-linecap="round"/>' +
-  '<path d="M2.4 -11 Q0 -15 -2 -16.6 Q-4.4 -17 -4.6 -15 Q-4 -13 -1 -11 Z" fill="' + c + '"/><path d="M-4.6 -15.6 L-4 -12.6" stroke="' + c2 + '" stroke-width=".8"/>' +
-  '<path d="M-1.6 -16.6 Q-1 -20 1.6 -20.4" stroke="#8A7A62" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M-.6 -16 l3 1.2 l-2.6 .8 Z" fill="' + dk(c, 0.2) + '"/>' +
-  '<circle cx="-2.6" cy="-15.8" r=".45" fill="#1A0E06"/><path d="M-4.4 -14.6 q-.2 1.8 .4 2.6" stroke="' + dk(c, 0.3) + '" stroke-width=".5" fill="none"/></g></g>';
+/** a long-legged Sahel goat facing left, feet on y: drooping ears, a beard, horns swept back, a patch on its side */
+const goat = (x, y, s, c = '#F2EEE6', c2 = '#5A3A22') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="8" cy=".3" rx="10" ry="1.1" fill="rgba(40,24,10,.3)"/><g class="x-goat">' +
+  '<path d="M3.6 -7 L3.4 0 h1 L4.9 -7 Z M11.8 -7 L12.3 0 h1 L13.5 -7 Z" fill="' + dk(c, 0.38) + '"/>' +
+  '<path d="M2 -7.6 Q1 -10.4 0 -12.4 L-2.6 -15.6 Q-4.6 -15 -5 -15.8 Q-5.4 -17.2 -4.6 -18 L-2.4 -19.6 Q-.8 -20.2 .2 -19 Q1.4 -16 3.4 -13.6 Q8 -13.8 13 -13.4 Q15.6 -13.2 16 -11 Q16.2 -8 14.6 -7 Q8 -6 2 -7.6 Z" fill="' + c + '"/>' +
+  '<path d="M7 -13.6 Q11 -13.2 12 -10.2 Q10 -8.2 7 -9.2 Z" fill="' + c2 + '"/><path d="M2 -7.6 Q8 -6 14.6 -7 Q15.6 -8.6 15.8 -10 Q10 -8.4 3 -9.6 Z M-2.6 -15.6 L0 -12.4 Q-1.4 -13.4 -2.6 -15.6 Z" fill="#1a0e06" opacity=".18"/>' +
+  '<path d="M2 -8.4 L2.2 -3 L1.8 0 h1.2 L3.7 -3 L4.1 -8.4 Z M13 -8.4 Q14.4 -5 13.6 -3 L13.4 0 h1.2 L15 -3 Q15.7 -6 15 -8.4 Z" fill="' + dk(c, 0.12) + '"/>' +
+  '<path d="M15.8 -12.6 l1.4 -2.4" stroke="' + c + '" stroke-width="1.1" stroke-linecap="round"/>' +
+  '<path d="M-.6 -18.6 Q1.8 -18.4 2.6 -15.6 Q.6 -16.4 -.9 -17.6 Z" fill="' + dk(c, 0.22) + '"/>' +
+  '<path d="M-1.2 -19.8 Q0 -22.6 2.8 -22.2" stroke="#8A7A62" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M-4.2 -15.4 q-.3 1.8 .3 2.8" stroke="' + dk(c, 0.3) + '" stroke-width=".6" fill="none"/>' +
+  '<circle cx="-2.5" cy="-18.2" r=".45" fill="#1A0E06"/></g></g>';
 export function jirgiScene(): string {
   // the far bank: the town and its market at the landing
   const town = '<path d="M0 74 Q80 70 160 73 T320 72 V102 H0 Z" fill="' + u('bank') + '"/>' +
@@ -231,13 +234,15 @@ export function jirgiScene(): string {
     tiny(164, 99.6, '#F4EBD0', '#C62828', 0, '#5E3A1C') + '<path d="M162.4 90.2 q2 -1.6 4 0 l-.4 1.6 h-3.2 Z" fill="#DCCBA0"/>' +
     '<g transform="translate(140 99.4)"><path d="M0 0 v-3 M1.6 0 v-3 M5 0 v-3 M6.4 0 v-3" stroke="#6E6258" stroke-width=".7"/><path d="M-.6 -2.6 Q-.6 -5.6 3 -5.6 Q7.6 -5.6 7.4 -2.8 Z" fill="#8E8278"/><path d="M-.4 -4.6 L-2.6 -6.6 L-3 -5.2 L-1 -3 Z" fill="#8E8278"/><path d="M-2.6 -6.6 l-.2 -1.8 M-2 -6.4 l.6 -1.6" stroke="#8E8278" stroke-width=".5"/><path d="M1.4 -5.8 h3.6 v2 h-3.6 Z" fill="#C62828"/></g>';
   // the waiting passengers on the near bank, the shade tree and its tea seller
-  const nearR = '<path d="M320 138 Q282 144 252 158 Q226 172 212 200 L210 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 138 Q282 144 252 158 Q226 172 212 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
+  const nearR = '<path d="M320 138 Q282 144 252 158 Q226 172 212 200 L210 212 H320 Z" fill="' + u('sand') + '"/><path d="M320 138 Q282 144 252 158 Q226 172 212 200 L210 212 H320 Z" fill="' + u('grit') + '"/>' +
+    '<path d="M320 138 Q282 144 252 158 Q226 172 212 200 L219 200 Q232 176 256 162.4 Q284 148 320 143 Z" fill="#8A6A3E" opacity=".28"/><path d="M320 138 Q282 144 252 158 Q226 172 212 200" stroke="#F2E2B8" stroke-width="1.2" fill="none" opacity=".8"/>' +
     '<ellipse cx="292" cy="170" rx="34" ry="6" fill="rgba(60,40,10,.18)"/>' +
     // the shade tree
     '<g><path d="M296 170 Q298 140 292 110 Q288 96 280 84 M297 140 Q306 116 314 96 M293 116 Q300 100 304 84" stroke="#5E4630" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M298 170 Q300 140 294 110" stroke="#4A3624" stroke-width="2" fill="none"/>' +
-    '<g fill="#3F6B2E"><ellipse cx="268" cy="78" rx="22" ry="11"/><ellipse cx="296" cy="70" rx="26" ry="14"/><ellipse cx="320" cy="82" rx="18" ry="11"/><ellipse cx="284" cy="88" rx="14" ry="6"/></g>' +
-    '<g fill="#52833A"><ellipse cx="262" cy="74" rx="14" ry="6"/><ellipse cx="290" cy="63" rx="17" ry="7"/><ellipse cx="314" cy="72" rx="12" ry="6"/></g>' +
-    '<g fill="#6A9C46"><ellipse cx="286" cy="59" rx="9" ry="3.6"/><ellipse cx="258" cy="71" rx="7" ry="2.8"/><ellipse cx="308" cy="66" rx="6" ry="2.6"/></g></g>' +
+    '<path d="M246 80 Q244 70 256 68 Q258 58 272 60 Q278 50 292 54 Q302 46 314 54 Q328 52 332 62 Q342 66 338 78 Q340 90 326 92 Q316 98 302 92 Q292 98 280 94 Q266 98 258 90 Q246 90 246 80 Z" fill="#3F6B2E"/>' +
+    '<path d="M250 76 Q250 68 260 68 Q262 60 274 62 Q280 53 292 57 Q302 50 312 56 Q322 55 326 62 Q316 64 306 62 Q296 66 286 64 Q276 70 266 70 Q256 74 250 76 Z" fill="#52833A"/>' +
+    '<path d="M246 80 Q244 70 256 68 Q258 58 272 60 Q278 50 292 54 Q302 46 314 54 Q328 52 332 62 Q342 66 338 78 Q340 90 326 92 Q316 98 302 92 Q292 98 280 94 Q266 98 258 90 Q246 90 246 80 Z" fill="' + u('leaf') + '"/>' +
+    '<path d="M262 66 q4 -4 10 -3 q-5 1 -10 3 Z M282 58 q6 -4 13 -2 q-7 0 -13 2 Z M302 54 q5 -2 9 1 q-5 -1 -9 -1 Z M256 86 q6 3 12 2 M292 92 q8 2 14 -1" fill="#6A9C46" stroke="#2F5422" stroke-width=".6" stroke-opacity=".5"/></g>' +
     // the tea seller behind his little table: kettle, glasses, the charcoal stove
     person(304, 166, 25, { kind: 'man', skin: 1, robe: '#F4EBD0', trim: '#8A6A3E', hat: 'borno', hatc: '#7A1F2B', hatc2: '#F2C230', hatc3: '#1F2E5A', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', beard: 'w' }) +
     '<g><path d="M292 160 h20 v1.6 h-20 Z" fill="#8A5A2E"/><path d="M294 161.6 v7 M310 161.6 v7" stroke="#6B4422" stroke-width="1.1"/>' +
@@ -245,19 +250,20 @@ export function jirgiScene(): string {
     '<path d="M303 160 Q302 155 305.6 155 Q309 155 308.4 160 Z" fill="#2E7D32"/><path d="M308.4 157 l2.6 -2" stroke="#2E7D32" stroke-width=".9"/><path d="M304.4 155 q1.2 -1.4 2.4 0" stroke="#1F5A22" stroke-width=".7" fill="none"/></g>' +
     '<g><path d="M311 169 l2 -5 h6 l2 5 Z" fill="#4A4A4A"/><ellipse cx="316" cy="164" rx="3.4" ry="1" fill="#E8661E"/><path d="M314.6 163 Q315 159 317 156 Q317 160 318 163" stroke="#B0B6BA" stroke-width=".5" fill="none" opacity=".7"/></g>' +
     // the passengers waiting with their loads
-    goat(220, 180, 0.62, '#F2EEE6', '#5A3A22') +
-    '<path d="M225 166.8 Q226 174 219.4 173" stroke="#A8864A" stroke-width=".5" fill="none"/>' +
-    person(230, 180, 24, { kind: 'boy', skin: 3, robe: '#2E7D32', trou: '#E8DFC8', hat: 'hula', hatc: '#F4EBD0', hatc2: '#2E7D32', al: 'fwd', ar: 'down', arc: 'x-wv', cls: 'p1' }) +
-    person(247, 179, 34, { kind: 'woman', skin: 0, robe: '#C2185B', wrap: '#FFB300', wrap2: '#6A1B9A', hat: 'kallabi', hatc: '#FFB300', hatc2: '#C2185B', al: 'load', ar: 'down', arc: 'x-wv', load: headBasin('#1E88E5', ['#E53935', '#C62828', '#43A047', '#FB8C00']), cls: 'p2' }) +
+    person(238, 180, 24, { kind: 'boy', skin: 3, robe: '#2E7D32', trou: '#E8DFC8', hat: 'hula', hatc: '#F4EBD0', hatc2: '#2E7D32', al: 'fwd', ar: 'down', arc: 'x-wv', cls: 'p1' }) +
+    person(250, 179, 34, { kind: 'woman', skin: 0, robe: '#C2185B', wrap: '#FFB300', wrap2: '#6A1B9A', hat: 'kallabi', hatc: '#FFB300', hatc2: '#C2185B', al: 'load', ar: 'down', arc: 'x-wv', load: headBasin('#1E88E5', ['#E53935', '#C62828', '#43A047', '#FB8C00']), cls: 'p2' }) +
     person(272, 177, 34, { kind: 'man', skin: 5, robe: '#E8E1CF', robe2: '#D4CBB4', trim: '#3E6E8E', hat: 'zanna', hatc: '#1F2E5A', hatc2: '#E9E2CF', al: 'clap', ar: 'clap', alc: 'x-cl', arc: 'x-cl', cls: 'p3' }) +
+    goat(226, 184, 0.62, '#F2EEE6', '#5A3A22') + '<path d="M233.4 169.4 Q231.4 176.4 225 175.2" stroke="#A8864A" stroke-width=".5" fill="none"/>' +
     bicycle(283, 172, 5.2) +
     person(259, 188, 32, { kind: 'man', skin: 2, robe: '#4E6E3A', trou: '#D8CFB8', hat: 'turban', hatc: '#F4EBD0', al: 'down', ar: 'load', alc: 'x-wv', front: sack, cls: 'p4' });
   // the near-left sand under the game's jetty
-  const nearL = '<path d="M0 166 Q40 164 80 172 Q104 178 116 200 L118 212 H0 Z" fill="' + u('sand') + '"/>' + reeds(4, 170, 6, 1.1) + reeds(98, 188, 4, 1);
+  const nearL = '<path d="M0 166 Q40 164 80 172 Q104 178 116 200 L118 212 H0 Z" fill="' + u('sand') + '"/><path d="M0 166 Q40 164 80 172 Q104 178 116 200 L118 212 H0 Z" fill="' + u('grit') + '"/>' +
+    '<path d="M0 166 Q40 164 80 172 Q104 178 116 200 L109 200 Q98 182 76 176 Q40 169 0 170.6 Z" fill="#8A6A3E" opacity=".28"/>' + reeds(4, 170, 6, 1.1) + reeds(98, 188, 4, 1);
   return '<svg class="scene ' + P + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('sky', ['#86C8EA', '#B8DFEE', '#EEF1DE', '#F6E6C2']) + lg('bank', ['#B8A46C', '#A39A5E', '#D2BC86']) + lg('sand', ['#E8D29A', '#D8B87A', '#C9A266']) +
     lg('water', ['#8CCBE0', '#4FA9D6', '#2F86BA', '#1F6A9A'], 100, 200, true) +
-    '<radialGradient id="' + P + '-sh" cx=".38" cy=".32" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></radialGradient>' +
+    '<pattern id="' + P + '-grit" width="23" height="13" patternUnits="userSpaceOnUse"><path d="M2 2.2 h.5 v.4 h-.5 Z M13.6 1 h.4 v.5 h-.4 Z M8 6.4 h.6 v.4 h-.6 Z M19 8.6 h.4 v.4 h-.4 Z M4.6 11 h.5 v.4 h-.5 Z M15 11.6 h.6 v.3 h-.6 Z M1 7.6 q2.6 -.9 5.2 0 M11 4 q3 -1 6 .1 M14.4 9.6 q2.4 -.8 4.6 .2" fill="#6E5028" fill-opacity=".4" stroke="#FFF4D8" stroke-opacity=".28" stroke-width=".3"/></pattern>' +
+    '<pattern id="' + P + '-leaf" width="9" height="6" patternUnits="userSpaceOnUse"><path d="M1 3 q1.5 -2.2 3 0 M5 5.6 q1.5 -2.2 3 0 M5.4 1.8 q1.1 -1.6 2.2 0" stroke="#24401A" stroke-width=".5" fill="none" opacity=".55"/></pattern>' +
     '</defs><rect width="320" height="200" fill="' + u('sky') + '"/>' +
     cloud(40, 34, 0.9) + cloud(170, 26, 0.7) + cloud(236, 44, 0.6) +
     town +
