@@ -606,3 +606,26 @@ body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
 #app .s.fashe .poptime{position:absolute;top:58px;left:50%;transform:translateX(-50%);z-index:5;width:min(560px,60%);margin:0;background:rgba(255,253,247,.9);border-radius:999px;padding:6px 16px}
 #app .s.fashe .stage{height:clamp(18px,4vmin,30px)}
 #app .s.fashe .bub{width:clamp(62px,10.5vmin,104px);font-size:clamp(28px,5vmin,46px)}
+/* Fashe haruffa, r3 (Sani 2026-10-27 "more real"; the look only, the game and its timings are untouched): a deeper
+   sky lit from the upper left, two soft clouds with grey-blue undersides, the far savanna along the horizon pale and
+   blue with distance (a town wall with its zanko, neem and acacia), grass blades instead of a scalloped edge, and
+   balloons that read as rubber: a slightly pear shape in the same box, a bright window highlight, shade towards the
+   lower right, a tied knot and a string hanging from it. The string never takes a tap (pointer-events:none). */
+#app .s.fashe .sky{background:
+  radial-gradient(circle at 6% 0,rgba(255,249,224,.9),rgba(255,249,224,0) 28%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cg fill='%23fff'%3E%3Cellipse cx='60' cy='30' rx='34' ry='12'/%3E%3Cellipse cx='44' cy='24' rx='18' ry='13'/%3E%3Cellipse cx='70' cy='20' rx='20' ry='15'/%3E%3Cellipse cx='150' cy='38' rx='26' ry='8'/%3E%3Cellipse cx='160' cy='32' rx='14' ry='9'/%3E%3C/g%3E%3Cg fill='%23D6E4EE' opacity='.8'%3E%3Cellipse cx='60' cy='36' rx='30' ry='5'/%3E%3Cellipse cx='152' cy='41.5' rx='22' ry='3.5'/%3E%3C/g%3E%3C/svg%3E") no-repeat 50% 18% / min(680px,62%) auto,
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 26 400 34' preserveAspectRatio='none'%3E%3Cpath d='M0 46 Q60 36 120 42 T240 40 T400 42 V60 H0Z' fill='%23B9CDBF'/%3E%3Cg fill='%23C9B9A8'%3E%3Cpath d='M150 50 V40 H200 V50Z M210 50 V43 H240 V50Z'/%3E%3Cpath d='M150 40 l2 -4 l2 4Z M158 40 l2 -4 l2 4Z M166 40 l2 -4 l2 4Z M174 40 l2 -4 l2 4Z M182 40 l2 -4 l2 4Z M190 40 l2 -4 l2 4Z'/%3E%3Crect x='226' y='28' width='4' height='15'/%3E%3C/g%3E%3Cg fill='%2394AE98'%3E%3Cellipse cx='40' cy='40' rx='16' ry='8'/%3E%3Cellipse cx='54' cy='37' rx='10' ry='6'/%3E%3Cellipse cx='300' cy='38' rx='18' ry='4'/%3E%3Cellipse cx='318' cy='35' rx='9' ry='3'/%3E%3Cellipse cx='96' cy='42' rx='10' ry='5'/%3E%3Cellipse cx='364' cy='41' rx='12' ry='6'/%3E%3C/g%3E%3Cg stroke='%2394AE98' stroke-width='1.4'%3E%3Cpath d='M300 50 V40 M296 41 L300 44 L304 41 M46 50 V44 M364 50 V45'/%3E%3C/g%3E%3Cpath d='M0 50 Q100 46 200 50 T400 50 V60 H0Z' fill='%23A9C49A'/%3E%3C/svg%3E") repeat-x 0 calc(100% - clamp(16px,3.6vmin,27px)) / clamp(520px,90vmin,900px) clamp(44px,10vmin,90px),
+  linear-gradient(180deg,#4FA8DE 0%,#86C9EE 40%,#C6E7F3 78%,#E6F2E2 100%)}
+#app .s.fashe .stage{background:linear-gradient(180deg,#D9C391,#C9AE74)}
+#app .s.fashe .stage::before{height:clamp(9px,2.2vmin,16px);opacity:1;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14' preserveAspectRatio='none'%3E%3Cpath d='M0 14 L2 5 L4 14 L5 2 L7 14 L9 6 L11 14 L13 1 L15 14 L17 7 L19 14 L21 3 L23 14 L25 6 L27 14 L29 0 L31 14 L33 5 L35 14 L37 3 L40 14Z' fill='%235E9E45'/%3E%3Cpath d='M1 14 L3 8 L5 14 L8 4 L10 14 L14 6 L16 14 L20 5 L22 14 L26 4 L28 14 L32 7 L34 14 L38 5 L40 14Z' fill='%2378B85A'/%3E%3C/svg%3E") repeat-x 0 100% / clamp(30px,6vmin,48px) 100%}
+#app .s.fashe .bub{border-radius:50% 50% 48% 48% / 54% 54% 46% 46%;
+  background:radial-gradient(ellipse 15% 11% at 31% 24%,rgba(255,255,255,.95),rgba(255,255,255,0) 100%),
+    radial-gradient(circle at 36% 30%,rgba(255,255,255,.42),rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 26% 84%,rgba(255,255,255,.2),rgba(255,255,255,0) 22%),
+    radial-gradient(circle at 42% 38%,rgba(0,0,0,0) 46%,rgba(0,0,0,.26) 82%),var(--c);
+  box-shadow:none;text-shadow:0 2px 3px rgba(0,0,0,.22)}
+#app .s.fashe .bub::after{bottom:-7px;margin-left:-5px;width:10px;height:8px;border-radius:2px;clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);
+  background:linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,.28)),var(--c)}
+#app .s.fashe .bub::before{content:"";position:absolute;left:50%;top:calc(100% + 6px);width:18px;height:95%;margin-left:-9px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 100' preserveAspectRatio='none'%3E%3Cpath d='M9 0 C3 18 15 34 9 50 S3 82 10 100' fill='none' stroke='%23705E4C' stroke-opacity='.7' stroke-width='1.3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%}
+#app .s.fashe .bub.pop::before,#app .s.fashe .bub.burst::before,#app .s.fashe .bub.burst::after{opacity:0}
