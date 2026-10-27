@@ -14,50 +14,54 @@ const COWS = [
   // Sokoto Gudali: cream and grey, short horns, a heavy dewlap
   { body: ['#EDE6D8', '#BDB3A2'], horn: '#E6DCC6', tip: '#6A5A44', muzzle: '#4A403A', ear: '#9A9086', eye: '#5A504A', horns: 'short' },
 ];
+/* round five (Sani 2026-10-27, realism with performance): the horns are tapering filled shapes, not strokes */
 const HORNS = {
-  lyre: 'M192 66 C178 52 182 32 196 20 M198 64 C212 50 224 40 218 20',
-  tall: 'M192 66 C176 50 178 22 190 6 M198 64 C214 48 226 28 220 6',
-  short: 'M192 66 C186 58 188 50 194 46 M198 64 C206 58 210 52 208 46',
+  lyre: 'M188 67 C176 52 179 32 195 19 C185 34 183 52 194 64Z M196 64 C210 50 222 40 217 19 C227 40 216 55 201 66Z',
+  tall: 'M188 67 C174 50 176 22 189 5 C182 24 183 50 194 64Z M196 64 C212 48 224 28 219 5 C230 28 218 52 201 66Z',
+  short: 'M189 66 C184 58 187 50 193 45 C190 52 191 58 195 64Z M197 64 C204 58 209 52 207 45 C212 52 208 60 201 66Z',
 };
-const TIPS = { lyre: [[196, 20], [218, 20]], tall: [[190, 6], [220, 6]], short: [[194, 46], [208, 46]] };
+const TIPS = { lyre: [[195, 21], [218, 21]], tall: [[189, 7], [220, 7]], short: [[193, 46.5], [208, 46.5]] };
 let n = 0;
-/* viewBox 0 0 240 160, ground at 150; the neck and head (.zhead) turn about the shoulder at (156,74) to reach the grass */
+/* viewBox 0 0 240 160, ground at 150; the neck and head (.zhead) turn about the shoulder at (156,74) to reach the grass.
+   Round five: the zebu drawn as the market draws its cattle: the rump with its hip bones, the back dipping to the hump,
+   the deep brisket and the sagging belly, jointed legs (knee in front, hock behind) on small hooves, the coat lit from
+   the upper left with the belly and the far side in shade, a long face, the ear held out, the dewlap in folds. */
 export function zebu(v = 0): string {
   const c = COWS[v % COWS.length], id = 'zb' + (n++);
-  // a tapered leg with its knee or hock, and the hoof, moving together
   const leg = (cls, x, top, front, col) => `<g class="zl ${cls}"><path d="${front
-      ? `M${x - 6} ${top} L${x + 7} ${top} L${x + 5} ${top + 22} L${x + 4} 143 L${x - 2} 143 L${x - 3} ${top + 22} Z`
-      : `M${x - 10} ${top} L${x + 8} ${top + 2} L${x + 4} ${top + 20} L${x + 5} 143 L${x - 1} 143 L${x - 3} ${top + 24} Z`}" fill="${col}"/>` +
-    `<path d="M${front ? x - 3 : x - 1.5} 141 h${front ? 8 : 7.5} l1 7 h-10 Z" fill="#231A14"/></g>`;
-  const far = c.body[1], near = `url(#${id})`;
-  return `<svg class="zebu" viewBox="0 0 240 160" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.body[0]}"/><stop offset=".7" stop-color="${c.body[0]}"/><stop offset="1" stop-color="${c.body[1]}"/></linearGradient></defs>` +
-    `<ellipse cx="118" cy="150" rx="74" ry="5" fill="rgba(40,24,10,.25)"/>` +
+      ? `M${x - 6} ${top} L${x + 7} ${top} C${x + 7} ${top + 12} ${x + 6} ${top + 18} ${x + 4.6} ${top + 22} L${x + 4} 138 Q${x + 4.6} 141 ${x + 5} 141.4 L${x - 1.6} 141.4 L${x - 2} 138 L${x - 3} ${top + 24} C${x - 4} ${top + 18} ${x - 6} ${top + 10} ${x - 6} ${top} Z`
+      : `M${x - 10} ${top} C${x - 12} ${top + 14} ${x - 6} ${top + 22} ${x - 4} ${top + 26} L${x - 2} 138 Q${x - 2} 141 ${x} 141.4 L${x + 5} 141.4 Q${x + 5} 138 ${x + 4} 136 L${x + 4} ${top + 24} C${x + 6} ${top + 16} ${x + 9} ${top + 8} ${x + 8} ${top} Z`}" fill="${col}"/>` +
+    `<path d="M${front ? x - 2.6 : x - 1.6} 140.6 h${front ? 8.2 : 7.8} l1.3 7.4 q-5.6 1.4 -10.8 0 Z" fill="#231A14"/></g>`;
+  const far = c.body[1], near = `url(#${id})`, dw = v % 3 === 2;
+  const BODY = 'M56 64 C64 58 78 60 92 61 C108 62 118 61 125 58 C129 47 140 40 151 43 C159 46 162 54 161 62 C168 68 172 78 173 92 C174 106 168 116 158 120 C140 126 112 127 94 123 C84 121 78 118 72 114 C62 112 52 104 49 92 C47 80 49 70 56 64 Z';
+  return `<svg class="zebu" viewBox="0 0 240 160" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.body[0]}"/><stop offset=".55" stop-color="${c.body[0]}"/><stop offset="1" stop-color="${c.body[1]}"/></linearGradient>` +
+    `<radialGradient id="${id}v" cx=".4" cy=".3" r=".75"><stop offset=".55" stop-color="#1A0E04" stop-opacity="0"/><stop offset="1" stop-color="#1A0E04" stop-opacity=".26"/></radialGradient></defs>` +
+    `<ellipse cx="122" cy="149.6" rx="72" ry="4.6" fill="rgba(40,24,10,.3)"/>` +
     leg('b', 76, 104, false, far) + leg('d', 146, 108, true, far) +
-    `<g class="ztail"><path d="M52 70 Q42 96 46 132" stroke="${c.body[1]}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M42 126 q2 14 8 4 q0 -8 -8 -4 Z" fill="#231A14"/></g>` +
-    // the hump over the withers, leaning forward, its base hidden by the body
-    `<path d="M126 70 C124 44 146 34 160 48 C166 56 164 66 158 72 Z" fill="${near}"/><path d="M136 48 Q146 42 154 47" stroke="#fff" stroke-opacity=".14" stroke-width="2" fill="none"/>` +
-    `<path d="M54 66 C66 56 110 58 140 60 C160 62 172 76 172 94 C172 108 164 116 152 118 C130 122 100 122 82 118 C64 116 50 106 48 90 C47 80 49 72 54 66 Z" fill="${near}"/>` +
-    `<path d="M62 70 Q100 62 140 66" stroke="#fff" stroke-opacity=".22" stroke-width="5" fill="none" stroke-linecap="round"/>` +
-    `<path d="M50 92 C54 108 66 116 82 118 L80 104 C70 102 60 98 50 92 Z" fill="#000" opacity=".06"/><path d="M100 112 Q126 120 150 114" stroke="#000" stroke-opacity=".07" stroke-width="7" fill="none"/>` +
-    `<path d="M150 80 Q160 92 156 110" stroke="#000" stroke-opacity=".07" stroke-width="3" fill="none"/>` +
+    `<g class="ztail"><path d="M54 66 Q44 96 47 130" stroke="${c.body[1]}" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M43 124 q1 12 5 13 q4 -1 4 -9 q-3 -6 -9 -4 Z" fill="#231A14"/></g>` +
+    `<path d="${BODY}" fill="${near}"/><path d="${BODY}" fill="url(#${id}v)"/>` +
+    `<path d="M150 70 Q162 90 155 113 M62 70 Q78 86 71 112 M110 97 q9 6 19 4 M113 105 q8 5 16 3 M60 63 q4 -4 9 -2 M98 121 Q124 128 150 120" stroke="#1A0E04" stroke-opacity=".1" stroke-width="2" fill="none" stroke-linecap="round"/>` +
+    `<path d="M60 66 Q96 60 122 62 M131 50 Q141 43 151 46" stroke="#fff" stroke-opacity=".24" stroke-width="3.4" fill="none" stroke-linecap="round"/>` +
     leg('a', 64, 100, false, c.body[0]) + leg('c', 158, 108, true, c.body[0]) +
     `<g class="zhead">` +
-    // neck and dewlap, then the long head down to the dark muzzle; the horns rise from the poll
-    `<path d="M146 62 C162 60 178 62 190 70 L196 92 C186 96 176 102 168 108 L150 96 Z" fill="${near}"/>` +
-    `<path d="M164 102 C168 ${v % 3 === 2 ? 132 : 124} 180 ${v % 3 === 2 ? 136 : 128} 192 ${v % 3 === 2 ? 118 : 114} L196 94 Z" fill="${c.body[1]}"/><path d="M172 112 q6 4 13 1 M174 121 q5 3 11 -1" stroke="#000" stroke-opacity=".12" stroke-width="1.3" fill="none"/>` +
-    `<path d="${HORNS[c.horns]}" stroke="${c.horn}" stroke-width="5.5" fill="none" stroke-linecap="round"/>` + TIPS[c.horns].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.9" fill="${c.tip}"/>`).join('') +
-    `<path d="M187 64 C196 60 204 64 207 72 L219 100 C222 110 212 116 204 111 L189 92 C184 84 183 72 187 64 Z" fill="${c.body[0]}"/>` +
-    `<path d="M194 66 Q200 70 204 80" stroke="#000" stroke-opacity=".08" stroke-width="3" fill="none"/>` +
-    `<ellipse cx="212" cy="106" rx="8" ry="6.5" transform="rotate(-30 212 106)" fill="${c.muzzle}"/><circle cx="210" cy="104" r="1.3" fill="#000"/><circle cx="215.5" cy="106" r="1.3" fill="#000"/>` +
-    `<path class="chew" d="M203 110 q4 3 9 2" stroke="${c.muzzle}" stroke-width="2" fill="none"/>` +
-    `<ellipse cx="197" cy="77" rx="4.4" ry="3.4" fill="${c.eye}" opacity=".6"/><circle cx="197" cy="77" r="2.3" fill="#140C06"/><circle cx="197.8" cy="76.2" r=".7" fill="#fff"/>` +
-    `<path d="M189 72 C180 70 172 74 170 80 C178 82 186 80 190 77 Z" fill="${c.body[1]}"/><path d="M176 74 C172 76 170 78 170 80 C174 80 176 79 178 77 Z" fill="${c.ear}"/>` +
+    `<path d="M146 62 C162 58 180 60 190 68 L197 92 C188 98 178 104 168 110 L150 98 Z" fill="${near}"/>` +
+    `<path d="M162 100 C164 ${dw ? 130 : 120} 176 ${dw ? 136 : 128} 190 ${dw ? 122 : 116} L196 94 Z" fill="${c.body[1]}"/><path d="M170 110 q6 4 13 1 M172 119 q5 3 11 -1 M168 102 q8 3 16 0" stroke="#000" stroke-opacity=".13" stroke-width="1.3" fill="none"/>` +
+    `<path d="${HORNS[c.horns]}" fill="${c.horn}"/><path d="${TIPS[c.horns].map(([x, y]) => `M${x - 2.2} ${y + 1.6} Q${x} ${y - 3.4} ${x + 2.2} ${y + 1.6}Z`).join('')}" fill="${c.tip}"/>` +
+    `<path d="M186 62 C195 57 205 62 208 70 L220 98 C224 109 214 117 205 112 L190 93 C184 84 182 70 186 62 Z" fill="${c.body[0]}"/>` +
+    `<path d="M203 70 Q209 84 216 100 L205 110 L191 92 Q197 82 203 70 Z" fill="#1A0E04" opacity=".09"/>` +
+    `<ellipse cx="212" cy="106" rx="8" ry="6.5" transform="rotate(-30 212 106)" fill="${c.muzzle}"/><path d="M208.6 103.2 a1.3 1 0 1 0 .1 0 M214.6 105.4 a1.3 1 0 1 0 .1 0 M203 110 q4 3 9 2" stroke="#000" stroke-width="1.2" fill="none"/>` +
+    `<ellipse cx="197" cy="77" rx="4" ry="3" fill="${c.eye}" opacity=".6"/><path d="M197 74.8 a2.2 2.2 0 1 0 .1 0Z" fill="#140C06"/>` +
+    `<path d="M189 72 C180 69 171 73 168 80 C177 83 186 80 190 77 Z" fill="${c.body[1]}"/><path d="M176 74 C172 76 170 78 169.4 80 C174 80 176 79 178 77 Z" fill="${c.ear}"/>` +
     `</g></svg>`;
 }
-/* a tuft of savanna grass to graze on; two greens so the field is not flat */
+/* a clump of savanna grass: thin tapering blades, the dry ones behind and the green in front (round five: filled blades,
+   not combs of strokes) */
 export function tuft(v = 0): string {
   const g = ['#6B8E3A', '#8FA548', '#A9A050'][v % 3];
-  return `<svg class="tuft" viewBox="0 0 40 22" aria-hidden="true"><path d="M4 22 Q6 9 10 4 M10 22 Q12 6 18 1 M16 22 Q18 10 24 5 M22 22 Q26 8 32 3 M28 22 Q30 12 36 7 M8 22 Q4 14 1 12 M34 22 Q36 16 39 14" stroke="${g}" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`;
+  const bl = (pts) => pts.map(([x, tx, ty]) => `M${x - 1} 22 Q${(x + tx) / 2 - 1} ${(22 + ty) / 2 + 2} ${tx} ${ty} Q${(x + tx) / 2 + 1.4} ${(22 + ty) / 2 + 3} ${x + 1.4} 22Z`).join('');
+  return `<svg class="tuft" viewBox="0 0 40 22" aria-hidden="true"><ellipse cx="20" cy="21.6" rx="15" ry="1.2" fill="rgba(40,24,10,.18)"/>` +
+    `<path d="${bl([[9, 2, 6], [15, 12, 1], [21, 26, 2], [27, 36, 8], [12, 6, 2]])}" fill="#B9A35E"/>` +
+    `<path d="${bl([[6, 0, 13], [11, 9, 4], [17, 19, 3], [20, 24, 5], [24, 31, 7], [30, 39, 13], [14, 14, 6]])}" fill="${g}"/></svg>`;
 }
 
 /*

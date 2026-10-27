@@ -26,8 +26,6 @@
 .glab .gbg .gk .gk-birds{animation:gk-fly 46s linear infinite}
 .glab .gbg .gk .gk-birds.b2{animation-duration:58s;animation-delay:-30s}
 @keyframes gk-fly{0%{transform:translate(-120px,10px);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translate(260px,-14px);opacity:0}}
-.glab .gbg .gk .gk-wb{transform-origin:50% 100%;animation:gk-wb .5s ease-in-out infinite alternate}
-@keyframes gk-wb{to{transform:scaleY(-.5)}}
 .glab .gbg .gk .gk-far{animation:gk-far 60s linear infinite alternate}
 @keyframes gk-far{from{transform:translateX(10px)}to{transform:translateX(-30px)}}
 
@@ -94,3 +92,6 @@
   box-shadow:inset 0 0 0 .12cqw #4E2E12,inset .3cqw .3cqw .6cqw rgba(0,0,0,.4),-.45cqw .55cqw .45cqw rgba(30,20,8,.35)}
 .glab .scr.garke .herd .gkraal .cnt2::after{content:"";position:absolute;left:50%;top:100%;width:.9cqw;height:3.4cqw;margin:.45cqw 0 0 -.45cqw;z-index:-1;border-radius:.2cqw;
   background:linear-gradient(90deg,#4E2E12,#7A4A22 45%,#A8743E);box-shadow:-.6cqw .3cqw .4cqw rgba(30,20,8,.3)}
+
+/* round five (Sani 2026-10-27, performance): the grass clumps stand still (their sway was too small to see on a tablet) */
+.glab .scr.garke .herd .tf svg{animation:none}

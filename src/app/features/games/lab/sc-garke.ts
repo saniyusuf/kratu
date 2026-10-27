@@ -56,7 +56,8 @@ const pounder = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale
 
 /* a skein of birds going home: little dark Vs whose wings beat */
 const birds = (x, y, s, cls) => '<g class="gk-birds ' + cls + '"><g transform="translate(' + x + ' ' + y + ') scale(' + s + ')" stroke="#3A2E3A" stroke-width=".7" fill="none" stroke-linecap="round">' +
-  [[0, 0], [-5, 2.4], [-10, 4.8], [-5, -2.4], [-10, -4.6], [-15, 6.8]].map(([bx, by], i) => '<path class="gk-wb" style="animation-delay:-' + (i * .13).toFixed(2) + 's" d="M' + (bx - 2) + ' ' + (by - 1) + ' Q' + (bx - 1) + ' ' + (by - 1.6) + ' ' + bx + ' ' + by + ' Q' + (bx + 1) + ' ' + (by - 1.6) + ' ' + (bx + 2) + ' ' + (by - 1) + '"/>').join('') + '</g></g>';
+  // round five: the skein glides, one path for the six birds (their wing beats were too small to see)
+  '<path d="' + [[0, 0], [-5, 2.4], [-10, 4.8], [-5, -2.4], [-10, -4.6], [-15, 6.8]].map(([bx, by], i) => 'M' + (bx - 2) + ' ' + (by - 1 + (i % 2) * .5) + ' Q' + (bx - 1) + ' ' + (by - 1.6) + ' ' + bx + ' ' + by + ' Q' + (bx + 1) + ' ' + (by - 1.6) + ' ' + (bx + 2) + ' ' + (by - 1 - (i % 2) * .4)).join('') + '"/></g></g>';
 
 export function garkeScene(): string {
   const defs = '<defs>' + lg('gksky', '#6E5C8E', '#C9788A', '#F2A65E', '#F8CF86') + lg('gkgr', '#C99A62', '#B48452', '#9C7044') + lg('gkhill', '#8C6A78', '#A47A74') +
@@ -132,22 +133,36 @@ const n2 = (v) => +(+v).toFixed(1);
 const twigs = (pts, h, col) => pts.map(([x, y], i) => { const a = (i % 3) - 1, b = h * (.7 + (i % 4) * .12);
   return 'M' + x + ' ' + y + ' l' + (a * 4) + ' ' + (-b) + ' M' + (x + a * 2) + ' ' + (y - b * .55) + ' l' + (6 - (i % 2) * 12) + ' ' + (-b * .3) + ' M' + (x + a * 3) + ' ' + (y - b * .8) + ' l' + (-4 + (i % 2) * 8) + ' ' + (-b * .25); }).join(' ');
 const arc = (y0, ry, from, to, n, dir) => Array.from({ length: n }, (_, i) => { const t = Math.PI * (from + (to - from) * i / (n - 1)); return [n2(320 - 300 * Math.cos(t)), n2(y0 + dir * ry * Math.sin(t))]; });
+/* round five (Sani 2026-10-27, realism with performance): the fence is a real hedge of cut thorn branches (zariba) — a
+   dense dark tangle along the ring with a ragged spiky crown, lit twigs on the sunward side, a few long branches poking
+   out — drawn as one filled band and two strokes, instead of rows of stick-figure twigs */
+function hedge(pts, h, dy, seed) {
+  let top = '', bot = '', k = seed;
+  const R = () => (k = (k * 16807) % 2147483647) / 2147483647;
+  pts.forEach(([x, y], i) => { const hh = h * (.45 + R() * .55), cl = h * (.35 + R() * .3);
+    // a rounded clump of brush, then two or three thorny sticks standing out of it
+    top += (i ? 'L' : 'M') + n2(x - 5) + ' ' + n2(y - cl * .8) + 'Q' + n2(x - 3) + ' ' + n2(y - cl * 1.2) + ' ' + n2(x - 1) + ' ' + n2(y - cl) +
+      'L' + n2(x - 2 + R() * 3) + ' ' + n2(y - hh) + 'L' + n2(x + .4) + ' ' + n2(y - cl * 1.05) + 'L' + n2(x + 3 + R() * 4) + ' ' + n2(y - hh * (.7 + R() * .4)) + 'L' + n2(x + 2.6) + ' ' + n2(y - cl * .95) +
+      'Q' + n2(x + 5) + ' ' + n2(y - cl * 1.15) + ' ' + n2(x + 6) + ' ' + n2(y - cl * .8);
+    bot = 'L' + n2(x + 3) + ' ' + n2(y + dy) + bot; });
+  return top + bot + 'Z';
+}
 export function kraalBack(): string {
   const back = arc(112, 60, .02, .98, 46, -1);
   return '<svg class="kback" viewBox="0 0 640 180" preserveAspectRatio="none" aria-hidden="true">' +
     '<ellipse cx="320" cy="116" rx="304" ry="62" fill="#A97A4A"/><ellipse cx="320" cy="112" rx="292" ry="56" fill="#C0915C"/>' +
     '<g fill="#8A6038" opacity=".5"><ellipse cx="220" cy="120" rx="60" ry="6"/><ellipse cx="420" cy="104" rx="70" ry="5"/><ellipse cx="330" cy="146" rx="90" ry="6"/></g>' +
-    '<g fill="#6A4A2A" opacity=".6">' + [[150, 96], [260, 132], [380, 120], [470, 140], [520, 108], [200, 150], [310, 84]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx="4" ry="1.8"/>').join('') + '</g>' +
-    '<path d="' + back.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ') + '" stroke="#5E3A1C" stroke-width="5" fill="none" stroke-linecap="round"/>' +
-    '<path d="' + twigs(back, 30, '') + '" stroke="#6B4422" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
-    '<path d="' + twigs(back.map(([x, y]) => [x + 5, y + 2]), 22, '') + '" stroke="#8A5A2E" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>';
+    '<path d="' + [[150, 96], [260, 132], [380, 120], [470, 140], [520, 108], [200, 150], [310, 84]].map(([x, y]) => 'M' + (x - 4) + ' ' + y + 'a4 1.8 0 1 0 8 0a4 1.8 0 1 0 -8 0').join('') + '" fill="#6A4A2A" opacity=".6"/>' +
+    '<path d="' + hedge(back, 40, 4, 7) + '" fill="#5A3A22"/>' +
+    '<path d="' + hedge(back.map(([x, y]) => [x + 3, y + 1]), 26, 3, 11) + '" fill="#76502E"/>' +
+    '<path d="' + twigs(back, 36, '') + '" stroke="#A47848" stroke-width="1" fill="none" stroke-linecap="round" opacity=".75"/></svg>';
 }
 export function kraalFront(): string {
   const near = arc(112, 62, .16, .98, 34, 1);   // the near hedge, open on the left where the cows come in
   return '<svg class="kfront" viewBox="0 0 640 180" preserveAspectRatio="none" aria-hidden="true">' +
-    '<path d="' + near.map(([x, y], i) => (i ? 'L' : 'M') + x + ' ' + y).join(' ') + '" stroke="#5E3A1C" stroke-width="6" fill="none" stroke-linecap="round"/>' +
-    '<path d="' + twigs(near, 16, '') + '" stroke="#6B4422" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
-    '<path d="' + twigs(near.map(([x, y]) => [x + 4, y + 1]), 11, '') + '" stroke="#8A5A2E" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
+    '<path d="' + hedge(near.map(([x, y]) => [x, y + 2]), 26, 3, 5) + '" fill="#4A2E18"/>' +
+    '<path d="' + hedge(near.map(([x, y]) => [x + 4, y + 3]), 16, 2, 9) + '" fill="#6A4626"/>' +
+    '<path d="' + twigs(near, 22, '') + '" stroke="#B0844E" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".8"/>' +
     // the gate posts either side of the gap
     '<path d="M' + n2(320 - 300 * Math.cos(Math.PI * .16)) + ' ' + n2(112 + 62 * Math.sin(Math.PI * .16)) + ' v-26 M22 112 v-24" stroke="#4E2E14" stroke-width="5" stroke-linecap="round"/></svg>';
 }
