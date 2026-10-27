@@ -137,10 +137,24 @@ const COWDEFS = () => ['wf', 'rb', 'gu'].map((k) => '<g id="' + P + '-c' + k + '
   '<g id="' + P + '-c' + k + 'd" transform="' + FRAME + '">' + cowArt(k, true).replace(/ class="x-(tl|ch)"/g, '') + '</g>').join('') +
   '<g id="' + P + '-crbk" transform="' + FRAME + '">' + cowArt('rb', 24).replace(/ class="x-(tl|ch)"/g, '') + '</g>';
 
-/* a neem tree: a stout trunk and a broad round canopy of small leaves */
-const neem = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path d="M-2.4 0 Q-3 -14 -1.6 -24 L1.6 -24 Q3 -14 2.4 0Z" fill="#5A3A1E"/><path d="M0 -18 L-9 -27 M0 -16 L10 -26 M0 -22 L-3 -32" stroke="#5A3A1E" stroke-width="1.6" stroke-linecap="round"/>' +
-  '<g fill="#3E6B2E"><ellipse cx="0" cy="-34" rx="20" ry="11"/><ellipse cx="-11" cy="-28" rx="11" ry="7"/><ellipse cx="11" cy="-29" rx="11" ry="7"/></g>' +
-  '<g fill="#5A8A3C"><ellipse cx="-5" cy="-38" rx="11" ry="6"/><ellipse cx="8" cy="-35" rx="8" ry="5"/><ellipse cx="-14" cy="-31" rx="5" ry="3"/></g><g fill="#7AA64C" opacity=".7"><ellipse cx="-6" cy="-41" rx="6" ry="2.6"/><ellipse cx="9" cy="-38" rx="4" ry="2"/></g></g>';
+/* a crown of foliage: an ellipse whose edge is a run of small scallops (leaf clusters), one path (round five) */
+function crown(cx, cy, rx, ry, n, seed = 1) {
+  const R = rng(seed * 7919 + 13); let d = '', prev = null;
+  for (let i = 0; i <= n; i++) { const a = Math.PI * 2 * i / n, k = .9 + R() * .16, x = cx + Math.cos(a) * rx * k, y = cy + Math.sin(a) * ry * k;
+    if (!prev) d = 'M' + r1(x) + ' ' + r1(y);
+    else { const am = Math.PI * 2 * (i - .5) / n, b = 1.16 + R() * .12; d += 'Q' + r1(cx + Math.cos(am) * rx * b) + ' ' + r1(cy + Math.sin(am) * ry * b) + ' ' + r1(x) + ' ' + r1(y); }
+    prev = 1; }
+  return d + 'Z';
+}
+/* a neem tree (round five, Sani 2026-10-27): a stout trunk flaring at the root with its bark, the boughs, and a dense crown
+   of leaf clusters, dark underneath, lit on top towards the sun (upper left) */
+const neem = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="3" cy=".4" rx="13" ry="1.6" fill="#2E2410" opacity=".22"/>' +
+  '<path d="M-3.6 .4 Q-2.2 -1 -2.2 -4 Q-2.8 -14 -1.4 -24 L1.8 -24 Q2.8 -14 2.4 -4 Q2.4 -1 4 .4Z" fill="#5A3A1E"/><path d="M.8 -3 Q1.6 -13 1 -23 M-1.2 -6 Q-1.6 -12 -.6 -17" stroke="#3A2410" stroke-width=".5" fill="none" opacity=".7"/><path d="M-1.8 -4 Q-2.2 -14 -1 -23" stroke="#8A6440" stroke-width=".5" fill="none" opacity=".6"/>' +
+  '<path d="M0 -18 Q-5 -21 -9 -27 M0 -16 Q6 -19 10 -26 M0 -22 L-3 -32 M.6 -21 L5 -31" stroke="#5A3A1E" stroke-width="1.5" stroke-linecap="round" fill="none"/>' +
+  '<path d="' + crown(0, -31, 22, 12.4, 15, 1) + '" fill="#355E28"/>' +
+  '<path d="' + crown(-2.6, -34, 17, 9, 12, 2) + '" fill="#4C7B34"/>' +
+  '<path d="' + crown(-6, -37.4, 9.6, 4.8, 9, 3) + crown(7, -36, 5.4, 3, 7, 4) + '" fill="#73A046" opacity=".8"/>' +
+  '<path d="M-14 -26 q2 1.4 4 .4 M-4 -24.4 q2.4 1 4.6 0 M8 -25.4 q2 1.2 4 .2" stroke="#24401A" stroke-width="1" fill="none" opacity=".5"/></g>';
 
 /* bring a group nearer: scale k about (x, y), then drop it dy */
 const near_ = (g, x, y, k, dy) => '<g transform="translate(' + x + ' ' + (y + dy) + ') scale(' + k + ') translate(' + (-x) + ' ' + (-y) + ')">' + g + '</g>';
@@ -193,18 +207,24 @@ export function shanuScene(): string {
     '<radialGradient id="' + P + '-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8E2"/><stop offset=".35" stop-color="#FFF0C8" stop-opacity=".7"/><stop offset="1" stop-color="#FFF0C8" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + P + '-sh" cx=".38" cy=".36" r=".7"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></radialGradient>' +
     '<radialGradient id="' + P + '-du" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F2DDB2" stop-opacity=".8"/><stop offset="1" stop-color="#F2DDB2" stop-opacity="0"/></radialGradient>' +
-    HEADB + FACE + JALF + RIGF + WOMF + COWDEFS() + dabAllDefs() + '<path id="' + P + '-ft" d="M-3.6 -1.4h2.8v1.3h-3.4z M.8 -1.4h2.8l.6 1.3h-3.4z" fill="#2E2218"/>' +
+    HEADB + FACE + JALF + RIGF + WOMF + COWDEFS() + ['gr', 'gw', 'rb', 'ru'].map(dabDefs).join('') + '<path id="' + P + '-ft" d="M-3.6 -1.4h2.8v1.3h-3.4z M.8 -1.4h2.8l.6 1.3h-3.4z" fill="#2E2218"/>' +
     ['gr', 'gw', 'rb', 'ru'].map((k) => '<g id="' + P + '-a' + k + '">' + dabStill(0, 0, 1, k, 0) + '</g>').join('') + '</defs>';
   const an = (x, y, s, k, flip) => '<use href="#' + P + '-a' + k + '" transform="translate(' + n2(x) + ' ' + n2(y) + ') scale(' + (flip ? -s : s) + ' ' + s + ')"/>';
 
   const sky = '<rect width="320" height="200" fill="url(#' + P + '-sky)"/><circle cx="92" cy="40" r="28" fill="url(#' + P + '-sun)"/><circle cx="92" cy="40" r="7.5" fill="#FFF7DC"/>' +
     '<path d="M0 92 Q40 82 86 88 T170 84 T250 86 T320 82 V104 H0Z" fill="#B9AE8C" opacity=".45"/>' +
     '<g fill="#BBA27A" opacity=".5"><path d="M150 100 V92 H166 V100Z M170 100 V90 H180 V100Z"/><path d="M184 100 V76 L185.6 72 L187.2 76 V100Z"/><ellipse cx="176" cy="90" rx="4" ry="3.4"/></g>' +
-    '<g fill="#7F946A" opacity=".55">' + [[12, 6], [40, 5], [62, 7], [128, 5], [146, 6], [200, 6], [226, 5], [252, 7], [296, 6]].map(([x, r]) => '<ellipse cx="' + x + '" cy="' + (98 - r * .4) + '" rx="' + r + '" ry="' + (r * .6) + '"/><rect x="' + (x - .5) + '" y="' + (98 - r * .2) + '" width="1" height="3"/>').join('') + '</g>';
+    // far trees on the horizon, pale in the dust: the flat umbrellas of acacias and a round shea or two, two shapes in all
+    '<path d="' + [[12, 6], [40, 5], [62, 7], [128, 5], [146, 6], [200, 6], [226, 5], [252, 7], [296, 6]].map(([x, r], i) => i % 3 === 1 ? crown(x, 98 - r * .55, r * .8, r * .5, 8, i) :
+      'M' + r1(x - r * 1.3) + ' ' + r1(98 - r * .6) + 'Q' + r1(x - r) + ' ' + r1(98 - r * 1.05) + ' ' + x + ' ' + r1(98 - r * 1.08) + 'Q' + r1(x + r * 1.1) + ' ' + r1(98 - r * 1.05) + ' ' + r1(x + r * 1.35) + ' ' + r1(98 - r * .62) + 'Q' + x + ' ' + r1(98 - r * .45) + ' ' + r1(x - r * 1.3) + ' ' + r1(98 - r * .6) + 'Z').join('') + '" fill="#7F8F66" opacity=".5"/>' +
+    '<path d="' + [[12, 6], [40, 5], [62, 7], [128, 5], [146, 6], [200, 6], [226, 5], [252, 7], [296, 6]].map(([x, r]) => 'M' + x + ' 98.6 L' + r1(x + .3) + ' ' + r1(98 - r * .55) + ' M' + r1(x + .2) + ' ' + r1(98 - r * .3) + ' l' + r1(-r * .5) + ' ' + r1(-r * .3) + ' M' + r1(x + .2) + ' ' + r1(98 - r * .35) + ' l' + r1(r * .5) + ' ' + r1(-r * .25)).join('') + '" stroke="#6E6A52" stroke-width=".6" opacity=".55" fill="none"/>';
 
   const ground = '<path d="M0 100 Q160 96 320 100 V200 H0Z" fill="url(#' + P + '-gr)"/>' +
-    '<g fill="#B88B52" opacity=".3"><ellipse cx="70" cy="130" rx="40" ry="2.4"/><ellipse cx="240" cy="140" rx="54" ry="2.6"/><ellipse cx="150" cy="172" rx="80" ry="3"/><ellipse cx="40" cy="190" rx="40" ry="2"/></g>' +
-    '<g fill="#8A6A3A" opacity=".35">' + [[30, 140], [96, 150], [180, 136], [262, 156], [300, 182], [120, 186], [210, 192]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx="1.6" ry=".7"/>').join('') + '</g>';
+    // the yard's trodden earth (round five): hoofprints, dung and straw in one tile, darker where the animals stand
+    '<pattern id="' + P + '-yd" width="26" height="9" patternUnits="userSpaceOnUse"><path d="M3 2.2a.9 .5 0 1 0 .1 0M5 2.6a.9 .5 0 1 0 .1 0M16 6.4a.9 .5 0 1 0 .1 0M18 6.8a.9 .5 0 1 0 .1 0" fill="#8A6A3A" opacity=".5"/>' +
+    '<path d="M10 4.6 l2.6 -.6 M21 1.6 l2 .5 M7.6 7.4 l1.8 -.9" stroke="#E2C88E" stroke-width=".3" opacity=".8"/><ellipse cx="23" cy="7.2" rx=".9" ry=".4" fill="#5E4426" opacity=".5"/></pattern>' +
+    '<path d="M0 104 Q160 100 320 104 V200 H0Z" fill="url(#' + P + '-yd)" opacity=".75"/>' +
+    '<g fill="#9A7240" opacity=".28"><ellipse cx="84" cy="112" rx="44" ry="3.4"/><ellipse cx="240" cy="124" rx="58" ry="3.6"/><ellipse cx="150" cy="128" rx="90" ry="5"/><ellipse cx="160" cy="196" rx="170" ry="9"/></g>';
 
   const herder = (x, y, s, sk, c, flip, cls = '') => person({ x, y, s, skin: sk, c, t: '#E9D9A6', cap: 'malafa', capc: '#D9B464', capc2: '#6B3A1E', al: 'staff', ar: 'down', flip, cls: 'x-w x-hr ' + cls,
     hl: '<path d="M-7.9 -36 L-6.8 1.4" stroke="#6B4422" stroke-width=".9" stroke-linecap="round"/>' });
@@ -226,7 +246,9 @@ export function shanuScene(): string {
     '<g><path d="M35 113.8 Q34.4 110.4 37 110 Q39.6 110.4 39 113.8Z" fill="#2E7D32"/><path d="M39 111.4 l2 -1.4" stroke="#2E7D32" stroke-width=".7"/><path d="M36 110.2 q1 -1 2 0" stroke="#1B5E20" stroke-width=".6" fill="none"/>' +
     '<path d="M41.6 113.8 Q41 110.8 43.4 110.4 Q45.8 110.8 45.2 113.8Z" fill="#1565C0"/><path d="M45.2 111.6 l1.8 -1.2" stroke="#1565C0" stroke-width=".7"/>' +
     '<g fill="#F4E3B8" opacity=".9"><rect x="47.4" y="111.8" width="1.2" height="2" rx=".2"/><rect x="49.2" y="111.8" width="1.2" height="2" rx=".2"/><rect x="51" y="111.8" width="1.2" height="2" rx=".2"/></g><g fill="#B5651D"><rect x="47.4" y="112.8" width="1.2" height="1"/><rect x="49.2" y="112.8" width="1.2" height="1"/></g></g>' +
-    '<path d="M56 124 L57 119 H63 L64 124Z" fill="#4E4A46"/><ellipse cx="60" cy="119" rx="3.4" ry=".9" fill="#E8661A"/><path d="M58.6 118.8 Q59 116.6 61.4 116.4 Q63.6 116.8 62.6 119Z" fill="#37474F"/>' +
+    '<ellipse cx="61" cy="124.2" rx="5" ry=".8" fill="#2E2410" opacity=".3"/><path d="M56 124 Q55.6 121 57 119.4 H63 Q64.4 121 64 124Z" fill="#8A5A36"/><path d="M58.4 124 V121.8 Q60 120.8 61.6 121.8 V124Z" fill="#2A1A10"/><ellipse cx="60" cy="123.2" rx="1" ry=".5" fill="#F06A1A"/>' +
+    '<path d="M60.6 119.6 Q62.6 120.6 63.2 123.6" stroke="#5E3A1C" stroke-width=".6" fill="none" opacity=".6"/><ellipse cx="60" cy="119.4" rx="3.2" ry=".7" fill="#C2461A"/>' +
+    '<path d="M57.8 119.2 Q57.6 116.4 60 116.2 Q62.4 116.4 62.2 119.2Z" fill="#B0B8BC"/><path d="M62 117.6 Q63.8 116.8 64.4 115.6" stroke="#9AA2A6" stroke-width=".6" fill="none"/><path d="M58.6 116.6 Q60 115.4 61.4 116.6" stroke="#6E767A" stroke-width=".5" fill="none"/><path d="M58.4 118.4 Q58.4 117 59.4 116.7" stroke="#fff" stroke-width=".35" opacity=".6" fill="none"/>' +
     '<g class="x-stm"><path d="M60 115.6 q-1.4 -2.4 0 -4.6 q1.2 -2 0 -4" stroke="#fff" stroke-width=".7" fill="none" opacity=".7" stroke-linecap="round"/><path d="M37 109 q-1 -2 0 -3.6" stroke="#fff" stroke-width=".5" fill="none" opacity=".6"/></g>' +
     person({ x: 42, y: 116.2, s: .44, skin: 3, c: '#F4EBD0', t: '#C62828', cap: 'zanna', capc: '#2E5E3A', capc2: '#F4EBD0', al: 'front', ar: 'down', cls: 'x-w' }) +
     '<path d="M30 114 H54 L53 115.6 H31Z" fill="#8B5A2B"/><path d="M32 115.6 V124 M52 115.6 V124" stroke="#6B4422" stroke-width="1"/>' +
@@ -273,8 +295,12 @@ export function shanuScene(): string {
     '<path d="M214 100 H235" stroke="#123A60" stroke-width=".6"/><path d="M214 101.2 H235" stroke="#E8731A" stroke-width=".8"/><path d="M226 96 v8" stroke="#123A60" stroke-width=".45"/><rect x="229.4" y="98" width="2.6" height=".7" rx=".3" fill="#D0D4D8"/>' +
     '<rect x="211.6" y="102.4" width="3.2" height="1.8" rx=".4" fill="#FFE9A8"/><rect x="211.2" y="105" width="4" height="1.6" rx=".4" fill="#BFC4C8"/><path d="M214 95 Q214 90 218 89" stroke="#fff" stroke-width=".5" opacity=".35" fill="none"/>' +
     [222, 248, 276].map((x) => '<ellipse cx="' + (x + 1) + '" cy="112" rx="3.8" ry=".7" fill="#1A0E04" opacity=".45"/><circle cx="' + x + '" cy="108.6" r="3.4" fill="#1C1C1C"/><circle cx="' + x + '" cy="108.6" r="2.9" fill="none" stroke="#333" stroke-width=".5" stroke-dasharray=".6 .5"/><circle cx="' + x + '" cy="108.6" r="1.7" fill="#B23A2A"/><circle cx="' + x + '" cy="108.6" r=".7" fill="#D8DCE0"/>').join('') +
-    '<path d="M287 104 L306 117 H312 L291 104Z" fill="#A9814E"/><path d="M288 104.4 L307 116.6 M290 104.4 L309.4 116.6" stroke="#7A5530" stroke-width=".5"/>' +
-    '<g class="x-up"><g transform="translate(297 111) rotate(33)">' + cowLive(0, 0, .74, 'rb', 1, 'up', 'x-bull') + '</g></g>' +
+    // the loading ramp (round five): a bank of packed earth against the tailboard, a plank rail along it, the bull
+    // walking up it at an easy slope
+    '<path d="M286.6 104.2 L319 112 L319 113.2 L286.6 113.2Z" fill="#A47A48"/><path d="M286.6 104.2 L319 112" stroke="#D9B47C" stroke-width=".6"/><path d="M288 112.4 l7 -1.4 M299 112.8 l6 -.8 M291 108.4 l5 .9" stroke="#7A5530" stroke-width=".4" fill="none" opacity=".7"/>' +
+    '<ellipse cx="306" cy="113.4" rx="12" ry=".9" fill="#3C2810" opacity=".2"/>' +
+    '<g class="x-up"><g transform="translate(303 108.6) rotate(13)">' + cowLive(0, 0, .74, 'rb', 1, 'up', 'x-bull') + '</g></g>' +
+    '<path d="M287.4 100.4 L318.6 108 M290 101 V105 M304 104.4 V108.6 M317.4 107.7 V112" stroke="#6B4422" stroke-width=".8" stroke-linecap="round"/>' +
     herder(311, 119.4, .48, 1, '#E9DDC0', 1, 'x-push') + '</g>';
   const byLorry = person({ x: 226, y: 118.6, s: .48, skin: 0, dress: 'riga', c: '#7B1FA2', t: '#FFD54A', cap: 'zanna', capc: '#7A1F2B', capc2: '#E9C46A', capside: -1, al: 'front', ar: 'front', cls: 'x-w x-shrug',
       hl: '<rect x="-1.6" y="-19.8" width="2.6" height="1.6" fill="#7FB07A" stroke="#4E7A4A" stroke-width=".2"/>' });
@@ -285,7 +311,8 @@ export function shanuScene(): string {
 
   const tuft = (x, y) => '<path d="M' + x + ' ' + y + ' q-1 -3 -3 -4 M' + x + ' ' + y + ' q0 -4 1 -5 M' + x + ' ' + y + ' q1 -3 3.4 -3.6" stroke="#A9A050" stroke-width=".6" fill="none"/>';
   const near = neem(318, 122, 1.4) + '<g>' + tuft(10, 196) + tuft(16, 197) + tuft(306, 196) + tuft(196, 198) + tuft(70, 198) + '</g>';
-  const dust = '<g class="x-du d1"><ellipse cx="140" cy="104" rx="70" ry="9" fill="url(#' + P + '-du)"/></g><g class="x-du d2"><ellipse cx="250" cy="118" rx="50" ry="7" fill="url(#' + P + '-du)"/></g>';
+  // the dust hangs still (round five: its drift was too slow to see and repainted half the screen)
+  const dust = '<ellipse cx="140" cy="104" rx="70" ry="9" fill="url(#' + P + '-du)" opacity=".8"/><ellipse cx="250" cy="118" rx="50" ry="7" fill="url(#' + P + '-du)" opacity=".8"/>';
 
   return '<svg class="scene ' + P + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + defs + sky +
     egret(150, 54, .8, 'e1') + egret(176, 62, .62, 'e2') + ground + farHerds + far2 + fulani + dust + near_(rams, 84, 110, 1.12, 8) + near_(tea, 30, 125, 1.2, 8) + near_(haggle, 124, 122, 1.22, 11) + near_(poultry, 160, 122, 1.2, 10) +

@@ -404,7 +404,7 @@ export function moreGames(c: any): Record<string, any> {
         const TENS = [20, 30, 40, 50, 60, 70, 80, 90], HUN = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
         const P = shuffle(TENS).slice(0, 3).concat(shuffle(HUN).slice(0, 5)); let r = 0, got = 0, hundreds = 0, busy = false, v = 0;
         const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><span class="tally"><span class="coin s">Z</span> <b>0</b> / 8</span></div>');
-        const yard = h('<div class="yard"><div class="pen4"></div><span class="eg e1">' + egret() + '</span><span class="eg e2">' + egret() + '</span><span class="eg e3">' + egret() + '</span></div>');
+        const yard = h('<div class="yard"><div class="pen4"></div></div>');   // livestock only in the yard (r5: the egrets went)
         const pen = yard.querySelector('.pen4');
         run.scr.appendChild(yard); run.scr.appendChild(top);
         run.clock(150, () => done({ right: got, part: got / 8, hundreds }));
