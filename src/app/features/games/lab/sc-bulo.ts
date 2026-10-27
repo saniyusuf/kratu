@@ -256,7 +256,7 @@ export function buloScene(): string {
     `<g fill="none" stroke="rgba(160,104,52,.25)" stroke-width=".5"><path d="M0 150 Q80 144 150 152 T320 147"/><path d="M0 172 Q90 166 170 176 T320 170"/></g>` +
     `<g stroke="#8B7A3A" stroke-width=".6" fill="none" opacity=".8"><path d="M4 196 q-1 -6 1 -10 M7 196 q1 -7 -1 -11 M312 196 q1 -6 -1 -10 M315 196 q-1 -7 1 -11"/></g>`;
   const pots = at(46, 134, .55, pot('tulu', url('pot'))) + at(54, 135, .5, pot('tukunya', url('blk'), '#C9A27A')) +
-    at(207, 133, .45, pot('tulu', url('pot'))) + at(213, 134, .4, pot('tulu', url('pot')));
+    at(193, 134, .45, pot('tulu', url('pot'))) + at(199, 135, .4, pot('tulu', url('pot')));
 
   const defs = '<defs>' +
     lin('sky', ['#7FC4EA', '#C4E4EE', '#F4E6C6']) + lin('ground', ['#D9B07A', '#CFA068', '#C09058']) + lin('wall', ['#D08A4E', '#B4692F']) +
@@ -271,7 +271,7 @@ export function buloScene(): string {
 
   return `<svg class="scene ${P}" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">` + defs + sky + land +
     hut(180, 124, .8) + hut(198, 126, .66) + `<rect y="60" width="320" height="70" fill="${url('haze')}"/>` + house() + at(24, 132, 1.3, neem()) + pots +
-    at(224, 135, 1, well()) + at(236, 140, .5, drawer) + at(287, 117, .46, topman) + at(268.6, 128.6, .5, carrier) +
+    at(210, 135, 1, well()) + at(222, 140, .5, drawer) + at(287, 117, .46, topman) + at(268.6, 128.6, .5, carrier) +
     at(122, 141, .55, donkey(), '', false) + stack +
     `<g transform="translate(228 153)">${mudPit()}${at(-11, 3.4, .62, treaderA)}${at(12, 2.8, .6, treaderB)}<g transform="translate(0 2.2)">${mudFront}</g></g>` +
     bricks + brick(300, 164, '#8A5634') + brick(303, 168, '#8A5634') + at(287, 158, .66, moulder) +
