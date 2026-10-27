@@ -59,3 +59,36 @@
 .glab .deal.look.away{animation:g-dlleave 1.8s ease-in forwards}@keyframes g-dlleave{0%{transform:scaleX(-1)}100%{transform:translateX(40cqw) scaleX(-1)}}
 .glab .deal.look.away .buyer{animation:none}.glab .deal.look.away .bob{animation:g-dlbob2 .32s ease-in-out 6 alternate}@keyframes g-dlbob2{to{transform:translateY(-.5cqw)}}
 @media (prefers-reduced-motion:reduce){.glab .mktime.late,.glab .deal.look,.glab .deal.look *{animation:none!important}}
+
+/* ---- realism pass (Sani 2026-10-27): nothing floats. The photo stands on a wooden easel whose feet are on the
+   square's ground (--gnd is set by the game: board top to the stage's ground, in cqw); the frame is lit from the
+   upper left; the dillali (market.ts auctioneer) stands beside it with his hand up to it; the onlookers are the
+   square's own people, as big as their place on the ground says. ---- */
+.glab .scr.dillali>.mkboard .mkeasel{position:absolute;left:3cqw;right:3cqw;top:8cqw;height:calc(var(--gnd,40cqw) - 8cqw);z-index:-1;pointer-events:none}
+.glab .scr.dillali .mkeasel .lg{position:absolute;top:0;bottom:0;width:1.5cqw;border-radius:.35cqw .35cqw .2cqw .2cqw;transform-origin:50% 0;
+  background:repeating-linear-gradient(90deg,rgba(60,30,8,0) 0 .28cqw,rgba(60,30,8,.2) .28cqw .36cqw),linear-gradient(90deg,#B98547,#8B5A2B 55%,#5A381A)}
+.glab .scr.dillali .mkeasel .lg.l{left:2cqw;transform:rotate(5deg)}
+.glab .scr.dillali .mkeasel .lg.r{right:2cqw;transform:rotate(-5deg)}
+.glab .scr.dillali .mkeasel .lg.b{left:calc(50% - .5cqw);width:1cqw;bottom:2.4cqw;filter:none;background:linear-gradient(90deg,#7A4E26,#4E3016)}
+.glab .scr.dillali .mkeasel .lg::after{content:"";position:absolute;left:-1.2cqw;right:-1.2cqw;bottom:-.7cqw;height:1.4cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(40,24,10,.5),rgba(40,24,10,0))}
+.glab .scr.dillali .mkeasel::after{content:"";position:absolute;left:4cqw;right:-9cqw;bottom:-1.4cqw;height:2.6cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(40,24,10,.22),rgba(40,24,10,0))}
+/* the ledge the frame rests on, with the clock along it */
+.glab .scr.dillali .mkeasel::before{content:"";position:absolute;left:-1.6cqw;right:-1.6cqw;top:calc(24cqw - 8cqw - .4cqw);height:3.6cqw;border-radius:.4cqw;
+  background:repeating-linear-gradient(0deg,rgba(60,30,8,0) 0 .4cqw,rgba(60,30,8,.16) .4cqw .5cqw),linear-gradient(#B07C44,#7A4E26);box-shadow:.4cqw .6cqw .8cqw rgba(30,18,6,.35)}
+.glab .scr.dillali .mktime{margin-left:1cqw;margin-right:1cqw}
+.glab .scr.dillali .mkframe{border-color:#B07C44 #6B4422 #5A381A #A06C38;box-shadow:.8cqw 1cqw 1.2cqw rgba(30,18,6,.4),inset 0 0 0 .2cqw #4E3016,inset .5cqw .5cqw 1cqw rgba(0,0,0,.25)}
+
+/* the dillali: feet on the ground line, his raised hand at the board's left edge */
+.glab .scr.dillali .dstage.mk .dillw{left:17cqw;width:19cqw;height:33cqw}
+.glab .scr.dillali .dstage.mk .dillw .dill{width:100%;height:100%}
+.glab .scr.dillali .dstage .pm-sad{opacity:0}.glab .scr.dillali .dstage.sad .pm-sad{opacity:1}.glab .scr.dillali .dstage.sad .pm-smile{opacity:0}
+
+/* the onlookers and the shopper: the square's people, standing on the ground with their shadows */
+.glab .scr.dillali .dstage.mk .crowd{left:68.5cqw;gap:0;bottom:1cqw}
+.glab .scr.dillali .crowd .pp-w{width:10cqw;height:20cqw}
+.glab .scr.dillali .deal .buyer{width:10cqw;height:19.5cqw}
+.glab .scr.dillali .kwp .x-a{transform-box:fill-box;transform-origin:50% 50%}
+.glab .scr.dillali .crowd.clapping{--eo:0;--eh:1}
+.glab .scr.dillali .crowd.clapping .x-a{animation:g-dlclap .3s ease-in-out infinite alternate}@keyframes g-dlclap{from{transform:rotate(-30deg)}to{transform:rotate(-55deg)}}
+.glab .scr.dillali .dstage.sad{--ms:0;--mf:1}
+@media (prefers-reduced-motion:reduce){.glab .scr.dillali .crowd .x-a{animation:none!important}}

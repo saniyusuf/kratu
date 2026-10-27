@@ -6,7 +6,7 @@
  * microphone and the clock waits while she listens.
  */
 import * as A from './art4';
-import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, coinClink, aaNo } from './market';
+import { GOODS, ACT_MS, deal, photoCard, inspector, coinBurst, coinClink, aaNo, auctioneer, crowdKw } from './market';
 import { durbarRider, emirThrone, sallahBand, dogari, maiFanka, hooves, fanfare, groan, RIDER_COUNT } from './durbar';
 import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { dabba, dabSound, dabbaAlone } from './sc-shanu';
@@ -200,19 +200,22 @@ export function moreGames(c: any): Record<string, any> {
         const items = shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6), among = G.flat();
         const LIMIT = 10000;   // ms to say each thing
         let r = 0, sold = 0, tick = 0;
-        const st = h('<div class="dstage mk"><div class="dillw">' + A.dillali() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + A.crowd(3) + '</div></div>');
-        const board = h('<div class="mkboard"><div class="mkgoods"></div><div class="mkdrawn"></div><div class="mkfx"></div><div class="mktime"><i></i></div></div>');
+        const st = h('<div class="dstage mk"><div class="dillw">' + auctioneer() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + crowdKw(3) + '</div></div>');
+        // the photo stands on a wooden easel whose feet are on the square's ground (Sani 2026-10-27: nothing floats)
+        const board = h('<div class="mkboard"><div class="mkeasel"><i class="lg b"></i><i class="lg l"></i><i class="lg r"></i></div><div class="mkgoods"></div><div class="mkdrawn"></div><div class="mkfx"></div><div class="mktime"><i></i></div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(board); run.scr.appendChild(tally); run.scr.appendChild(box);
         run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
+        const fitEasel = () => { if (run.dead) { removeEventListener('resize', fitEasel); return; } const u = run.scr.getBoundingClientRect().width / 100; if (u) board.style.setProperty('--gnd', ((st.getBoundingClientRect().bottom - board.getBoundingClientRect().top) / u).toFixed(2) + 'cqw'); };
+        addEventListener('resize', fitEasel); fitEasel();
         const goods = board.querySelector('.mkgoods'), drawn = board.querySelector('.mkdrawn'), fx = board.querySelector('.mkfx'), clock = board.querySelector('.mktime');
         const dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
         const stopClock = () => { clearInterval(tick); tick = 0; clock.classList.remove('on', 'warn', 'late', 'rest'); };
         function next() {
           const w = items[r]; st.classList.remove('sad'); fx.innerHTML = ''; drawn.className = 'mkdrawn'; drawn.innerHTML = '';
-          goods.className = 'mkgoods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up');
+          goods.className = 'mkgoods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up'); fitEasel();
           dealw.innerHTML = inspector(r); const look = dealw.firstElementChild;
           let left = LIMIT, over = false, quiet = 0;
           const end = () => { if (over) return false; over = true; stopClock(); box.busy = true; return true; };

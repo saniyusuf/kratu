@@ -5,7 +5,8 @@
  * and prayed on, pots and food go on the head, the kettle is carried by its handle, the broom sweeps, caps, turbans,
  * kaftans and shoes are put on with a proud turn, the umbrella opens. Moving parts by transform and opacity only.
  */
-import { person, ram, goat } from './art4';
+import { ram, goat } from './art4';
+import { KW } from './sc-kasuwa';
 
 const G = (vb, inner) => `<svg class="good" viewBox="${vb}" aria-hidden="true">${inner}</svg>`;
 const SH = (cx, cy, rx) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx / 7}" fill="rgba(40,24,10,.25)"/>`;
@@ -80,9 +81,9 @@ export function deal(key: string, b: number): string {
     const o = { ...by, hat: 'cap' as any };
     if (key === 'cap') Object.assign(o, { hat: 'cap', hatc: '#6A1B9A' }); if (key === 'turban') Object.assign(o, { hat: 'turban', hatc: '#FFFFFF' });
     if (key === 'kaftan') Object.assign(o, { robe: '#F4EBD0', robe2: '#D9CBA6' });
-    return `<div class="deal act-wear"><span class="buyer">${person(o)}</span>${key === 'shoe' ? `<span class="feet">${item}</span>` : ''}</div>`;
+    return `<div class="deal act-wear"><span class="buyer">${kwPerson(kwOf(o))}</span>${key === 'shoe' ? `<span class="feet">${item}</span>` : ''}</div>`;
   }
-  const P = `<span class="buyer">${person({ ...by, arm: act === 'umbrella' ? 'up' : act === 'eat' ? 'clap' : 'down' })}</span>`;
+  const P = `<span class="buyer">${kwPerson(kwOf(by, act === 'umbrella' ? 'up' : act === 'eat' ? 'clap' : 'down'))}</span>`;
   if (act === 'lead') return `<div class="deal act-lead walk">${P}<span class="rope"></span><span class="animal">${item}</span></div>`;
   if (act === 'umbrella') return `<div class="deal act-umbrella">${P}<span class="brolly"><svg viewBox="0 0 100 60" aria-hidden="true"><path d="M4 50 Q50 -10 96 50 Q86 42 74 50 Q62 42 50 50 Q38 42 26 50 Q14 42 4 50 Z" fill="#1565C0"/><path d="M50 50 V8" stroke="#0D47A1" stroke-width="2"/></svg></span></div>`;
   return `<div class="deal act-${act}">${P}<span class="prop">${item}</span></div>`;
@@ -96,7 +97,7 @@ export function photoCard(src: string): string {
 }
 /** the round's shopper: walks up to the stall from the left and leans in to look; leaves with it, or walks off without */
 export function inspector(b: number): string {
-  return `<div class="deal look"><span class="buyer"><span class="bob">${person(BUYERS[b % BUYERS.length])}</span></span></div>`;
+  return `<div class="deal look"><span class="buyer"><span class="bob">${kwPerson(kwOf(BUYERS[b % BUYERS.length]))}</span></span></div>`;
 }
 /** coins that leap from the sale up to the tally */
 export function coinBurst(n = 6): string {
@@ -126,4 +127,85 @@ export function aaNo(): void {
     g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.09, t + .03); g.gain.setValueAtTime(.09, t + .14); g.gain.exponentialRampToValueAtTime(.0001, t + .26);
     o.connect(lp).connect(g).connect(c.destination); o.start(t); o.stop(t + .3);
   });
+}
+
+/* ---- realism pass (Sani 2026-10-27): the people of the square in the square's own hand, and a real dillali ---- */
+
+/** a market person drawn like the square's people (sc-kasuwa.ts), feet on the bottom of its box, with a contact shadow.
+ *  Their faces read --ms/--mf (frown) and --eo/--eh (happy eyes) like the background's. */
+export function kwPerson(o: any): string {
+  return `<svg class="pp kwp" viewBox="-13 -47 26 48.6" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><ellipse cx="3" cy=".5" rx="9" ry="1.3" fill="#2A1A0C" opacity=".14"/>${KW.person({ x: 0, y: 0, s: 1, ...o })}</svg>`;
+}
+/** the old buyer description (art4 style) as a square person */
+function kwOf(by: any, arm = 'down'): any {
+  const a = arm === 'up' ? 'up' : arm === 'clap' ? 'front' : 'down', sk = KW.SKIN[by.skin ?? 1];
+  if (by.hat === 'hijab') return { kind: 'woman', sk, top: by.robe, wrap: by.robe, wrap2: '#FFD54A', trim: '#FFD54A', cap: 'mayafi', capc: by.hatc, al: 'down', ar: a };
+  return { kind: 'man', sk, robe: by.robe, robe2: by.robe2, trim: '#E8D9A8', cap: by.hat === 'turban' ? 'turban' : 'hula', capc: by.hatc, capc2: by.robe2, beard: by.skin === 0 ? '#2A1A10' : '', al: 'down', ar: a };
+}
+const CROWD_KW = [
+  { kind: 'man', sk: KW.SKIN[1], robe: '#2F6B9A', robe2: '#24557C', trim: '#E8D9A8', cap: 'hula', capc: '#E9D9A6', capc2: '#24557C' },
+  { kind: 'woman', sk: KW.SKIN[2], top: '#AD1457', wrap: '#AD1457', wrap2: '#FFD54A', trim: '#FFD54A', cap: 'kallabi', capc: '#C2185B', capc2: '#FFD54A' },
+  { kind: 'man', sk: KW.SKIN[0], robe: '#F4EBD0', robe2: '#D9CBA6', trim: '#8EA8C8', cap: 'turban', capc: '#FFFFFF', beard: '#E8E4DC' },
+];
+/** the onlookers at the right: they clap (.clapping) and frown (.sad on the stage) */
+export function crowdKw(n = 3): string {
+  return CROWD_KW.slice(0, n).map((p, i) => `<span class="pp-w" style="--d:${i * .13}s">${kwPerson({ ...p, al: 'front', ar: 'front', acl: 'x-a', acr: 'x-a' })}</span>`).join('');
+}
+
+/** the dillali: a grown man about seven heads tall in a brown babban riga with its embroidered pocket (aljihu) and
+ *  neck, a cream jallabiya and wando under it, sandals, an embroidered hula, a short beard; his left arm up with the
+ *  wide sleeve fallen back to the elbow, his right hand holding a carbi (prayer beads). Lit from the upper left. */
+export function auctioneer(): string {
+  const sk = '#7A4A2A', skd = '#5A3520', robe = '#5B3A29', robeD = '#3E271A', robeL = '#76503B', emb = '#E2C26A', cr = '#EFE6D2', crD = '#CDBF9F', hair = '#1E140C';
+  return `<svg class="dill auc" viewBox="0 0 120 200" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs>` +
+    `<linearGradient id="mkA-r" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".13"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>` +
+    `<radialGradient id="mkA-f" cx=".36" cy=".32" r=".78"><stop offset="0" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>` +
+    `<radialGradient id="mkA-g"><stop offset="0" stop-color="#2A1A0C" stop-opacity=".6"/><stop offset="1" stop-color="#2A1A0C" stop-opacity="0"/></radialGradient></defs>` +
+    // cast shadow to the lower right (sun upper left) and the dark contact under the feet
+    `<path d="M40 197 Q90 192 118 195 Q92 200 44 199.4 Z" fill="#2A1A0C" opacity=".16"/><ellipse cx="54" cy="197.4" rx="24" ry="3.4" fill="url(#mkA-g)"/>` +
+    // wando and sandals
+    `<path d="M41 182 L41.6 193 L49.4 193 L49.6 182 Z" fill="${crD}"/><path d="M57 182 L57 193 L64.6 193 L65.4 182 Z" fill="${cr}"/>` +
+    `<path d="M38 193.4 Q36.6 197.6 41 198 L51 198 Q53 196.6 50.6 193.4 Z" fill="#3E2414"/><path d="M40 194 Q45 191.4 50 194" stroke="#8B2E1E" stroke-width="1.8" fill="none"/>` +
+    `<path d="M55.6 193.4 Q54.6 197.6 58.8 198 L69 198 Q71 196.6 68.4 193.4 Z" fill="#4A2C18"/><path d="M57.4 194 Q62.4 191.4 67.6 194" stroke="#A33A26" stroke-width="1.8" fill="none"/>` +
+    // the jallabiya under the riga
+    `<path d="M28 158 L26.6 185 Q52 189.6 75.4 185 L74 158 Z" fill="${cr}"/><path d="M28 158 L26.6 185 Q52 189.6 75.4 185 L74 158 Z" fill="url(#mkA-r)"/>` +
+    `<path d="M40 166 Q39 176 38.4 186 M62 166 Q63 176 64 186" stroke="#000" stroke-opacity=".12" stroke-width="1" fill="none"/>` +
+    // the right arm, hanging inside the riga, hand out at the side with the beads
+    `<path d="M24 74 Q14 100 18 128" stroke="${robeD}" stroke-width="11" stroke-linecap="round" fill="none"/>` +
+    // the babban riga: very wide, folded over the shoulders
+    `<path d="M36 55 Q50 51 64 55 L75 60 Q88 74 92 104 L96 172 Q52 180 8 172 L12 104 Q16 72 28 59 Z" fill="${robe}"/>` +
+    `<path d="M8 172 Q52 180 96 172 L95.4 176 Q52 184 8.4 176 Z" fill="#000" opacity=".16"/>` +
+    `<path d="M22 84 Q15 124 16 168 M36 70 Q31 120 33 174 M50 62 Q49 120 51 176 M78 96 Q84 134 85 172 M68 120 Q71 150 70 175" stroke="${robeD}" stroke-width="1.5" fill="none" opacity=".75"/>` +
+    `<path d="M26 92 Q20 128 21 166 M44 100 Q42 140 44 172" stroke="${robeL}" stroke-width="1.2" fill="none" opacity=".7"/>` +
+    `<path d="M36 55 Q50 51 64 55 L75 60 Q88 74 92 104 L96 172 Q52 180 8 172 L12 104 Q16 72 28 59 Z" fill="url(#mkA-r)"/>` +
+    // embroidery: the neck, the slit, the pocket with its spiral and the two knives (aska biyu)
+    `<path d="M41.6 55.6 Q50 66 58.4 55.6" stroke="${emb}" stroke-width="1.6" fill="none"/><path d="M50 63 V78" stroke="${emb}" stroke-width="1.1"/>` +
+    `<path d="M55 70 H73 L74 112 H56 Z" fill="none" stroke="${emb}" stroke-width=".9" opacity=".9"/>` +
+    `<path d="M64.6 80 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0 M64.6 80 m-2.6 0 a2.6 2.6 0 1 0 5.2 0" stroke="${emb}" stroke-width=".9" fill="none"/>` +
+    `<path d="M58 89 L61.6 89 L59.8 110 Z M67.6 89 L71.2 89 L69.4 110 Z" fill="${emb}" opacity=".9"/><path d="M57 114 l2 -2 l2 2 l2 -2 l2 2 l2 -2 l2 2 l2 -2 l2 2" stroke="${emb}" stroke-width=".8" fill="none"/>` +
+    // right hand and carbi
+    `<path d="M15.4 126 Q14 133 18 135.6 Q22.6 136 22.8 130.6 Q22.4 126.6 19 126 Z" fill="${sk}"/><path d="M15.4 126 Q14 133 18 135.6" stroke="${skd}" stroke-width=".7" fill="none"/>` +
+    `<g fill="#6B2E1A">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map((k) => `<circle cx="${(18.6 + Math.sin(k * .55) * 3.2).toFixed(1)}" cy="${(136.4 + k * 1.7).toFixed(1)}" r=".95"/>`).join('')}</g><path d="M19 151.6 l-.8 3.4 h1.6 Z" fill="${emb}"/>` +
+    // the raised left arm: the sleeve folded back over the upper arm, the bare forearm, the open hand
+    `<g class="arm"><path d="M66 57 Q79 51 86 41 L95 48 Q90 64 78 76 Q71 70 66 57 Z" fill="${robe}"/><path d="M84 42 Q99 44 96 58 Q99 78 91 96 Q84 80 79 70 Z" fill="${robeD}"/>` +
+    `<path d="M84 42 Q99 44 96 58" stroke="${emb}" stroke-width="1" fill="none"/><path d="M68 60 Q78 58 88 46" stroke="${robeD}" stroke-width="1.1" fill="none" opacity=".8"/>` +
+    `<path d="M89.6 46 L95.4 20" stroke="${sk}" stroke-width="6.6" stroke-linecap="round"/><path d="M92 46 L97.6 21" stroke="${skd}" stroke-width="2" stroke-linecap="round" opacity=".6"/>` +
+    `<path d="M92.4 22 Q91.6 13 94 9 L94.8 3.2 Q95.6 1.4 96.8 3 L97 9 L97.8 1.6 Q98.8 -.2 99.8 1.6 L99.8 9 L100.8 3 Q102 1.4 102.8 3.2 L102.4 10.4 L104.2 6.8 Q106 6 105.8 8.4 L102.6 18.4 Q99 23.4 92.4 22 Z" fill="${sk}"/>` +
+    `<path d="M97 9 L97.2 14 M99.8 9 L99.8 14 M102.4 10.4 L101.8 14.6" stroke="${skd}" stroke-width=".6" fill="none"/></g>` +
+    // neck, ears, face (lit from the upper left), beard, eyes, brows, nose, the calling mouth and the frown
+    `<path d="M45 45 L45 57 Q50 59.4 55 57 L55 45 Z" fill="${skd}"/>` +
+    `<ellipse cx="38" cy="36.6" rx="2.2" ry="3.6" fill="${sk}"/><ellipse cx="62" cy="36.6" rx="2.2" ry="3.6" fill="${skd}"/>` +
+    `<path d="M38.4 31 Q38.4 21 50 20.4 Q61.6 21 61.6 31 Q61.6 44 56 49.6 Q50 53.6 44 49.6 Q38.4 44 38.4 31 Z" fill="${sk}"/><path d="M38.4 31 Q38.4 21 50 20.4 Q61.6 21 61.6 31 Q61.6 44 56 49.6 Q50 53.6 44 49.6 Q38.4 44 38.4 31 Z" fill="url(#mkA-f)"/>` +
+    `<path d="M39 37 Q40 47 45 50.6 Q50 54.6 55 50.6 Q60 47 61 37 Q60.4 45 55 47.6 Q50 49.4 45 47.6 Q39.6 45 39 37 Z" fill="${hair}"/><path d="M46.6 50.6 Q50 56.4 53.4 50.6 Z" fill="${hair}"/>` +
+    `<path d="M45 41.2 Q50 38.8 55 41.2" stroke="${hair}" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +
+    `<ellipse cx="45" cy="32.6" rx="2.3" ry="1.3" fill="#F2ECE2"/><ellipse cx="55" cy="32.6" rx="2.3" ry="1.3" fill="#E6DED2"/><circle cx="45.4" cy="32.7" r="1.05" fill="#1A0E06"/><circle cx="55.4" cy="32.7" r="1.05" fill="#1A0E06"/>` +
+    `<path d="M42.6 32 Q45 30.8 47.4 31.8 M52.6 31.8 Q55 30.8 57.4 32" stroke="${skd}" stroke-width=".6" fill="none"/>` +
+    `<path d="M42 29.6 Q45 28 48 29.4 M52 29.4 Q55 28 58 29.6" stroke="${hair}" stroke-width="1.15" fill="none" stroke-linecap="round"/>` +
+    `<path d="M50.2 32.4 Q49.6 36.8 47.8 38 Q50 39.4 52.4 38.2" stroke="${skd}" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M48.8 33 Q48.4 36 47.8 37.4" stroke="#fff" stroke-opacity=".18" stroke-width=".7" fill="none"/>` +
+    `<path class="mouth pm-smile" d="M46.4 42.6 Q50 47.8 53.6 42.6 Q50 43.6 46.4 42.6 Z" fill="#3A1A0A"/>` +
+    `<path class="pm-sad" d="M46.4 45 Q50 42.4 53.6 45" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>` +
+    // the hula: embroidered, a little tilted
+    `<path d="M38 27.4 Q37 13.6 50 12.8 Q63 13.6 62 27.4 Q50 24.4 38 27.4 Z" fill="#EDE2C4"/><path d="M51 13 Q62.6 14 62 27.4 Q57 25.6 52 25.2 Q55 19 51 13 Z" fill="#000" opacity=".12"/>` +
+    `<path d="M39.2 21.6 Q50 18.8 60.8 21.6" stroke="#8B5A2B" stroke-width=".7" fill="none"/><path d="M39.6 24.8 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.8 2 l1.8 -2 l1.2 1.4" stroke="#2E7D32" stroke-width=".7" fill="none"/>` +
+    `<path d="M42 17.4 Q50 14.6 58 17.4" stroke="#8B5A2B" stroke-width=".6" fill="none" stroke-dasharray="1 1"/></svg>`;
 }

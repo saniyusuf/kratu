@@ -38,7 +38,7 @@ const bunting = (x0, x1, y, sag) => { const cs = ['#D7261E', '#F2C230', '#2E7D32
   return s; };
 
 export function dillaliScene(): string {
-  const sky = '<rect width="320" height="200" fill="' + U('dsky') + '"/><circle cx="236" cy="44" r="20" fill="' + U('dsun') + '"/><circle cx="236" cy="44" r="5.5" fill="#FFF8DC"/>' +
+  const sky = '<rect width="320" height="200" fill="' + U('dsky') + '"/><circle cx="78" cy="40" r="26" fill="' + U('dsun') + '"/><circle cx="78" cy="40" r="5.5" fill="#FFF8DC"/>' +
     '<g class="x-cloud"><g fill="#fff" opacity=".85" transform="translate(96 40)"><ellipse rx="15" ry="3.4"/><ellipse cx="7" cy="-2" rx="8" ry="4"/><ellipse cx="-6" cy="-1.3" rx="6" ry="3"/></g></g>' +
     '<g class="x-cloud x-c2"><g fill="#fff" opacity=".7" transform="translate(200 36)"><ellipse rx="12" ry="2.8"/><ellipse cx="6" cy="-1.6" rx="6" ry="3.2"/></g></g>' +
     // birds drifting over the town
@@ -61,7 +61,8 @@ export function dillaliScene(): string {
   const ground = '<path d="M0 84 H320 V200 H0 Z" fill="' + U('dgr') + '"/><path d="M0 88 Q160 84 320 88 V92 Q160 88 0 92 Z" fill="#B98A50" opacity=".25"/>' +
     // the dirt road at the back, where the keke runs
     '<path d="M0 96 Q160 92 320 96 V102 Q160 98 0 102 Z" fill="#CBA06A" opacity=".45"/>' +
-    '<g fill="#A57A44" opacity=".35"><ellipse cx="40" cy="130" rx="14" ry="1"/><ellipse cx="280" cy="136" rx="16" ry="1"/><ellipse cx="120" cy="160" rx="10" ry=".8"/><ellipse cx="210" cy="176" rx="14" ry="1"/><circle cx="96" cy="140" r=".8"/><circle cx="230" cy="122" r=".7"/><circle cx="150" cy="190" r=".9"/></g>';
+    '<rect x="0" y="104" width="320" height="96" fill="url(#' + PF + '-rip)" opacity=".55"/><rect x="0" y="84" width="320" height="116" fill="' + U('dnear') + '"/>' +
+    '<g fill="#A57A44" opacity=".35"><ellipse cx="40" cy="130" rx="14" ry="1"/><ellipse cx="280" cy="136" rx="16" ry="1"/><ellipse cx="236" cy="150" rx="7" ry=".6"/><ellipse cx="210" cy="176" rx="14" ry="1"/><circle cx="96" cy="140" r=".8"/><circle cx="230" cy="122" r=".7"/><circle cx="150" cy="190" r=".9"/></g>';
   const far = crowd(184, 264, 92, 10, 3);
   // a kosai seller's smoke at the back corner, and the hens
   const smoke = '<g class="x-smoke"><circle cx="122" cy="84" r="2.6" fill="#E8E2D8" opacity=".55"/><circle cx="124" cy="78" r="3.4" fill="#E8E2D8" opacity=".4"/><circle cx="121" cy="72" r="4.4" fill="#E8E2D8" opacity=".25"/></g>' +
@@ -86,9 +87,10 @@ export function dillaliScene(): string {
   const animals = chicken(92, 126, .7, '#B5652E', false, 'x-pk') + chicken(102, 129, .6, '#F2EDE4', true, 'x-pk x-pk2') + chicken(214, 128, .6, '#2A2A2A', true, 'x-pk') +
     '<g opacity=".95">' + kwarya(196, 106, 4.6, tomatoes(196, 103, 4)) + kwano(208, 106, 4.2, '#F4F1EA', '#1F5FA8', peppers(208, 103.4, 3.8)) + '</g>';
   return '<svg class="scene ' + PF + ' dl4" viewBox="53 30 214 134" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
-    lg('dsky', '#86C8EA', '#BFE3F1', '#F6EBCF') + lg('dgr', '#E4C795', '#D7B27A', '#C99E64') +
+    lg('dsky', '#86C8EA', '#BFE3F1', '#F6EBCF') + lg('dgr', '#E4C795', '#D7B27A', '#C99E64') + lg('dhaze', 'rgba(232,240,246,0)', 'rgba(232,240,246,.38)', 'rgba(232,240,246,0)') + lg('dnear', 'rgba(120,80,40,0)', 'rgba(120,80,40,0)', 'rgba(110,70,32,.22)') +
+    '<pattern id="' + PF + '-rip" width="14" height="5" patternUnits="userSpaceOnUse"><path d="M0 3 Q3.5 1.6 7 3 T14 3" stroke="#B48A52" stroke-width=".35" fill="none" opacity=".6"/><path d="M2 4.6 Q5 3.6 8 4.6" stroke="#F2DDB4" stroke-width=".3" fill="none" opacity=".7"/><circle cx="11" cy="1" r=".22" fill="#9A7444"/></pattern>' +
     '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#AEB7BC"/><rect width=".4" height="6" fill="#7E888E"/><rect x=".5" width=".5" height="6" fill="#C8D0D4"/></pattern>' +
     KW.defs() + '<radialGradient id="' + PF + '-dsun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFF1B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></radialGradient></defs>' +
-    sky + town + ground + pen + stalls + far + smoke + lookers + animals + road + stopper + basin + ramMan + baro + '</svg>';
+    sky + town + ground + pen + stalls + '<rect x="0" y="40" width="320" height="64" fill="' + U('dhaze') + '"/>' + far + smoke + lookers + animals + road + stopper + basin + ramMan + baro + '</svg>';
 }
