@@ -186,3 +186,24 @@
 .glab .tstage.glad .sitter{animation:g-nod .45s ease-in-out 2 alternate}
 @keyframes g-nod{to{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.glab .tstage *{animation-duration:.01s!important;animation-iteration-count:1!important}}
+
+/* ---- realism pass (Sani 2026-10-27): the picture is the stand's menu board, in a wooden frame on an easel whose feet
+   stand on the ground in front of the stand; the waiting clock lies along its ledge. The bulb throws a warm pool of
+   light on the ground under the stand and the bench. ---- */
+.glab .tstage .teasel{position:absolute;left:50%;width:25cqw;margin-left:-12.5cqw;top:30cqw;bottom:2.4cqw;z-index:2;pointer-events:none}
+.glab .tstage .teasel i{position:absolute;top:0;bottom:0;width:1.4cqw;border-radius:.3cqw .3cqw .2cqw .2cqw;transform-origin:50% 0;
+  background:repeating-linear-gradient(90deg,rgba(40,20,6,0) 0 .26cqw,rgba(40,20,6,.22) .26cqw .34cqw),linear-gradient(90deg,#9A6A3A,#704626 55%,#43280F)}
+.glab .tstage .teasel i:nth-child(1){left:2.4cqw;transform:rotate(6deg)}
+.glab .tstage .teasel i:nth-child(2){right:2.4cqw;transform:rotate(-6deg)}
+.glab .tstage .teasel i:nth-child(3){left:calc(50% - .45cqw);width:.9cqw;bottom:2cqw;background:linear-gradient(90deg,#5E3C1E,#3A2410)}
+.glab .tstage .teasel i::after{content:"";position:absolute;left:-1.2cqw;right:-1.2cqw;bottom:-.7cqw;height:1.4cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,0))}
+.glab .tstage .teasel::before{content:"";position:absolute;left:-2.2cqw;right:-2.2cqw;top:5.4cqw;height:2.6cqw;border-radius:.4cqw;
+  background:repeating-linear-gradient(0deg,rgba(40,20,6,0) 0 .4cqw,rgba(40,20,6,.18) .4cqw .5cqw),linear-gradient(#9A6A3A,#5E3C1E);box-shadow:.4cqw .6cqw .8cqw rgba(0,0,0,.4)}
+.glab .tstage .teasel::after{content:"";position:absolute;left:-3cqw;right:-8cqw;bottom:-1.4cqw;height:2.8cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.3),rgba(0,0,0,0))}
+.glab .tstage .tcard .ph{padding:0!important;border-radius:.7cqw!important;overflow:hidden;background:#2E1A08!important;border:.9cqw solid;border-color:#A8763E #5E3C1E #4A2E14 #8E5E2E;
+  box-shadow:.8cqw 1cqw 1.4cqw rgba(0,0,0,.5),inset 0 0 0 .2cqw #3A2410!important}
+.glab .tstage .tcard .ph img{border-radius:.2cqw!important;object-fit:cover}
+.glab .tstage .twait{background:rgba(20,12,4,.55)!important;box-shadow:inset 0 0 0 .2cqw rgba(255,232,190,.5)!important}
+/* the bulb's light on the ground (a still gradient, nothing animated) */
+.glab .tstage .tsw::after{content:"";position:absolute;left:-6cqw;right:-34cqw;bottom:-3cqw;height:13cqw;pointer-events:none;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,196,110,.26),rgba(255,196,110,.1) 60%,rgba(255,196,110,0));mix-blend-mode:screen}

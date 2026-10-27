@@ -21,7 +21,14 @@ const frothy = (x, y, tilt = 0) =>
   `<g${tilt ? ` transform="rotate(${tilt} ${x} ${y})"` : ''}><path d="M${x - 7} ${y - 6} L${x + 7} ${y - 6} L${x + 6} ${y + 8} L${x - 6} ${y + 8} Z" fill="#F4F4F4"/>` +
   `<path d="M${x - 6.6} ${y + 5} L${x + 6.4} ${y + 5}" stroke="#1E5AA8" stroke-width="1.6"/><ellipse cx="${x}" cy="${y - 6}" rx="7.4" ry="2.6" fill="#E9CFA6"/>` +
   `<circle cx="${x - 3}" cy="${y - 7.4}" r="2.6" fill="#FBF1DD"/><circle cx="${x + 2}" cy="${y - 8}" r="2.8" fill="#FBF1DD"/><circle cx="${x + 5}" cy="${y - 6.6}" r="1.8" fill="#FBF1DD"/></g>`;
-const face = (x, y, r, sk) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${sk}"/><circle cx="${x - r * .35}" cy="${y - 1}" r="1.7" fill="#1A0E06"/><circle cx="${x + r * .35}" cy="${y - 1}" r="1.7" fill="#1A0E06"/>` +
+/* a face lit from the stand's bulb at the upper left (Sani 2026-10-27, realism): ears, the shaded right cheek, eyes with
+   their whites, brows and a nose; the mouth smiles, or frowns when the stage is sad */
+const face = (x, y, r, sk) => `<ellipse cx="${x - r * .97}" cy="${y + r * .08}" rx="${r * .17}" ry="${r * .27}" fill="${sk}"/><ellipse cx="${x + r * .97}" cy="${y + r * .08}" rx="${r * .17}" ry="${r * .27}" fill="${sk}"/><ellipse cx="${x + r * .97}" cy="${y + r * .08}" rx="${r * .17}" ry="${r * .27}" fill="#000" opacity=".22"/>` +
+  `<ellipse cx="${x}" cy="${y}" rx="${r * .94}" ry="${r}" fill="${sk}"/><path d="M${x + r * .2} ${y - r * .98} A${r * .94} ${r} 0 0 1 ${x + r * .2} ${y + r * .98} A${r * .42} ${r * .98} 0 0 0 ${x + r * .2} ${y - r * .98} Z" fill="#000" opacity=".2"/><ellipse cx="${x - r * .42}" cy="${y - r * .3}" rx="${r * .28}" ry="${r * .36}" fill="#fff" opacity=".09"/>` +
+  `<ellipse cx="${x - r * .36}" cy="${y - r * .06}" rx="${r * .17}" ry="${r * .1}" fill="#F1EAE0"/><ellipse cx="${x + r * .36}" cy="${y - r * .06}" rx="${r * .17}" ry="${r * .1}" fill="#DCD3C6"/>` +
+  `<circle cx="${x - r * .33}" cy="${y - r * .06}" r="${r * .085}" fill="#1A0E06"/><circle cx="${x + r * .39}" cy="${y - r * .06}" r="${r * .085}" fill="#1A0E06"/>` +
+  `<path d="M${x - r * .58} ${y - r * .3} Q${x - r * .36} ${y - r * .42} ${x - r * .14} ${y - r * .3} M${x + r * .14} ${y - r * .3} Q${x + r * .36} ${y - r * .42} ${x + r * .58} ${y - r * .3}" stroke="#1A0E06" stroke-width="${r * .08}" fill="none" stroke-linecap="round"/>` +
+  `<path d="M${x + r * .02} ${y - r * .02} Q${x - r * .04} ${y + r * .26} ${x - r * .14} ${y + r * .3} Q${x} ${y + r * .38} ${x + r * .14} ${y + r * .3}" stroke="#000" stroke-opacity=".35" stroke-width="${r * .06}" fill="none" stroke-linecap="round"/>` +
   `<path class="sm-happy" d="M${x - 5} ${y + 6} Q${x} ${y + 10} ${x + 5} ${y + 6}" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +
   `<path class="sm-sad" d="M${x - 5} ${y + 9} Q${x} ${y + 5} ${x + 5} ${y + 9}" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
 /* caps: the white hula, the embroidered red zanna */
@@ -56,7 +63,7 @@ export function teaStall(): string {
     // the man standing at the end of the table, in a kaftan and a zanna cap
     `<g class="cust">` +
     `<path d="M38 230 V254 M58 230 V254" stroke="#E8DDB8" stroke-width="9"/><path d="M30 254 h14 v5 h-16 Z M52 254 h14 v5 h-12 Z" fill="#3A2A1E"/>` +
-    `<path d="M30 112 Q48 104 66 112 L74 232 L22 232 Z" fill="${CL}"/><path d="M42 108 Q48 118 54 108" stroke="#E8DDB8" stroke-width="1.6" fill="none"/>` +
+    `<path d="M30 112 Q48 104 66 112 L74 232 L22 232 Z" fill="${CL}"/><path d="M52 108 Q62 108 66 112 L74 232 L52 232 Q58 170 52 108 Z" fill="#000" opacity=".17"/><path d="M36 130 Q32 180 30 232 M46 126 Q45 180 44 232 M60 140 Q64 190 66 232" stroke="#000" stroke-opacity=".13" stroke-width="1.6" fill="none"/><path d="M42 108 Q48 118 54 108" stroke="#E8DDB8" stroke-width="1.6" fill="none"/>` +
     arm(32, 116, 20, 150, 28, 178, '#255A99', C) +
     `<rect x="43" y="96" width="10" height="12" fill="${C}"/>` + face(48, 86, 15, C) + zanna(48, 86, 15) +
     `<g class="c-rest">${arm(64, 116, 80, 140, 70, 162, '#255A99', C)}${frothy(76, 156)}</g>` +
@@ -65,7 +72,7 @@ export function teaStall(): string {
     `</g>` +
     // the seller, behind the table
     `<g class="seller">` +
-    `<path d="M184 112 Q210 100 236 112 L244 200 L176 200 Z" fill="#2E7D32"/><path d="M210 106 V200" stroke="#1B5E20" stroke-width="1.6"/><path d="M198 106 Q210 120 222 106" stroke="#E8DDB8" stroke-width="2" fill="none"/>` +
+    `<path d="M184 112 Q210 100 236 112 L244 200 L176 200 Z" fill="#2E7D32"/><path d="M216 104 Q230 106 236 112 L244 200 L218 200 Q224 150 216 104 Z" fill="#000" opacity=".18"/><path d="M190 126 Q186 166 184 200 M226 128 Q232 166 236 200" stroke="#000" stroke-opacity=".13" stroke-width="1.6" fill="none"/><path d="M210 106 V200" stroke="#1B5E20" stroke-width="1.6"/><path d="M198 106 Q210 120 222 106" stroke="#E8DDB8" stroke-width="2" fill="none"/>` +
     `<rect x="204" y="92" width="12" height="12" fill="${S}"/>` + face(210, 80, 17, S) + hula(210, 80, 17) +
     // pulling tea: the low cup steady in the left hand, foam rising in it; the high cup in the right hand rises and falls and the stream stretches with it
     `<g class="p-pull">` + arm(188, 114, 206, 156, 244, 154, SL, S) +
@@ -117,8 +124,12 @@ export function teaStall(): string {
 function sitter(x: number, o: { cap: 'hula' | 'zanna'; robe: string; skin: number; beard?: boolean }): string {
   const sk = SK[o.skin];
   return `<path d="M${x - 14} 184 L${x - 12} 236 M${x + 12} 184 L${x + 12} 236" stroke="${o.robe}" stroke-width="11" stroke-linecap="round"/>` +
+    `<path d="M${x - 10} 186 L${x - 9} 236 M${x + 15} 186 L${x + 15} 236" stroke="#000" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>` +
     `<path d="M${x - 20} 236 h12 v6 h-14 Z M${x + 6} 236 h14 v6 h-12 Z" fill="#3A2A1E"/>` +
     `<path d="M${x - 18} 118 Q${x} 110 ${x + 18} 118 L${x + 22} 184 L${x - 22} 184 Z" fill="${o.robe}"/>` +
+    `<path d="M${x + 3} 112 Q${x + 14} 113 ${x + 18} 118 L${x + 22} 184 L${x + 5} 184 Q${x + 8} 150 ${x + 3} 112 Z" fill="#000" opacity=".17"/>` +
+    `<path d="M${x - 9} 128 Q${x - 12} 156 ${x - 14} 184 M${x - 1} 132 Q${x - 1} 160 ${x - 2} 184 M${x + 9} 130 Q${x + 12} 158 ${x + 14} 184" stroke="#000" stroke-opacity=".14" stroke-width="1.4" fill="none"/>` +
+    `<path d="M${x - 22} 184 L${x + 22} 184 L${x + 21} 188 L${x - 21} 188 Z" fill="#000" opacity=".16"/>` +
     `<rect x="${x - 5}" y="104" width="10" height="10" fill="${sk}"/>` + face(x, 96, 13, sk) +
     (o.beard ? `<path d="M${x - 9} 101 Q${x} 116 ${x + 9} 101 Q${x} 108 ${x - 9} 101 Z" fill="#E8E2D6"/>` : '') +
     (o.cap === 'zanna' ? zanna(x, 96, 13) : hula(x, 96, 13));

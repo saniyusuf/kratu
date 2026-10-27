@@ -282,7 +282,7 @@ export function moreGames(c: any): Record<string, any> {
         const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div>' +
           CUSTOMERS.map((c) => '<div class="tgot" style="left:' + c.x + 'cqw;bottom:' + c.hand + 'cqw"></div>').join('') +
           '<div class="twaiter">' + waiter() + '<div class="ttray"></div></div>' +
-          '<div class="tcard"></div><div class="twait"><i></i></div><div class="tbub"></div><div class="tserve"></div></div>');
+          '<div class="teasel" aria-hidden="true"><i></i><i></i><i></i></div><div class="tcard"></div><div class="twait"><i></i></div><div class="tbub"></div><div class="tserve"></div></div>');   // the picture stands on the stand's menu easel (Sani 2026-10-27)
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
         run.remind = () => say(line('j-shayi', 'how'), run);
