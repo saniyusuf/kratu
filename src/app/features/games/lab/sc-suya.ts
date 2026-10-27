@@ -148,25 +148,54 @@ const kwano = (x, y, r, c = '#F4F1EA', rim = '#1F5FA8', goods = '') => '<g trans
   '<path d="M' + n2(-r * 1.04) + ' ' + n2(-r * .6) + ' H' + n2(r * 1.04) + '" stroke="' + rim + '" stroke-width="' + n2(r * .13) + '" stroke-linecap="round"/><g transform="translate(' + -x + ' ' + -y + ')">' + goods + '</g></g>';
 
 /* ---------------- the street at night ---------------- */
-const zanko = (x0, x1, y, c) => { let s = '<g fill="' + c + '">'; for (let x = x0; x <= x1; x += 7) s += '<path d="M' + x + ' ' + y + ' l1.3 -3.6 l1.3 3.6 Z"/>'; return s + '</g>'; };
-const stars = (n) => { let s = ''; for (let i = 0; i < n; i++) s += '<circle cx="' + n1((i * 47.3 + 11) % 320) + '" cy="' + n1(4 + (i * 17.9) % 52) + '" r="' + (i % 4 ? .45 : .8) + '"/>'; return s; };
+/* the parapet of a Hausa house (round five): a tall curved zanko horn at each corner and small rounded crenels between,
+   one path per wall instead of a row of triangles */
+const zanko = (x0, x1, y, c) => { let d = 'M' + x0 + ' ' + (y + .4) + 'Q' + n1(x0 - .4) + ' ' + n1(y - 3) + ' ' + n1(x0 - 1.2) + ' ' + n1(y - 5.6) + 'Q' + n1(x0 + 1.6) + ' ' + n1(y - 3.4) + ' ' + n1(x0 + 2.8) + ' ' + y;
+  for (let x = x0 + 6; x < x1 - 5; x += 6) d += 'L' + n1(x - 1.2) + ' ' + y + 'Q' + n1(x - 1) + ' ' + n1(y - 1.9) + ' ' + x + ' ' + n1(y - 2) + 'Q' + n1(x + 1) + ' ' + n1(y - 1.9) + ' ' + n1(x + 1.2) + ' ' + y;
+  d += 'L' + n1(x1 - .8) + ' ' + y + 'Q' + n1(x1 + .4) + ' ' + n1(y - 3.4) + ' ' + n1(x1 + 3.2) + ' ' + n1(y - 5.6) + 'Q' + n1(x1 + 2.4) + ' ' + n1(y - 3) + ' ' + n1(x1 + 2) + ' ' + (y + .4) + 'Z';
+  return '<path d="' + d + '" fill="' + c + '"/>'; };
+const stars = (n) => { let d = ''; for (let i = 0; i < n; i++) { const r = i % 4 ? .45 : .8, x = n1((i * 47.3 + 11) % 320 - r), y = n1(4 + (i * 17.9) % 52); d += 'M' + x + ' ' + y + 'a' + r + ' ' + r + ' 0 1 0 ' + (2 * r) + ' 0a' + r + ' ' + r + ' 0 1 0 ' + (-2 * r) + ' 0'; } return '<path d="' + d + '"/>'; };
 /* a shop front: a painted block, a zinc awning on two posts, a lit kiosk or a closed shutter */
 const shop = (x, w, c, lit, goods = '') => '<path d="M' + x + ' 118 V76 H' + (x + w) + ' V118 Z" fill="' + c + '"/><path d="M' + (x + w * .78) + ' 118 V76 H' + (x + w) + ' V118 Z" fill="#000" opacity=".18"/>' + zanko(x, x + w - 2, 76, c) +
   (lit ? '<path d="M' + (x + 4) + ' 118 V94 H' + (x + w - 4) + ' V118 Z" fill="' + U('kiosk') + '"/>' + goods + '<path d="M' + (x + 4) + ' 118 L' + (x - 10) + ' 132 H' + (x + w + 10) + ' L' + (x + w - 4) + ' 118 Z" fill="#FFC870" opacity=".14"/>'
     : '<path d="M' + (x + 4) + ' 118 V94 H' + (x + w - 4) + ' V118 Z" fill="' + U('shut') + '"/><path d="M' + (x + w / 2) + ' 112 v4" stroke="#1A1420" stroke-width=".8"/>') +
   '<path d="M' + (x - 3) + ' 92 L' + x + ' 85 H' + (x + w) + ' L' + (x + w + 3) + ' 92 Z" fill="' + U('zinc') + '"/><path d="M' + (x - 3) + ' 92 H' + (x + w + 3) + '" stroke="#3A3A44" stroke-width=".6"/>' +
   '<path d="M' + (x - 1) + ' 118 V92 M' + (x + w + 1) + ' 118 V92" stroke="#3A2A22" stroke-width="1"/>';
-const shelves = (x, y) => { const C = ['#E8A21E', '#C62828', '#2E7D32', '#1F5FA8', '#F4F1EA', '#AD1457']; let s = '<path d="M' + x + ' ' + y + ' h18 M' + x + ' ' + (y + 6) + ' h18 M' + x + ' ' + (y + 12) + ' h18" stroke="#6B4A2E" stroke-width=".7"/>';
-  for (let r = 0; r < 3; r++) for (let i = 0; i < 6; i++) s += '<rect x="' + (x + 1 + i * 2.9) + '" y="' + (y + r * 6 - 3.4) + '" width="2.2" height="3.4" fill="' + C[(i + r * 2) % 6] + '"/>'; return s; };
+/* the kiosk's shelves (round five): the goods are one tile shared by every shelf — tins with a lit rim, packets, a bottle
+   or two, three rows of six — laid over the shelf boards, instead of fifty-four little rectangles */
+let shelfN = 0;
+const shelves = (x, y) => { const id = PF + '-gd' + (shelfN++);
+  return '<pattern id="' + id + '" href="#' + PF + '-goods" x="' + (x + 1) + '" y="' + n1(y - 3.4) + '"/><rect x="' + (x + 1) + '" y="' + n1(y - 3.4) + '" width="17.4" height="15.4" fill="url(#' + id + ')"/>' +
+    '<path d="M' + x + ' ' + y + ' h18 M' + x + ' ' + (y + 6) + ' h18 M' + x + ' ' + (y + 12) + ' h18" stroke="#6B4A2E" stroke-width=".7"/>'; };
+const goodsTile = () => { const C = ['#E8A21E', '#C62828', '#2E7D32', '#1F5FA8', '#F4F1EA', '#AD1457'], by = {}; let hl = '', tops = '';
+  for (let r = 0; r < 3; r++) for (let i = 0; i < 6; i++) { const c = C[(i + r * 2) % 6], x = n1(i * 2.9), y0 = r * 6, kind = (i * 5 + r * 3) % 4;
+    // a tin, a tall packet, a bottle, a short box
+    by[c] = (by[c] || '') + (kind === 2 ? 'M' + n1(x + .6) + ' ' + (y0 + 3.4) + 'v-2Q' + n1(x + .6) + ' ' + (y0 + .9) + ' ' + n1(x + .95) + ' ' + (y0 + .6) + 'v-.6h.5v.6Q' + n1(x + 1.8) + ' ' + (y0 + .9) + ' ' + n1(x + 1.8) + ' ' + (y0 + 1.4) + 'v2Z'
+      : 'M' + x + ' ' + (y0 + 3.4) + 'V' + n1(y0 + [0.6, 0, 0, 1.4][kind]) + 'h2.2V' + (y0 + 3.4) + 'Z');
+    if (kind === 0) tops += 'M' + x + ' ' + n1(y0 + .9) + 'h2.2';
+    hl += 'M' + n1(x + .4) + ' ' + n1(y0 + [1, .4, 1.4, 1.8][kind]) + 'v1.6'; }
+  return '<pattern id="' + PF + '-goods" width="17.4" height="18" patternUnits="userSpaceOnUse">' + Object.keys(by).map((c) => '<path d="' + by[c] + '" fill="' + c + '"/>').join('') +
+    '<path d="' + tops + '" stroke="#C9CCD2" stroke-width=".35"/><path d="' + hl + '" stroke="#fff" stroke-opacity=".45" stroke-width=".35"/></pattern>'; };
 const bulbs = (cls, pts) => '<g class="' + cls + '">' + pts.map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="7" fill="' + U('glow') + '"/>').join('') + '</g>';
-const okada = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="16" ry="1.6" fill="#000" opacity=".35"/>' +
-  '<path class="x-beam" d="M-15 -14 L-60 -26 L-60 6 Z" fill="' + U('beam') + '"/>' +
-  '<circle cx="-11" cy="-5" r="5" fill="#141414"/><circle cx="-11" cy="-5" r="2.2" fill="#7A7A80"/><circle cx="11" cy="-5" r="5" fill="#141414"/><circle cx="11" cy="-5" r="2.2" fill="#7A7A80"/>' +
-  '<path d="M-11 -5 L-8 -16 M11 -5 L4 -8 L-4 -8" stroke="#8A8A90" stroke-width="1.2" fill="none"/><path d="M-5 -9 h9 v3 h-9 Z" fill="#3A3A40"/><path d="M6 -8 h7 l1 2 h-8 Z" fill="#8A8A90"/>' +
-  '<path d="M-7 -14 Q-6 -17 -2 -17 L4 -16 Q5 -12 2 -10 L-6 -10 Z" fill="#B71C1C"/><path d="M-6 -15.6 Q-3 -16.6 1 -16" stroke="#fff" stroke-opacity=".4" stroke-width=".6" fill="none"/>' +
-  '<path d="M2 -16.6 Q8 -17.6 13 -16 L13 -14.2 Q8 -14.8 3 -14.4 Z" fill="#1A1A1A"/><path d="M9 -10 Q12 -12 14 -10 L13 -6 H8 Z" fill="#B71C1C"/>' +
-  '<path d="M-8 -16 L-9 -21 M-11 -21.4 L-6.4 -20.6" stroke="#2A2A2E" stroke-width=".9" stroke-linecap="round"/><path d="M-12.6 -17.6 a2.2 2.2 0 0 1 0 -4 l1.2 .4 v3.2 Z" fill="#C9C9CF"/><circle cx="-13.4" cy="-15.6" r="1.4" fill="#FFF6C8"/>' +
-  '<circle cx="14.4" cy="-11" r=".7" fill="#FF3A2A"/></g>';
+/* an okada parked on the street (round five, Sani 2026-10-27: realism): the everyday 100 cc bike of the north, facing
+   left, its headlamp lit, spoked wheels on fat tyres, the red tank and side panels, the long black seat, the chrome
+   exhaust running back under it, the bulbs' light on the tank and the seat */
+const okada = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="1" cy=".4" rx="17" ry="1.8" fill="#000" opacity=".4"/>' +
+  '<ellipse cx="-22" cy=".2" rx="9" ry="1.6" fill="#FFF6C8" opacity=".12"/>' +
+  '<circle cx="-11" cy="-5" r="5.2" fill="#121212"/><circle cx="11" cy="-5" r="5.2" fill="#121212"/>' +
+  '<path d="M-14.6 -5 a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0 M7.4 -5 a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0" stroke="#A9AAB2" stroke-width=".55" fill="none"/>' +
+  '<path d="M-11 -8.6 V-1.4 M-14.1 -6.8 L-7.9 -3.2 M-14.1 -3.2 L-7.9 -6.8 M11 -8.6 V-1.4 M7.9 -6.8 L14.1 -3.2 M7.9 -3.2 L14.1 -6.8" stroke="#7A7B84" stroke-width=".25"/>' +
+  '<path d="M-11.9 -5 a.9 .9 0 1 0 1.8 0a.9 .9 0 1 0 -1.8 0 M10.1 -5 a.9 .9 0 1 0 1.8 0a.9 .9 0 1 0 -1.8 0" fill="#C9CAD0"/>' +
+  '<path d="M-11 -5 L-8.2 -16.4" stroke="#B8BAC2" stroke-width="1.3" stroke-linecap="round"/>' +
+  '<path d="M-15.6 -8.6 Q-11 -12.4 -6.6 -8.8 L-7.6 -8.2 Q-11 -10.8 -14.6 -8.2Z M7 -9.6 Q11.6 -13.2 16 -9 L15 -8.4 Q11.6 -11.4 8 -8.8Z" fill="#9E1818"/>' +
+  '<path d="M-4.6 -6.6 Q-5 -10.6 -1.4 -11 L3.4 -10.8 Q5.4 -9 4.2 -6.4 Q0 -5 -4.6 -6.6Z" fill="#33343A"/><path d="M-3.8 -9.6 h7 M-3.6 -8.2 h7" stroke="#55565E" stroke-width=".4"/>' +
+  '<path d="M-2 -6.4 Q3 -5.4 9 -6.2 L13.6 -7.4" stroke="#D8DAE0" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M9.4 -7.6 l5.4 -.9 l.4 1.6 l-5.4 .8Z" fill="#C2C4CA"/>' +
+  '<path d="M-8.8 -13 L-6.4 -10.6 L4 -10.4 L8.6 -11.6 L13 -13 L12.6 -10.4 L4.6 -8.8 L-5.6 -9Z" fill="#7E1414"/>' +
+  '<path d="M-8.4 -14.2 Q-7.6 -17.6 -3.4 -17.4 L1.4 -16.6 Q2.8 -14 1.2 -12.4 L-6.6 -12.2 Q-8.6 -12.6 -8.4 -14.2Z" fill="#C21E1E"/><path d="M-7.2 -15.6 Q-4.4 -17 -.4 -16.2" stroke="#FFD9A0" stroke-opacity=".55" stroke-width=".7" fill="none" stroke-linecap="round"/>' +
+  '<path d="M.6 -16.8 Q7 -17.8 13.2 -15.8 Q13.8 -14.6 13 -14 Q7 -15 1.4 -14.6Z" fill="#17171A"/><path d="M2 -16.6 Q7 -17.4 12.4 -15.8" stroke="#5A5A62" stroke-width=".35" fill="none"/>' +
+  '<path d="M9 -14.2 L13.2 -14.4 L14.6 -11.4 L12.6 -10.6Z" fill="#B71C1C"/><circle cx="14.8" cy="-12.4" r=".75" fill="#FF3A2A"/>' +
+  '<path d="M-8.4 -16.6 L-9.4 -21.2 M-11.6 -21.6 L-6.8 -20.8 M-10.6 -21.4 L-11.4 -24" stroke="#2A2A2E" stroke-width=".8" stroke-linecap="round"/><ellipse cx="-11.6" cy="-24.4" rx=".9" ry=".6" fill="#8A8C94"/>' +
+  '<path d="M-12.8 -16.8 Q-13.8 -18.8 -11.6 -19.8 L-9 -19.2 L-9.4 -16Z" fill="#26272C"/><ellipse cx="-13.2" cy="-17.6" rx="1" ry="1.5" fill="#FFF6C8"/><ellipse cx="-13.6" cy="-17.6" rx="2.6" ry="2.6" fill="#FFF6C8" opacity=".18"/></g>';
 const generator = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cy=".4" rx="11" ry="1.4" fill="#000" opacity=".35"/><g class="x-gen">' +
   '<path d="M-9 0 V-12 H9 V0" stroke="#1F1F22" stroke-width="1.4" fill="none"/><path d="M-8 -1.4 H8 V-11 H-8 Z" fill="#E8A21E"/><path d="M2 -1.4 H8 V-11 H2 Z" fill="#000" opacity=".18"/>' +
   '<path d="M-6 -11 h8 v-3 h-8 Z" fill="#C62828"/><circle cx="-4" cy="-6" r="2.4" fill="#2A2A2E"/><path d="M-5.6 -6 h3.2 M-4 -7.6 v3.2" stroke="#6A6A70" stroke-width=".4"/><path d="M4 -8 h3 v4 h-3 Z" fill="#2A2A2E"/><path d="M8 -9 h3 v-2" stroke="#3A3A40" stroke-width="1" fill="none"/></g>' +
@@ -181,12 +210,13 @@ const brazier = (x, y) => '<g transform="translate(' + x + ' ' + y + ')"><circle
   '<g class="x-smoke"><circle cx="1" cy="-20" r="3" fill="#B8B0C0" opacity=".35"/><circle cx="-1" cy="-27" r="4" fill="#B8B0C0" opacity=".25"/><circle cx="2" cy="-35" r="5" fill="#B8B0C0" opacity=".15"/></g></g>';
 
 export function suyaScene(): string {
+  shelfN = 0;
   const bulbPts = [];
   for (let i = 0; i <= 16; i++) { const x = 8 + i * 19, y = 58 + Math.sin(((x - 8) / 152) * Math.PI) * 0 + (((x - 8) % 152) / 152) * (1 - ((x - 8) % 152) / 152) * 16; bulbPts.push([n1(x), n1(y + 1.6)]); }
   const sky = '<rect width="320" height="200" fill="' + U('sky') + '"/><g class="x-stars" fill="#FFF6DC">' + stars(46) + '</g>' +
     '<circle cx="42" cy="38" r="18" fill="' + U('moon') + '"/><path d="M47 30 a9.4 9.4 0 1 0 0 16.4 a7.6 7.6 0 1 1 0 -16.4 Z" fill="#FFF3C4"/>';
   // the town behind: dark houses with zanko, a few lit windows, the minaret with its green light
-  const town = '<g fill="#2B2340">' + '<path d="M0 100 V66 H30 V100 Z M34 100 V72 H62 V100 Z M98 100 V68 H128 V100 Z M190 100 V70 H222 V100 Z M226 100 V64 H262 V100 Z M268 100 V72 H296 V100 Z M298 100 V66 H320 V100 Z"/>' +
+  const town = '<g fill="#2B2340">' + '<path d="M0 100 V66 H30 V100 Z M34 100 V72 H62 V100 Z M98 100 V68 H128 V100 Z M190 100 V70 H222 V100 Z M226 100 V64 H262 V100 Z M268 100 V72 H296 V100 Z M298 100 V66 H320 V100 Z"/><path d="M0 100 V66 H30 V100 Z M34 100 V72 H62 V100 Z M98 100 V68 H128 V100 Z M190 100 V70 H222 V100 Z M226 100 V64 H262 V100 Z M268 100 V72 H296 V100 Z M298 100 V66 H320 V100 Z" fill="url(#' + PF + '-mud)" opacity=".5"/>' +
     zanko(0, 28, 66, '#2B2340') + zanko(34, 60, 72, '#2B2340') + zanko(98, 126, 68, '#2B2340') + zanko(190, 220, 70, '#2B2340') + zanko(226, 260, 64, '#2B2340') + zanko(268, 294, 72, '#2B2340') + zanko(298, 318, 66, '#2B2340') + '</g>' +
     '<g fill="#FFC96A" opacity=".75"><rect x="8" y="74" width="3" height="4"/><rect x="104" y="76" width="3" height="4"/><rect x="236" y="72" width="3" height="4"/><rect x="306" y="74" width="3" height="4"/><rect x="200" y="78" width="3" height="4"/></g>' +
     '<g transform="translate(170 100)" fill="#332A4A"><path d="M-16 0 V-14 H22 V0 Z"/><path d="M-4 -14 Q5 -30 14 -14 Z"/><path d="M-13 -14 L-12 -56 H-6 L-5 -14 Z"/><path d="M-14 -56 H-4 V-58.4 H-14 Z"/><path d="M-12.6 -58 L-12.2 -66 H-5.8 L-5.4 -58 Z"/><path d="M-13 -66 Q-9 -73 -5 -66 Z"/>' +
@@ -195,12 +225,12 @@ export function suyaScene(): string {
     '<ellipse cx="72" cy="150" rx="80" ry="26" fill="' + U('pool') + '"/><ellipse cx="200" cy="146" rx="40" ry="14" fill="' + U('pool') + '"/><ellipse cx="280" cy="140" rx="50" ry="16" fill="' + U('pool') + '" opacity=".7"/>' +
     '<g fill="#4A3A48" opacity=".5"><ellipse cx="150" cy="176" rx="12" ry=".8"/><ellipse cx="110" cy="190" rx="10" ry=".8"/><circle cx="170" cy="190" r=".7"/><circle cx="236" cy="196" r=".8"/></g>';
   const shops = shop(4, 34, '#5A4458', false) + shop(140, 40, '#4E4A62', true, shelves(150, 100)) + shop(186, 30, '#5E4650', false) + shop(222, 44, '#54425E', true, shelves(226, 100) + shelves(244, 100)) + shop(272, 46, '#4E4458', false) +
-    '<path d="M44 118 V82 H134 V118 Z" fill="#4A3A4E"/>' + zanko(44, 132, 82, '#4A3A4E') + '<path d="M60 118 V98 a6 6 0 0 1 12 0 V118 Z M100 118 V98 a6 6 0 0 1 12 0 V118 Z" fill="#241C2A"/>';
+    '<path d="M44 118 V82 H134 V118 Z" fill="#4A3A4E"/><path d="M44 118 V82 H134 V118 Z" fill="url(#' + PF + '-mud)"/>' + zanko(44, 132, 82, '#4A3A4E') + '<path d="M60 118 V98 a6 6 0 0 1 12 0 V118 Z M100 118 V98 a6 6 0 0 1 12 0 V118 Z" fill="#241C2A"/>';
   // the bulbs on their wire, between poles
   let wire = 'M8 59.6'; for (const [x, y] of bulbPts) wire += ' L' + x + ' ' + y;
   const lights = '<path d="M8 120 V56 M312 120 V56" stroke="#2A2024" stroke-width="1.4"/><path d="' + wire + '" stroke="#141014" stroke-width=".45" fill="none"/>' +
     bulbs('x-bulbs', bulbPts.filter((_, i) => i % 2)) + bulbs('x-bulbs x-b2', bulbPts.filter((_, i) => !(i % 2))) +
-    '<g fill="#FFF0B0">' + bulbPts.map(([x, y]) => '<circle cx="' + x + '" cy="' + (y + 1.2) + '" r="1.3"/>').join('') + '</g>';
+    '<path fill="#FFF0B0" d="' + bulbPts.map(([x, y]) => 'M' + n1(x - 1.3) + ' ' + n1(y + 1.2) + 'a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0').join('') + '"/>';
   // the grill's smoke, rising behind the game's grill
   const smoke = '<g class="x-smk"><circle cx="70" cy="80" r="7" fill="' + U('puff') + '" opacity="0.66"/><circle cx="64" cy="66" r="9" fill="' + U('puff') + '" opacity="0.48"/><circle cx="72" cy="50" r="11" fill="' + U('puff') + '" opacity="0.3"/></g>' +
     '<g class="x-smk x-s2"><circle cx="104" cy="82" r="6" fill="' + U('puff') + '" opacity="0.6"/><circle cx="110" cy="68" r="8" fill="' + U('puff') + '" opacity="0.42"/><circle cx="104" cy="52" r="10" fill="' + U('puff') + '" opacity="0.27"/></g>';
@@ -222,14 +252,17 @@ export function suyaScene(): string {
   return '<svg class="scene ' + PF + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('sky', '#0B0D2A', '#1E1A44', '#45305A') + lg('gr', '#3A2C38', '#2A2030', '#1C1622') + lg('kiosk', '#FFE3A0', '#F2A84A') + lg('shut', '#6A6878', '#4A4858') +
     '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#6E7280"/><rect width=".4" height="6" fill="#4E5260"/><rect x=".5" width=".5" height="6" fill="#8A8E9A"/></pattern>' +
+    goodsTile() +
+    // the mud plaster (round five): smoothed by hand, the strokes of the palm, a crack, the odd darker patch of a repair
+    '<pattern id="' + PF + '-mud" width="17" height="11" patternUnits="userSpaceOnUse"><path d="M1 2.4 q3 -1 6 0 M9 7.6 q3 -1.2 6.4 .2 M3 9 q2 -.6 3.6 0" stroke="#fff" stroke-opacity=".07" stroke-width=".7" fill="none"/>' +
+    '<path d="M12 1 l.6 1.6 l-.8 1.4 l.4 1.2" stroke="#000" stroke-opacity=".2" stroke-width=".25" fill="none"/><ellipse cx="5" cy="5.6" rx="2.6" ry="1.4" fill="#000" opacity=".08"/></pattern>' +
     '<radialGradient id="' + PF + '-glow"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".8"/><stop offset=".3" stop-color="#FFC96A" stop-opacity=".3"/><stop offset="1" stop-color="#FFC96A" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-lamp"><stop offset="0" stop-color="#FFD27A" stop-opacity=".7"/><stop offset="1" stop-color="#FF9A3A" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-coal"><stop offset="0" stop-color="#FF8A2A" stop-opacity=".55"/><stop offset="1" stop-color="#FF6A1A" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-pool"><stop offset="0" stop-color="#FFB45A" stop-opacity=".28"/><stop offset="1" stop-color="#FFB45A" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-puff"><stop offset="0" stop-color="#B4A8C0" stop-opacity=".5"/><stop offset="1" stop-color="#B4A8C0" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="' + PF + '-moon"><stop offset=".3" stop-color="#FFF3C4" stop-opacity=".35"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>' +
-    '<linearGradient id="' + PF + '-beam" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#FFF6C8" stop-opacity=".38"/><stop offset="1" stop-color="#FFF6C8" stop-opacity="0"/></linearGradient>' +
-    '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#FFD9A0" stop-opacity=".18"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>' +
+        '<radialGradient id="' + PF + '-sh" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#FFD9A0" stop-opacity=".18"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></radialGradient>' +
     headDef + clothesDef() + '</defs>' +
     sky + town + shops + street + smoke + lights + left + helper + people + front + '</svg>';
 }

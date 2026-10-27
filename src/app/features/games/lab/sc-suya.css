@@ -8,8 +8,6 @@
 
 /* the quiet loops: the stars, two sets of bulbs, the lantern, the grill smoke (two plumes), the brazier's smoke and
    coals, the helper's fan, the generator, its exhaust, the okada's headlight */
-.glab .gbg .sy4 .x-stars{animation:sy4-twinkle 5s ease-in-out infinite alternate}
-@keyframes sy4-twinkle{from{opacity:.55}to{opacity:1}}
 .glab .gbg .sy4 .x-bulbs{animation:sy4-bulb 3.2s ease-in-out infinite alternate}
 .glab .gbg .sy4 .x-b2{animation-delay:-1.6s}
 @keyframes sy4-bulb{from{opacity:.55}to{opacity:1}}
@@ -25,11 +23,7 @@
 @keyframes sy4-coal{from{opacity:.6}to{opacity:1}}
 .glab .gbg .sy4 .x-fan{animation:sy4-fan .38s ease-in-out infinite alternate}
 @keyframes sy4-fan{from{transform:rotate(-8deg)}to{transform:rotate(18deg)}}
-.glab .gbg .sy4 .x-gen{animation:sy4-hum .12s linear infinite alternate}
-@keyframes sy4-hum{from{transform:translateY(0)}to{transform:translateY(-.3px)}}
 .glab .gbg .sy4 .x-exh{animation:sy4-rise 2.4s ease-out infinite}
-.glab .gbg .sy4 .x-beam{animation:sy4-beam 4s ease-in-out infinite alternate}
-@keyframes sy4-beam{from{opacity:.75}to{opacity:1}}
 
 /* faces: happy eyes on cheer, a frown on sad */
 .glab .gbg.cheer .sy4{--eo:0;--eh:1}
