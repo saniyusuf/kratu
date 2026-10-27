@@ -52,3 +52,26 @@
 @media (prefers-reduced-motion: reduce){
   .glab .gbg .sy4 *{animation:none!important;transition:none!important}
 }
+
+/* ---- the game's own pieces (sc-suya.ts stand() and note()): the stand stands on the street, the note is held out
+   by the child's hand from the bottom-right corner and flies to the suya man when paid ---- */
+.glab .scr.suyag .grillw{left:-1cqw;bottom:0;width:42cqw;height:33.6cqw}
+.glab .sy5 .sy5-fan{transform-origin:73px 139px;animation:sy5-fan .42s ease-in-out infinite alternate}
+@keyframes sy5-fan{from{transform:rotate(-6deg)}to{transform:rotate(14deg)}}
+.glab .sy5 .sy5-coal{animation:sy5-coal 1.3s ease-in-out infinite alternate}
+@keyframes sy5-coal{from{opacity:.35}to{opacity:1}}
+.glab .sy5 .sy5-smk{transform-box:fill-box;transform-origin:50% 100%;animation:sy5-rise 5s ease-in-out infinite}
+.glab .sy5 .sy5-s2{animation-delay:-2.5s;animation-duration:6s}
+@keyframes sy5-rise{0%{transform:translate(0,8px) scale(.8);opacity:0}35%{opacity:1}100%{transform:translate(-4px,-14px) scale(1.25);opacity:0}}
+.glab .scr.suyag .handn{left:auto!important;right:-1cqw;bottom:-.6cqw;width:31cqw;height:17.6cqw;opacity:0;transform:translate(6cqw,12cqw) rotate(8deg);transition:none}
+.glab .scr.suyag .handn.in{opacity:1;transform:none;transition:transform .7s cubic-bezier(.3,1.2,.5,1),opacity .3s}
+.glab .scr.suyag .handn.paid{opacity:1;transform:none}
+.glab .scr.suyag .handn .sy5-nt{transform-origin:120px 69px;transition:transform 1.1s ease-in,opacity .5s .7s}
+.glab .scr.suyag .handn .sy5-arm{transition:transform .7s ease-in .25s,opacity .5s .4s}
+.glab .scr.suyag .handn.paid .sy5-nt{transform:translate(-560px,-118px) rotate(-8deg) scale(.3);opacity:0}
+.glab .scr.suyag .handn.paid .sy5-arm{transform:translate(70px,90px);opacity:0}
+/* the wrapped portions, folded newspaper */
+.glab .scr.suyag .wraps i.on{background:repeating-linear-gradient(0deg,#E9E3D2 0 .35cqw,#B8B1A0 .35cqw .5cqw);box-shadow:inset 0 0 0 .3cqw #8B5A2B;border-radius:35%}
+@media (prefers-reduced-motion: reduce){
+  .glab .sy5 *{animation:none!important}
+}

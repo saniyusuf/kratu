@@ -233,3 +233,181 @@ export function suyaScene(): string {
     headDef + clothesDef() + '</defs>' +
     sky + town + shops + street + smoke + lights + left + helper + people + front + '</svg>';
 }
+
+/* ---------------- the game's own pieces (Sani 2026-10-27, realism pass) ----------------
+ * stand(): the mai suya behind his grill, standing on the street. A welded sheet-metal trough on angle-iron legs, the
+ * coals glowing under a row of tsire sticks whose handles stick out over the rim, "SUYA" brushed on its sooty front, a
+ * sack of charcoal underneath, a side table with newspaper for wrapping, sliced suya with onions and a bowl of yaji.
+ * He is a grown man at street scale (head about 1/7 of his height), in a hula and a worn kaftan with a greasy apron,
+ * one hand fanning the coals with a woven mafici, the other turning a stick; the coals light him from below.
+ * Everything stands on the ground: his legs and slippers show under the trough, and the legs cast soft shadows.
+ * note(n): a naira note held out by the child's own hand from the bottom-right corner (first person). On pay, the
+ * note flies to the suya man and the arm drops away (sc-suya.css). Animated parts (transform and opacity only):
+ * .sy5-fan, .sy5-coal, .sy5-smk, .sy5-nt, .sy5-arm. */
+const Q = 'sy5';
+const QU = (id) => 'url(#' + Q + '-' + id + ')';
+const qlg = (id, x2, y2, ...c) => '<linearGradient id="' + Q + '-' + id + '" x1="0" y1="0" x2="' + x2 + '" y2="' + y2 + '">' + c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
+const qrg = (id, c, o0, o1, extra = '') => '<radialGradient id="' + Q + '-' + id + '"' + extra + '><stop offset="0" stop-color="' + c + '" stop-opacity="' + o0 + '"/><stop offset="1" stop-color="' + c + '" stop-opacity="' + o1 + '"/></radialGradient>';
+/* a tiny seeded random so the coals and meat look the same every time */
+const rnd = (s) => () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+
+export function stand(): string {
+  const r = rnd(7);
+  const SK = '#6B4022', SKD = '#4A2A14', SKL = '#9A5E30';
+  // the coal bed, seen from a little above: lumps with glowing cracks
+  let coals = '';
+  for (let i = 0; i < 46; i++) { const x = n1(34 + r() * 186), y = n1(142.4 + r() * 7.6), w = n1(2.4 + r() * 3);
+    coals += '<path d="M' + n1(x - w) + ' ' + y + ' q' + n1(w * .4) + ' -1.8 ' + n1(w) + ' -1.4 q' + n1(w * .7) + ' .2 ' + n1(w) + ' 1.4 q-' + n1(w) + ' 1.2 -' + n1(w * 2) + ' 0 Z" fill="' + (i % 5 ? '#2A1712' : '#3A2018') + '"/>'; }
+  // the tsire sticks: lying front to back over the coals, the handles out over the front rim
+  let sticks = '';
+  for (let i = 0; i < 14; i++) { const x = 40 + i * 13.3 + (r() - .5) * 2, lean = (r() - .5) * 2.4;
+    if (Math.abs(x - 149) < 4) continue;   // his hand holds this one (drawn with the hand)
+    sticks += stick(x, lean, r); }
+  // the man, behind the trough (his lower half shows under it)
+  const legs = '<path d="M98.6 192 L97.4 207 L126.6 207 L125.4 192 Z" fill="#CFC4A8"/><path d="M114 192 L126.6 207 L125.4 192 Z" fill="#000" opacity=".12"/>' +
+    '<path d="M100.6 206 L100.2 224 H108.6 L109.2 206 Z M114.8 206 L115.4 224 H123.8 L123.4 206 Z" fill="#3A3A42"/><path d="M119 206 L119.6 224 H123.8 L123.4 206 Z" fill="#000" opacity=".2"/>' +
+    '<path d="M98.6 228.4 Q98.4 224.6 101.4 224 H109 Q110.4 226 110 228.4 Z M114 228.4 Q113.6 226 115 224 H122.6 Q125.6 224.6 125.4 228.4 Z" fill="#2A1A10"/>' +
+    '<path d="M100 224.6 h9 M115 224.6 h9" stroke="#6B4A2E" stroke-width=".8"/>';
+  const face = '<path d="M107 90 L106.8 100.6 Q112 104.4 117.2 100.6 L117 90 Z" fill="' + SK + '"/><path d="M107 94 Q112 98.6 117 94 L117 100.6 Q112 103.6 107 100.6 Z" fill="' + SKD + '" opacity=".55"/>' +
+    '<ellipse cx="103.4" cy="85.4" rx="1.9" ry="3.1" fill="' + SK + '"/><ellipse cx="120.6" cy="85.4" rx="1.9" ry="3.1" fill="' + SKD + '"/>' +
+    '<path d="M103.8 80 Q103.4 92 107.8 96.6 Q112 99.6 116.2 96.6 Q120.6 92 120.2 80 Q119.8 71.4 112 71.4 Q104.2 71.4 103.8 80 Z" fill="' + SK + '"/>' +
+    '<path d="M114.6 72 Q119.8 73 120.2 80 Q120.6 92 116.2 96.6 Q114 98.2 112.4 98.4 Q117.6 90 114.6 72 Z" fill="' + SKD + '" opacity=".5"/>' +
+    '<path d="M105 92 Q108 98.6 112 98.8 Q116 98.6 119 92 Q117 97.4 112 97.6 Q107 97.4 105 92 Z" fill="' + QU('glowup') + '"/>' +
+    // brows, eyes, nose, mouth, a short beard
+    '<path d="M106.4 81.2 Q108.4 80 110.4 80.9 M113.6 80.9 Q115.6 80 117.6 81.2" stroke="#1A0E06" stroke-width=".9" fill="none" stroke-linecap="round"/>' +
+    '<ellipse cx="108.5" cy="83.9" rx="1.6" ry=".85" fill="#E9DFCF"/><ellipse cx="115.5" cy="83.9" rx="1.6" ry=".85" fill="#E2D6C4"/><circle cx="108.8" cy="83.9" r=".72" fill="#1A0E06"/><circle cx="115.8" cy="83.9" r=".72" fill="#1A0E06"/>' +
+    '<path d="M106.8 83.2 Q108.5 82.4 110.2 83.2 M113.8 83.2 Q115.5 82.4 117.2 83.2" stroke="#2A160A" stroke-width=".5" fill="none"/>' +
+    '<path d="M111.8 84.6 Q111.4 88 110 89.2 Q111.8 90.4 114 89.4" stroke="' + SKD + '" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M110.6 89.6 q.6 .4 1.2 0 M112.6 89.6 q.6 .4 1.2 0" stroke="#2A140A" stroke-width=".5" fill="none"/>' +
+    '<path d="M104.4 86.6 Q104.8 94 108.6 97 Q112 99.4 115.4 97 Q119.2 94 119.6 86.6 Q119 92.4 116 94.8 Q112 96.4 108 94.8 Q105 92.4 104.4 86.6 Z" fill="#1A100A" opacity=".85"/>' +
+    '<path d="M108.8 91.6 Q112 90.2 115.2 91.6 Q112 92.4 108.8 91.6 Z" fill="#1A100A"/><path d="M109.4 93 Q112 94.6 114.6 93" stroke="#5A1E12" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+    // the hula, white with a maroon and green stitched band
+    '<path d="M103.2 79.6 Q102.6 67.6 112 67 Q121.4 67.6 120.8 79.6 Q112 77 103.2 79.6 Z" fill="#EFE8D8"/><path d="M114 67.4 Q121.4 68.4 120.8 79.6 Q117.6 78.4 115.2 78.2 Q116.8 72 114 67.4 Z" fill="#000" opacity=".14"/>' +
+    '<path d="M103.6 76.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8 l1.6 -1.8 l1.6 1.8" stroke="#8E1F2A" stroke-width=".8" fill="none"/>' +
+    '<path d="M104 73.4 Q112 71.4 120 73.4" stroke="#2E6B3A" stroke-width=".6" fill="none" stroke-dasharray="1.4 1"/><path d="M106 70.4 Q112 69 118 70.4" stroke="#8E1F2A" stroke-width=".5" fill="none"/>';
+  const body = '<path d="M107 98.4 Q99 98.8 93.4 101.8 Q89.4 104.4 89 111 L87.6 156 L136.4 156 L135 111 Q134.6 104.4 130.6 101.8 Q125 98.8 117 98.4 Q112 102.4 107 98.4 Z" fill="#D8CCAE"/>' +
+    '<path d="M120 99 Q125 98.8 130.6 101.8 Q134.6 104.4 135 111 L136.4 156 L124 156 Q127 120 120 99 Z" fill="#000" opacity=".16"/>' +
+    '<path d="M107.4 98.6 Q112 105 116.6 98.6 M112 103.6 V116" stroke="#8E6A3A" stroke-width=".8" fill="none"/><path d="M108.4 100 Q112 104 115.6 100" stroke="#C9A24A" stroke-width=".5" fill="none" stroke-dasharray="1 .8"/>' +
+    // the apron, greasy, on a neck strap
+    '<path d="M99.6 113 L106.4 99.6 M124.4 113 L117.6 99.6" stroke="#3E302A" stroke-width="1.6"/>' +
+    '<path d="M98.4 112.4 Q112 110.4 125.6 112.4 L128.6 156 L95.4 156 Z" fill="#4A3A30"/><path d="M116 111 Q125.6 112.4 125.6 112.4 L128.6 156 L119 156 Q120.4 130 116 111 Z" fill="#000" opacity=".22"/>' +
+    '<g fill="#22180F" opacity=".4"><ellipse cx="104" cy="126" rx="3" ry="2"/><ellipse cx="117" cy="138" rx="4" ry="2.4"/><ellipse cx="108" cy="146" rx="2.4" ry="1.6"/></g>' +
+    '<path d="M101 120 Q100 136 99.6 154 M110 116 Q109.4 134 109 154 M121 118 Q122 136 123 154" stroke="#000" stroke-opacity=".18" stroke-width=".6" fill="none"/>';
+  // his right arm (viewer's left): fanning the coals with a woven mafici
+  const fan = '<g class="sy5-fan"><path d="M73.4 139 L64 128.6" stroke="#7A5A2E" stroke-width="1.4" stroke-linecap="round"/>' +
+    '<ellipse cx="58.6" cy="122.4" rx="9.6" ry="8.4" transform="rotate(-38 58.6 122.4)" fill="#D2AE68"/>' +
+    '<path d="M51.4 118 L65 127 M52.6 114.4 L66.4 123.6 M50.6 121.8 L62.8 130 M55.6 113.2 L66.8 120.4" stroke="#A8823E" stroke-width=".8"/>' +
+    '<ellipse cx="58.6" cy="122.4" rx="9.6" ry="8.4" transform="rotate(-38 58.6 122.4)" fill="none" stroke="#8E1F2A" stroke-width="1.3"/>' +
+    '<ellipse cx="58.6" cy="122.4" rx="6" ry="5.2" transform="rotate(-38 58.6 122.4)" fill="none" stroke="#2E6B3A" stroke-width=".7"/></g>';
+  const armL = '<path d="M93.4 101.8 Q86.4 104.4 84.8 114.6 L82.8 127.8 Q87.4 130.6 92.6 128.4 L94.4 116 Z" fill="#D2C6A6"/>' +
+    '<path d="M93 108 Q88 116 86.6 127.4" stroke="#000" stroke-opacity=".14" stroke-width=".7" fill="none"/>' +
+    '<path d="M83 125 Q77 131 71.6 135.8 L76.8 141.6 Q84 136.4 92 131 Z" fill="' + SK + '"/><path d="M76.2 140.6 Q83.2 135.8 91.4 130 L90 128.6 Q82.4 134 75.2 139.2 Z" fill="' + QU('glowup') + '"/>' +
+    '<ellipse cx="87.8" cy="128.2" rx="5.6" ry="2.6" transform="rotate(-28 87.8 128.2)" fill="#C7B994"/>' + fan +
+    '<path d="M70.6 136.6 Q72.6 134 75.4 135.4 Q77.8 137.6 76.6 140.8 Q74.4 142.4 72 141.2 Q70 139.4 70.6 136.6 Z" fill="' + SK + '"/><path d="M71.4 137.2 q1.4 -.6 2.4 .4 M71 139 q1.4 -.4 2.4 .6" stroke="' + SKD + '" stroke-width=".5" fill="none"/>';
+  // his left arm (viewer's right): turning a stick, its handle in his fingers
+  const held = stick(149, -.6, rnd(3));
+  const armR = '<path d="M130.6 101.8 Q137.8 104.4 139.4 114.6 L141.6 126.4 Q137.2 129.4 132 127.4 L130.8 116 Z" fill="#C4B898"/>' +
+    '<path d="M131.6 108 Q136 116 137.4 126.6" stroke="#000" stroke-opacity=".16" stroke-width=".7" fill="none"/>' +
+    '<path d="M132 125.6 Q138.4 140 143.6 154.8 L151 152.4 Q146 138 142.6 124.6 Z" fill="' + SKD + '"/><path d="M144.6 154.4 L150.6 152.6 Q148 144 146 138 Q144 146 144.6 154.4 Z" fill="' + QU('glowup') + '"/>' +
+    '<ellipse cx="137.4" cy="126.4" rx="5.4" ry="2.6" transform="rotate(30 137.4 126.4)" fill="#B9AC8A"/>' +
+    '<path d="M143.6 154.6 Q145.2 151.2 148.8 151.6 Q152.4 152.6 152.2 156.6 Q150.8 159.6 147.4 159.2 Q144.2 158 143.6 154.6 Z" fill="' + SK + '"/><path d="M145 157.6 q2.6 .9 5.2 -.6 M145.4 155.4 q2.4 .8 4.8 -.4" stroke="' + SKD + '" stroke-width=".5" fill="none"/>';
+  const man = '<g class="sy5-man">' + legs + body + face + '</g>', front = held + armL + armR;
+  // the trough
+  const trough = '<path d="M30 140 L222 140 L230 152 L22 152 Z" fill="#1A100C"/>' +
+    '<path d="M33 141.6 L219 141.6 L225.6 150.6 L26.4 150.6 Z" fill="' + QU('bed') + '"/><path class="sy5-coal" d="M33 141.6 L219 141.6 L225.6 150.6 L26.4 150.6 Z" fill="' + QU('hot') + '"/>' + coals +
+    '<path d="M30 140 L222 140" stroke="#5A4A44" stroke-width="1.2"/>' + sticks +
+    '<path d="M22 151.6 L230 151.6 L230 155.6 L22 155.6 Z" fill="' + QU('rim') + '"/>' +
+    '<path d="M22 155.6 L230 155.6 L226.4 195 L25.6 195 Z" fill="' + QU('sheet') + '"/>' +
+    '<path d="M22 155.6 L230 155.6 L229.6 160 L22.4 160 Z" fill="#000" opacity=".35"/>' +
+    '<g fill="#7A3A18" opacity=".26"><path d="M40 176 q6 -4 12 1 q2 6 -5 8 q-8 0 -7 -9 Z"/><path d="M188 168 q8 -2 10 4 q-2 8 -9 6 q-4 -4 -1 -10 Z"/><path d="M150 186 q6 -2 9 2 q-3 5 -9 3 Z"/><path d="M78 186 q5 -3 8 1 q-2 4 -8 2 Z"/></g>' +
+    '<path d="M74 156 L73.6 195 M126 156 V195 M178 156 L178.4 195" stroke="#120C0A" stroke-width="1"/><path d="M75 156 L74.6 195 M127 156 V195 M179 156 L179.4 195" stroke="#6A5A54" stroke-width=".5" opacity=".6"/>' +
+    '<g fill="#4A3C38">' + [70.6, 122.6, 174.6, 77.6, 129.6, 181.6].map((x, i) => '<circle cx="' + x + '" cy="' + (i < 3 ? 162 : 188) + '" r=".9"/>').join('') + '</g>' +
+    // SUYA, brushed in cream paint, a red stripe under it
+    '<path d="M86 184.6 Q126 181.4 168 184.2" stroke="#B3261E" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".85"/>' +
+    '<text x="127" y="180" text-anchor="middle" transform="rotate(-1.5 127 176)" font-family="\'Arial Black\',\'Baloo 2\',sans-serif" font-weight="900" font-size="18" letter-spacing="2.4" fill="#EDE0BE" opacity=".9">SUYA</text>' +
+    // the angle-iron legs, a shelf bar, soft shadows where they meet the ground
+    '<path d="M41 194 h4 v33 h-4 Z M207 194 h4 v33 h-4 Z" fill="#1E1614"/><path d="M33 213 H219 V216 H33 Z" fill="#241A16"/>' +
+    '<path d="M26.4 194 h6.4 v39 h-6.4 Z M219.2 194 h6.4 v39 h-6.4 Z" fill="' + QU('leg') + '"/>';
+  const sack = '<path d="M150 231 Q146 214 153 205 Q160 202.6 168 203.4 Q180 202.4 186 205 Q193 214 189.6 231 Z" fill="#B9A57A"/>' +
+    '<path d="M150 231 Q146 214 153 205 Q160 202.6 168 203.4 Q180 202.4 186 205 Q193 214 189.6 231 Z" fill="' + QU('weave') + '"/>' +
+    '<path d="M173 204 Q186 210 189.6 231 L178 231 Q178 214 173 204 Z" fill="#000" opacity=".22"/>' +
+    '<g fill="#1C1412"><ellipse cx="160" cy="204.6" rx="4" ry="2.2"/><ellipse cx="168" cy="203.4" rx="4.4" ry="2.4"/><ellipse cx="177" cy="204.4" rx="4" ry="2"/></g>';
+  // the side table: newspaper for wrapping, sliced suya with onions, a bowl of yaji, the knife
+  let grain = ''; for (let i = 0; i < 5; i++) grain += '<path d="M236 ' + (159.2 + i * .9) + ' Q266 ' + (158.6 + i * .9 + (i % 2)) + ' 298 ' + (159.4 + i * .9) + '" stroke="#5A3A20" stroke-width=".3" fill="none" opacity=".6"/>';
+  let slices = ''; const r2 = rnd(11);
+  for (let i = 0; i < 16; i++) slices += '<ellipse cx="' + n1(266 + r2() * 14) + '" cy="' + n1(153.4 + r2() * 3.4) + '" rx="2" ry="1.1" transform="rotate(' + Math.round(r2() * 60 - 30) + ' ' + 273 + ' 155)" fill="' + (i % 3 ? '#6E2C12' : '#8A3E1A') + '"/>';
+  const table = '<path d="M238 162 v70 h3.6 v-70 Z M291 162 v70 h3.6 v-70 Z" fill="#4A3020"/><path d="M243 166 v62 h2.4 v-62 Z M286 166 v62 h2.4 v-62 Z" fill="#2E1E14"/>' +
+    '<path d="M234 157.6 H298 V162 H234 Z" fill="' + QU('wood') + '"/>' + grain + '<path d="M236 162 H296 V167 H236 Z" fill="#3E2818"/>' +
+    '<path d="M237 157.8 L239 150.6 L261 150 L263.6 157.6 Z" fill="#D6CFBE"/><path d="M239 152 h21 M238.6 153.6 h22 M238.2 155.2 h23" stroke="#8A8478" stroke-width=".5" stroke-dasharray="3 1 5 1"/>' +
+    '<path d="M263 157.8 Q272 154 283.6 157.8 Z" fill="#CFC8B4"/>' + slices +
+    '<g fill="none" stroke="#E8D6E8" stroke-width=".6"><ellipse cx="268" cy="152.6" rx="1.6" ry="1"/><ellipse cx="275" cy="151.6" rx="1.8" ry="1.1"/><ellipse cx="279.6" cy="153.6" rx="1.4" ry=".9"/></g>' +
+    '<path d="M285 152.4 L286.6 157.6 H295.4 L297 152.4 Z" fill="#F2EEE4"/><path d="M285 152.4 H297" stroke="#1F5FA8" stroke-width="1" stroke-linecap="round"/><path d="M286 152.4 Q291 147.6 296 152.4 Z" fill="#9A3A16"/>' +
+    '<g fill="#5A1A08"><circle cx="289.6" cy="151" r=".4"/><circle cx="292.4" cy="150.4" r=".4"/><circle cx="291" cy="149.6" r=".35"/></g>' +
+    '<path d="M244 159.4 L262 158.6" stroke="#B9BEC6" stroke-width="1.4" stroke-linecap="round"/><path d="M262 158.6 L268 158.4" stroke="#3A2618" stroke-width="2" stroke-linecap="round"/>';
+  const smoke = '<g class="sy5-smk"><ellipse cx="96" cy="128" rx="10" ry="7" fill="' + QU('puff') + '"/><ellipse cx="90" cy="112" rx="13" ry="9" fill="' + QU('puff') + '" opacity=".7"/></g>' +
+    '<g class="sy5-smk sy5-s2"><ellipse cx="170" cy="130" rx="11" ry="7" fill="' + QU('puff') + '"/><ellipse cx="176" cy="114" rx="14" ry="9" fill="' + QU('puff') + '" opacity=".7"/></g>';
+  const ground = '<ellipse cx="128" cy="233" rx="126" ry="9" fill="' + QU('pool') + '"/><ellipse cx="128" cy="232.6" rx="110" ry="5" fill="' + QU('shadow') + '"/>' +
+    '<ellipse cx="29.6" cy="233" rx="7" ry="1.6" fill="#000" opacity=".45"/><ellipse cx="222.4" cy="233" rx="7" ry="1.6" fill="#000" opacity=".45"/><ellipse cx="266" cy="232.4" rx="34" ry="2.6" fill="#000" opacity=".35"/>' +
+    '<ellipse cx="170" cy="231.2" rx="22" ry="2.2" fill="#000" opacity=".4"/><ellipse cx="112" cy="228.6" rx="16" ry="1.8" fill="#000" opacity=".4"/>';
+  return '<svg class="suya sy5" viewBox="0 0 300 240" aria-hidden="true"><defs>' +
+    qlg('bed', 0, 1, '#FFB347', '#E8541A', '#7A1E08') + qlg('rim', 0, 1, '#E89A5A', '#5A4038', '#2A1E1A') + qlg('sheet', 0, 1, '#2C2220', '#3A2E2A', '#241A18') +
+    qlg('leg', 1, 0, '#3A302C', '#1A1412') + qlg('wood', 0, 1, '#9A6A3E', '#6E4626') +
+    '<linearGradient id="' + Q + '-hot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE08A" stop-opacity="0"/><stop offset=".3" stop-color="#FFE08A" stop-opacity=".55"/><stop offset=".6" stop-color="#FFD06A" stop-opacity=".2"/><stop offset=".85" stop-color="#FFE08A" stop-opacity=".5"/><stop offset="1" stop-color="#FFE08A" stop-opacity="0"/></linearGradient>' +
+    '<linearGradient id="' + Q + '-glowup" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF9A3A" stop-opacity=".55"/><stop offset="1" stop-color="#FF9A3A" stop-opacity="0"/></linearGradient>' +
+    qrg('puff', '#C8BCD0', .38, 0) + qrg('pool', '#FF9A3A', .32, 0) + qrg('shadow', '#000', .55, 0) + qrg('torso', '#FFA040', .4, 0, ' cx=".5" cy="1" r=".9"') +
+    '<pattern id="' + Q + '-weave" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 1.5 H3 M1.5 0 V3" stroke="#7A6440" stroke-width=".5" opacity=".6"/></pattern>' +
+    '</defs>' + ground + sack + man +
+    '<path d="M88 112 Q112 108 136 112 L137 156 L87 156 Z" fill="' + QU('torso') + '"/>' +
+    smoke + trough + front + table + '</svg>';
+}
+/* one tsire stick: four chunks of spiced meat, the handle over the front rim */
+function stick(x, lean, r) {
+  const x0 = x + 1.6 + lean, y0 = 139.6, x1 = x - 1.4 - lean * .4, y1 = 159;
+  let s = '<path d="M' + n1(x0) + ' ' + y0 + ' L' + n1(x1) + ' ' + y1 + '" stroke="#D9B46A" stroke-width="1.1" stroke-linecap="round"/>';
+  for (let k = 0; k < 4; k++) { const t = .06 + k * .17, cx = n1(x0 + (x1 - x0) * t), cy = n1(y0 + (y1 - y0) * t), w = n1(2.3 + r() * .9 + k * .3), hh = n1(1.6 + r() * .4 + k * .2);
+    s += '<rect x="' + n1(cx - w) + '" y="' + n1(cy - hh) + '" width="' + n1(w * 2) + '" height="' + n1(hh * 2) + '" rx="' + n1(hh * .9) + '" fill="' + ['#6A2A10', '#7E3416', '#5A2410', '#8A3E1A'][(k + Math.round(x)) % 4] + '"/>' +
+      '<path d="M' + n1(cx - w * .6) + ' ' + n1(cy - hh * .5) + ' h' + n1(w * .9) + '" stroke="#E0A060" stroke-width=".5" stroke-linecap="round" opacity=".6"/>' +
+      '<circle cx="' + n1(cx + w * .3) + '" cy="' + n1(cy + hh * .2) + '" r=".45" fill="#B8481A"/>'; }
+  return s;
+}
+
+/* naira notes, close to the real colours: [paper, ink, second tint] */
+const NAIRA: Record<number, [string, string, string]> = { 20: ['#E6C77A', '#3E6B2A', '#E89A4A'], 50: ['#BFD3E6', '#23466E', '#E2A3B6'], 100: ['#C9C0E0', '#3E2E78', '#9EC4D8'],
+  200: ['#C8D9B4', '#2F5A2E', '#C9A070'], 500: ['#B4D6C4', '#1E5A48', '#D8C08A'], 1000: ['#E2C9A6', '#6A3418', '#C99A3A'] };
+export function note(n: number): string {
+  const [pa, ink, t2] = NAIRA[n] || ['#D8D2B8', '#3A3A2A', '#B8A070'], id = Q + '-n' + n;
+  let guil = ''; for (let i = 0; i < 9; i++) guil += '<path d="M10 ' + (30 + i * 11) + ' q15 -7 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="' + ink + '" stroke-width=".5" fill="none" opacity=".16"/>';
+  let ros = ''; for (let i = 0; i < 12; i++) ros += '<ellipse rx="14" ry="5" transform="rotate(' + i * 15 + ')" fill="none" stroke="' + ink + '" stroke-width=".45" opacity=".35"/>';
+  const N = n.toLocaleString('en-GB');
+  const nt = '<g class="sy5-nt"><g transform="rotate(-5 120 69)">' +
+    '<path d="M12 18 L232 13 L234 128 L14 132 Z" fill="#000" opacity=".28" transform="translate(3 4)"/>' +
+    '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="' + pa + '"/><path d="M10 14 L230 10 L232 124 L12 128 Z" fill="url(#' + id + 't)"/>' +
+    '<clipPath id="' + id + 'c"><path d="M10 14 L230 10 L232 124 L12 128 Z"/></clipPath><g clip-path="url(#' + id + 'c)">' + guil +
+    
+    // the portrait in its oval: a man in a cap and babban riga, printed in the note's ink
+    '<ellipse cx="174" cy="64" rx="27" ry="33" fill="#fff" opacity=".35"/><ellipse cx="174" cy="64" rx="27" ry="33" fill="none" stroke="' + ink + '" stroke-width="1.2" opacity=".6"/>' +
+    '<g fill="' + ink + '" opacity=".72"><path d="M150 97 Q152 78 166 74 L174 80 L182 74 Q196 78 198 97 Z"/><path d="M167 70 L167 76 Q174 80 181 76 L181 70 Z"/>' +
+    '<ellipse cx="174" cy="58" rx="9" ry="11.4"/><path d="M164.6 52 Q164 41 174 40.4 Q184 41 183.4 52 Q174 49.6 164.6 52 Z"/></g>' +
+    '<g fill="none" stroke="#fff" stroke-width=".6" opacity=".55"><path d="M170 57 h2 M176 57 h2 M172.6 64 q1.4 .8 2.8 0 M158 90 Q166 82 172 84 M190 90 Q182 82 176 84"/></g>' +
+    // the arms: a black shield with the white Y, an eagle over it
+    '<g transform="translate(118 52)">' + ros + '</g><g transform="translate(118 50)"><path d="M-7 -6 H7 V2 Q7 9 0 11 Q-7 9 -7 2 Z" fill="#1A1A1A"/><path d="M-4.6 -4 L0 1.6 L4.6 -4 M0 1.6 V8" stroke="#F4F1EA" stroke-width="1.6" fill="none"/>' +
+    '<path d="M-5 -8 Q0 -13 5 -8 Q0 -9.6 -5 -8 Z" fill="#B3261E"/><path d="M-10 -2 Q-12 6 -8 10 M10 -2 Q12 6 8 10" stroke="' + ink + '" stroke-width="1.3" fill="none" opacity=".6"/></g>' +
+    '<rect x="140" y="10" width="3" height="120" fill="' + t2 + '" opacity=".75"/><path d="M141.5 10 V130" stroke="#fff" stroke-width=".6" stroke-dasharray="2 3" opacity=".7"/>' +
+    '<path d="M121 10 L123 130" stroke="#fff" stroke-width="3" opacity=".22"/><path d="M124 10 L126 130" stroke="#000" stroke-width="1.6" opacity=".08"/></g>' +
+    '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="none" stroke="' + ink + '" stroke-width="1.6" opacity=".7"/><path d="M17 20 L223 16.4 L225 117.6 L19 121 Z" fill="none" stroke="' + ink + '" stroke-width=".7" stroke-dasharray="2 1.4" opacity=".5"/>' +
+    '<text x="120" y="31" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9.5" letter-spacing="1" fill="' + ink + '">CENTRAL BANK OF NIGERIA</text>' +
+    '<text x="24" y="45" font-family="Georgia,serif" font-weight="700" font-size="17" fill="' + ink + '">' + N + '</text>' +
+    '<text x="24" y="112" font-family="\'Arial Black\',\'Baloo 2\',sans-serif" font-weight="900" font-size="' + (n >= 1000 ? 30 : 36) + '" fill="' + ink + '">₦' + N + '</text>' +
+    '<text x="26" y="72" font-family="Georgia,serif" font-weight="700" font-size="9" letter-spacing="2.4" fill="' + ink + '" opacity=".8">NAIRA</text></g></g>';
+  // the child's hand, from the bottom-right corner: the thumb over the front of the note, the sleeve of a blue kaftan
+  const SK = '#8B5A2B', SKD = '#6A4020';
+  const arm = '<g class="sy5-arm"><path d="M235 80 Q246 75 253 84 Q256 93 247 98 L237 96 Z" fill="' + SKD + '"/>' +
+    '<path d="M250 126 Q262 112 274 108 L304 136 L304 200 L268 200 Q254 150 250 126 Z" fill="' + SK + '"/><path d="M262 176 Q256 150 252 128 L262 124 Q266 150 276 176 Z" fill="' + SKD + '" opacity=".5"/>' +
+    '<path d="M236 92 Q250 83 263 91 Q273 104 271 121 Q263 134 248 132 Q238 124 236 110 Z" fill="' + SK + '"/>' +
+    '<path d="M238 100 Q243 102 247 100 M238 108 Q243 111 248 109 M239 116 Q244 119 249 117" stroke="' + SKD + '" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+    '<path d="M256 92 Q264 98 266 110" stroke="#B07A48" stroke-width="1.4" fill="none" opacity=".6" stroke-linecap="round"/>' +
+    '<path d="M246 104 Q232 99 215 97.4 Q209.6 97.6 209.6 101.4 Q210.4 105 215.4 105.6 Q230 107.6 243 115 Z" fill="' + SK + '"/>' +
+    '<path d="M215.4 105.6 Q230 107.6 243 115 L245 111 Q230 104 214 103.4 Z" fill="' + SKD + '" opacity=".6"/><ellipse cx="213.4" cy="100.6" rx="2.6" ry="1.9" fill="#D9A27A"/>' +
+    '<path d="M266 142 Q284 130 306 138 L420 200 V260 H300 Q262 162 266 142 Z" fill="#2F6B9A"/><path d="M266 142 Q284 130 306 138" stroke="#E8D9A8" stroke-width="2.2" fill="none"/><path d="M272 156 Q286 150 302 156" stroke="#000" stroke-opacity=".2" stroke-width="1.3" fill="none"/></g>';
+  return '<svg class="note sy5note" viewBox="0 0 300 170" aria-hidden="true"><defs><linearGradient id="' + id + 't" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + t2 + '" stop-opacity=".55"/><stop offset=".5" stop-color="' + pa + '" stop-opacity="0"/><stop offset="1" stop-color="' + t2 + '" stop-opacity=".45"/></linearGradient></defs>' +
+    nt + arm + '</svg>';
+}

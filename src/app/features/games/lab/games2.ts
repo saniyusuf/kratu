@@ -15,6 +15,7 @@ import { kraalBack, kraalFront, kraalCow, countBell, happyHerd } from './sc-gark
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
 import * as JR from './sc-jirgi';
+import * as SY from './sc-suya';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
 
 export function moreGames(c: any): Record<string, any> {
@@ -546,14 +547,14 @@ export function moreGames(c: any): Record<string, any> {
       place: (r) => r.right >= 6 ? 'Paid with every note by name, to a thousand: Lambobi would skip the hundreds.' : 'Named ' + r.right + ' of 6 notes: Lambobi would start at the tens.',
       play(run, done) {
         const NOTES = shuffle([20, 50, 100, 200, 500, 1000]), AMONG = NOTES.map((n) => K.enText['n' + n].toLowerCase()).concat(['ten', 'five', 'two', 'one']); let r = 0, got = 0;
-        const st = h('<div class="sgstage"><div class="grillw">' + A.suya() + '</div></div>');
+        const st = h('<div class="sgstage"><div class="grillw">' + SY.stand() + '</div></div>');
         const hand = h('<div class="handn"></div>'), wraps = h('<div class="wraps">' + NOTES.map(() => '<i></i>').join('') + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(hand); run.scr.appendChild(wraps); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 6 }));
         run.remind = () => say(line('j-suya', 'how'), run);
         function next() {
-          const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = A.note(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
+          const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = SY.note(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
           autoRound(run, box, w, AMONG, () => {
             got++; run.good(hand); sayW(run, K.en['n' + n]); hand.classList.add('paid'); wraps.children[r].classList.add('on'); later(run, 1700, step);
           }, () => { wraps.children[r].classList.add('miss'); st.classList.add('cross'); later(run, 1500, () => { st.classList.remove('cross'); hand.classList.add('paid'); }); later(run, 1900, step); });
