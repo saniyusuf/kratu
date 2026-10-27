@@ -59,3 +59,20 @@
 .glab .gbg .gy4 .x-ms,.glab .gbg .gy4 .x-mf{stroke:#3A1A0A;stroke-width:.42;fill:none;stroke-linecap:round}
 .glab .gbg .gy4 .x-sl{stroke-width:2.6;stroke-linecap:round;fill:none}
 .glab .gbg .gy4 .x-sf{stroke:#000;stroke-opacity:.12;stroke-width:.9;stroke-linecap:round;fill:none;transform:translate(.5px,.2px)}
+
+/* ---- round three (Sani 2026-10-27, realism): the lorry stands on the yard in front of the store, the piles stand on
+   their mats on the ground in the foreground, nothing floats; the hear button and the tally sit under the door and ear ---- */
+.glab .scr.gyada{padding:0}
+.glab .scr.gyada .gtop{position:absolute;inset:0;margin:0;width:auto;display:block;pointer-events:none;z-index:1}
+.glab .scr.gyada .gtop>*{pointer-events:auto}
+.glab .scr.gyada .gtop .hearn{position:absolute;left:1.6cqw;top:11.2cqw;margin:0}
+.glab .scr.gyada .gtop .tally{position:absolute;right:1.6cqw;top:11.2cqw;margin:0}
+.glab .scr.gyada .lorryw{position:absolute;left:3cqw;top:25.8cqw;width:37cqw;height:17.35cqw}
+.glab .scr.gyada .stacks2{position:absolute;left:8.5cqw;right:2cqw;bottom:1.2cqw;margin:0;display:flex;justify-content:space-between;align-items:flex-end;gap:1cqw;z-index:2}
+.glab .scr.gyada .stacks2 .stk{width:21cqw!important;height:15.5cqw!important;padding:0!important;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;transition:transform .15s}
+.glab .scr.gyada .stacks2.big{left:10cqw;right:3cqw}
+.glab .scr.gyada .stacks2.big .stk{width:27.5cqw!important;height:20.5cqw!important}
+.glab .scr.gyada .stacks2 .stk:active:not(.fly){transform:translateY(.3cqw) scale(.98)}
+.glab .scr.gyada .stacks2 .stk.fly{transform:translate(var(--tx),var(--ty)) scale(.3)!important}
+/* the lorry's dust is soft, and it sits low on the ground */
+.glab .lorry.gyl .dust{transform-box:view-box}

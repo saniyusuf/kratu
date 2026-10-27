@@ -12,6 +12,7 @@ import { zebu, tuft, herdsman, cowbell, moo, egret, priceBoard } from './herd';
 import { dabba, dabSound, dabbaAlone } from './sc-shanu';
 import { react as reactScene } from './rest';
 import { kraalBack, kraalFront, kraalCow, countBell, happyHerd } from './sc-garke';
+import { gyLorry, gySacks, gyLorryLoad } from './sc-gyada';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound } from './sc-wasika';
 import * as JR from './sc-jirgi';
@@ -340,7 +341,7 @@ export function moreGames(c: any): Record<string, any> {
          drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {
         const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0, busy = false;
-        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + A.lorry() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
+        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + gyLorry() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
         const row = h('<div class="stacks2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(row);
         run.clock(150, () => done({ right: got, part: got / 8, reached }));
@@ -358,7 +359,7 @@ export function moreGames(c: any): Record<string, any> {
           const n = N[r], cap = n <= 10 ? 10 : 20, k = n <= 10 ? 3 : 2;
           const opts = shuffle([n].concat(shuffle([-3, -2, -1, 1, 2, 3].map((d) => n + d).filter((x) => x >= 1 && x <= cap)).slice(0, k)));
           row.innerHTML = ''; row.classList.toggle('big', cap === 20);
-          opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + A.sacks(m, cap) + '</button>'); row.appendChild(b);
+          opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + gySacks(m, cap) + '</button>'); row.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m !== n) {
                 // wrong: the right pile glows for a moment, and the lorry leaves empty
@@ -369,7 +370,7 @@ export function moreGames(c: any): Record<string, any> {
               const br = io.rect(b), lr = io.rect(lw);
               b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .3 - (br.top + br.height / 2)) + 'px');
               b.classList.add('fly'); row.querySelectorAll('.stk').forEach((o) => { if (o !== b) o.classList.add('fade'); });
-              later(run, 500, () => { lw.querySelector('.load').innerHTML = A.lorryLoad(n); });
+              later(run, 500, () => { lw.querySelector('.load').innerHTML = gyLorryLoad(n); });
               const loaded = 500 + n * 90 + 400;
               later(run, loaded, () => { bump(lw, 'thump', 500); horn(true); });
               later(run, loaded + 500, () => lw.classList.add('away', 'zoom'));   // off it speeds, in approval

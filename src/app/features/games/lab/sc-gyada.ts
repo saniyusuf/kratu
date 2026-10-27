@@ -108,7 +108,7 @@ export function gyadaScene(): string {
     HEADB + FACE + SACKDEF + JALF + RIGF + WOMF + '<path id="' + P + '-ft" d="M-3.6 -1.4h2.8v1.3h-3.4z M.8 -1.4h2.8l.6 1.3h-3.4z" fill="#2E2218"/>' +
     '<path id="' + P + '-s" d="M.5 .4Q3.6 -.3 6.7 .4Q7.5 2 6.7 3.8Q3.6 4.3 .5 3.8Q-.3 2 .5 .4Z" stroke="#8B6A3A" stroke-width=".22"/></defs>';
 
-  const sky = '<rect width="320" height="200" fill="url(#' + P + '-sky)"/><circle cx="238" cy="44" r="30" fill="url(#' + P + '-sun)"/><circle cx="238" cy="44" r="8.5" fill="#FFF6DC" opacity=".9"/>' +
+  const sky = '<rect width="320" height="200" fill="url(#' + P + '-sky)"/><circle cx="70" cy="34" r="34" fill="url(#' + P + '-sun)"/><circle cx="70" cy="34" r="8.5" fill="#FFF6DC" opacity=".9"/>' +
     // the old city faint on the horizon: flat roofs with zanko horns, a dome and a minaret
     '<g fill="#C7AC7E" opacity=".5"><path d="M60 124 V112 H84 V124Z M88 124 V108 H104 V124Z M150 124 V110 H176 V124Z M228 124 V113 H250 V124Z M296 124 V109 H320 V124Z"/>' +
     '<path d="M60 112 l1.2 -3 1.2 3 M72 112 l1.2 -3 1.2 3 M82 112 l1.2 -3 1.2 3 M88 108 l1.2 -3 1.2 3 M102 108 l1.2 -3 1.2 3 M296 109 l1.2 -3 1.2 3 M318 109 l1.2 -3 1.2 3"/>' +
@@ -119,10 +119,10 @@ export function gyadaScene(): string {
   // far porters, tiny, on the far pyramid and walking to it from the warehouse
   const tiny = (x, y, c, k) => person({ x, y, s: .26, skin: k, c, cap: 'pad', al: 'head', ar: 'down', load: SACK, flip: k % 2 });
   const far = '<g opacity=".85">' + tiny(124, 61.4, '#B23A2A', 1) + tiny(136, 73, '#2F6B9A', 2) + tiny(111, 77, '#E9DDC0', 3) + '</g>' +
-    tiny(68, 125.4, '#6A4C93', 0) + tiny(84, 125.6, '#E9DDC0', 2) + tiny(99, 125.4, '#2E7D32', 1) + tiny(150, 125.6, '#C62828', 4);
+    tiny(146, 125.2, '#6A4C93', 0) + tiny(256, 125.2, '#E9DDC0', 2);
   const pyrs = '<path d="M-10 70 Q80 64 170 72 T330 66" stroke="#F7EAD0" stroke-width="5" fill="none" opacity=".25"/><path d="M-10 52 Q120 46 210 54 T330 50" stroke="#F7EAD0" stroke-width="3" fill="none" opacity=".25"/>' +
     pyr(30, 125, 11, .55) + pyr(122, 125, 16, .72) + '<rect y="60" width="320" height="66" fill="url(#' + P + '-hz)"/>' + haze +
-    pyr(292, 125, 9, 1) + pyr(200, 125, 13, 1);
+    '<g fill="#5A3A16" opacity=".2"><path d="M200 124.8 L247 124.8 L282 131.6 L226 131.6Z"/><path d="M292 124.8 L325 124.8 L330 129.8 L310 129.8Z"/></g>' + pyr(292, 125, 9, 1) + pyr(200, 125, 13, 1);
 
   // the warehouse: whitewashed earth walls under a corrugated zinc roof, its big door open on stacked sacks
   let corr = ''; for (let x = -8; x < 62; x += 2.2) corr += 'M' + n2(x) + ' 90.4 L' + n2(x - 1.6) + ' 101';
@@ -134,6 +134,14 @@ export function gyadaScene(): string {
 
   const g = '<path d="M0 124.6 H320 V200 H0Z" fill="url(#' + P + '-gr)"/><g fill="#B88E55" opacity=".35"><ellipse cx="60" cy="150" rx="40" ry="2.4"/><ellipse cx="250" cy="165" rx="50" ry="2.6"/><ellipse cx="160" cy="190" rx="70" ry="3"/></g>' +
     // spilled groundnut shells on the ground
+    '<linearGradient id="' + P + '-gn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5226" stop-opacity="0"/><stop offset="1" stop-color="#7A5226" stop-opacity=".3"/></linearGradient><rect y="150" width="320" height="50" fill="url(#' + P + '-gn)"/>' +
+    '<linearGradient id="' + P + '-tk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A87C46" stop-opacity=".4"/><stop offset=".55" stop-color="#A87C46" stop-opacity=".3"/><stop offset="1" stop-color="#A87C46" stop-opacity="0"/></linearGradient>' +
+    '<path d="M-10 128 Q80 126.4 170 129 Q230 130.4 300 133 Q240 137.6 170 139.4 Q80 138.4 -10 140Z" fill="url(#' + P + '-tk)"/>' +
+    '<path d="M-10 131.6 Q80 130 168 132 Q220 133 270 134.6 M-10 138 Q80 136.4 168 137.6 Q215 137.4 262 136.2" stroke="#8E6634" stroke-width=".6" stroke-dasharray="1.2 .8" fill="none" opacity=".4"/>' +
+    '<g stroke="#E8CF9C" stroke-width=".4" fill="none" opacity=".45">' + [[20, 150], [110, 156], [210, 148], [260, 160], [40, 172], [150, 178], [240, 186], [80, 190], [300, 174]].map(([x, y]) => '<path d="M' + x + ' ' + y + ' q6 -1.2 12 0 t12 0"/>').join('') + '</g>' +
+    '<g stroke="#A27840" stroke-width=".35" fill="none" opacity=".35">' + [[22, 151], [112, 157], [212, 149], [262, 161], [42, 173], [152, 179], [242, 187], [82, 191], [302, 175]].map(([x, y]) => '<path d="M' + x + ' ' + y + ' q6 -1.2 12 0 t12 0"/>').join('') + '</g>' +
+    '<g fill="#8E6634" opacity=".35">' + [[150, 134], [156, 137], [161, 134.4], [167, 137.4], [190, 140], [196, 143], [232, 139], [228, 143]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx="1" ry=".45"/>').join('') + '</g>' +
+    '<g fill="#9A7848">' + [[130, 147], [176, 152], [226, 146], [98, 162], [286, 150], [190, 166], [64, 156]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx=".9" ry=".55"/>').join('') + '</g>' +
     '<g fill="#C79A5C">' + [[180, 131], [214, 129], [246, 131], [12, 182], [300, 186], [30, 194], [292, 195], [262, 130]].map(([x, y]) => '<ellipse cx="' + x + '" cy="' + y + '" rx=".9" ry=".5"/><ellipse cx="' + (x + 2) + '" cy="' + (y + .6) + '" rx=".8" ry=".45"/>').join('') + '</g>';
 
   // porters: two climb the big pyramid's right face, sack on head; one sets his down at the top; one comes back down
@@ -174,14 +182,117 @@ export function gyadaScene(): string {
 
   // by the warehouse: a woman selling kosai from a tray on her head, and children watching
   const tray = '<g><ellipse cy="-36" rx="5" ry="1.1" fill="#C9A15E"/><path d="M-4.4 -36.4 Q0 -39.6 4.4 -36.4Z" fill="#E8C35A"/><g fill="#B8741E"><circle cx="-2" cy="-37.2" r=".9"/><circle cx="0" cy="-37.8" r=".9"/><circle cx="2" cy="-37.2" r=".9"/></g></g>';
-  const town = person({ x: 47, y: 128.4, s: .55, skin: 2, dress: 'wom', c: '#C2185B', t: '#FFD54A', w: '#1E6E5A', w2: '#FFD54A', cap: 'kallabi', capc: '#FFB300', capc2: '#C2185B', al: 'head', ar: 'down', load: tray, cls: 'x-w' }) +
-    person({ x: 39.6, y: 129, s: .36, skin: 4, c: '#E57A2A', t: '#FFF1D6', cap: 'kube', capc: '#2E5E8C', al: 'down', ar: 'front', cls: 'x-w x-kid' }) +
-    person({ x: 7, y: 129, s: .38, skin: 0, dress: 'wom', c: '#7B3FA0', w: '#3F6FB5', w2: '#F4EBD0', cap: 'hijab', capc: '#F6C94A', al: 'down', ar: 'down', cls: 'x-w x-kid' }) +
-    person({ x: 52.4, y: 129.6, s: .34, skin: 3, c: '#2E9E6A', cap: 'kube', capc: '#F4EBD0', al: 'up', ar: 'down', cls: 'x-w x-kid' });
+  const town = person({ x: 150, y: 129.4, s: .55, skin: 2, dress: 'wom', c: '#C2185B', t: '#FFD54A', w: '#1E6E5A', w2: '#FFD54A', cap: 'kallabi', capc: '#FFB300', capc2: '#C2185B', al: 'head', ar: 'down', load: tray, cls: 'x-w' }) +
+    person({ x: 142.4, y: 130, s: .36, skin: 4, c: '#E57A2A', t: '#FFF1D6', cap: 'kube', capc: '#2E5E8C', al: 'down', ar: 'front', cls: 'x-w x-kid' }) +
+    person({ x: 162, y: 130.6, s: .38, skin: 0, dress: 'wom', c: '#7B3FA0', w: '#3F6FB5', w2: '#F4EBD0', cap: 'hijab', capc: '#F6C94A', al: 'down', ar: 'down', cls: 'x-w x-kid' }) +
+    person({ x: 157, y: 130.2, s: .34, skin: 3, c: '#2E9E6A', cap: 'kube', capc: '#F4EBD0', al: 'up', ar: 'down', cls: 'x-w x-kid' });
 
   // the near corners: a few sacks and a heap of shells in front, the dust of the yard
-  const near = '<g>' + heap(296, 199) + heap(-4, 200, 1) + '</g>';
+  const near = '';
 
   return '<svg class="scene ' + P + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + defs + sky +
     egret(118, 46, .9, 'e1') + egret(146, 55, .7, 'e2') + pyrs + store + g + far + climbers + onPyr + donkey + shade + men + town + near + '</svg>';
+}
+
+/* ================= the game's own pieces, round three (Sani 2026-10-27: realism) =================
+   The lorry is a bonneted northern lorry (the old Mercedes 911 shape) with a painted wooden body, parked on the
+   ground; the piles stand on palm-fibre mats on the ground, not on cards. Light from the upper left, shadows fall
+   to the right. Same classes the game's CSS drives: .lorry .load .ld .wheel .dust .speed, .sacks. */
+const SKB = 'M3 3.5 Q1.5 .5 4.5 1.3 Q15 -.6 25.5 1.3 Q28.6 .5 27 3.5 Q30.4 9 27 14.6 Q28.6 17.6 25.5 16.8 Q15 18.8 4.5 16.8 Q1.5 17.6 3 14.6 Q-.4 9 3 3.5 Z';
+const SKDEF = '<radialGradient id="gyS-hl" cx=".3" cy=".22" r=".6"><stop offset="0" stop-color="#FFF6DA" stop-opacity=".5"/><stop offset="1" stop-color="#FFF6DA" stop-opacity="0"/></radialGradient>' +
+  '<linearGradient id="gyS-dk" x1="0" y1="0" x2="1" y2="1"><stop offset=".45" stop-color="#2A1806" stop-opacity="0"/><stop offset="1" stop-color="#2A1806" stop-opacity=".38"/></linearGradient>' +
+  '<pattern id="gyS-mat" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#C9A35E"/><path d="M0 1 H4 M0 3 H4" stroke="#A9843E" stroke-width=".9"/><path d="M1 0 V1 M3 2 V3" stroke="#E2C27E" stroke-width=".8"/></pattern>';
+const TINT = ['#000', '#5A3A10', '#000', '#FFF2D0'], TOP = [0, .1, .08, .1];
+function gySack(x, y, k = 0) {
+  const t = k % 4;
+  return '<g transform="translate(' + n2(x) + ' ' + n2(y) + ')"><ellipse cx="16.4" cy="17.4" rx="14" ry="2" fill="#2A1806" opacity=".38"/>' +
+    '<path d="' + SKB + '" fill="url(#k4-sackg)" stroke="#5E4218" stroke-width=".55"/><path d="' + SKB + '" fill="url(#k4-jute)" opacity=".55"/>' +
+    (TOP[t] ? '<path d="' + SKB + '" fill="' + TINT[t] + '" opacity="' + TOP[t] + '"/>' : '') +
+    '<path d="' + SKB + '" fill="url(#gyS-hl)"/><path d="' + SKB + '" fill="url(#gyS-dk)"/>' +
+    '<path d="M6 5 Q9 7 8 11 M21 4 Q24 8 22 13 M14 13.5 Q17 12 19 14.6" stroke="#7A5826" stroke-width=".5" fill="none" opacity=".7"/>' +
+    '<path d="M9.6 1.2 Q10.2 9 9.6 17 M11.3 1.1 Q11.9 9 11.3 17.2" stroke="#A8352A" stroke-width=".95" fill="none" opacity=".8"/><path d="M13 1 Q13.6 9 13 17.3" stroke="#2E6E30" stroke-width=".95" fill="none" opacity=".8"/>' +
+    '<text x="20" y="10.4" text-anchor="middle" font-size="3.1" font-weight="800" fill="#3E2A10" opacity=".5" font-family="Baloo 2,sans-serif">GYAƊA</text>' +
+    '<path d="M4.6 3.2 Q15 1.6 25.6 3.2" stroke="#4E3A18" stroke-width=".5" stroke-dasharray="1.1 .9" fill="none"/>' +
+    '<path d="M3 3.5 q-1.6 -1.6 -2.4 -3 M3 14.6 q-1.6 1.6 -2.4 3 M27 3.5 q1.6 -1.6 2.4 -3 M27 14.6 q1.6 1.6 2.4 3" stroke="#6E4E1E" stroke-width="1.2" stroke-linecap="round" fill="none"/></g>';
+}
+/** n sacks in a stepped pile on a mat; the mat and the scale are the same for every pile of the round (cap) */
+export function gySacks(n, cap = 20) {
+  const rows = []; let left = n, w = Math.max(1, Math.ceil((Math.sqrt(8 * n + 1) - 1) / 2));
+  while (left > 0) { const r = Math.min(w, left); rows.push(r); left -= r; w = Math.max(1, w - 1); }
+  const SW = 27, SH = 14, maxw = rows[0] * SW, cx = maxw / 2; let out = '', y = 142, k = n * 3;
+  rows.forEach((r) => { const x0 = cx - r * SW / 2; for (let i = 0; i < r; i++) out += gySack(x0 + i * SW, y - 18, k++); y -= SH; });
+  const wc = Math.ceil((Math.sqrt(8 * cap + 1) - 1) / 2), Wc = wc * SW, W = Wc + 14, H = wc * SH + 26, ml = cx - Wc / 2 - 2, mr = cx + Wc / 2 + 2;
+  const mat = '<path d="M' + n2(ml - 2) + ' 149 L' + n2(mr + 6) + ' 149.4 L' + n2(mr + 1) + ' 137.6 L' + n2(ml + 3) + ' 137.4Z" fill="#2A1806" opacity=".18" transform="translate(2.4 1.4)"/>' +
+    '<path d="M' + n2(ml - 2) + ' 148.4 L' + n2(mr + 4) + ' 148.6 L' + n2(mr) + ' 137 L' + n2(ml + 2) + ' 136.8Z" fill="url(#gyS-mat)" stroke="#7E5E28" stroke-width=".7"/>' +
+    '<path d="M' + n2(ml - 1) + ' 147 H' + n2(mr + 3) + '" stroke="#9A7434" stroke-width="1.1" opacity=".7"/>' +
+    '<path d="M' + n2(ml - 2) + ' 148.4 L' + n2(mr + 4) + ' 148.6" stroke="#E6CC92" stroke-width=".5" stroke-dasharray=".6 .8"/>';
+  const cast = '<ellipse cx="' + n2(cx + maxw * .12) + '" cy="143.2" rx="' + n2(maxw * .58) + '" ry="3.2" fill="#2A1806" opacity=".3"/>';
+  return '<svg class="sacks gys" viewBox="' + n2(cx - W / 2) + ' ' + (151 - H) + ' ' + n2(W) + ' ' + H + '" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><defs>' + SKDEF + '</defs>' + mat + cast + out + '</svg>';
+}
+/** the sacks on the back of the lorry, piled above the sides the way they are in the north; each drops in in turn */
+export function gyLorryLoad(n) {
+  let out = '', k = 0;
+  for (let r = 0; k < n; r++) { const inRow = Math.min(8 - (r % 2), n - k);
+    for (let i = 0; i < inRow; i++, k++) out += '<g class="ld" style="--i:' + k + '"><g transform="translate(' + (16 + i * 22 + (r % 2) * 11) + ' ' + (31 - r * 11.5) + ') scale(.84)">' + gySack(0, 0, k) + '</g></g>'; }
+  return out;
+}
+function wheel(x) {
+  let nuts = ''; for (let a = 0; a < 6; a++) nuts += '<circle cx="' + n2(x + 4.4 * Math.cos(a * Math.PI / 3)) + '" cy="' + n2(125 + 4.4 * Math.sin(a * Math.PI / 3)) + '" r=".8" fill="#E8E8E8"/>';
+  return '<ellipse cx="' + (x + 4) + '" cy="142" rx="17" ry="2.2" fill="#1A0E04" opacity=".55"/>' +
+    '<g class="wheel" style="transform-origin:' + x + 'px 125px"><circle cx="' + x + '" cy="125" r="17" fill="url(#gyL-tyre)"/>' +
+    '<circle cx="' + x + '" cy="125" r="15.8" fill="none" stroke="#2C2C2C" stroke-width="2.2" stroke-dasharray="2 1.7"/>' +
+    '<circle cx="' + x + '" cy="125" r="10.4" fill="url(#gyL-rim)" stroke="#111" stroke-width="1"/><circle cx="' + x + '" cy="125" r="6.6" fill="#C9CED2" stroke="#7D848A" stroke-width=".6"/>' +
+    nuts + '<circle cx="' + x + '" cy="125" r="2.4" fill="#5A6066"/><path d="M' + (x - 9) + ' 120 A10 10 0 0 1 ' + (x - 3) + ' 115.6" stroke="#fff" stroke-width=".9" opacity=".45" fill="none"/></g>';
+}
+/** a northern lorry, side on, facing right: the long bonnet, a painted wooden body, a driver at the window */
+export function gyLorry() {
+  const defs = '<defs>' + SKDEF +
+    '<linearGradient id="gyL-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9A562"/><stop offset=".6" stop-color="#B57E42"/><stop offset="1" stop-color="#8E5C2C"/></linearGradient>' +
+    '<linearGradient id="gyL-cab" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#4C93CF"/><stop offset=".55" stop-color="#2468A8"/><stop offset="1" stop-color="#174A7C"/></linearGradient>' +
+    '<linearGradient id="gyL-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E6"/><stop offset="1" stop-color="#D9CCAE"/></linearGradient>' +
+    '<linearGradient id="gyL-gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D8EEF4"/><stop offset=".5" stop-color="#8FB4C2"/><stop offset="1" stop-color="#4E6E7A"/></linearGradient>' +
+    '<linearGradient id="gyL-cr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FAFAFA"/><stop offset=".5" stop-color="#9AA0A6"/><stop offset="1" stop-color="#DADDE0"/></linearGradient>' +
+    '<linearGradient id="gyL-lit" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF4D8" stop-opacity=".22"/><stop offset=".5" stop-color="#FFF4D8" stop-opacity="0"/><stop offset="1" stop-color="#1A0E04" stop-opacity=".28"/></linearGradient>' +
+    '<radialGradient id="gyL-tyre" cx=".42" cy=".38" r=".62"><stop offset=".55" stop-color="#3A3A3A"/><stop offset="1" stop-color="#0E0E0E"/></radialGradient>' +
+    '<radialGradient id="gyL-rim" cx=".38" cy=".34" r=".7"><stop offset="0" stop-color="#E5534B"/><stop offset="1" stop-color="#8E1C16"/></radialGradient>' +
+    '<radialGradient id="gyL-dust" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#E2CC9A" stop-opacity=".85"/><stop offset="1" stop-color="#E2CC9A" stop-opacity="0"/></radialGradient></defs>';
+  // planks with their grain; three painted bands; posts with bolts
+  let planks = '', grain = '';
+  for (let k = 0; k < 7; k++) { const y = 50 + k * 7.4; planks += '<rect x="12" y="' + n2(y) + '" width="184" height="7.4" fill="url(#gyL-wood)"/>';
+    for (let g = 0; g < 3; g++) { const x0 = 14 + ((k * 37 + g * 61) % 150); grain += 'M' + x0 + ' ' + n2(y + 2 + g * 1.7) + ' q8 -.9 16 0 t16 .2'; } }
+  const bands = '<rect x="12" y="50" width="184" height="7.4" fill="#F1E3BF"/><rect x="12" y="64.8" width="184" height="7.4" fill="#2E7D32"/>' +
+    '<path d="M12 72.2 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4 l6 -7.4 l6 7.4" stroke="#FFD54A" stroke-width="1.3" fill="none"/>' +
+    '<rect x="12" y="87" width="184" height="7.4" fill="#B3261E"/><g fill="#F1E3BF">' + [24, 48, 72, 96, 120, 144, 168].map((x) => '<path d="M' + x + ' 88.4 l3 2.3 l-3 2.3 l-3 -2.3Z"/>').join('') + '</g>' +
+    '<text x="104" y="56.2" text-anchor="middle" style="font:800 5.6px var(--disp,sans-serif);letter-spacing:.4px" fill="#8E2414">ALLAH YA KIYAYE</text>';
+  const posts = [12, 70, 134, 192].map((x) => '<rect x="' + x + '" y="47" width="4" height="56" fill="#6E4320"/><path d="M' + (x + .7) + ' 48 V102" stroke="#A8743E" stroke-width=".6"/><circle cx="' + (x + 2) + '" cy="61" r=".7" fill="#C9CED2"/><circle cx="' + (x + 2) + '" cy="83" r=".7" fill="#C9CED2"/>').join('');
+  const body = planks + bands + '<path d="' + grain + '" stroke="#6E4320" stroke-width=".35" fill="none" opacity=".45"/>' +
+    '<path d="M12 57.4 H196 M12 64.8 H196 M12 72.2 H196 M12 79.6 H196 M12 87 H196 M12 94.4 H196" stroke="#4A2C12" stroke-width=".55" opacity=".7"/>' +
+    posts + '<rect x="10" y="45.6" width="190" height="3.2" rx="1" fill="#4A2C12"/><rect x="10" y="101.6" width="190" height="5.4" fill="#3A220E"/>' +
+    '<rect x="12" y="50" width="184" height="52" fill="url(#gyL-lit)"/>' +
+    // the headboard rising over the cab roof, and the rack over the cab
+    '<path d="M196 30 H203 V102 H196Z" fill="#6E4320"/><path d="M197 31 V101" stroke="#A8743E" stroke-width=".7"/><path d="M200 33 H246 M200 37 H244" stroke="#3A220E" stroke-width="1.6"/><path d="M208 33 V40 M222 33 V40 M236 33 V40" stroke="#3A220E" stroke-width="1.2"/>';
+  const chassis = '<path d="M16 113 L284 113 L292 141 L22 141Z" fill="#1A0E04" opacity=".26"/>' +
+    '<rect x="14" y="107" width="272" height="6" fill="#222"/><path d="M14 107.6 H286" stroke="#555" stroke-width=".6"/>' +
+    '<rect x="124" y="111" width="30" height="11" rx="5.5" fill="#2A2A2A"/><ellipse cx="139" cy="116.5" rx="11" ry="4" fill="#3A3A3A"/>' +
+    '<rect x="170" y="109" width="30" height="12" rx="4" fill="url(#gyL-cr)"/><path d="M174 111 v8 M196 111 v8" stroke="#7D848A" stroke-width=".7"/>' +
+    '<path d="M60 108 Q84 96 108 108" stroke="#1E1E1E" stroke-width="3.6" fill="none"/><rect x="104" y="108" width="4" height="12" fill="#1E1E1E"/>';
+  const cab = '<path d="M202 112 V46 Q202 40 208 40 L240 40 Q246 40 247 46 L251 74 Q272 70 286 76 Q293 80 293 92 L293 112Z" fill="url(#gyL-cab)"/>' +
+    '<path d="M202 46 Q202 40 208 40 L240 40 Q246 40 247 46 L250 66 H202Z" fill="url(#gyL-top)"/>' +
+    '<path d="M202 74 H251 Q272 70 286 76 Q290 78 291.4 81" stroke="#E8731A" stroke-width="2.6" fill="none"/>' +
+    '<path d="M207 46 L239 46 Q243 46 244 50 L246 70 H207Z" fill="url(#gyL-gl)" stroke="#2A3A44" stroke-width=".8"/>' +
+    // the driver, cap on, elbow on the sill
+    '<g><path d="M219 70 Q219 61 226 60.6 Q233 61 233 70Z" fill="#F4EBD0"/><circle cx="227" cy="56" r="4.6" fill="#5E3A1C"/><path d="M222.6 54.6 Q222.6 49.4 227 49.2 Q231.4 49.4 231.4 54.6Z" fill="#F4EBD0"/><path d="M223 53 l.8 -.8 .8 .8 .8 -.8 .8 .8 .8 -.8 .8 .8 .8 -.8 .8 .8 .8 -.8" stroke="#2E7D32" stroke-width=".4" fill="none"/><circle cx="229.6" cy="56" r=".5" fill="#1A0E06"/>' +
+    '<path d="M231 68 Q238 66 245 69.6" stroke="#F4EBD0" stroke-width="3.4" stroke-linecap="round" fill="none"/><circle cx="245.6" cy="69.6" r="1.5" fill="#5E3A1C"/></g>' +
+    '<path d="M209 47.4 L224 47.4 L212 60Z" fill="#fff" opacity=".22"/>' +
+    '<path d="M204 76 V110 M249 76 V110" stroke="#123A60" stroke-width=".7"/><rect x="236" y="80" width="7" height="1.6" rx=".8" fill="url(#gyL-cr)"/>' +
+    '<path d="M255 82 l14 -1.6 M256 86 l14 -1.6 M257 90 l14 -1.6" stroke="#123A60" stroke-width=".8" opacity=".7"/>' +
+    '<path d="M286 76 Q293 80 293 92 V112 H288 Q289 92 284 78Z" fill="#0E2E50" opacity=".45"/>' +
+    '<circle cx="288" cy="92" r="4.2" fill="url(#gyL-cr)"/><circle cx="288.6" cy="92" r="2.8" fill="#FFF6C8"/><rect x="287" y="99" width="4" height="2.4" fill="#F29A2E"/>' +
+    '<path d="M247 50 L255 46" stroke="#333" stroke-width="1"/><rect x="254" y="40" width="3" height="12" rx="1" fill="#2A2A2A"/>' +
+    '<rect x="212" y="112" width="24" height="3" fill="#2A2A2A"/><rect x="282" y="110" width="15" height="5" rx="1.2" fill="url(#gyL-cr)"/>' +
+    '<path d="M244 112 A22 22 0 0 1 288 112Z" fill="#111"/><path d="M243 112 A23 23 0 0 1 289 112" stroke="#0E2E50" stroke-width="2.6" fill="none"/>';
+  const dust = '<g class="dust"><circle cx="0" cy="134" r="12" fill="url(#gyL-dust)"/><circle cx="-14" cy="126" r="16" fill="url(#gyL-dust)"/><circle cx="12" cy="138" r="8" fill="url(#gyL-dust)"/></g>';
+  return '<svg class="lorry gyl" viewBox="-20 0 320 150" aria-hidden="true">' + defs +
+    '<ellipse cx="160" cy="142" rx="150" ry="5" fill="#1A0E04" opacity=".22"/>' + chassis +
+    '<g class="load"></g>' + body + cab + wheel(84) + wheel(266) + dust + '<g class="speed"></g></svg>';
 }
