@@ -102,10 +102,10 @@ function person(o) {
   } else if (k === 'woman') { // blouse, zani wrapper, a wrapper tying the baby on
     b += sandal(-2.6, s) + sandal(2.7, s) +
       '<path d="M-5.6 -48.5 Q0 -50 5.6 -48.5 L7.4 -29 L-7.4 -29 Z" fill="' + o.robe + '"/><path d="M1 -49.6 Q5.6 -49.6 5.6 -48.5 L7.4 -29 L2 -29 Z" fill="#000" opacity=".12"/>' +
-      '<path d="M-7.6 -30 L7.6 -30 L8.8 -1.4 Q0 0 -8.8 -1.4 Z" fill="' + o.wrap + '"/><path d="M-7.6 -30 L7.6 -30 L7.8 -26.4 L-7.8 -26.4 Z" fill="' + o.wrap2 + '"/>' +
-      '<path d="M-8.2 -14 H8.2 M-8.5 -6 H8.5" stroke="' + o.wrap2 + '" stroke-width="1.1"/><g fill="' + o.wrap2 + '">' + [-5, -1.6, 1.8, 5.2].map((x) => '<path d="M' + x + ' -11 l1.2 1.2 l-1.2 1.2 l-1.2 -1.2 Z"/>').join('') + '</g>' +
+      '<path d="M-7.6 -30 L7.6 -30 Q9.2 -22 8.4 -13 Q7.6 -6 7.4 -1.4 Q0 -.2 -7.2 -1.4 Q-7.4 -8 -8.4 -14 Q-9 -22 -7.6 -30 Z" fill="' + o.wrap + '"/><path d="M-7.6 -30 L7.6 -30 L7.8 -26.4 L-7.8 -26.4 Z" fill="' + o.wrap2 + '"/>' +
+      '<path d="M-8.3 -14 Q0 -13 8.4 -14.6 M-7.6 -6 Q0 -5 7.6 -6.4" stroke="' + o.wrap2 + '" stroke-width="1.1" fill="none"/><g fill="' + o.wrap2 + '">' + [-5, -1.6, 1.8, 5.2].map((x) => '<path d="M' + x + ' -11 l1.2 1.2 l-1.2 1.2 l-1.2 -1.2 Z"/>').join('') + '</g>' +
       '<g fill="' + o.wrap2 + '" opacity=".8">' + [-5.6, -2, 1.6, 5].map((x) => '<circle cx="' + x + '" cy="-20" r=".7"/>').join('') + '</g>' +
-      '<path d="M1 -30 L2 -1 Q5.6 -.4 8.8 -1.4 L7.6 -30 Z" fill="#000" opacity=".12"/>' + folds('M-3 -26 Q-3.6 -14 -4.4 -2 M4 -26 Q4.4 -14 5 -2') +
+      '<path d="M1 -30 L2 -1 Q5 -.6 7.4 -1.4 Q7.6 -6 8.4 -13 Q9.2 -22 7.6 -30 Z" fill="#000" opacity=".12"/>' + folds('M-3 -26 Q-3.2 -16 -1.6 -10 Q-3 -6 -3.4 -2 M4 -26 Q4.4 -14 4.6 -2') +
       (o.baby ? '<path d="M-6.6 -46 L6.4 -40 L6.8 -36 L-7 -42 Z" fill="' + o.baby + '"/><path d="M-6.6 -46 L6.4 -40 M-6.8 -43.6 L6.6 -37.6" stroke="rgba(0,0,0,.22)" stroke-width=".4"/>' : '');
   } else if (k === 'kid') { // a boy in a short kaftan and shorts
     b += '<path d="M-3.6 -12 h3 v10.6 h-3 Z M.6 -12 h3 v10.6 h-3 Z" fill="' + sk(s) + '"/><path d="M-3.6 -12 h3 v10.6 h-1 Z" fill="#000" opacity=".1"/>' + sandal(-2.1, s) + sandal(2.1, s) +
@@ -136,22 +136,31 @@ const bicycle = (x, y, sc) => '<g transform="translate(' + x + ' ' + y + ') scal
   '<path d="M-8 -5 L-2 -5 L4 -12 L-4 -12 Z M-2 -5 L-5 -13 M4 -12 L8 -5 M3.4 -14 L4 -12" stroke="#1E5AA8" stroke-width=".95" stroke-linejoin="round"/><path d="M-7 -13.4 h3.6" stroke="#2A1A10" stroke-width="1.4"/><path d="M1.6 -14.6 Q3.4 -15.4 5.4 -14.2" stroke="#2A2A2A" stroke-width=".8"/>' +
   '<path d="M-12.4 -10 h6 v-3 h-6 Z" fill="#6B4422" stroke="none"/><path d="M-8 -5 L-11 -9.8" stroke="#3A3A3A" stroke-width=".6"/></g>';
 const tyre = '<g class="x-tyre"><circle r="4.4" fill="none" stroke="#1E1E1E" stroke-width="1.9"/><circle r="4.4" fill="none" stroke="#4A4A4A" stroke-width=".5" stroke-dasharray="1 1"/><path d="M-3 -3 A4.4 4.4 0 0 1 2 -3.9" stroke="#fff" stroke-width=".4" opacity=".2" fill="none"/></g>';
-const goat = '<g class="x-goat"><ellipse cy=".4" rx="9" ry="1.2" fill="rgba(40,24,10,.25)"/>' +
-  '<path d="M-6 -2 V-7 M-4 -2 V-7 M4 -2 V-7 M6 -2 V-7" stroke="#5A4030" stroke-width="1.1" stroke-linecap="round"/><path d="M-6 -2 v2 M-4 -2 v2 M4 -2 v2 M6 -2 v2" stroke="#2A1A10" stroke-width="1.1"/>' +
-  '<path d="M-7.6 -12 Q-8 -6.4 -3 -6 L5 -6 Q8 -6.6 7.8 -11 Q6 -14 0 -13.6 Q-6 -14 -7.6 -12 Z" fill="#EDE4D3"/><path d="M-6 -12 Q0 -10 6 -12 Q4 -8 -4 -8 Z" fill="#7A4A26"/>' +
-  '<path d="M-2 -6.4 Q0 -8 4 -6.6" stroke="rgba(0,0,0,.15)" stroke-width=".5" fill="none"/><path d="M-7.6 -12 l-1.8 -1.6" stroke="#EDE4D3" stroke-width="1.2" stroke-linecap="round"/>' +
-  '<g class="x-ghead"><circle cx="8" cy="-12" r="5" fill="none"/><path d="M6.6 -11.4 Q7 -16.4 10 -16 Q12.6 -15.6 12.8 -12.4 Q12.4 -10.8 11 -11 L8.6 -10 Z" fill="#7A4A26"/><path d="M8.4 -15.8 Q7.4 -18.4 5.6 -18.4" stroke="#3A2A1A" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M7.4 -15 Q5 -15 4.6 -13" stroke="#5A3418" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="10.4" cy="-14.2" r=".5" fill="#1A0E06"/><path d="M12.2 -11.2 Q12 -9.6 11 -9.2" stroke="#EDE4D3" stroke-width=".8" fill="none"/></g></g>';
-const hen = (x, y, c, cls = '') => '<g transform="translate(' + x + ' ' + y + ')"><g class="x-hen ' + cls + '"><ellipse cy=".2" rx="3.4" ry=".6" fill="rgba(40,24,10,.25)"/><path d="M-1 0 L-.6 -2 M1 0 L.6 -2" stroke="#D89A2A" stroke-width=".45"/>' +
-  '<path d="M-3.6 -5 Q-4.6 -2 -1 -1.6 L2 -1.8 Q3.6 -2.4 3.2 -4.6 L4.2 -6.8 Q3.4 -7.8 2.4 -6.6 Q1 -5 -1 -5.4 Q-2.8 -7 -3.6 -5 Z" fill="' + c + '"/><path d="M-3.6 -5 Q-5 -7.4 -4.2 -8.2 Q-2.8 -7 -2.6 -5.4 Z" fill="#2A2A2A" opacity=".8"/>' +
-  '<path d="M-2 -3.6 Q0 -2.4 1.6 -3.4" stroke="rgba(0,0,0,.2)" stroke-width=".45" fill="none"/><path d="M3.6 -7.4 l.5 -.9 l.5 .8 Z" fill="#D32F2F"/><path d="M4.2 -6.2 l1.2 .4 l-1.1 .4 Z" fill="#E8A317"/><circle cx="3.6" cy="-6.6" r=".3" fill="#1A0E06"/></g></g>';
+/* (r5) a Red Sokoto goat standing side on: knees and hocks, a deep chest, drooping ears, short horns, a beard */
+const goat = '<g class="x-goat"><ellipse cx="1" cy=".4" rx="10" ry="1.3" fill="rgba(40,24,10,.3)"/>' +
+  '<path d="M-6.4 -7 Q-7.2 -4 -6.2 -2.6 L-6.4 0 h1.2 L-5 -2.8 Q-5.2 -5 -4.6 -7 Z M5.4 -7 L5.2 0 h1.2 L6.8 -7 Z" fill="#6E3416"/>' +
+  '<path d="M-8.4 -13.4 Q-10 -15.4 -9.2 -17" stroke="#7A3518" stroke-width="1" fill="none" stroke-linecap="round"/>' +
+  '<path d="M-8.6 -11.8 Q-9 -14.4 -6.4 -14.6 Q0 -14 5 -14.6 Q8.4 -14.8 8.8 -11.6 Q8.8 -8.4 6.6 -7.2 Q2 -6 -2 -6.6 Q-6.6 -6.6 -8 -8.4 Q-9 -9.8 -8.6 -11.8 Z" fill="#9A4A24"/>' +
+  '<path d="M-8.4 -9.6 Q0 -6.8 8.4 -9.4 Q8 -7.6 6.6 -7.2 Q2 -6 -2 -6.6 Q-6.6 -6.6 -8 -8.4 Z" fill="#5A2810" opacity=".45"/><path d="M-7.6 -13.6 Q0 -14.6 6 -14.2" stroke="#C06A38" stroke-width=".7" fill="none" opacity=".7"/>' +
+  '<path d="M-5.6 -8 Q-6.6 -4.4 -5.2 -2.8 L-5.4 0 h1.3 L-3.8 -3 Q-4 -5.4 -2.8 -7.6 Z M4.2 -8 L4 0 h1.3 L5.8 -8 Z" fill="#8A4220"/>' +
+  '<path d="M-6.4 -.6 h1.2 V0 h-1.2 Z M5.2 -.6 h1.2 V0 h-1.2 Z M-5.4 -.6 h1.3 V0 h-1.3 Z M4 -.6 h1.3 V0 h-1.3 Z" fill="#2A1A10"/>' +
+  '<g class="x-ghead"><circle cx="10" cy="-15.6" r="4.6" fill="none"/><path d="M5.6 -13.6 Q7.4 -17.6 9.6 -19 L12 -17.8 Q10.4 -15 9.6 -11 Z" fill="#9A4A24"/>' +
+  '<path d="M9.4 -19.6 Q12 -21 14.4 -19 L16.4 -15.8 Q16.6 -14.4 15.2 -14.2 Q13.6 -14.4 12.6 -16 Q11 -16.4 9.6 -17.8 Z" fill="#A8552A"/><path d="M14.4 -16.8 L16.4 -15.8 Q16.6 -14.4 15.2 -14.2 Q13.6 -14.4 13 -15.8 Z" fill="#6E3016" opacity=".5"/>' +
+  '<path d="M11 -18.6 Q8.4 -18.6 7.6 -15.8 Q9.8 -16.2 11.4 -17.4 Z" fill="#7A3518"/><path d="M10.8 -19.8 Q10.4 -22.4 8.4 -23.4 M11.9 -20 Q12 -22.6 10.2 -24" stroke="#4A3626" stroke-width=".8" fill="none" stroke-linecap="round"/>' +
+  '<circle cx="13" cy="-17.8" r=".5" fill="#140A04"/><path d="M14.6 -14.2 q-.1 1.6 -.9 2.2" stroke="#6E3016" stroke-width=".6" fill="none"/></g></g>';
+/* (r5) a hen's real shape: tail up with sickle feathers, comb and wattle */
+const hen = (x, y, c, cls = '') => '<g transform="translate(' + x + ' ' + y + ')"><g class="x-hen ' + cls + '"><ellipse cy=".2" rx="3.6" ry=".6" fill="rgba(40,24,10,.25)"/><path d="M-.6 -2 L-.9 0 h-.8 M1 -2 L1.2 0 h.8" stroke="#D89A2A" stroke-width=".45" fill="none"/>' +
+  '<path d="M-3.8 -4.6 Q-5.8 -8.6 -4.2 -10 Q-3.6 -7.6 -1.8 -6 Z" fill="#2A2A2A"/><path d="M-4.2 -10 Q-2.4 -10.6 -2.2 -8.4 M-4.8 -9 Q-6.4 -8.6 -6 -6.6" stroke="#2A2A2A" stroke-width=".5" fill="none" stroke-linecap="round"/>' +
+  '<path d="M-4.2 -4.4 Q-4.4 -6.4 -2.6 -6.6 Q.6 -6.8 1.8 -6.4 Q1.6 -8.4 2.8 -8.4 Q4.2 -8.4 4.2 -7 L5.2 -6.6 L4.2 -6.1 Q4.2 -4.4 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.6 -2.4 -4.2 -4.4 Z" fill="' + c + '"/>' +
+  '<path d="M-2.4 -5.2 Q.4 -6 2 -4.6 Q.4 -2.8 -2.2 -3.6 Z M-3.8 -3.2 Q0 -1.6 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.2 -2.2 -3.8 -3.2 Z" fill="#000" opacity=".16"/>' +
+  '<path d="M2.4 -8.2 l.3 -1 l.5 .6 l.4 -.7 l.3 .9 Z M4 -5.9 q.4 1 -.2 1.3 q-.4 -.6 .2 -1.3 Z" fill="#D32F2F"/><path d="M4.2 -7 l1 .4 l-1 .2 Z" fill="#E8A317"/><circle cx="3.4" cy="-7.4" r=".26" fill="#1A0E06"/></g></g>';
 
 /* the post office's wall of brass P.O. boxes */
-function poBoxes(x, y, cols, rows) {
-  let s = '<rect x="' + (x - 1.2) + '" y="' + (y - 1.2) + '" width="' + (cols * 4.4 + 1.6) + '" height="' + (rows * 4.4 + 1.6) + '" fill="#5A4A3A" rx=".4"/>';
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { const bx = x + c * 4.4, by = y + r * 4.4;
-    s += '<rect x="' + bx + '" y="' + by + '" width="4" height="4" fill="url(#ws4-brass)"/><rect x="' + (bx + .6) + '" y="' + (by + .6) + '" width="2.8" height="1" fill="#2A1A10" opacity=".55"/><circle cx="' + (bx + 3.1) + '" cy="' + (by + 2.9) + '" r=".35" fill="#3A2A10"/><path d="M' + (bx + .6) + ' ' + (by + 2.6) + ' h1.4" stroke="#6A4A10" stroke-width=".35"/>'; }
-  return s;
+function poBoxes(x, y, cols, rows) {   // (r5) one patterned rect (ws4-pob) instead of a hundred little shapes
+  return '<rect x="' + (x - 1.2) + '" y="' + (y - 1.2) + '" width="' + (cols * 4.4 + 1.6) + '" height="' + (rows * 4.4 + 1.6) + '" fill="#5A4A3A" rx=".4"/>' +
+    '<rect x="' + x + '" y="' + y + '" width="' + (cols * 4.4 - .4) + '" height="' + (rows * 4.4 - .4) + '" fill="url(#ws4-pob)"/>';
 }
+const POB = '<pattern id="ws4-pob" x="44" y="84" width="4.4" height="4.4" patternUnits="userSpaceOnUse"><rect width="4.4" height="4.4" fill="#5A4A3A"/><rect width="4" height="4" fill="url(#ws4-brass)"/><rect x=".6" y=".6" width="2.8" height="1" fill="#2A1A10" opacity=".55"/><circle cx="3.1" cy="2.9" r=".35" fill="#3A2A10"/><path d="M.6 2.6 h1.4" stroke="#6A4A10" stroke-width=".35"/><path d="M0 0 h4" stroke="#FFF0B0" stroke-width=".3" opacity=".5"/></pattern>';
 /* a window with the burglar bars every Nigerian window has */
 const barWin = (x, y, w, h) => '<rect x="' + (x - 1) + '" y="' + (y - 1) + '" width="' + (w + 2) + '" height="' + (h + 2) + '" fill="#D9CBA6"/><rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="url(#ws4-glass)"/>' +
   '<path d="M' + x + ' ' + y + ' l' + (w * .6) + ' ' + h + ' h' + (w * .2) + ' l-' + (w * .6) + ' -' + h + ' Z" fill="#fff" opacity=".12"/>' +
@@ -186,7 +195,7 @@ export function wasikaScene(): string {
     at(42, 146, .64, person({ kind: 'woman', skin: 2, robe: '#0277BD', wrap: '#C62828', wrap2: '#FFF3C0', hat: 'hijab', hatc: '#F48FB1', cheek: 1, al: 'down', ar: 'reach', cls: 'x-poster',
       hr: letterSheet(15.8, -37, 20) }));
   const kids =
-    at(206, 154, .42, '<g class="x-kid1">' + person({ kind: 'kid', skin: 2, robe: '#E53935', trim: '#fff', hat: 'bare', cheek: 1, al: 'up', ar: 'down', pants: '#2E4A7A' }) + '</g>') +
+    at(206, 154, .42, '<g class="x-kid1">' + person({ kind: 'kid', skin: 2, robe: '#E53935', trim: '#fff', hat: 'bare', cheek: 1, al: 'front', ar: 'down', pants: '#2E4A7A' }) + '</g>') +
     '<g transform="translate(216 150.4)"><g class="x-roll">' + tyre + '</g></g>' +
     at(226, 154, .4, '<g class="x-kid2">' + person({ kind: 'kid', skin: 4, robe: '#FFB300', trim: '#fff', hat: 'hula', hatc: '#1565C0', hatc2: '#fff', cheek: 1, al: 'front', ar: 'down',
       hr: '<path d="M8.8 -27.8 L1 -14" stroke="#6B4422" stroke-width="1.6" stroke-linecap="round"/>' }) + '</g>');
@@ -196,7 +205,7 @@ export function wasikaScene(): string {
     lg('ws4-side', '#E6CC98', '#D4B07A') + lg('ws4-road', '#8E877C', '#7E776C', '#6E675C') + lg('ws4-glass', '#7FB2CE', '#3E6E8A') + lg('ws4-fascia', '#139A4A', '#0B6B33') +
     lg('ws4-door', '#2F6B45', '#1E4A2E') + lgx('ws4-pbox', '#D83A3A', '#C62828', '#8E1414') + lg('ws4-brass', '#D8B25A', '#A8822E') + lg('ws4-pole', '#9A8A78', '#6B5A48') +
     lgx('ws4-pillar', '#E8DAB8', '#FFF8E6', '#D6C496') + skins +
-    pat('ws4-plaster', 12, 10, plaster) + pat('ws4-mudt', 10, 8, mud) + pat('ws4-sandt', 14, 6, sand) + pat('ws4-tart', 8, 6, tar) +
+    pat('ws4-plaster', 12, 10, plaster) + pat('ws4-mudt', 10, 8, mud) + pat('ws4-sandt', 14, 6, sand) + pat('ws4-tart', 8, 6, tar) + POB +
     '<radialGradient id="ws4-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".45" stop-color="#FFE7A0" stop-opacity=".5"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></radialGradient></defs>' +
     '<rect width="' + W + '" height="' + H + '" fill="url(#ws4-sky)"/><circle cx="232" cy="30" r="22" fill="url(#ws4-sun)"/><circle cx="232" cy="30" r="6" fill="#FFF3C6"/>' +
     cloud(150, 20, 1) + cloud(300, 40, .7) + cloud(40, 24, .6) +
@@ -254,7 +263,7 @@ export function wasikaScene(): string {
     letterSheet(278, 110, -8) + '<path d="M309 110 h3.6 v2 h-3.6 Z" fill="#1565C0"/><path d="M314 108 l3 3" stroke="#1F4E9C" stroke-width=".7"/></g>' +
     right +
     // between the letter and the keys: the boys and their tyre, a goat, hens
-    '<g transform="translate(244 152)">' + goat + '</g>' + hen(186, 149, '#A0522D') + hen(132, 152, '#F4F0E6', 'h2') + kids +
+    '<g transform="translate(246 152) scale(.82)">' + goat + '</g>' + hen(186, 149, '#A0522D') + hen(132, 152, '#F4F0E6', 'h2') + kids +
     '</svg>';
 }
 

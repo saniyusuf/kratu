@@ -38,8 +38,7 @@
 @keyframes ws4-chew{to{transform:rotate(-8deg)}}
 .glab .gbg .ws4 .x-flag{animation:ws4-flag 1.6s ease-in-out infinite alternate}
 @keyframes ws4-flag{to{transform:scaleX(.9) skewY(3deg)}}
-.glab .gbg .ws4 .x-cloud{animation:ws4-drift 40s linear infinite alternate}
-@keyframes ws4-drift{to{transform:translateX(-24px)}}
+/* r5: the clouds no longer drift (nobody saw it on a tablet; three loops fewer) */
 
 /* cheer: the queue claps, the children jump, the writer and the water seller nod */
 .glab .gbg.cheer .ws4 .q1 .x-al,.glab .gbg.cheer .ws4 .q2 .x-al{animation:ws4-clapl .26s ease-in-out infinite alternate}
