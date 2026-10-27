@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Allo, drawn (Sani 2026-10-25): a makarantar allo in a compound under a big neem tree in the morning. A red-earth
  * compound wall with zanko horns and white relief runs behind; beyond it a Sahel mud mosque with a tapering minaret
@@ -22,14 +23,13 @@ const cloud = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale('
 function head(o) {
   const sk = SK[o.skin % SK.length], hc = o.hatc || '#fff', hc2 = o.hatc2 || '#C62828';
   let back = '', top = '', ears = '<g fill="' + sk + '"><circle cx="-5.1" cy=".5" r="1.1"/><circle cx="5.1" cy=".5" r="1.1"/></g>';
-  if (o.hat === 'hula') top = '<path d="M-5.3 -1.3 Q-5.7 -7.8 0 -8.3 Q5.7 -7.8 5.3 -1.3 Q0 -2.9 -5.3 -1.3 Z" fill="' + hc + '"/><path d="M-4.6 -3.6 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2" stroke="' + hc2 + '" stroke-width=".5" fill="none"/><path d="M-5.3 -1.3 Q0 -2.9 5.3 -1.3" stroke="rgba(0,0,0,.2)" stroke-width=".5" fill="none"/>';
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') top = arewaCap(o.hat, 0, -1.4, 5.35, hc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'turban') top = '<path d="M-5.9 -.6 Q-6.8 -9.6 0 -10 Q6.8 -9.6 5.9 -.6 Q0 -4.2 -5.9 -.6 Z" fill="' + hc + '"/><path d="M-5.6 -3.4 Q0 -8.2 5.6 -3.4 M-5.9 -1.6 Q0 -6.2 5.9 -1.6 M-3 -9 Q1 -6.6 5.4 -6" stroke="rgba(0,0,0,.13)" stroke-width=".5" fill="none"/>' +
     (o.tail ? '<path d="M5.4 -1.4 Q7.6 4 6.4 10.6" stroke="' + hc + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' : '');
   if (o.hat === 'kallabi') top = '<path d="M-5.6 -.6 Q-6.4 -8.6 0 -9.2 Q6.4 -8.6 5.6 -.6 Q0 -4.2 -5.6 -.6 Z" fill="' + hc + '"/><path d="M-2.6 -8.4 Q-6.6 -13.6 -1.4 -12 Q0 -15.4 1.6 -12 Q6.6 -13.4 2.8 -8.4 Z" fill="' + hc + '"/><path d="M-5 -3.4 Q0 -7.2 5 -3.4" stroke="' + hc2 + '" stroke-width=".7" fill="none"/>';
   if (o.hat === 'hijab') { back = '<path d="M-6.2 0 Q-6.9 -8.8 0 -9.2 Q6.9 -8.8 6.2 0 L8.4 11.6 Q0 14.4 -8.4 11.6 Z" fill="' + hc + '"/>'; ears = '';
     top = '<path d="M-5.5 1.2 Q-6.1 -7.4 0 -7.7 Q6.1 -7.4 5.5 1.2 Q4.9 -3.6 0 -3.9 Q-4.9 -3.6 -5.5 1.2 Z" fill="' + hc + '"/><path d="M-5.3 1.2 Q-4.6 5.8 0 6 Q4.6 5.8 5.3 1.2 L8.3 11.6 Q0 14.2 -8.3 11.6 Z" fill="' + hc + '"/>' +
       '<path d="M-5.4 1 Q-4.6 5.8 0 6 Q4.6 5.8 5.4 1" stroke="rgba(0,0,0,.14)" stroke-width=".5" fill="none"/><path d="M2 7 Q4 10 3.4 13" stroke="rgba(0,0,0,.12)" stroke-width=".5" fill="none"/>'; }
-  if (o.hat === 'zanna') top = '<path d="M-5.1 -1.6 L-4.7 -7.6 Q0 -9.2 4.7 -7.6 L5.1 -1.6 Q0 -3 -5.1 -1.6 Z" fill="' + hc + '"/><path d="M.6 -9 L-.8 -2.6" stroke="rgba(0,0,0,.25)" stroke-width=".5"/>';
   const beard = o.beard ? '<path d="M-4.7 1.2 Q-4.2 8 0 8.8 Q4.2 8 4.7 1.2 Q2.8 4.4 0 4.4 Q-2.8 4.4 -4.7 1.2 Z" fill="' + o.beard + '"/><path d="M-2.2 2.6 Q0 1.8 2.2 2.6" stroke="' + o.beard + '" stroke-width=".9" fill="none"/>' : '';
   return '<g class="x-head">' + back + ears +
     '<circle r="5.2" fill="' + sk + '"/><path d="M1 -5.1 A5.2 5.2 0 0 1 1 5.1 A3.8 5.2 0 0 0 1 -5.1 Z" fill="#000" opacity=".13"/>' +
@@ -123,7 +123,7 @@ export function alloScene(): string {
     [240, 143, .84, { skin: 0, hat: 'hula', hatc: '#FFFFFF', hatc2: '#2E7D32', robe: '#E9E4D6', robe2: '#C9C0AA', trim: '#2E7D32', ink: 4, cls: 'k2' }],
     [258, 143, .84, { skin: 3, girl: 1, hat: 'hijab', hatc: '#1E88A8', robe: '#1E88A8', robe2: '#15657E', ink: 2, cls: 'k3' }],
     // front row
-    [232, 173, 1, { skin: 4, hat: 'hula', hatc: '#C62828', hatc2: '#FFD54A', robe: '#6FA8DC', robe2: '#4C82B4', trim: '#FFFFFF', ink: 3, cls: 'k4' }],
+    [232, 173, 1, { skin: 4, hat: 'hula', hatc: '#7A1F2B', hatc2: '#E9C46A', robe: '#6FA8DC', robe2: '#4C82B4', trim: '#FFFFFF', ink: 3, cls: 'k4' }],
     [255, 173, 1, { skin: 1, girl: 1, hat: 'hijab', hatc: '#C2185B', robe: '#C2185B', robe2: '#8E1046', ink: 4, cls: 'k5' }],
   ].map(([x, y, s, o]) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')">' + kid(o) + '</g>').join('');
   const W = 320, H = 200;

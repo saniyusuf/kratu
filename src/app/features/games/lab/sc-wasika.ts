@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { arewaCap } from './capsArewa';
 /*
  * Marubucin wasiƙa, drawn (Sani 2026-10-25, reworked 2026-10-26: "make the things more real and add sound and make the
  * letter thing bigger too"). The big letter now fills the middle of the screen, so the street is laid out around it:
@@ -34,9 +35,8 @@ const rnd = (s) => () => (s = (s * 9301 + 49297) % 233280) / 233280;
 function head(o) {
   const s = o.skin % SK.length, hc = o.hatc || '#fff', hc2 = o.hatc2 || '#C62828';
   let back = '', top = '', ears = '<g fill="' + SK[s] + '"><ellipse cx="-5.1" cy=".6" rx="1.05" ry="1.4"/><ellipse cx="5.1" cy=".6" rx="1.05" ry="1.4"/></g><g fill="#000" opacity=".22"><ellipse cx="-5.2" cy=".7" rx=".45" ry=".8"/><ellipse cx="5.2" cy=".7" rx=".45" ry=".8"/></g>';
-  if (o.hat === 'hula') top = '<path d="M-5.3 -1.3 Q-5.7 -7.8 0 -8.3 Q5.7 -7.8 5.3 -1.3 Q0 -2.9 -5.3 -1.3 Z" fill="' + hc + '"/><path d="M-4.6 -3.6 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2 l1.15 -1.2 l1.15 1.2" stroke="' + hc2 + '" stroke-width=".5" fill="none"/><path d="M-3.4 -6 l.8 .8 l.8 -.8 M1.2 -6.2 l.8 .8 l.8 -.8" stroke="' + hc2 + '" stroke-width=".4" fill="none"/><path d="M1.6 -8.1 Q5.4 -7.4 5.3 -1.3 Q3.6 -2.4 2.2 -2.6 Z" fill="#000" opacity=".12"/><path d="M-5.3 -1.3 Q0 -2.9 5.3 -1.3" stroke="rgba(0,0,0,.25)" stroke-width=".5" fill="none"/>';
+  if (o.hat === 'hula' || o.hat === 'zanna' || o.hat === 'borno') top = arewaCap(o.hat, 0, -1.4, 5.35, hc, o.hatc2, o.hatc3, o.capside || 1);
   if (o.hat === 'kallabi') top = '<path d="M-5.6 -.6 Q-6.4 -8.6 0 -9.2 Q6.4 -8.6 5.6 -.6 Q0 -4.2 -5.6 -.6 Z" fill="' + hc + '"/><path d="M-2.6 -8.4 Q-6.6 -13.6 -1.4 -12 Q0 -15.4 1.6 -12 Q6.6 -13.4 2.8 -8.4 Z" fill="' + hc + '"/><path d="M-5 -3.4 Q0 -7.2 5 -3.4 M-1.4 -12 Q-.6 -10 0 -8.6 M1.6 -12 Q.8 -10 .4 -8.6" stroke="' + hc2 + '" stroke-width=".6" fill="none"/><path d="M2 -9 Q6.2 -8.4 5.6 -.6 Q4.4 -2.4 3 -3 Z" fill="#000" opacity=".14"/>';
-  if (o.hat === 'zanna') top = '<path d="M-5.1 -1.6 L-4.7 -7.6 Q0 -9.2 4.7 -7.6 L5.1 -1.6 Q0 -3 -5.1 -1.6 Z" fill="' + hc + '"/><path d="M1.6 -8.6 Q4.7 -8.2 4.7 -7.6 L5.1 -1.6 Q3.4 -2.2 2 -2.4 Z" fill="#000" opacity=".18"/><path d="M-4.4 -3.4 Q0 -4.6 4.4 -3.4" stroke="rgba(255,255,255,.25)" stroke-width=".5" fill="none"/>';
   if (o.hat === 'cap') top = '<path d="M-5.4 -1.2 Q-5.8 -7.6 0 -8 Q5.8 -7.6 5.4 -1.2 Z" fill="' + hc + '"/><path d="M3.4 -2.2 Q9 -2.6 10.4 -1 Q7 -.2 3.4 -.8 Z" fill="' + hc2 + '"/><path d="M0 -8 V-1.4" stroke="rgba(0,0,0,.2)" stroke-width=".4"/><circle cy="-8" r=".6" fill="' + hc2 + '"/>';
   if (o.hat === 'hijab') { back = '<path d="M-6.2 0 Q-6.9 -8.8 0 -9.2 Q6.9 -8.8 6.2 0 L8.4 11.6 Q0 14.4 -8.4 11.6 Z" fill="' + hc + '"/>'; ears = '';
     top = '<path d="M-5.5 1.2 Q-6.1 -7.4 0 -7.7 Q6.1 -7.4 5.5 1.2 Q4.9 -3.6 0 -3.9 Q-4.9 -3.6 -5.5 1.2 Z" fill="' + hc + '"/><path d="M-5.3 1.2 Q-4.6 5.8 0 6 Q4.6 5.8 5.3 1.2 L8.3 11.6 Q0 14.2 -8.3 11.6 Z" fill="' + hc + '"/><path d="M2 6 Q4.6 5.8 5.3 1.2 L8.3 11.6 Q5 12.8 2.6 13 Z" fill="#000" opacity=".15"/><path d="M-3 7 Q-1 10 -2 13 M2 7.4 Q3 10 2.4 13" stroke="rgba(0,0,0,.14)" stroke-width=".5" fill="none"/>'; }
@@ -176,12 +176,12 @@ export function wasikaScene(): string {
   umb = '<path d="M292 56 Q266 60 257 75 L327 75 Q318 60 292 56 Z" fill="#D84315"/>' + umb +
     '<path d="M292 56 Q300 64 327 75 L292 75 Z" fill="#000" opacity=".12"/>' +
     '<g stroke="#7A2A0A" stroke-width=".3" opacity=".6">' + Array.from({ length: 11 }, (_, i) => '<path d="M292 56 L' + (258 + i * 6.8) + ' 74"/>').join('') + '</g><path d="M292 56 v-2.6" stroke="#4A2E16" stroke-width="1.1"/><circle cx="292" cy="53.2" r="1.1" fill="#4A2E16"/>';
-  const writer = person({ kind: 'man', skin: 3, robe: '#2F4F8F', trim: '#E8C35A', hat: 'hula', hatc: '#F4EBD0', hatc2: '#2F4F8F', specs: 1, beard: '#2A1A10', al: 'type', ar: 'type', cls: 'x-writer' });
+  const writer = person({ kind: 'man', skin: 3, robe: '#2F4F8F', trim: '#E8C35A', hat: 'zanna', hatc: '#F4EBD0', hatc2: '#2F4F8F', specs: 1, beard: '#2A1A10', al: 'type', ar: 'type', cls: 'x-writer' });
   const right =
     at(268, 142, .68, person({ kind: 'young', skin: 4, robe: '#F4F1EA', trim: '#2E7D32', hat: 'hula', hatc: '#2E7D32', hatc2: '#FFD54A', al: 'front', ar: 'front', cls: 'q1',
       hl: letterSheet(-1, -36, -12) }));
   const left =
-    at(16, 148, .7, person({ kind: 'man', skin: 1, robe: '#E8E0CC', trim: '#8B6A3A', hat: 'zanna', hatc: '#B71C1C', beard: '#ECE8DE', specs: 1, al: 'read', ar: 'read', cls: 'x-reader',
+    at(16, 148, .7, person({ kind: 'man', skin: 1, robe: '#E8E0CC', trim: '#8B6A3A', hat: 'borno', hatc: '#F2E8CF', hatc2: '#A3242C', hatc3: '#1E5B3A', beard: '#ECE8DE', specs: 1, al: 'read', ar: 'read', cls: 'x-reader',
       hl: '<path d="M-6 -44 L3 -45.6 L3.6 -36 L-5.4 -34.6 Z" fill="#FBF7EC" stroke="#C9B48A" stroke-width=".3"/><path d="M-4.4 -42.6 h6 M-4.2 -40.6 h6.2 M-4 -38.6 h5" stroke="#5A6AA8" stroke-width=".35"/>' })) +
     at(42, 146, .64, person({ kind: 'woman', skin: 2, robe: '#0277BD', wrap: '#C62828', wrap2: '#FFF3C0', hat: 'hijab', hatc: '#F48FB1', cheek: 1, al: 'down', ar: 'reach', cls: 'x-poster',
       hr: letterSheet(15.8, -37, 20) }));
