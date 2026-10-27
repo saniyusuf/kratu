@@ -207,3 +207,9 @@
 /* the bulb's light on the ground (a still gradient, nothing animated) */
 .glab .tstage .tsw::after{content:"";position:absolute;left:-6cqw;right:-34cqw;bottom:-3cqw;height:13cqw;pointer-events:none;border-radius:50%;
   background:radial-gradient(closest-side,rgba(255,196,110,.26),rgba(255,196,110,.1) 60%,rgba(255,196,110,0));mix-blend-mode:screen}
+/* the whole frame clear below the clock bar (lead 2026-10-27): the picture 1.7cqw lower, its easel and waiting bar
+   with it, and Laila 1.5cqw lower so the bar stays clear of her */
+.glab .tstage .tcard{top:10.2cqw}
+.glab .tstage .twait{top:37.9cqw}
+.glab .tstage .teasel{top:31.7cqw}
+.glab .scr.shayi>.mic{bottom:1.2cqw!important}
