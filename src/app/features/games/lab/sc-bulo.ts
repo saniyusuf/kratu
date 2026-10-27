@@ -34,8 +34,10 @@ const shadow = (w, len = 1) => `<ellipse cx="${n(w * .62 * len)}" cy=".4" rx="${
 function grain(x0, x1, y0, y1, k, fill, r = .35, seed = 7) {
   let s = '', v = seed;
   const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
-  for (let i = 0; i < k; i++) { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0), rr = r * (.5 + rnd()); s += `<ellipse cx="${n(x)}" cy="${n(y)}" rx="${n(rr * 1.6)}" ry="${n(rr)}"/>`; }
-  return `<g fill="${fill}">${s}</g>`;
+  // (r5) one path of tiny ellipses instead of hundreds of <ellipse> elements: the same grain, far fewer nodes
+  for (let i = 0; i < k; i++) { const x = x0 + rnd() * (x1 - x0), y = y0 + rnd() * (y1 - y0), rr = r * (.5 + rnd()), rx = n(rr * 1.6), ry = n(rr);
+    s += `M${n(x - rx)} ${n(y)}a${rx} ${ry} 0 1 0 ${n(2 * rx)} 0a${rx} ${ry} 0 1 0 ${n(-2 * rx)} 0Z`; }
+  return `<path d="${s}" fill="${fill}"/>`;
 }
 
 /* ---------------- people ---------------- */
@@ -138,7 +140,10 @@ function pot(type, fill, deco = '#F3D9B0') {
     `<ellipse cx="-3.6" cy="-4.6" rx="1.2" ry="2.2" fill="#fff" opacity=".15"/>`;
 }
 const zanko = (x0, x1, y, step, h = 4) => { let s = ''; for (let x = x0; x <= x1; x += step) s += `<path d="M${n(x - 1.6)} ${y} Q${n(x - .6)} ${y - h * .5} ${n(x - .2)} ${n(y - h)} Q${n(x + .6)} ${y - h * .5} ${n(x + 1.6)} ${y} Z"/>`; return s; };
-const relief = (x, y) => `<g fill="none" stroke="#FCEBD0" stroke-width=".55" opacity=".75"><path d="M${x - 5} ${y} q5 -5 10 0 q-5 5 -10 0 Z"/><circle cx="${x}" cy="${y}" r="1.2"/><path d="M${x - 7} ${y + 5} l3.5 -2 l3.5 2 l3.5 -2 l3.5 2"/></g>`;
+/* zanen dagi: the Hausa interlaced knot in raised plaster (r5: replaces an eye-like mark) */
+const DAGI = 'M0 -5.6 Q3.2 -2.2 0 0 Q-3.2 -2.2 0 -5.6 Z M5.6 0 Q2.2 3.2 0 0 Q2.2 -3.2 5.6 0 Z M0 5.6 Q-3.2 2.2 0 0 Q3.2 2.2 0 5.6 Z M-5.6 0 Q-2.2 -3.2 0 0 Q-2.2 3.2 -5.6 0 Z M-3.9 -3.9 H3.9 V3.9 H-3.9 Z';
+const relief = (x, y) => `<path d="${DAGI} M-8 7.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4" transform="translate(${x + .5} ${y + .5}) scale(.8)" fill="none" stroke="#5E2E12" stroke-width=".8" opacity=".25"/>` +
+  `<path d="${DAGI} M-8 7.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4 l2 -1.4 l2 1.4" transform="translate(${x} ${y}) scale(.8)" fill="none" stroke="#FCEBD0" stroke-width=".7" opacity=".8" stroke-linejoin="round"/>`;
 const cloud = (x, y, s, d) => at(x, y, s, `<g fill="#fff" opacity=".85"><ellipse rx="13" ry="3.2"/><ellipse cx="7" cy="-2" rx="7.4" ry="3.8"/><ellipse cx="-5" cy="-1.4" rx="5.4" ry="3"/><ellipse cx="1" cy="-3.4" rx="4" ry="3"/></g>`, 'x-cl ' + d);
 function hut(x, y, s) {
   let lines = ''; for (let k = -12; k <= 12; k += 3) lines += `<path d="M0 -31 Q${n(k * .6)} -20 ${k * 1.2} -10.6"/>`;
@@ -148,12 +153,13 @@ function hut(x, y, s) {
     `<path d="M-15.6 -10.6 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l1.4 -1.4 l1.4 1.6 l.4 -1" stroke="#B48C44" stroke-width=".5" fill="none"/>` +
     `<path d="M0 -31 V-35" stroke="#6B4422" stroke-width=".8"/><circle cy="-35.4" r=".8" fill="#6B4422"/>`);
 }
-function chicken(x, y, s, c, flip, d) {
-  return at(x, y, s, shadow(3.4, 1) + `<path d="M-.6 -2.4 L-1 0 M1 -2.4 L1.2 0" stroke="#D9A23A" stroke-width=".45"/>` +
-    `<g class="x-pk ${d}"><path d="M-3.6 -5.4 Q-5.6 -9 -3.8 -9.4 Q-2.6 -7 -2 -5.4 Z" fill="${c[1]}"/><ellipse cx="-.4" cy="-4.2" rx="3.6" ry="2.5" fill="${c[0]}"/>` +
-    `<path d="M-2.6 -4.6 Q-.6 -2.6 1.6 -4.4" stroke="${c[1]}" stroke-width=".5" fill="none"/><circle cx="2.8" cy="-6.6" r="1.35" fill="${c[0]}"/>` +
-    `<path d="M2 -7.8 q.4 -1.2 .9 -.3 q.4 -1 .9 .1 q.3 .4 -.2 .8 Z" fill="#D32F2F"/><path d="M4 -6.8 l1.3 .4 l-1.3 .4 Z" fill="#E8A23A"/><path d="M3.4 -5.6 q.3 .9 -.2 1.2" stroke="#D32F2F" stroke-width=".55" fill="none"/>` +
-    `<circle cx="3.1" cy="-6.9" r=".26" fill="#1A0E06"/></g>`, '', flip);
+function chicken(x, y, s, c, flip, d) {   // (r5) a hen's real shape: tail up with sickle feathers, comb and wattle
+  return at(x, y, s, shadow(3.4, 1) + `<path d="M-.6 -2 L-.9 0 h-.8 M1 -2 L1.2 0 h.8" stroke="#D9A23A" stroke-width=".45" fill="none"/>` +
+    `<g class="x-pk ${d}"><path d="M-3.8 -4.6 Q-5.8 -8.6 -4.2 -10 Q-3.6 -7.6 -1.8 -6 Z" fill="${c[1]}"/><path d="M-4.2 -10 Q-2.4 -10.6 -2.2 -8.4 M-4.8 -9 Q-6.4 -8.6 -6 -6.6" stroke="${c[1]}" stroke-width=".5" fill="none" stroke-linecap="round"/>` +
+    `<path d="M-4.2 -4.4 Q-4.4 -6.4 -2.6 -6.6 Q.6 -6.8 1.8 -6.4 Q1.6 -8.4 2.8 -8.4 Q4.2 -8.4 4.2 -7 L5.2 -6.6 L4.2 -6.1 Q4.2 -4.4 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.6 -2.4 -4.2 -4.4 Z" fill="${c[0]}"/>` +
+    `<path d="M-2.4 -5.2 Q.4 -6 2 -4.6 Q.4 -2.8 -2.2 -3.6 Z M-3.8 -3.2 Q0 -1.6 3 -3 Q1 -1.6 -1.4 -1.8 Q-3.2 -2.2 -3.8 -3.2 Z" fill="#000" opacity=".16"/>` +
+    `<path d="M2.4 -8.2 l.3 -1 l.5 .6 l.4 -.7 l.3 .9 Z M4 -5.9 q.4 1 -.2 1.3 q-.4 -.6 .2 -1.3 Z" fill="#D32F2F"/><path d="M4.2 -7 l1 .4 l-1 .2 Z" fill="#E8A23A"/>` +
+    `<circle cx="3.4" cy="-7.4" r=".26" fill="#1A0E06"/></g>`, '', flip);
 }
 function donkey() {
   // side on, facing right, two woven panniers of wet clay across its back
@@ -184,11 +190,21 @@ function baobab() {
 /* ---------------- the building site ---------------- */
 const brick = (x, y, c = '#B5683A') => `<path d="M${x} ${y + 2.4} h6 l2.6 -.6 l-1.4 -1.4 Z" fill="rgba(60,28,8,.3)"/><path d="M${x} ${y} h6 l1.2 -1.4 h-6 Z" fill="#D49A68"/><path d="M${x} ${y} h6 v2.4 h-6 Z" fill="${c}"/><path d="M${x + 6} ${y} l1.2 -1.4 v2.4 l-1.2 1.4 Z" fill="#8A4A26"/>`;
 function neem() {
-  const L = [[-22, -50, 13, 9], [0, -60, 16, 10], [22, -50, 13, 9], [-12, -38, 14, 8], [12, -38, 15, 8], [-30, -36, 9, 6], [30, -38, 10, 6], [0, -44, 12, 9]];
+  // (r5) one ragged crown instead of a stack of round lollipop clumps: a dark mass, a shaded underside with branches
+  // showing through, sunlit lobes on the upper left, and leaf texture as two speckle paths
+  let v = 5; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+  let lit = '', dark = '';
+  for (let i = 0; i < 34; i++) { const x = -30 + rnd() * 50, y = -68 + rnd() * 26, w = 1.6 + rnd() * 2;
+    if (x + (y + 68) * 1.1 < 18) lit += `M${n(x)} ${n(y)}q${n(w / 2)} ${n(-w * .7)} ${n(w)} 0q${n(-w / 2)} ${n(w * .5)} ${n(-w)} 0Z`; }
+  for (let i = 0; i < 40; i++) { const x = -32 + rnd() * 64, y = -64 + rnd() * 30, w = 1.4 + rnd() * 1.8;
+    dark += `M${n(x)} ${n(y)}q${n(w / 2)} ${n(w * .6)} ${n(w)} 0q${n(-w / 2)} ${n(-w * .4)} ${n(-w)} 0Z`; }
   return shadow(14, 2.2) + `<path d="M-3.4 0 Q-2 -16 -3 -30 L-9 -40 L-7.6 -41 L-1 -33 L0 -44 L2 -44 L2 -33 L9 -42 L10.4 -41 L3.4 -30 Q2.6 -16 4 0 Z" fill="${url('bark')}"/>` +
-    `<g fill="#3E6B2E">${L.map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`).join('')}</g>` +
-    `<g fill="#5A8A3A">${L.map(([x, y, rx, ry]) => `<ellipse cx="${x - 2}" cy="${y - 2.4}" rx="${n(rx * .7)}" ry="${n(ry * .6)}"/>`).join('')}</g>` +
-    `<g fill="#79A64C">${L.map(([x, y, rx]) => `<ellipse cx="${n(x - rx * .35)}" cy="${y - 4.6}" rx="${n(rx * .35)}" ry="2"/>`).join('')}</g>`;
+    `<path d="M-2.4 -2 Q-1.2 -14 -2.2 -27 M1.6 -4 Q2.6 -16 1.4 -28 M-2.6 -10 q1 -.6 1.6 0" stroke="rgba(40,26,14,.4)" stroke-width=".45" fill="none"/><path d="M-3 -1 Q-1.8 -16 -2.6 -29" stroke="#C8A27A" stroke-width=".5" fill="none" opacity=".45"/>` +
+    `<path d="M-34 -36 Q-38 -44 -31 -48 Q-33 -57 -24 -58 Q-22 -67 -12 -66 Q-6 -73 3 -70 Q12 -74 18 -66 Q27 -67 28 -58 Q37 -56 34 -47 Q40 -41 33 -35 Q30 -29 22 -31 Q16 -26 8 -30 Q0 -27 -7 -30 Q-15 -26 -21 -31 Q-30 -28 -34 -36 Z" fill="#3E6B2E"/>` +
+    `<path d="M-34 -36 Q-30 -28 -21 -31 Q-15 -26 -7 -30 Q0 -27 8 -30 Q16 -26 22 -31 Q30 -29 33 -35 Q20 -39 8 -37 Q-6 -40 -20 -37 Q-28 -37 -34 -36 Z" fill="#22401A" opacity=".7"/>` +
+    `<path d="M-1 -31 Q-8 -36 -17 -37 M2 -31 Q10 -37 19 -38 M0 -32 Q1 -37 -1 -41" stroke="#4A3626" stroke-width="1.3" fill="none" stroke-linecap="round"/>` +
+    `<path d="M-30 -47 Q-31 -55 -23 -56 Q-21 -64 -12 -63 Q-6 -69 2 -67 Q10 -70 15 -64 Q6 -60 -2 -61 Q-10 -56 -16 -55 Q-24 -52 -30 -47 Z" fill="#5A8A3A"/>` +
+    `<path d="${dark}" fill="#2E5222" opacity=".4"/><path d="${lit}" fill="#7DAA4E" opacity=".75"/>`;
 }
 function well() {
   return shadow(9, 1.2) + `<path d="M-8.4 -8 V0 Q0 2 8.4 0 V-8 Z" fill="${url('wall')}"/><path d="M3 -8.6 Q6 -8.4 8.4 -8 V0 Q6 1.2 3 1.4 Z" fill="rgba(80,30,10,.2)"/>` +
@@ -330,8 +346,8 @@ export function buloHouse(): string {
     `<path d="M18 70 Q19 58 22 50 Q24 60 27 70 Z M173 70 Q176 60 178 50 Q181 58 182 70 Z" fill="#B86A34"/>` +
     `<g fill="#7A5230"><rect x="36" y="80" width="6" height="3.6" rx="1"/><rect x="70" y="80" width="6" height="3.6" rx="1"/><rect x="124" y="80" width="6" height="3.6" rx="1"/><rect x="158" y="80" width="6" height="3.6" rx="1"/></g>` +
     `<g fill="#5A3A1E" opacity=".5"><rect x="37" y="83.6" width="5" height="1.4"/><rect x="71" y="83.6" width="5" height="1.4"/><rect x="125" y="83.6" width="5" height="1.4"/><rect x="159" y="83.6" width="5" height="1.4"/></g>` +
-    `<g fill="none" stroke="#FCEBD0" stroke-width="1.3" opacity=".8"><path d="M88 92 q12 -12 24 0 q-12 12 -24 0 Z"/><circle cx="100" cy="92" r="2.6"/>` +
-    `<path d="M76 102 l6 -4 l6 4 l6 -4 l6 4 l6 -4 l6 4 l6 -4 l6 4"/><path d="M40 98 l5 -5 l5 5 l-5 5 Z M150 98 l5 -5 l5 5 l-5 5 Z"/></g>` +
+    `<path d="${DAGI}" transform="translate(101 92.6) scale(1.75)" fill="none" stroke="#5E2E12" stroke-width=".8" opacity=".25"/>` +
+    `<g fill="none" stroke="#FCEBD0" stroke-width="1.3" opacity=".8" stroke-linejoin="round"><path d="${DAGI}" transform="translate(100 92) scale(1.75)" stroke-width=".75"/><path d="M40 98 l5 -5 l5 5 l-5 5 Z M150 98 l5 -5 l5 5 l-5 5 Z"/></g>` +
     `<path d="M78 ${G} V117 Q100 95 122 117 V${G}" fill="none" stroke="#FCEBD0" stroke-width="1.6" opacity=".75"/>` +
     `<path d="M83 ${G} V118.6 Q100 101.4 117 118.6 V${G} Z" fill="#3A1E0C"/><path d="M86 ${G} V120 Q100 106 114 120 V${G} Z" fill="#2A1408"/>` +
     `<g transform="translate(140 ${G})"><path d="M-4 -.6 Q-8 -4 -7.6 -9 Q-7 -13.6 -2.8 -15 L-2.6 -16.8 H2.6 L2.8 -15 Q7 -13.6 7.6 -9 Q8 -4 4 -.6 Q0 .4 -4 -.6 Z" fill="${u('pot')}"/>` +

@@ -11,9 +11,7 @@
 @keyframes bl4-tread{from{transform:translateY(0) rotate(-2.5deg)}to{transform:translateY(-1.6px) rotate(2.5deg)}}
 .glab .gbg .bl4 .cy .x-bd{animation:bl4-climb 2.8s ease-in-out infinite alternate}
 @keyframes bl4-climb{from{transform:translate(0,0)}to{transform:translate(1px,-2px)}}
-.glab .gbg .bl4 .x-cl{animation:bl4-cloud 14s ease-in-out infinite alternate}
-.glab .gbg .bl4 .x-cl.d1{animation-duration:11s;animation-delay:-4s}
-@keyframes bl4-cloud{to{transform:translateX(9px)}}
+/* r5: the clouds no longer drift (9px behind the clock bar: nobody saw it; two loops fewer) */
 .glab .gbg .bl4 .x-pk{transform-origin:20% 100%;animation:bl4-peck 3.6s ease-in-out infinite}
 @keyframes bl4-peck{0%,55%,100%{transform:none}65%,75%{transform:rotate(32deg)}70%{transform:rotate(26deg)}}
 .glab .gbg .bl4 .x-ear{animation:bl4-ear 5s ease-in-out infinite}
