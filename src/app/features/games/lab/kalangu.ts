@@ -22,39 +22,55 @@ const zanko = (x0, x1, y) => { let s = ''; for (let x = x0; x <= x1; x += 8) s +
 const relief = (x, y) => '<g fill="none" stroke="#FFF1D6" stroke-width=".55" opacity=".8"><path d="M' + (x - 5) + ' ' + y + ' q5 -5 10 0 q-5 5 -10 0 Z"/><circle cx="' + x + '" cy="' + y + '" r="1.2"/><path d="M' + (x - 7) + ' ' + (y + 5) + ' l3.5 -2 l3.5 2 l3.5 -2 l3.5 2"/></g>';
 const cloud = (x, y, s) => '<g class="drift4" transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="#fff" opacity=".8"><ellipse rx="12" ry="3"/><ellipse cx="7" cy="-1.6" rx="7" ry="3.4"/><ellipse cx="-5" cy="-1" rx="5" ry="2.6"/></g>';
 /** neighbours sitting along the wall: wrappers and caps, a few clapping */
+/* (r5, Sani 2026-10-27 "realism, keep performance in mind"): each neighbour is a person sitting on the sand against
+   the wall: a lap of wrapper with the knees under it, feet showing, the body turned a little, a face lit from the
+   upper left with its shaded side and eyes, the women's veils framing the face and falling over the shoulders, the
+   men in Arewa caps. A soft shadow under each. About the same number of shapes as the old cut-outs. */
 const sitters = (x0, x1, y) => {
   const C = [['#AD1457', '#FFB300'], ['#2F6B9A', '#F4EBD0'], ['#2E7D32', '#FFD54A'], ['#6A4C93', '#E9D9A6'], ['#EF6C00', '#FFFFFF'], ['#00897B', '#C2185B'], ['#C62828', '#F4EBD0']];
   let s = '<g class="kl-sit">'; let k = 0;
-  for (let x = x0; x <= x1; x += 5.2, k++) { const c = C[k % C.length], sk = SKIN[k % 4], w = k % 2;
-    s += '<g transform="translate(' + (x + (k % 3) * .6).toFixed(1) + ' ' + (y + (k % 2) * .5) + ') scale(' + [1, .92, 1.06, .96, 1.1][k % 5] + ')"><ellipse cx=".8" cy=".3" rx="3.6" ry=".7" fill="#5A3A1A" opacity=".3"/><path d="M-3 0 Q-3.2 -5 -1.8 -6.2 L1.8 -6.2 Q3.2 -5 3 0 Z" fill="' + c[0] + '"/>' +
-      '<path d="M-3 0 Q-3.2 -5 -1.8 -6.2 L-.8 -6.2 Q-1.6 -3 -1.2 0 Z" fill="#fff" opacity=".16"/><path d="M-2.8 -1.6 Q0 -2.6 2.8 -1.6 L3.2 0 H-3.2 Z" fill="#000" opacity=".14"/><path d="M-2.6 0 h1.4 M1.2 0 h1.4" stroke="' + sk + '" stroke-width=".7"/>' +
-      '<rect x="-.45" y="-7" width=".9" height="1" fill="' + sk + '"/><circle cy="-7.8" r="1.6" fill="' + sk + '"/><circle cx="-.5" cy="-8.2" r=".7" fill="#fff" opacity=".13"/><circle cx="-.5" cy="-7.8" r=".17" fill="#1A0E06"/><circle cx=".5" cy="-7.8" r=".17" fill="#1A0E06"/>' +
-      (w ? '<path d="M-1.9 -8 Q0 -11.4 1.9 -8 Z" fill="' + c[1] + '"/>' : '<path d="M-2 -7.6 Q-2 -10.4 0 -10.4 Q2 -10.4 2 -7.6 L2.4 -5.6 L-2.4 -5.6 Z" fill="' + c[1] + '"/><circle cy="-7.8" r="1.2" fill="' + sk + '"/>') +
-      (k % 3 === 1 ? '<g class="kl-clap"><path d="M1.4 -5 L3 -6.6" stroke="' + c[0] + '" stroke-width="1" stroke-linecap="round"/></g>' : '') + '</g>'; }
+  for (let x = x0; x <= x1; x += 5.2, k++) { const c = C[k % C.length], sk = SKIN[k % 4], w = k % 2 === 0;
+    s += '<g transform="translate(' + (x + (k % 3) * .6).toFixed(1) + ' ' + (y + (k % 2) * .5) + ') scale(' + [1, .92, 1.06, .96, 1.1][k % 5] + ')"><ellipse cx=".8" cy=".3" rx="3.8" ry=".7" fill="#5A3A1A" opacity=".32"/>' +
+      (w ? '<path d="M-3 0 Q-3.3 -3.6 -2.1 -5.4 Q-2.2 -10 0 -10.2 Q2.2 -10 2.1 -5.4 Q3.3 -3.6 3 0 Z" fill="' + c[1] + '"/>'
+        : '<path d="M-3 0 Q-3.3 -3.8 -2 -5.6 Q0 -6.6 2 -5.6 Q3.3 -3.8 3 0 Z" fill="' + c[1] + '"/>') +
+      '<path d="M1 -5.8 Q2.9 -5 3 0 H1.2 Q1.8 -3 1 -5.8 Z" fill="#000" opacity=".18"/>' +
+      '<path d="M-3.6 .1 Q-3.6 -2.3 -.6 -2.5 Q3.4 -2.4 3.6 .1 Z" fill="' + c[0] + '"/><path d="M-3.4 -.6 Q-.2 -1.4 3.4 -.6 M-.4 -2.4 Q0 -1.2 -.2 0" stroke="#000" stroke-opacity=".2" stroke-width=".3" fill="none"/>' +
+      '<path d="M-2.8 .15 h1.3 M1.5 .15 h1.3" stroke="' + sk + '" stroke-width=".7" stroke-linecap="round"/>' +
+      '<path d="M-1.3 -7 Q-1.5 -9.4 0 -9.5 Q1.5 -9.4 1.3 -7 Q.9 -5.8 0 -5.8 Q-.9 -5.8 -1.3 -7 Z" fill="' + sk + '"/><path d="M.3 -9.4 Q1.6 -9 1.3 -7 Q.9 -5.9 .2 -5.9 Q.9 -7.4 .3 -9.4 Z" fill="#000" opacity=".22"/>' +
+      '<path d="M-.75 -7.8 h.45 M.35 -7.8 h.45 M-.4 -6.6 h.8" stroke="#1A0E06" stroke-width=".28" stroke-linecap="round"/>' +
+      (w ? '<path d="M-1.6 -7.4 Q-1.5 -9.9 0 -9.9 Q1.5 -9.9 1.6 -7.4 Q1 -9.5 0 -9.5 Q-1 -9.5 -1.6 -7.4 Z" fill="' + c[1] + '"/><path d="M-1.6 -7.6 Q-1.6 -9.6 0 -9.7" stroke="#fff" stroke-opacity=".3" stroke-width=".35" fill="none"/>'
+        : arewaCap(k % 4 === 1 ? 'hula' : 'zanna', 0, -9.1, 1.25, k % 4 === 1 ? '#F4EBD0' : '#7A1F2B', k % 4 === 1 ? '#2E5E3A' : '#E9C46A')) +
+      (k % 3 === 1 ? '<path d="M1.8 -4.6 Q3.4 -4.4 3.6 -6.2" stroke="' + c[1] + '" stroke-width="1" stroke-linecap="round" fill="none"/>' : '') + '</g>'; }
   return s + '</g>';
 };
 /* (r3, Sani 2026-10-27 "more real") the wall's plaster: blotches of darker and paler earth, rain streaks from the
    parapet, hairline cracks; the palm-wood beams (toron) that stand out of every Hausa wall; the dagi knot in raised
    plaster in place of the old eye; ripples, footprints and pebbles in the sand. The light comes from the upper left. */
-const plaster = () => { let s = '<g>';
-  for (let i = 0; i < 60; i++) { const x = (i * 37.3) % 160, y = 46 + (i * 23.7) % 25; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (1 + (i % 4) * .7).toFixed(1) + '" ry="' + (.5 + (i % 3) * .3).toFixed(1) + '" fill="' + (i % 2 ? '#9A5A2E' : '#E8A86E') + '" opacity=".22"/>'; }
-  for (let i = 0; i < 16; i++) { const x = 3 + (i * 53.1) % 154; s += '<path d="M' + x.toFixed(1) + ' ' + (x > 60 && x < 100 ? 38 : 44) + ' v' + (5 + (i % 4) * 3) + '" stroke="#7A3A1C" stroke-width="' + (.6 + (i % 2) * .5) + '" opacity=".13"/>'; }
-  return s + '<path d="M14 56 l2 3 l-1 3 l2 4 M128 58 l-2 3 l1 4" stroke="#6B3418" stroke-width=".35" fill="none" opacity=".45"/></g>'; };
+const plTile = (id, w, h, k) => { let d1 = '', d2 = '', d3 = '';
+  for (let i = 0; i < 7; i++) { const x = (i * 13.7 * k) % w, y = (i * 7.9 * k + 2) % h, rx = 1 + (i % 4) * .7, ry = .5 + (i % 3) * .3;
+    const e = 'M' + (x - rx).toFixed(1) + ' ' + y.toFixed(1) + 'a' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ' 0 1 0 ' + (2 * rx).toFixed(1) + ' 0a' + rx.toFixed(1) + ' ' + ry.toFixed(1) + ' 0 1 0 ' + (-2 * rx).toFixed(1) + ' 0Z';
+    if (i % 2) d1 += e; else d2 += e; }
+  for (let i = 0; i < 3; i++) d3 += 'M' + ((i * 9.3 * k + 3) % w).toFixed(1) + ' ' + (i * 4) + 'v' + (4 + i * 2.5);
+  return '<pattern id="' + id + '" width="' + w + '" height="' + h + '" patternUnits="userSpaceOnUse"><path d="' + d1 + '" fill="#9A5A2E" opacity=".22"/><path d="' + d2 + '" fill="#E8A86E" opacity=".24"/><path d="' + d3 + '" stroke="#7A3A1C" stroke-width=".7" opacity=".12"/></pattern>'; };
+/* (r5) the blotches and streaks are two pattern tiles of different sizes over each other: the same earth in four shapes */
+const plaster = () => '<defs>' + plTile('kl-pl1', 27, 14, 1) + plTile('kl-pl2', 43, 21, 1.7) + '</defs><g><path d="M0 72 V44 H60 V38 H100 V44 H160 V72 Z" fill="url(#kl-pl1)"/><path d="M0 72 V44 H60 V38 H100 V44 H160 V72 Z" fill="url(#kl-pl2)"/>' +
+  '<path d="M14 56 l2 3 l-1 3 l2 4 M128 58 l-2 3 l1 4" stroke="#6B3418" stroke-width=".35" fill="none" opacity=".45"/></g>';
 const toron = (pts) => '<g>' + pts.map(([x, y]) => '<path d="M' + (x + .5) + ' ' + (y + .6) + ' l2 .3 l-.4 1.6 l-1.6 -.3 Z" fill="#6E3418" opacity=".35"/><rect x="' + (x - .6) + '" y="' + (y - .5) + '" width="2.2" height="1.1" rx=".3" fill="#5A3416"/><rect x="' + (x - .6) + '" y="' + (y - .5) + '" width="2.2" height=".35" fill="#8A5A30"/>').join('') + '</g>';
 const dagi = (x, y, r = 5) => { const k = r * .55, d = 'M' + x + ' ' + (y - r) + ' Q' + (x + k) + ' ' + (y - k) + ' ' + (x + r) + ' ' + y + ' Q' + (x + k) + ' ' + (y + k) + ' ' + x + ' ' + (y + r) + ' Q' + (x - k) + ' ' + (y + k) + ' ' + (x - r) + ' ' + y + ' Q' + (x - k) + ' ' + (y - k) + ' ' + x + ' ' + (y - r) + ' Z' +
     'M' + (x - r * .7) + ' ' + (y - r * .7) + ' Q' + x + ' ' + (y - r * .15) + ' ' + (x + r * .7) + ' ' + (y - r * .7) + ' Q' + (x + r * .15) + ' ' + y + ' ' + (x + r * .7) + ' ' + (y + r * .7) + ' Q' + x + ' ' + (y + r * .15) + ' ' + (x - r * .7) + ' ' + (y + r * .7) + ' Q' + (x - r * .15) + ' ' + y + ' ' + (x - r * .7) + ' ' + (y - r * .7) + ' Z';
   return '<g fill="none" stroke-linejoin="round"><path d="' + d + '" stroke="#6E3418" stroke-width=".9" opacity=".35" transform="translate(.35 .4)"/><path d="' + d + '" stroke="#FFF1D6" stroke-width=".7" opacity=".85"/><circle cx="' + x + '" cy="' + y + '" r="' + (r * .22) + '" stroke="#FFF1D6" stroke-width=".6" opacity=".85"/></g>'; };
-const sand = () => { let s = '<g fill="none" stroke="#B88A50" stroke-width=".3" opacity=".45">';
-  for (let i = 0; i < 24; i++) { const x = (i * 41.3) % 156 + 2, y = 80 + (i * 17.9) % 19, w = 4 + (i % 4) * 2; s += '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (w / 2) + ' -.8 ' + w + ' 0"/>'; }
-  s += '</g><g fill="#A47A46" opacity=".35">';
-  for (let i = 0; i < 16; i++) { const x = (i * 29.7 + 11) % 150 + 4, y = 82 + (i * 13.1) % 16; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx=".7" ry=".35"/><ellipse cx="' + (x + 1.6).toFixed(1) + '" cy="' + (y + 1).toFixed(1) + '" rx=".7" ry=".35"/>'; }
-  s += '</g><g fill="#8E6A3E" opacity=".5">';
-  for (let i = 0; i < 26; i++) { const x = (i * 23.9 + 5) % 156 + 2, y = 78 + (i * 11.3) % 21; s += '<ellipse cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" rx="' + (.25 + (i % 3) * .15).toFixed(2) + '" ry=".18"/>'; }
-  return s + '</g>'; };
+/* (r5) each kind of mark one path: ripples, footprints, pebbles */
+const sand = () => { let a = '', b = '', c = '';
+  for (let i = 0; i < 24; i++) { const x = (i * 41.3) % 156 + 2, y = 80 + (i * 17.9) % 19, w = 4 + (i % 4) * 2; a += 'M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' q' + (w / 2) + ' -.8 ' + w + ' 0'; }
+  const el = (x, y, rx, ry) => 'M' + (x - rx).toFixed(2) + ' ' + y.toFixed(2) + 'a' + rx + ' ' + ry + ' 0 1 0 ' + (2 * rx).toFixed(2) + ' 0a' + rx + ' ' + ry + ' 0 1 0 ' + (-2 * rx).toFixed(2) + ' 0Z';
+  for (let i = 0; i < 16; i++) { const x = (i * 29.7 + 11) % 150 + 4, y = 82 + (i * 13.1) % 16; b += el(x, y, .7, .35) + el(x + 1.6, y + 1, .7, .35); }
+  for (let i = 0; i < 26; i++) { const x = (i * 23.9 + 5) % 156 + 2, y = 78 + (i * 11.3) % 21; c += el(x, y, +(.25 + (i % 3) * .15).toFixed(2), .18); }
+  return '<path d="' + a + '" fill="none" stroke="#B88A50" stroke-width=".3" opacity=".45"/><path d="' + b + '" fill="#A47A46" opacity=".35"/><path d="' + c + '" fill="#8E6A3E" opacity=".5"/>'; };
 export function kalanguScene(): string {
   const flags = [6, 18, 30, 42, 54, 66, 78, 90, 102, 114, 126, 138, 150].map((x, i) => '<path d="M' + x + ' ' + (12 + Math.sin(x / 160 * Math.PI) * 10).toFixed(1) + ' l2.6 5 l2.6 -5 Z" fill="' + ['#C62828', '#2E7D32', '#FFD54A', '#1565C0'][i % 4] + '"/>').join('');
   return '<svg class="scene kl-scene" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
     lg('kl-sky', '#F2A65A', '#F8CF8E', '#FBE7C0') + lg('kl-wall', '#D08A4E', '#B26B36') + lg('kl-wall2', '#C27840', '#9E5A2C') + lg('kl-ground', '#E6C690', '#CDA068') +
+    '<radialGradient id="kl-ring" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F4E2BA" stop-opacity=".75"/><stop offset=".7" stop-color="#EFD6A4" stop-opacity=".55"/><stop offset="1" stop-color="#C99E62" stop-opacity="0"/></radialGradient>' +
     '<radialGradient id="kl-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4C8"/><stop offset=".5" stop-color="#FFE08A" stop-opacity=".6"/><stop offset="1" stop-color="#FFE08A" stop-opacity="0"/></radialGradient></defs>' +
     '<rect width="160" height="100" fill="url(#kl-sky)"/><circle cx="26" cy="20" r="30" fill="url(#kl-sun)"/><circle cx="26" cy="20" r="6" fill="#FFF1C2"/>' + cloud(34, 10, .8) + cloud(140, 14, .6) +
     // far roofs of the town, then the baobab behind the wall
@@ -74,12 +90,14 @@ export function kalanguScene(): string {
     plaster() + '<path d="M100 38 h3.4 V72 H100 Z" fill="#5A2A10" opacity=".16"/><path d="M0 44 H60 v1.2 H0 Z M100 44 H160 v1.2 H100 Z M60 38 H100 v1.2 H60 Z" fill="#5A2A10" opacity=".14"/>' +
     toron([[8, 49], [26, 49], [50, 49], [106, 49], [124, 49], [150, 49], [64, 43], [94, 43]]) +
     dagi(20, 56, 4.4) + dagi(44, 56, 4.4) + dagi(116, 56, 4.4) + dagi(140, 56, 4.4) + dagi(80, 31, 3.6) +
-    '<path d="M108 58 h8 v6 h-8 Z M30 58 h8 v6 h-8 Z" fill="#5A3416"/><path d="M108 58 h8 M30 58 h8" stroke="#FFF1D6" stroke-width=".5"/>' +
+    // (r5) two small windows with a wooden lattice set deep in the wall: the recess dark at the top, the sill lit
+    '<path d="M108 58 h8 v6 h-8 Z M30 58 h8 v6 h-8 Z" fill="#2A160A"/><path d="M110.6 58 v6 M113.4 58 v6 M108 61 h8 M32.6 58 v6 M35.4 58 v6 M30 61 h8" stroke="#8A5A30" stroke-width=".5"/><path d="M108 58 h8 v1.2 h-8 Z M30 58 h8 v1.2 h-8 Z" fill="#000" opacity=".35"/><path d="M107.4 64.2 h9.2 M29.4 64.2 h9.2" stroke="#F0B884" stroke-width=".7"/><path d="M108 58 h8 M30 58 h8" stroke="#FFF1D6" stroke-width=".5"/>' +
     // the bunting across the square
     '<g class="kl-bunting"><path d="M0 12 Q80 24 160 12" fill="none" stroke="#5A3A1E" stroke-width=".45"/>' + flags + '</g>' +
     // the ground, the trodden dancing ring, the neighbours along the wall
     '<path d="M0 72 H160 V100 H0 Z" fill="url(#kl-ground)"/><path d="M0 72 H160 V75 Q80 74 0 75 Z" fill="#6E4A22" opacity=".2"/>' + sand() + sitters(3, 58, 74.4) + sitters(102, 158, 74.4) +
-    '<ellipse cx="44" cy="90" rx="38" ry="6" fill="#F2DDB0" opacity=".55"/><ellipse cx="44" cy="90" rx="38" ry="6" fill="none" stroke="#B98A50" stroke-width=".4" stroke-dasharray="1.4 1.2" opacity=".6"/>' +
+    // (r5) the dancing ring is trodden earth: paler and smooth where feet go round, scuffed darker at its rim, no drawn line
+    '<ellipse cx="44" cy="90" rx="40" ry="6.6" fill="url(#kl-ring)"/><path d="M8 91.6 Q10 96 44 96.8 Q78 96 80 91.6 Q74 95.4 44 95.8 Q14 95.4 8 91.6 Z" fill="#A47A46" opacity=".28"/>' +
     '<g fill="#B98A50" opacity=".4"><ellipse cx="120" cy="94" rx="20" ry="1.4"/><ellipse cx="12" cy="97" rx="10" ry="1"/></g></svg>';
 }
 
@@ -104,9 +122,11 @@ function arm(side, pose, sleeve, skin, hold = '', w = 9) {
   if (POSE[pose]) { d = POSE[pose][0]; [hx, hy] = POSE[pose][1]; if (!left) { d = mirror(d); hx = 60 - hx; } }
   else { const m = pose.split('|'); d = m[0]; [hx, hy] = m[1].split(',').map(Number); }
   return `<g class="kl-a${side}" style="transform-origin:${o}">${hold && hold.startsWith('<!--b-->') ? hold : ''}` +
-    `<path d="${d}" stroke="${sleeve}" stroke-width="${w}" stroke-linecap="round" fill="none"/><circle cx="${hx}" cy="${hy}" r="3.9" fill="${skin}"/>` +
+    `<path d="${d}" stroke="${sleeve}" stroke-width="${w}" stroke-linecap="round" fill="none"/><path d="${d}" stroke="#000" stroke-opacity=".14" stroke-width="${w * .4}" stroke-linecap="round" fill="none" transform="translate(${left ? 1.6 : 2} 1.4)"/><circle cx="${hx}" cy="${hy}" r="3.6" fill="${skin}"/>` +
     `${hold && !hold.startsWith('<!--b-->') ? hold : ''}</g>`;
 }
+/** an egg-shaped face, broad at the brow and narrowing to the chin */
+const egg = (cy, r) => `M${30 - r * .92} ${cy - r * .1}C${30 - r * .96} ${cy - r * 1.2} ${30 + r * .96} ${cy - r * 1.2} ${30 + r * .92} ${cy - r * .1}C${30 + r * .9} ${cy + r * .6} ${30 + r * .45} ${cy + r * 1.12} 30 ${cy + r * 1.12}C${30 - r * .45} ${cy + r * 1.12} ${30 - r * .9} ${cy + r * .6} ${30 - r * .92} ${cy - r * .1}Z`;
 function head(o: Fig, sk) {
   const girl = o.kind === 'girl';
   let back = '', front = '';
@@ -119,9 +139,11 @@ function head(o: Fig, sk) {
   if (o.hat === 'hijab') front = `<path d="M17 24 Q16 8 30 8 Q44 8 43 24 Q38 16 30 16 Q22 16 17 24 Z" fill="${o.hatc}"/>`;
   const r = girl ? 10.5 : 11, cy = girl ? 26 : 25;
   return `<g class="kl-head" style="transform-origin:30px ${cy + r}px">${back}` +
-    `<rect x="26" y="${cy + 6}" width="8" height="${girl ? 9 : 10}" fill="${sk}"/><circle cx="30" cy="${cy}" r="${r}" fill="${sk}"/><circle cx="30" cy="${cy}" r="${r}" fill="url(#k4-shade)"/><circle cx="${30 - r * .45}" cy="${cy - r * .3}" r="${r * .38}" fill="#fff" opacity=".1"/>` +
+    // (r5) an oval face with a chin and ears, not a ball: the shaded side and the jaw's shadow on the neck
+    `<path d="M${30 - r * .98} ${cy - 2.6}a1.9 2.9 0 1 0 0 5.2Z M${30 + r * .98} ${cy - 2.6}a1.9 2.9 0 1 1 0 5.2Z" fill="${sk}"/><rect x="26" y="${cy + 6}" width="8" height="${girl ? 9 : 10}" fill="${sk}"/><path d="M26 ${cy + 7.4} Q30 ${cy + 11.6} 34 ${cy + 7.4} V${cy + 10.4} Q30 ${cy + 13} 26 ${cy + 10.4} Z" fill="#000" opacity=".22"/>` +
+    `<path d="${egg(cy, r)}" fill="${sk}"/><path d="${egg(cy, r)}" fill="url(#k4-shade)"/><path d="M${30 + r * .15} ${cy - r * 1.02} Q${30 + r * 1.02} ${cy - r * .7} ${30 + r * .94} ${cy} Q${30 + r * .8} ${cy + r * .8} 30 ${cy + r * 1.1} Q${30 + r * .62} ${cy + r * .3} ${30 + r * .15} ${cy - r * 1.02} Z" fill="#000" opacity=".14"/>` +
     `<path d="M29.4 ${cy - .2} q-1.6 3.4 .4 4.2 q1.8 .2 2.4 -.8" stroke="#000" stroke-opacity=".28" stroke-width="1" fill="none" stroke-linecap="round"/>` +
-    `<g class="kl-eo" fill="#1A0E06"><circle cx="25.6" cy="${cy - 1}" r="1.6"/><circle cx="34.4" cy="${cy - 1}" r="1.6"/></g>` +
+    `<g class="kl-eo" fill="#1A0E06"><path d="M24.2 ${cy - 1}a1.4 1.5 0 1 0 2.8 0a1.4 1.5 0 1 0 -2.8 0Z M33 ${cy - 1}a1.4 1.5 0 1 0 2.8 0a1.4 1.5 0 1 0 -2.8 0Z"/></g>` +
     `<g class="kl-eh" fill="none" stroke="#1A0E06" stroke-width="1.5" stroke-linecap="round"><path d="M23.6 ${cy - .6} q2 -2.2 4 0 M32.4 ${cy - .6} q2 -2.2 4 0"/></g>` +
     `<g class="kl-eb" stroke="#1A0E06" stroke-width="1.2" stroke-linecap="round"><path d="M23 ${cy - 5} l5 1.6 M37 ${cy - 5} l-5 1.6"/></g>` +
     `<path class="kl-ms" d="M25.5 ${cy + 5} Q30 ${cy + 9} 34.5 ${cy + 5}" stroke="#3A1A0A" stroke-width="1.6" fill="none" stroke-linecap="round"/>` +
