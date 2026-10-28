@@ -83,16 +83,16 @@
   background:none!important;box-shadow:none!important;padding:0!important}
 /* the keys themselves are the lessons' A–Z keys (design.css, .glab .abcgrid), Sani 2026-10-27 */
 
-/* the house: unbuilt slots are a faint outline; a brick drops in with a squash and a puff of dust; a wrong letter
-   knocks the top one off; finished, it is plastered (zanko, relief, beams, the doorway) and bounces with pride */
+/* the house (r6, a gidan tubali of the old days): before it is built it is only its dashed outline and the faint
+   outlines of its twelve tubali on the footing; a brick drops in with a squash and a puff of dust; a wrong letter knocks
+   the top one off; finished, the bricks go under the plaster (zanko, beams, the doorway, the relief) and it bounces */
 .glab .scr.mud2 .bhouse{display:block;width:100%;height:auto;overflow:visible;transform-origin:50% 92%}
 .glab .scr.mud2 .bhouse .plan{fill:none;stroke:rgba(255,244,220,.75);stroke-width:1;stroke-dasharray:4 3}
+.glab .scr.mud2 .bhouse .ghosts{fill:rgba(255,236,204,.28);stroke:rgba(122,74,40,.7);stroke-width:.9;stroke-dasharray:3 2}
 .glab .scr.mud2 .bhouse .doorhole{fill:rgba(58,30,12,.18)}
-.glab .scr.mud2 .bhouse .gh{fill:rgba(255,236,204,.3);stroke:rgba(122,74,40,.7);stroke-width:.9;stroke-dasharray:3 2;transition:opacity .2s}
-.glab .scr.mud2 .bhouse .hb:not(.ghost) .gh{opacity:0}
 .glab .scr.mud2 .bhouse .hb.ghost .hbb{opacity:0}
 .glab .scr.mud2 .bhouse .hbb,.glab .scr.mud2 .bhouse .puff{transform-box:fill-box;transform-origin:50% 100%}
-.glab .scr.mud2 .bhouse .hbb text{font:800 15px var(--disp);fill:#FFF1D6;paint-order:stroke;stroke:rgba(74,36,18,.65);stroke-width:2.4}
+.glab .scr.mud2 .bhouse .hbb text{font:800 15px var(--disp);fill:#FFF1D6;paint-order:stroke;stroke:rgba(74,36,18,.7);stroke-width:2.6}
 .glab .scr.mud2 .bhouse .puff{fill:#EED0A0;opacity:0;pointer-events:none}
 .glab .scr.mud2 .bhouse .hb.drop .hbb{animation:bl4-drop .5s cubic-bezier(.5,0,.8,.6) both}
 .glab .scr.mud2 .bhouse .hb.drop .puff{animation:bl4-puff .75s .3s ease-out both}
@@ -102,5 +102,6 @@
 @keyframes bl4-fall{0%{transform:none;opacity:1}100%{transform:translate(12px,40px) rotate(28deg);opacity:0}}
 .glab .scr.mud2 .bhouse .fin{opacity:0;transition:opacity .9s .25s}
 .glab .scr.mud2 .site.done .bhouse .fin{opacity:1}
+.glab .scr.mud2 .site.done .bhouse .hb,.glab .scr.mud2 .site.done .bhouse .plan,.glab .scr.mud2 .site.done .bhouse .ghosts,.glab .scr.mud2 .site.done .bhouse .doorhole{opacity:0;transition:opacity .5s .65s}
 .glab .scr.mud2 .site.done .bhouse{animation:bl4-proud .7s .9s ease-in-out 2}
 @keyframes bl4-proud{0%,100%{transform:none}50%{transform:translateY(-1.2cqw) scale(1.03)}}

@@ -295,62 +295,118 @@ export function buloScene(): string {
     '</svg>';
 }
 
-/* ---------------- the game's own house (Sani 2026-10-26) ----------------
- * "Why are we not creating the house with the realism of the houses in the bg": the same red-earth Hausa house as the
- * one going up on the right of the scene, drawn big, built tubali by tubali. 12 brick slots (.hb, bottom course first,
- * left to right): two courses either side of the doorway, then the course over it. A slot not yet built is a faint
- * outline (.hb.ghost); a right letter drops its brick in (.drop: a thud and a dust puff), a wrong one knocks the top
- * brick off (.fall). When .site gets .done the wall is plastered: smooth red earth, zanko horns on the parapet, the
- * relief over the door, the roof beams and a pot by the door. Styles in sc-bulo.css (.glab .scr.mud2 .bhouse …). */
+/* ---------------- the game's own house (Sani 2026-10-26; r6 2026-10-28) ----------------
+ * "I want it to look like a real Arewa mud house long before": a gidan tubali of the old days, built tubali by tubali.
+ * 12 brick slots (.hb, bottom course first, left to right): two courses either side of the doorway, then the course
+ * over it; the courses step in a little as they rise, as the thick walls taper. Before a slot is built the house is
+ * only its dashed outline on the trodden footing (one path for all the slot outlines, one <use> of the house's own
+ * silhouette). A right letter drops its brick in (.drop: a thud and a dust puff), a wrong one knocks the top brick off
+ * (.fall): each brick is one hand-rolled tubali, domed and rounded at the ends, laid in mud mortar, its grain and straw
+ * one shared pattern, its finger grooves its own. When .site gets .done the bricks vanish under the laso: smooth
+ * red-earth plaster with its hand-smoothed strokes, rain streaks, a damp eroded foot and a shaded side wall; zanko
+ * horns at the corners and along the parapet, toron beams and two rain spouts with their shadows, small windows high
+ * up, the deep arched zaure doorway with a hanging zana mat and a threshold step, the dagi knots and the arch frame
+ * raised and whitewashed. Sun on the upper left: shadows fall to the lower right. Styles in sc-bulo.css. */
+/** move and scale a path made of absolute M L Q H V Z commands (the dagi knot is drawn once, about 0 0) */
+const place = (d, cx, cy, s) => d.replace(/([MLQHV])([^MLQHVZ]*)/g, (m, c, a) => {
+  const v = a.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+  if (c === 'H') return 'H' + n(cx + v[0] * s);
+  if (c === 'V') return 'V' + n(cy + v[0] * s);
+  return c + v.map((x, i) => n(i % 2 ? cy + x * s : cx + x * s)).join(' ');
+});
+/* the dagi: a square knotted through a diamond, four loops at the diamond's points */
+const KNOT = 'M-4 -4 H4 V4 H-4 Z M0 -5.8 L5.8 0 L0 5.8 L-5.8 0 Z M0 -5.8 Q-2.4 -8.8 0 -9.4 Q2.4 -8.8 0 -5.8 M5.8 0 Q8.8 -2.4 9.4 0 Q8.8 2.4 5.8 0 ' +
+  'M0 5.8 Q2.4 8.8 0 9.4 Q-2.4 8.8 0 5.8 M-5.8 0 Q-8.8 2.4 -9.4 0 Q-8.8 -2.4 -5.8 0 M-1.6 0 L0 -1.6 L1.6 0 L0 1.6 Z';
 export function buloHouse(): string {
   const Q = 'bl4h', u = (id) => `url(#${Q}-${id})`;
-  const G = 156, R = [[130, [[24, 53], [53, 82], [118, 147], [147, 176]]], [104, [[24, 46], [46, 82], [118, 154], [154, 176]]],
-    [78, [[24, 62], [62, 100], [100, 138], [138, 176]]]];
-  let slots = '', k = 0;
+  const G = 156, R = [[130, [[23, 52], [52, 82], [118, 148], [148, 177]]], [104, [[25, 46], [46, 82], [118, 154], [154, 175]]],
+    [78, [[26.5, 62], [62, 100], [100, 138], [138, 173.5]]]];
+  // one hand-rolled tubali: domed on top, rounded ends, a little uneven
+  const loaf = (x, y, w, h, s) => `M${n(x + 1.6)} ${n(y + h)} Q${n(x - .3)} ${n(y + h - .6)} ${n(x)} ${n(y + h - 6)} V${n(y + 7)} Q${n(x + .3)} ${n(y + 1.4)} ${n(x + 6)} ${n(y + .8)} ` +
+    `Q${n(x + w * .5)} ${n(y - 2.8 + (s % 3) * .7)} ${n(x + w - 6)} ${n(y + 1)} Q${n(x + w - .2)} ${n(y + 1.8)} ${n(x + w)} ${n(y + 7.6)} V${n(y + h - 5.6)} ` +
+    `Q${n(x + w + .2)} ${n(y + h - .4)} ${n(x + w - 1.8)} ${n(y + h)} Q${n(x + w * .5)} ${n(y + h + .9)} ${n(x + 1.6)} ${n(y + h)} Z`;
+  let slots = '', ghosts = '', k = 0;
   R.forEach(([y0, xs]) => xs.forEach(([a, b]) => {
-    const x = a + .7, w = b - a - 1.4, y = y0 + .7, hh = 24.6, cx = n(x + w / 2), s = (k * 37) % 11;
-    // straw flecks and a thumb print or two in the mud, different on every brick
-    let fl = '';
-    for (let j = 0; j < 4; j++) { const fx = n(x + 4 + ((s + j * 7) % 10) / 10 * (w - 8)), fy = n(y + 6 + ((s * 3 + j * 5) % 7) / 7 * (hh - 11)); fl += `M${fx} ${fy} l${j % 2 ? 2.6 : -2.2} ${j % 3 ? .9 : -.7}`; }
-    slots += `<g class="hb ghost"><rect class="gh" x="${n(x + .6)}" y="${n(y + .6)}" width="${n(w - 1.2)}" height="${hh - 1.2}" rx="4.4"/>` +
-      `<g class="hbb"><rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${hh}" rx="5" fill="${u('brk')}"/>` +
-      `<path d="M${n(x + 4)} ${n(y + 1.6)} H${n(x + w - 4)}" stroke="#E6A872" stroke-width="2" stroke-linecap="round" opacity=".55"/>` +
-      `<path d="M${n(x + 3)} ${n(y + hh - 1.2)} H${n(x + w - 3)}" stroke="#6E3A1C" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>` +
-      `<rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${hh}" rx="5" fill="${u('side')}"/>` +
-      `<path d="${fl}" stroke="#E2C072" stroke-width=".7" stroke-linecap="round" opacity=".75"/>` +
-      `<ellipse cx="${n(x + w * (.25 + (s % 4) * .15))}" cy="${n(y + hh * .62)}" rx="2.2" ry="1.5" fill="#8A4A26" opacity=".35"/>` +
+    const x = a + .6, w = b - a - 1.2, y = y0 + .8, hh = 24.4, cx = n(x + w / 2), s = (k * 37) % 11, d = loaf(x, y, w, hh, s);
+    // the dents the fingers left when it was rolled and pressed: short smudges near the ends and a thumb print (clear of the letter)
+    const dents = [[.14, .3, -1.6, 2.4], [.2, .62, 1.8, 1.2], [.84, .26, 1.4, 2.6], [.78, .58, -2, 1.6], [.12 + (s % 3) * .04, .84, 2.4, -.4], [.82, .86, -2.2, -.8]];
+    let fm = dents.filter((_, j) => (s + j) % 5).map(([fx, fy, dx, dy]) => `M${n(x + w * fx)} ${n(y + hh * fy)} q${n(dx * .6)} ${n(dy * .2 + .8)} ${dx} ${dy}`).join(' ');
+    const tx = n(x + w * (s % 2 ? .8 : .2)), ty = n(y + hh * .46);
+    fm += ` M${n(tx - 1.8)} ${ty} a1.8 1.3 0 1 0 3.6 0 a1.8 1.3 0 1 0 -3.6 0`;
+    ghosts += d;
+    slots += `<g class="hb ghost"><g class="hbb"><path d="${d}" fill="${u('tb')}" stroke="#8A5A36" stroke-width="1.7" stroke-linejoin="round"/>` +
+      `<path d="${fm}" fill="rgba(90,40,14,.14)" stroke="#5E2C10" stroke-width="1.1" stroke-linecap="round" opacity=".42"/>` +
       `<text x="${cx}" y="${n(y + 18)}" text-anchor="middle"></text></g>` +
-      `<g class="puff"><ellipse cx="${n(x + 3)}" cy="${y0 + 24}" rx="6" ry="3.2"/><ellipse cx="${n(x + w - 3)}" cy="${y0 + 24}" rx="6.4" ry="3.4"/><ellipse cx="${cx}" cy="${y0 + 25.4}" rx="${n(w * .4)}" ry="2.6"/></g></g>`;
+      `<path class="puff" d="M${n(x - 3)} ${y0 + 24} a6 3.2 0 1 0 12 0 a6 3.2 0 1 0 -12 0 M${n(x + w - 9.4)} ${y0 + 24} a6.4 3.4 0 1 0 12.8 0 a6.4 3.4 0 1 0 -12.8 0 ` +
+      `M${n(x + w * .1)} ${y0 + 25.4} a${n(w * .4)} 2.6 0 1 0 ${n(w * .8)} 0 a${n(w * .4)} 2.6 0 1 0 ${n(-w * .8)} 0"/></g>`;
     k++;
   }));
-  const wall = `M22 ${G} V74 H178 V${G} Z M82 ${G} V118 Q100 100 118 118 V${G} Z`;
-  let horns = ''; for (let x = 30; x <= 170; x += 14) horns += `<path d="M${x - 3.4} 70 Q${x - 1.2} 64 ${x} 60 Q${x + 1.2} 64 ${x + 3.4} 70 Z"/>`;
+  // the finished house's front face, parapet and zanko horns in one outline (the dashed plan is the same path)
+  const horn = (xl, xr, y, tx, ty) => `L${xl} ${y} Q${n((xl + tx) / 2 + .4)} ${n((y + ty) / 2 + 1)} ${tx} ${ty} Q${n((xr + tx) / 2 + .6)} ${n((y + ty) / 2 + 2)} ${xr} ${y} `;
+  const wall = `M21 ${G} Q20.2 112 24.6 80 L25.2 66 ` + horn(25.2, 36, 66, 23.4, 41) + `Q42 65.4 47.4 66 ` + horn(47.4, 53.4, 66, 49.8, 57) +
+    `Q63 65.6 70.4 66 ` + horn(70.4, 76.4, 66, 73.2, 57.4) + `Q85 65.6 93.4 66 ` + horn(93.4, 106.6, 66, 100, 46) + `Q115 65.6 123.6 66 ` +
+    horn(123.6, 129.6, 66, 126.6, 57.4) + `Q137 65.6 146.6 66 ` + horn(146.6, 152.6, 66, 150, 57) + `Q158 65.4 164 66 ` + horn(164, 174.8, 66, 176.6, 41) +
+    `L175.4 80 Q179.8 112 179 ${G} Q140 ${G + .8} 100 ${G} Q60 ${G - .8} 21 ${G} Z`;
+  const door = `M83 ${G} V121 Q83.4 107 100 102.4 Q116.6 107 117 121 V${G} Z`;
+  // the toron (roof beams) poke out under the parapet and the two spouts drain the roof, all leaning to the viewer's right
+  const BX = [32, 58, 82, 118, 142, 168], SX = [42, 150];
+  let beam = '', cap = '', bsh = '';
+  BX.forEach((x) => { const y = 72.4; beam += `M${x - 1.3} ${n(y - 1.3)} L${x + 4.2} ${n(y - .5)} L${x + 4.2} ${n(y + 1.7)} L${x - 1.3} ${n(y + 1.3)} Z`;
+    cap += `M${x + 3.4} ${n(y + .6)} a.9 1.15 0 1 0 1.8 0 a.9 1.15 0 1 0 -1.8 0`; bsh += `M${x + .4} ${n(y + 1.4)} L${x + 4.4} ${n(y + 1.8)} L${x + 9} ${n(y + 6.4)} L${x + 5.4} ${n(y + 6)} Z`; });
+  SX.forEach((x) => { const y = 68.6; beam += `M${x - 1.6} ${n(y - 1.6)} L${x + 10} ${n(y + .6)} L${x + 9.6} ${n(y + 3.4)} L${x - 1.6} ${n(y + 1.8)} Z`;
+    cap += `M${x - 1.2} ${n(y - 1)} L${x + 9.8} ${n(y + 1)} L${x + 9.8} ${n(y + 1.8)} L${x - 1.2} ${n(y + .2)} Z`; bsh += `M${x} ${n(y + 2)} L${x + 9.6} ${n(y + 3.4)} L${x + 14} ${n(y + 9)} L${x + 4} ${n(y + 8)} Z`; });
+  // rain: a long streak under each spout's drip and a short stain under every beam; the damp, eroded foot of the wall
+  let rain = '';
+  SX.forEach((x) => { rain += `M${x + 7} 74 Q${x + 9.4} 100 ${x + 7.6} 146 L${x + 11.2} 146 Q${x + 12} 100 ${x + 10.4} 74 Z M${x + 4} 76 Q${x + 5.2} 96 ${x + 4.6} 118 L${x + 5.8} 118 Q${x + 6.4} 96 ${x + 5.6} 76 Z`; });
+  BX.forEach((x) => { rain += `M${x + 1} 76 Q${x + 2} 84 ${x + 1.4} 92 L${x + 2.6} 92 Q${x + 3} 84 ${x + 2.4} 76 Z`; });
+  const foot = `M21 ${G} Q20.6 151 21.2 149.4 Q30 147.4 40 149 Q50 150.2 60 148.4 Q70 147.6 80 149.2 V${G} Z M120 ${G} V149 Q130 147.6 140 149.2 Q150 150.4 160 148.4 Q170 147.6 179 149.2 Q179.3 152 179 ${G} Z`;
+  // the raised relief, whitewashed: the arch frame curling at its feet, the dagi over it and either side, the frieze, the window frames
+  let zz = 'M30 80'; for (let x = 30; x < 170; x += 4) zz += ` L${x + 2} 77.6 L${x + 4} 80`;
+  const rel = `M79.4 148 V121.4 Q80 103.4 100 98.8 Q120 103.4 120.6 121.4 V148 M76.8 146 V121.4 Q77.6 101 100 95.8 Q122.4 101 123.2 121.4 V146 ` +
+    `M76.8 146 Q76.8 150 79.4 150 Q81.4 149.6 79.4 148 M123.2 146 Q123.2 150 120.6 150 Q118.6 149.6 120.6 148 ` +
+    place(KNOT, 100, 87.6, .86) + ' ' + place(KNOT, 60, 109, 1.05) + ' ' + place(KNOT, 140, 109, 1.05) + ' ' + zz + ' ' +
+    `M33.6 85 h12.8 v12.8 h-12.8 Z M153.6 85 h12.8 v12.8 h-12.8 Z M50 128 h20 M130 128 h20 M52 131 l4 3 l4 -3 l4 3 l4 -3 M132 131 l4 3 l4 -3 l4 3 l4 -3`;
+  let horns = ''; // the horns' lit left flanks
+  [[25.2, 23.4, 41], [47.4, 49.8, 57], [70.4, 73.2, 57.4], [93.4, 100, 46], [123.6, 126.6, 57.4], [146.6, 150, 57], [164, 176.6, 41]].forEach(([xl, tx, ty]) => {
+    horns += `M${xl} 66 Q${n((xl + tx) / 2 + .4)} ${n((66 + ty) / 2 + 1)} ${tx} ${ty} Q${n(tx + 1.4)} ${n((66 + ty) / 2)} ${n(xl + 2.4)} 66 Z`; });
+  // the brick: a radial light from the upper left, grain and straw, stretched to each tubali (one pattern for all twelve)
+  let sp = '', st = '', v = 11; const rnd = () => (v = (v * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 40; i++) { const x = n(rnd() * 100) / 100, y = n(rnd() * 100) / 100; sp += `M${x} ${y}h.014v.018h-.014Z`; }
+  for (let i = 0; i < 7; i++) { const x = n(10 + rnd() * 74) / 100, y = n(12 + rnd() * 76) / 100, dx = n((rnd() - .5) * 20) / 100; st += `M${x} ${y}l${dx} .02l.004 .018l${-dx} -.02Z`; }
   const defs = `<defs>` +
-    `<linearGradient id="${Q}-brk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C8784A"/><stop offset=".55" stop-color="#B5683A"/><stop offset="1" stop-color="#97522C"/></linearGradient>` +
-    `<linearGradient id="${Q}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D08A4E"/><stop offset="1" stop-color="#B4692F"/></linearGradient>` +
-    `<linearGradient id="${Q}-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>` +
-    `<linearGradient id="${Q}-lit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".78" stop-color="#3A1A08" stop-opacity="0"/><stop offset="1" stop-color="#3A1A08" stop-opacity=".28"/></linearGradient>` +
-    `<radialGradient id="${Q}-pot" cx=".36" cy=".35" r=".75"><stop offset="0" stop-color="#E9A56C"/><stop offset=".55" stop-color="#C0683A"/><stop offset="1" stop-color="#7E3A1A"/></radialGradient></defs>`;
+    `<radialGradient id="${Q}-brk" cx=".3" cy=".18" r=".95"><stop offset="0" stop-color="#DB935C"/><stop offset=".45" stop-color="#BC6E3C"/><stop offset=".85" stop-color="#9A512A"/><stop offset="1" stop-color="#7E3F1E"/></radialGradient>` +
+    `<pattern id="${Q}-tb" width="1" height="1" patternContentUnits="objectBoundingBox"><rect width="1" height="1" fill="${u('brk')}"/><path d="${sp}" fill="#5A2C10" opacity=".45"/><path d="${st}" fill="#EBC77E" opacity=".8"/></pattern>` +
+    `<pattern id="${Q}-laso" width="46" height="34" patternUnits="userSpaceOnUse"><path d="M3 6 q6 -2.2 12.6 .6 M24 4 q4 -1 7.4 .4 M28 15 q6.4 -2.6 13 .2 M6 21 q3.6 -1.6 7.2 -.2 M17 29 q6 -2 11 .8 M36 26 q3 -1.2 6.4 0" fill="none" stroke="#F4C08C" stroke-width=".9" stroke-linecap="round" opacity=".2"/>` +
+    `<path d="M3.4 7.2 q6 -2 12.4 .7 M28.4 16.2 q6.2 -2.4 12.8 .3 M17.4 30.2 q5.8 -1.8 10.8 .8 M10 13 h.6 M39 8 h.5 M30 23 h.5 M2 30 h.5" fill="none" stroke="#6A2E10" stroke-width=".8" stroke-linecap="round" opacity=".13"/></pattern>` +
+    `<pattern id="${Q}-mat" width="3" height="11" patternUnits="userSpaceOnUse"><rect width="3" height="11" fill="#C9A160"/><path d="M0 0 V11 M1.5 0 V11" stroke="#9C7638" stroke-width=".45"/><path d="M0 0 H3 V1.6 H0 Z M0 4.4 H3 V5 H0 Z" fill="#7A2E1E"/></pattern>` +
+    `<linearGradient id="${Q}-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D49058"/><stop offset=".6" stop-color="#C27A44"/><stop offset="1" stop-color="#A9622F"/></linearGradient>` +
+    `<linearGradient id="${Q}-lit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFF3DC" stop-opacity=".16"/><stop offset=".3" stop-color="#fff" stop-opacity=".04"/><stop offset=".6" stop-color="#3A1A08" stop-opacity="0"/><stop offset="1" stop-color="#3A1A08" stop-opacity=".2"/></linearGradient>` +
+    `<linearGradient id="${Q}-sd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A5228"/><stop offset="1" stop-color="#6E3618"/></linearGradient>` +
+    `<radialGradient id="${Q}-pot" cx=".36" cy=".35" r=".75"><stop offset="0" stop-color="#E9A56C"/><stop offset=".55" stop-color="#C0683A"/><stop offset="1" stop-color="#7E3A1A"/></radialGradient>` +
+    `<path id="${Q}-wl" d="${wall}"/><path id="${Q}-rl" d="${rel}"/></defs>`;
   return `<svg class="bhouse" viewBox="0 0 200 170" aria-hidden="true">` + defs +
-    `<ellipse cx="116" cy="${G + 2}" rx="100" ry="7.4" fill="rgba(74,40,14,.22)"/><ellipse cx="100" cy="${G + 1}" rx="86" ry="4" fill="rgba(48,22,6,.3)"/>` +
-    // the footing: a trench of trodden mud the house stands on, and the faint shape of the house to come
-    `<path d="M18 ${G - 1} H182 L186 ${G + 4} Q100 ${G + 8} 14 ${G + 4} Z" fill="#8E5A34"/><path d="M18 ${G - 1} H182" stroke="#6B3E20" stroke-width="1.2"/>` +
-    `<path class="plan" d="M24 ${G} V78 H176 V${G} M82 ${G} V118 Q100 100 118 118 V${G}"/>` +
-    `<path class="doorhole" d="M83 ${G} V118.6 Q100 101.4 117 118.6 V${G} Z"/>` +
+    // the footing: a trench of trodden mud the house stands on, and the dashed shape of the house to come
+    `<path d="M17 ${G - 1} H184 L188 ${G + 3.6} Q100 ${G + 7.6} 13 ${G + 3.6} Z" fill="#8E5A34"/><path d="M17 ${G - 1} H184" stroke="#6B3E20" stroke-width="1.2"/>` +
+    `<use href="#${Q}-wl" class="plan"/><path class="ghosts" d="${ghosts}"/><path class="doorhole" d="${door}"/>` +
     slots +
-    // the finish: plaster over the bricks, the parapet and its zanko horns, roof beams, the relief and the doorway
+    // the finish
     `<g class="fin">` +
-    `<path d="${wall}" fill="${u('wall')}" fill-rule="evenodd"/><path d="${wall}" fill="${u('lit')}" fill-rule="evenodd"/>` +
-    `<path d="M22 74 H178 V78 H22 Z" fill="#A85E2E" opacity=".6"/>` +
-    `<path d="M20 70 H180 V75 H20 Z" fill="#B86A34"/><g fill="#C27840">${horns}</g>` +
-    `<path d="M18 70 Q19 58 22 50 Q24 60 27 70 Z M173 70 Q176 60 178 50 Q181 58 182 70 Z" fill="#B86A34"/>` +
-    `<g fill="#7A5230"><rect x="36" y="80" width="6" height="3.6" rx="1"/><rect x="70" y="80" width="6" height="3.6" rx="1"/><rect x="124" y="80" width="6" height="3.6" rx="1"/><rect x="158" y="80" width="6" height="3.6" rx="1"/></g>` +
-    `<g fill="#5A3A1E" opacity=".5"><rect x="37" y="83.6" width="5" height="1.4"/><rect x="71" y="83.6" width="5" height="1.4"/><rect x="125" y="83.6" width="5" height="1.4"/><rect x="159" y="83.6" width="5" height="1.4"/></g>` +
-    `<path d="${DAGI}" transform="translate(101 92.6) scale(1.75)" fill="none" stroke="#5E2E12" stroke-width=".8" opacity=".25"/>` +
-    `<g fill="none" stroke="#FCEBD0" stroke-width="1.3" opacity=".8" stroke-linejoin="round"><path d="${DAGI}" transform="translate(100 92) scale(1.75)" stroke-width=".75"/><path d="M40 98 l5 -5 l5 5 l-5 5 Z M150 98 l5 -5 l5 5 l-5 5 Z"/></g>` +
-    `<path d="M78 ${G} V117 Q100 95 122 117 V${G}" fill="none" stroke="#FCEBD0" stroke-width="1.6" opacity=".75"/>` +
-    `<path d="M83 ${G} V118.6 Q100 101.4 117 118.6 V${G} Z" fill="#3A1E0C"/><path d="M86 ${G} V120 Q100 106 114 120 V${G} Z" fill="#2A1408"/>` +
-    `<g transform="translate(140 ${G})"><path d="M-4 -.6 Q-8 -4 -7.6 -9 Q-7 -13.6 -2.8 -15 L-2.6 -16.8 H2.6 L2.8 -15 Q7 -13.6 7.6 -9 Q8 -4 4 -.6 Q0 .4 -4 -.6 Z" fill="${u('pot')}"/>` +
-    `<ellipse cy="-16.8" rx="3" ry=".8" fill="#4A2412"/><path d="M-6 -11 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2" stroke="#F3D9B0" stroke-width=".55" fill="none" opacity=".8"/></g>` +
+    `<path d="M21 ${G} L179 ${G} L191 ${G - 5.4} L214 ${G - .4} Q208 ${G + 6} 178 ${G + 7} L40 ${G + 6} Q18 ${G + 4.6} 21 ${G} Z" fill="rgba(60,28,8,.24)"/>` +
+    `<path d="M179 ${G} Q177.6 112 175.4 80 L174.8 66 L180.2 63.8 Q182 56 186.6 47 Q185.8 56 185.8 61.6 Q188.6 108 191 ${G - 5.4} Z" fill="${u('sd')}"/>` +
+    `<path d="M180.2 63.8 Q182 56 186.6 47 Q183.6 53 182.4 63.4 Z M179 ${G} L191 ${G - 5.4} L190.6 ${G - 10} Q185 ${G - 8} 179 ${G - 6} Z" fill="#4E2410" opacity=".35"/>` +
+    `<use href="#${Q}-wl" fill="${u('wall')}"/><use href="#${Q}-wl" fill="${u('laso')}"/><use href="#${Q}-wl" fill="${u('lit')}"/>` +
+    `<path d="M30 92 Q44 86 56 96 Q50 112 34 108 Q26 102 30 92 Z M120 126 Q140 118 158 128 Q150 142 128 140 Q116 134 120 126 Z M60 136 Q70 130 76 138 Q70 146 60 144 Z M150 82 Q166 78 170 90 Q160 98 150 92 Z" fill="#7A3A18" opacity=".07"/>` +
+    `<path d="${horns}" fill="#F2B47C" opacity=".35"/>` +
+    `<path d="${rain}" fill="#5E2A0E" opacity=".16"/><path d="${foot}" fill="#5A2810" opacity=".22"/>` +
+    `<path d="${bsh}" fill="#3A1606" opacity=".3"/><path d="${beam}" fill="#6A4626"/><path d="${cap}" fill="#C79A64"/>` +
+    `<path d="M35.4 86.8 h9.2 v9.2 h-9.2 Z M155.4 86.8 h9.2 v9.2 h-9.2 Z" fill="#2A1408"/><path d="M35.4 86.8 h9.2 l-1.6 1.6 h-6 v7.6 l-1.6 -1.6 Z M155.4 86.8 h9.2 l-1.6 1.6 h-6 v7.6 l-1.6 -1.6 Z" fill="#5E321A"/>` +
+    `<use href="#${Q}-rl" transform="translate(.7 .9)" fill="none" stroke="#5A2810" stroke-width="1.2" opacity=".4"/>` +
+    `<use href="#${Q}-rl" fill="none" stroke="#F6E8CC" stroke-width="1.1" stroke-linejoin="round" opacity=".82"/>` +
+    `<path d="${door}" fill="#24110A"/>` +
+    `<path d="M86.6 112 H113.4 V148.6 Q100 150.4 86.6 148.6 Z" fill="${u('mat')}"/><path d="M86 111.4 H114" stroke="#A47A3C" stroke-width="3.6" stroke-linecap="round"/>` +
+    `<path d="M83 ${G} V121 Q83.4 107 100 102.4 L100 106 Q87.6 110 87.4 122 V${G - 3.4} Z" fill="#5A2E16"/>` +
+    `<path d="M79.6 152 L81.4 149.4 H118.6 L120.4 152 Z" fill="#D49A62"/><path d="M79.6 152 H120.4 L121 ${G + .4} H79 Z" fill="#8A4A24"/>` +
+    `<g transform="translate(142 ${G})"><ellipse cx="4" cy=".2" rx="9" ry="1.6" fill="rgba(48,22,6,.35)"/><path d="M-4 -.6 Q-8 -4 -7.6 -9 Q-7 -13.6 -2.8 -15 L-2.6 -16.8 H2.6 L2.8 -15 Q7 -13.6 7.6 -9 Q8 -4 4 -.6 Q0 .4 -4 -.6 Z" fill="${u('pot')}"/>` +
+    `<path d="M-6 -11 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 l1.2 1.2 l1.2 -1.2 M-3 -16.8 H3" stroke="#F3D9B0" stroke-width=".55" fill="none" opacity=".8"/></g>` +
     `</g></svg>`;
 }
