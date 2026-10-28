@@ -8,6 +8,7 @@
 import { ram, goat } from './art4';
 import { KW } from './sc-kasuwa';
 import { arewaCap } from './capsArewa';
+import { liveAC } from './audioctx';
 
 const G = (vb, inner) => `<svg class="good" viewBox="${vb}" aria-hidden="true">${inner}</svg>`;
 const SH = (cx, cy, rx) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${rx / 7}" fill="rgba(40,24,10,.25)"/>`;
@@ -109,7 +110,7 @@ export function coinBurst(n = 6): string {
 /* the market's own sounds, on the game's little synth like the tea seller's cup and the herd's bell:
    right, coins clink into the dillali's hand; wrong, the shopper's low "a'a" (no) as they turn away */
 let mac: AudioContext | null = null;
-const ctx = () => { try { return mac = mac || new ((window as any).AudioContext || (window as any).webkitAudioContext)(); } catch { return null; } };
+const ctx = () => { try { return mac = liveAC(mac); } catch { return null; } };
 export function coinClink(): void {
   const c = ctx(); if (!c) return;
   [[3520, 0], [4180, .09], [2960, .17], [3950, .27], [3300, .34]].forEach(([f, d]) => {

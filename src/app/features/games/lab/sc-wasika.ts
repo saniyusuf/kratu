@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { arewaCap } from './capsArewa';
+import { liveAC } from './audioctx';
 /*
  * Marubucin wasiƙa, drawn (Sani 2026-10-25, reworked 2026-10-26: "make the things more real and add sound and make the
  * letter thing bigger too"). The big letter now fills the middle of the screen, so the street is laid out around it:
@@ -389,7 +390,7 @@ export function splat(): string {
 /* ---------------- the game's sounds: WebAudio, short and gentle ---------------- */
 export function wasikaSound(run) {
   let ac = null, nb = null;
-  const A = () => { if (run && run.dead) return null; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); if (ac.state === 'suspended') ac.resume(); return ac; } catch (e) { return null; } };
+  const A = () => { if (run && run.dead) return null; try { ac = liveAC(ac); if (ac.state === 'suspended') ac.resume(); return ac; } catch (e) { return null; } };
   const noise = (a) => { if (nb) return nb; nb = a.createBuffer(1, a.sampleRate * 2, a.sampleRate); const d = nb.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return nb; };
   const env = (g, t, peak, a, r) => { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + r); };
   const burst = (a, t, dur, type, f0, f1, q, peak) => { const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); s.buffer = noise(a);

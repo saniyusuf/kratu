@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { liveAC } from './audioctx';
 /*
  * Hawan Sallah (Sani 2026-10-22): every horseman different, as at a real Sallah durbar. Six riders and horses: coat
  * (bay, chestnut, grey, black, dun, roan), the caparison's colours and pattern (quilted diamonds, stripes, checks,
@@ -462,7 +463,7 @@ export function maiFanka(): string {
  * microphone can open; none plays over Laila's voice (the game schedules them after her).
  */
 let dac: AudioContext | null = null;
-function audio(): AudioContext | null { try { dac = dac || new (window.AudioContext || (window as any).webkitAudioContext)(); if (dac.state === 'suspended') dac.resume(); return dac; } catch { return null; } }
+function audio(): AudioContext | null { try { dac = liveAC(dac); if (dac.state === 'suspended') dac.resume(); return dac; } catch { return null; } }
 function noise(a: AudioContext, secs: number): AudioBuffer { const n = Math.floor(a.sampleRate * secs), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; }
 function clop(a: AudioContext, t: number, vol: number): void {
   const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); s.buffer = noise(a, .08); f.type = 'bandpass'; f.frequency.value = 1700; f.Q.value = 2.5;

@@ -18,6 +18,7 @@ import { postRider, envelopeArt, inkLetter, splat, wasikaSound, wsBoard, wsPins 
 import * as JR from './sc-jirgi';
 import * as SY from './sc-suya';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
+import { liveAC } from './audioctx';
 
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
@@ -211,7 +212,7 @@ export function moreGames(c: any): Record<string, any> {
         run.clock(170, () => done({ right: sold, part: sold / 6 }));
         run.remind = () => say(line('j-dillali', 'how'), run);
         const fitEasel = () => { if (run.dead) { removeEventListener('resize', fitEasel); return; } const u = run.scr.getBoundingClientRect().width / 100; if (u) board.style.setProperty('--gnd', ((st.getBoundingClientRect().bottom - board.getBoundingClientRect().top) / u).toFixed(2) + 'cqw'); };
-        addEventListener('resize', fitEasel); fitEasel();
+        addEventListener('resize', fitEasel); run.offs.push(() => removeEventListener('resize', fitEasel)); fitEasel();
         const goods = board.querySelector('.mkgoods'), drawn = board.querySelector('.mkdrawn'), fx = board.querySelector('.mkfx'), clock = board.querySelector('.mktime');
         const dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
         const stopClock = () => { clearInterval(tick); tick = 0; clock.classList.remove('on', 'warn', 'late', 'rest'); };
@@ -381,7 +382,7 @@ export function moreGames(c: any): Record<string, any> {
         /* the lorry's horn: two bright toots when it is loaded, one low one when it leaves empty */
         let hac = null;
         function horn(happy) {
-          try { hac = hac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+          try { hac = liveAC(hac); } catch (e) { return; }
           const notes = happy ? [[440, 0], [554, .18]] : [[220, 0]];
           notes.forEach(([f, t0]) => { const t = hac.currentTime + t0, o = hac.createOscillator(), g = hac.createGain();
             o.type = 'square'; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + (happy ? .16 : .4));
@@ -686,7 +687,7 @@ export function moreGames(c: any): Record<string, any> {
         kb.addEventListener('click', (e) => { const b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
         const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
           const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
-        document.addEventListener('keydown', onKey);
+        document.addEventListener('keydown', onKey); run.offs.push(() => document.removeEventListener('keydown', onKey));   // gone with the game, not at the next key
         word();
       } },
   };

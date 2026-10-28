@@ -23,7 +23,9 @@ const SCENE: Record<string, () => string> = {
   'j-nemo': kasuwaScene, 'j-suya': suyaScene, 'j-gyada': gyadaScene, 'j-shanu': shanuScene, 'j-garke': garkeScene,
   'j-dillali': dillaliScene,
 };
-export function restScene(gid: string): string | null { const f = SCENE[gid]; return f ? f() : null; }
+/** the scenes are fixed drawings (no chance in them), so each string is built once and kept for the next round */
+const BUILT: Record<string, string> = {};
+export function restScene(gid: string): string | null { const f = SCENE[gid]; return f ? (BUILT[gid] ??= f()) : null; }
 
 /** the scene's people react: .cheer after a right answer, .sad after a wrong one (the classes sit on .gbg) */
 export function react(scr: HTMLElement, kind: 'cheer' | 'sad'): void {

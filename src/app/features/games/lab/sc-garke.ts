@@ -14,6 +14,7 @@
  *   milk woman) · .gk-milk (the milker's hands) · .gk-lead (the boy and the calf) · .gk-far (the herd coming in)
  */
 import { shanuKit, dabSpec, dabbaAlone } from './sc-shanu';
+import { liveAC } from './audioctx';
 
 const { P, lg, person, cow, cowLive, calf, egret, near_ } = shanuKit;
 
@@ -195,7 +196,7 @@ export const kraalCow = (n) => dabbaAlone(KRAAL_KINDS[n % KRAAL_KINDS.length]);
    clonks as the count runs up on her, a little higher each time, and when the herd is counted they low together,
    content, and the herdsman whistles. WebAudio, on the tab's own volume. */
 let gac = null;
-const actx = () => { try { gac = gac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { gac = null; } return gac; };
+const actx = () => { try { gac = liveAC(gac); } catch (e) { gac = null; } return gac; };
 export function countBell(k) {
   const a = actx(); if (!a) return; const t = a.currentTime + .02, up = Math.pow(1.06, k);
   [[620, .09], [930, .05], [1480, .022]].forEach(([f, v]) => { const o = a.createOscillator(), g = a.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(f * up, t);

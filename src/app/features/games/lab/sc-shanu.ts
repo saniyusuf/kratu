@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { arewaCap, CAPS } from './capsArewa';
+import { liveAC } from './audioctx';
 /*
  * Kasuwar dabbobi (was Kasuwar shanu), drawn (Sani 2026-10-25: the same hand as Hawan Sallah; 2026-10-26: a mixed livestock
  * market, goats, rams, a few cattle, poultry as background life). Originally a big open cattle market in the morning, like
@@ -567,7 +568,7 @@ export const dabLive = (x, y, s, id, flip, cls = '') => '<g transform="translate
 /* ---- their voices (WebAudio, gentle): a goat's bleat, a ram's lower one, a cow's moo; displeased is shorter and falls ---- */
 let dac = null;
 export function dabSound(id, happy) {
-  try { dac = dac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  try { dac = liveAC(dac); } catch (e) { return; }
   const t = dac.currentTime + .03, fam = id[0];
   if (fam === 'c') {   // the cow: a low moo through a soft filter; happy rises a little at the end
     const o = dac.createOscillator(), f = dac.createBiquadFilter(), g = dac.createGain(), d = happy ? 1.1 : 1.3;

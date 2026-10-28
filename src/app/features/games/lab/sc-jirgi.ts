@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { arewaCap } from './capsArewa';
+import { liveAC } from './audioctx';
 /*
  * Jirgin ruwa (the ferry): a river crossing point in the morning. The far bank is a busy market town at its landing:
  * zinc-roofed and mat-roofed stalls of tomatoes, peppers and grain, umbrellas, market folk, a mosque with its minaret,
@@ -364,7 +365,7 @@ export function engineBoat(word: string, pax: number): string {
 
 /* ---------- sounds: gentle and short, synthesised (the same pattern as engine.ts) ---------- */
 let jac = null;
-const audio = () => { try { jac = jac || new (window.AudioContext || (window as any).webkitAudioContext)(); return jac; } catch (e) { return null; } };
+const audio = () => { try { jac = liveAC(jac); return jac; } catch (e) { return null; } };
 /** the engine's putt-putt: soft low thuds, swelling and fading over `sec` seconds */
 export function puttPutt(sec = 1.8): void {
   const a = audio(); if (!a) return;

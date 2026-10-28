@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { arewaCap } from './capsArewa';
+import { liveAC } from './audioctx';
 /*
  * Allo, drawn (Sani 2026-10-25): a makarantar allo in a compound under a big neem tree in the morning. A red-earth
  * compound wall with zanko horns and white relief runs behind; beyond it a Sahel mud mosque with a tapering minaret
@@ -344,7 +345,7 @@ function board(word) {
     buta + rag + pen + '</svg>';
   return { svg, tl };
 }
-function audio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); return actx; } catch (e) { return null; } }
+function audio() { try { actx = liveAC(actx); if (actx.state === 'suspended') actx.resume(); return actx; } catch (e) { return null; } }
 function noise(a, secs) { const n = Math.floor(a.sampleRate * secs), b = a.createBuffer(1, n, a.sampleRate), d = b.getChannelData(0); for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1; return b; }
 function burst(a, t, dur, type, f0, f1, q, peak) {
   const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();

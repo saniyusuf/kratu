@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { liveAC } from './audioctx';
 /*
  * Ƙirgen shanu's cattle (Sani 2026-10-22): the cows Nigerian children know. White Fulani (Bunaji): white, black
  * muzzle and ear tips, long lyre horns; Red Bororo (Rahaji): deep red with long pale horns; and a white and grey
@@ -86,14 +87,14 @@ export function herdsman(): string {
 /* a cowbell's soft clonk, the sound of a herd moving (WebAudio; the tab's own volume) */
 let bac = null;
 export function cowbell(times = 2): void {
-  try { bac = bac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  try { bac = liveAC(bac); } catch (e) { return; }
   for (let k = 0; k < times; k++) { const t = bac.currentTime + .05 + k * .55;
     [[540, .09], [812, .05], [1290, .025]].forEach(([f, v]) => { const o = bac.createOscillator(), g = bac.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(f * (k % 2 ? .94 : 1), t);
       g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .008); g.gain.exponentialRampToValueAtTime(.0001, t + .5); o.connect(g).connect(bac.destination); o.start(t); o.stop(t + .55); }); }
 }
 /* a low, unhappy moo for a wrong count */
 export function moo(): void {
-  try { bac = bac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  try { bac = liveAC(bac); } catch (e) { return; }
   const t = bac.currentTime + .05, o = bac.createOscillator(), g = bac.createGain(), f = bac.createBiquadFilter();
   o.type = 'sawtooth'; o.frequency.setValueAtTime(150, t); o.frequency.linearRampToValueAtTime(175, t + .35); o.frequency.exponentialRampToValueAtTime(105, t + 1.2);
   f.type = 'lowpass'; f.frequency.value = 600; g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.14, t + .12); g.gain.setValueAtTime(.14, t + .8); g.gain.exponentialRampToValueAtTime(.0001, t + 1.3);

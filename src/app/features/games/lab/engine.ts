@@ -18,6 +18,7 @@ import { tukPot } from './sc-tukwane';
 import { pickRhythm, playRhythm, playSigh } from './band';
 import * as KL from './kalangu';
 import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } from './kamun';
+import { liveAC, closeAC } from './audioctx';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -51,7 +52,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   function sfx(k) { if (!gone) io.sfx(K[k]); }
   function drum(big) {
     if (gone) return;
-    try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+    try { ac = liveAC(ac); } catch (e) { return; }
     var t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
     o.type = 'sine'; o.frequency.setValueAtTime(big ? 140 : 220, t); o.frequency.exponentialRampToValueAtTime(big ? 60 : 110, t + .25);
     g.gain.setValueAtTime(.6, t); g.gain.exponentialRampToValueAtTime(.001, t + .35); o.connect(g).connect(ac.destination); o.start(t); o.stop(t + .4);
@@ -92,12 +93,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   function closeMic() { if (mic) { try { mic.stop(); } catch (e) { /* closed */ } mic = null; } }
 
   function Run() {
-    var self = this; this.scr = frame.querySelector('.scr'); this.dead = false; this.timers = []; this.miss = 0; this.right = 0; this.idle = 0; this.combo = 0; this.coins = 0;
+    var self = this; this.scr = frame.querySelector('.scr'); this.dead = false; this.timers = []; this.offs = []; this.miss = 0; this.right = 0; this.idle = 0; this.combo = 0; this.coins = 0;
     this.onDown = function (e) { self.lastEl = e.target.closest && e.target.closest('button'); };
     this.scr.addEventListener('pointerdown', this.onDown);
   }
   Run.prototype.later = function (ms, f) { var t = setTimeout(f, ms); this.timers.push(t); return t; };
-  Run.prototype.stop = function () { this.dead = true; this.timers.forEach(clearTimeout); clearInterval(this.tick); closeMic(); io.hush(); this.scr.removeEventListener('pointerdown', this.onDown); };
+  Run.prototype.stop = function () { this.dead = true; this.timers.forEach(clearTimeout); clearInterval(this.tick); this.hold(); closeMic(); io.hush(); this.scr.removeEventListener('pointerdown', this.onDown); this.offs.forEach(function (f) { f(); }); this.offs = []; };
   /* the clock: a bar that empties; right answers give 4 s back, wrong ones take 8. It stands still while the mic is open. */
   Run.prototype.clock = function (secs, onOut) {
     var self = this; this.left = secs * 1000; this.full = secs * 1000;
@@ -105,7 +106,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     var last = performance.now();
     this.tick = setInterval(function () {
       var now = performance.now(), dt = now - last; last = now;
-      if (self.listening) return;
+      if (self.listening) { self.hold(); return; }
       self.left -= dt;
       if (self.left <= 0) { self.left = 0; clearInterval(self.tick); onOut(); }
       self.paint();
@@ -115,14 +116,47 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     }, 250);
     this.paint();
   };
-  Run.prototype.paint = function () { if (!this.cel) return; var p = Math.max(0, this.left / this.full); this.cel.querySelector('i').style.transform = 'scaleX(' + p + ')'; this.cel.querySelector('.tm').textContent = Math.ceil(this.left / 1000); this.cel.classList.toggle('low', this.left < 15000); };
+  /* The bar used to get a fresh .25 s transition to the new value on every tick, four a second, each costing the main
+     thread a frame. It is now ONE linear animation that runs the same 250 ms behind the clock those chained transitions
+     did, re-aimed only when the clock jumps (a bump, or going on after the mic) and brought to rest exactly where the
+     last transition would have stopped when the clock stands (the mic is open, or the round is over). The number is
+     written only when it changes. */
+  Run.prototype.paint = function () {
+    var c = this.cel; if (!c) return;
+    if (!c._bar) { c._bar = c.querySelector('i'); c._tm = c.querySelector('.tm'); }
+    var p = Math.max(0, this.left / this.full), now = performance.now(), s = String(Math.ceil(this.left / 1000));
+    if (c._tm.textContent !== s) c._tm.textContent = s;
+    c.classList.toggle('low', this.left < 15000);
+    c._last = p; c._lastT = now;
+    if (c._anim && !c._held && Math.abs(c._p0 - (now - c._t0) / this.full - p) < .001) return;   // already on its way there
+    var from = barAt(c, now, this.full), d = 250 + p * this.full;
+    if (c._anim) c._anim.cancel();
+    c._anim = c._bar.animate([{ transform: 'scaleX(' + from + ')' }, { transform: 'scaleX(' + p + ')', offset: 250 / d }, { transform: 'scaleX(0)' }], { duration: d, easing: 'linear', fill: 'forwards' });
+    c._from = from; c._p0 = p; c._t0 = now; c._held = false;
+  };
+  /** the clock stands: the bar finishes the move to the last value painted and stays there */
+  Run.prototype.hold = function () {
+    var c = this.cel; if (!c || !c._anim || c._held) return;
+    var now = performance.now(), from = barAt(c, now, this.full), d = Math.max(0, c._lastT + 250 - now);
+    c._anim.cancel(); c._anim = c._bar.animate([{ transform: 'scaleX(' + from + ')' }, { transform: 'scaleX(' + c._last + ')' }], { duration: d, easing: 'linear', fill: 'forwards' });
+    c._from = from; c._p0 = c._last; c._t0 = now; c._held = true; c._hd = d;
+  };
+  /** where the bar's animation has it now */
+  function barAt(c, now, full) {
+    if (!c._anim) return c._last;
+    var e = now - c._t0;
+    if (c._held) return e >= c._hd ? c._p0 : c._from + (c._p0 - c._from) * e / c._hd;
+    return e < 250 ? c._from + (c._p0 - c._from) * e / 250 : Math.max(0, c._p0 - (e - 250) / full);
+  }
   Run.prototype.bump = function (ms) { this.left = Math.max(0, Math.min(this.full, this.left + ms)); this.paint(); var b = h('<span class="bump ' + (ms > 0 ? 'up' : 'down') + '">' + (ms > 0 ? '+' : '−') + Math.abs(ms / 1000) + '</span>'); this.cel.appendChild(b); setTimeout(function () { b.remove(); }, 900); };
   Run.prototype.spark = function (el, pts) {
     var sr = io.rect(this.scr), r = el && el.getBoundingClientRect ? io.rect(el) : null;
     var x = r ? r.left + r.width / 2 - sr.left : sr.width / 2, y = r ? r.top + r.height / 2 - sr.top : sr.height / 2, k = sr.width / 100;
     var box = h('<div class="fx" style="left:' + x + 'px;top:' + y + 'px"></div>'), cols = ['#FFD54A', '#FFF1A8', '#4CAF50', '#1FA1D8', '#E63946'];
-    for (var i = 0; i < 10; i++) { var a = i / 10 * Math.PI * 2, d = (6 + (i % 3) * 3) * k; box.insertAdjacentHTML('beforeend', '<i style="--dx:' + Math.cos(a) * d + 'px;--dy:' + Math.sin(a) * d + 'px;background:' + cols[i % 5] + '"></i>'); }
-    if (pts) box.insertAdjacentHTML('beforeend', '<b>+' + pts + '</b>');
+    var s = '';   // one parse for the burst, not eleven
+    for (var i = 0; i < 10; i++) { var a = i / 10 * Math.PI * 2, d = (6 + (i % 3) * 3) * k; s += '<i style="--dx:' + Math.cos(a) * d + 'px;--dy:' + Math.sin(a) * d + 'px;background:' + cols[i % 5] + '"></i>'; }
+    if (pts) s += '<b>+' + pts + '</b>';
+    box.insertAdjacentHTML('beforeend', s);
     this.scr.appendChild(box); setTimeout(function () { box.remove(); }, 900);
   };
   Run.prototype.good = function (el) {
@@ -143,7 +177,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       '<span class="lmw"><span class="lm">' + K.laila + '</span></span><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>' +
       '<span class="lhand">👆🏾</span><small>Faɗa</small></span></div>');
     var btn = box.querySelector('.x-laila'), raf = 0;
-    function level() { btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
+    function level() { if (run.dead) { raf = 0; return; } btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
     box.listen = function (opts, heard, right) {
       box.heard = heard; box.right = right;
       if (io.tester && !box.querySelector('.tester')) {     // ?tester=1 in the link only: answer for the child, for a desk without a microphone
@@ -349,7 +383,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         run.clock(150, function () { done({ right: said, part: said / 6 }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         var easel = stage.querySelector('.kl-easel'), plate = stage.querySelector('.plate');
-        function audio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } }
+        function audio() { try { ac = liveAC(ac); return ac; } catch (e) { return null; } }
         function round() {
           var w = words[r];
           easel.classList.remove('in', 'out'); plate.classList.remove('flip', 'miss'); stage.classList.remove('sad'); void easel.offsetWidth;
@@ -454,7 +488,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var life = h('<div class="riverlife"><span class="fisher">' + fisherman() + '</span>' + [0, 1, 2].map(function (k) { return '<span class="leap l' + k + '">' + leapFish() + '</span>'; }).join('') + '</div>');
         run.scr.appendChild(life); run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: got, part: got / 5, misses: run.miss }); });
         run.remind = function () { say(line(gid, 'how'), run); };
-        function audio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } }
+        function audio() { try { ac = liveAC(ac); return ac; } catch (e) { return null; } }
         function freeze(c) { var m = getComputedStyle(c).transform; c.style.animation = 'none'; c.style.transform = m === 'none' ? '' : m; void c.offsetWidth; }
         function splash(c, cls) { var cr = io.rect(c), rr = io.rect(river), sp = h('<span class="' + cls + '" style="left:' + (cr.left - rr.left + cr.width * .45) + 'px;top:' + (cr.top - rr.top + cr.height * .7) + 'px"><i></i><i></i><i></i><b></b><b></b><b></b></span>'); river.appendChild(sp); setTimeout(function () { sp.remove(); }, 1600); }
         function round() {
@@ -513,7 +547,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
               } else {
                 // a wrong pot cracks: a crash, the word is marked wrong, and on to the next word
                 busy = true; misses++; run.bad(); react(run.scr, 'sad'); b.classList.add('crack'); b.insertAdjacentHTML('beforeend', '<i class="shard s1"></i><i class="shard s2"></i><i class="shard s3"></i><i class="shard s4"></i>');
-                try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); crashSound(ac); } catch (e) { /* no sound */ }
+                try { ac = liveAC(ac); crashSound(ac); } catch (e) { /* no sound */ }
                 top.querySelector('.spslots').classList.add('wrongw'); run.later(1200, function () { top.querySelector('.spslots').classList.remove('wrongw'); });
                 nextWord();
               }
@@ -592,7 +626,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         kb.addEventListener('click', function (e) { var b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
         var onKey = function (e) { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
           var L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
-        document.addEventListener('keydown', onKey);
+        document.addEventListener('keydown', onKey); run.offs.push(function () { document.removeEventListener('keydown', onKey); });   // gone with the game, not at the next key
         word();
       } }
   };
@@ -601,7 +635,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 
   if (opts.lesson) start(); else question();
   return {
-    stop: function () { gone = true; if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } },
+    stop: function () { gone = true; if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } closeAC(); },
     again: function () { if (live && live.remind) live.remind(); else if (live && live.scr.classList.contains('q')) say(line(gid, 'ask'), live); },
   };
 }

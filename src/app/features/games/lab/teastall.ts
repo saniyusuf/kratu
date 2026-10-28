@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { arewaCap } from './capsArewa';
+import { liveAC } from './audioctx';
 /*
  * Mai shayi by the roadside in the evening (Sani 2026-10-23, reworked 2026-10-25: a stand by the road, not a shop).
  * The tea seller stands behind his table under a bulb on a pole. Most of the time he pulls tea, pouring it in a long
@@ -257,7 +258,7 @@ export function waiter(): string {
 /* the tea seller's pleasure: two quick taps of the spoon on the cup */
 let tac = null;
 export function cupTap(happy = true): void {
-  try { tac = tac || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
+  try { tac = liveAC(tac); } catch (e) { return; }
   const n = happy ? [[2600, 0], [3100, .14]] : [[900, 0]];
   n.forEach(([f, d]) => { const t = tac.currentTime + .03 + d, o = tac.createOscillator(), g = tac.createGain(); o.type = 'triangle'; o.frequency.setValueAtTime(f, t);
     if (!happy) o.frequency.exponentialRampToValueAtTime(500, t + .4);
