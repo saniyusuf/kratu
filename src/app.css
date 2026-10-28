@@ -271,7 +271,7 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 
 /* she does the pointing herself: the wing on the side of whatever she is naming swings out and holds.
    Her idle wing-wave from design.css has to stand down here, or an animation would beat these transforms. */
-.s.welcome .laila-v .wing{animation:none}
+.s.welcome .laila-v>.lw{animation:none}
 .s.welcome .laila-v .wing-l,.s.welcome .laila-v .wing-r{transform-box:fill-box;transform-origin:70% 30%;transition:transform .45s cubic-bezier(.2,1.45,.4,1)}
 .s.welcome .point-l .laila-v .wing-l{transform:rotate(-38deg) scale(1.5,1.15)}
 .s.welcome .point-r .laila-v .wing-r{transform:rotate(30deg) scale(1.5,1.15)}

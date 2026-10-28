@@ -43,6 +43,9 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; wai
  * It asks for a finger rather than a voice because the recogniser confuses T with C and F with S, and a bad listen
  * must never send a child who knows the alphabet back to A.
  */
+/** The pointing hand rides its balloon by the `translate` property where the webview has it (Chrome 104+). */
+const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1px 1px');
+
 @Component({
   selector: 'app-fashe',
   imports: [Door, Ear, LailaButton],
@@ -50,10 +53,10 @@ interface Bub { id: number; L: string; lane: number; x: number; dur: number; wai
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ eye() }}</div>
 <div class="poptime" [class.low]="low()" [class.off]="!ticking()">
-  <span class="ptbar"><i [style.width.%]="pct()"></i></span><b>{{ clock() }}</b>
+  <span class="ptbar nofit"><i [style.width.%]="pct()"></i></span><b>{{ clock() }}</b>
   @if (bump()) {<span class="ptbump" [class.minus]="bump()!.startsWith('−')">{{ bump() }}</span>}
 </div>
-<div #sky class="sky" (click)="tapped($event)">
+<div #sky class="sky nofit" (click)="tapped($event)">
   <span class="stage" aria-hidden="true"></span>
   @for (b of bubs(); track b.id) {
     <button class="bub" [class.pop]="b.state === 'pop'" [class.burst]="b.state === 'burst'" [class.go]="b.state === 'go'" [attr.data-b]="b.id" [attr.data-l]="b.L"
@@ -371,8 +374,10 @@ export class FasheScreen implements OnInit, OnDestroy {
       const h = this.hand, on = this.handOn;
       if (!h || !on || !on.isConnected) return;
       const r = on.getBoundingClientRect(), s = sky.getBoundingClientRect();
-      // left/top, not transform: the hand's bob animation owns its transform and would throw any translate away
-      h.style.left = (r.left - s.left + r.width / 2 - 30) + 'px'; h.style.top = (r.bottom - s.top - 6) + 'px';
+      // not transform: the hand's bob animation owns it. The separate `translate` property composes with it and moves
+      // the hand without a layout every frame (left/top did, 2026-10-28); a webview without it keeps left/top.
+      const x = r.left - s.left + r.width / 2 - 30, y = r.bottom - s.top - 6;
+      if (TRANSLATE) h.style.translate = x + 'px ' + y + 'px'; else { h.style.left = x + 'px'; h.style.top = y + 'px'; }
       this.handRaf = requestAnimationFrame(follow);
     };
     follow();

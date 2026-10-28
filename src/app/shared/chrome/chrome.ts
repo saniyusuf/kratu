@@ -1,6 +1,6 @@
 import { Component, input, inject, output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DOOR_SVG, EAR_SVG } from '../svg';
+import { DOOR_LAYERS, EAR_LAYERS } from '../svg';
 
 /**
  * The door (upper-left, back) and the ear (upper-right, hear again) on every screen. The component IS the design's
@@ -14,7 +14,7 @@ import { DOOR_SVG, EAR_SVG } from '../svg';
 })
 export class Door {
   readonly pressed = output<void>();
-  readonly svg = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_SVG);
+  readonly svg = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_LAYERS);
 }
 
 @Component({
@@ -26,5 +26,5 @@ export class Ear {
   /** The design's focus(dome): the ear pulses so the child knows where to press to hear it again. */
   readonly spot = input(false);
   readonly pressed = output<void>();
-  readonly svg = inject(DomSanitizer).bypassSecurityTrustHtml(EAR_SVG);
+  readonly svg = inject(DomSanitizer).bypassSecurityTrustHtml(EAR_LAYERS);
 }

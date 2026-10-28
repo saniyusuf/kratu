@@ -246,9 +246,11 @@ export class SpeechService {
   private log(e: HeardEntry): void { this.heard.push(e); while (this.heard.length > 60) this.heard.shift(); }
   private note(target: string, text: string): void { this.log({ t: Date.now(), target, heard: text, ok: true, peak: 0 }); }
   /** The copy of the model into storage happens only while nobody is speaking: the worker is single-threaded. */
+  private hideHooked = false;
   private scheduleSave(): void {
     if (this.saved || this.saveT) return;
     this.saveT = setInterval(() => { if (this.saved || !this.model) { clearInterval(this.saveT!); this.saveT = null; return; } if (this.feeding || this.rec) return; try { this.model.save?.(); } catch { /* ignore */ } }, 5000);
+    if (this.hideHooked) return; this.hideHooked = true;   // one listener for the app's life, however often the save is rescheduled
     document.addEventListener('visibilitychange', () => { if (document.hidden && this.model && !this.saved && !this.feeding) { try { this.model.save?.(); } catch { /* ignore */ } } });
   }
   private ensureAudio(): Promise<boolean> {

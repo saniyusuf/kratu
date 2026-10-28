@@ -37,11 +37,15 @@ body{margin:0;background:#EFE6D0;color:var(--ink);font-family:var(--body)}
 .mk .k{color:var(--red)}.mk .r{color:var(--orange)}.mk .a{color:var(--yellow)}.mk .t{color:var(--teal)}.mk .u{color:var(--blue)}
 
 .lm{display:block;position:relative;z-index:2}
-.laila-v{display:block;width:100%;height:100%;animation:bob 4.6s ease-in-out infinite;transform-origin:center bottom;overflow:visible}
+.laila-v{display:block;position:relative;width:100%;height:100%;animation:bob 4.6s ease-in-out infinite;transform-origin:center bottom;overflow:visible}
 @keyframes bob{0%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-6px) rotate(1.4deg)}100%{transform:translateY(0) rotate(-1.4deg)}}
-.laila-v .eye{transform-box:fill-box;transform-origin:center;animation:blink 5s ease-in-out infinite}
+.laila-v>svg{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}
+/* the blink and the wave run on their own layer's root (svg.ts): the eyes' centre line is y 131 of 240, and the
+   wing's old pivot (60% 40% of its box, 170..226.4 × 96.6..150) is 203.85, 117.94 of 240 */
+.laila-v>.le{transform-origin:50% 54.5833%;animation:blink 5s ease-in-out infinite}
 @keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
-.laila-v .wing{transform-box:fill-box;transform-origin:60% 40%;animation:wave 2.1s ease-in-out infinite}
+.laila-v>.lw{transform-origin:84.9356% 49.1429%;animation:wave 2.1s ease-in-out infinite}
+.laila-v .wing{transform-box:fill-box;transform-origin:60% 40%}
 @keyframes wave{0%,100%{transform:rotate(0)}22%{transform:rotate(-20deg)}55%{transform:rotate(8deg)}}
 
 .tapbox{position:relative;z-index:2;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
@@ -780,12 +784,19 @@ html:not([data-debug]) .s.lesson .demobar{display:flex}   /* demo controls stay 
 .s .backdoor .doorsvg{position:absolute;left:12px;top:8px;width:40px;height:48px;display:block;overflow:visible}
 .s .helpdome .earsvg,.genderred .helpdome .earsvg{width:44px;height:52px;display:block;overflow:visible}
 .s .backdoor .doorsvg *,.helpdome .earsvg *{transform-box:fill-box}
-.s .backdoor .leaf{transform-origin:left center;animation:doorajar 5.2s ease-in-out infinite}
+.s .backdoor .doorsvg>svg,.helpdome .earsvg>svg{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}.helpdome .earsvg{position:relative}
+/* the leaf turns on its own layer (svg.ts DOOR_LAYERS): its hinge, the left middle of 14..46 × 8..67 in the 60×70 drawing,
+   is 9.333px 25.667px of the 40×48 box (scale 2/3, centred 0.667px down). Inside an SVG the browser drew doorajar flat
+   (perspective dropped, the leaf only narrowing by cos θ); a rotateY with no perspective draws exactly that on a layer. */
+.s .backdoor .dleaf{transform-origin:23.3333% 53.4722%;animation:doorajar2 5.2s ease-in-out infinite}
+@keyframes doorajar2{0%,55%,100%{transform:rotateY(0)}70%,85%{transform:rotateY(-34deg)}}
 @keyframes doorajar{0%,55%,100%{transform:perspective(120px) rotateY(0)}70%,85%{transform:perspective(120px) rotateY(-34deg)}}
-.helpdome .earg{transform-origin:center bottom;animation:earwig 4.4s ease-in-out infinite}
+/* the ear wiggles on its own layer (EAR_LAYERS): the bottom middle of its 11.94..50.80 × 7.75..60 shape is 23.005px 44.333px
+   of the 44×52 box (scale 0.7333, centred 0.333px down) */
+.helpdome .eearg{transform-origin:52.2850% 85.2564%;animation:earwig 4.4s ease-in-out infinite}
 @keyframes earwig{0%,72%,100%{transform:rotate(0)}80%{transform:rotate(-7deg)}90%{transform:rotate(5deg)}}
-.helpdome .waves path{stroke-dasharray:40;animation:wavein 2.4s ease-in-out infinite}
-.helpdome .waves path:nth-child(2){animation-delay:.35s}
+.helpdome .waves path{stroke-dasharray:40}.helpdome .ew{animation:wavein 2.4s ease-in-out infinite}
+.helpdome .ew2{animation-delay:.35s}
 .helpdome .ic{display:none}
 @keyframes wavein{0%,60%,100%{opacity:.2}30%{opacity:1}}
 /* voice-button rows: wrap cleanly instead of squeezing the title */
