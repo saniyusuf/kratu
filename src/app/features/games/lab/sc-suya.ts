@@ -407,28 +407,15 @@ const NAIRA: Record<number, [string, string, string]> = { 20: ['#E6C77A', '#3E6B
 export function note(n: number): string {
   const [pa, ink, t2] = NAIRA[n] || ['#D8D2B8', '#3A3A2A', '#B8A070'], id = Q + '-n' + n;
   let guil = ''; for (let i = 0; i < 9; i++) guil += '<path d="M10 ' + (30 + i * 11) + ' q15 -7 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="' + ink + '" stroke-width=".5" fill="none" opacity=".16"/>';
-  let ros = ''; for (let i = 0; i < 12; i++) ros += '<ellipse rx="14" ry="5" transform="rotate(' + i * 15 + ')" fill="none" stroke="' + ink + '" stroke-width=".45" opacity=".35"/>';
   const N = n.toLocaleString('en-GB');
   const nt = '<g class="sy5-nt"><g transform="rotate(-5 120 69)">' +
     '<path d="M12 18 L232 13 L234 128 L14 132 Z" fill="#000" opacity=".28" transform="translate(3 4)"/>' +
     '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="' + pa + '"/><path d="M10 14 L230 10 L232 124 L12 128 Z" fill="url(#' + id + 't)"/>' +
-    '<clipPath id="' + id + 'c"><path d="M10 14 L230 10 L232 124 L12 128 Z"/></clipPath><g clip-path="url(#' + id + 'c)">' + guil +
-    
-    // the portrait in its oval: a man in a cap and babban riga, printed in the note's ink
-    '<ellipse cx="174" cy="64" rx="27" ry="33" fill="#fff" opacity=".35"/><ellipse cx="174" cy="64" rx="27" ry="33" fill="none" stroke="' + ink + '" stroke-width="1.2" opacity=".6"/>' +
-    '<g fill="' + ink + '" opacity=".72"><path d="M150 97 Q152 78 166 74 L174 80 L182 74 Q196 78 198 97 Z"/><path d="M167 70 L167 76 Q174 80 181 76 L181 70 Z"/>' +
-    '<ellipse cx="174" cy="58" rx="9" ry="11.4"/><path d="M164.6 52 Q164 41 174 40.4 Q184 41 183.4 52 Q174 49.6 164.6 52 Z"/></g>' +
-    '<g fill="none" stroke="#fff" stroke-width=".6" opacity=".55"><path d="M170 57 h2 M176 57 h2 M172.6 64 q1.4 .8 2.8 0 M158 90 Q166 82 172 84 M190 90 Q182 82 176 84"/></g>' +
-    // the arms: a black shield with the white Y, an eagle over it
-    '<g transform="translate(118 52)">' + ros + '</g><g transform="translate(118 50)"><path d="M-7 -6 H7 V2 Q7 9 0 11 Q-7 9 -7 2 Z" fill="#1A1A1A"/><path d="M-4.6 -4 L0 1.6 L4.6 -4 M0 1.6 V8" stroke="#F4F1EA" stroke-width="1.6" fill="none"/>' +
-    '<path d="M-5 -8 Q0 -13 5 -8 Q0 -9.6 -5 -8 Z" fill="#B3261E"/><path d="M-10 -2 Q-12 6 -8 10 M10 -2 Q12 6 8 10" stroke="' + ink + '" stroke-width="1.3" fill="none" opacity=".6"/></g>' +
-    '<rect x="140" y="10" width="3" height="120" fill="' + t2 + '" opacity=".75"/><path d="M141.5 10 V130" stroke="#fff" stroke-width=".6" stroke-dasharray="2 3" opacity=".7"/>' +
-    '<path d="M121 10 L123 130" stroke="#fff" stroke-width="3" opacity=".22"/><path d="M124 10 L126 130" stroke="#000" stroke-width="1.6" opacity=".08"/></g>' +
-    '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="none" stroke="' + ink + '" stroke-width="1.6" opacity=".7"/><path d="M17 20 L223 16.4 L225 117.6 L19 121 Z" fill="none" stroke="' + ink + '" stroke-width=".7" stroke-dasharray="2 1.4" opacity=".5"/>' +
-    '<text x="120" y="31" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="9.5" letter-spacing="1" fill="' + ink + '">CENTRAL BANK OF NIGERIA</text>' +
-    '<text x="24" y="45" font-family="Georgia,serif" font-weight="700" font-size="17" fill="' + ink + '">' + N + '</text>' +
-    '<text x="24" y="112" font-family="\'Arial Black\',\'Baloo 2\',sans-serif" font-weight="900" font-size="' + (n >= 1000 ? 30 : 36) + '" fill="' + ink + '">₦' + N + '</text>' +
-    '<text x="26" y="72" font-family="Georgia,serif" font-weight="700" font-size="9" letter-spacing="2.4" fill="' + ink + '" opacity=".8">NAIRA</text></g></g>';
+    // Sani 2026-10-28: "the number is the thing": only the amount, big and alone; the naira's colours and a faint
+    // engraved texture say "money" without anything else to read or look at (no bank name, portrait or arms)
+    '<clipPath id="' + id + 'c"><path d="M10 14 L230 10 L232 124 L12 128 Z"/></clipPath><g clip-path="url(#' + id + 'c)">' + guil.replace(/opacity=".16"/g, 'opacity=".08"') + '</g>' +
+    '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="none" stroke="' + ink + '" stroke-width="1.6" opacity=".55"/><path d="M17 20 L223 16.4 L225 117.6 L19 121 Z" fill="none" stroke="' + ink + '" stroke-width=".7" opacity=".3"/>' +
+    '<text x="121" y="' + (n >= 1000 ? 88 : 92) + '" text-anchor="middle" font-family="\'Baloo 2\',\'Arial Black\',sans-serif" font-weight="800" font-size="' + (n >= 1000 ? 54 : n >= 100 ? 64 : 72) + '" fill="' + ink + '">₦' + N + '</text></g></g>';
   // the child's hand, from the bottom-right corner: the thumb over the front of the note, the sleeve of a blue kaftan
   const SK = '#8B5A2B', SKD = '#6A4020';
   const arm = '<g class="sy5-arm"><path d="M235 80 Q246 75 253 84 Q256 93 247 98 L237 96 Z" fill="' + SKD + '"/>' +
