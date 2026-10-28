@@ -415,7 +415,7 @@ export function note(n: number): string {
     // engraved texture say "money" without anything else to read or look at (no bank name, portrait or arms)
     '<clipPath id="' + id + 'c"><path d="M10 14 L230 10 L232 124 L12 128 Z"/></clipPath><g clip-path="url(#' + id + 'c)">' + guil.replace(/opacity=".16"/g, 'opacity=".08"') + '</g>' +
     '<path d="M10 14 L230 10 L232 124 L12 128 Z" fill="none" stroke="' + ink + '" stroke-width="1.6" opacity=".55"/><path d="M17 20 L223 16.4 L225 117.6 L19 121 Z" fill="none" stroke="' + ink + '" stroke-width=".7" opacity=".3"/>' +
-    '<text x="121" y="' + (n >= 1000 ? 88 : 92) + '" text-anchor="middle" font-family="\'Baloo 2\',\'Arial Black\',sans-serif" font-weight="800" font-size="' + (n >= 1000 ? 54 : n >= 100 ? 64 : 72) + '" fill="' + ink + '">₦' + N + '</text></g></g>';
+    '<text x="121" y="' + (n >= 1000 ? 88 : 92) + '" text-anchor="middle" font-family="\'Baloo 2\',\'Arial Black\',sans-serif" font-weight="800" font-size="' + (n >= 1000 ? 62 : n >= 100 ? 72 : 80) + '" fill="' + ink + '">' + N + '</text></g></g>';
   // the child's hand, from the bottom-right corner: the thumb over the front of the note, the sleeve of a blue kaftan
   const SK = '#8B5A2B', SKD = '#6A4020';
   const arm = '<g class="sy5-arm"><path d="M235 80 Q246 75 253 84 Q256 93 247 98 L237 96 Z" fill="' + SKD + '"/>' +

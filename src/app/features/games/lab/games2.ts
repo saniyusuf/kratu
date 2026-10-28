@@ -417,7 +417,7 @@ export function moreGames(c: any): Record<string, any> {
           // four kinds every round, never four of one: one cow (the two breeds take turns), two goats, the rams
           const kinds = shuffle([v++ % 2 ? 'cr' : 'cw', 'gr', 'gw', 'rb', 'ru']).slice(0, 4);
           opts.forEach((m, k) => {
-            const b = h('<button type="button" class="beast2" aria-label="₦' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + ';--px:' + dabRump(kinds[k]).toFixed(1) + '%">' +
+            const b = h('<button type="button" class="beast2" aria-label="' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + ';--px:' + dabRump(kinds[k]).toFixed(1) + '%">' +
               priceBoard(m) + '<span class="post"></span>' + dabba(kinds[k]) + '</button>');
             pen.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;

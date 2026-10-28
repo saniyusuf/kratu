@@ -110,5 +110,5 @@ export function egret(): string {
 }
 /* the price board hung on the post in front of each animal: chalk on a little blackboard */
 export function priceBoard(m: number): string {
-  return `<span class="pboard"><i class="prope"></i><b>₦${m.toLocaleString('en-GB')}</b></span>`;
+  return `<span class="pboard"><i class="prope"></i><b>${m.toLocaleString('en-GB')}</b></span>`;
 }
