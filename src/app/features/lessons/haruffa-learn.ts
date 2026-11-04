@@ -165,7 +165,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       if (misses >= GIVE) {
         await this.sayLetter(this.bus.gk('app_remind'), L);
         await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L);
-        this.fb('wait', L + ' ✓'); await wait(500); return;
+        this.fb('wait', L); await wait(500); return;
       }
     }
   }
@@ -174,7 +174,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     // them cut each other off (Sani 2026-09-28)
     if (r.ok) {
       const cel = this.celebrate();
-      await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla! ✓');
+      await flyText(this.zoom, this.host.nativeElement, this.lb().head(), this.slot(L), L); this.fill(L); this.fb('good', 'Madalla!');
       await cel;
       if (noKudos) await wait(350); else await this.play('app_kudos');
       return true;
@@ -247,7 +247,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private async checkpoint(n: number): Promise<void> { const list = ALL.slice(0, n); this.markActive(list); this.unfill(list); this.eye.set('Ƙaramin jarrabawa · ' + n + ' haruffa'); await this.play(this.bus.gk('s_l_check')); await this.recall(shuffle(list)); this.hideLetter(); await wait(400); }
   private async finals(): Promise<void> {
     this.markActive(ALL); this.unfill(ALL); this.eye.set('Babbar jarrabawa · A → Z'); await this.play(this.bus.gk('s_l_final1')); await this.recall(ALL); this.hideLetter(); this.unfill(ALL);
-    this.eye.set('Jarrabawa ta ƙarshe · a gauraye'); await this.play(this.bus.gk('s_l_final2')); await this.recall(shuffle(ALL), true); this.hideLetter(); this.fb('good', '✓ A – Z'); await this.play(this.bus.gk('s_all_done')); this.progress.mark('haruffa', 'final');
+    this.eye.set('Jarrabawa ta ƙarshe · a gauraye'); await this.play(this.bus.gk('s_l_final2')); await this.recall(shuffle(ALL), true); this.hideLetter(); this.fb('good', 'A – Z'); await this.play(this.bus.gk('s_all_done')); this.progress.mark('haruffa', 'final');
   }
   private async start(fromGroup: number, intro = false): Promise<void> {
     this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(Math.max(fromGroup * 4, this.startAt));

@@ -352,7 +352,7 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
   filter:drop-shadow(0 0 10px rgba(76,175,80,.85)) drop-shadow(0 6px 6px rgba(0,0,0,.18))}
 #app .s.lesson .oslider .ogrid .oc.say.miss{filter:drop-shadow(0 0 10px rgba(230,57,70,.9)) drop-shadow(0 6px 6px rgba(0,0,0,.18))}
 /* a missed card keeps a small mark even while it waits its turn */
-#app .s.lesson .oslider .ogrid .oc.miss::after{content:"✗";position:absolute;top:-6px;right:-6px;width:26px;height:26px;
+#app .s.lesson .oslider .ogrid .oc.miss::after{content:"";position:absolute;top:-6px;right:-6px;width:26px;height:26px;
   border-radius:50%;background:var(--red);color:#fff;font:800 15px/26px var(--disp);text-align:center;box-shadow:0 0 0 3px #fff}
 #app .s.lesson .oslider .ogrid .oc{position:relative}
 @media (prefers-reduced-motion:reduce){#app .s.lesson .oslider .ogrid,#app .s.lesson .oslider .ogrid .oc{transition:none}}
@@ -655,3 +655,6 @@ body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
 #app .s.lesson .aslot.done::after{display:none}   /* never a tick (Sani 2026-10-27) */
 /* the gap between the two words of a two-word name in Karatu's slots ("LUNCH BOX", course steps, Sani 2026-11-04) */
 #app .s.lesson.karatu .wslot.gap{visibility:hidden;width:26px}
+/* the tiles' white names sat on light colours (blue, green, yellow) below the contrast minimum: each name now sits on a
+   dark wash of its own tile's colour, so every tile reads clearly and keeps its colour (Sani 2026-11-04) */
+#app .s.lesson .catcard .nm{display:inline-block;padding:2px 10px;border-radius:999px;background:rgba(36,22,6,.5);line-height:1.35}

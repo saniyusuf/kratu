@@ -29,7 +29,7 @@ const EG_TRIES = 3;
 @if (kind === 'haruffa') {<div class="abcshow" [class.off]="!bigLetter()"><span class="abcbig" style="--c:var(--red)">{{ bigLetter() }}</span><span class="abcex">example</span></div>}
 @if (kind === 'nemo' || kind === 'nemonum') {
 <div class="qlesson"><div #qgrid class="qgrid" [class.n4]="kind === 'nemo'" [class.n6]="kind === 'nemonum'">
-  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img" (error)="retryPic($event)">@if (it.k === gridDone()) {<div class="qmask">✓</div>}</button>}
+  @for (it of gridItems(); track it.k) {<button type="button" [attr.data-k]="it.k" [class.wrongtap]="wrongTap() === it.k" (click)="tap(it.k)"><img alt="" [src]="it.img" (error)="retryPic($event)">@if (it.k === gridDone()) {<div class="qmask"></div>}</button>}
 </div><div class="objrow">@for (i of ten; track i) {<span class="oslot active" [class.on]="i === 0"></span>}</div><div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div></div>}
 @else {
 @if (kind === 'karatu' || kind === 'rubutu' || kind === 'abubuwa' || kind === 'lambobi') {<div #show class="objshow" [class.off]="!picSrc()"><span #pic class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span></div>}
@@ -160,11 +160,11 @@ export class MisaliScreen implements OnInit, OnDestroy {
     // Praise is for getting it. Being shown the answer is acknowledged for what it was — not right — and
     // then let go of, because an example is not a test and the item comes round again (Sani 2026-10-07).
     if (!got) {
-      this.fb('wait', heard + ' ✓'); await wait(450);
+      this.fb('wait', heard); await wait(450);
       this.speak.set(true); await this.seq([this.maybe('s_eg_ok')]); this.speak.set(false);
       return;
     }
-    this.fb('good', 'Madalla! ✓'); await this.celebrate(); if (!noKudos) await this.play('app_kudos');
+    this.fb('good', 'Madalla!'); await this.celebrate(); if (!noKudos) await this.play('app_kudos');
   }
   private reset(): void { this.running = false; this.phase = 'idle'; this.movie.set(false); this.cue.set(false); this.handOff(); this.fb('', ''); this.speak.set(false); this.armed.set(false); this.recOff(); this.showPic(null); this.mkSlots(''); this.bigLetter.set(''); this.gridItems.set([]); this.gridDone.set(''); }
   /**
@@ -272,7 +272,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
   tap(k: string): void {
     this.skipFilm();
     if (this.phase !== 'turn') return;
-    if (k === this.gridTarget) { this.phase = 'doing'; this.gridDone.set(k); this.fb('good', 'Madalla! ✓'); this.play('app_kudos').then(() => this.done()); }
+    if (k === this.gridTarget) { this.phase = 'doing'; this.gridDone.set(k); this.fb('good', 'Madalla!'); this.play('app_kudos').then(() => this.done()); }
     else { this.wrongTap.set(''); setTimeout(() => this.wrongTap.set(k), 0); this.fb('bad', 'A’a'); this.play('app_quiz_wrong'); }
   }
 
@@ -358,7 +358,7 @@ export class MisaliScreen implements OnInit, OnDestroy {
     // just the word: what to do with it is the next line's job, and saying it twice made the example drag (Sani 20 Sep)
     if (!(await this.say([{ src: this.clip(tgt, 'en')! }]))) return;
     if (!(await this.sayDo(num ? 'sx_do_findnum' : 'sx_do_find', this.gridTargetEl()))) return;
-    const gb = this.gridTargetEl(); if (gb) await this.handTo(gb); this.gridDone.set(this.gridTarget); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos');
+    const gb = this.gridTargetEl(); if (gb) await this.handTo(gb); this.gridDone.set(this.gridTarget); this.fb('good', 'Madalla!'); await this.play('app_kudos');
     this.session.markExample(num ? 'nemonum' : 'nemo', tgt.k); this.handOff(); await this.finish();
   }
   /**

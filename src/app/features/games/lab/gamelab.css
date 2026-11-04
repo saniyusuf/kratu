@@ -980,10 +980,10 @@
 .glab .micx .lmw{display:inline-block;line-height:0}.glab .micx .lm{display:inline-block;width:120px;height:120px}.glab .micx .lm svg{width:100%;height:100%}
 .glab .micx .x-laila small{font-size:17px;color:#3B2E1E;text-shadow:0 0 6px #fff,0 0 10px #fff}
 /* no hints, only displeasure (Sani 2026-10-22): a wrong turn is marked and the scene shows it is not pleased */
-.glab .board.nosale::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 14cqw/1 var(--disp);color:#C62828;background:rgba(255,255,255,.55)}
+.glab .board.nosale::after{content:"";position:absolute;inset:0;display:grid;place-items:center;font:800 14cqw/1 var(--disp);color:#C62828;background:rgba(255,255,255,.55)}
 .glab .crowd.grumble .pp-w{animation:g-grumble .35s ease-in-out 4 alternate}@keyframes g-grumble{from{transform:rotate(-4deg)}to{transform:rotate(4deg) translateY(1px)}}
 .glab .gstage.cross .herder,.glab .sgstage.cross .grillw{animation:g-headno .3s ease-in-out 4 alternate}@keyframes g-headno{from{transform:translateX(-.8cqw)}to{transform:translateX(.8cqw)}}
-.glab .allow2.wrongw::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 18cqw/1 var(--disp);color:#E53935;opacity:.85}
+.glab .allow2.wrongw::after{content:"";border-radius:inherit;background:rgba(229,57,53,.22);box-shadow:inset 0 0 0 .7cqw rgba(229,57,53,.75);position:absolute;inset:0;display:grid;place-items:center;font:800 18cqw/1 var(--disp);color:#E53935;opacity:.85}
 .glab .allow2{position:relative}
 /* Hawan Sallah's band and guards behind the horsemen */
 .glab .sallahw{position:absolute;left:16cqw;bottom:12cqw;width:46cqw;height:19cqw;z-index:0;opacity:.95}.glab .sallahw .sallah{width:100%;height:100%;display:block}
@@ -1015,7 +1015,7 @@
 .glab .dancer .armL,.glab .dancer .armR{transform-box:fill-box}.glab .dancer .armL{transform-origin:100% 100%}.glab .dancer .armR{transform-origin:0 100%}
 .glab .dancers.on .armL{animation:g-armL .5s ease-in-out infinite alternate}.glab .dancers.on .armR{animation:g-armR .5s ease-in-out infinite alternate}
 @keyframes g-armL{to{transform:rotate(-18deg)}}@keyframes g-armR{to{transform:rotate(18deg)}}
-.glab .plate.miss .pf{background:#C62828;color:#fff}.glab .plate.miss .pf::after{content:"✗"}.glab .plate.miss .pf{font-size:0}.glab .plate.miss .pf::after{font-size:4.4cqw}
+.glab .plate.miss .pf{background:#C62828;color:#fff}.glab .plate.miss .pf::after{content:""}.glab .plate.miss .pf{font-size:0}.glab .plate.miss .pf::after{font-size:4.4cqw}
 .glab .plate.miss .pb{transform:rotateX(180deg)!important}.glab .plate.miss .pf{transform:none!important}
 .glab .scr.drum .krow{position:relative;z-index:2}
 @media (prefers-reduced-motion:reduce){.glab .kband *,.glab .dancers *{animation:none!important}}
@@ -1188,7 +1188,7 @@
 /* a wrong touch: head up, a shake, and the head turned away; the board is crossed out */
 .glab .beast2.no .zhead{animation:g-zno .28s ease-in-out 5 alternate}
 .glab .beast2.no .zebu{animation:g-turnaway .5s ease-in-out .9s forwards}@keyframes g-turnaway{to{transform:scaleX(-1)}}
-.glab .beast2.no .pboard::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font:800 5cqw/1 var(--disp);color:#E53935}
+.glab .beast2.no .pboard::after{content:"";background:rgba(229,57,53,.22);position:absolute;inset:0;display:grid;place-items:center;font:800 5cqw/1 var(--disp);color:#E53935}
 .glab .beast2.no .pboard b{opacity:.35}
 .glab .yard.sad .beast2:not(.no){filter:saturate(.75)}
 /* egrets about the cattle's feet: they step a little and peck */

@@ -278,7 +278,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   function intro(run, how, go) {
     var g = GAMES[gid], items = gateItems(), sim = opts.gate.sim;
     var o = h('<div class="gintro">' + tries(opts.gate.tries) + '<div class="gi-ban">' + g.title + '</div>' +
-      (items.length ? '<div class="gi-chips' + (items.length > 10 ? ' many' : '') + '">' + items.map(function (k) { return '<button type="button" class="gi-chip" data-k="' + k + '">' + chip(k) + '</button>'; }).join('') + '</div>' : '') +
+      (items.length ? '<div class="gi-chips' + (items.length > 10 ? ' many' : '') + '">' + items.map(function (k) { return '<button type="button" class="gi-chip" data-k="' + k + '" aria-label="' + (K.pic[k] ? spoken(k) : k) + '">' + chip(k) + '</button>'; }).join('') + '</div>' : '') +
       stars4(0) + '<div class="gi-go">' + lailaBtn('talking') + '<span class="gi-hand">👉🏾</span></div>' +
       (sim ? '<div class="gi-sim"><small>Simulate: tap pictures to mark them failed</small><button type="button" class="gi-skip">Skip to results ›</button></div>' : '') + '</div>');
     run.scr.appendChild(o);
@@ -589,7 +589,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           run.item(q[c]); say(K.en[q[c]], run);
         }
         function lay() {
-          mat.innerHTML = goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + bowl2(K.pic[k]) + '</button>'; }).join('');
+          mat.innerHTML = goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '" aria-label="' + spoken(k) + '">' + bowl2(K.pic[k]) + '</button>'; }).join('');
           [].forEach.call(mat.children, wire);
         }
         function wire(b) {
@@ -661,7 +661,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         function round() {
           busy = false; var item = R[r]; run.item(item[0]); bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var L = LANES[k], c = h('<button type="button" class="canoe2 lane' + (w.length > 6 ? ' long' : '') + '" style="top:' + L[0] + 'cqw;--k:' + L[5] + ';--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
+            var L = LANES[k], c = h('<button type="button" aria-label="' + spoken(w) + '" class="canoe2 lane' + (w.length > 6 ? ' long' : '') + '" style="top:' + L[0] + 'cqw;--k:' + L[5] + ';--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
               if (run.dead || busy) return; busy = true;
               if (w === item[1][0]) {
@@ -703,7 +703,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           var gp = gaps(top.querySelector('.spslots'), W[wi]); top.classList.toggle('long', w.length + gp > 6);
           pad.innerHTML = ''; pad.classList.toggle('two', pool.length > 9); pad.style.setProperty('--n', String(pool.length)); top.style.setProperty('--n', String(w.length + gp * .5));   // sizes for a long word (sc-tukwane.css)
           pool.forEach(function (L) {
-            var b = h('<button type="button" class="pot2">' + tukPot(L) + '</button>');
+            var b = h('<button type="button" class="pot2" aria-label="' + L + '">' + tukPot(L) + '</button>');
             b.onclick = function () {
               if (b.disabled || run.dead || busy) return;
               if (L === w[li]) {

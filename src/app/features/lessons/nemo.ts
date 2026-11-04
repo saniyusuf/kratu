@@ -24,7 +24,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
 <div class="qlesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!resultsOn()" [hidden]="!resultsOn()"><span class="kimg objpic"></span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
   <div [class]="'qgrid n' + n()">
-    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><img alt="" [src]="c.w.img" (error)="retryPic($event)">@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m">{{ m === 'good' ? '✓' : '✗' }}</div>}</button>}
+    @for (c of choices(); track c.k) {<button type="button" [attr.data-k]="c.k" (click)="tap(c.k)"><img alt="" [src]="c.w.img" (error)="retryPic($event)">@if (masks()[c.k]; as m) {<div [class]="'qmask ' + m"></div>}</button>}
     @for (p of placeholders(); track $index) {<div class="qph"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="8" width="36" height="32" rx="6"/><circle cx="17" cy="18" r="3.5"/><path d="M8 36l11-11 7 7 6-6 8 8"/></svg></div>}
   </div>
   <div class="objrow" [class.many]="dots().length > 5">@for (d of dots(); track $index) {<span class="oslot active" [class.on]="dotOn() === $index" [class.done]="d === 'done'" [class.miss]="d === 'miss'"></span>}</div>
@@ -79,9 +79,9 @@ export class NemoScreen extends TopicLessonBase {
       this.check(); const tapP = new Promise<string>((res) => { this.tapRes = res; });   // live before Laila speaks: a tap cuts her off and counts
       this.seq(ask).then((ok) => { if (ok) this.fb('wait', this.qdef.set ? 'Danna alamar lambar da aka faɗa.' : 'Danna hoton abin da aka faɗa.'); }).catch(() => undefined);
       const k = await tapP; this.bus.stopAll(); this.check();
-      if (k === it.k) { this.masks.update((m) => ({ ...m, [k]: 'good' })); this.dotOn.set(-1); this.dots.update((d) => d.map((x, i) => i === idx ? 'done' : x)); this.right.push(it); this.fb('good', 'Madalla! ✓'); await this.play('app_kudos'); await wait(400); return; }
+      if (k === it.k) { this.masks.update((m) => ({ ...m, [k]: 'good' })); this.dotOn.set(-1); this.dots.update((d) => d.map((x, i) => i === idx ? 'done' : x)); this.right.push(it); this.fb('good', 'Madalla!'); await this.play('app_kudos'); await wait(400); return; }
       tries++; this.masks.update((m) => ({ ...m, [k]: 'bad' }));
-      if (tries < 2) { this.fb('bad', '✗'); ask = ['app_quiz_wrong', this.en(it), this.tapKey()]; continue; }   // "A'a, ba wannan ba…" then the name again; the grid stays live
+      if (tries < 2) { this.fb('bad', ''); ask = ['app_quiz_wrong', this.en(it), this.tapKey()]; continue; }   // "A'a, ba wannan ba…" then the name again; the grid stays live
       this.wrongs.push(it); this.dotOn.set(-1); this.dots.update((d) => d.map((x, i) => i === idx ? 'miss' : x)); this.masks.update((m) => ({ ...m, [it.k]: 'good' })); this.fb('wait', it.en);
       await this.seq([this.bus.gk('s_o_miss'), 's_o_inen', this.en(it), 's_o_next']); await wait(400); return;
     }

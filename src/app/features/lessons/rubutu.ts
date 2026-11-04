@@ -146,7 +146,7 @@ export class RubutuScreen extends TopicLessonBase {
     await this.spellOut(word); await this.ways(word);
     let pre: Clip[] | null = null;
     for (let i = 0; i < word.length;) { const r = await this.askLetter(word, i, pre); if (!r.ok) misses++; i += r.n; pre = r.ok && r.n >= 2 ? null : ['app_kudos']; }
-    this.curLetter = null; this.fb('good', word + ' ✓'); if (pre) await this.seq(pre); return misses === 0;
+    this.curLetter = null; this.fb('good', word); if (pre) await this.seq(pre); return misses === 0;
   }
   // ---- the test: the whole word freely; checked only when complete; two tries (three for words longer than four letters) ----
   private async examWord(it: Item, maxTries: number, pre: Clip[] | null): Promise<boolean> {
@@ -159,7 +159,7 @@ export class RubutuScreen extends TopicLessonBase {
       if (e.kind === 'tap') { if (!typed.length) render(); put(e.L); } else if (e.kind === 'heard') { if (!typed.length) render(); (e.letters || []).forEach((L) => put(String(L).toUpperCase())); }
       if (typed.length < word.length) continue;
       await wait(250);
-      if (typed.join('') === word) { this.slots.update((a) => a.map((x) => ({ ...x, st: 'done' }))); this.fb('good', word + ' ✓'); return true; }
+      if (typed.join('') === word) { this.slots.update((a) => a.map((x) => ({ ...x, st: 'done' }))); this.fb('good', word); return true; }
       tries++; this.slots.update((a) => a.map((x) => ({ ...x, st: 'bad' }))); this.fb('bad', typed.join(''));
       if (tries >= maxTries) { await wait(700); return false; }
       typed = []; this.speak.set(true); await this.play('app_retry'); this.speak.set(false); render();

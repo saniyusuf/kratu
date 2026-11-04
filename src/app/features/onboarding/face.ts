@@ -72,7 +72,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
     <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? 'Ki ce' : 'Ka ce' }}: “Sunana…” · say your name</div>
     <div class="heard" [hidden]="!heardText()" [class.interim]="interim()">{{ heardText() }}</div>
     <div class="camnote" [hidden]="!note()">{{ note() }}</div>
-    <div class="capdone" [hidden]="!doneText()"><span class="bigcheck">✓</span> <span class="donetext">{{ doneText() }}</span></div>
+    <div class="capdone" [hidden]="!doneText()"><span class="donetext">{{ doneText() }}</span></div>
     <div class="capmiss" [hidden]="!missText()">{{ missText() }}</div>
     <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ Sake gwada · try again</button>
   </div>

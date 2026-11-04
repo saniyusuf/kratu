@@ -82,7 +82,7 @@ export class KaratuScreen extends TopicLessonBase {
       this.check();
       if (r.got) {
         await flyText(this.zoom, this.s, this.lb().head(), this.showRef().nativeElement, word); this.setAll('done'); this.picSrc.set(it.w.img || null); await afterPaint(); this.reveal();
-        this.fb('good', '✓ ' + word); this.speak.set(true); await this.play(this.bus.gk('app_read_good')); this.speak.set(false); return true;   // "Madalla! Ka iya karatu!" (no extra kudos: never two Madalla)
+        this.fb('good', word); this.speak.set(true); await this.play(this.bus.gk('app_read_good')); this.speak.set(false); return true;   // "Madalla! Ka iya karatu!" (no extra kudos: never two Madalla)
       }
       tries++; this.fb('bad', r.raw && r.raw !== '?' ? '“' + r.raw + '”' : 'Sake gwadawa'); this.speak.set(true);
       if (tries >= 3) { if (!testMode) await this.seq([this.bus.gk('app_remind'), this.en(it)]); this.speak.set(false); return false; }

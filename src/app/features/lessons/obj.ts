@@ -126,7 +126,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     }
   }
   private async settlePractice(it: Item, r: { kind: 'say'; ok: boolean; heard: string | null } | { kind: 'dk' } | { kind: 'skip' }, miss: () => number): Promise<boolean> {
-    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); this.fb('good', 'Madalla! ✓'); await joy(this.bus, this.yay); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
+    if (r.kind === 'say' && r.ok) { this.mark(it, 'done'); this.fb('good', 'Madalla!'); await joy(this.bus, this.yay); await this.play('app_kudos'); return true; }   // no written word here: naming the picture is the whole answer (Sani 2026-09-20)
     if (r.kind === 'dk') { this.fb('wait', 'Ba komai — ' + this.KA() + ' saurara.'); await this.remind(it); return false; }
     if (r.kind === 'say') { const m = miss(); shakeNo(this.nope); this.fb('bad', r.heard ? ('“' + r.heard + '” — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); await this.play('app_retry'); if (m % 3 === 0) await this.remind(it); }
     return false;
@@ -199,7 +199,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
       this.speak.set(true); await this.seq(['app_wannan', this.ha(it)]); this.speak.set(false);
       const armP = this.arm(it); this.play(this.bus.gk('s_o_say')).catch(() => undefined); let r = await armP; let ok = false, why: 'three' | 'dk' = 'three';
       for (;;) { if (r.kind === 'say' && r.ok) { ok = true; break; } if (r.kind === 'dk') { why = 'dk'; break; } tries++; shakeNo(this.nope); this.fb('bad', r.kind === 'say' && r.heard ? ('“' + r.heard + '”') : 'Ban ji ba'); if (tries >= 3) break; await this.play('app_retry'); r = await this.arm(it); }
-      if (ok) { this.mark(dot, 'done'); this.right.push(it); this.fb('good', 'Madalla! ✓'); await joy(this.bus, this.yay); await this.play('app_kudos'); await wait(300); }
+      if (ok) { this.mark(dot, 'done'); this.right.push(it); this.fb('good', 'Madalla!'); await joy(this.bus, this.yay); await this.play('app_kudos'); await wait(300); }
       else { this.mark(dot, 'miss'); this.wrongs.push(it); this.fb('wait', why === 'dk' ? 'Ban sani ba' : 'Sau uku'); this.speak.set(true); await this.seq([this.bus.gk(why === 'three' ? 's_o_three' : 's_o_miss'), 's_o_inen', this.en(it), 's_o_next']); this.speak.set(false); await wait(300); }
       this.onItem.set('');
     }

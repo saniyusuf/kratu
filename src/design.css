@@ -325,7 +325,7 @@ body{margin:0;background:#EFE6D0;color:var(--ink);font-family:var(--body)}
 .facecap .camwrap .rec{background:#555}
 .facecap .camwrap.armed .rec{background:var(--red)}
 .facecap .camwrap.done .rec{background:#555}
-.facecap .camwrap.done .rec::after{content:" · ✓"}
+.facecap .camwrap.done .rec::after{content:""}
 .capmodal{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;background:rgba(22,16,9,.84);padding:18px}
 .capmodal[hidden]{display:none}
 .capmodal-inner{background:var(--paper);border-radius:30px;padding:22px 28px 22px;width:min(800px,96cqw);max-height:96cqh;overflow:auto;display:flex;flex-direction:column;align-items:center;gap:6px;
@@ -452,13 +452,13 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson .legend{display:flex;gap:18px;font-family:var(--body);font-weight:700;font-size:13px;color:var(--muted)}.s.lesson .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:middle}.s.lesson .legend i.lk{background:#fff;border:2px solid #E3D6B5}
 .s.lesson .al.done{background:var(--yellow);color:var(--ink)}
 .s.lesson .catmenu{display:grid;grid-template-columns:repeat(5,1fr);gap:30px 16px;width:min(660px,96%);padding-top:14px}
-/* category cards = the dashboard tiles: solid colour, white label, living picture on a white plate; selection = white + yellow ring and the big yellow ✓ (same as Screen 4) */
+/* category cards = the dashboard tiles: solid colour, white label, living picture on a white plate; selection = white + yellow ring (the yellow ✓ badge is gone: no tick or X marks, Sani 2026-11-04) */
 .s.lesson .catcard{border:none;border-radius:22px;background:var(--c);color:#fff;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;position:relative;transition:transform .2s,box-shadow .2s}
 .s.lesson .catcard:hover{transform:translateY(-3px)}
 .s.lesson .catcard .em{font-size:36px;line-height:1}.s.lesson .catcard .nm{font-family:var(--disp);font-weight:800;font-size:14px;color:#fff}.s.lesson .catcard .ct{font-family:var(--body);font-weight:700;font-size:12px;color:rgba(255,255,255,.85)}
 .s.lesson .catcard .em.kico{width:70px;height:70px;filter:drop-shadow(0 3px 0 rgba(0,0,0,.2))}   /* pictures blend straight onto the tile, like the dashboard */
 .s.lesson .catcard.picked{box-shadow:0 0 0 6px #fff,0 0 0 12px var(--yellow);transform:translateY(-4px)}
-.s.lesson .catcard.picked::after{content:"✓";position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;background:var(--yellow);color:var(--ink);font-family:var(--disp);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;border:4px solid #fff;z-index:2}
+.s.lesson .catcard.picked::after{content:"";display:none!important;position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;background:var(--yellow);color:var(--ink);font-family:var(--disp);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;border:4px solid #fff;z-index:2}
 .s.lesson .cats.haspick .catcard{transform:none}.s.lesson .cats.haspick .catcard.picked{transform:translateY(-4px)}
 .s.lesson .catpick{justify-content:center;gap:40px;margin-top:6px;animation:pop .35s ease-out}
 .s.lesson .catpick[hidden]{display:none}
@@ -499,16 +499,16 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson .oslot.active{opacity:1;border-color:var(--purple);border-style:solid;background:#F3ECFF}
 .s.lesson .oslot.on{border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,201,60,.55);animation:growshrink 1.4s ease-in-out infinite}
 .s.lesson .oslot.done{opacity:1;border-color:var(--green);border-style:solid;background:#E8F5E9}
-.s.lesson .oslot.done::after{content:"✓";position:absolute;top:-9px;right:-9px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.s.lesson .oslot.done::after{content:"";position:absolute;top:-9px;right:-9px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 .s.lesson .oslot.miss{opacity:1;border-color:var(--red);border-style:solid;background:#FDECEC}
-.s.lesson .oslot.miss::after{content:"✗";position:absolute;top:-9px;right:-9px;width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.s.lesson .oslot.miss::after{content:"";position:absolute;top:-9px;right:-9px;width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 .s.lesson .objq.nohand .yes .lhand{visibility:hidden}
 .s.lesson .objq .no{transition:opacity .3s}.s.lesson .objq.noallo .no{opacity:.25;pointer-events:none}
 .s.lesson .objresults{width:100%}.s.lesson .ogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(420px,92%);margin:0 auto}
 .s.lesson .ogrid .oc{background:#fff;border-radius:18px;padding:8px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 0 4px var(--green)}
 .s.lesson .ogrid .oc.miss{box-shadow:0 0 0 4px var(--red)}
-.s.lesson .ogrid .oc::after{content:"✓";position:absolute;top:-12px;right:-12px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;border:3px solid #fff}
-.s.lesson .ogrid .oc.miss::after{content:"✗";background:var(--red)}
+.s.lesson .ogrid .oc::after{content:"";position:absolute;top:-12px;right:-12px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;border:3px solid #fff}
+.s.lesson .ogrid .oc.miss::after{content:"";background:var(--red)}
 .s.lesson .objresults[hidden]{display:none}
 .s.lesson .spmenu{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
 .s.lesson .spmenu[hidden],.s.lesson .splesson[hidden],.s.lesson .splanding[hidden]{display:none}
@@ -573,7 +573,7 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson .homegrid{transition:none}
 .s.lesson .htile{transition:transform .2s,box-shadow .2s;position:relative}
 .s.lesson .htile.hot{box-shadow:0 0 0 6px #fff,0 0 0 12px var(--yellow);transform:translateY(-4px)}
-.s.lesson .htile.hot::after{content:"✓";position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;background:var(--yellow);color:var(--ink);font-family:var(--disp);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;border:4px solid #fff}
+.s.lesson .htile.hot::after{content:"";display:none!important;position:absolute;top:-14px;right:-14px;width:40px;height:40px;border-radius:50%;background:var(--yellow);color:var(--ink);font-family:var(--disp);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;border:4px solid #fff}
 .s.lesson .homegrid.has-sel .htile{transform:none}
 .s.lesson .homegrid.has-sel .htile.hot{transform:translateY(-4px)}
 .s.lesson .chosen{display:flex;align-items:center;gap:22px;background:#fff;border:4px solid var(--yellow);border-radius:24px;padding:12px 30px 12px 22px;box-shadow:0 0 0 6px rgba(255,201,60,.35);animation:pop .35s ease-out}
@@ -590,7 +590,7 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson .aslot.on{border-color:var(--yellow);border-style:solid;box-shadow:0 0 0 4px rgba(255,201,60,.55);animation:growshrink 1.4s ease-in-out infinite}
 .s.lesson .aslot{position:relative}
 .s.lesson .aslot.done{background:var(--green);border-color:var(--green);border-style:solid;animation:pop .35s ease-out}
-.s.lesson .aslot.done::after{content:"✓";position:absolute;top:-8px;right:-8px;width:17px;height:17px;border-radius:50%;background:#fff;color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.s.lesson .aslot.done::after{content:"";position:absolute;top:-8px;right:-8px;width:17px;height:17px;border-radius:50%;background:#fff;color:var(--green);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 .s.lesson .aslot.bad{border-color:var(--red);background:rgba(230,57,70,.18);animation:shake .4s ease-in-out}
 .s.lesson .aslot.miss{border-color:var(--red);border-style:solid}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.08)}100%{transform:scale(1)}}

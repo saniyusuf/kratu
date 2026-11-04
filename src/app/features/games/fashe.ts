@@ -373,7 +373,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     const el = this.el(b.id), res = this.answer; this.answer = null;
     this.freeze(el);
     this.bubs.update((a) => a.map((x) => x.id === b.id ? { ...x, state: 'pop' } : x));
-    joy(this.bus, this.yay); this.bad.set(false); this.fb('good', 'Madalla! ✓'); this.adjust(GAIN);
+    joy(this.bus, this.yay); this.bad.set(false); this.fb('good', 'Madalla!'); this.adjust(GAIN);
     if (el) await flyLetter(this.zoom, this.host.nativeElement, el, this.slot(b.L), b.L, 'var(--green)');
     this.done.update((a) => a.map((v, i) => i === ALL.indexOf(b.L) ? true : v));
     this.later(60, () => { this.recycle(b.id); this.sweep(); });
