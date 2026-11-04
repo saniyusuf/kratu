@@ -523,18 +523,21 @@ html:not([data-debug]) .facecap:not(.lab) .heard,html:not([data-debug]) .facecap
 .s.lesson.spell .wslot.done{background:var(--green);border-color:var(--green);border-style:solid;color:#fff;animation:floaty 3.4s ease-in-out infinite}
 .s.lesson.spell .wslot.done:nth-child(2n){animation-delay:.6s}.s.lesson.spell .wslot.done:nth-child(3n){animation-delay:1.1s}
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
-.s.lesson.spell .abcgrid{grid-template-columns:repeat(13,1fr);gap:5px;width:min(600px,98%)}
+/* Rubutu's keys for small fingers (Sani 2026-11-04): about 50 px on a 7-inch tablet, where they were 34 */
+.s.lesson.spell .abcgrid{grid-template-columns:repeat(13,1fr);gap:7px;width:min(900px,98%);--abk-h:66px;--abk-f:30px;--abk-r:12px}
 .s.lesson.spell .abckey,.glab .scr .abcgrid .abckey{--c:var(--ink);height:var(--abk-h,40px);font-size:var(--abk-f,18px);color:var(--ink);border:var(--abk-b,3px) solid #C9B98F;background:#fff;border-radius:var(--abk-r,10px);cursor:pointer;font-family:var(--disp);font-weight:800;transition:transform .1s}
 .s.lesson.spell .abckey:active,.glab .scr .abcgrid .abckey:active{transform:scale(.92)}
 .s.lesson.spell .abckey.good,.glab .scr .abcgrid .abckey.good{background:var(--green);border-color:var(--green);color:#fff}
 .s.lesson.spell .abckey.bad,.glab .scr .abcgrid .abckey.bad{background:#FDECEC;border-color:var(--red);color:var(--red);animation:shakex .3s}
 /* the games' A–Z keys are these same keys (Sani 2026-10-27: "use the same keyboard across all apps"): the lessons' sizes
    at 1280x800 (key 40px × 1.1 fit) in the game frame's cqw, two paper trays, A–M left and N–Z right of Laila */
-.glab .scr>.mkb.abcgrid{width:auto;gap:0;--abk-h:3.44cqw;--abk-f:1.55cqw;--abk-b:.26cqw;--abk-r:.86cqw;--abk-hot:.34cqw}
+/* the games' keys, made for small fingers (Sani 2026-11-04): about 53×48 px on a 7-inch tablet, three rows of five a
+   side (A–M left of Laila, N–Z right), where two rows of seven at 34 px were too small to hit */
+.glab .scr>.mkb.abcgrid{width:auto;gap:0;--abk-h:4.7cqw;--abk-f:2.4cqw;--abk-b:.3cqw;--abk-r:1cqw;--abk-hot:.4cqw}
 .glab .scr .abcgrid .abckey{display:flex;align-items:center;justify-content:center;padding:0;line-height:1;box-sizing:border-box}
 .glab .scr .abcgrid .abckey.hot{background:var(--c);color:#fff;box-shadow:0 0 0 var(--abk-hot) rgba(255,201,60,1)}
 .glab .scr .abcgrid.locked .abckey{opacity:.45;pointer-events:none}
-.glab .scr>.mkb.abcgrid>.mkh{display:grid;grid-template-columns:repeat(7,3.57cqw);gap:.43cqw;padding:.9cqw;border-radius:1.2cqw;background:#F4E7C9;box-shadow:inset 0 0 0 .16cqw #E6D6AE,0 .5cqw 1cqw rgba(30,18,6,.3)}
+.glab .scr>.mkb.abcgrid>.mkh{display:grid;grid-template-columns:repeat(5,5.2cqw);align-content:start;gap:.5cqw;padding:.8cqw;border-radius:1.2cqw;background:#F4E7C9;box-shadow:inset 0 0 0 .16cqw #E6D6AE,0 .5cqw 1cqw rgba(30,18,6,.3)}
 @keyframes shakex{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .s.lesson.spell .abcgrid.spot2{border-radius:14px;box-shadow:0 0 0 6px rgba(255,201,60,.95),0 0 34px 12px rgba(255,201,60,.6)}
 .s.lesson.spell .abcgrid.locked .abckey{opacity:.45;pointer-events:none}
