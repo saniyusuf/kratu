@@ -40,8 +40,7 @@ export class CourseGate {
 
   /** Where the course goes after step n is done: its next step, or home when the simulator has moved elsewhere. */
   nextUrl(n: number): string {
-    this.course.done(n); const nx = this.course.step();
-    if (!nx || this.course.at() !== n + 1) return '/home';
+    const nx = this.course.finish(n); if (!nx) return '/home';
     const rt = this.course.route(nx); return this.router.serializeUrl(this.router.createUrlTree(['/' + rt.path], { queryParams: rt.query }));
   }
   /** Open a url as a fresh screen, even when it is the screen already showing (a retry). */

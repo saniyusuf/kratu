@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
+import { CourseService } from '../../core/state/course.service';
+import { PlanService } from '../../core/state/plan.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { LailaButton } from '../../shared/laila/laila-button';
@@ -99,6 +101,8 @@ export class GateScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly router = inject(Router);
   private readonly session = inject(SessionService);
+  private readonly course = inject(CourseService);
+  private readonly plan = inject(PlanService);
   readonly shown = SHOWN;
   readonly all = ALL;
   /** The letters drifting up behind the board: a hint of the balloon game that comes next. */
@@ -189,8 +193,11 @@ export class GateScreen implements OnInit, OnDestroy {
     const g = this.bus.gk('s_gate_calm');
     if (this.bus.has(g)) await this.bus.play(g); else await wait(500);
     this.speak.set(false);
-    this.session.owedGame.set(true);                 // the lesson hands them to the game when it is done
-    if (!this.stopped) this.router.navigate(['/haruffa/koyo']);
+    if (this.stopped) return;
+    // the course from its first letters, A B C D (Sani 2026-11-04): the course's own Durbar and balloons come after
+    this.plan.save({ hits: 0, wrong: 0, asked: 0, start: 'haruffa_ah', at: Date.now() });
+    const st = this.course.placed([]); if (!st) { this.router.navigate(['/haruffa/koyo']); return; }
+    const rt = this.course.route(st); this.router.navigate(['/' + rt.path], { queryParams: rt.query });
   }
 
   leave(): void { this.seq++; this.stopped = true; this.spotter.unspot(); this.bus.stopAll(); this.router.navigate(['/home']); }

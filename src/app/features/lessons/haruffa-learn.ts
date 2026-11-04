@@ -225,8 +225,8 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     }
     if (this.stopped) return; await this.play(this.bus.gk('app_stage_done')); this.running = false; if (this.stopped) return; this.stopped = true; this.bus.stopAll();
     if (done) {
-      this.course.done(+done); const nx = this.course.step();
-      if (nx && this.course.at() === +done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+      const nx = this.course.finish(+done);
+      if (nx) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
     }
     this.router.navigateByUrl(back && back.startsWith('/') ? back : '/home');
   }

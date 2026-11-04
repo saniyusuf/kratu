@@ -152,7 +152,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
     const reopen = (url: string) => this.router.navigateByUrl('/blank', { skipLocationChange: true }).then(() => this.router.navigateByUrl(url));
     if (r.pass) {
       // straight on to the next step of the course, never back to the menu (Sani 2026-11-03)
-      if (step) { this.course.done(+step); const nx = this.course.step(); if (nx && this.course.at() === +step + 1) { const rt = this.course.route(nx); reopen(this.router.serializeUrl(this.router.createUrlTree(['/' + rt.path], { queryParams: rt.query }))); return; } }
+      if (step) { const nx = this.course.finish(+step); if (nx) { const rt = this.course.route(nx); reopen(this.router.serializeUrl(this.router.createUrlTree(['/' + rt.path], { queryParams: rt.query }))); return; } }
       const n = q.get('next'); this.router.navigateByUrl(n && n.startsWith('/') ? n : '/home'); return;
     }
     if (r.tries < 2) { reopen(here(2)); return; }

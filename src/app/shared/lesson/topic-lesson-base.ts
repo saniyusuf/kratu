@@ -54,8 +54,8 @@ export abstract class TopicLessonBase extends LessonBase implements OnInit {
   /** A course step played out: the course moves on and its next step opens, never the tiles (as Abubuwa does). */
   private toCourse(): boolean {
     const done = this.route.snapshot.queryParamMap.get('done'); if (!done || !this.inCourse()) return false;
-    this.course.done(+done); const nx = this.course.step();
-    if (nx && this.course.at() === +done + 1) { const rt = this.course.route(nx); this.router.navigateByUrl('/blank', { skipLocationChange: true }).then(() => this.router.navigate(['/' + rt.path], { queryParams: rt.query })); }
+    const nx = this.course.finish(+done);
+    if (nx) { const rt = this.course.route(nx); this.router.navigateByUrl('/blank', { skipLocationChange: true }).then(() => this.router.navigate(['/' + rt.path], { queryParams: rt.query })); }
     else this.router.navigate(['/home']);
     return true;
   }

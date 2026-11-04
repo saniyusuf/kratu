@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { FasheScreen } from './features/games/fashe';
 import { GateScreen } from './features/games/gate';
-import { GameLabScreen } from './features/games/lab/gamelab';
 import { PermScreen } from './features/onboarding/perm';
 import { GenderScreen } from './features/onboarding/gender';
 import { MeetLailaScreen } from './features/onboarding/meet-laila';
@@ -35,7 +34,8 @@ export const routes: Routes = [
   { path: 'karatu', component: KaratuScreen },
   { path: 'haruffa/gwada', component: GateScreen },   // the gate: do you know them all?
   { path: 'fashe', component: FasheScreen },
-  { path: 'wasanni/:id', component: GameLabScreen },   // the judging games, reached from the settings for now
+  // the games load only when one opens: their scenes are most of the app's script (Sani 2026-11-04, cheap tablets)
+  { path: 'wasanni/:id', loadComponent: () => import('./features/games/lab/gamelab').then((m) => m.GameLabScreen) },   // the judging games, reached from the settings for now
   { path: 'blank', component: BlankScreen },
   { path: '**', redirectTo: 'gender' },
 ];

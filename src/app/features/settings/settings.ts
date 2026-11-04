@@ -5,7 +5,7 @@ import { IdentityService, Person } from '../../core/identity/identity.service';
 import { LoaderService } from '../../core/loader/loader.service';
 import { SessionService } from '../../core/state/session.service';
 import { SpeechService } from '../../core/speech/speech.service';
-import { GAME_LIST } from '../games/lab/engine';
+import { GAME_LIST } from '../games/lab/game-list';
 import { CourseService } from '../../core/state/course.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { LEVEL_AT, TITLES, levelOf } from '../../core/state/zinari';
@@ -75,7 +75,7 @@ const ICO = {
     </div><button class="close cback" (click)="stage.set('who')"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Koma · back</button></div>
   <div class="stage course-stage" [hidden]="stage() !== 'course'"><h4 class="stitle">Kos · course simulator</h4>
     <div class="sub">Pick any of the {{ course.steps.length }} steps, then press the book on the home screen: it opens that step. A lesson played out or a game passed moves the book on. Before a game you can tap pictures to count them as failed, then press Laila to play, or skip straight to the results.</div>
-    <div class="cnow">@if (course.step(); as st) {<b>Now: step {{ st.n }} · {{ st.title }}</b><small>{{ st.t }} · {{ st.kind }}{{ st.items.length ? ' · ' + st.items.join(', ') : '' }}</small>} @else {<b>Off: the book follows the child's real plan</b>}</div>
+    <div class="cnow">@if (course.step(course.at()); as st) {<b>Now: step {{ st.n }} · {{ st.title }}</b><small>{{ st.t }} · {{ st.kind }}{{ st.items.length ? ' · ' + st.items.join(', ') : '' }}</small>} @else {<b>Off: the book follows the child's real plan</b>}</div>
     <div class="row3"><button (click)="stepBy(-1)">‹ Back a step</button><button (click)="stepBy(1)">Forward a step ›</button><button class="cgo" [disabled]="!course.on()" (click)="openBook()">Go to the book</button><button [disabled]="!course.on()" (click)="course.go(null)">Turn off</button></div>
     <div class="zset"><b>Zinari: {{ zin() }}{{ zinLevel() }}</b><small>Set the gold just under a bag (50 short): the next game passed fills it and unlocks its title.</small>
       <div class="row3">@for (t of titles; track t.key; let i = $index) {<button (click)="setZin(t.at - 50)">{{ t.m }} · {{ t.at - 50 }}</button>}<button (click)="setZin(0)">0</button></div></div>

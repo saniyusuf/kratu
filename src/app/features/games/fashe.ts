@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, computed, inject, signal, vie
 import { ActivatedRoute, Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
-import { PlanService } from '../../core/state/plan.service';
+import { Placement, PlanService } from '../../core/state/plan.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
@@ -513,7 +513,8 @@ export class FasheScreen implements OnInit, OnDestroy {
     const step = q.get('step'); if (step) { await this.courseEnd(step, at, second); return; }
     const startL = won ? '' : ALL[Math.min(at, ALL.length - 1)];
     const start = won ? 'dabbobi' : PlanService.decide(Math.max(0, at - 1), this.wrong);
-    this.plan.save({ hits: Math.max(0, at - 1), wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now(), startL });
+    const placement = { hits: Math.max(0, at - 1), wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now(), startL };
+    this.plan.save(placement);
     // a child who has already finished Haruffa in the lessons is never sent back to A, whatever the balloons show
     const learned = this.progress.has('haruffa', 'final');
     if (won) {
@@ -527,8 +528,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       this.progress.unlockGame('fashe');                    // remembered as met (no home-page shelf: Sani 2026-10-23)
       if (this.stopped) return;
       this.progress.passLetters(ALL.length);                // the whole alphabet: Haruffa is done
-      this.session.category.set('animals'); this.router.navigate(['/abubuwa/koyo']);   // straight on to Abubuwa
-      return;
+      this.toCourse(placement); return;   // the course from the first step they do not know yet (Sani 2026-11-04)
     }
     this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
     if (!second && !learned) {
@@ -544,10 +544,13 @@ export class FasheScreen implements OnInit, OnDestroy {
     await wait(400);
     if (this.stopped) return;
     this.progress.unlockGame('fashe');
-    if (learned) { this.router.navigate(['/home']); return; }
-    this.session.owedGame.set(true);
-    this.progress.passLetters(ALL.indexOf(startL));         // the letters before it are known: never taught again
-    this.router.navigate(['/haruffa/koyo'], { queryParams: { fromL: startL } });
+    if (!learned) this.progress.passLetters(ALL.indexOf(startL));   // the letters before it are known: never taught again
+    this.toCourse(placement);
+  }
+  /** After the placement, the book's course: its first step this child does not know yet, opened at once. */
+  private toCourse(p: Placement): void {
+    const st = this.course.placed(this.plan.known(p)); if (!st) { this.router.navigate(['/home']); return; }
+    const rt = this.course.route(st); this.router.navigate(['/' + rt.path], { queryParams: rt.query });
   }
   /**
    * The balloons as a course game (?step=n, Sani 2026-11-04): the game gate's rule, not the placement. 75% of A–Z

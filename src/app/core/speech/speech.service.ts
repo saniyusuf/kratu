@@ -90,6 +90,17 @@ export class SpeechService {
   error(): string { return this.lastErr; }
   feedErrors(): number { return this.feedErr; }
   present(): boolean { return typeof Vosk !== 'undefined'; }
+  /** The recogniser's script (5.8 MB), loaded here rather than in the page head, so the first screen is not held up
+   *  while a cheap tablet reads it (Sani 2026-11-04). The service worker keeps it offline like the rest. */
+  private scriptP: Promise<boolean> | null = null;
+  script(): Promise<boolean> {
+    if (this.present()) return Promise.resolve(true);
+    return this.scriptP ??= new Promise<boolean>((res) => {
+      const el = document.createElement('script'); el.src = 'vosk.js'; el.async = true;
+      el.onload = () => res(this.present()); el.onerror = () => { this.scriptP = null; res(false); };
+      document.head.appendChild(el);
+    });
+  }
 
   loadModel(files?: Record<string, ArrayBuffer> | null): void {
     if (this.model || this.loading || this.failed || typeof Vosk === 'undefined') return;

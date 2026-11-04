@@ -1,6 +1,9 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { SessionService } from './session.service';
 import { CourseService } from './course.service';
+import { CourseStep } from './course.data';
+import { ProgressService } from './progress.service';
+import { ALL } from '../../shared/lesson/letters';
 
 /** What the chooser puts on its card: one step, already chosen, with the route that opens it. */
 export interface PlanCard {
@@ -32,6 +35,7 @@ const CARDS: Record<string, PlanCard> = {
 export class PlanService {
   private readonly session = inject(SessionService);
   private readonly course = inject(CourseService);
+  private readonly progress = inject(ProgressService);
   /** Bumped whenever the stored placement changes, so the chooser's card is recomputed. */
   private readonly rev = signal(0);
 
@@ -62,13 +66,37 @@ export class PlanService {
   }
   clear(): void { try { localStorage.removeItem(this.key()); } catch { /* ignore */ } this.rev.update((n) => n + 1); }
 
+  /**
+   * The letters a placement showed the child knows: everything before the letter where the balloons stopped (all of
+   * them after a clean A–Z), plus whatever Haruffa has already marked done.
+   */
+  known(p: Placement | null = this.placement()): string[] {
+    const k = new Set<string>();
+    if (p) {
+      const upto = p.start === 'dabbobi' ? 26 : p.startL ? ALL.indexOf(p.startL) : p.start === 'haruffa_qz' ? 16 : p.start === 'haruffa_ip' ? 8 : 0;
+      ALL.slice(0, Math.max(0, upto)).forEach((L) => k.add(L));
+    }
+    if (this.progress.has('haruffa', 'final')) ALL.forEach((L) => k.add(L));
+    for (let g = 0; g < 7; g++) if (this.progress.has('haruffa', 'g' + g)) ALL.slice(g * 4, g * 4 + 4).forEach((L) => k.add(L));
+    return [...k];
+  }
   /** What the chooser shows, and what Laila opens when nothing else is picked. */
   next(): PlanCard {
     // the course simulator in the settings: the book opens the step picked there (Sani 2026-11-02)
-    const st = this.course.step();
-    if (st) { const r = this.course.route(st); return { key: 'sim' + st.n, eyebrow: 'GWAJI · STEP ' + st.n, title: st.title, sub: st.items.join(', '), ico: '🧪', colour: 'var(--teal)', route: r.path, query: r.query }; }
-    const p = this.placement(), c = CARDS[p?.start || ''] || CARDS[p ? 'haruffa_ah' : 'mugani'];
-    // the balloons found where this child stopped: Haruffa opens at that very letter (Sani 2026-10-22)
-    return p?.startL && c.route === 'haruffa/koyo' ? { ...c, query: { fromL: p.startL } } : c;
+    if (this.course.on()) { const st = this.course.step(this.course.at()); if (st) return { ...this.card(st), key: 'sim' + st.n, eyebrow: 'GWAJI · STEP ' + st.n, ico: '🧪', colour: 'var(--teal)' }; }
+    // never placed: the opening question, the course's step 0 (Sani 2026-10-07)
+    const p = this.placement(); if (!p) return CARDS['mugani'];
+    // the book walks the course (Sani 2026-11-04); a child placed before the course existed starts where the placement put them
+    if (!this.course.hasPlace()) this.course.placed(this.known(p));
+    const st = this.course.step(); if (st) return this.card(st);
+    const c = CARDS[p.start || ''] || CARDS['haruffa_ah'];
+    return p.startL && c.route === 'haruffa/koyo' ? { ...c, query: { fromL: p.startL } } : c;
+  }
+  /** A course step on the book's card: its title, what it practises, and the screen it opens. */
+  private card(st: CourseStep): PlanCard {
+    const look: Record<string, [string, string]> = { letters: ['🔤', 'var(--red)'], words: ['🐐', 'var(--blue)'], read: ['📖', 'var(--purple)'], spell: ['✏️', 'var(--yellow)'], numbers: ['🔢', 'var(--green)'], find: ['🔍', 'var(--green)'] };
+    const [ico, colour] = st.t === 'game' ? ['🎮', 'var(--orange)'] : look[st.kind] || ['📘', 'var(--teal)'];
+    const r = this.course.route(st), [ha, en] = st.title.split(' · ');
+    return { key: 'step' + st.n, eyebrow: 'NA GABA · NEXT', title: ha, sub: en || '', ico, colour, route: r.path, query: r.query };
   }
 }

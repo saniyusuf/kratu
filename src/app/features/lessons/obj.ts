@@ -236,9 +236,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
         this.hidePic(); await this.play(this.bus.gk('app_stage_done')); this.running = false;
         const back = q.get('back'), done = q.get('done');
         if (done) {
-          this.course.done(+done);
-          const nx = this.course.step();   // in the course, straight on to the next step (Sani 2026-11-03)
-          if (nx && this.course.at() === +done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+          const nx = this.course.finish(+done);   // in the course, straight on to the next step (Sani 2026-11-03)
+          if (nx) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
         }
         this.router.navigateByUrl(back && back.startsWith('/') ? back : '/home'); return;
       }
@@ -263,8 +262,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
         if (one === null || one === STAGES.length - 1) { this.hidePic(); await this.bigTest(); this.progress.mark('lambobi', 'test'); }
         if (one !== null) {
           this.hidePic(); await this.play(this.bus.gk('app_stage_done')); this.running = false;
-          const done = +(q.get('done') || 0); this.course.done(done); const nx = this.course.step();
-          if (nx && this.course.at() === done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+          const nx = this.course.finish(+(q.get('done') || 0));
+          if (nx) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
           this.router.navigate(['/home']); return;
         }
       }

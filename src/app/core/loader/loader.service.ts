@@ -45,7 +45,7 @@ export class LoaderService {
 
   readonly pieces: Piece[] = [
     { id: 'speech', ha: 'Murya', en: 'voice', heavy: true,
-      dl: async () => { if (!this.speech.present()) return 'skip'; this.speechFiles = await this.fetchSpeechFiles(); return undefined; },
+      dl: async () => { if (!(await this.speech.script())) return 'skip'; this.speechFiles = await this.fetchSpeechFiles(); return undefined; },
       prep: () => this.prepSpeech() },
     { id: 'face', ha: 'Fuska', en: 'face', heavy: true,
       dl: async () => { if (!this.identity.present()) return 'skip'; await this.fetchFaceModels(); return undefined; },

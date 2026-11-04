@@ -145,8 +145,13 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
   (Abubuwa, Karatu, Rubutu `?words=`; Haruffa `?letters=`; Lambobi `?stage=`; Nemo lamba `?pick=qnum`), games take
   `?step=n` and go through the gate (75%, retry, review, Zinari; `CourseGate` is shared by the game frame, Nemo hoto and
   the balloons). A title won outside the game frame plays at `/wasanni/unlock?i=…&next=…`. Only the settings simulator
-  walks the course so far: real children still get PlanService's first sitting. No game asks "do you know this game?"
-  any more (Sani 4 Nov); only the course's first step asks it, about the letters.
+  walks a step instead of the child while it is on. Each child's place is `kratu_course_<id>` ({at, known}); the
+  balloons' placement (or "ban sani ba" at the opening question) sets it, and letter steps whose letters are known are
+  skipped. No game asks "do you know this game?" any more (Sani 4 Nov); only the course's first step asks it.
+- Start-up (Sani 4 Nov, cheap tablets): `vosk.js` (5.8 MB) is not in the page head; `SpeechService.script()` loads it
+  for the loader. The games are a lazy route chunk (`loadComponent`); keep anything outside `features/games/lab` from
+  importing the engine (the settings' list lives in `game-list.ts`). The service worker serves the cached app first
+  (`navigationRequestStrategy: performance`), so an offline launch never waits for the network.
 
 ## Open items
 - Review page inside the app (`/review`, debug only), screens index (`/screens`) — see the plan:
