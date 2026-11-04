@@ -5177,7 +5177,11 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Ruwan sama 2 Nov"
+  "review": "unreviewed: Claude draft, Ruwan sama 2 Nov",
+  "recorded": {
+   "m": "3e514817c2",
+   "f": "6c8df9932a"
+  }
  },
  {
   "key": "s_g_rini_how",
@@ -5194,7 +5198,11 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Karofi 2 Nov"
+  "review": "unreviewed: Claude draft, Karofi 2 Nov",
+  "recorded": {
+   "m": "2f3805e277",
+   "f": "f71792c756"
+  }
  },
  {
   "key": "s_l_game",
