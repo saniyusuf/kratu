@@ -7,6 +7,7 @@ import { ProgressService } from '../../core/state/progress.service';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { CourseService } from '../../core/state/course.service';
+import { CourseGate } from '../../core/state/course-gate.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { flyLetter, joy, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
@@ -163,6 +164,7 @@ export class FasheScreen implements OnInit, OnDestroy {
    * With the course simulator on (or ?debug) an adult can tap letters to count them as failed and skip to the ending.
    */
   private readonly course = inject(CourseService);
+  private readonly cgate = inject(CourseGate);
   readonly intro = signal(true); readonly introReady = signal(false); readonly introSpeak = signal(false);
   readonly marked = signal<string[]>([]);
   readonly sim = this.course.on() || this.session.debug;
@@ -508,6 +510,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     // anything less goes to Haruffa, starting at the very letter where they stopped.
     const q = this.route.snapshot.queryParamMap, first = +(q.get('best') || -1), second = q.get('try') === '2';
     const at = Math.max(this.at, first), won = !stopped && this.at >= ALL.length;
+    const step = q.get('step'); if (step) { await this.courseEnd(step, at, second); return; }
     const startL = won ? '' : ALL[Math.min(at, ALL.length - 1)];
     const start = won ? 'dabbobi' : PlanService.decide(Math.max(0, at - 1), this.wrong);
     this.plan.save({ hits: Math.max(0, at - 1), wrong: this.wrong, asked: ALL.length - 1, start, at: Date.now(), startL });
@@ -545,6 +548,22 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.session.owedGame.set(true);
     this.progress.passLetters(ALL.indexOf(startL));         // the letters before it are known: never taught again
     this.router.navigate(['/haruffa/koyo'], { queryParams: { fromL: startL } });
+  }
+  /**
+   * The balloons as a course game (?step=n, Sani 2026-11-04): the game gate's rule, not the placement. 75% of A–Z
+   * passes and pays Zinari; a first miss is one more go; a second miss teaches the letters not reached, then the
+   * balloons again. The placement is left alone.
+   */
+  private async courseEnd(step: string, at: number, second: boolean): Promise<void> {
+    const score = Math.min(1, at / ALL.length), tries = second ? 2 : 1;
+    if (score >= CourseGate.PASS - 1e-9) {
+      this.fb('good', this.reached + ' / 25'); const a = this.cgate.award('fashe', step, CourseGate.stars(score), tries);
+      await this.sayMaybe(a.lines[0]); if (this.stopped) return; this.stopped = true; this.bus.stopAll(); this.progress.unlockGame('fashe'); this.cgate.passed(+step, a); return;
+    }
+    this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
+    if (!second) { await this.sayMaybe('s_pop_again'); await wait(300); if (this.stopped) return; this.cgate.reopen('/fashe?step=' + step + '&try=2&best=' + at); return; }
+    if (this.outOfTime) await this.sayMaybe('s_pop_timeup'); await wait(400); if (this.stopped) return; this.stopped = true; this.bus.stopAll();
+    this.router.navigate(['/haruffa/koyo'], { queryParams: { letters: ALL.slice(Math.min(at, ALL.length - 1)).join(''), back: '/fashe?step=' + step + '&try=1' } });
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
   private async sayMaybe(k: string): Promise<void> {

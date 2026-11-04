@@ -192,10 +192,12 @@ export class RubutuScreen extends TopicLessonBase {
     }
   }
   protected async start(key: string): Promise<void> {
-    this.WORDS = this.poolByLength(this.def()); this.clear();
+    // a course step spells every one of its words; a two-word name is spelt without its space, as the games do
+    const g = this.given()?.map((it) => ({ ...it, en: it.en.replace(/ /g, '') })) || null;
+    this.WORDS = g || this.poolByLength(this.def()); this.clear();
     // the word the example already spelled counts as the first one done and is not set again (Sani 2026-09-20)
     const ex = this.session.takeExample('rubutu');
-    if (ex) this.WORDS = this.WORDS.filter((w) => String(w.en).toUpperCase() !== ex.toUpperCase());
+    if (ex && !g) this.WORDS = this.WORDS.filter((w) => String(w.en).toUpperCase() !== ex.toUpperCase());
     await firstHints(this.bus, this.session, this.spotter, this.s, null); await this.runSets(this.WORDS); await this.play(this.bus.gk('app_stage_done')); this.finished();
   }
   protected clear(): void { this.stopMic(); this.clearTimer(); this.pend = null; this.awaiting = false; this.curLetter = null; this.slots.set([]); this.fb('', ''); this.showPic(null); this.resultsOn.set(false); this.resultItems.set([]); this.keyMarks.set({}); this.s.querySelectorAll('.spothand.typing').forEach((x) => x.remove()); this.kbLocked.set(false); this.dkHidden.set(false); this.armed.set(false); this.rec.set(false); this.speak.set(false); this.pairNohand.set(false); }

@@ -103,7 +103,6 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   /* one sound at a time, like the rest of the app: every line waits for the one before */
   function say(src, run) { if (!src || gone || (run && run.dead)) return Promise.resolve(false); return io.say(src).then(function (ok) { return ok && !gone && !(run && run.dead); }); }
   function lailaBtn(cls, label) { return '<button type="button" class="glaila ' + (cls || '') + '"><span class="lsvg">' + K.laila + '</span>' + (label ? '<small>' + label + '</small>' : '') + '</button>'; }
-  function alloBtn() { return '<button type="button" class="gallo"><span class="asvg">' + K.allo + '</span><small>Ban sani ba</small></button>'; }
   function line(gid, which) { return K.lines[gid] && K.lines[gid][which]; }
   function closeMic() { if (mic) { try { mic.stop(); } catch (e) { /* closed */ } mic = null; } }
   /* A lesson's words (?words=, Sani 2026-11-02): every word game plays ALL of them, once each, instead of its own short
@@ -242,18 +241,6 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 
 
   /* ---------- the three screens every game shares ---------- */
-  function question() {
-    if (live) live.stop();
-    var g = GAMES[gid], run = new Run(); live = run;
-    run.scr.className = 'scr q'; bg.innerHTML = '';
-    run.scr.innerHTML = '<div class="eye">' + g.title + '</div>' +
-      '<div class="qrow">' + lailaBtn('yes talking', 'Na sani') + alloBtn() + '</div>';   // the question is heard, never written (Kratu rule)
-    var yes = run.scr.querySelector('.glaila'), no = run.scr.querySelector('.gallo');
-    yes.onclick = function () { start(); };
-    no.onclick = function () { result(run, { learn: true }); };
-    run.remind = null;
-    say(line(gid, 'ask'), run).then(function () { if (!run.dead) { yes.classList.remove('talking'); yes.classList.add('cue'); } });
-  }
   function start() {
     if (live) live.stop();
     var g = GAMES[gid], run = new Run(); live = run;
@@ -414,7 +401,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         '<div class="gold"><span class="coin">Z</span><b>+' + gold + '</b><small>Zinari</small></div>') +
       '<div class="place">' + (r.learn ? g.placeNo : g.place(r, run)) + '</div>' +
       lailaBtn('cue', 'Danna Laila');
-    res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(r); } else question(); };
+    res.scr.querySelector('.glaila').onclick = function () { if (opts.lesson && io.next) { live && live.stop(); io.next(r); } else start(); };
     if (r.learn) say(K.learn, res);
     else {
       if (io.firstTime) io.firstTime();   // remembered as met; no home-page shelf (Sani 2026-10-23: removed)
@@ -828,10 +815,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
 
   Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs, batches }));   // the Arewa games (games2.ts)
 
-  if (opts.lesson) start(); else question();
+  // no "do you know this game?" before a game any more (Sani 2026-11-04): only the course's first step asks that, about the
+  // letters. Every game opens on its own how-to the first time, and the gate's intro after that.
+  start();
   return {
     stop: function () { gone = true; if (unl) { unl.stop(); unl = null; } if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } closeAC(); },
-    again: function () { if (unl) unl.again(); else if (live && live.remind) live.remind(); else if (live && live.scr.classList.contains('q')) say(line(gid, 'ask'), live); },
+    again: function () { if (unl) unl.again(); else if (live && live.remind) live.remind(); },
   };
 }
 

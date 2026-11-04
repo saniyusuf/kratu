@@ -250,14 +250,23 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
         await this.runQueue(this.items.slice().filter((it) => !ex || it.k !== ex), true, false);
       }
       else {
-        let first = true, si = 0;
+        // a course step (?stage=i&done=n, Sani 2026-11-04) is one stage; the last one, the hundreds, ends with the big test
+        const one = q.get('done') && q.get('stage') !== null ? Math.max(0, Math.min(STAGES.length - 1, +(q.get('stage') || 0))) : null;
+        let first = one === null || one === 0, si = 0;
         for (const st of STAGES) {
+          if (one !== null && si !== one) { si++; continue; }
           this.check(); this.loadCat(st.key); this.stageHa = st.ha;
           if (first) { first = false; await this.play(this.bus.gk('s_n_intro')); } await this.play(this.bus.gk(st.intro));
           for (const [a, b] of st.blocks) await this.runQueue(this.items.slice(a, b), a === 0 && st.key === 'lambobi_palms', true);
           this.progress.mark('lambobi', 's' + si++);
         }
-        this.hidePic(); await this.bigTest(); this.progress.mark('lambobi', 'test');
+        if (one === null || one === STAGES.length - 1) { this.hidePic(); await this.bigTest(); this.progress.mark('lambobi', 'test'); }
+        if (one !== null) {
+          this.hidePic(); await this.play(this.bus.gk('app_stage_done')); this.running = false;
+          const done = +(q.get('done') || 0); this.course.done(done); const nx = this.course.step();
+          if (nx && this.course.at() === done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+          this.router.navigate(['/home']); return;
+        }
       }
       this.hidePic(); await this.play(this.bus.gk('app_stage_done'));
       if (this.mode === 'words') this.progress.mark('abubuwa', this.cat);

@@ -140,6 +140,14 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
   clock, sparks and moving pieces never refit or rescale the screen (Sani 14 Oct). Every rule in `gamelab.css` is scoped
   under `.glab` and every keyframe is `g-…`. Only with `?tester=1` in the link do the speaking games show ✓/✗ under Laila to answer without a microphone (Sani 25 Oct: never otherwise).
 
+- The course (Sani 2 to 4 Nov): `course.data.ts` is the 233-step ladder, `CourseService.route()` turns a step into a
+  screen and its query, and every step screen hands back to the next step when it is done: lessons take `?done=n`
+  (Abubuwa, Karatu, Rubutu `?words=`; Haruffa `?letters=`; Lambobi `?stage=`; Nemo lamba `?pick=qnum`), games take
+  `?step=n` and go through the gate (75%, retry, review, Zinari; `CourseGate` is shared by the game frame, Nemo hoto and
+  the balloons). A title won outside the game frame plays at `/wasanni/unlock?i=…&next=…`. Only the settings simulator
+  walks the course so far: real children still get PlanService's first sitting. No game asks "do you know this game?"
+  any more (Sani 4 Nov); only the course's first step asks it, about the letters.
+
 ## Open items
 - Review page inside the app (`/review`, debug only), screens index (`/screens`) — see the plan:
   https://claude.ai/code/artifact/56d76491-ae9f-476e-b17d-895b578e5300 (the repo-root move is done; hosting is Firebase, not Pages).

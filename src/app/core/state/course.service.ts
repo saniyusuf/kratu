@@ -32,18 +32,19 @@ export class CourseService {
     const n = String(s.n), ws = s.items.join(',');
     if (s.t === 'start') return { path: 'haruffa/gwada', query: {} };
     if (s.t === 'game') {
-      if (s.game === 'fashe') return { path: 'fashe', query: {} };
-      if (s.game === 'nemo') return { path: 'nemo', query: ws ? { words: ws, step: n } : { step: n } };
+      if (s.game === 'fashe') return { path: 'fashe', query: { step: n } };
+      if (s.game === 'nemo') return { path: 'nemo', query: { pick: 'q4', words: ws, step: n } };
       const q: Record<string, string> = { next: '/home', step: n };
       if (s.kind === 'letters') q['letters'] = s.items.join(''); else if (ws) q['words'] = ws;
       return { path: 'wasanni/' + s.game, query: q };
     }
-    if (s.kind === 'letters') return { path: 'haruffa/koyo', query: s.items[0] ? { fromL: s.items[0] } : {} };
+    if (s.kind === 'letters') return { path: 'haruffa/koyo', query: { letters: s.items.join(''), done: n } };
     if (s.kind === 'words') return { path: 'abubuwa/koyo', query: { words: ws, done: n } };
-    if (s.kind === 'read') return { path: 'karatu', query: {} };
-    if (s.kind === 'spell') return { path: 'rubutu', query: {} };
-    if (s.kind === 'numbers') return { path: 'lambobi', query: {} };
-    return { path: 'nemo', query: ws ? { words: ws } : {} };
+    if (s.kind === 'read') return { path: 'karatu', query: { words: ws, done: n } };
+    if (s.kind === 'spell') return { path: 'rubutu', query: { words: ws, done: n } };
+    // Lambobi 1–5 are its five stages: fingers, writing 1–10, 11–20, tens, hundreds (the last one ends with the big test)
+    if (s.kind === 'numbers') return { path: 'lambobi', query: { stage: String(Math.max(0, +(s.title.match(/Lambobi (\d)/)?.[1] || 1) - 1)), done: n } };
+    return { path: 'nemo', query: { pick: 'qnum', done: n } };   // Nemo lamba: Nemo hoto's number signs
   }
 }
 

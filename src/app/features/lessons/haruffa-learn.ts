@@ -6,6 +6,7 @@ import { SpeechService } from '../../core/speech/speech.service';
 import { SessionService } from '../../core/state/session.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
+import { CourseService } from '../../core/state/course.service';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { Spotter, firstHints, flyText, joy, shakeNo, wait } from '../../shared/lesson/helpers';
@@ -52,6 +53,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private readonly zoom = inject(ZoomService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly course = inject(CourseService);
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly lb = viewChild.required<LailaButton>('lb');
   private readonly slotsRef = viewChild.required<ElementRef<HTMLElement>>('slots');
@@ -69,7 +71,12 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   /** The letter to start at, from the balloons: earlier letters of its group are already known (Sani 2026-10-22). */
   private startAt = 0;
   private resumeAt(): number { for (let g = 0; g < GROUPS.length; g++) if (!this.progress.has('haruffa', 'g' + g)) return g; return 0; }
-  ngOnInit(): void { this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap; const fromL = (q.get('fromL') || '').toUpperCase(); this.startAt = Math.max(0, ALL.indexOf(fromL)); const from = fromL ? Math.floor(this.startAt / 4) : q.get('from') !== null ? +(q.get('from') || 0) : this.resumeAt(); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
+  ngOnInit(): void {
+    this.spotter = new Spotter(this.host.nativeElement, this.zoom); const q = this.route.snapshot.queryParamMap;
+    // a course step (?letters=ABCD&done=n), or the letters a course game found missing (?letters=…&back=the game)
+    const only = (q.get('letters') || '').toUpperCase().split('').filter((L) => ALL.includes(L));
+    if (only.length && (q.get('done') || q.get('back'))) { afterPaint().then(() => this.courseLetters(only)); return; }
+    const fromL = (q.get('fromL') || '').toUpperCase(); this.startAt = Math.max(0, ALL.indexOf(fromL)); const from = fromL ? Math.floor(this.startAt / 4) : q.get('from') !== null ? +(q.get('from') || 0) : this.resumeAt(); afterPaint().then(() => this.start(from, from === 0 && q.get('intro') !== '0')); }
   ngOnDestroy(): void { this.stopped = true; this.stopAuto(); this.bus.stopAll(); this.hearHandle?.stop(); this.spotter?.unspot(); }
 
   private idx(L: string): number { return ALL.indexOf(L); }
@@ -192,8 +199,9 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     }
   }
   private async recall(list: string[], lastNoKudos = false): Promise<void> { for (let i = 0; i < list.length; i++) { if (this.stopped) return; await this.askSay(list[i], [this.bus.gk('s_abc_say')], lastNoKudos && i === list.length - 1); await wait(400); } }
-  private async runGroup(gi: number): Promise<void> {
-    const group = GROUPS[gi].filter((L) => ALL.indexOf(L) >= this.startAt); this.markActive(group); this.unfill(group); this.eye.set('Haruffa · koyo · rukuni ' + (gi + 1));
+  /** One group: shown, taught, recalled in order, then mixed up. */
+  private async teachGroup(group: string[], gi: number): Promise<void> {
+    this.markActive(group); this.unfill(group); this.eye.set('Haruffa · koyo · rukuni ' + (gi + 1));
     await this.playIntro(gi === 0 ? this.bus.gk('s_l_look') : this.bus.gk(group.length < 4 ? 's_l_new2' : 's_l_new4'));
     await this.present(group); await this.teach(group);
     // whatever the example already got right is done: this group neither teaches nor recalls it again. The checkpoints
@@ -201,6 +209,30 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
     const rest = group.filter((L) => L !== this.exampleLetter);
     await this.play(this.bus.gk('s_l_recall')); this.unfill(group); await this.recall(rest);
     await this.play('app_scatter_intro'); this.unfill(group); await this.recall(shuffle(rest), true);
+  }
+  /**
+   * A course step's letters, or a course game's missed ones (Sani 2026-11-04): only those, in the app's groups of four
+   * (a step of U–Z is U V W X, then Y Z), and then the course goes on, or back to the game that sent them.
+   */
+  private async courseLetters(list: string[]): Promise<void> {
+    const q = this.route.snapshot.queryParamMap, done = q.get('done'), back = q.get('back'), at = Math.min(...list.map((L) => ALL.indexOf(L)));
+    this.running = true; this.hinted = false; this.reset(); this.setDoneUpTo(done ? at : 0);
+    if (done && at === 0) { await this.play('app_board_intro'); if (this.stopped) return; }
+    for (let gi = 0; gi < GROUPS.length; gi++) {
+      const group = GROUPS[gi].filter((L) => list.includes(L)); if (!group.length) continue; if (this.stopped) return;
+      if (back) { this.markActive(group); this.unfill(group); this.eye.set('Mu sake · ' + group.join(' ')); await this.teach(group); this.hideLetter(); await wait(400); continue; }
+      await this.teachGroup(group, gi); if (this.stopped) return; this.hideLetter(); this.progress.mark('haruffa', 'g' + gi);
+    }
+    if (this.stopped) return; await this.play(this.bus.gk('app_stage_done')); this.running = false; if (this.stopped) return; this.stopped = true; this.bus.stopAll();
+    if (done) {
+      this.course.done(+done); const nx = this.course.step();
+      if (nx && this.course.at() === +done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+    }
+    this.router.navigateByUrl(back && back.startsWith('/') ? back : '/home');
+  }
+  private async runGroup(gi: number): Promise<void> {
+    const group = GROUPS[gi].filter((L) => ALL.indexOf(L) >= this.startAt);
+    await this.teachGroup(group, gi);
     const learned = Math.min(26, (gi + 1) * 4); this.hideLetter(); await this.play(this.bus.gk('app_stage_done')); this.progress.mark('haruffa', 'g' + gi);
     if (learned === 8 || learned === 16 || learned === 24) await this.checkpoint(learned);
     // at twelve and at twenty letters the Durbar, mixed up, with only the letters learned so far;

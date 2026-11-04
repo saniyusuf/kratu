@@ -1,4 +1,4 @@
-import { Component, ElementRef, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { afterPaint } from '../../shared/paint';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { Clip, Item } from '../../shared/lesson/lesson-base';
@@ -6,6 +6,7 @@ import { TopicLessonBase } from '../../shared/lesson/topic-lesson-base';
 import { TopicMenu } from '../../shared/lesson/topic-menu';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
 import { retryPic, shuffle, wait } from '../../shared/lesson/helpers';
+import { CourseGate } from '../../core/state/course-gate.service';
 
 const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)', n: 4 }, { key: 'qnum', ha: 'Lambobi', ico: 'qnum', c: 'var(--green)', n: 6, set: 'lambobi_symbols' }];
 
@@ -43,6 +44,7 @@ export class NemoScreen extends TopicLessonBase {
   /** ?words=…: only a lesson's own words are asked, each once (the others are still the wrong pictures beside them) */
   private ask: Item[] | null = null; private right: Item[] = []; private wrongs: Item[] = [];
   private tapRes: ((k: string) => void) | null = null; private curItem: Item | null = null;
+  private readonly cgate = inject(CourseGate);
 
   private get qdef() { return QUIZ_CATS.find((x) => x.key === this.cat()) || QUIZ_CATS[0]; }
   private get N(): number { return this.qdef.n ?? 4; }
@@ -101,8 +103,29 @@ export class NemoScreen extends TopicLessonBase {
     for (let i = 0; i < items.length; i++) await this.puzzle(items[i], i + preDone);
     this.curItem = null; await this.recap();
   }
+  /**
+   * Nemo hoto as a course game (?step=n, Sani 2026-11-04): every word of the step once, in tens, then the game gate's
+   * rule: 75% passes and pays Zinari, a first miss is a fresh mix, a second miss is a lesson of the missed words.
+   */
+  private async gameRun(step: string): Promise<void> {
+    const q = this.route.snapshot.queryParamMap, tries = Math.max(1, Math.min(2, +(q.get('try') || 1)));
+    const all = shuffle((this.ask || []).slice()), right: Item[] = [], wrong: Item[] = [];
+    for (let i = 0; i < all.length; i += 10) { await this.runTen(all.slice(i, i + 10), i === 0); right.push(...this.right); wrong.push(...this.wrongs); }
+    const score = all.length ? right.length / all.length : 1;
+    const here = (t: number) => { const p = new URLSearchParams(location.search); p.delete('resume'); p.set('try', String(t)); return '/nemo?' + p.toString(); };
+    if (score >= CourseGate.PASS - 1e-9) {
+      const a = this.cgate.award('nemo', step, CourseGate.stars(score), tries);
+      if (this.bus.has(this.bus.gk(a.lines[0]))) await this.play(this.bus.gk(a.lines[0]));
+      this.stopped = true; this.bus.stopAll(); this.cgate.passed(+step, a); return;
+    }
+    if (tries < 2) { await this.play(this.bus.gk('s_pop_again')); this.stopped = true; this.bus.stopAll(); this.cgate.reopen(here(2)); return; }
+    this.stopped = true; this.bus.stopAll();
+    this.router.navigate(['/abubuwa/koyo'], { queryParams: { words: wrong.map((w) => w.k).join(','), review: 1, back: here(1) } });
+  }
   protected async start(): Promise<void> {
-    this.loadPool(); this.n.set(this.N); let first = true, prev: Item[] = [];
+    this.loadPool(); this.n.set(this.N);
+    const step = this.route.snapshot.queryParamMap.get('step'); if (step && this.ask) { this.session.takeExample('nemo'); await this.gameRun(step); return; }
+    let first = true, prev: Item[] = [];
     // whatever the example already got right is not asked again: the first round is one short and starts a dot ahead
     const done = this.session.takeExample(this.qdef.set ? 'nemonum' : 'nemo'); let pre = 0;
     if (done && (this.ask || this.pool).some((x) => x.k === done)) { this.pool = this.pool.filter((x) => x.k !== done); if (this.ask) this.ask = this.ask.filter((x) => x.k !== done); pre = 1; }

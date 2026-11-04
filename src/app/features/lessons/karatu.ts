@@ -29,7 +29,7 @@ type Slot = { L: string; st: '' | 'on' | 'done' };
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="splesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img #pic alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
-  <div class="wslots">@for (sl of slots(); track $index) {<span class="wslot show" [class.on]="sl.st === 'on'" [class.done]="sl.st === 'done'">{{ sl.L }}</span>}</div>
+  <div class="wslots">@for (sl of slots(); track $index) {<span class="wslot show" [class.gap]="sl.L === ' '" [class.on]="sl.st === 'on'" [class.done]="sl.st === 'done'">{{ sl.L }}</span>}</div>
   <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
   <div class="yesno ynpair spq"><app-laila-btn #lb label="Karanta" [size]="96" [armed]="armed()" [rec]="rec()" [speak]="speak()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>
 </div>`,
@@ -52,7 +52,11 @@ export class KaratuScreen extends TopicLessonBase {
   /** Each letter lights as Laila says it. */
   private async walk(word: string): Promise<void> {
     this.speak.set(true);
-    for (let i = 0; i < word.length; i++) { this.slots.update((a) => a.map((x, k) => ({ ...x, st: k === i ? 'on' : k < i ? 'done' : '' }))); if (!(await this.play('app_en_' + word.charAt(i)))) break; await wait(280); }
+    for (let i = 0; i < word.length; i++) {
+      this.slots.update((a) => a.map((x, k) => ({ ...x, st: k === i ? 'on' : k < i ? 'done' : '' })));
+      if (word.charAt(i) === ' ') { await wait(280); continue; }   // the gap of a two-word name: a breath, no letter
+      if (!(await this.play('app_en_' + word.charAt(i)))) break; await wait(280);
+    }
     this.speak.set(false);
   }
   private waitAnswer(): Promise<{ got: string | null; raw: string }> { this.awaiting = true; this.armed.set(true); this.fb('wait', 'Danna kan Laila, ' + this.KA() + ' karanta kalmar.'); const p = new Promise<{ got: string | null; raw: string }>((res) => { this.pend = res; }); if (this.takeEarly()) setTimeout(() => this.lailaPressed()); return p; }
@@ -108,10 +112,11 @@ export class KaratuScreen extends TopicLessonBase {
     }
   }
   protected async start(key: string): Promise<void> {
-    this.WORDS = this.poolByLength(this.def()); this.clear();
-    // the word the example already read is not read again: it counts as the first one done (Sani 2026-09-20)
+    const g = this.given(); this.WORDS = g || this.poolByLength(this.def()); this.clear();
+    // the word the example already read is not read again: it counts as the first one done (Sani 2026-09-20). A course
+    // step reads every one of its words (Sani 2026-11-02).
     const ex = this.session.takeExample('karatu');
-    if (ex) this.WORDS = this.WORDS.filter((w) => String(w.en).toUpperCase() !== ex.toUpperCase());
+    if (ex && !g) this.WORDS = this.WORDS.filter((w) => String(w.en).toUpperCase() !== ex.toUpperCase());
     const blocks: Item[][] = []; for (let i = 0; i < this.WORDS.length; i += 5) blocks.push(this.WORDS.slice(i, i + 5));
     await firstHints(this.bus, this.session, this.spotter, this.s, null);
     for (let b = 0; b < blocks.length; b++) { this.block = blocks[b]; await this.runBlock(blocks[b], b === blocks.length - 1); }
