@@ -1,0 +1,158 @@
+/* Ruwan sama scene (sc-ruwa.ts): the first rains over the millet farm. Scoped under .glab .gbg .rw4; keyframes rw4-…;
+   transform and opacity only. People are drawn in their own 60x140 boxes, so their pivots are given in those units. */
+.glab .gbg .rw4 .x-cl1,.glab .gbg .rw4 .x-cl2,.glab .gbg .rw4 .x-curt,.glab .gbg .rw4 .x-bird,.glab .gbg .rw4 .x-egret,.glab .gbg .rw4 .x-goat{transform-box:fill-box}
+
+/* idle: the storm clouds creep, the far rain shimmers, birds, egrets pecking, the goat grazing, hens pecking */
+.glab .gbg .rw4 .x-cl1{animation:rw4-drift 26s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-cl2{animation:rw4-drift 34s ease-in-out infinite alternate-reverse}
+.glab .gbg .rw4 .x-curt{animation:rw4-veil 5s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-bird{transform-origin:50% 50%;animation:rw4-fly 7s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-bird.b2{animation-delay:-2.4s}.glab .gbg .rw4 .x-bird.b3{animation-delay:-4.6s;animation-duration:9s}
+.glab .gbg .rw4 .x-egret{transform-origin:40% 100%;animation:rw4-peck 6s ease-in-out infinite}
+.glab .gbg .rw4 .x-egret.e2{animation-delay:-2s}.glab .gbg .rw4 .x-egret.e3{animation-delay:-4s;animation-duration:8s}
+.glab .gbg .rw4 .x-goat{transform-origin:20% 100%;animation:rw4-graze 6s ease-in-out infinite}
+.glab .gbg .rw4 .x-hen{animation:rw4-hen 2.6s ease-in-out infinite}
+.glab .gbg .rw4 .x-hen.h2{animation-delay:-1.1s}.glab .gbg .rw4 .x-hen.h3{animation-delay:-.5s;animation-duration:3.4s}
+.glab .gbg .rw4 .p4 .x-head{animation:rw4-look 4s ease-in-out infinite alternate}
+@keyframes rw4-drift{from{transform:translateX(-4px)}to{transform:translateX(6px)}}
+@keyframes rw4-veil{from{opacity:.55}to{opacity:1}}
+@keyframes rw4-fly{from{transform:translate(0,0) scaleY(1)}50%{transform:translate(8px,-2px) scaleY(.6)}to{transform:translate(16px,1px) scaleY(1)}}
+@keyframes rw4-peck{0%,66%,100%{transform:rotate(0)}74%,86%{transform:rotate(30deg)}}
+@keyframes rw4-graze{0%,60%,100%{transform:rotate(0)}70%,88%{transform:rotate(-8deg)}}
+@keyframes rw4-hen{0%,55%,100%{transform:rotate(0)}65%,80%{transform:rotate(28deg)}}
+@keyframes rw4-look{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+
+/* cheer: arms up, the children hop, the farmer nods, the goat skips */
+.glab .gbg.cheer .rw4 .x-al.x-wv{animation:rw4-wl .5s ease-in-out infinite alternate}
+.glab .gbg.cheer .rw4 .x-ar.x-wv{animation:rw4-wr .5s ease-in-out infinite alternate}
+.glab .gbg.cheer .rw4 .x-fig.p3,.glab .gbg.cheer .rw4 .x-fig.p4{animation:rw4-hop .4s ease-in-out infinite alternate}
+.glab .gbg.cheer .rw4 .x-fig.p1,.glab .gbg.cheer .rw4 .x-fig.p2{animation:rw4-nod .5s ease-in-out infinite alternate}
+.glab .gbg.cheer .rw4 .x-goat{transform-origin:50% 100%;animation:rw4-bleat .35s ease-in-out infinite alternate}
+@keyframes rw4-wl{from{transform:rotate(130deg)}to{transform:rotate(165deg)}}
+@keyframes rw4-wr{from{transform:rotate(-130deg)}to{transform:rotate(-165deg)}}
+@keyframes rw4-hop{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+@keyframes rw4-nod{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@keyframes rw4-bleat{from{transform:translateY(0) rotate(0)}to{transform:translateY(-3px) rotate(-6deg)}}
+/* sad: heads shake, smiles turn down */
+.glab .gbg.sad .rw4 .x-head{animation:rw4-no .32s ease-in-out infinite alternate}
+.glab .gbg.sad .rw4 .x-ms{opacity:0}
+.glab .gbg.sad .rw4 .x-mf{opacity:1}
+@keyframes rw4-no{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+
+/* ---------- the game: the word's cloud up in the sky (below the clock bar, above the ridge), the rain under it, and
+   the six seedlings standing on the near ridge just above Laila's head (her top edge is at 40cqw) ---------- */
+.glab .scr.ruwa .rstage{position:absolute;inset:0;pointer-events:none}
+.glab .scr.ruwa .rcloud{position:absolute;top:8.6cqw;width:46cqw;height:18.4cqw;opacity:0;transform:translateX(-80cqw);z-index:2}
+.glab .scr.ruwa .rcloud.in{opacity:1;transform:none;transition:transform 2.2s cubic-bezier(.15,.6,.3,1),opacity .6s}
+.glab .scr.ruwa .rcloud.out{opacity:0;transform:translateX(70cqw);transition:transform 2.4s cubic-bezier(.5,0,.8,.6),opacity .6s 1.6s}
+.glab .scr.ruwa .rcloud.out.fast{transition:transform 1.4s cubic-bezier(.5,0,.8,.6),opacity .5s .8s}
+.glab .scr.ruwa .rwc{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 .5cqw .6cqw rgba(30,36,44,.28))}
+.glab .scr.ruwa .rwc-body{transform-box:fill-box;transform-origin:50% 60%;animation:rw4-puff 3.6s ease-in-out infinite alternate}
+@keyframes rw4-puff{from{transform:scale(1,1)}to{transform:scale(1.015,1.03)}}
+.glab .scr.ruwa .rwc-dark{opacity:0;transition:opacity .5s}
+.glab .scr.ruwa .rcloud.dark .rwc-dark{opacity:.92}
+.glab .scr.ruwa .rcloud.dark{animation:rw4-flash .6s ease-out 1}
+@keyframes rw4-flash{0%{filter:none}12%{filter:brightness(1.6)}24%{filter:none}36%{filter:brightness(1.3)}100%{filter:none}}
+.glab .scr.ruwa .rcloud.dry .rwc-body{opacity:.75}
+/* the word: big, white with a dark rim so it reads on the light cloud and the dark one alike */
+.glab .scr.ruwa .rww{position:absolute;left:0;right:0;top:34%;text-align:center;font:800 7.2cqw/1 var(--disp);letter-spacing:.06em;color:#2B3440;
+  text-shadow:0 .12cqw 0 rgba(255,255,255,.8);transition:color .5s,text-shadow .5s}
+.glab .scr.ruwa .rww.l6,.glab .scr.ruwa .rww.l7{font-size:6.2cqw}
+.glab .scr.ruwa .rww.l8,.glab .scr.ruwa .rww.l9{font-size:5cqw;top:37%}
+.glab .scr.ruwa .rcloud.dark .rww{color:#FFFFFF;text-shadow:0 .2cqw .4cqw rgba(0,0,0,.45)}
+/* the rain: masked soft at its edges, falling in two speeds */
+.glab .scr.ruwa .rrain{position:absolute;top:22cqw;width:16cqw;height:16.4cqw;overflow:hidden;opacity:0;transition:opacity .5s;z-index:1;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+.glab .scr.ruwa .rrain.on{opacity:1}
+.glab .scr.ruwa .rwr{display:block;width:100%;height:200%}
+.glab .scr.ruwa .rrain.on .rwr1{animation:rw4-fall .42s linear infinite}
+.glab .scr.ruwa .rrain.on .rwr2{animation:rw4-fall .6s linear infinite}
+@keyframes rw4-fall{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+/* the millet: a seedling until it is rained on; then it shoots up and heads out; a dry cloud leaves it to wilt */
+.glab .scr.ruwa .mbox{position:absolute;top:21.4cqw;width:9cqw;height:16.5cqw}
+.glab .scr.ruwa .mp{display:block;width:100%;height:100%;overflow:visible}
+.glab .scr.ruwa .mp g,.glab .scr.ruwa .mp ellipse{transform-box:fill-box}
+.glab .scr.ruwa .mplant{transform-origin:50% 100%;transform:scale(.3);transition:transform 1.8s cubic-bezier(.2,.9,.3,1.05)}
+.glab .scr.ruwa .mbox.grow .mplant{transform:scale(1)}
+.glab .scr.ruwa .mbox.wilt .mplant{transform:scale(.6);transition:transform .8s ease-in}
+.glab .scr.ruwa .mh{opacity:0;transform-origin:50% 100%;transform:scaleY(.3);transition:opacity .6s,transform .9s cubic-bezier(.2,.9,.3,1.2)}
+.glab .scr.ruwa .mbox.head .mh{opacity:1;transform:none}
+.glab .scr.ruwa .mw{opacity:0}
+.glab .scr.ruwa .mbox.wilt .mw{opacity:1;transition:opacity .6s}
+.glab .scr.ruwa .mbox.wilt .mg{opacity:0;transition:opacity .6s}
+.glab .scr.ruwa .mwet{opacity:0;transition:opacity 1.2s}
+.glab .scr.ruwa .mbox.wet .mwet{opacity:.75}
+.glab .scr.ruwa .msplash{opacity:0}
+.glab .scr.ruwa .mbox.wet:not(.head) .msplash{opacity:1;transform-origin:50% 50%;animation:rw4-ring .5s ease-out infinite}
+@keyframes rw4-ring{from{transform:scale(.4)}to{transform:scale(1.4)}}
+.glab .scr.ruwa .mdust{opacity:0;transform-origin:50% 100%}
+.glab .scr.ruwa .mbox.dust .mdust{animation:rw4-dust 1.4s ease-out forwards}
+@keyframes rw4-dust{0%{opacity:0;transform:translate(0,0) scale(.4)}25%{opacity:.85}100%{opacity:0;transform:translate(14px,-10px) scale(1.6)}}
+/* whose turn it is: a soft pale ring of dug earth glows under the seedling */
+.glab .scr.ruwa .mbox::after{content:"";position:absolute;left:-1.2cqw;right:-1.2cqw;bottom:-.6cqw;height:2.2cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(255,236,170,.7),rgba(255,236,170,0));opacity:0;transition:opacity .4s}
+.glab .scr.ruwa .mbox.turn::after{opacity:1;animation:rw4-turn 1.4s ease-in-out infinite alternate}
+@keyframes rw4-turn{from{opacity:.45}to{opacity:1}}
+/* the harvest: every full head glints and sways */
+.glab .scr.ruwa .rstage.harvest .mbox.head .mplant{animation:rw4-sway 1s ease-in-out infinite alternate}
+@keyframes rw4-sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+
+
+/* added 2 Nov (Sani: more life): flocks crossing, far farmers hoeing and sowing, the plough team */
+.glab .gbg .rw4 .x-wf,.glab .gbg .rw4 .x-hoe,.glab .gbg .rw4 .x-sow,.glab .gbg .rw4 .x-seed,.glab .gbg .rw4 .x-lg,.glab .gbg .rw4 .x-bob,.glab .gbg .rw4 .x-clod{transform-box:fill-box}
+.glab .gbg .rw4 .x-flock{animation:rw4-cross 34s linear infinite}
+.glab .gbg .rw4 .x-flock.fk2{animation-duration:48s;animation-delay:-20s}
+@keyframes rw4-cross{0%{transform:translateX(-50px);opacity:0}4%{opacity:1}96%{opacity:1}100%{transform:translateX(360px);opacity:0}}
+.glab .gbg .rw4 .x-wf{transform-origin:50% 100%;animation:rw4-flap .42s ease-in-out infinite alternate}
+@keyframes rw4-flap{from{transform:scaleY(1)}to{transform:scaleY(-.5)}}
+.glab .gbg .rw4 .x-hoe{transform-origin:0% 0%;animation:rw4-hoe 1.3s ease-in-out infinite}
+@keyframes rw4-hoe{0%,100%{transform:rotate(-38deg)}55%{transform:rotate(6deg)}62%{transform:rotate(2deg)}}
+.glab .gbg .rw4 .x-sow{transform-origin:0% 0%;animation:rw4-sow 1.8s ease-in-out infinite}
+@keyframes rw4-sow{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(8deg)}}
+.glab .gbg .rw4 .x-seed{opacity:0;animation:rw4-seed 1.8s ease-in infinite}
+@keyframes rw4-seed{0%,45%{opacity:0;transform:translateY(0)}55%{opacity:1}80%{opacity:0;transform:translateY(4px)}100%{opacity:0}}
+.glab .gbg .rw4 .x-team{transform-box:fill-box;transform-origin:50% 50%;animation:rw4-plough 44s linear infinite}
+/* down the field to the left, a turn at the headland, back to the right, a turn again */
+@keyframes rw4-plough{0%{transform:translateX(0) scaleX(1)}44%{transform:translateX(-14px) scaleX(1)}50%{transform:translateX(-14px) scaleX(-1)}94%{transform:translateX(0) scaleX(-1)}100%{transform:translateX(0) scaleX(1)}}
+.glab .gbg .rw4 .x-fur{transform-box:fill-box}
+.glab .gbg .rw4 .x-fur.a{transform-origin:100% 50%;animation:rw4-fur-a 44s linear infinite}
+.glab .gbg .rw4 .x-fur.b{transform-origin:0% 50%;animation:rw4-fur-b 44s linear infinite}
+@keyframes rw4-fur-a{0%{transform:scaleX(0);opacity:0}2%{opacity:.55}44%{transform:scaleX(1)}96%{opacity:.55;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1)}}
+@keyframes rw4-fur-b{0%,50%{transform:scaleX(0);opacity:0}52%{opacity:.55}94%{transform:scaleX(1)}96%{opacity:.55;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1)}}
+.glab .gbg .rw4 .x-lg{transform-origin:50% 0%;animation:rw4-step 1.1s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-lg.b{animation-delay:-.55s}
+@keyframes rw4-step{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+.glab .gbg .rw4 .x-bob{animation:rw4-bob .55s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-bob.b2{animation-delay:-.3s}.glab .gbg .rw4 .x-bob.b3{animation-duration:.6s;animation-delay:-.15s}
+@keyframes rw4-bob{from{transform:translateY(0)}to{transform:translateY(-.5px)}}
+.glab .gbg .rw4 .x-clod{animation:rw4-clod 1.1s ease-out infinite}
+@keyframes rw4-clod{from{transform:translate(0,0);opacity:.9}to{transform:translate(3px,-1px);opacity:0}}
+
+/* added 2 Nov, second pass: wind ahead of the storm, the harvest with a sickle (the wet field is drawn in millet()) */
+.glab .gbg .rw4 .x-tree,.glab .gbg .rw4 .x-flut{transform-box:fill-box}
+.glab .gbg .rw4 .x-tree{transform-origin:50% 100%;animation:rw4-wind 5s ease-in-out infinite}
+.glab .gbg .rw4 .x-tree.t2{animation-duration:4.2s;animation-delay:-1.4s}.glab .gbg .rw4 .x-tree.t3{animation-duration:3.6s;animation-delay:-2.2s}
+@keyframes rw4-wind{0%,100%{transform:skewX(0)}30%{transform:skewX(-2.4deg)}45%{transform:skewX(-1deg)}60%{transform:skewX(-3deg)}}
+.glab .gbg .rw4 .x-flut{transform-origin:0% 0%;animation:rw4-flut .9s ease-in-out infinite alternate}
+.glab .gbg .rw4 .x-flut.f2{transform-origin:100% 0%;animation-duration:.75s}
+@keyframes rw4-flut{from{transform:rotate(-6deg) scaleY(.9)}to{transform:rotate(8deg) scaleY(1.08)}}
+.glab .scr.ruwa .mstub,.glab .scr.ruwa .mbun{opacity:0}
+.glab .scr.ruwa .mbox.cut .mplant{transform:scale(1,0);opacity:0;transition:transform .35s ease-in,opacity .35s .1s}
+.glab .scr.ruwa .rstage.harvest .mbox.cut .mplant{animation:none}
+.glab .scr.ruwa .mbox.cut .mstub{opacity:1;transition:opacity .2s .2s}
+.glab .scr.ruwa .mbox.cut .mbun{opacity:1;transform-box:fill-box;transform-origin:50% 100%;animation:rw4-lay .5s .25s ease-out both}
+@keyframes rw4-lay{from{opacity:0;transform:translateY(-6px) rotate(-12deg)}to{opacity:1;transform:none}}
+.glab .scr.ruwa .rreap{position:absolute;left:0;top:27cqw;width:13cqw;height:11cqw;transform:translateX(-14cqw);opacity:0;z-index:1}
+.glab .scr.ruwa .rreap.walk{opacity:1;transform:translateX(100cqw);transition:transform 5.4s linear,opacity .3s}
+.glab .scr.ruwa .rpr{display:block;width:100%;height:100%;overflow:visible}
+.glab .scr.ruwa .rpr-arm{transform-box:fill-box;transform-origin:0% 0%}
+.glab .scr.ruwa .rreap.walk .rpr-arm{animation:rw4-reap .45s ease-in-out infinite alternate}
+@keyframes rw4-reap{from{transform:rotate(-24deg)}to{transform:rotate(18deg)}}
+.glab .scr.ruwa .rreap.walk .rpr-legs{transform-box:fill-box;transform-origin:50% 0%;animation:rw4-walk .45s ease-in-out infinite alternate}
+@keyframes rw4-walk{from{transform:skewX(-8deg)}to{transform:skewX(8deg)}}
+
+@media (prefers-reduced-motion: reduce){
+  .glab .gbg .rw4 *,.glab .scr.ruwa *{animation:none!important}
+}
+/* long words and names of two words on the cloud (a lesson's own, Sani 2026-11-02); a field's empty places are not drawn */
+.glab .scr.ruwa .rww.l10,.glab .scr.ruwa .rww.l11,.glab .scr.ruwa .rww.l12{font-size:4.2cqw;top:38%}
+.glab .scr.ruwa .mbox.off{display:none}

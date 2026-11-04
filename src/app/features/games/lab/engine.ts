@@ -19,6 +19,8 @@ import { pickRhythm, playRhythm, playSigh } from './band';
 import * as KL from './kalangu';
 import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } from './kamun';
 import { liveAC, closeAC } from './audioctx';
+import { BAG, U_DEFS } from './unlock-art';
+import { playUnlock } from './unlock';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -33,19 +35,32 @@ export interface GameIO {
   tester?: boolean;
   next?: (r?: any) => void;
   firstTime?: () => boolean;
+  /** a passed course game's Zinari: the gold, the totals before and after, the title, and Laila's lines for them */
+  award?: (a: { stars: number; tries: number }) => any;
   amp?: () => number;
   preparing?: () => boolean;
   has?: (key: string) => boolean;  // is this line recorded? (a draft line not yet recorded is skipped)
+  /** the child's Zinari total, for the five bags in a course game's status bar */
+  zinari?: () => number;
+  /** where each bag is full (LEVEL_AT) */
+  levels?: number[];
+  /** the app's pointing hand beside an element (null: away) */
+  spot?: (el: Element | null) => void;
 }
 export interface GameHandle { stop(): void; again(): void; }
 /** Inside a lesson (Haruffa's in-between games): only the letters learned so far, no opening
  *  question, and Laila on the score screen carries the child back into the lesson. */
-export interface GameOpts { letters?: string[]; lesson?: boolean; }
+export interface GameOpts { letters?: string[]; words?: string[]; lesson?: boolean;
+  /** The course's game gate (Sani 2026-11-02): an intro before the game, a 75% pass, a retry with a new mix, then a review
+   *  lesson of the words missed. `tries` is this attempt (1 or 2), `first` whether the child has never met this game (only then
+   *  does Laila explain it), `sim` lets an adult mark words as failed before playing (the course simulator). */
+  gate?: { tries: number; first: boolean; sim: boolean }; }
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: GameOpts = {}): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
   bootArt4(KART);
-  let ac = null, live = null, gone = false, mic = null;
+  let ac = null, live = null, gone = false, mic = null, unl = null;
+  if (!frame.querySelector('#zb-sack')) frame.insertAdjacentHTML('beforeend', U_DEFS);   // the bag and medal gradients, once
   function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function h(html) { var d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
@@ -91,18 +106,38 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   function alloBtn() { return '<button type="button" class="gallo"><span class="asvg">' + K.allo + '</span><small>Ban sani ba</small></button>'; }
   function line(gid, which) { return K.lines[gid] && K.lines[gid][which]; }
   function closeMic() { if (mic) { try { mic.stop(); } catch (e) { /* closed */ } mic = null; } }
+  /* A lesson's words (?words=, Sani 2026-11-02): every word game plays ALL of them, once each, instead of its own short
+     list; the clock grows with the count. A key is not always the word as written (sorghum is "Guinea corn"), so the
+     games read, spell and hear txt(), letters() and spoken(), and Laila says the key's own clip. */
+  var LW = (opts.words || []).filter(function (w, k, a) { return K.pic[w] && K.en[w] && a.indexOf(w) === k; });
+  function txt(w) { return (K.word && K.word[w]) || String(w).replace(/_/g, ' '); }
+  function spoken(w) { return txt(w).toLowerCase(); }
+  function letters(w) { return txt(w).toUpperCase().replace(/[^A-Z]/g, ''); }
+  /** a two-word name is spelt without its space ("school uniform" = 13 letters), but its boxes keep the gap between the
+      words, so the child sees two words: the box that starts the next word gets .wb (a margin). Gives the gap count. */
+  function gaps(box, w) {
+    var parts = txt(w).toUpperCase().split(/[^A-Z]+/).filter(Boolean), at = 0, n = 0;
+    parts.forEach(function (p, k) { if (k && box.children[at]) { box.children[at].classList.add('wb'); n++; } at += p.length; });
+    return n;
+  }
+  function secs(base, n, n0) { return Math.round(base * Math.max(1, n / n0)); }
+  /** n words into rounds of at most `most`, as even as they come (20 by 6: 5 5 5 5) */
+  function batches(ws, most) { var nb = Math.ceil(ws.length / most), out = [], k = 0; for (var b = 0; b < nb; b++) { var sz = Math.ceil((ws.length - k) / (nb - b)); out.push(ws.slice(k, k + sz)); k += sz; } return out; }
 
   function Run() {
-    var self = this; this.scr = frame.querySelector('.scr'); this.dead = false; this.timers = []; this.offs = []; this.miss = 0; this.right = 0; this.idle = 0; this.combo = 0; this.coins = 0;
+    var self = this; this.scr = frame.querySelector('.gbox .scr') || frame.querySelector('.scr'); this.dead = false; this.timers = []; this.offs = []; this.miss = 0; this.right = 0; this.idle = 0; this.combo = 0; this.coins = 0; this.cur = null; this.seen = []; this.res = {};
     this.onDown = function (e) { self.lastEl = e.target.closest && e.target.closest('button'); };
     this.scr.addEventListener('pointerdown', this.onDown);
   }
+  /** the word (or letter) now being asked: a right answer counts for it only if nothing went wrong on it first */
+  Run.prototype.item = function (k) { this.cur = k; if (this.seen.indexOf(k) < 0) this.seen.push(k); };
   Run.prototype.later = function (ms, f) { var t = setTimeout(f, ms); this.timers.push(t); return t; };
   Run.prototype.stop = function () { this.dead = true; this.timers.forEach(clearTimeout); clearInterval(this.tick); this.hold(); closeMic(); io.hush(); this.scr.removeEventListener('pointerdown', this.onDown); this.offs.forEach(function (f) { f(); }); this.offs = []; };
   /* the clock: a bar that empties; right answers give 4 s back, wrong ones take 8. It stands still while the mic is open. */
   Run.prototype.clock = function (secs, onOut) {
     var self = this; this.left = secs * 1000; this.full = secs * 1000;
     var c = h('<div class="gclock"><span class="hcoin"><span class="coin s">Z</span><b class="cn">0</b></span><span class="bar"><i></i></span><b class="tm">' + secs + '</b><span class="combo"></span></div>'); this.scr.appendChild(c); this.cel = c;
+    if (opts.gate && io.zinari) c.querySelector('.hcoin').insertAdjacentHTML('afterend', zbags(io.zinari(), LV0));   // the child's five bags, always in sight in a course game (Sani 2026-11-04)
     var last = performance.now();
     this.tick = setInterval(function () {
       var now = performance.now(), dt = now - last; last = now;
@@ -160,13 +195,14 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     this.scr.appendChild(box); setTimeout(function () { box.remove(); }, 900);
   };
   Run.prototype.good = function (el) {
+    if (this.cur != null && !(this.cur in this.res)) this.res[this.cur] = 1;
     this.right++; this.idle = 0; this.combo++; var pts = 10 * Math.min(3, this.combo); this.coins += pts; sfx('yay');
     if (this.cel && !this.noBump) this.bump(4000);
     this.spark(el || this.lastEl, pts);
     if (this.cel) { var cn = this.cel.querySelector('.cn'); cn.textContent = this.coins; cn.parentNode.classList.remove('pulse'); void cn.offsetWidth; cn.parentNode.classList.add('pulse');
       var cb = this.cel.querySelector('.combo'); cb.innerHTML = this.combo >= 2 ? '🔥 ×' + Math.min(3, this.combo) : ''; cb.classList.toggle('on', this.combo >= 2); }
   };
-  Run.prototype.bad = function (el) { this.miss++; this.idle = 0; this.combo = 0; sfx('nope'); if (this.cel) { var cb = this.cel.querySelector('.combo'); cb.innerHTML = ''; cb.classList.remove('on'); } this.scr.classList.remove('hit'); void this.scr.offsetWidth; this.scr.classList.add('hit'); if (this.cel && !this.noBump) this.bump(-8000); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } };
+  Run.prototype.bad = function (el) { if (this.cur != null) this.res[this.cur] = 0; this.miss++; this.idle = 0; this.combo = 0; sfx('nope'); if (this.cel) { var cb = this.cel.querySelector('.combo'); cb.innerHTML = ''; cb.classList.remove('on'); } this.scr.classList.remove('hit'); void this.scr.offsetWidth; this.scr.classList.add('hit'); if (this.cel && !this.noBump) this.bump(-8000); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } };
 
   /* The speaking games: Laila is the microphone. Press her, say it, and the answer comes back to `heard`.
      While she listens she glows red and the clock waits, so a slow speaker is never punished for the recogniser. */
@@ -236,13 +272,129 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       })();
     };
     var how = g.noHow ? null : line(gid, 'how');   // a game whose example teaches it skips the spoken how-to before the 3-2-1
+    if (opts.gate) { intro(run, how, go); return; }
     if (how) {
       var s = h('<div class="gsay">' + lailaBtn('talking') + '</div>'); run.scr.appendChild(s);   // Laila explains out loud; nothing written
       var skip = false; s.querySelector('.glaila').onclick = function () { if (skip) return; skip = true; io.hush(); s.remove(); go(); };   // a tap while she explains starts the game
       say(how, run).then(function () { if (skip || run.dead) return; skip = true; s.remove(); go(); });
     } else go();
   }
+  /* ---------- the course's game gate (Sani 2026-11-02) ---------- */
+  /** what this game asks: the lesson's words, or its letters */
+  function gateItems() { return LW.length ? LW.slice() : (opts.letters || []).slice(); }
+  function chip(k) { return K.pic[k] ? '<img alt="" src="' + K.pic[k] + '">' : '<b>' + k + '</b>'; }
+  function stars4(n) { return '<div class="g4stars">' + [1, 2, 3, 4].map(function (i) { return (i === 4 ? '<span class="g4line"></span>' : '') + '<i class="' + (i <= n ? 'on' : '') + '"></i>'; }).join('') + '</div>'; }
+  function tries(n) { return '<div class="gtries">' + [1, 2].map(function (i) { return '<i class="' + (i <= n ? 'on' : '') + '"></i>'; }).join('') + '</div>'; }
+  var simMissed = null;   // the words an adult marked as failed on the intro (the simulator), or null to score the real play
+  /** Before every game in the course: the scene behind, the name on a ribbon, every word's picture, the four stars with the
+   *  pass line after the third, the tries, and Laila to press. She explains the game only the first time it is met. */
+  function intro(run, how, go) {
+    var g = GAMES[gid], items = gateItems(), sim = opts.gate.sim;
+    var o = h('<div class="gintro">' + tries(opts.gate.tries) + '<div class="gi-ban">' + g.title + '</div>' +
+      (items.length ? '<div class="gi-chips' + (items.length > 10 ? ' many' : '') + '">' + items.map(function (k) { return '<button type="button" class="gi-chip" data-k="' + k + '">' + chip(k) + '</button>'; }).join('') + '</div>' : '') +
+      stars4(0) + '<div class="gi-go">' + lailaBtn('talking') + '<span class="gi-hand">👉🏾</span></div>' +
+      (sim ? '<div class="gi-sim"><small>Simulate: tap pictures to mark them failed</small><button type="button" class="gi-skip">Skip to results ›</button></div>' : '') + '</div>');
+    run.scr.appendChild(o);
+    var lb = o.querySelector('.glaila'), started = false, marked = [];
+    if (sim) {
+      [].forEach.call(o.querySelectorAll('.gi-chip'), function (c) { c.onclick = function () { var k = c.dataset.k, i = marked.indexOf(k); if (i < 0) marked.push(k); else marked.splice(i, 1); c.classList.toggle('fail', i < 0); }; });
+      o.querySelector('.gi-skip').onclick = function () { if (started) return; started = true; simMissed = marked.slice(); io.hush(); bg.classList.remove('gdim');
+        result(run, { finished: true, right: items.length - marked.length, part: items.length ? 1 - marked.length / items.length : 1, banner: true }); };
+    }
+    lb.onclick = function () { if (started) return; started = true; if (sim && marked.length) simMissed = marked.slice(); io.hush(); o.remove(); bg.classList.remove('gdim'); run.remind = null; go(); };
+    var cue = function () { if (run.dead || started) return; lb.classList.remove('talking'); lb.classList.add('cue'); o.classList.add('ready'); };
+    run.remind = function () { if (how) say(how, run).then(cue); else say(K.go, run).then(cue); };
+    if (opts.gate.first && how) say(how, run).then(function (ok) { if (ok && !run.dead && !started) return say(K.go, run).then(cue); cue(); });
+    else say(K.go, run).then(cue);
+  }
+  /** The gate's result, over the game's own scene with a mask: 75% passes; under it, Laila takes the child back to try again
+   *  with a new mix, and after a second miss to a review lesson of the words missed (at least five, never more than ten). */
+  function gateResult(run, r) {
+    var items = gateItems(), missed;
+    if (simMissed) missed = simMissed.slice();
+    else if (items.length && run.seen.length) missed = items.filter(function (k) { return run.res[k] !== 1; });
+    else if (r.missed) missed = [].concat(r.missed);
+    else missed = null;
+    var total = items.length || Math.max(1, run.right + run.miss);
+    var score = missed ? (total - missed.length) / total : (r.part != null ? r.part : run.right / Math.max(1, run.right + run.miss));
+    var pass = score >= .75 - 1e-9, n = Math.max(0, Math.min(4, Math.floor(score * 4 + 1e-9))), tryN = opts.gate.tries;
+    var review = null;
+    if (!pass && tryN >= 2 && missed && LW.length) {
+      var rest = shuffle(LW.filter(function (k) { return missed.indexOf(k) < 0; }));
+      review = missed.slice(0, 10); while (review.length < 5 && rest.length) review.push(rest.shift());
+    }
+    var snap = document.createElement('div'); snap.className = 'gsnapbox'; var sc = run.scr.cloneNode(true);
+    [].forEach.call(sc.querySelectorAll('video,audio'), function (e) { e.remove(); }); snap.appendChild(sc); bg.appendChild(snap);   // the game as it stood, behind the mask
+    var res = new Run(); live = res;
+    res.scr.className = 'scr r gres' + (pass ? ' pass' : ''); bg.classList.add('gdim');
+    var aw = pass && io.award ? io.award({ stars: n, tries: tryN }) : null;
+    var mid = pass && aw ? zinHtml(aw)
+      : pass ? '<div class="gold"><span class="coin">Z</span><b>+' + Math.max(50, Math.floor((100 + run.right * 20) / 50) * 50) + '</b><small>Zinari</small></div>'
+      : tryN < 2 ? '<div class="gr-row">' + shuffle(items).slice(0, 10).map(function (k, i) { return '<span class="gr-fly" style="animation-delay:-' + (i * .23).toFixed(2) + 's">' + chip(k) + '</span>'; }).join('') + '</div>'
+      : '<div class="gr-book">' + (review || missed || []).map(function (k) { return '<span class="' + (missed && missed.indexOf(k) >= 0 ? 'miss' : '') + '">' + chip(k) + '</span>'; }).join('') + '</div>';
+    res.scr.innerHTML = stars4(n) + mid + '<div class="gi-go">' + lailaBtn('talking') + '<span class="gi-hand">👉🏾</span></div>' + (pass ? '' : tries(tryN));
+    var lb = res.scr.querySelector('.glaila'), out = { gate: true, pass: pass, score: score, missed: missed || [], review: review, tries: tryN, letters: !LW.length && !!(opts.letters || []).length };
+    var cue = function () { if (!res.dead) { lb.classList.remove('talking'); lb.classList.add('cue'); res.scr.classList.add('ready'); } };
+    var onward = function () { live && live.stop(); bg.classList.remove('gdim'); if (io.next) io.next(out); };
+    lb.onclick = onward;
+    if (io.firstTime) io.firstTime();
+    if (aw) zinAnim(res, aw);
+    var up = aw && aw.unlock;   // a bag filled: its title is granted now, and Laila's press on the unlock carries on instead
+    var seq = pass ? (aw && aw.lines.length && (!io.has || io.has(aw.lines[0])) ? aw.lines.slice() : [K.kudos]).concat(up ? [] : [K.go]).filter(function (k) { return k === K.kudos || k === K.go || !io.has || io.has(k); }) : tryN < 2 ? ['s_pop_again', 's_q_again'] : ['s_o_retake', review && review.length > missed.length ? 's_n_focus5' : 's_o_focus'];
+    if (pass) sfx('yay');
+    res.remind = function () { if (unl) unl.again(); else play(0); };
+    function play(i) {
+      if (res.dead) return;
+      if (i >= seq.length) { if (up) unlock(); else cue(); return; }
+      say(seq[i], res).then(function (ok) { if (ok) play(i + 1); else if (up) unlock(); else cue(); });
+    }
+    function unlock() {
+      if (unl || res.dead) return;
+      res.scr.classList.add('zhide');   // the results step aside: the unlock is the whole screen
+      unl = playUnlock(frame, up.i, up.name, up.colour, up.lines, { laila: K.laila, say: function (k) { return say(k, res); }, hush: io.hush, spot: io.spot }, function () { unl = null; onward(); });
+    }
+    res.later(pass ? 700 : 300, function () { play(0); });
+  }
+  /* ---------- Zinari on a passed game (Sani 2026-11-03; bags 2026-11-04): the gold just won counts up and flies into the
+     bag it is filling; a bag that fills grants its title (the unlock, above). Five bags, one per title: full ones gold,
+     the one filling gold to its level, the rest grey. ---------- */
+  var LV0 = io.levels || [];   // where each bag is full (LEVEL_AT, from the screen)
+  function bagFill(total, at) { return at.map(function (hi, i) { var lo = i ? at[i - 1] : 0; return Math.max(0, Math.min(1, (total - lo) / (hi - lo))); }); }
+  function zbags(total, at, big) {
+    var f = bagFill(total, at), cur = f.findIndex(function (x) { return x < 1; });
+    return '<span class="zbags' + (big ? ' big' : '') + '">' + f.map(function (x, i) { return '<i class="zb' + (i === cur ? ' cur' : '') + '" style="--f:' + x.toFixed(3) + '"><span class="zgrey">' + BAG + '</span><span class="zg"><span>' + BAG + '</span></span></i>'; }).join('') + '</span>';
+  }
+  function paintBags(box, total, at) {
+    var f = bagFill(total, at), cur = f.findIndex(function (x) { return x < 1; });
+    [].forEach.call(box.querySelectorAll('.zb'), function (b, i) { b.style.setProperty('--f', f[i].toFixed(3)); b.classList.toggle('cur', i === cur); });
+  }
+  function zinHtml(aw) {
+    return '<div class="zgain"><span class="coin">Z</span><b class="zplus">+0</b></div>' + zbags(aw.before, aw.at, true);
+  }
+  function zcount(res, el, from, to, ms, pre) {
+    var t0 = 0; function f(t) { if (res.dead) return; if (!t0) t0 = t; var k = Math.min(1, (t - t0) / ms); el.textContent = (pre || '') + Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); }
+    requestAnimationFrame(f);
+  }
+  function zinAnim(res, aw) {
+    var scr = res.scr, plus = scr.querySelector('.zplus'), box = scr.querySelector('.zbags');
+    var into = bagFill(aw.before, aw.at).findIndex(function (x) { return x < 1; });
+    res.later(350, function () { zcount(res, plus, 0, aw.gold, 700, '+'); });
+    res.later(1250, function () {
+      var target = box.children[into >= 0 ? into : box.children.length - 1];
+      var a = scr.querySelector('.zgain .coin').getBoundingClientRect(), b = target.getBoundingClientRect(), o = scr.getBoundingClientRect();
+      var sc = o.width / (scr.offsetWidth || o.width);
+      for (var i = 0; i < 6; i++) {
+        var c = h('<span class="coin s zfly">Z</span>'); scr.appendChild(c);
+        c.style.left = (a.left - o.left + a.width / 2) / sc + 'px'; c.style.top = (a.top - o.top + a.height / 2) / sc + 'px';
+        c.style.setProperty('--dx', (b.left - a.left + (b.width - a.width) / 2) / sc + 'px'); c.style.setProperty('--dy', (b.top - a.top + (b.height - a.height) / 2) / sc + 'px');
+        c.style.animationDelay = (i * 90) + 'ms';
+        (function (c) { res.later(900 + i * 90, function () { c.remove(); }); })(c);
+      }
+      res.later(450, function () { sfx('yay'); paintBags(box, aw.after, aw.at); });
+    });
+  }
   function result(run, r) {
+    if (opts.gate && !r.learn && r.banner) { run.stop(); gateResult(run, r); return; }
     if (!r.learn && !r.banner) {
       run.stop(); var bn = h('<div class="finish"><b>' + (r.finished ? 'An gama!' : 'Lokaci ya ƙare!') + '</b></div>'); run.scr.appendChild(bn); drum(true);
       r.banner = true; setTimeout(function () { if (!gone) result(run, r); }, 1300); return;
@@ -281,11 +433,15 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         // slips off the hook and sinks away. Nothing ever appears mid-river (Sani 2026-10-25): a fish only joins by swimming
         // in from off the left, when its empty place next comes round. The word is chosen only from fish already in view,
         // never the newest arrival, so the answer is in the water before Laila says it and is not the obvious one.
-        var words = shuffle(['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair']), r = 0, n = 0, target, busy = false;
+        var OWN = ['goat', 'mango', 'car', 'dog', 'banana', 'horse', 'cow', 'bus', 'fish', 'apple', 'cup', 'chair'];
+        // a lesson's words are the ones asked, every one; when there are fewer than the river holds, its own fish swim with them unasked
+        var ASK = LW.length ? shuffle(LW) : null, N = ASK ? ASK.length : 6;
+        var words = ASK ? ASK.concat(shuffle(OWN.filter(function (w) { return ASK.indexOf(w) < 0; })).slice(0, Math.max(0, 12 - ASK.length))) : shuffle(OWN), r = 0, n = 0, target, busy = false;
+        function askable(w) { return !ASK || ASK.indexOf(w) >= 0; }
         var slots = [null, null, null, null, null, null, null, null, null], asked = {}, used = {}, t0 = [0, 1, 2].map(function () { return performance.now() - Math.random() * 20000; });
         var pond = h('<div class="pond2 ag"></div>');
-        var bank = h('<div class="kamun"><span class="fisher">' + argFisher() + '</span><span class="kw">' + basket() + '<b class="kn">0 / 6</b></span></div>');
-        bg.appendChild(bank); run.scr.appendChild(pond); run.clock(120, function () { done({ right: r, part: r / 6 }); });
+        var bank = h('<div class="kamun"><span class="fisher">' + argFisher() + '</span><span class="kw">' + basket() + '<b class="kn">0 / ' + N + '</b></span></div>');
+        bg.appendChild(bank); run.scr.appendChild(pond); run.clock(secs(120, N, 6), function () { done({ right: r, part: r / N }); });
         run.remind = function () { say(K.en[target], run); };
         function dur(row) { return 26 + row * 4; }
         function along(f) { var d = dur(f._row); return (((performance.now() - t0[f._row]) / 1000 / d) + f._ph / 3) % 1; }   // 0 = off at the left, 1 = off at the right
@@ -301,7 +457,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
               run.bad(); var m = new DOMMatrix(getComputedStyle(f).transform); f.style.setProperty('--x', m.m41 + 'px'); f.classList.add('slip2');
               bank.classList.add('miss'); run.later(1400, function () { f.remove(); bank.classList.remove('miss'); });
             }
-            run.later(w === target ? 1800 : 1500, function () { if (n >= 6) done({ right: r, finished: r === 6, part: r / 6, misses: run.miss }); else cast(); });
+            run.later(w === target ? 1800 : 1500, function () { if (n >= N) done({ right: r, finished: r === N, part: r / N, misses: run.miss }); else cast(); });
           };
           pond.appendChild(f);
         }
@@ -330,7 +486,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           run.later(1150, function () { bank.classList.remove('throw'); });
           run.later(1400, function () {
             fl.remove(); var kw = bank.querySelector('.kw'), b = kw.querySelector('.bf.b' + r); if (b) b.classList.add('on');
-            kw.querySelector('.kn').textContent = r + ' / 6'; kw.classList.remove('plop'); void kw.offsetWidth; kw.classList.add('plop');
+            kw.querySelector('.kn').textContent = r + ' / ' + N; kw.classList.remove('plop'); void kw.offsetWidth; kw.classList.add('plop');
           });
           run.later(1500, function () { fl.remove(); });
         }
@@ -340,21 +496,24 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           run.later((1 - p) * d * 1000 + 60, function () {
             if (run.dead || slots[sl]) return;
             var inRiver = {}; swimming().forEach(function (f) { inRiver[f.dataset.w] = true; });
-            var fresh = shuffle(words.filter(function (w) { return !used[w]; })), again = shuffle(words.filter(function (w) { return !asked[w] && !inRiver[w]; }));
-            var w = fresh[0] || again[0]; if (w) addFish(w, sl);
+            // a word still to be asked comes first, so every one of a lesson's words reaches the water
+            var due = shuffle(words.filter(function (w) { return askable(w) && !asked[w] && !inRiver[w]; }));
+            var fresh = shuffle(words.filter(function (w) { return !used[w] && !inRiver[w]; })), again = shuffle(words.filter(function (w) { return !asked[w] && !inRiver[w]; }));
+            var w = due[0] || fresh[0] || again[0] || shuffle(words.filter(function (w) { return !inRiver[w]; }))[0]; if (w) addFish(w, sl);
           });
         }
         /* the word: a fish not asked before that is well into view and not the newest arrival; if none is ready yet, wait */
         function cast(tries) {
           busy = true; tries = tries || 0;
-          var open = swimming().filter(function (f) { return !asked[f.dataset.w]; });
+          var open = swimming().filter(function (f) { return !asked[f.dataset.w] && askable(f.dataset.w); });
+          if (!open.length) { run.later(300, function () { cast(tries); }); return; }   // the next word to ask is still swimming in
           var newest = swimming().reduce(function (m, f) { return !m || f._born > m._born ? f : m; }, null);
           var ok = open.filter(function (f) { var p = along(f); return f !== newest && p > .4 && p < .62; });
           if (!ok.length) ok = open.filter(function (f) { var p = along(f); return f !== newest && p > .36 && p < .74; });
           if (!ok.length && tries < 40) { run.later(300, function () { cast(tries + 1); }); return; }
           if (!ok.length) ok = open.filter(function (f) { var p = along(f); return p > .36 && p < .8; });
           if (!ok.length) ok = open;
-          busy = false; target = rnd(ok).dataset.w; asked[target] = true; pond.dataset.t = target;
+          busy = false; target = rnd(ok).dataset.w; asked[target] = true; run.item(target); pond.dataset.t = target;
           say(K.en[target], run);
         }
         // the river at the start: three fish in each row, evenly spaced, already in the water when the game opens
@@ -365,7 +524,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     /* Kalangu (Sani 2026-10-25): a drawn village square, the band on the right and four dancers on the left, the word's
        picture on a carved board at the top left, filling it edge to edge. One picture, one answer, no hints. Right: the
        band plays one of fifteen rhythms (at least three seconds), the dancers dance and the word shows on the plate.
-       Wrong: the plate shows a red cross, the kakaki sighs, the dancers stop and shake their heads; the word is never
+       Wrong: the plate turns red (never a cross), the kakaki sighs, the dancers stop and shake their heads; the word is never
        shown or said. Laila waits for the first press; from then on she listens by herself as each picture comes in (if
        she hears nothing she listens once more, then waits for a press again). */
     'j-magana': { title: 'Kalangu', cls: 'drum', scene: (KART.scene.kalangu = KL.kalanguScene(), 'kalangu'),
@@ -373,29 +532,30 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 ? 'Said every word: those sets would be skipped.' : 'Said ' + r.right + ' of 6: the sets they could not say would be taught.'; },
       play: function (run, done) {
-        var words = shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), r = 0, said = 0, auto = false, quiet = 0;
+        var words = LW.length ? shuffle(LW) : shuffle(['horse', 'goat', 'cat', 'dog', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken']).slice(0, 6), N = words.length, r = 0, said = 0, auto = false, quiet = 0;
+        var among = words.map(spoken);
         var stage = h('<div class="kl-stage">' +
           '<span class="kl-poles"><i></i><i></i></span><div class="kl-easel"><div class="kl-board"><img alt=""></div><div class="plate"><span class="pf">?</span><span class="pb"></span></div></div>' +
           '<div class="kl-dancers">' + KL.dancers() + '</div><div class="kl-band">' + KL.band() + '</div></div>');
-        var row = h('<div class="krow">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
+        var row = h('<div class="krow' + (N > 10 ? ' many' : '') + '">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
         var box = micBox(run);
         run.scr.appendChild(stage); run.scr.appendChild(row); run.scr.appendChild(box);
-        run.clock(150, function () { done({ right: said, part: said / 6 }); });
+        run.clock(secs(150, N, 6), function () { done({ right: said, part: said / N }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         var easel = stage.querySelector('.kl-easel'), plate = stage.querySelector('.plate');
         function audio() { try { ac = liveAC(ac); return ac; } catch (e) { return null; } }
         function round() {
-          var w = words[r];
+          var w = words[r], ws = spoken(w); run.item(w);
           easel.classList.remove('in', 'out'); plate.classList.remove('flip', 'miss'); stage.classList.remove('sad'); void easel.offsetWidth;
-          easel.querySelector('img').src = K.pic[w]; plate.querySelector('.pb').textContent = w; easel.classList.add('in'); row.children[r].classList.add('now');
+          easel.querySelector('img').src = K.pic[w]; plate.querySelector('.pb').textContent = ws; plate.style.setProperty('--len', String(ws.length)); easel.classList.add('in'); row.children[r].classList.add('now');
           // every listen, pressed or by herself, turns her own listening on for the pictures after it
-          box.listen(function () { auto = true; return { target: w, among: words, match: function (raw) { return io.match(raw, w, words); } }; }, function (res) {
+          box.listen(function () { auto = true; return { target: ws, among: among, match: function (raw) { return io.match(raw, ws, among); } }; }, function (res) {
             if (res.value === null && !res.raw) {                                       // nothing heard
               if (auto && ++quiet < 2) { box.busy = false; box.go(); return; }          // she listens once more by herself
               quiet = 0; auto = false; box.cue(); return;                                // then waits for a press
             }
             quiet = 0; box.busy = true; row.children[r].classList.remove('now');
-            if (res.value === w) {
+            if (res.value === ws) {
               box.yay(); run.good(easel); said++; plate.classList.add('flip'); row.children[r].classList.add('on');
               var a = audio(), ms = a ? playRhythm(a, pickRhythm()) : 3500;
               stage.classList.add('play'); run.later(ms, function () { stage.classList.remove('play'); });
@@ -405,12 +565,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
               var b = audio(); if (b) playSigh(b);
               next(2200);
             }
-          }, function () { return w; });
+          }, function () { return ws; });
           if (auto) run.later(700, function () { if (!run.dead) { box.busy = false; box.go(); } }); else box.cue();
         }
         function next(ms) {
           run.later(ms, function () { easel.classList.add('out'); r++;
-            if (r >= 6) run.later(500, function () { done({ right: said, finished: true, part: said / 6, misses: 6 - said }); }); else run.later(450, round); });
+            if (r >= N) run.later(500, function () { done({ right: said, finished: true, part: said / N, misses: N - said }); }); else run.later(450, round); });
         }
         round();
       } },
@@ -419,30 +579,40 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       placeNo: 'Nemo hoto would start from the four-picture rounds.',
       place: function (r) { return r.right >= 6 ? 'Served everyone: Nemo hoto would be done.' : 'Served ' + r.right + ' of 6: Nemo hoto would start from the four-picture rounds.'; },
       play: function (run, done) {
-        var goods = ['tomato', 'bread', 'egg', 'orange', 'onion', 'banana'], people = ['woman', 'man', 'girl', 'boy', 'old_man', 'woman'], q = shuffle(goods), c = 0, served = 0, pt;
+        // a lesson's words come to the stall six at most at a time; when a set is sold the stall is laid out again with the next
+        var SETS = LW.length ? batches(shuffle(LW), 6) : [['tomato', 'bread', 'egg', 'orange', 'onion', 'banana']], si = 0, goods = SETS[0];
+        var N = SETS.reduce(function (a, b) { return a + b.length; }, 0), base = 0;
+        var people = ['woman', 'man', 'girl', 'boy', 'old_man', 'woman'], q = shuffle(goods), c = 0, served = 0, pt;
         var top = h('<div class="cust"><span class="person"></span><span class="ask"><i></i></span><span class="pat"><b></b></span></div>');
         run.scr.appendChild(h('<div class="awnwrap">' + KART.awning() + '</div>'));
-        var mat = h('<div class="mat2">' + goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + bowl2(K.pic[k]) + '</button>'; }).join('') + '</div>');
-        var sold = h('<div class="sold"><span class="coin s">Z</span> <b>0</b> / 6</div>');
+        var mat = h('<div class="mat2"></div>');
+        var sold = h('<div class="sold"><span class="coin s">Z</span> <b>0</b> / ' + N + '</div>');
         var shop = h('<div class="shop"><div class="buyer"></div></div>'); shop.firstChild.appendChild(top); shop.firstChild.appendChild(sold); shop.appendChild(mat);   // the buyer beside the stall, so the goods can be big
-        run.scr.appendChild(shop); run.clock(90, function () { done({ right: served, part: served / 6 }); });
+        run.scr.appendChild(shop); run.clock(secs(90, N, 6), function () { done({ right: served, part: served / N }); });
         run.remind = function () { say(K.en[q[c]], run); };
         function next() {
-          if (c >= 6) return done({ right: served, finished: served === 6, part: served / 6 });
-          var who = people[c]; top.querySelector('.person').innerHTML = '<img alt="" src="' + K.pic[who] + '">';
+          if (c >= goods.length) {
+            if (si + 1 >= SETS.length) return done({ right: served, finished: served === N, part: served / N });
+            si++; base += goods.length; goods = SETS[si]; q = shuffle(goods); c = 0; lay();
+          }
+          var who = people[(base + c) % people.length]; top.querySelector('.person').innerHTML = '<img alt="" src="' + K.pic[who] + '">';
           top.classList.remove('leave', 'come'); void top.offsetWidth; top.classList.add('come');
           var bar = top.querySelector('.pat b'); bar.style.transition = 'none'; bar.style.transform = 'scaleX(1)'; void bar.offsetWidth; bar.style.transition = 'transform 12s linear'; bar.style.transform = 'scaleX(0)';
           clearTimeout(pt); pt = run.later(12000, function () { run.miss++; react(run.scr, 'sad'); top.classList.add('leave'); c++; run.later(600, next); });
-          say(K.en[q[c]], run);
+          run.item(q[c]); say(K.en[q[c]], run);
         }
-        [].forEach.call(mat.children, function (b) {
+        function lay() {
+          mat.innerHTML = goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '">' + bowl2(K.pic[k]) + '</button>'; }).join('');
+          [].forEach.call(mat.children, wire);
+        }
+        function wire(b) {
           b.onclick = function () {
-            if (c >= 6 || run.dead) return;
+            if (c >= goods.length || run.dead) return;
             if (b.dataset.k === q[c]) { clearTimeout(pt); run.good(); react(run.scr, 'cheer'); served++; sold.querySelector('b').textContent = served; b.classList.add('fly'); setTimeout(function () { b.classList.remove('fly'); }, 700); top.classList.add('leave'); c++; run.later(700, next); }
             else { clearTimeout(pt); run.bad(b); react(run.scr, 'sad'); top.classList.add('sad', 'leave'); c++; run.later(1200, function () { top.classList.remove('sad'); next(); }); }   // one go: the customer leaves unhappy
           };
-        });
-        next();
+        }
+        lay(); next();
       } },
 
     'j-lambobi': { title: 'Ƙirga taurari', cls: 'night', instr: ['Taurari suna jira! Ka danna su bisa tsari, daga ɗaya.', 'Taurari suna jira! Ki danna su bisa tsari, daga ɗaya.'], ask: ['Ka iya ƙirga da Turanci?', 'Kin iya ƙirga da Turanci?'],
@@ -480,24 +650,34 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
          now and then, and a fisherman sits on the far bank with his line in the water. */
       play: function (run, done) {
         var R = shuffle([['cat', ['CAT', 'CAR', 'CUP', 'COT', 'CAP']], ['dog', ['DOG', 'DIG', 'LOG', 'FOG', 'DOT']], ['sun', ['SUN', 'BUN', 'SUB', 'RUN', 'SUM']], ['bus', ['BUS', 'BUT', 'BUN', 'BUD', 'BUG']], ['cup', ['CUP', 'CAP', 'CUT', 'PUP', 'CUB']]]), r = 0, got = 0, busy = false;
+        if (LW.length) {
+          // a lesson's words: the other canoes carry the lesson's other words, nearest in length first, then the same first letter
+          var SPARE = ['CAT', 'DOG', 'SUN', 'BUS', 'CUP', 'BED', 'HAT', 'PEN', 'GOAT', 'FISH', 'BOOK', 'MILK', 'BREAD', 'MANGO', 'WATER', 'CHAIR'];
+          R = shuffle(LW).map(function (w) {
+            var t = txt(w).toUpperCase(), all = LW.map(function (x) { return txt(x).toUpperCase(); }).concat(SPARE).filter(function (x, k, a) { return x !== t && a.indexOf(x) === k; });
+            var near = shuffle(all).sort(function (a, b) { return (Math.abs(a.length - t.length) - Math.abs(b.length - t.length)) || ((b[0] === t[0] ? 1 : 0) - (a[0] === t[0] ? 1 : 0)); });
+            return [w, [t].concat(near.slice(0, 4))];
+          });
+        }
+        var N = R.length;
         /* five canoes at once (Sani 2026-10-25: "no more than 5, but on the water"): each lane keeps to open water, and a
            canoe fades in and out where the river meets a bank, so none is ever seen on the sand (top, from, to, seconds) */
         var LANES = [[30.5, -26, 100, 27, 0, .92], [30.5, -26, 100, 27, .5, .92], [37, -12, 88, 22, .2, .95], [43.5, 20, 64, 15, .6, .97], [50, 31, 46, 11, .35, 1]];   // the last number: further canoes are smaller (Sani 2026-10-27, realism)
         var bank = h('<div class="bank2"><img alt=""></div>'), river = h('<div class="canal2"></div>');
         run.scr.appendChild(h('<div class="kwstand" aria-hidden="true"><i></i><i></i><b></b></div>'));   // the picture's board stands on two posts at the water's edge
         var life = h('<div class="riverlife"><span class="fisher">' + fisherman() + '</span>' + [0, 1, 2].map(function (k) { return '<span class="leap l' + k + '">' + leapFish() + '</span>'; }).join('') + '</div>');
-        run.scr.appendChild(life); run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(120, function () { done({ right: got, part: got / 5, misses: run.miss }); });
+        run.scr.appendChild(life); run.scr.appendChild(bank); run.scr.appendChild(river); run.clock(secs(120, N, 5), function () { done({ right: got, part: got / N, misses: run.miss }); });
         run.remind = function () { say(line(gid, 'how'), run); };
         function audio() { try { ac = liveAC(ac); return ac; } catch (e) { return null; } }
         function freeze(c) { var m = getComputedStyle(c).transform; c.style.animation = 'none'; c.style.transform = m === 'none' ? '' : m; void c.offsetWidth; }
         function splash(c, cls) { var cr = io.rect(c), rr = io.rect(river), sp = h('<span class="' + cls + '" style="left:' + (cr.left - rr.left + cr.width * .45) + 'px;top:' + (cr.top - rr.top + cr.height * .7) + 'px"><i></i><i></i><i></i><b></b><b></b><b></b></span>'); river.appendChild(sp); setTimeout(function () { sp.remove(); }, 1600); }
         function round() {
-          busy = false; var item = R[r]; bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
+          busy = false; var item = R[r]; run.item(item[0]); bank.querySelector('img').src = K.pic[item[0]]; river.innerHTML = '';
           shuffle(item[1]).forEach(function (w, k) {
-            var L = LANES[k], c = h('<button type="button" class="canoe2 lane" style="top:' + L[0] + 'cqw;--k:' + L[5] + ';--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
+            var L = LANES[k], c = h('<button type="button" class="canoe2 lane' + (w.length > 6 ? ' long' : '') + '" style="top:' + L[0] + 'cqw;--k:' + L[5] + ';--x0:' + L[1] + 'cqw;--x1:' + L[2] + 'cqw;animation-duration:' + L[3] + 's;animation-delay:-' + (L[4] * L[3]).toFixed(1) + 's">' + KART.canoe(w) + '</button>');
             c.onclick = function () {
               if (run.dead || busy) return; busy = true;
-              if (w === item[0].toUpperCase()) {
+              if (w === item[1][0]) {
                 run.good(c); react(run.scr, 'cheer'); got++; freeze(c); c.classList.add('row'); splash(c, 'splash');
                 var a = audio(); if (a) paddleSound(a);
                 requestAnimationFrame(function () { c.style.transition = 'transform 1.4s cubic-bezier(.5,0,.8,.4)'; c.style.transform = 'translateX(150cqw)'; });
@@ -506,7 +686,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
                 var b = audio(); if (b) sinkSound(b);
                 requestAnimationFrame(function () { c.style.transition = 'transform 1.6s ease-in, opacity 1.2s ease-in .4s'; c.style.transform += ' translateY(9cqw) rotate(-14deg)'; c.style.opacity = '0'; });
               }
-              r++; if (r >= 5) run.later(1900, function () { done({ right: got, finished: true, part: got / 5, misses: run.miss }); }); else run.later(1900, round);
+              r++; if (r >= N) run.later(1900, function () { done({ right: got, finished: true, part: got / N, misses: run.miss }); }); else run.later(1900, round);
             };
             river.appendChild(c);
           });
@@ -521,18 +701,20 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
          the next box, where it stays with its letter; its place is left empty. A wrong pot cracks apart with a crash, the
          word is marked wrong and the next word comes. */
       play: function (run, done) {
-        var W = shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, words = 0, misses = 0, busy = false;
+        var W = LW.length ? shuffle(LW) : shuffle(['cat', 'dog', 'sun', 'bus']), N = W.length, wi = 0, li = 0, words = 0, misses = 0, busy = false;
         var top = h('<div class="sp"><span class="sppic"><img alt=""></span><div class="spslots"></div></div>');
         var pad = h('<div class="pots2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(pad);
-        run.clock(120, function () { done({ right: words, part: words / 4, misses: misses }); });
+        run.clock(secs(120, N, 4), function () { done({ right: words, part: words / N, misses: misses }); });
         run.remind = function () { say(K.en[W[wi]], run); };
         function nextWord() { wi++; if (wi >= W.length) run.later(900, function () { done({ right: words, finished: words === W.length, misses: misses }); }); else run.later(1000, word); }
         function word() {
-          busy = false; var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]];
+          busy = false; var w = letters(W[wi]); li = 0; run.item(W[wi]); top.querySelector('img').src = K.pic[W[wi]];
+          top.classList.toggle('long', w.length > 6); pad.classList.toggle('long', w.length > 6);
           top.querySelector('.spslots').innerHTML = w.split('').map(function () { return '<span></span>'; }).join('');
           var pool = shuffle(w.split('').concat(shuffle('BDEGHKLMPRT'.split('').filter(function (x) { return w.indexOf(x) < 0; })).slice(0, 2)));
-          pad.innerHTML = '';
+          var gp = gaps(top.querySelector('.spslots'), W[wi]); top.classList.toggle('long', w.length + gp > 6);
+          pad.innerHTML = ''; pad.classList.toggle('two', pool.length > 9); pad.style.setProperty('--n', String(pool.length)); top.style.setProperty('--n', String(w.length + gp * .5));   // sizes for a long word (sc-tukwane.css)
           pool.forEach(function (L) {
             var b = h('<button type="button" class="pot2">' + tukPot(L) + '</button>');
             b.onclick = function () {
@@ -564,7 +746,10 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       place: function (r) { return r.finished ? 'Built the whole house in time: spelling out loud is there, and with Tukwane agreeing Rubutu moves on.' : 'Built ' + Math.round(100 * (r.built || 0) / 12) + '% of the house before time ran out: Rubutu would start at three letters.'; },
       play: function (run, done) {
         /* every letter said right is a mud brick in the house; a wrong one knocks the top brick off. Finish before the clock runs out. */
-        var W = shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, placed = 0, TOTAL = 12;
+        var W = LW.length ? shuffle(LW) : shuffle(['cat', 'dog', 'sun', 'bus']), wi = 0, li = 0, placed = 0, TOTAL = 12;
+        /* a lesson's words: each is spelt once, and the house grows by the share of all their letters spelt right (a
+           wrong letter still knocks a brick's worth off); the game ends after the last word, or with the house built */
+        var LES = LW.length > 0, ALL = W.reduce(function (a, w) { return a + letters(w).length; }, 0), lt = 0, done1 = 0, rightW = 0;
         var top = h('<div class="sp hs"><span class="sppic"><img alt=""></span><div class="spslots"></div><span class="hpct"><b>0</b>%</span></div>');
         /* the house is the red-earth Hausa house of the scene behind (sc-bulo.ts buloHouse, Sani 2026-10-26) */
         var site = h('<div class="site">' + buloHouse() + '</div>');
@@ -575,7 +760,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var hrow = h('<div class="hrow"></div>'); hrow.appendChild(site);
         run.scr.appendChild(top); run.scr.appendChild(hrow); run.scr.appendChild(kb); run.scr.appendChild(box);
         run.noBump = true;
-        run.clock(150, function () { done({ right: wi, part: placed / TOTAL, built: placed }); });
+        run.clock(LES ? secs(150, W.length, 4) : 150, function () { done({ right: LES ? rightW : wi, part: placed / TOTAL, built: placed }); });
         run.remind = function () { say(K.en[W[wi]], run); };
         var bricks = site.querySelectorAll('.hb');
         function paint() { top.querySelector('.hpct b').textContent = Math.round(100 * placed / TOTAL); }
@@ -586,8 +771,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           site.classList.remove('quake'); void site.offsetWidth; site.classList.add('quake'); paint();
         }
         function word() {
-          var w = W[wi].toUpperCase(); li = 0; top.querySelector('img').src = K.pic[W[wi]]; kb.classList.remove('locked');
+          var w = letters(W[wi]); li = 0; run.item(W[wi]); top.querySelector('img').src = K.pic[W[wi]]; kb.classList.remove('locked');
           top.querySelector('.spslots').innerHTML = w.split('').map(function () { return '<span></span>'; }).join('');
+          top.querySelector('.spslots').style.setProperty('--n', String(w.length + gaps(top.querySelector('.spslots'), W[wi]) * .5));   // a long word's boxes share the board (sc-bulo.css)
           box.cue();
           run.later(200, function () { run.said = say(K.en[W[wi]], run); if (run.auto) autoGo(); });   // after the first press Laila listens by herself
         }
@@ -595,32 +781,41 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var quiet = 0, stamp = '';
         /* the same for a spoken run of letters and for a key. "C A T" in one breath is welcome: every letter in order is a
            brick; the first wrong one breaks one and stops (one go) */
+        /* the lesson's way: bricks follow the share of all the letters spelt right */
+        function lesBricks(L) { var want = Math.floor(TOTAL * lt / ALL); while (placed < want) addBrick(L); }
+        function lesNext(ms) {
+          done1++; wi++;
+          if (done1 >= W.length || placed >= TOTAL) { box.busy = true; kb.classList.add('locked'); if (placed >= TOTAL) site.classList.add('done');
+            run.later(ms + 600, function () { done({ right: rightW, finished: rightW === W.length, part: placed / TOTAL, built: placed }); }); return; }
+          run.later(ms, word);
+        }
         function take(got, kbtn) {
-          var w = W[wi].toUpperCase();
+          var w = letters(W[wi]);
           for (var k = 0; k < got.length && li < w.length; k++) {
             var L = String(got[k]).toUpperCase();
             if (L === w[li]) {
-              run.idle = 0; var slot = top.querySelectorAll('.spslots > span')[li]; slot.textContent = L; slot.classList.add('on'); addBrick(L); li++;
+              run.idle = 0; var slot = top.querySelectorAll('.spslots > span')[li]; slot.textContent = L; slot.classList.add('on'); li++;
+              if (LES) { lt++; lesBricks(L); } else addBrick(L);
               if (kbtn) { kbtn.classList.remove('bad'); kbtn.classList.add('good'); setTimeout(function () { kbtn.classList.remove('good'); }, 500); }
-              if (placed >= TOTAL) { box.busy = true; kb.classList.add('locked'); run.right = 4; site.classList.add('done'); react(run.scr, 'cheer'); sfx('yay'); run.later(2200, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
+              if (!LES && placed >= TOTAL) { box.busy = true; kb.classList.add('locked'); run.right = 4; site.classList.add('done'); react(run.scr, 'cheer'); sfx('yay'); run.later(2200, function () { done({ right: 4, finished: true, built: TOTAL }); }); return; }
             } else {
-              run.bad(site); react(run.scr, 'sad'); breakBrick(); li = -1;
+              run.bad(site); react(run.scr, 'sad'); breakBrick(); if (LES) lt = Math.ceil(placed * ALL / TOTAL); li = -1;
               if (kbtn) { kbtn.classList.add('bad'); setTimeout(function () { kbtn.classList.remove('bad'); }, 700); }
               break;
             }
           }
-          if (li < 0) { box.busy = true; kb.classList.add('locked'); wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
-          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); run.good(site); react(run.scr, 'cheer'); run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
+          if (li < 0) { box.busy = true; kb.classList.add('locked'); if (LES) { lesNext(1500); return; } wi = (wi + 1) % W.length; run.later(1500, word); return; }   // one go: the brick breaks and the next word comes
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); run.good(site); react(run.scr, 'cheer'); if (LES) { rightW++; lesNext(900); return; } run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
           else if (run.auto && !kbtn) autoGo(); else box.cue();
         }
         /* a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
            she listens: what she hears for a letter already typed past is dropped (stamp) */
-        box.listen(function () { var w = W[wi].toUpperCase(); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: W[wi], target: w[li] }; }, function (r) {
+        box.listen(function () { var w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, function (r) {
           if ((stamp && stamp !== wi + ':' + li) || box.busy) return;   // (the ?tester buttons answer without a listen, so no stamp)
           stamp = ''; var got = r.value || [];
           if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }   // nothing heard: once more, then wait for a press
           quiet = 0; take(got);
-        }, function () { return W[wi].toUpperCase().slice(li).split(''); });
+        }, function () { return letters(W[wi]).slice(li).split(''); });
         var ready = function () { return !run.dead && !box.busy; };
         var typed = function (L, b) { run.auto = false; take([L], b); };
         kb.addEventListener('click', function (e) { var b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
@@ -631,12 +826,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       } }
   };
 
-  Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io, opts }));   // the Arewa games (games2.ts)
+  Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs, batches }));   // the Arewa games (games2.ts)
 
   if (opts.lesson) start(); else question();
   return {
-    stop: function () { gone = true; if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } closeAC(); },
-    again: function () { if (live && live.remind) live.remind(); else if (live && live.scr.classList.contains('q')) say(line(gid, 'ask'), live); },
+    stop: function () { gone = true; if (unl) { unl.stop(); unl = null; } if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } closeAC(); },
+    again: function () { if (unl) unl.again(); else if (live && live.remind) live.remind(); else if (live && live.scr.classList.contains('q')) say(line(gid, 'ask'), live); },
   };
 }
 
@@ -656,7 +851,9 @@ export const GAME_LIST: { id: string; name: string; en: string; section: string;
   { id: 'j-karatu', name: 'Kwale-kwale', en: 'The canoes', section: 'Karatu' },
   { id: 'j-allo', name: 'Allo', en: 'The writing board · speaking', section: 'Karatu' },
   { id: 'j-jirgi', name: 'Jirgin ruwa', en: 'The ferry · speaking', section: 'Karatu' },
+  { id: 'j-ruwa', name: 'Ruwan sama', en: 'Rain on the farm · speaking', section: 'Karatu' },
   { id: 'j-rubutu', name: 'Tukwane', en: 'Clay pots', section: 'Rubutu' },
   { id: 'j-rubutu-say', name: 'Ginin bulo', en: 'Build the house · speaking', section: 'Rubutu' },
   { id: 'j-marubuci', name: 'Marubucin wasiƙa', en: 'The letter writer · speaking', section: 'Rubutu' },
+  { id: 'j-rini', name: 'Karofi', en: 'The Kano dye pits · speaking', section: 'Rubutu' },
 ];

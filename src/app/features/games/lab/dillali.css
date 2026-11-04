@@ -12,9 +12,11 @@
 .glab .mkframe img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .3s}
 .glab .mkgoods.turn .mkcard{transform:scaleX(0)}
 .glab .mkgoods .mkx{position:absolute;inset:0;opacity:0}
-.glab .mkgoods .mkx::before,.glab .mkgoods .mkx::after{content:"";position:absolute;left:20%;right:20%;top:calc(50% - 1cqw);height:2cqw;border-radius:1.2cqw;background:#E53935;box-shadow:0 0 0 .4cqw #fff}
-.glab .mkgoods .mkx::before{transform:rotate(45deg)}.glab .mkgoods .mkx::after{transform:rotate(-45deg)}
-.glab .mkgoods.wrong .mkx{animation:g-dlstamp .35s cubic-bezier(.3,1.6,.5,1) forwards}@keyframes g-dlstamp{from{opacity:0;transform:scale(1.8)}to{opacity:1;transform:none}}
+/* no cross on a miss, ever (Sani 2026-10-27): the photo goes grey and dull before it drops away */
+.glab .mkgoods .mkframe img{transition:filter .35s}.glab .mkgoods.wrong .mkframe img{filter:grayscale(1) brightness(.72)}
+/* a thing with no drawing of its own (a lesson's word): the photo itself is what the buyer takes */
+.glab .mkdrawn .mkph,.glab .deal .prop .mkph{display:block;width:100%;height:100%;border-radius:.6cqw;overflow:hidden;border:.3cqw solid #FFF6E0;box-shadow:0 .4cqw .8cqw rgba(0,0,0,.3)}
+.glab .mkdrawn .mkph img,.glab .deal .prop .mkph img{width:100%;height:100%;object-fit:cover;display:block}
 .glab .mkgoods.wrong .mkframe img{filter:grayscale(.6) brightness(.9)}
 .glab .mkgoods.wrong .mkcard{animation:g-shk .4s .1s}
 .glab .mkgoods.back{opacity:0;transform:translateY(5cqw) scale(.85);transition:transform .8s ease-in,opacity .6s .2s}

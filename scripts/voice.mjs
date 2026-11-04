@@ -4,7 +4,7 @@
 // Provider: KRATU_TTS in .env (google = the Translate voice used for every clip so far; add others in synth()).
 // Every clip is normalised to −18.5 dB mean and encoded opus 24 kHz mono. The key, if any, is read from .env and never printed.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -28,9 +28,11 @@ async function record(text, lang, dest) {
   const tmp = join(tmpdir(), 'kratu-voice-' + Date.now()); mkdirSync(tmp, { recursive: true });
   const files = []; for (const [i, c] of chunks(text).entries()) { const f = join(tmp, 'p' + i + '.mp3'); writeFileSync(f, await synth(c, lang)); files.push(f); }
   writeFileSync(join(tmp, 'list.txt'), files.map((f) => `file '${f}'\n`).join(''));
-  const raw = join(tmp, 'raw.wav'); execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), '-ac', '1', '-ar', '24000', raw]);
-  const det = execFileSync('ffmpeg', ['-i', raw, '-af', 'volumedetect', '-f', 'null', '-'], { stdio: ['ignore', 'pipe', 'pipe'] }).toString() + ''; const m = /mean_volume:\s*(-?[\d.]+) dB/.exec(det) || /mean_volume:\s*(-?[\d.]+) dB/.exec(execFileSync('ffmpeg', ['-i', raw, '-af', 'volumedetect', '-f', 'null', '-'], { stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8' }));
-  const gain = m ? (TARGET_DB - parseFloat(m[1])).toFixed(2) : '0';
+  const raw = join(tmp, 'raw.wav'); execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), '-ac', '1', '-ar', '24000', '-c:a', 'pcm_f32le', raw]);
+  // volumedetect reports on stderr; execFileSync hands back stdout only, so the mean was never found and every clip got 0 dB
+  const det = spawnSync('ffmpeg', ['-hide_banner', '-i', raw, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' }).stderr || '', m = /mean_volume:\s*(-?[\d.]+) dB/.exec(det);
+  if (!m) throw new Error('no loudness reading');
+  const gain = (TARGET_DB - parseFloat(m[1])).toFixed(2);
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', raw, '-af', 'volume=' + gain + 'dB', '-c:a', 'libopus', '-b:a', '24k', '-ac', '1', dest]);
   rmSync(tmp, { recursive: true, force: true });
 }

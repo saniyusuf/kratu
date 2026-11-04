@@ -39,7 +39,9 @@ export class NemoScreen extends TopicLessonBase {
   readonly n = signal(4); readonly choices = signal<Item[]>([]); readonly placeholders = signal<number[]>([]); readonly masks = signal<Record<string, 'good' | 'bad'>>({});
   readonly dots = signal<('' | 'done' | 'miss')[]>([]); readonly dotOn = signal(-1);
   readonly resultsOn = signal(false); readonly resultItems = signal<Item[]>([]); readonly resultMiss = signal<string[]>([]); readonly saying = signal('');
-  private pool: Item[] = []; private seen: string[] = []; private right: Item[] = []; private wrongs: Item[] = [];
+  private pool: Item[] = []; private seen: string[] = [];
+  /** ?words=…: only a lesson's own words are asked, each once (the others are still the wrong pictures beside them) */
+  private ask: Item[] | null = null; private right: Item[] = []; private wrongs: Item[] = [];
   private tapRes: ((k: string) => void) | null = null; private curItem: Item | null = null;
 
   private get qdef() { return QUIZ_CATS.find((x) => x.key === this.cat()) || QUIZ_CATS[0]; }
@@ -50,6 +52,8 @@ export class NemoScreen extends TopicLessonBase {
     if (this.qdef.set) { ['lambobi_symbols', 'lambobi_tens', 'lambobi_hundreds'].forEach((c) => this.words.list(c).forEach((w) => add(c, w))); return; }
     const cats = Object.keys(this.words.cats()).filter((c) => !/^lambobi|^numbers/.test(c)), lists = cats.map((c) => this.words.list(c).slice());
     for (let any = true; any;) { any = false; lists.forEach((l, i) => { if (l.length) { add(cats[i], l.shift()!); any = true; } }); }
+    const only = (new URLSearchParams(location.search).get('words') || '').toLowerCase().split(',').map((w) => w.trim()).filter(Boolean);
+    const mine = this.pool.filter((x) => only.includes(x.k)); this.ask = mine.length ? mine : null;
   }
   private sameAs(a: Item, b: Item): boolean { return a.k === b.k || a.w.img === b.w.img || a.en.toLowerCase() === b.en.toLowerCase(); }
   private distractors(target: Item, n: number): Item[] {
@@ -57,8 +61,9 @@ export class NemoScreen extends TopicLessonBase {
     sh.forEach((x) => { if (out.length < n && !used[x.cat!] && !clash(x)) { out.push(x); used[x.cat!] = 1; } }); sh.forEach((x) => { if (out.length < n && !clash(x)) out.push(x); }); return out;
   }
   private nextTen(prevWrong: Item[], cap = 10): Item[] {
-    const items = prevWrong.slice(), fresh = this.pool.filter((x) => !this.seen.includes(x.k) && !items.includes(x)); while (items.length < cap && fresh.length) items.push(fresh.shift()!);
-    if (items.length < cap) { const passed = shuffle(this.pool.filter((x) => this.seen.includes(x.k) && !items.includes(x))); while (items.length < cap && passed.length) items.push(passed.shift()!); }
+    const src = this.ask || this.pool;
+    const items = prevWrong.slice(), fresh = src.filter((x) => !this.seen.includes(x.k) && !items.includes(x)); while (items.length < cap && fresh.length) items.push(fresh.shift()!);
+    if (items.length < cap && !this.ask) { const passed = shuffle(this.pool.filter((x) => this.seen.includes(x.k) && !items.includes(x))); while (items.length < cap && passed.length) items.push(passed.shift()!); }
     items.forEach((x) => { if (!this.seen.includes(x.k)) this.seen.push(x.k); }); return shuffle(items);
   }
   private tapKey(): string { return this.qdef.set ? 's_qn_tap' : 'app_quiz_tap'; }
@@ -100,8 +105,8 @@ export class NemoScreen extends TopicLessonBase {
     this.loadPool(); this.n.set(this.N); let first = true, prev: Item[] = [];
     // whatever the example already got right is not asked again: the first round is one short and starts a dot ahead
     const done = this.session.takeExample(this.qdef.set ? 'nemonum' : 'nemo'); let pre = 0;
-    if (done && this.pool.some((x) => x.k === done)) { this.pool = this.pool.filter((x) => x.k !== done); pre = 1; }
-    for (;;) { this.check(); const items = this.nextTen(prev, 10 - pre); if (!items.length) break; await this.runTen(items, first, pre); pre = 0; first = false; prev = this.wrongs.slice(); if (!prev.length && !this.pool.some((x) => !this.seen.includes(x.k))) break; }
+    if (done && (this.ask || this.pool).some((x) => x.k === done)) { this.pool = this.pool.filter((x) => x.k !== done); if (this.ask) this.ask = this.ask.filter((x) => x.k !== done); pre = 1; }
+    for (;;) { this.check(); const items = this.nextTen(prev, 10 - pre); if (!items.length) break; await this.runTen(items, first, pre); pre = 0; first = false; prev = this.wrongs.slice(); if (!prev.length && !(this.ask || this.pool).some((x) => !this.seen.includes(x.k))) break; }
     await this.play(this.bus.gk('app_stage_done')); this.finished();
   }
   protected clear(): void { this.tapRes = null; this.curItem = null; this.choices.set([]); this.placeholders.set([]); this.masks.set({}); this.dots.set([]); this.fb('', ''); this.resultsOn.set(false); this.resultItems.set([]); }

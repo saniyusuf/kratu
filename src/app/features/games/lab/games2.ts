@@ -16,12 +16,14 @@ import { gyLorry, gySacks, gyLorryLoad } from './sc-gyada';
 import { alloWrite, alloWash } from './sc-allo';
 import { postRider, envelopeArt, inkLetter, splat, wasikaSound, wsBoard, wsPins } from './sc-wasika';
 import * as JR from './sc-jirgi';
+import { wordCloud, rainSheet, millet, ruwaSound, reaper } from './sc-ruwa';
+import { dyeCloth, dyeLetter, dyeSpoil, riniSound, DYE_SETS } from './sc-rini';
 import * as SY from './sc-suya';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
 import { liveAC } from './audioctx';
 
 export function moreGames(c: any): Record<string, any> {
-  const { K, h, say, sfx, drum, shuffle, micBox, line, F, io } = c, opts = c.opts || {};
+  const { K, h, say, sfx, drum, shuffle, micBox, line, F, io, LW, txt, spoken, letters, gaps, secs, batches } = c, opts = c.opts || {};
   const later = (run, ms, f) => run.later(ms, f);
   const beat = (run, n) => { for (let k = 0; k < n; k++) later(run, k * 200, () => drum(k % 2 === 0)); };
   const bump = (el, cls, ms = 700) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); if (ms) setTimeout(() => el.classList.remove(cls), ms); };
@@ -168,7 +170,7 @@ export function moreGames(c: any): Record<string, any> {
          */
         const AUTO = true;
         function next() {
-          const L = L8[i], rw = arrive(L, looks[i % looks.length]);
+          const L = L8[i], rw = arrive(L, looks[i % looks.length]); run.item(L);
           later(run, 1500, () => { rw.classList.remove('gallop'); rw.classList.add('listen'); row.children[i].classList.add('now');
             box.listen(() => ({ target: L, until: L, maxWrong: 2, limit: 6000 }), (r) => {
               box.busy = true; rw.classList.remove('listen');
@@ -196,20 +198,22 @@ export function moreGames(c: any): Record<string, any> {
          the first press Laila listens by herself, as in the other market games. Named right: the photo turns into its
          drawing with a burst of coins and their clink, the drawing goes down to the shopper, who takes it the way people
          do (an animal led off on a rope, the mat prayed on, a pot on the head, a cap put on…) while the crowd claps.
-         Wrong or out of time: a red cross on the photo, the shopper's low "a'a", and they walk off without buying; the
+         Wrong or out of time: the photo goes grey (never a cross), the shopper's low "a'a", and they walk off without buying; the
          photo drops away and its name is never said. The square behind is sc-dillali.ts. */
       play(run, done) {
         const G = [['ram', 'goat', 'chicken', 'camel', 'donkey'], ['millet', 'groundnut', 'mango', 'bread', 'onion'], ['calabash', 'pot', 'mat', 'kettle', 'broom'], ['kaftan', 'cap', 'turban', 'shoe', 'umbrella']];
-        const items = shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6), among = G.flat();
+        // a lesson's words: every one is held up once (a thing with no drawing stays its photo, and the buyer takes it in hand)
+        const items = LW.length ? shuffle(LW) : shuffle(G.map((g) => shuffle(g)[0]).concat(shuffle(G.flat()).slice(0, 4))).filter((w, k, a) => a.indexOf(w) === k).slice(0, 6);
+        const N = items.length, among = (LW.length ? items : G.flat()).map(spoken);
         const LIMIT = 10000;   // ms to say each thing
         let r = 0, sold = 0, tick = 0;
         const st = h('<div class="dstage mk"><div class="dillw">' + auctioneer() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + crowdKw(3) + '</div></div>');
         // the photo stands on a wooden easel whose feet are on the square's ground (Sani 2026-10-27: nothing floats)
         const board = h('<div class="mkboard"><div class="mkeasel"><i class="lg b"></i><i class="lg l"></i><i class="lg r"></i></div><div class="mkgoods"></div><div class="mkdrawn"></div><div class="mkfx"></div><div class="mktime"><i></i></div></div>');
-        const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / 6</div>');
+        const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / ' + N + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(board); run.scr.appendChild(tally); run.scr.appendChild(box);
-        run.clock(170, () => done({ right: sold, part: sold / 6 }));
+        run.clock(secs(170, N, 6), () => done({ right: sold, part: sold / N }));
         run.remind = () => say(line('j-dillali', 'how'), run);
         const fitEasel = () => { if (run.dead) { removeEventListener('resize', fitEasel); return; } const u = run.scr.getBoundingClientRect().width / 100; if (u) board.style.setProperty('--gnd', ((st.getBoundingClientRect().bottom - board.getBoundingClientRect().top) / u).toFixed(2) + 'cqw'); };
         addEventListener('resize', fitEasel); run.offs.push(() => removeEventListener('resize', fitEasel)); fitEasel();
@@ -217,7 +221,7 @@ export function moreGames(c: any): Record<string, any> {
         const dealw = st.querySelector('.dealw'), crowdEl = st.querySelector('.crowd');
         const stopClock = () => { clearInterval(tick); tick = 0; clock.classList.remove('on', 'warn', 'late', 'rest'); };
         function next() {
-          const w = items[r]; st.classList.remove('sad'); fx.innerHTML = ''; drawn.className = 'mkdrawn'; drawn.innerHTML = '';
+          const w = items[r], ws = spoken(w); run.item(w); st.classList.remove('sad'); fx.innerHTML = ''; drawn.className = 'mkdrawn'; drawn.innerHTML = '';
           goods.className = 'mkgoods'; goods.innerHTML = photoCard(K.pic[w]); void goods.offsetWidth; goods.classList.add('up'); fitEasel();
           dealw.innerHTML = inspector(r); const look = dealw.firstElementChild;
           let left = LIMIT, over = false, quiet = 0;
@@ -226,12 +230,12 @@ export function moreGames(c: any): Record<string, any> {
             sold++; run.good(goods); tally.querySelector('b').textContent = sold; bump(tally, 'pop', 600);
             // the photo turns over into its drawing, coins leap and clink
             goods.classList.add('turn'); fx.innerHTML = coinBurst(); later(run, 250, coinClink);
-            later(run, 260, () => { drawn.innerHTML = GOODS[w].svg(); drawn.classList.add('pop'); });
+            later(run, 260, () => { drawn.innerHTML = GOODS[w] ? GOODS[w].svg() : '<span class="mkph"><img alt="" src="' + K.pic[w] + '"></span>'; drawn.classList.add('pop'); });
             // the drawing goes down to the shopper, who takes it away
             later(run, 1100, () => { drawn.classList.add('taken'); });
-            later(run, 1450, () => { dealw.innerHTML = deal(w, r); bump(crowdEl, 'clapping', 1600);
+            later(run, 1450, () => { dealw.innerHTML = deal(w, r, K.pic[w]); bump(crowdEl, 'clapping', 1600);
               later(run, 60, () => dealw.firstElementChild && dealw.firstElementChild.classList.add('run')); });
-            step(1450 + (ACT_MS[GOODS[w].act] || 3000));
+            step(1450 + (ACT_MS[GOODS[w] ? GOODS[w].act : 'hand'] || 3000));
           }
           function onMiss() {
             goods.classList.add('wrong'); st.classList.add('sad'); bump(crowdEl, 'grumble', 1400); later(run, 450, aaNo);
@@ -250,7 +254,7 @@ export function moreGames(c: any): Record<string, any> {
               if (left <= 0 && !run.listening) miss();
             }, 100);
           }));
-          box.listen(() => { run.auto = true; return { target: w, among, match: (raw) => io.match(raw, w, among) }; }, (res) => {
+          box.listen(() => { run.auto = true; return { target: ws, among, match: (raw) => io.match(raw, ws, among) }; }, (res) => {
             if (over) return;
             if (res.value === null && !res.raw) {
               if (left <= 0) { miss(); return; }
@@ -258,12 +262,12 @@ export function moreGames(c: any): Record<string, any> {
               run.auto = false; box.cue(); return;
             }
             if (!end()) return;
-            if (res.value === w) { box.yay(); react(run, 'cheer'); onRight(); return; }
+            if (res.value === ws) { box.yay(); react(run, 'cheer'); onRight(); return; }
             run.bad(); box.nope(); react(run, 'sad'); onMiss();
-          }, () => w);
+          }, () => ws);
           autoGo(run, box);
         }
-        function step(ms) { later(run, ms, () => { r++; if (r >= 6) { stopClock(); done({ right: sold, finished: true, part: sold / 6 }); } else next(); }); }
+        function step(ms) { later(run, ms, () => { r++; if (r >= N) { stopClock(); done({ right: sold, finished: true, part: sold / N }); } else next(); }); }
         next();
       } },
 
@@ -397,7 +401,7 @@ export function moreGames(c: any): Record<string, any> {
        blackboard: a zebu cow (White Fulani or Red Bororo), a Sokoto Red goat, a white Sahel goat, a Balami or an Uda ram
        (sc-shanu.ts draws them); they breathe, flick their tails and ears. Hear a price and touch the animal that costs it.
        Right: a buyer comes and leads it off on a rope, it calls (bleat, moo), the cowbell or the coins. Wrong: it shakes
-       its head, complains and turns away, the board gets a red cross, and the next price comes (one touch, no second go). */
+       its head, complains and turns away (never a cross on the board), and the next price comes (one touch, no second go). */
     'j-shanu': { title: 'Kasuwar dabbobi', cls: 'shanu', scene: 'cattle', tap: true,
       placeNo: 'Lambobi would start at the tens, with the lessons.',
       place: (r) => r.right >= 8 ? 'Knew every price by ear, to a thousand: the tens and hundreds would be skipped.' : 'Knew ' + r.right + ' of 8 prices: Lambobi would start ' + (r.hundreds < 2 ? 'at the tens.' : 'at the hundreds.'),
@@ -570,17 +574,19 @@ export function moreGames(c: any): Record<string, any> {
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: (r) => r.longest >= 5 ? 'Read aloud up to ' + r.longest + '-letter words: Karatu would start at long words.' : 'Read aloud up to ' + (r.longest || 0) + '-letter words: Karatu would start at short words.',
       play(run, done) {
-        const W = shuffle(['cat', 'sun', 'bus', 'dog', 'cup']).slice(0, 3).concat(shuffle(['goat', 'book', 'fish', 'milk']).slice(0, 2), shuffle(['bread', 'mango', 'water']).slice(0, 2));
-        let r = 0, got = 0, longest = 0;
+        // a lesson's words, every one, shortest first as the board's own words go
+        const W = LW.length ? shuffle(LW).sort((a, b) => letters(a).length - letters(b).length)
+          : shuffle(['cat', 'sun', 'bus', 'dog', 'cup']).slice(0, 3).concat(shuffle(['goat', 'book', 'fish', 'milk']).slice(0, 2), shuffle(['bread', 'mango', 'water']).slice(0, 2));
+        const among = W.map(spoken); let r = 0, got = 0, longest = 0;
         const st = h('<div class="astage"><div class="allow2"></div></div>'); const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
-        const prog = h('<div class="seats">' + W.map(() => '<i></i>').join('') + '</div>'); run.scr.appendChild(prog);
-        run.clock(150, () => done({ right: got, part: got / W.length, longest }));
+        const prog = h('<div class="seats' + (W.length > 10 ? ' many' : '') + '">' + W.map(() => '<i></i>').join('') + '</div>'); run.scr.appendChild(prog);
+        run.clock(secs(150, W.length, 7), () => done({ right: got, part: got / W.length, longest }));
         run.remind = () => say(line('j-allo', 'how'), run);
         const aw = st.querySelector('.allow2');
         function next() {
-          const w = W[r]; alloWrite(aw, w.toUpperCase());
-          autoRound(run, box, w, W, () => {
-            got++; longest = Math.max(longest, w.length); run.good(aw); sayW(run, K.en[w]); prog.children[r].classList.add('on');
+          const w = W[r]; run.item(w); alloWrite(aw, txt(w).toUpperCase());
+          autoRound(run, box, spoken(w), among, () => {
+            got++; longest = Math.max(longest, letters(w).length); run.good(aw); sayW(run, K.en[w]); prog.children[r].classList.add('on');
             alloWash(aw); later(run, 2350, step);
           }, () => { prog.children[r].classList.add('miss'); aw.classList.add('wrongw'); later(run, 1100, () => { aw.classList.remove('wrongw'); alloWash(aw); }); later(run, 3400, step); });
         }
@@ -596,13 +602,16 @@ export function moreGames(c: any): Record<string, any> {
       placeNo: 'Karatu would start at short words, with the lessons.',
       place: (r) => r.right >= 5 ? 'Read every boat aloud and filled it: the ferry and the board agree.' : 'Read ' + r.right + ' of 5 boats: Karatu would start at short words.',
       play(run, done) {
-        const W = shuffle(['cup', 'bed', 'pen', 'cow', 'egg', 'key', 'hat', 'map'].filter((w) => K.en[w])).slice(0, 5); let r = 0, got = 0;
-        const st = h('<div class="fstage"><div class="bank3">' + W.map((_, k) => '<span class="pq">' + JR.waiter(k) + '</span>').join('') + '</div><div class="ferry"></div></div>');
+        // a lesson's words: every one; the jetty holds five at most, and when they have all gone the next people walk on
+        const W = LW.length ? shuffle(LW) : shuffle(['cup', 'bed', 'pen', 'cow', 'egg', 'key', 'hat', 'map'].filter((w) => K.en[w])).slice(0, 5); let r = 0, got = 0;
+        const N = W.length, GR = batches(W, 5), among = W.map(spoken); let gi = 0, g0 = 0;
+        const queue = (n, off) => Array.from({ length: n }, (_, k) => '<span class="pq">' + JR.waiter(k + off) + '</span>').join('');
+        const st = h('<div class="fstage"><div class="bank3">' + queue(GR[0].length, 0) + '</div><div class="ferry"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
-        run.clock(150, () => done({ right: got, part: got / 5 }));
+        run.clock(secs(150, N, 5), () => done({ right: got, part: got / N }));
         run.remind = () => say(line('j-jirgi', 'how'), run);
         const ferry = st.querySelector('.ferry'), bank = st.querySelector('.bank3');
-        const who = () => bank.children[W.length - 1 - r];   // the one nearest the boat goes first
+        const who = () => bank.children[GR[gi].length - 1 - (r - g0)];   // the one nearest the boat goes first
         /* where the walker must go, in the jetty's own (scaled) px: to the jetty's end, then up into the boat's seat */
         function aim(p) {
           const op = ferry.offsetParent || st, S = op.getBoundingClientRect(), k = S.width / op.offsetWidth || 1, B = bank.getBoundingClientRect(), kb = (B.width / bank.offsetWidth || 1);
@@ -612,9 +621,11 @@ export function moreGames(c: any): Record<string, any> {
           p.style.setProperty('--x2', ((bx - fx) / kb) + 'px'); p.style.setProperty('--y2', ((by - fy) / kb) + 'px');
         }
         function next() {
-          const w = W[r]; ferry.innerHTML = JR.engineBoat(w.toUpperCase(), W.length - 1 - r); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
+          if (r - g0 >= GR[gi].length) { g0 += GR[gi].length; gi++; bank.innerHTML = queue(GR[gi].length, g0); }   // the next people come down the jetty
+          // the passenger is the same person who waits on the jetty
+          const w = W[r]; run.item(w); ferry.innerHTML = JR.engineBoat(txt(w).toUpperCase(), g0 + GR[gi].length - 1 - (r - g0)); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
           JR.puttPutt(2.2); later(run, 2300, () => ferry.classList.add('moor'));
-          autoRound(run, box, w, W, () => {
+          autoRound(run, box, spoken(w), among, () => {
             got++; run.good(ferry); sayW(run, K.en[w]);
             const p = who(); aim(p); ferry.classList.add('plank'); p.classList.add('aboard');
             later(run, 1900, () => { p.classList.add('in'); ferry.classList.add('boarded'); });
@@ -630,7 +641,76 @@ export function moreGames(c: any): Record<string, any> {
             later(run, 3900, step);
           });
         }
-        function step() { r++; if (r >= 5) done({ right: got, finished: true, part: got / 5 }); else next(); }
+        function step() { r++; if (r >= N) done({ right: got, finished: true, part: got / N }); else next(); }
+        next();
+      } },
+
+    /* ---------------- Karatu: rain on the farm ---------------- */
+    /* Ruwan sama (Sani 2026-11-02, for the long words): a rain cloud carries the word across the sky to one of six
+       seedlings on the near ridge. Read it aloud: thunder, the cloud darkens and rains, the earth darkens and the millet
+       shoots up and heads out; the family cheers. Wrong: the cloud blows away dry, a gust of dust, the seedling wilts.
+       One answer each, no hints, the word is never said for the child. All six rained on: the harvest glints. */
+    'j-ruwa': { title: 'Ruwan sama', cls: 'ruwa', scene: 'farmrain',
+      placeNo: 'Karatu would start at short words, with the lessons.',
+      place: (r) => r.right >= 6 ? 'Read every cloud aloud and the whole farm grew.' : 'Read ' + r.right + ' of 6 clouds: Karatu would start at shorter words.',
+      play(run, done) {
+        // a lesson's words: every one, a field of six seedlings at most at a time; a field is harvested, then the next is sown
+        const W = LW.length ? shuffle(LW) : shuffle(['mango', 'bread', 'water', 'chair', 'horse', 'sheep', 'spoon', 'plate', 'table', 'onion', 'camel', 'banana', 'orange', 'donkey', 'chicken', 'teacher', 'farmer', 'flower', 'river'].filter((w) => K.en[w])).slice(0, 6);
+        const FL = batches(W, 6), among = W.map(spoken); let r = 0, got = 0, fi = 0, f0 = 0, fgot = 0;
+        const X = [13, 28, 43, 58, 73, 88];   // the six seedlings along the near ridge, in cqw
+        const snd = ruwaSound(run), fin = (res) => { snd.close(); done(res); };
+        const st = h('<div class="rstage">' + FL[0].map((_, k) => '<div class="mbox" style="left:' + (X[k] - 4.5) + 'cqw">' + millet(k) + '</div>').join('') +
+          '<div class="rrain">' + rainSheet() + '</div><div class="rcloud">' + wordCloud() + '<b class="rww"></b></div>' +
+          '<div class="rreap">' + reaper() + '</div></div>');
+        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
+        run.clock(secs(150, W.length, 6), () => fin({ right: got, part: got / W.length }));
+        run.remind = () => say(line('j-ruwa', 'how'), run);
+        const cl = st.querySelector('.rcloud'), ww = st.querySelector('.rww'), rain = st.querySelector('.rrain'), plants = st.querySelectorAll('.mbox');
+        const reap = st.querySelector('.rreap');
+        function next() {
+          const w = W[r], k0 = r - f0, x = X[k0], cx = Math.min(75, Math.max(25, x)), t = txt(w).toUpperCase(); run.item(w);
+          plants.forEach((p, k) => p.classList.toggle('turn', k === k0));
+          ww.textContent = t; ww.className = 'rww l' + Math.min(12, Math.max(4, t.length));
+          cl.style.left = (cx - 23) + 'cqw'; rain.style.left = (x - 8) + 'cqw';
+          cl.className = 'rcloud'; void cl.offsetWidth; cl.classList.add('in');
+          autoRound(run, box, spoken(w), among, () => {
+            got++; fgot++; run.good(cl); sayW(run, K.en[w]);
+            const p = plants[k0];
+            snd.thunder(); cl.classList.add('dark');
+            later(run, 500, () => { rain.classList.add('on'); p.classList.add('wet'); snd.rain(2.8); });
+            later(run, 900, () => p.classList.add('grow'));
+            later(run, 2300, () => p.classList.add('head'));
+            later(run, 3200, () => rain.classList.remove('on'));
+            later(run, 3500, () => { cl.classList.remove('in'); cl.classList.add('out'); });
+            later(run, 5200, step);
+          }, () => {
+            const p = plants[k0];
+            cl.classList.add('dry'); snd.gust();
+            later(run, 200, () => { cl.classList.remove('in'); cl.classList.add('out', 'fast'); });
+            later(run, 700, () => p.classList.add('dust'));
+            later(run, 1100, () => p.classList.add('wilt'));
+            later(run, 3300, step);
+          });
+        }
+        function step() {
+          plants.forEach((p) => p.classList.remove('turn'));
+          r++; if (r - f0 < FL[fi].length) { next(); return; }
+          const last = r >= W.length, then = () => last ? fin({ right: got, finished: true, part: got / W.length }) : sow();
+          if (!fgot) { later(run, 300, then); return; }
+          st.classList.add('harvest'); snd.harvest(); react(run, 'cheer');
+          // the harvest: the farmer walks the ridge with his sickle and each ripe head is cut and tied into a bundle
+          const T = 5.4, from = -14, to = 100;
+          later(run, 1400, () => reap.classList.add('walk'));
+          plants.forEach((p, k) => { if (p.classList.contains('head')) later(run, 1400 + ((X[k] - from) / (to - from)) * T * 1000, () => p.classList.add('cut')); });
+          later(run, 1400 + T * 1000 + 600, then);
+        }
+        /* the next field: the ridge is cleared and sown again, the farmer goes back to the shade, and the next cloud comes */
+        function sow() {
+          f0 += FL[fi].length; fi++; fgot = 0;
+          st.classList.remove('harvest'); reap.classList.remove('walk');
+          plants.forEach((p, k) => { p.className = 'mbox' + (k < FL[fi].length ? '' : ' off'); });
+          later(run, 600, next);
+        }
         next();
       } },
 
@@ -642,27 +722,27 @@ export function moreGames(c: any): Record<string, any> {
       placeNo: 'Rubutu would start at three letters, with the lessons.',
       place: (r) => r.right >= 4 ? 'Spelled every name: with Ginin bulo agreeing, Rubutu moves on.' : 'Spelled ' + r.right + ' of 4: Rubutu would start at three letters.',
       play(run, done) {
-        const W = shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;
+        const W = LW.length ? shuffle(LW) : shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;   // a lesson's words: every one
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="wsbd">' + wsBoard() + '</div><div class="env">' + envelopeArt() + '</div><div class="wsbd wspin">' + wsPins() + '</div><div class="achw">' + postRider() + '</div></div>');
         const snd = wasikaSound(run), fin = (r) => { snd.close(); done(r); };
         const key = (L) => '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>';   // the lessons' keys (design.css); A–M on the left, N–Z on the right, Laila between them
         const kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
-        run.clock(150, () => fin({ right: words, part: words / W.length }));
+        run.clock(secs(150, W.length, 4), () => fin({ right: words, part: words / W.length }));
         run.remind = () => say(K.en[W[wi]], run);
         const env = st.querySelector('.env'), hand = env.querySelector('.hand2'), ach = st.querySelector('.achw');
         function word() {
-          const w = W[wi].toUpperCase(); li = 0; env.querySelector('img').src = K.pic[W[wi]]; env.className = 'env'; ach.className = 'achw'; kb.classList.remove('locked');
-          hand.innerHTML = w.split('').map(() => '<span></span>').join(''); box.cue();
+          const w = letters(W[wi]); li = 0; run.item(W[wi]); env.querySelector('img').src = K.pic[W[wi]]; env.className = 'env'; ach.className = 'achw'; kb.classList.remove('locked');
+          hand.innerHTML = w.split('').map(() => '<span></span>').join(''); hand.className = 'hand2 n' + Math.min(14, w.length + gaps(hand, W[wi])); box.cue();
           later(run, 300, () => { sayW(run, K.en[W[wi]]); if (run.auto) autoGo(run, box); });   // after a spoken word, Laila listens by herself
         }
         function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) fin({ right: words, finished: true, part: words / W.length }); else word(); }); }
         // the same for a spoken run of letters and for a key: right letters are inked in order, the first wrong one ends the word
-        function take(letters, key) {
-          const w = W[wi].toUpperCase();
-          for (let k = 0; k < letters.length && li < w.length; k++) {
-            const L = String(letters[k]).toUpperCase();
+        function take(got, key) {
+          const w = letters(W[wi]);
+          for (let k = 0; k < got.length && li < w.length; k++) {
+            const L = String(got[k]).toUpperCase();
             if (L === w[li]) { const s = hand.children[li]; s.innerHTML = inkLetter(L); s.classList.add('on'); snd.pen(); bump(st.querySelector('.marw'), 'writing', 400); if (key) bump(key, 'good', 500); li++; }
             else { run.bad(env); if (key) bump(key, 'bad', 700); hand.children[li].innerHTML = splat(); snd.blot(); li = -1; break; }   // the ink blots where the letter should go
           }
@@ -676,18 +756,87 @@ export function moreGames(c: any): Record<string, any> {
         // a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
         // she listens: what she hears for a letter already typed past is dropped (stamp)
         let quiet = 0, stamp = '';
-        box.listen(() => { const w = W[wi].toUpperCase(); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: W[wi], target: w[li] }; }, (r) => {
+        box.listen(() => { const w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, (r) => {
           if (stamp !== wi + ':' + li || box.busy) return;
           const got = r.value || [];
           if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }
           quiet = 0; take(got);
-        }, () => W[wi].toUpperCase().slice(li).split(''));
+        }, () => letters(W[wi]).slice(li).split(''));
         const ready = () => !run.dead && !box.busy;
         const typed = (L, b) => { run.auto = false; take([L], b); };
         kb.addEventListener('click', (e) => { const b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
         const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
           const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
         document.addEventListener('keydown', onKey); run.offs.push(() => document.removeEventListener('keydown', onKey));   // gone with the game, not at the next key
+        word();
+      } },
+    /* ---------------- Rubutu: the Kano dye pits ---------------- */
+    /* Karofi (Sani 2026-11-02, for the long words): a white cloth hangs on the dyers' frame with the picture pinned at its
+       corner. Say the letters of its name to Laila, or tap them on the A–Z keys (or a real keyboard), the same way as
+       Marubucin wasiƙa. Each right letter is dyed into the cloth, white on indigo, with a splash; the first wrong one
+       spoils the cloth with a rust stain and the next cloth comes (one go, no hints). A finished name: the whole cloth goes
+       indigo round its white letters, the beaters' mallets knock, and it is carried off to the drying line. */
+    'j-rini': { title: 'Karofi', cls: 'rinig', scene: 'dyepits',
+      placeNo: 'Rubutu would start at three letters, with the lessons.',
+      place: (r) => r.right >= 4 ? 'Spelled every cloth: Rubutu can move on to long words.' : 'Spelled ' + r.right + ' of 4: Rubutu would start at shorter words.',
+      play(run, done) {
+        const W = LW.length ? shuffle(LW) : shuffle(['mango', 'bread', 'horse', 'sheep', 'chair', 'table', 'spoon', 'plate', 'camel', 'onion', 'water', 'banana', 'orange'].filter((w) => K.en[w] && K.pic[w])).slice(0, 4);   // a lesson's words: every one
+        let wi = 0, li = 0, words = 0;
+        const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const st = h('<div class="dstage2"><div class="dyframe"><i class="dyp l"></i><i class="dyp r"></i></div><div class="dycl">' + dyeCloth() +
+          '<span class="dypic"><img alt=""></span><span class="dyslots"></span><i class="dyspl"></i></div><div class="dystack"></div></div>');
+        const snd = riniSound(run), fin = (r) => { snd.close(); done(r); };
+        const key = (L) => '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>';
+        const kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
+        const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(kb); run.scr.appendChild(box);
+        run.clock(secs(150, W.length, 4), () => fin({ right: words, part: words / W.length }));
+        run.remind = () => say(K.en[W[wi]], run);
+        const cloth = st.querySelector('.dycl'), slots = st.querySelector('.dyslots'), img = st.querySelector('.dypic img'), spl = st.querySelector('.dyspl'), pile = st.querySelector('.dystack');
+        const gbg = () => run.scr.closest('.glab')?.querySelector('.gbg');
+        const sceneOn = (c, ms) => { const g = gbg(); if (!g) return; g.classList.add(c); if (ms) later(run, ms, () => g.classList.remove(c)); };
+        run.offs.push(() => { const g = gbg(); if (g) g.classList.remove('rn-beat', 'rn-buy', 'rn-bought'); });
+        function word() {
+          const w = letters(W[wi]); li = 0; run.item(W[wi]); img.src = K.pic[W[wi]];
+          cloth.className = 'dycl v' + (wi % 4); void cloth.offsetWidth; cloth.classList.add('hang'); kb.classList.remove('locked');
+          DYE_SETS[wi % DYE_SETS.length].forEach((c, k) => cloth.style.setProperty('--dy' + (k + 1), c));   // each word its own dye
+          slots.className = 'dyslots n' + Math.min(14, w.length);
+          slots.innerHTML = w.split('').map(() => '<span></span>').join(''); const g = gaps(slots, W[wi]); if (g) slots.className = 'dyslots n' + Math.min(14, w.length + g); box.cue();
+          later(run, 700, () => { sayW(run, K.en[W[wi]]); if (run.auto) autoGo(run, box); });   // after a spoken word, Laila listens by herself
+        }
+        function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) fin({ right: words, finished: true, part: words / W.length }); else word(); }); }
+        // a spoken run of letters or a key: right letters are dyed in order, the first wrong one spoils the cloth
+        function take(got, key) {
+          const w = letters(W[wi]);
+          for (let k = 0; k < got.length && li < w.length; k++) {
+            const L = String(got[k]).toUpperCase();
+            if (L === w[li]) { const s = slots.children[li]; s.innerHTML = dyeLetter(L); s.classList.add('on'); snd.dip(); bump(cloth, 'dip', 450);
+              const C = cloth.getBoundingClientRect(), R = s.getBoundingClientRect(), k = C.width / cloth.offsetWidth || 1; spl.style.left = ((R.left + R.width / 2 - C.left) / k) + 'px'; bump(spl, 'fly', 600); if (key) bump(key, 'good', 500); li++; }
+            else { run.bad(cloth); if (key) bump(key, 'bad', 700); slots.children[li].innerHTML = dyeSpoil(); slots.children[li].classList.add('bad'); snd.spoil(); li = -1; break; }
+          }
+          if (li < 0) { box.busy = true; kb.classList.add('locked'); cloth.classList.add('spoilt'); react(run, 'sad'); later(run, 1300, () => cloth.classList.add('away')); nextWord(2300); return; }
+          if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(cloth); react(run, 'cheer'); snd.done();
+            later(run, 250, () => cloth.classList.add('dyed'));
+            // the finished cloth goes down to the beater, is beaten glossy, and joins the seller's pile; the woman buys one
+            later(run, 1900, () => cloth.classList.add('off'));
+            later(run, 2700, () => sceneOn('rn-beat', 1300));
+            later(run, 3300, () => { const f = document.createElement('i'); f.style.top = -(pile.children.length + 1) * 0.75 + 'cqw'; pile.appendChild(f); });
+            if (words === 1) later(run, 2300, () => { sceneOn('rn-buy', 1600); later(run, 1500, () => sceneOn('rn-bought')); });
+            nextWord(3600); }
+          else if (run.auto && !key) autoGo(run, box); else box.cue();
+        }
+        let quiet = 0, stamp = '';
+        box.listen(() => { const w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, (r) => {
+          if (stamp !== wi + ':' + li || box.busy) return;
+          const got = r.value || [];
+          if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }
+          quiet = 0; take(got);
+        }, () => letters(W[wi]).slice(li).split(''));
+        const ready = () => !run.dead && !box.busy;
+        const typed = (L, b) => { run.auto = false; take([L], b); };
+        kb.addEventListener('click', (e) => { const b = e.target.closest('.abckey'); if (b && ready()) typed(b.dataset.l, b); });
+        const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
+          const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && ready()) { e.preventDefault(); typed(L, kb.querySelector('[data-l="' + L + '"]')); } };
+        document.addEventListener('keydown', onKey); run.offs.push(() => document.removeEventListener('keydown', onKey));
         word();
       } },
   };

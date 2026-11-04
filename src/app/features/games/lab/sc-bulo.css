@@ -105,3 +105,7 @@
 .glab .scr.mud2 .site.done .bhouse .hb,.glab .scr.mud2 .site.done .bhouse .plan,.glab .scr.mud2 .site.done .bhouse .ghosts,.glab .scr.mud2 .site.done .bhouse .doorhole{opacity:0;transition:opacity .5s .65s}
 .glab .scr.mud2 .site.done .bhouse{animation:bl4-proud .7s .9s ease-in-out 2}
 @keyframes bl4-proud{0%,100%{transform:none}50%{transform:translateY(-1.2cqw) scale(1.03)}}
+/* every box of a long word on the board, however many letters (a lesson's own words, Sani 2026-11-02) */
+.glab .scr.mud2 .spslots>span{flex:none;width:min(7.2cqw,calc((23.2cqw - .6cqw * (var(--n,4) - 1)) / var(--n,4)));height:min(8.6cqw,calc((23.2cqw - .6cqw * (var(--n,4) - 1)) / var(--n,4) * 1.6));align-self:center;font-size:min(5.4cqw,calc((23.2cqw - .6cqw * (var(--n,4) - 1)) / var(--n,4) * .8))}
+/* a two-word name keeps the gap between its words (the slot widths count it as half a box) */
+.glab .scr.mud2 .spslots>span.wb{margin-left:calc(min(7.2cqw,calc((23.2cqw - .6cqw * (var(--n,4) - 1)) / var(--n,4))) * .5)}

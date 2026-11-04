@@ -94,3 +94,6 @@
 .glab .kl-poles i::after{content:"";position:absolute;left:-1.6cqw;right:-1.6cqw;bottom:-.7cqw;height:1.4cqw;border-radius:50%;background:radial-gradient(closest-side,rgba(60,36,14,.45),rgba(60,36,14,0))}
 .glab .kl-board{border-color:#6B4422;border-image:repeating-linear-gradient(100deg,#7A4E28 0 .5cqw,#5E3A1C .5cqw .8cqw,#6B4422 .8cqw 1.5cqw) 12;border-radius:0;
   box-shadow:0 0 0 .35cqw #C9A227,inset .3cqw .3cqw 0 rgba(255,240,210,.12),.9cqw 1.4cqw 1.2cqw rgba(40,24,10,.38)}
+/* a long word or a two-word name (ride a bicycle) stays on one line: the plate widens a little, then the letters shrink */
+.glab .kl-easel .plate{width:max(17cqw,calc(var(--len,6) * 1.55cqw))}
+.glab .kl-easel .plate span{white-space:nowrap;font-size:min(3.8cqw,calc(max(17cqw,calc(var(--len,6) * 1.55cqw)) / (var(--len,6) * .62)))}

@@ -5163,6 +5163,40 @@
   }
  },
  {
+  "key": "s_g_ruwa_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan girgije da ƙarfi, sai ruwan sama ya sauka a gona.",
+   "f": "Ki karanta kalmar da ke kan girgije da ƙarfi, sai ruwan sama ya sauka a gona."
+  },
+  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "screens": [
+   "Wasanni · Ruwan sama"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Ruwan sama 2 Nov"
+ },
+ {
+  "key": "s_g_rini_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ka danna su a kan allo. Sai mai rini ya rina zanen.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ki danna su a kan allo. Sai mai rini ya rina zanen."
+  },
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the dyer will dye the cloth.",
+  "screens": [
+   "Wasanni · Karofi"
+  ],
+  "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
+  "status": "live",
+  "review": "unreviewed: Claude draft, Karofi 2 Nov"
+ },
+ {
   "key": "s_l_game",
   "lang": "ha",
   "voice": "laila",
@@ -5225,5 +5259,674 @@
    "m": "0305a57df9",
    "f": "e07851a762"
   }
+ },
+ {
+  "key": "s_z_got_3_50",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari hamsin.",
+   "f": "Madalla! Kin samu taurari uku da zinari hamsin."
+  },
+  "en": "Well done! You earned three stars and 50 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "0ea47b25b7",
+   "f": "9940613d67"
+  }
+ },
+ {
+  "key": "s_z_got_3_100",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari."
+  },
+  "en": "Well done! You earned three stars and 100 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "ca578d9d7f",
+   "f": "4cb7aa0119"
+  }
+ },
+ {
+  "key": "s_z_got_3_150",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari da hamsin.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari da hamsin."
+  },
+  "en": "Well done! You earned three stars and 150 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "e61c4591c0",
+   "f": "5ca0d07f3c"
+  }
+ },
+ {
+  "key": "s_z_got_3_200",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari biyu.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari biyu."
+  },
+  "en": "Well done! You earned three stars and 200 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "7734884392",
+   "f": "b2b2c163df"
+  }
+ },
+ {
+  "key": "s_z_got_4_50",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari hamsin.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari hamsin."
+  },
+  "en": "Well done! You earned four stars and 50 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "1b051e5412",
+   "f": "1ac11566bd"
+  }
+ },
+ {
+  "key": "s_z_got_4_100",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari."
+  },
+  "en": "Well done! You earned four stars and 100 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "509710bcae",
+   "f": "56ac947361"
+  }
+ },
+ {
+  "key": "s_z_got_4_150",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari da hamsin.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari da hamsin."
+  },
+  "en": "Well done! You earned four stars and 150 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "58bad3b260",
+   "f": "21f4b25161"
+  }
+ },
+ {
+  "key": "s_z_got_4_200",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari biyu.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari biyu."
+  },
+  "en": "Well done! You earned four stars and 200 gold.",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game, before the title line.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "7d06092349",
+   "f": "5cbd4df104"
+  }
+ },
+ {
+  "key": "s_z_now_fada",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Ɗan Fada ne!",
+   "f": "Yanzu ke 'Yar Fada ce!"
+  },
+  "en": "Now you are a Ɗan Fada / 'Yar Fada!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "1569298468",
+   "f": "85e60477e1"
+  }
+ },
+ {
+  "key": "s_z_now_jarumi",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Jarumi ne!",
+   "f": "Yanzu ke Jaruma ce!"
+  },
+  "en": "Now you are a Jarumi / Jaruma!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "0513eb8233",
+   "f": "380a0245a2"
+  }
+ },
+ {
+  "key": "s_z_now_malami",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Malami ne!",
+   "f": "Yanzu ke Malama ce!"
+  },
+  "en": "Now you are a Malami / Malama!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "03b26729bf",
+   "f": "8d22204300"
+  }
+ },
+ {
+  "key": "s_z_now_dansarki",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Ɗan Sarki ne!",
+   "f": "Yanzu ke 'Yar Sarki ce!"
+  },
+  "en": "Now you are a Ɗan Sarki / 'Yar Sarki!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "32543c8c59",
+   "f": "2992302a34"
+  }
+ },
+ {
+  "key": "s_z_now_magaji",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Magaji ne!",
+   "f": "Yanzu ke Magajiya ce!"
+  },
+  "en": "Now you are a Magaji / Magajiya!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "ea307e3b63",
+   "f": "b74126d472"
+  }
+ },
+ {
+  "key": "s_z_now_sarki",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Sarki ne!",
+   "f": "Yanzu ke Sarauniya ce!"
+  },
+  "en": "Now you are a Sarki / Sarauniya!",
+  "screens": [
+   "Wasanni · results"
+  ],
+  "said_when": "A passed course game: the child's title after the gold.",
+  "status": "live",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "recorded": {
+   "m": "f4b42ca196",
+   "f": "f7f27b1280"
+  }
+ },
+ {
+  "key": "s_z_effort",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ƙoƙarinka ya kai ka sabon matsayi!",
+   "f": "Ƙoƙarinki ya kai ki sabon matsayi!"
+  },
+  "en": "Your effort has brought you to a new level!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: her first line, as the medal is revealed.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "df7bfb829f",
+   "f": "ce4742125d"
+  }
+ },
+ {
+  "key": "s_z_bag1",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhun zinarinka na farko ya cika!",
+   "f": "Buhun zinarinki na farko ya cika!"
+  },
+  "en": "Your first bag of gold is full!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: after the title's name, as bag 1 fills.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "a2ceee8f1d",
+   "f": "f8b5ad5196"
+  }
+ },
+ {
+  "key": "s_z_bag2",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhun zinarinka na biyu ya cika!",
+   "f": "Buhun zinarinki na biyu ya cika!"
+  },
+  "en": "Your second bag of gold is full!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: after the title's name, as bag 2 fills.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "0e5095da10",
+   "f": "e1e236f060"
+  }
+ },
+ {
+  "key": "s_z_bag3",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhun zinarinka na uku ya cika!",
+   "f": "Buhun zinarinki na uku ya cika!"
+  },
+  "en": "Your third bag of gold is full!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: after the title's name, as bag 3 fills.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "c64f69cce2",
+   "f": "02b23c2354"
+  }
+ },
+ {
+  "key": "s_z_bag4",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhun zinarinka na huɗu ya cika!",
+   "f": "Buhun zinarinki na huɗu ya cika!"
+  },
+  "en": "Your fourth bag of gold is full!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: after the title's name, as bag 4 fills.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "d554c30807",
+   "f": "1bd6470d86"
+  }
+ },
+ {
+  "key": "s_z_bag5",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhun zinarinka na biyar ya cika!",
+   "f": "Buhun zinarinki na biyar ya cika!"
+  },
+  "en": "Your fifth bag of gold is full!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: after the title's name, as bag 5 fills.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "bbc7586d78",
+   "f": "3ab2bad87d"
+  }
+ },
+ {
+  "key": "s_z_gold_1000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu ɗaya.",
+   "f": "Zinarinki ya kai dubu ɗaya."
+  },
+  "en": "Your Zinari have reached 1,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "261c44de0d",
+   "f": "0d36ba186b"
+  }
+ },
+ {
+  "key": "s_z_gold_2000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu biyu.",
+   "f": "Zinarinki ya kai dubu biyu."
+  },
+  "en": "Your Zinari have reached 2,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "bc92a1d847",
+   "f": "56144f8d13"
+  }
+ },
+ {
+  "key": "s_z_gold_4000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu huɗu.",
+   "f": "Zinarinki ya kai dubu huɗu."
+  },
+  "en": "Your Zinari have reached 4,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "b6610186f3",
+   "f": "d7c97feaad"
+  }
+ },
+ {
+  "key": "s_z_gold_6000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu shida.",
+   "f": "Zinarinki ya kai dubu shida."
+  },
+  "en": "Your Zinari have reached 6,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "0dafbda77d",
+   "f": "f512538c65"
+  }
+ },
+ {
+  "key": "s_z_gold_8000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu takwas.",
+   "f": "Zinarinki ya kai dubu takwas."
+  },
+  "en": "Your Zinari have reached 8,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "0525dd3bfa",
+   "f": "e9c80f3b3d"
+  }
+ },
+ {
+  "key": "s_z_gold_10000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu goma.",
+   "f": "Zinarinki ya kai dubu goma."
+  },
+  "en": "Your Zinari have reached 10,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "c2d21ef918",
+   "f": "6bd007c4da"
+  }
+ },
+ {
+  "key": "s_z_gold_12000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu goma sha biyu.",
+   "f": "Zinarinki ya kai dubu goma sha biyu."
+  },
+  "en": "Your Zinari have reached 12,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "98659bce4f",
+   "f": "f11984c2a7"
+  }
+ },
+ {
+  "key": "s_z_gold_16000",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu goma sha shida.",
+   "f": "Zinarinki ya kai dubu goma sha shida."
+  },
+  "en": "Your Zinari have reached 16,000.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "a575e14505",
+   "f": "8a54a3daf2"
+  }
+ },
+ {
+  "key": "s_z_first",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan shi ne matsayi na farko. Akwai ƙarin matsayi guda huɗu a gaba.",
+  "en": "This is the first level. There are four more levels ahead.",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "The first title unlocked, after the amount.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": "005e8ddb69"
+ },
+ {
+  "key": "s_z_keep_first",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ci gaba da ƙoƙari, har ka zama Sarki!",
+   "f": "Ci gaba da ƙoƙari, har ki zama Sarauniya!"
+  },
+  "en": "Keep trying, until you become Sarki / Sarauniya!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "The first title unlocked, after s_z_first.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": {
+   "m": "34ebbfe4b6",
+   "f": "20d154cfdb"
+  }
+ },
+ {
+  "key": "s_z_keep",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ci gaba da ƙoƙari haka!",
+  "en": "Keep up the effort like this!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "A middle title unlocked (2nd to 4th), after the amount.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": "313a72f848"
+ },
+ {
+  "key": "s_z_top",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan shi ne matsayi mafi girma duka!",
+  "en": "This is the highest level of all!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "The top title (Sarki / Sarauniya) unlocked, after the amount.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": "655939d65d"
+ },
+ {
+  "key": "s_z_top_keep",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ci gaba da karatu kullum!",
+  "en": "Keep learning every day!",
+  "screens": [
+   "Wasanni · title unlock"
+  ],
+  "said_when": "The top title unlocked, after s_z_top.",
+  "status": "live",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "recorded": "6274085a87"
  }
 ]

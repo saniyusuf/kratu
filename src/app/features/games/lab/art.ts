@@ -195,6 +195,7 @@ export function bootArt(): any {
      contact shadow, a broken reflection). The word is on a weathered plank lashed across it. Gradients live in the
      shared defs above, so five canoes do not repeat them; nothing in it is animated. */
   A.canoe = function (w) {
+    const n = w.length, P = n <= 7 ? 132 : Math.min(184, 132 + (n - 7) * 8), sx = +(P / 132).toFixed(3), fs = Math.min(22, Math.floor(P / (n * 0.62)));
     return '<svg viewBox="0 0 220 90" class="art canoe3">' +
       '<path d="M14 50 Q110 62 206 50 Q196 66 110 72 Q24 66 14 50 Z M30 63 h40 v1.2 h-40 Z M128 66 h44 v1.2 h-44 Z" fill="url(#kc-refl)" fill-rule="evenodd"/>' +
       '<path d="M4 47 Q110 60 216 47 Q204 54 110 57 Q16 54 4 47 Z" fill="#163E5A" opacity=".35"/>' +
@@ -208,11 +209,14 @@ export function bootArt(): any {
       '<path d="M150 12 L182 44" stroke="#8A5428" stroke-width="2.8" stroke-linecap="round"/><path d="M178 40 Q190 46 192 56 Q182 54 176 46 Z" fill="#9C5F2E"/>' +
       '<path d="M8 43 Q110 56 212 43 Q207 46 200 48 Q110 61 20 48 Q13 46 8 43 Z" fill="url(#kc-sub)"/><path d="M6 43.4 Q110 56.6 214 43.4" stroke="#E9FBFF" stroke-width="1.2" fill="none" opacity=".7"/>' +
       '<path d="M-20 58 Q-8 54 4 57 M-34 62 Q-20 58 -6 61 M212 55 Q222 52 232 55" fill="none" stroke="#E9FBFF" stroke-opacity=".45" stroke-width="1"/>' +
+      '<g' + (sx > 1 ? ' transform="translate(110 0) scale(' + sx + ' 1) translate(-110 0)"' : '') + '>' +
       '<rect x="44" y="18" width="132" height="34" rx="3" fill="#F4E3BE" stroke="#6E4220" stroke-width="1.6"/>' +
       '<path d="M53 15.6 q-1.6 20 -.4 40 M167 15.6 q1.6 20 .4 40" stroke="#B8955C" stroke-width="2.4" fill="none" stroke-dasharray="1.8 1"/>' +
       '<path d="M46 23 Q90 21 174 24 M46 40 Q100 42 174 39 M60 30 q14 -2 26 1 M136 47 q12 1 22 -1" fill="none" stroke="#B89466" stroke-width=".7" opacity=".55"/>' +
-      '<path d="M45 49 H175 V50.4 Q174 51 172 51 H48 Q45.6 51 45 50 Z M48 33.6 h3 v3 h-3 Z M169 33.6 h3 v3 h-3 Z" fill="#5A3416" opacity=".55"/>' +
-      '<text x="110" y="46.5" text-anchor="middle" class="tw">' + w + '</text></svg>';
+      '<path d="M45 49 H175 V50.4 Q174 51 172 51 H48 Q45.6 51 45 50 Z M48 33.6 h3 v3 h-3 Z M169 33.6 h3 v3 h-3 Z" fill="#5A3416" opacity=".55"/>' + '</g>' +
+      // a long word or a two-word name (a lesson's own, Sani 2026-11-02) gets a longer plank first (up to most of the
+      // canoe), then smaller letters held inside it by textLength: it never runs off, and stays readable on a 7-inch screen
+      '<text x="110" y="46.5" text-anchor="middle" class="tw"' + (n > 6 ? ' style="font-size:' + fs + 'px!important;letter-spacing:1px!important"' + (n > 9 ? ' textLength="' + Math.round(P - 10) + '" lengthAdjust="spacingAndGlyphs"' : '') : '') + '>' + w + '</text></svg>';
   };
   /* a clay pot: thick rim, incised band, speckled fired clay, a soft shine, the letter in white chalk */
   A.pot = function (L) {

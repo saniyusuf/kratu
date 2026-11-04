@@ -76,8 +76,9 @@ function prayer(): string {
 }
 
 /** the sale itself: a buyer from the crowd and the thing, doing what people do with it, then walking off */
-export function deal(key: string, b: number): string {
-  const g = GOODS[key], act = g.act, by = BUYERS[b % BUYERS.length], item = g.svg();
+export function deal(key: string, b: number, pic = ''): string {
+  // a lesson's word with no drawing of its own: the buyer takes its photo in hand (Sani 2026-11-02: every word of the lesson)
+  const g = GOODS[key] || { svg: () => '<span class="mkph"><img alt="" src="' + pic + '"></span>', act: 'hand' }, act = g.act, by = BUYERS[b % BUYERS.length], item = g.svg();
   if (act === 'pray') return `<div class="deal act-pray">${prayer()}</div>`;
   if (act === 'wear') {
     const o = { ...by, hat: 'cap' as any };

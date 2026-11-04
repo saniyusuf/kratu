@@ -1,5 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { SessionService } from './session.service';
+import { CourseService } from './course.service';
 
 /** What the chooser puts on its card: one step, already chosen, with the route that opens it. */
 export interface PlanCard {
@@ -30,6 +31,7 @@ const CARDS: Record<string, PlanCard> = {
 @Injectable({ providedIn: 'root' })
 export class PlanService {
   private readonly session = inject(SessionService);
+  private readonly course = inject(CourseService);
   /** Bumped whenever the stored placement changes, so the chooser's card is recomputed. */
   private readonly rev = signal(0);
 
@@ -62,6 +64,9 @@ export class PlanService {
 
   /** What the chooser shows, and what Laila opens when nothing else is picked. */
   next(): PlanCard {
+    // the course simulator in the settings: the book opens the step picked there (Sani 2026-11-02)
+    const st = this.course.step();
+    if (st) { const r = this.course.route(st); return { key: 'sim' + st.n, eyebrow: 'GWAJI · STEP ' + st.n, title: st.title, sub: st.items.join(', '), ico: '🧪', colour: 'var(--teal)', route: r.path, query: r.query }; }
     const p = this.placement(), c = CARDS[p?.start || ''] || CARDS[p ? 'haruffa_ah' : 'mugani'];
     // the balloons found where this child stopped: Haruffa opens at that very letter (Sani 2026-10-22)
     return p?.startL && c.route === 'haruffa/koyo' ? { ...c, query: { fromL: p.startL } } : c;

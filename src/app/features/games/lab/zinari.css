@@ -1,0 +1,22 @@
+/* The child's Zinari as five bags (Sani 2026-11-04): one bag per title, full ones gold, the one filling gold up to its
+   level, the rest grey. The gold copy is clipped by two opposite translates, so a filling bag costs no layout or paint. */
+.glab .zbags{display:inline-flex;align-items:flex-end;gap:.5cqw;flex:none}
+.glab .zbags .zb{position:relative;display:block;width:2.6cqw;aspect-ratio:60/66;font-style:normal}
+.glab .zbags.big{gap:1.4cqw}
+.glab .zbags.big .zb{width:6.4cqw}
+.glab .zbags.big .zb.cur{scale:1.25;margin:0 1cqw}
+.glab .zbags.big .zb.cur::before{content:"";position:absolute;inset:-35%;border-radius:50%;background:radial-gradient(circle,rgba(255,213,74,.6),rgba(255,213,74,0) 65%);z-index:-1}
+.glab .zbags svg{display:block;width:100%;height:100%;overflow:visible}
+.glab .zbags .zgrey,.glab .zbags .zg,.glab .zbags .zg>span{position:absolute;inset:0;display:block}
+.glab .zbags .zgrey svg{opacity:.35;filter:grayscale(1) brightness(1.6)}
+.glab .zbags .zgrey .u-cn{display:none}
+.glab .zbags .zg{overflow:hidden;transform:translateY(calc((1 - var(--f)) * 100%));transition:transform .9s cubic-bezier(.3,.8,.4,1)}
+.glab .zbags .zg>span{transform:translateY(calc((var(--f) - 1) * 100%));transition:transform .9s cubic-bezier(.3,.8,.4,1)}
+.glab .gclock .zbags{margin:0 .4cqw}
+/* the unlock covers the whole screen, its picture in the 16:10 box the games use */
+.glab>.zul{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(100cqw,160cqh);height:min(100cqh,62.5cqw);container-type:inline-size;z-index:60}
+.glab>.zul::before{content:"";position:absolute;inset:0;box-shadow:0 0 0 100cqw rgba(20,12,4,.82);opacity:0}
+.glab>.zul.u-run::before{animation:g-ufade .5s ease-out both}
+.glab .zul .u-lailaw{border:0;background:none;padding:0;cursor:default;-webkit-tap-highlight-color:transparent}
+.glab .zul.u-ready .u-lailaw{cursor:pointer}
+.glab .scr.gres.zhide>*{opacity:0;transition:opacity .4s}

@@ -1338,3 +1338,61 @@
    about 29% across and 22% down the rider drawing */
 .glab .scr.durbar .rw .dhand{position:absolute;left:29%;top:22%;transform:translate(-50%,-100%);z-index:5;font-size:8cqw;line-height:1;pointer-events:none;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
 .glab .scr.durbar .rw .dhand{animation:g-dhandbob .8s ease-in-out infinite}@keyframes g-dhandbob{0%,100%{translate:0 0}50%{translate:0 -1.2cqw}}
+/* a lesson of more than ten words: smaller drums, so the whole row stays on screen (Sani 2026-11-02: every word of the lesson) */
+.glab .krow.many{gap:.7cqw;padding:.8cqw 1.6cqw}.glab .krow.many .kd{width:2.7cqw;height:3.25cqw}
+/* NEVER a cross on a miss (Sani 2026-10-27): the four games that still drew one now only dim, redden or wash the thing */
+.glab .board.nosale::after{content:""}.glab .allow2.wrongw::after{content:none}.glab .beast2.no .pboard::after{content:none}
+.glab .plate.miss .pf::after{content:none}.glab .plate.miss .pf{font-size:4.4cqw}
+
+/* ---------- the course's game gate (Sani 2026-11-02): intro and results over the game's own scene, dimmed ---------- */
+.glab>.gbg.gdim::before{content:"";position:absolute;inset:0;z-index:50;background:rgba(28,20,12,.58);pointer-events:none}
+.glab .gsnapbox{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(100cqw,160cqh);height:min(100cqh,62.5cqw);container-type:inline-size;z-index:1;pointer-events:none}
+.glab .gsnapbox .gclock,.glab .gsnapbox .finish,.glab .gsnapbox .cdown,.glab .gsnapbox .gintro{display:none!important}
+.glab .gintro{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8cqw;padding:4cqw 6cqw;animation:g-gfade .35s ease-out both}
+.glab .gintro::before{content:"";position:absolute;inset:-100vmax;z-index:-1;background:rgba(28,20,12,.58);pointer-events:none}
+.glab .scr.gres{background:none!important;gap:2cqw}
+.glab .gi-ban{position:relative;font:800 4.2cqw/1 var(--disp);color:#5A3A00;padding:1.3cqw 6cqw 1.5cqw;background:linear-gradient(180deg,#FFE58A,#F7C93E 55%,#D99A12);clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);filter:drop-shadow(0 .5cqw 0 rgba(0,0,0,.25));animation:g-gpop .45s cubic-bezier(.3,1.5,.5,1) both}
+.glab .gi-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2cqw;max-width:82cqw}
+.glab .gi-chip,.glab .gr-fly,.glab .gr-book>span{width:8.5cqw;aspect-ratio:1;border:0;padding:0;border-radius:1.6cqw;background:#FFFDF7;display:grid;place-items:center;overflow:hidden;box-shadow:0 .5cqw 0 rgba(0,0,0,.28);transition:transform .15s,filter .15s,outline-color .15s;outline:.5cqw solid transparent;outline-offset:-.5cqw}
+.glab .gi-chips.many .gi-chip{width:6.4cqw;border-radius:1.2cqw}
+.glab .gi-chip img,.glab .gr-fly img,.glab .gr-book img{width:100%;height:100%;object-fit:cover;display:block}
+.glab .gi-chip b,.glab .gr-fly b,.glab .gr-book b{font:800 4.4cqw/1 var(--disp);color:var(--ink)}
+.glab .gi-chip{cursor:default;animation:g-gpop .4s cubic-bezier(.3,1.5,.5,1) both}
+.glab .gi-chip:nth-child(2n){animation-delay:.06s}.glab .gi-chip:nth-child(3n){animation-delay:.12s}
+.glab .gintro:has(.gi-sim) .gi-chip{cursor:pointer}
+.glab .gi-chip.fail{outline-color:#E63946;filter:grayscale(.85) brightness(.8);transform:scale(.9) rotate(-4deg)}
+.glab .g4stars{display:flex;align-items:center;gap:1cqw}
+.glab .g4stars i{font-style:normal;font-size:5cqw;line-height:1;color:rgba(255,255,255,.28)}
+.glab .g4stars i::before{content:"★"}
+.glab .g4stars i.on{color:#FFD54A;filter:drop-shadow(0 0 1cqw rgba(255,213,74,.8));animation:g-starin .45s cubic-bezier(.3,1.6,.5,1) both}
+.glab .g4stars i.on:nth-of-type(2){animation-delay:.15s}.glab .g4stars i.on:nth-of-type(3){animation-delay:.3s}.glab .g4stars i.on:nth-of-type(4){animation-delay:.45s}
+.glab .g4line{width:.5cqw;height:6cqw;border-radius:.3cqw;background:#fff;margin:0 .6cqw;box-shadow:0 0 1cqw rgba(255,255,255,.7)}
+.glab .gtries{position:absolute;top:3cqw;right:13cqw;display:flex;gap:1cqw;z-index:3}
+.glab .gtries i{width:2.4cqw;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 .3cqw rgba(255,255,255,.55)}
+.glab .gtries i.on{background:radial-gradient(circle at 35% 30%,#FFF1A8,#F7C93E 50%,#C98A0C);box-shadow:0 0 1cqw rgba(255,213,74,.7)}
+.glab .gi-go{position:relative;display:flex;align-items:center;justify-content:center}
+.glab .gi-go .glaila .lsvg{width:15cqw;height:15cqw}
+.glab .gi-hand{position:absolute;right:100%;top:50%;translate:0 -50%;font-size:6cqw;line-height:1;opacity:0;transition:opacity .3s;pointer-events:none}
+.glab .ready .gi-hand,.glab .ready.gi-go .gi-hand{opacity:1;animation:g-ghand 1s ease-in-out infinite}
+.glab .gi-sim{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:2cqw;padding:1cqw 2cqw;background:rgba(0,0,0,.55);color:#fff;font:700 1.5cqw var(--body)}
+.glab .gi-sim button{font:800 1.5cqw var(--disp);color:#3B2E1E;background:#FFD54A;border:0;border-radius:99px;padding:.6cqw 2cqw;cursor:pointer}
+.glab .gres .gold b,.glab .gres .gold small{color:#FFD54A}
+.glab .gr-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2cqw;max-width:80cqw}
+.glab .gr-fly{animation:g-gshuf 2.3s ease-in-out infinite}
+.glab .gr-book{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2cqw;max-width:72cqw;padding:2.4cqw 3cqw;border-radius:1.4cqw .6cqw .6cqw 1.4cqw;background:linear-gradient(90deg,#5E1414 0 3%,#9E2A2A 3% 4%,#8E2020 4%);box-shadow:inset 0 0 0 .4cqw #C9A23A,inset 0 0 0 .8cqw #8E2020,inset 0 0 0 1cqw rgba(201,162,58,.6),0 .8cqw 0 rgba(0,0,0,.35);animation:g-gpop .45s cubic-bezier(.3,1.5,.5,1) both}
+.glab .gr-book>span{width:7.5cqw;opacity:.75}
+.glab .gr-book>span.miss{opacity:1;outline-color:#FFD54A;box-shadow:0 0 1.4cqw rgba(255,213,74,.75),0 .5cqw 0 rgba(0,0,0,.3)}
+@keyframes g-gfade{from{opacity:0}}
+@keyframes g-gpop{from{opacity:0;transform:scale(.6)}}
+@keyframes g-ghand{50%{translate:-1.2cqw -50%}}
+@keyframes g-gshuf{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-1.2cqw) rotate(-5deg)}75%{transform:translateY(.6cqw) rotate(4deg)}}
+.glab .gbg:has(>.scene) .gsnapbox .scr{background:none!important}
+.glab .scr.gres>.gtries{position:absolute}
+.glab .scr>.gintro{position:absolute!important;inset:0!important;z-index:40!important;margin:0!important}
+/* ---------- Zinari on a passed game (Sani 2026-11-03) ---------- */
+.glab .gres .zgain{display:flex;align-items:center;gap:1.4cqw}
+.glab .gres .zgain .coin{width:6.4cqw;font-size:2.8cqw}
+.glab .gres .zplus{font:800 7cqw/1 var(--disp);color:#FFD54A;font-variant-numeric:tabular-nums;text-shadow:0 .4cqw 0 rgba(0,0,0,.3)}
+.glab .scr.gres>.zfly{position:absolute!important;z-index:6!important;margin:-1.7cqw 0 0 -1.7cqw;animation:g-zfly .6s cubic-bezier(.5,0,.6,1) both;pointer-events:none}
+.glab .scr.gres>.conf{position:absolute!important;inset:0;z-index:1!important}
+@keyframes g-zfly{from{transform:translate(0,0) scale(1.3)}60%{opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.8);opacity:.2}}

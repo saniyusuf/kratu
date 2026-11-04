@@ -652,3 +652,4 @@ body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
 #app .s.fashe .bub.burst{border:0;color:#fff;text-shadow:0 1px 2px rgba(120,0,10,.6);
   background:radial-gradient(circle at 36% 30%,rgba(255,255,255,.35),rgba(255,255,255,0) 40%),linear-gradient(rgba(214,40,52,.5),rgba(214,40,52,.5)),var(--c);
   clip-path:polygon(50% 0,58% 14%,72% 4%,70% 22%,92% 16%,80% 34%,100% 44%,82% 52%,96% 70%,76% 68%,80% 92%,62% 78%,52% 100%,42% 80%,22% 94%,26% 70%,4% 74%,18% 54%,0 42%,20% 34%,8% 14%,30% 22%,30% 2%,42% 16%)}
+#app .s.lesson .aslot.done::after{display:none}   /* never a tick (Sani 2026-10-27) */

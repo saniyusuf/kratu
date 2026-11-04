@@ -19,14 +19,14 @@ const P = 'jr4';
 const SK = ['#7A4A26', '#5E3A1C', '#8B5A2B', '#6B4022', '#4F2F17', '#94603A'];
 
 /* ---------- colour and gradient helpers ---------- */
-const mix = (a, b, t) => { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b);
+export const mix = (a, b, t) => { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b);
   return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join(''); };
-const dk = (c, t = 0.25) => mix(c, '#1a0e06', t);
-const lt = (c, t = 0.25) => mix(c, '#ffffff', t);
+export const dk = (c, t = 0.25) => mix(c, '#1a0e06', t);
+export const lt = (c, t = 0.25) => mix(c, '#ffffff', t);
 const lg = (id, c, y1 = 0, y2 = 1, us = false) => '<linearGradient id="' + P + '-' + id + '" x1="0" y1="' + y1 + '" x2="0" y2="' + y2 + '"' + (us ? ' gradientUnits="userSpaceOnUse"' : '') + '>' +
   c.map((col, i) => '<stop offset="' + (i / (c.length - 1)).toFixed(2) + '" stop-color="' + col + '"/>').join('') + '</linearGradient>';
 const u = (id) => 'url(#' + P + '-' + id + ')';
-const f1 = (n) => (+n).toFixed(1);
+export const f1 = (n) => (+n).toFixed(1);
 
 /* ---------- people (drawn in a 60 x 140 box, feet on y 134, placed by a nested svg) ---------- */
 const POSE = {
@@ -104,7 +104,7 @@ function body(o, sk) {
     '<path d="M42 88 Q40 108 45 131 M20 90 Q18 110 16 131" stroke="rgba(0,0,0,.2)" stroke-width="1.1" fill="none"/>';
 }
 /** a standing person with feet at (x, y), h units tall; o.cls adds classes to the figure */
-function person(x, y, h, o) {
+export function person(x, y, h, o) {
   const s = h / 140, sk = SK[o.skin % SK.length], w = o.kind === 'man' ? 11 : 8.4;
   const arms = arm('l', o.al || 'down', o.sl || o.robe, sk, o.alc || '', w, o.hl || '') + arm('r', o.ar || 'down', o.sl || o.robe, sk, o.arc || '', w, o.hr || '');
   const inner = '<ellipse cx="30" cy="135" rx="22" ry="3.4" fill="rgba(40,24,10,.28)"/>' + (o.under || '') +
@@ -116,7 +116,7 @@ function person(x, y, h, o) {
 /* ---------- scenery ---------- */
 const thatchLines = (x, y, w, h) => { let s = ''; for (let i = -3; i <= 3; i++) s += 'M' + f1(x + i * w / 7) + ' ' + f1(y + h) + ' L' + f1(x + i * w / 20) + ' ' + f1(y + h * 0.15) + ' '; return '<path d="' + s + '" stroke="#8A6A2E" stroke-width=".35" opacity=".6" fill="none"/>'; };
 /** a round mud hut with a conical thatched roof, base centre (x, y), width w */
-const hut = (x, y, w, wall = '#C98A55') => { const h = w * 0.55, rh = w * 0.62;
+export const hut = (x, y, w, wall = '#C98A55') => { const h = w * 0.55, rh = w * 0.62;
   return '<g><path d="M' + f1(x - w / 2) + ' ' + f1(y) + ' V' + f1(y - h) + ' H' + f1(x + w / 2) + ' V' + f1(y) + ' Q' + x + ' ' + f1(y + w * 0.08) + ' ' + f1(x - w / 2) + ' ' + f1(y) + ' Z" fill="' + wall + '"/>' +
     '<path d="M' + x + ' ' + f1(y - h) + ' H' + f1(x + w / 2) + ' V' + f1(y) + ' Q' + f1(x + w / 4) + ' ' + f1(y + w * 0.06) + ' ' + x + ' ' + f1(y + w * 0.04) + ' Z" fill="' + dk(wall, 0.16) + '"/>' +
     '<path d="M' + f1(x - w * 0.12) + ' ' + f1(y + w * 0.03) + ' V' + f1(y - h * 0.62) + ' Q' + x + ' ' + f1(y - h * 0.82) + ' ' + f1(x + w * 0.12) + ' ' + f1(y - h * 0.62) + ' V' + f1(y + w * 0.03) + ' Z" fill="#3A2212"/>' +
@@ -124,7 +124,7 @@ const hut = (x, y, w, wall = '#C98A55') => { const h = w * 0.55, rh = w * 0.62;
     '<path d="M' + x + ' ' + f1(y - h - rh) + ' L' + f1(x + w * 0.62) + ' ' + f1(y - h + 1) + ' Q' + f1(x + w * 0.3) + ' ' + f1(y - h + 2.4) + ' ' + f1(x + w * 0.1) + ' ' + f1(y - h + 2.6) + ' Z" fill="#B8924A"/>' +
     thatchLines(x, y - h - rh, w * 1.1, rh) + '<path d="M' + x + ' ' + f1(y - h - rh) + ' l0 -2" stroke="#8A6A2E" stroke-width=".7"/></g>'; };
 /** a rumbu granary: a clay pot on stones with a thatch cap */
-const rumbu = (x, y, w) => { const h = w * 0.9;
+export const rumbu = (x, y, w) => { const h = w * 0.9;
   return '<g><path d="M' + f1(x - w * 0.3) + ' ' + y + ' v' + f1(-w * 0.18) + ' M' + f1(x + w * 0.3) + ' ' + y + ' v' + f1(-w * 0.18) + '" stroke="#7A6A5A" stroke-width="' + f1(w * 0.14) + '"/>' +
     '<path d="M' + f1(x - w * 0.42) + ' ' + f1(y - w * 0.16) + ' Q' + f1(x - w * 0.62) + ' ' + f1(y - h * 0.7) + ' ' + f1(x - w * 0.3) + ' ' + f1(y - h) + ' H' + f1(x + w * 0.3) + ' Q' + f1(x + w * 0.62) + ' ' + f1(y - h * 0.7) + ' ' + f1(x + w * 0.42) + ' ' + f1(y - w * 0.16) + ' Z" fill="#B97848"/>' +
     '<path d="M' + x + ' ' + f1(y - h) + ' H' + f1(x + w * 0.3) + ' Q' + f1(x + w * 0.62) + ' ' + f1(y - h * 0.7) + ' ' + f1(x + w * 0.42) + ' ' + f1(y - w * 0.16) + ' H' + x + ' Z" fill="#9C6036"/>' +
@@ -135,12 +135,12 @@ const rumbu = (x, y, w) => { const h = w * 0.9;
 const fan = (x, y, r, c) => { let s = '<g transform="translate(' + f1(x) + ' ' + f1(y) + ')">'; for (let a = -160; a <= -20; a += 20) { const rad = a * Math.PI / 180; s += '<path d="M0 0 L' + f1(Math.cos(rad - 0.12) * r) + ' ' + f1(Math.sin(rad - 0.12) * r) + ' L' + f1(Math.cos(rad + 0.12) * r) + ' ' + f1(Math.sin(rad + 0.12) * r) + ' Z" fill="' + (a % 40 ? c : dk(c, 0.15)) + '"/>'; }
   for (let a = 10; a <= 60; a += 25) { const rad = a * Math.PI / 180; s += '<path d="M0 0 L' + f1(Math.cos(rad - 0.12) * r * 0.8) + ' ' + f1(Math.sin(rad - 0.12) * r * 0.8) + ' L' + f1(Math.cos(rad + 0.12) * r * 0.8) + ' ' + f1(Math.sin(rad + 0.12) * r * 0.8) + ' Z" fill="' + dk(c, 0.2) + '"/>'; s += '<path d="M0 0 L' + f1(-Math.cos(rad - 0.12) * r * 0.8) + ' ' + f1(Math.sin(rad - 0.12) * r * 0.8) + ' L' + f1(-Math.cos(rad + 0.12) * r * 0.8) + ' ' + f1(Math.sin(rad + 0.12) * r * 0.8) + ' Z" fill="' + dk(c, 0.2) + '"/>'; }
   return s + '<circle r="' + f1(r * 0.12) + '" fill="#6B4A22"/></g>'; };
-const dum = (x, y, s, c = '#6E8E3A') => '<g><path d="M' + x + ' ' + y + ' Q' + f1(x + 1 * s) + ' ' + f1(y - 14 * s) + ' ' + f1(x) + ' ' + f1(y - 22 * s) + ' Q' + f1(x - 3 * s) + ' ' + f1(y - 30 * s) + ' ' + f1(x - 7 * s) + ' ' + f1(y - 36 * s) + ' M' + x + ' ' + f1(y - 22 * s) + ' Q' + f1(x + 4 * s) + ' ' + f1(y - 28 * s) + ' ' + f1(x + 6 * s) + ' ' + f1(y - 40 * s) + '" stroke="#7A6248" stroke-width="' + f1(1.6 * s) + '" fill="none" stroke-linecap="round"/>' +
+export const dum = (x, y, s, c = '#6E8E3A') => '<g><path d="M' + x + ' ' + y + ' Q' + f1(x + 1 * s) + ' ' + f1(y - 14 * s) + ' ' + f1(x) + ' ' + f1(y - 22 * s) + ' Q' + f1(x - 3 * s) + ' ' + f1(y - 30 * s) + ' ' + f1(x - 7 * s) + ' ' + f1(y - 36 * s) + ' M' + x + ' ' + f1(y - 22 * s) + ' Q' + f1(x + 4 * s) + ' ' + f1(y - 28 * s) + ' ' + f1(x + 6 * s) + ' ' + f1(y - 40 * s) + '" stroke="#7A6248" stroke-width="' + f1(1.6 * s) + '" fill="none" stroke-linecap="round"/>' +
   fan(x - 7 * s, y - 36 * s, 9 * s, c) + fan(x + 6 * s, y - 40 * s, 10 * s, c) + '<g fill="#8A5A2A"><circle cx="' + f1(x - 6 * s) + '" cy="' + f1(y - 34.6 * s) + '" r="' + f1(1 * s) + '"/><circle cx="' + f1(x + 6.8 * s) + '" cy="' + f1(y - 38.4 * s) + '" r="' + f1(1 * s) + '"/></g></g>';
-const neem = (x, y, s) => '<g><path d="M' + f1(x - 1.6 * s) + ' ' + y + ' Q' + f1(x - 1 * s) + ' ' + f1(y - 12 * s) + ' ' + f1(x - 5 * s) + ' ' + f1(y - 20 * s) + ' M' + f1(x + 1.4 * s) + ' ' + y + ' Q' + f1(x + 1.4 * s) + ' ' + f1(y - 12 * s) + ' ' + f1(x + 6 * s) + ' ' + f1(y - 19 * s) + '" stroke="#5E4630" stroke-width="' + f1(2 * s) + '" fill="none"/>' +
+export const neem = (x, y, s) => '<g><path d="M' + f1(x - 1.6 * s) + ' ' + y + ' Q' + f1(x - 1 * s) + ' ' + f1(y - 12 * s) + ' ' + f1(x - 5 * s) + ' ' + f1(y - 20 * s) + ' M' + f1(x + 1.4 * s) + ' ' + y + ' Q' + f1(x + 1.4 * s) + ' ' + f1(y - 12 * s) + ' ' + f1(x + 6 * s) + ' ' + f1(y - 19 * s) + '" stroke="#5E4630" stroke-width="' + f1(2 * s) + '" fill="none"/>' +
   '<g fill="#4F7A35"><ellipse cx="' + f1(x - 6 * s) + '" cy="' + f1(y - 21 * s) + '" rx="' + f1(9 * s) + '" ry="' + f1(5.6 * s) + '"/><ellipse cx="' + f1(x + 6 * s) + '" cy="' + f1(y - 22 * s) + '" rx="' + f1(9 * s) + '" ry="' + f1(6 * s) + '"/><ellipse cx="' + x + '" cy="' + f1(y - 27 * s) + '" rx="' + f1(9 * s) + '" ry="' + f1(5.6 * s) + '"/></g>' +
   '<g fill="#6A9444"><ellipse cx="' + f1(x - 2 * s) + '" cy="' + f1(y - 29 * s) + '" rx="' + f1(5.6 * s) + '" ry="' + f1(3 * s) + '"/><ellipse cx="' + f1(x + 8 * s) + '" cy="' + f1(y - 24.6 * s) + '" rx="' + f1(4.4 * s) + '" ry="' + f1(2.6 * s) + '"/><ellipse cx="' + f1(x - 9 * s) + '" cy="' + f1(y - 23 * s) + '" rx="' + f1(4 * s) + '" ry="' + f1(2.4 * s) + '"/></g></g>';
-const zanko = (x0, x1, y, step = 5, c) => { let s = ''; for (let x = x0; x <= x1; x += step) s += 'M' + f1(x) + ' ' + y + ' l.9 -2.8 l.9 2.8 Z '; return '<path d="' + s + '" fill="' + c + '"/>'; };
+export const zanko = (x0, x1, y, step = 5, c) => { let s = ''; for (let x = x0; x <= x1; x += step) s += 'M' + f1(x) + ' ' + y + ' l.9 -2.8 l.9 2.8 Z '; return '<path d="' + s + '" fill="' + c + '"/>'; };
 const cloud = (x, y, s) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')" fill="#fff" opacity=".85"><ellipse rx="16" ry="3.6"/><ellipse cx="7" cy="-2.4" rx="8" ry="4.4"/><ellipse cx="-6" cy="-1.4" rx="6" ry="3.4"/></g>';
 const reeds = (x, y, n, s = 1) => { let p = ''; for (let i = 0; i < n; i++) { const xx = x + i * 2.4 * s, hh = (14 + (i * 7) % 9) * s, lean = ((i % 3) - 1) * 2.4 * s; p += 'M' + f1(xx) + ' ' + y + ' Q' + f1(xx + lean * 0.3) + ' ' + f1(y - hh * 0.6) + ' ' + f1(xx + lean) + ' ' + f1(y - hh) + ' '; }
   let tops = ''; for (let i = 0; i < n; i += 2) { const xx = x + i * 2.4 * s, hh = (14 + (i * 7) % 9) * s, lean = ((i % 3) - 1) * 2.4 * s; tops += '<ellipse cx="' + f1(xx + lean) + '" cy="' + f1(y - hh - 1.4 * s) + '" rx="' + f1(0.7 * s) + '" ry="' + f1(2.4 * s) + '" fill="#7A5A30"/>'; }
@@ -156,7 +156,7 @@ const wader = (x, y, s, heron, cls = '') => { const b = heron ? '#8E98A0' : '#FB
     '<circle cx="-1.4" cy="-23.4" r="1.4" fill="' + b + '"/><path d="M-2.4 -23.8 L-7 -23 L-2.4 -22.6 Z" fill="' + (heron ? '#C9A43A' : '#E8B830') + '"/>' +
     (heron ? '<path d="M-1 -24.6 Q2 -25 4 -23.4" stroke="#2A2A2A" stroke-width=".6" fill="none"/><path d="M-2.6 -19 Q-3 -15 -1.6 -13" stroke="#3A3A3A" stroke-width=".5" fill="none" stroke-dasharray=".6 .6"/>' : '') +
     '<circle cx="-1.8" cy="-23.8" r=".35" fill="#1A1A1A"/></g></g>'; };
-const bird = (x, y, s, cls) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-bird ' + cls + '"><path d="M-4 0 Q-2 -2 0 0 Q2 -2 4 0" stroke="#3A3A44" stroke-width=".7" fill="none" stroke-linecap="round"/></g></g>';
+export const bird = (x, y, s, cls) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-bird ' + cls + '"><path d="M-4 0 Q-2 -2 0 0 Q2 -2 4 0" stroke="#3A3A44" stroke-width=".7" fill="none" stroke-linecap="round"/></g></g>';
 /** a dugout canoe, centre (x, y), length l */
 const canoe = (x, y, l, c = '#7A4A26') => '<g><path d="M' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + f1(x - l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + x + ' ' + f1(y + l * 0.07) + ' Q' + f1(x + l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + f1(x + l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + x + ' ' + f1(y - l * 0.01) + ' ' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Z" fill="' + c + '"/>' +
   '<path d="M' + f1(x - l * 0.46) + ' ' + f1(y - l * 0.055) + ' Q' + x + ' ' + f1(y + l * 0.02) + ' ' + f1(x + l * 0.46) + ' ' + f1(y - l * 0.055) + '" stroke="' + lt(c, 0.3) + '" stroke-width="' + f1(l * 0.012) + '" fill="none"/>' +
@@ -200,7 +200,7 @@ const bicycle = (x, y, r) => { const L = r * 3.1, rx = x + L;
     '<path d="M' + f1(rx - r * 0.5) + ' ' + f1(y - r * 1.8) + ' Q' + f1(rx + r * 0.3) + ' ' + f1(y - r * 2) + ' ' + f1(rx + r * 1.1) + ' ' + f1(y - r * 1.7) + '" stroke="#B8A26E" stroke-width=".4" fill="none"/>' +
     '<circle cx="' + f1(bx) + '" cy="' + by + '" r=".9" fill="#555"/></g>'; };
 /** a long-legged Sahel goat facing left, feet on y: drooping ears, a beard, horns swept back, a patch on its side */
-const goat = (x, y, s, c = '#F2EEE6', c2 = '#5A3A22') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="8" cy=".3" rx="10" ry="1.1" fill="rgba(40,24,10,.3)"/><g class="x-goat">' +
+export const goat = (x, y, s, c = '#F2EEE6', c2 = '#5A3A22') => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="8" cy=".3" rx="10" ry="1.1" fill="rgba(40,24,10,.3)"/><g class="x-goat">' +
   '<path d="M3.6 -7 L3.4 0 h1 L4.9 -7 Z M11.8 -7 L12.3 0 h1 L13.5 -7 Z" fill="' + dk(c, 0.38) + '"/>' +
   '<path d="M2 -7.6 Q1 -10.4 0 -12.4 L-2.6 -15.6 Q-4.6 -15 -5 -15.8 Q-5.4 -17.2 -4.6 -18 L-2.4 -19.6 Q-.8 -20.2 .2 -19 Q1.4 -16 3.4 -13.6 Q8 -13.8 13 -13.4 Q15.6 -13.2 16 -11 Q16.2 -8 14.6 -7 Q8 -6 2 -7.6 Z" fill="' + c + '"/>' +
   '<path d="M7 -13.6 Q11 -13.2 12 -10.2 Q10 -8.2 7 -9.2 Z" fill="' + c2 + '"/><path d="M2 -7.6 Q8 -6 14.6 -7 Q15.6 -8.6 15.8 -10 Q10 -8.4 3 -9.6 Z M-2.6 -15.6 L0 -12.4 Q-1.4 -13.4 -2.6 -15.6 Z" fill="#1a0e06" opacity=".18"/>' +
@@ -310,6 +310,20 @@ const waitO = (k) => Object.assign({}, WAIT[k % WAIT.length], { face: SADFACE })
 export function waiter(k: number): string {
   return '<svg class="jr4w" viewBox="-6 -14 72 150" overflow="visible" aria-hidden="true">' + person(30, 134, 140, Object.assign(waitO(k), { cls: 'w-fig' })) + '</svg>';
 }
+/** the boat's name board with its word: short words keep the big painted letters on the usual board; a longer word or a
+ *  two-word name gets a longer board (up to most of the hull) before its letters shrink, and textLength keeps every
+ *  word inside its board, so nothing ever runs off it and long names stay readable on a 7-inch screen */
+function boardSign(word: string): string {
+  const n = word.length, W = Math.max(188, Math.min(280, n * 24)), cx = n > 8 ? 212 : 222, x = cx - W / 2;
+  const fs = Math.min(38, Math.floor(W / (n * 0.72))), ls = n <= 6 ? 7 : n <= 9 ? 3 : 1;
+  const fit = n > 7 ? ' textLength="' + (W - 12) + '" lengthAdjust="spacingAndGlyphs"' : '';
+  return '<g class="eb-board"><rect x="' + (x - 4) + '" y="84" width="' + (W + 8) + '" height="46" rx="5" fill="#FFF6DF" stroke="#6B3E1E" stroke-width="3"/>' +
+    '<rect x="' + x + '" y="88" width="' + W + '" height="38" rx="3" fill="none" stroke="#E2C99A" stroke-width="1"/>' +
+    '<g fill="#8A6A3E"><circle cx="' + (x + 3) + '" cy="91" r="1.6"/><circle cx="' + (x + W - 3) + '" cy="91" r="1.6"/><circle cx="' + (x + 3) + '" cy="123" r="1.6"/><circle cx="' + (x + W - 3) + '" cy="123" r="1.6"/></g>' +
+    '<text x="' + cx + '" y="' + (107 + Math.round(fs * 0.37)) + '" text-anchor="middle" font-size="' + fs + '" font-weight="900" letter-spacing="' + ls + '"' + fit +
+    ' fill="#2A1A0C" style="font-family:var(--disp,sans-serif)">' + word + '</text></g>';
+}
+
 /** the boat itself in its 420 x 165 box, bow at the left; o.board = the word, o.pax = the passenger index who boards,
     o.crowd = a few seated passengers (the scene's far boat) */
 function boatBody(o) {
@@ -332,10 +346,7 @@ function boatBody(o) {
     // ribs of the hull showing as nail lines, and the eye painted at the prow
     '<g stroke="rgba(0,0,0,.18)" stroke-width="1">' + [60, 100, 140, 330].map((x) => '<path d="M' + x + ' ' + f1(gun(x) + 4) + ' V' + f1(keel(x) - 4) + '"/>').join('') + '</g>' +
     '<circle cx="34" cy="' + f1(gun(34) + 12) + '" r="4.2" fill="#F4EBD0"/><circle cx="33" cy="' + f1(gun(34) + 12) + '" r="2" fill="#1A0E06"/>';
-  if (o.board != null) s += '<g class="eb-board"><rect x="124" y="84" width="196" height="46" rx="5" fill="#FFF6DF" stroke="#6B3E1E" stroke-width="3"/>' +
-    '<rect x="128" y="88" width="188" height="38" rx="3" fill="none" stroke="#E2C99A" stroke-width="1"/>' +
-    '<g fill="#8A6A3E"><circle cx="131" cy="91" r="1.6"/><circle cx="313" cy="91" r="1.6"/><circle cx="131" cy="123" r="1.6"/><circle cx="313" cy="123" r="1.6"/></g>' +
-    '<text x="222" y="121" text-anchor="middle" font-size="38" font-weight="900" letter-spacing="7" fill="#2A1A0C" style="font-family:var(--disp,sans-serif)">' + o.board + '</text></g>';
+  if (o.board != null) s += boardSign(o.board);
   // the boarding plank from the end of the jetty (below the boat, nearer to us) up to the gunwale; shown while moored
   if (o.pax != null) s += '<g class="eb-plank"><path d="M58 202 L86 202 L110 ' + f1(gun(104) + 1) + ' L98 ' + f1(gun(104) + 1) + ' Z" fill="#A8743E" stroke="#5E3A1C" stroke-width="1.6" stroke-linejoin="round"/>' +
     '<path d="M64 186 h20 M70 166 h17 M76 146 h15 M82 126 h13 M88 106 h11 M93 88 h10" stroke="#6B4422" stroke-width="2.2" stroke-linecap="round"/></g>';

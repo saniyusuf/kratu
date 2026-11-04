@@ -67,6 +67,18 @@ export class ProgressService {
     try { this.store().setItem(this.key() + '_games', JSON.stringify([...g, id])); this.store().setItem(this.key() + '_gamesnew', '1'); } catch { /* private mode */ }
     return true;
   }
+  /** Zinari, the child's gold (Sani 2026-11-03): only ever added to. */
+  zinari(): number { try { return +(this.store().getItem(this.key() + '_zin') || 0) || 0; } catch { return 0; } }
+  addZinari(n: number): { before: number; after: number } {
+    const before = this.zinari(), after = before + Math.max(0, Math.round(n));
+    try { this.store().setItem(this.key() + '_zin', String(after)); } catch { /* private mode */ }
+    return { before, after };
+  }
+  /** The course simulator only: put the total where an adult wants it (just under a bag, to see its title unlock). */
+  setZinari(n: number): void { try { this.store().setItem(this.key() + '_zin', String(Math.max(0, Math.round(n)))); } catch { /* private mode */ } }
+  /** Course steps passed before: passing one again pays less. */
+  passed(tag: string): boolean { try { return (JSON.parse(this.store().getItem(this.key() + '_passed') || '[]') as string[]).includes(tag); } catch { return false; } }
+  markPassed(tag: string): void { if (this.passed(tag)) return; try { const l = JSON.parse(this.store().getItem(this.key() + '_passed') || '[]'); l.push(tag); this.store().setItem(this.key() + '_passed', JSON.stringify(l)); } catch { /* private mode */ } }
   /** A game was added since the home page last showed the shelf. */
   gamesNew(): boolean { try { return this.store().getItem(this.key() + '_gamesnew') === '1'; } catch { return false; } }
   gamesSeen(): void { try { this.store().removeItem(this.key() + '_gamesnew'); } catch { /* ignore */ } }

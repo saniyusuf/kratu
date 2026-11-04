@@ -253,10 +253,10 @@ let pn = 0, actx = null;
 const BODY = 'M34 62 H150 Q170 62 174 48 L176 36 Q160 30 162 16 Q166 0 215 0 Q264 0 268 16 Q270 30 254 36 L256 48 Q260 62 280 62 H396 Q422 62 422 88 V414 Q422 440 398 440 H32 Q8 440 8 414 V88 Q8 62 34 62 Z';
 /* the board and the word on it; returns the svg and the pen timeline (stroke start/end in ms) */
 function board(word) {
-  const id = ++pn, W = word.split('').filter((c) => LET[c]);
+  const id = ++pn, W = word.replace(/\s+/g, ' ').trim().split('').filter((c) => LET[c] || c === ' ');   // a two-word name keeps its space
   let seed = 7; for (const c of word) seed = (seed * 31 + c.charCodeAt(0)) % 9973;
   const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
-  const GAP = 16, wid = W.reduce((s, c) => s + LET[c][0], 0) + GAP * (W.length - 1);
+  const GAP = 16, SP = 34, wid = W.reduce((s, c) => s + (LET[c] ? LET[c][0] : SP), 0) + GAP * (W.length - 1);
   const sc = Math.min(1.42, 350 / wid), x0 = 215 - wid * sc / 2, y0 = 262 - 50 * sc;
   // the wood: light board, grain running from the handle down, a knot, old wash stains, darker worn edges
   // (r5) the grain lines merged into three paths by tone, for cheap tablets
@@ -269,6 +269,7 @@ function board(word) {
   // the word: per letter a little lean, rise and size; ink a little darker after each dip
   let ink = '', runs = '', t = 260, cx = 0; const tl = [], keys = [];
   W.forEach((c, li) => {
+    if (!LET[c]) { cx += SP + GAP; return; }   // the space between two words: nothing written
     const [lw, strokes] = LET[c], rot = (rnd() - .5) * 5, dy = (rnd() - .5) * 7, s2 = .96 + rnd() * .08, op = (li % 3 === 0 ? 1 : li % 3 === 1 ? .93 : .86);
     const tx = x0 + cx * sc, ty = y0 + dy; const m = (p) => { const r = rot * Math.PI / 180, px = (p[0] - lw / 2) * s2, py = (p[1] - 50) * s2;
       return [tx + (lw / 2 + px * Math.cos(r) - py * Math.sin(r)) * sc, ty + (50 + px * Math.sin(r) + py * Math.cos(r)) * sc]; };

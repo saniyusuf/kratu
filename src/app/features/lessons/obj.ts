@@ -8,6 +8,7 @@ import { Item, LessonBase, Stopped } from '../../shared/lesson/lesson-base';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
 import { firstHints, joy, matchWord, retryPic, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
 import { CAT_NAME } from './cats';
+import { CourseService } from '../../core/state/course.service';
 
 type Mark = '' | 'done' | 'miss';
 const STAGES = [
@@ -36,6 +37,7 @@ const STAGES = [
 export class ObjLessonScreen extends LessonBase implements OnInit {
   protected readonly retryPic = retryPic;
   private readonly route = inject(ActivatedRoute);
+  private readonly course = inject(CourseService);
   private readonly lb = viewChild.required<LailaButton>('lb');
   private readonly dk = viewChild.required(AlloButton);
   private readonly showRef = viewChild.required<ElementRef<HTMLElement>>('show');
@@ -221,6 +223,25 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
     if (this.running) return; this.running = true; this.reset();
     this.eye.set(this.mode === 'numbers' ? 'Lambobi · yatsu · saiti 1 / 2' : (CAT_NAME[this.session.category() || 'animals'] || 'Dabbobi') + ' · koyo · saiti 1 / 12');   // the design's placeholder until the first set names it
     try {
+      const q = this.route.snapshot.queryParamMap, given = (q.get('words') || '').split(',').map((k) => k.trim()).filter((k) => this.words.find(k));
+      if (this.mode === 'words' && given.length) {
+        // a course step's own words (?words=), or a game's review of the words missed (?review=1&back=…): the lesson teaches
+        // exactly these, five at a time, and keeps going until every one is said right (Sani 2026-11-02: 100% before the game)
+        const catOf = (k: string) => Object.keys(this.words.cats()).find((c) => this.words.list(c).some((w) => w.k === k)) || 'animals';
+        this.cat = catOf(given[0]); this.rowItems.set([]); this.marks.set({});
+        this.items = given.map((k) => { const w = this.words.find(k)!; return { ...this.item(w, catOf(k)), en: String(w.en).toLowerCase() }; });
+        this.eye.set((CAT_NAME[this.cat] || this.cat) + (q.get('review') ? ' · sake koyo' : ' · koyo'));
+        if (!q.get('review')) { const opening = this.catStart(this.cat); if (opening) await this.play(opening); }
+        await this.runQueue(this.items.slice(), !q.get('review'), false);
+        this.hidePic(); await this.play(this.bus.gk('app_stage_done')); this.running = false;
+        const back = q.get('back'), done = q.get('done');
+        if (done) {
+          this.course.done(+done);
+          const nx = this.course.step();   // in the course, straight on to the next step (Sani 2026-11-03)
+          if (nx && this.course.at() === +done + 1) { const rt = this.course.route(nx); await this.router.navigateByUrl('/blank', { skipLocationChange: true }); this.router.navigate(['/' + rt.path], { queryParams: rt.query }); return; }
+        }
+        this.router.navigateByUrl(back && back.startsWith('/') ? back : '/home'); return;
+      }
       if (this.mode === 'words') {
         this.loadCat(this.session.category() || 'animals');
         const opening = this.catStart(this.cat); if (opening) await this.play(opening);

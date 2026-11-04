@@ -16,12 +16,14 @@ import { gyadaScene } from './sc-gyada';
 import { shanuScene } from './sc-shanu';
 import { garkeScene } from './sc-garke';
 import { dillaliScene } from './sc-dillali';
+import { ruwaScene } from './sc-ruwa';
+import { riniScene } from './sc-rini';
 
 /** the drawn background of each reworked game, by game id (sc-*.ts, wired in as each is drawn) */
 const SCENE: Record<string, () => string> = {
   'j-karatu': kogiScene, 'j-jirgi': jirgiScene, 'j-allo': alloScene, 'j-marubuci': wasikaScene, 'j-rubutu': tukwaneScene, 'j-rubutu-say': buloScene,
   'j-nemo': kasuwaScene, 'j-suya': suyaScene, 'j-gyada': gyadaScene, 'j-shanu': shanuScene, 'j-garke': garkeScene,
-  'j-dillali': dillaliScene,
+  'j-dillali': dillaliScene, 'j-ruwa': ruwaScene, 'j-rini': riniScene,
 };
 /** the scenes are fixed drawings (no chance in them), so each string is built once and kept for the next round */
 const BUILT: Record<string, string> = {};

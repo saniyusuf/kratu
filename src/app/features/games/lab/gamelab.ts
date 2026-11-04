@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AudioBus } from '../../../core/audio/audio-bus.service';
 import { SessionService } from '../../../core/state/session.service';
 import { SpeechService } from '../../../core/speech/speech.service';
+import { WordsService } from '../../../core/clips/words.service';
 import { ProgressService } from '../../../core/state/progress.service';
+import { CourseService } from '../../../core/state/course.service';
 import { ZoomService } from '../../../core/zoom/zoom.service';
 import { Door, Ear } from '../../../shared/chrome/chrome';
 import { matchWord } from '../../../shared/lesson/helpers';
@@ -11,11 +13,15 @@ import { ALLO_SVG } from '../../../shared/allo';
 import { LAILA_SVG } from '../../../shared/svg';
 import { afterPaint } from '../../../shared/paint';
 import { GameHandle, GameOpts, playGame } from './engine';
+import { LEVEL_AT, TITLES, gameGold, levelOf, unlockLines } from '../../../core/state/zinari';
+import { Spotter } from '../../../shared/lesson/helpers';
 
 const WORDS = ['goat', 'mango', 'car', 'dog', 'cat', 'fish', 'apple', 'banana', 'horse', 'cow', 'bus', 'tomato', 'bread', 'egg', 'orange', 'onion', 'cup', 'chair', 'bed', 'sun', 'book', 'chicken',
   // the Arewa games: the dillali's goods, the mai shayi's menu, the allo's and the ferry's words, the letter writer's names
   'ram', 'camel', 'donkey', 'millet', 'groundnut', 'calabash', 'pot', 'mat', 'kettle', 'broom', 'kaftan', 'cap', 'turban', 'shoe', 'umbrella',
-  'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'spoon', 'rice', 'beans', 'water', 'pen', 'key', 'mama', 'baba', 'aunt', 'uncle'];
+  'school', 'farm', 'river', 'well', 'forest', 'road', 'tea', 'sugar', 'milk', 'spoon', 'rice', 'beans', 'water', 'pen', 'key', 'mama', 'baba', 'aunt', 'uncle',
+  // Ruwan sama and Karofi (2026-11-02): the longer words they read and spell
+  'sheep', 'plate', 'table', 'teacher', 'farmer', 'flower'];
 const PEOPLE = ['woman', 'man', 'girl', 'boy', 'old_man'];
 const NUMS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 /** Lambobi's numbers by value: 1–10 have their own word clips, the rest are the n-keys of the Lambobi lessons. */
@@ -41,6 +47,8 @@ const LINES: Record<string, { ask: string; how: string }> = {
   'j-allo': { ask: 's_g_canoes_ask', how: 's_g_allo_how' },
   'j-jirgi': { ask: 's_g_canoes_ask', how: 's_g_jirgi_how' },
   'j-marubuci': { ask: 's_g_house_ask', how: 's_g_marubuci_how' },
+  'j-ruwa': { ask: 's_g_canoes_ask', how: 's_g_ruwa_how' },
+  'j-rini': { ask: 's_g_house_ask', how: 's_g_rini_how' },
 };
 
 /**
@@ -53,7 +61,7 @@ const LINES: Record<string, { ask: string; how: string }> = {
   imports: [Door, Ear],
   host: { class: 's lesson gamelab' },
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./gamelab.css', './kalangu.css', './teastall.css', './kamun.css', './rest.css', './sc-kogi.css', './sc-jirgi.css', './sc-allo.css', './sc-wasika.css', './sc-tukwane.css', './sc-bulo.css', './sc-kasuwa.css', './sc-suya.css', './sc-gyada.css', './sc-shanu.css', './sc-garke.css', './dillali.css', './sc-dillali.css'],
+  styleUrls: ['./gamelab.css', './kalangu.css', './teastall.css', './kamun.css', './rest.css', './sc-kogi.css', './sc-jirgi.css', './sc-allo.css', './sc-wasika.css', './sc-tukwane.css', './sc-bulo.css', './sc-kasuwa.css', './sc-suya.css', './sc-gyada.css', './sc-shanu.css', './sc-garke.css', './dillali.css', './sc-dillali.css', './sc-ruwa.css', './sc-rini.css', './zinari.css', './unlock.css'],
   template: `<div #frame class="glab nofit"><div class="gbg"></div><div class="gbox"><div class="scr"></div></div></div><app-door (pressed)="leave()" /><app-ear (pressed)="again()" />`,
 })
 export class GameLabScreen implements OnInit, OnDestroy {
@@ -62,24 +70,32 @@ export class GameLabScreen implements OnInit, OnDestroy {
   private readonly speech = inject(SpeechService);
   private readonly zoom = inject(ZoomService);
   private readonly progress = inject(ProgressService);
+  private readonly course = inject(CourseService);
+  private readonly words = inject(WordsService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly frame = viewChild.required<ElementRef<HTMLElement>>('frame');
   private game: GameHandle | null = null;
   private gone = false;
+  private readonly spotter = new Spotter(inject(ElementRef).nativeElement, inject(ZoomService));
   /** The yay or nope still sounding: Laila's next line waits for it, so neither cuts the other off. */
   private sfxP: Promise<unknown> = Promise.resolve();
 
   ngOnInit(): void {
-    afterPaint().then(() => { if (!this.gone) this.start(this.route.snapshot.paramMap.get('id') || 'j-magana'); });
+    // the word list first: a lesson's words are given by key, and a key is not always the word as written (sorghum: Guinea corn)
+    afterPaint().then(() => this.words.load().catch(() => undefined)).then(() => { if (!this.gone) this.start(this.route.snapshot.paramMap.get('id') || 'j-magana'); });
   }
-  ngOnDestroy(): void { this.gone = true; this.game?.stop(); this.bus.stopAll(); }
+  ngOnDestroy(): void { this.gone = true; this.spotter.unspot(); this.game?.stop(); this.bus.stopAll(); }
 
   private start(id: string): void {
     const map = (keys: string[], f: (k: string) => string) => Object.fromEntries(keys.map((k) => [k, f(k)]));
+    // ?words=…: a lesson's own words, so their pictures and clips are there too (a key the content does not know is dropped)
+    const extra = (this.opts().words || []).filter((w) => this.words.find(w)), info = (w: string) => this.words.find(w);
     const K = {
-      pic: map(WORDS.concat(PEOPLE), (w) => 'assets/pictures/' + w + '.webp'),
-      en: { ...map(WORDS.concat(NUMS), (w) => 'assets/audio/en/word_' + w + '.ogg'),
+      pic: { ...map(WORDS.concat(PEOPLE), (w) => 'assets/pictures/' + w + '.webp'), ...map(extra, (w) => info(w)!.img || 'assets/pictures/' + w + '.webp') },
+      /** each word as written, for reading, spelling and hearing it: the key is not always the word */
+      word: Object.fromEntries(WORDS.concat(PEOPLE, extra).map((w) => [w, info(w)?.en || w.replace(/_/g, ' ')])),
+      en: { ...map(WORDS.concat(NUMS), (w) => 'assets/audio/en/word_' + w + '.ogg'), ...map(extra, (w) => info(w)!.en_clip || 'assets/audio/en/word_' + w + '.ogg'),
         ...Object.fromEntries(Object.keys(NUMBER).map((n) => ['n' + n, 'assets/audio/en/word_' + (+n <= 10 ? NUMBER[+n].toLowerCase() : 'n' + n) + '.ogg'])) },
       enText: Object.fromEntries(Object.entries(NUMBER).map(([n, t]) => ['n' + n, t])),
       L: map('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), (L) => 'assets/audio/en/app_en_' + L + '.ogg'),
@@ -99,17 +115,54 @@ export class GameLabScreen implements OnInit, OnDestroy {
       rect: (el) => this.zoom.rect(el),
       leave: () => this.leave(),
       firstTime: () => this.progress.unlockGame(id),
+      award: (a: { stars: number; tries: number }) => this.award(id, a),
+      zinari: () => this.progress.zinari(), levels: LEVEL_AT,
+      spot: (el: Element | null) => { if (el) this.spotter.spot(el, 'left'); else this.spotter.unspot(); },
       next: (r) => {
+        if (r && r.gate) { this.gate(r); return; }
         const q = this.route.snapshot.queryParamMap;
         const n = q.get('next'), missed = ((r && r.missed) || []).join('');
         if (n && n.startsWith('/')) this.router.navigateByUrl(missed ? n + (n.includes('?') ? '&' : '?') + 'again=' + missed : n); else this.leave();
       },
     }, this.opts());
   }
-  /** ?letters=ABCD: only those letters; ?next=/…: played inside a lesson, which it hands back to. */
+  /** ?letters=ABCD: only those letters; ?words=mango,bread: the lesson's words, every one of them played (every word game,
+   *  Sani 2026-11-02: a game practises all the words just learned); ?next=/…:
+   *  played inside a lesson, which it hands back to. */
   private opts(): GameOpts {
     const q = this.route.snapshot.queryParamMap, letters = (q.get('letters') || '').toUpperCase().replace(/[^A-Z]/g, '').split('').filter(Boolean);
-    return { letters: letters.length ? letters : undefined, lesson: !!q.get('next') };
+    const words = (q.get('words') || '').toLowerCase().split(',').map((w) => w.trim()).filter((w) => /^[a-z_]+$/.test(w));
+    const lesson = !!q.get('next'), id = this.route.snapshot.paramMap.get('id') || '';
+    // the course's gate: inside the course (a step number), or whenever the simulator is on (Sani 2026-11-02)
+    const gate = lesson && (q.get('step') || this.course.on())
+      ? { tries: Math.max(1, Math.min(2, +(q.get('try') || 1))), first: !this.progress.games().includes(id), sim: this.course.on() || /[?&]debug\b/.test(location.search) } : undefined;
+    return { letters: letters.length ? letters : undefined, words: words.length ? words : undefined, lesson, gate };
+  }
+  /** After the gate's result, Laila's press: passed, on to the next step; first miss, the same game again with a new mix;
+   *  second miss, a review lesson of the words missed, which comes back to this game (its intro, a fresh first try). */
+  private gate(r: { pass: boolean; missed: string[]; review: string[] | null; tries: number; letters: boolean }): void {
+    const q = this.route.snapshot.queryParamMap, step = q.get('step'), id = this.route.snapshot.paramMap.get('id') || '';
+    const here = (t: number) => { const p = new URLSearchParams(location.search); p.set('try', String(t)); return '/wasanni/' + id + '?' + p.toString(); };
+    const reopen = (url: string) => this.router.navigateByUrl('/blank', { skipLocationChange: true }).then(() => this.router.navigateByUrl(url));
+    if (r.pass) {
+      // straight on to the next step of the course, never back to the menu (Sani 2026-11-03)
+      if (step) { this.course.done(+step); const nx = this.course.step(); if (nx && this.course.at() === +step + 1) { const rt = this.course.route(nx); reopen(this.router.serializeUrl(this.router.createUrlTree(['/' + rt.path], { queryParams: rt.query }))); return; } }
+      const n = q.get('next'); this.router.navigateByUrl(n && n.startsWith('/') ? n : '/home'); return;
+    }
+    if (r.tries < 2) { reopen(here(2)); return; }
+    if (r.letters && r.missed.length) { this.router.navigate(['/haruffa/koyo'], { queryParams: { fromL: r.missed.slice().sort()[0] } }); return; }
+    if (r.review && r.review.length) { this.router.navigate(['/abubuwa/koyo'], { queryParams: { words: r.review.join(','), review: 1, back: here(1) } }); return; }
+    reopen(here(1));   // nothing to review by word (a counting game): a fresh first try
+  }
+  /** A passed game's Zinari (Sani 2026-11-03): paid once on the result screen. When it fills a bag, that bag's title is
+   *  granted there and then (Sani 2026-11-04): the unlock plays, and the course goes on only after Laila is pressed. */
+  private award(id: string, a: { stars: number; tries: number }) {
+    const step = this.route.snapshot.queryParamMap.get('step'), tag = step ? 's' + step : 'g' + id, first = !this.progress.passed(tag);
+    const gold = gameGold(first, a.tries <= 1, a.stars >= 4); this.progress.markPassed(tag);
+    const { before, after } = this.progress.addZinari(gold), f = this.session.g() === 'f';
+    const was = levelOf(before), now = levelOf(after), t = now > was ? TITLES[now - 1] : null;   // two bags at once (only the simulator can) grants the higher
+    return { gold, before, after, at: LEVEL_AT, lines: ['s_z_got_' + a.stars + '_' + gold],
+      unlock: t ? { i: now - 1, name: f ? t.f : t.m, colour: t.colour, lines: unlockLines(now - 1) } : null };
   }
   again(): void { this.game?.again(); }
   leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigate(['/home']); }

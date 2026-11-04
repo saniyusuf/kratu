@@ -43,6 +43,11 @@ export function dillaliScene(): string {
     '<g class="x-cloud x-c2"><g fill="#fff" opacity=".7" transform="translate(200 36)"><ellipse rx="12" ry="2.8"/><ellipse cx="6" cy="-1.6" rx="6" ry="3.2"/></g></g>' +
     // birds drifting over the town
     '<g class="x-birds"><path d="M100 30 q2 -1.6 4 0 q2 -1.6 4 0 M114 24 q1.6 -1.3 3.2 0 q1.6 -1.3 3.2 0 M92 22 q1.4 -1.1 2.8 0 q1.4 -1.1 2.8 0" stroke="#3A3A3A" stroke-width=".5" fill="none"/></g>';
+  // the land the town stands on, running back to the horizon, so nothing behind the square hangs in the sky (Sani 3 Nov)
+  const land = '<path d="M0 59 Q60 57 130 58.4 Q200 59.6 260 57.8 Q296 57 320 58.4 V86 H0 Z" fill="#DCC196"/>' +
+    '<path d="M0 63 Q90 61.4 170 63 Q250 64.4 320 62.6 V86 H0 Z" fill="#D5B583" opacity=".7"/>' +
+    '<path d="M0 60.4 H66 M120 60.4 H190 M222 60.6 H252 M290 60.4 H320" stroke="#BE9466" stroke-width="1.6" opacity=".55"/>' +   // the town's low mud walls
+    '<g fill="#8FA05E" opacity=".55"><ellipse cx="34" cy="61" rx="4" ry="1.6"/><ellipse cx="128" cy="62" rx="3" ry="1.2"/><ellipse cx="182" cy="61.4" rx="3.4" ry="1.3"/><ellipse cx="300" cy="61.2" rx="4" ry="1.5"/></g>';
   const town = '<g opacity=".8">' + house(70, 60, 22, 12, '#D49A68', '#B9784A') + house(96, 60, 18, 9, '#CF9160', '#B9784A') + house(196, 60, 24, 13, '#D49A68', '#B9784A') +
     house(224, 60, 18, 10, '#CF9160', '#B9784A') + house(262, 60, 26, 12, '#D49A68', '#B9784A') + '</g>' +
     // the mosque behind the square: a dome and a minaret
@@ -94,5 +99,5 @@ export function dillaliScene(): string {
     '<pattern id="' + PF + '-zinc" width="2.2" height="6" patternUnits="userSpaceOnUse" patternTransform="skewX(-15)"><rect width="2.2" height="6" fill="#AEB7BC"/><rect width=".4" height="6" fill="#7E888E"/><rect x=".5" width=".5" height="6" fill="#C8D0D4"/></pattern>' +
     KW.defs() + '<radialGradient id="' + PF + '-dsun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF8DC"/><stop offset=".4" stop-color="#FFF1B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>' +
     '</defs>' +
-    sky + town + ground + pen + stalls + '<rect x="0" y="40" width="320" height="64" fill="' + U('dhaze') + '"/>' + far + smoke + lookers + animals + road + stopper + basin + ramMan + baro + '</svg>';
+    sky + land + town + ground + pen + stalls + '<rect x="0" y="40" width="320" height="64" fill="' + U('dhaze') + '"/>' + far + smoke + lookers + animals + road + stopper + basin + ramMan + baro + '</svg>';
 }

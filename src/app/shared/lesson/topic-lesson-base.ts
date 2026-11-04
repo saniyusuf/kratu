@@ -42,7 +42,9 @@ export abstract class TopicLessonBase extends LessonBase implements OnInit {
   }
   go(): void {
     const key = this.cat(); if (!key || this.running) return; this.bus.stopAll(); this.spotter.unspot(); this.nohand.set(false); this.cue.set(false);
-    if (this.flow.sub(this.lesson, key, '/' + this.lesson + '?pick=' + key + '&resume=1')) return; this.begin(key);
+    // a lesson's own words (?words=, the course's Nemo hoto) come back with it after the example
+    const ws = this.route.snapshot.queryParamMap.get('words'), keep = ws ? '&words=' + encodeURIComponent(ws) : '';
+    if (this.flow.sub(this.lesson, key, '/' + this.lesson + '?pick=' + key + '&resume=1' + keep)) return; this.begin(key);
   }
   private begin(key: string): void { this.inLesson.set(true); this.running = true; this.run(() => this.start(key)).then(() => { if (!this.stopped && this.inLesson()) this.toMenu(); }); }
   /** The lesson itself, from its first clip to app_stage_done. */
