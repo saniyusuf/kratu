@@ -51,39 +51,54 @@ const SLOW = 1.5;
  * hard cover once and the book stays open and centred; every few seconds the hand peels the right-hand page from its
  * bottom corner (the fold is the reflection of the page about the line halfway between corner and finger) onto a
  * spread of another kind of lesson, and the pictures move where they are. Pressing it opens the next lesson.
- * The pages are one small canvas; the hand and cover move by transform only; nothing draws while the screen is hidden.
+ * The pages are one canvas (drawn at no more than 1.25× the screen's pixels, the book being big); the hand and cover move
+ * by transform only; nothing draws while the screen is hidden. Home design 2 (Sani 2026-11-05): three times the old size, red
+ * leather with gold corners and stitching, thick page edges and a blue ribbon, a warm light behind and a soft shadow under;
+ * it breathes all the time and pulses (.talk on the host) while Laila talks about it.
  */
 @Component({
   selector: 'app-course-book',
   host: { class: 'cbookwrap' },
   template: `
+<span class="cbpool" aria-hidden="true"></span><span class="cbshadow" aria-hidden="true"></span>
 <button #book class="cbook breath" aria-label="Littafi" (click)="press()">
-  <span #back class="cbback"></span>
+  <span #back class="cbback"><span class="cbleaves"></span><span class="cbribbon"></span></span>
   <canvas #cv class="cbpages" aria-hidden="true"></canvas>
   <span #cover class="cbcover"><span class="cbfront" [innerHTML]="coverSvg"></span><span class="cbinside"></span></span>
   <span #hand class="cbhand" [innerHTML]="handSvg"></span>
 </button>`,
   styles: [`
-:host{display:flex;justify-content:center;width:100%;margin:4px 0 40px}
-.cbook{--c:1;position:relative;width:184px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:900px;translate:calc(var(--c) * -25%) 0;-webkit-tap-highlight-color:transparent}
-.cbook.breath{animation:cbbreath 6.6s ease-in-out infinite}
-@keyframes cbbreath{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-.cbook::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(251,192,45,.45),rgba(251,192,45,0) 65%);z-index:-1;translate:calc(var(--c) * 18.4%) 0;animation:cbglow 4.8s ease-in-out infinite}
-@keyframes cbglow{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.05)}}
-.cbook.spot2::before{opacity:0;animation:none}
-.cbook.spot2 .cbback::before{animation-duration:1.1s}
-.cbback{position:absolute;inset:-6px -7px -8px;border-radius:12px 18px 18px 12px;background:linear-gradient(135deg,#A63A22,#7A2616);box-shadow:0 8px 0 rgba(59,46,30,.16),inset 0 0 0 2px #5E1C10;opacity:0}
-.cbback::after{content:"";position:absolute;inset:3px;border-radius:9px 15px 15px 9px;border:1.4px dashed #F1D9A8;opacity:.8}
-.cbback::before{content:"";position:absolute;inset:-5px;border-radius:15px 21px 21px 15px;box-shadow:0 0 0 2.5px var(--glow,#FBC02D),0 0 18px 6px var(--glow,#FBC02D);opacity:.35;animation:cbedge 4.2s ease-in-out infinite;pointer-events:none}
-@keyframes cbedge{0%,100%{opacity:.3}50%{opacity:.9}}
+:host{position:relative;display:flex;justify-content:center;width:100%;margin:30px 0 30px;
+  --cbc-tl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-tr:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 1 30 0)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");
+  --cbc-bl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(1 0 0 -1 0 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-br:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 -1 30 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E")}
+:host(.talk){z-index:3}
+.cbook{--c:1;position:relative;width:480px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:2400px;translate:calc(var(--c) * -25%) 0;transform-origin:50% 60%;-webkit-tap-highlight-color:transparent}
+.cbook.breath{animation:cbbreath 3s ease-in-out infinite}
+@keyframes cbbreath{50%{transform:translateY(-6px) scale(1.02)}}
+:host(.talk) .cbook.breath{animation:cbtalk 1.3s ease-in-out infinite}
+@keyframes cbtalk{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.cbpool{position:absolute;left:50%;top:50%;width:884px;height:624px;margin:-312px 0 0 -442px;border-radius:50%;pointer-events:none;will-change:opacity;
+  background:radial-gradient(closest-side,rgba(255,214,120,.75),rgba(255,214,120,.25) 60%,rgba(255,214,120,0));animation:cbhal 3s ease-in-out infinite}
+:host(.talk) .cbpool{animation:cbhalf .65s ease-in-out infinite alternate}
+@keyframes cbhal{50%{opacity:.55}}
+@keyframes cbhalf{to{opacity:.55}}
+.cbshadow{position:absolute;left:50%;bottom:-30px;width:458px;height:62px;margin-left:-229px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(60,35,10,.45),rgba(60,35,10,0));animation:cbshd 3s ease-in-out infinite}
+@keyframes cbshd{50%{transform:scaleX(.94);opacity:.8}}
+.cbback{position:absolute;inset:-21px -22px -19px;border-radius:22px;background:linear-gradient(#B8322F,#8E2220);box-shadow:0 14px 0 #8E2220;opacity:0}
+.cbback::after{content:"";position:absolute;inset:12px;border-radius:14px;border:3px dashed #F2C14E;opacity:.9}
+.cbback::before{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tl),var(--cbc-tr),var(--cbc-bl),var(--cbc-br);background-position:left top,right top,left bottom,right bottom}
+.cbleaves{position:absolute;inset:21px 22px 19px;border-radius:6px;box-shadow:0 5px 0 #F2E3BE,0 10px 0 #E6D2A4,0 11px 0 #C9AE78}
+.cbribbon{position:absolute;left:66%;bottom:-26px;width:28px;height:46px;background:#2F6DB5;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);box-shadow:inset 0 8px 0 #00000022;z-index:5}
 .cbpages{position:absolute;left:-10%;top:-50%;width:120%;height:200%;z-index:4;pointer-events:none}
 .cbcover{position:absolute;top:-3px;bottom:-3px;right:-3px;width:calc(50% + 3px);transform-origin:left center;transform-style:preserve-3d;z-index:5;will-change:transform}
 .cbfront,.cbinside{position:absolute;inset:0;border-radius:4px 16px 16px 4px;backface-visibility:hidden;overflow:hidden}
-.cbfront{box-shadow:0 8px 0 rgba(59,46,30,.18)}
+.cbfront{box-shadow:0 12px 0 #8E2220}
+.cbfront::after{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tr),var(--cbc-br);background-position:right top,right bottom}
 .cbinside{transform:rotateY(180deg);border-radius:16px 4px 4px 16px;background:#FBF3DE repeating-linear-gradient(transparent 0 13px,rgba(201,174,116,.35) 13px 14px);border:3px solid #C9AE74}
 .cbhand{position:absolute;left:0;top:0;z-index:25;pointer-events:none;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 4px 3px rgba(59,46,30,.28))}
-.cbook.down{transform:scale(.96);transition:transform .12s ease-out}
-@media (prefers-reduced-motion:reduce){.cbook,.cbook::before,.cbback::before{animation:none!important}}
+.cbook.down{animation:none;transform:scale(.96);transition:transform .12s ease-out}
+@media (prefers-reduced-motion:reduce){.cbook,.cbpool,.cbshadow{animation:none!important}}
 `],
 })
 export class CourseBook implements AfterViewInit, OnDestroy {
@@ -138,7 +153,7 @@ export class CourseBook implements AfterViewInit, OnDestroy {
 
   private size(): void {
     this.W = this.el.offsetWidth; this.H = this.el.offsetHeight; if (!this.W) return;
-    this.dpr = Math.min(1.5, window.devicePixelRatio || 1); this.S = this.W / 2; this.w = this.W / 2; this.h = this.H; this.ox = this.W * .1; this.oy = this.H * .5;
+    this.dpr = Math.min(1.25, window.devicePixelRatio || 1); this.S = this.W / 2; this.w = this.W / 2; this.h = this.H; this.ox = this.W * .1; this.oy = this.H * .5;
     this.cv.width = Math.round(this.W * 1.2 * this.dpr); this.cv.height = Math.round(this.H * 2 * this.dpr);
     this.hw = this.W * .30; this.ax = this.hw * 32 / 140; this.ay = this.hw * 12 / 140; this.hand.style.width = this.hw + 'px'; this.hand.style.transformOrigin = this.ax + 'px ' + this.ay + 'px';
   }
@@ -213,7 +228,7 @@ export class CourseBook implements AfterViewInit, OnDestroy {
   }
 
   private opened(): void {
-    this.setCover(178); this.cover.style.visibility = 'hidden'; this.el.style.setProperty('--c', '0'); this.back.style.opacity = '1'; this.leftOn = true; this.el.classList.remove('breath');
+    this.setCover(178); this.cover.style.visibility = 'hidden'; this.el.style.setProperty('--c', '0'); this.back.style.opacity = '1'; this.leftOn = true;
     this.settled.emit();
   }
   private go(name: string): void { this.phase = name; this.t0 = performance.now(); this.turned = false; }
@@ -241,7 +256,6 @@ export class CourseBook implements AfterViewInit, OnDestroy {
     } else if (this.phase === 'open') {   // a press, then the hard cover lifts over; the book slides to the centre
       const pr = t < .3 ? 1 - .07 * Math.sin(Math.PI * t / .3) : 1, q = ease((t - .3) / 2.0), deg = 178 * q, rad = deg * Math.PI / 180;
       this.setCover(deg); this.el.style.setProperty('--c', (1 - q).toFixed(3));
-      if (deg > 8) this.el.classList.remove('breath');
       if (deg > 90 && !this.leftOn) { this.leftOn = true; this.back.style.opacity = '1'; }
       const hx = S + w * .97 * Math.cos(rad), hy = h * .64 - Math.sin(rad) * h * .1, fade = 1 - out3((q - .8) / .2);
       this.setHand(hx - (q > .8 ? (q - .8) * W * .6 : 0), hy + (q > .8 ? (q - .8) * H * .8 : 0), -16 - 34 * q, pr, fade); this.draw(null);

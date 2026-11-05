@@ -15,6 +15,8 @@ import { CourseBook } from '../../shared/book/book';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ScreenTransition } from '../../core/nav/screen-transition.service';
+import { SettingsPanel } from '../settings/panel';
+import { GAMES_CORNER_SVG } from './games-corner';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
@@ -23,7 +25,8 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
 /**
  * Screen 4 · Zaɓi darasi. The course book on top opens the next lesson of the path (Sani 2026-10-11); below it the six
  * tiles, in the order the curriculum opens them, each showing how far the child has come. A tap lifts one and Laila
- * describes it; press her to start it.
+ * describes it; press her to start it. Home design 2 (Sani 2026-11-05): the book is the main button, three times its old
+ * size in a warm light; the tiles are one quieter row; the edges of the screen are shaded; Wasanni has its own corner.
  */
 @Component({
   selector: 'app-home',
@@ -32,9 +35,11 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
   template: `
 <app-door (pressed)="leave()" />
 <app-ear (pressed)="pick()" />
-<app-course-book [hold]="true" (pressed)="book()" (settled)="respot()" />
+<div class="hvig" aria-hidden="true"></div>
+<app-course-book [hold]="true" [class.talk]="arrival() === 'book'" (pressed)="book()" (settled)="respot()" />
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
 <div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" />@if (cue()) {<span class="lhand">👆🏾</span>}<span class="lhint">Fara</span></button></div>
+<button class="gcorner" aria-label="Wasanni" [innerHTML]="gamesSvg" (click)="games()"></button>
 <app-leave />`,
 })
 export class HomeScreen implements OnInit, OnDestroy {
@@ -52,7 +57,13 @@ export class HomeScreen implements OnInit, OnDestroy {
   private pointing = false; private asks = 0;
   private readonly leaveBox = viewChild.required(Leave);
   private readonly courseBook = viewChild.required(CourseBook);
-  readonly grid = inject(DomSanitizer).bypassSecurityTrustHtml(HOMEGRID_HTML);
+  private readonly san = inject(DomSanitizer);
+  private readonly panel = inject(SettingsPanel);
+  readonly grid = this.san.bypassSecurityTrustHtml(HOMEGRID_HTML);
+  readonly gamesSvg = this.san.bypassSecurityTrustHtml(GAMES_CORNER_SVG);
+  /** What moves while Laila talks (Sani 2026-11-05): the book while she invites the child to press it, the tiles while she
+   *  says a lesson can be picked; null once she has finished, when only the book's slow breath goes on. */
+  readonly arrival = signal<'book' | 'tiles' | null>(null);
   private readonly gridHost = viewChild.required<ElementRef<HTMLElement>>('gridHost');
   readonly act = signal<string | null>(null);
   readonly cue = signal(false);
@@ -86,43 +97,38 @@ export class HomeScreen implements OnInit, OnDestroy {
     // then the door, the first time a child is on a screen that has one: "press this door to go back" (Sani 2026-10-12)
     if (await this.invite()) await hintOnce('door', this.bus, this.session, this.spotter, this.hostEl.nativeElement);
   }
-  /** The book comes first (Sani 2026-10-11): the hand points at it and it glows while Laila invites the child to press it —
-   *  to start for a new child, to continue for a returning one — and then she says the tiles can be picked too. */
+  /** The book comes first (Sani 2026-10-11): it pulses, its light quickens and the hand points at it while Laila invites
+   *  the child to press it — to start for a new child, to continue for a returning one. Then, while she says the tiles can
+   *  be picked too, they ripple left to right like a snake (Sani 2026-11-05). Each movement lasts exactly as long as its
+   *  line: the bus resolves when the clip ends. */
   private async invite(): Promise<boolean> {
     const k = this.bus.gk(this.progress.started() ? 'app_book_more' : 'app_book_start');
-    const mine = ++this.asks; this.pointAtBook(true);
+    const mine = ++this.asks; this.show('book');
     if (this.bus.has(k)) {
       const ok = await this.bus.play(k);
       // the ear may have asked again meanwhile, or a tap cut her off; a browser that refused the sound keeps the hand on the book
       if (!ok || mine !== this.asks) return false;
-      // then the tiles: "you can tap any lesson to hear more" — all six glow and pulse together with the hand in their middle (Sani 2026-10-12)
-      this.pointAtBook(false); this.pointAtTiles(true);
     }
+    this.show('tiles');
     const or = this.bus.gk('app_book_or'), ok = await this.bus.play(this.bus.has(or) ? or : 'app_act_pick');
-    if (mine === this.asks && !this.bus.blocked()) { this.pointAtBook(false); this.pointAtTiles(false); }
+    if (mine === this.asks && !this.bus.blocked()) this.show(null);
     return ok;
   }
-  private pointAtBook(on: boolean): void {
-    this.pointing = on; if (on) this.pointAtTiles(false);
-    if (on) this.spotter.spot(this.hostEl.nativeElement.querySelector('.cbook'), 'right'); else this.spotter.unspot();
+  private show(what: 'book' | 'tiles' | null): void {
+    this.arrival.set(what); this.pointAtBook(what === 'book');
+    this.gridHost().nativeElement.querySelector('.homegrid')?.classList.toggle('snake', what === 'tiles');
   }
-  /** Every tile at once, and one hand in the middle of them pulsing in step: any of these can be tapped. */
-  private pointAtTiles(on: boolean): void {
-    const s = this.hostEl.nativeElement, g = s.querySelector<HTMLElement>('.homegrid');
-    s.querySelector('.gridhand')?.remove(); g?.classList.remove('pickme');
-    if (!on || !g) return;
-    const sR = this.zoom.rect(s), r = this.zoom.rect(g), h = document.createElement('span');
-    h.className = 'gridhand'; h.textContent = '👆🏾';
-    h.style.left = (r.left + r.width / 2 - sR.left) + 'px'; h.style.top = (r.top + r.height / 2 - sR.top) + 'px';
-    s.appendChild(h); g.classList.add('pickme');
+  private pointAtBook(on: boolean): void {
+    this.pointing = on;
+    if (on) this.spotter.spot(this.hostEl.nativeElement.querySelector('.cbook'), 'right'); else this.spotter.unspot();
   }
   /** The book slides to the middle as its cover opens; the hand follows it there. */
   respot(): void { if (this.pointing) this.pointAtBook(true); }
-  ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.pointAtTiles(false); this.spotter.unspot(); this.bus.stopAll(); }
+  ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.spotter.unspot(); this.bus.stopAll(); }
   pick(): void { this.bus.stopAll(); this.invite(); }
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
-    this.bus.stopAll(); this.pointAtBook(false); this.pointAtTiles(false); this.cue.set(false);
+    this.bus.stopAll(); this.show(null); this.cue.set(false);
     clearTimeout(this.leaving); this.leaving = window.setTimeout(() => { this.nav.plain(); this.next(); }, 150);   // just long enough to see it pressed; no slide
   }
   private next(): void {
@@ -136,7 +142,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   tile(e: Event): void {
     const t = (e.target as HTMLElement).closest('.htile') as HTMLElement | null; if (!t) return;
     const host = this.gridHost().nativeElement; host.querySelectorAll('.htile').forEach((x) => x.classList.toggle('hot', x === t)); host.querySelector('.homegrid')?.classList.add('has-sel');
-    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.pointAtBook(false); this.pointAtTiles(false);
+    const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.show(null);
     let k = 'app_act_desc_' + act; if (!this.bus.has(k)) k = FALLBACK[act] || k;
     this.bus.play(k).then((ok) => { if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white'); });
   }
@@ -149,4 +155,6 @@ export class HomeScreen implements OnInit, OnDestroy {
     this.flow.open(ROUTE[act] || 'home');
   }
   leave(): void { this.leaveBox().show(); }
+  /** The games corner opens the games list, today's Wasanni page of the settings. */
+  games(): void { this.bus.stopAll(); this.show(null); this.panel.games(); }
 }
