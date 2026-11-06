@@ -272,7 +272,23 @@ export function makeArt(L) {
   // the morning tea stall: tea-and-bread stalls stand on southern streets too, so it keeps its build; its board says TEA
   const stall = () => teaStall().replace('>SHAYI<', '>TEA<');
 
-  const art = { jrWaiter, emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
+  /** the market-rush shoppers (Sani 6 Nov: never the Hausa photos here): a drawn bust in a market doorway, by the word
+      picture each one stood for (woman, man, girl, boy, old_man); 80 x 100 like the portrait frame */
+  const SHOP = Y
+    ? { woman: { kind: 'woman', robe: '#F2C230', wrap: '#5A2E7A', hat: 'gele', hatc: '#5A2E7A', beads: 1, marks: 1 },
+        man: { kind: 'man', robe: '#3E7CB1', agbada: '#F4EBD0', hat: 'fila', hatc: '#7A2E5C' },
+        girl: { kind: 'woman', girl: 1, tight: 1, robe: '#E35D8A', wrap: '#E35D8A', hat: 'braids' }, boy: { kind: 'boy', robe: '#2E7D5A', hat: 'fila', hatc: '#E8A317' },
+        old_man: { kind: 'man', robe: '#F4EBD0', agbada: '#1F3A78', hat: 'gobi', hatc: '#1F3A78', beard: 'w' } }
+    : { woman: { kind: 'woman', robe: '#F4F1EA', wrap: '#8E1B2A', hat: 'tie', hatc: '#1F6B4A', beads: 1 },
+        man: { kind: 'man', robe: '#B71C1C', hat: 'okpu', hatc: '#B71C1C', hatc2: '#1E1E24' },
+        girl: { kind: 'woman', girl: 1, tight: 1, robe: '#E8A317', wrap: '#E8A317', hat: 'braids' }, boy: { kind: 'boy', robe: '#3E7CB1', hat: 'hair' },
+        old_man: { kind: 'man', robe: '#F4F1EA', hat: 'okpuf', hatc: '#B71C1C', hatc2: '#1E1E24', beads: 1, beard: 'w' } };
+  const shopper = (who) => { const o = SHOP[who] || SHOP.woman, kid = o.girl || o.kind === 'boy';
+    return '<svg class="sk5shop" viewBox="0 0 80 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' +
+      '<rect width="80" height="100" fill="' + (Y ? '#E9D3AE' : '#DCCDB0') + '"/><rect x="6" y="8" width="30" height="70" fill="' + (Y ? '#B98A58' : '#8C6A4A') + '" opacity=".55"/>' +
+      '<path d="M0 60 H80 V100 H0 Z" fill="#C9A878"/><path d="M44 14 h30 v22 h-30 Z" fill="' + (Y ? '#2E5E8A' : '#B71C1C') + '" opacity=".35"/>' +
+      person(40, kid ? 196 : 226, kid ? 175 : 210, { ...o, skin: (who.length * 3) % 6, al: 'hold', ar: 'hold' }) + '</svg>'; };
+  const art = { shopper, jrWaiter, emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
   if (!Y) art.durbarRider = ageGrade;
   if (Y) art.engineBoat = danfoBus;
   return art;

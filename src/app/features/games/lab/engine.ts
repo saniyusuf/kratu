@@ -587,7 +587,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
             if (si + 1 >= SETS.length) return done({ right: served, finished: served === N, part: served / N });
             si++; base += goods.length; goods = SETS[si]; q = shuffle(goods); c = 0; lay();
           }
-          var who = people[(base + c) % people.length]; top.querySelector('.person').innerHTML = '<img alt="" src="' + K.pic[who] + '">';
+          var who = people[(base + c) % people.length]; var shp = SK_('shopper', null); top.querySelector('.person').innerHTML = shp ? shp(who) : '<img alt="" src="' + K.pic[who] + '">';
           top.classList.remove('leave', 'come'); void top.offsetWidth; top.classList.add('come');
           var bar = top.querySelector('.pat b'); bar.style.transition = 'none'; bar.style.transform = 'scaleX(1)'; void bar.offsetWidth; bar.style.transition = 'transform 12s linear'; bar.style.transform = 'scaleX(0)';
           clearTimeout(pt); pt = run.later(12000, function () { run.miss++; react(run.scr, 'sad'); top.classList.add('leave'); c++; run.later(600, next); });

@@ -58,3 +58,5 @@
 .glab .sk5r .x-fig.dance{animation:sk5-dance .9s ease-in-out infinite alternate}
 .glab .sk5r svg+svg .x-fig.dance{animation-delay:-.45s}
 @media (prefers-reduced-motion:reduce){.glab .gbg .sk5 *,.glab .sk5r *{animation:none!important}}
+.glab .cust .person .sk5shop{width:100%;height:100%;display:block}
+.glab .cust.sad .person .sk5shop{filter:grayscale(.7)}
