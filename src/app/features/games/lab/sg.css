@@ -200,7 +200,7 @@
 .glab .sg.oil .mnkeg .oil{transition:y .25s,height .25s}
 .glab .sg.oil .mnkeg.full .oil{y:7px;height:20px}
 .glab .sg.oil .mnkeg.meant{animation:sg-glow .5s ease-in-out 4 alternate}
-.glab .sg.oil .mnkeg.go{transform:translate(30cqw,6cqw) scale(.5);opacity:0;transition-delay:calc(var(--j) * 40ms)}
+.glab .sg.oil .mnkeg.sgo{transform:translate(30cqw,6cqw) scale(.5);opacity:0;transition-delay:calc(var(--j) * 40ms)}
 @keyframes sg-glow{to{filter:drop-shadow(0 0 1.2cqw #FFF3A0) brightness(1.2)}}
 
 /* ---- Aṣọ Òkè: the cloths riding the line ---- */
@@ -213,7 +213,7 @@
 .glab .sg.oke .okin::before{content:'';position:absolute;left:45%;top:-1cqw;width:1cqw;height:1.6cqw;background:#8E6A3A;border-radius:.2cqw}
 .glab .sg.oke .oktag{position:absolute;left:50%;bottom:-2cqw;translate:-50% 0;background:#FFFDF7;border:.25cqw solid #C9B98F;border-radius:.8cqw;padding:0 .8cqw;font:800 2.4cqw var(--disp,'Baloo 2'),sans-serif;color:#3B2E1E;white-space:nowrap}
 .glab .sg.oke .okc.no .okin{animation:sg-no .15s linear 6 alternate}
-.glab .sg.oke .okc.sold .okin{animation:none;transform:translate(30cqw,20cqw) scale(.4);opacity:0}
+.glab .sg.oke .okc.sgsold .okin{animation:none;transform:translate(30cqw,20cqw) scale(.4);opacity:0}
 @keyframes sg-sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
 
 /* ---- Aba shoes: six boxes on the shelf ---- */
@@ -236,7 +236,7 @@
 .glab .sg.party .pg{position:absolute;width:9cqw;translate:-50% 0;animation:sg-in .5s ease-out both}
 .glab .sg.party .pg svg{width:100%;display:block}
 .glab .sg.party .pguests.dance .pg{animation:sg-dance .5s ease-in-out calc(var(--d) * -.17s) infinite alternate}
-.glab .sg.party .pguests.shake .pg{animation:sg-no .3s ease-in-out 3 alternate}
+.glab .sg.party .pguests.sgshake .pg{animation:sg-no .3s ease-in-out 3 alternate}
 .glab .sg.party .pguests.out{opacity:0}
 .glab .sg.party .pnotes{position:absolute;inset:0;z-index:3;pointer-events:none}
 .glab .sg.party .pnotes i{position:absolute;top:8cqw;width:3.2cqw;height:1.6cqw;background:#C9DCB8;border:.2cqw solid #6E8A5A;border-radius:.2cqw;animation:sg-fall 1.6s ease-in calc(var(--k) * .12s) both}
@@ -326,7 +326,7 @@
 .glab .sg.news .nww.l7,.glab .sg.news .nww.l8{font-size:5.6cqw}
 .glab .sg.news .nww.l9,.glab .sg.news .nww.l10,.glab .sg.news .nww.l11,.glab .sg.news .nww.l12{font-size:4.4cqw}
 .glab .sg.news .nwcol{position:absolute;left:2cqw;right:2cqw;bottom:1.2cqw;height:2cqw;background:repeating-linear-gradient(#B8B4A8 0 .2cqw,transparent .2cqw .6cqw)}
-.glab .sg.news .nwpaper.sold{animation:none;opacity:0;transform:translate(-30cqw,18cqw) scale(.3)}
+.glab .sg.news .nwpaper.sgsold{animation:none;opacity:0;transform:translate(-30cqw,18cqw) scale(.3)}
 .glab .sg.news .nwpaper.blow{animation:none;opacity:0;transform:translate(50cqw,-16cqw) rotate(40deg) scale(.6)}
 @keyframes sg-up{from{opacity:0;transform:translateY(6cqw)}to{opacity:1;transform:none}}
 
@@ -346,3 +346,185 @@
 .glab .sg.mgba .mgring.throw .mgthem{animation:none;transform:scaleX(-1) translate(-4cqw,-1cqw) rotate(-90deg)}
 .glab .sg.mgba .mgring.slip .mgus{animation:none;transform:translate(-2cqw,0) rotate(-80deg)}
 .glab .sg.mgba .mgring.slip .mgthem{animation:none;transform:scaleX(-1) rotate(-6deg)}
+
+/* ================= round 6 ================= */
+.glab .sg .sgcard{display:block;aspect-ratio:1;background:#fff;border-radius:1.2cqw;padding:.5cqw;box-shadow:0 .4cqw 0 rgba(59,46,30,.25),0 0 0 .4cqw #FFFDF7}
+.glab .sg .sgcard img{width:100%;height:100%;object-fit:contain;display:block}
+/* the row of letters done (calabash rack, the stars) */
+.glab .sg .sgrow{position:absolute;left:50%;top:9.4cqw;translate:-50% 0;display:flex;gap:.5cqw;z-index:2}
+.glab .sg .sgrow span{width:2.8cqw;height:2.8cqw;border-radius:50%;display:grid;place-items:center;font:800 1.8cqw var(--disp,'Baloo 2'),sans-serif}
+.glab .sg .sgrow.many span{width:2.3cqw;height:2.3cqw;font-size:1.5cqw}
+
+/* ---- Igbá: the calabash on the carver's lap ---- */
+.glab .sg.igba .cbrack span{background:#E8D3A8;border:.25cqw dashed #5A3418;color:#3B2412}
+.glab .sg.igba .cbrack span.now{border-style:solid;border-color:#E8A317}
+.glab .sg.igba .cbrack span.on{background:radial-gradient(circle at 40% 35%,#F2D9A0,#C99A5A);border:.2cqw solid #7A4A26}
+.glab .sg.igba .cbrack span.miss{background:rgba(60,40,20,.15);border-style:dotted}
+.glab .sg.igba .cbbowl{position:absolute;left:50%;top:17cqw;translate:-50% 0;width:22cqw;height:18cqw;border-radius:50%;z-index:2;display:grid;place-items:center;
+  background:radial-gradient(ellipse at 40% 35%,#F6E2B0,#D9B070 60%,#B8884A);box-shadow:inset 0 -1cqw 1.4cqw rgba(90,52,24,.35),0 1cqw 1.2cqw rgba(60,30,10,.3);transition:transform .9s cubic-bezier(.3,.7,.3,1),opacity .6s}
+.glab .sg.igba .cbbowl b{font:800 10cqw var(--disp,'Baloo 2'),sans-serif;color:#5A3418;text-shadow:0 .2cqw 0 rgba(255,240,200,.6)}
+.glab .sg.igba .cbbowl.turn{animation:sg-turn .6s ease-out}
+@keyframes sg-turn{from{transform:rotate(-30deg) scale(.6);opacity:0}}
+.glab .sg.igba .cbbowl.burnt{background:radial-gradient(ellipse at 40% 35%,#F6E2B0,#D9B070 50%,#B8884A),repeating-conic-gradient(#5A3418 0 6deg,transparent 6deg 18deg);box-shadow:inset 0 0 0 1.4cqw #8E5A2E,inset 0 0 0 1.8cqw #F6E2B0,0 1cqw 1.2cqw rgba(60,30,10,.3)}
+.glab .sg.igba .cbbowl.rack{transform:translate(0,-12cqw) scale(.2);opacity:0}
+.glab .sg.igba .cbcrack{position:absolute;inset:0;opacity:0;background:linear-gradient(115deg,transparent 46%,#3A2010 47%,#3A2010 49%,transparent 50%)}
+.glab .sg.igba .cbbowl.crack .cbcrack{opacity:1}
+.glab .sg.igba .cbbowl.aside{transform:translate(-30cqw,8cqw) scale(.5);opacity:0}
+
+/* ---- Egwu ọnwa: the child with the letter, the stars ---- */
+.glab .sg.moon .mnstars span{color:transparent;background:radial-gradient(circle,#8A8EA8 20%,transparent 60%)}
+.glab .sg.moon .mnstars span.now{background:radial-gradient(circle,#F6F0D2 25%,transparent 65%);animation:sg-twk 1s ease-in-out infinite alternate}
+.glab .sg.moon .mnstars span.on{color:#3A3418;background:radial-gradient(circle,#FFF3B0 45%,rgba(255,243,176,.3) 70%,transparent 72%);box-shadow:0 0 1.2cqw #FFF3B0}
+@keyframes sg-twk{to{opacity:.5}}
+.glab .sg.moon .mnkid{position:absolute;left:50%;top:15cqw;translate:-50% 0;width:13cqw;z-index:2;opacity:0;transition:transform .8s ease-in,opacity .6s}
+.glab .sg.moon .mnkid.in{opacity:1;animation:sg-run .7s ease-out}
+@keyframes sg-run{from{transform:translateX(-30cqw)}}
+.glab .sg.moon .mnfig svg{width:100%;display:block}
+.glab .sg.moon .mncard{position:absolute;left:50%;top:-2cqw;translate:-50% 0;width:11cqw;height:11cqw;display:grid;place-items:center;background:#FFFDF7;border:.5cqw solid #E8A317;border-radius:1.2cqw;font:800 8cqw var(--disp,'Baloo 2'),sans-serif;color:#1C2448}
+.glab .sg.moon .mnkid.dance{animation:sg-dance .4s ease-in-out infinite alternate}
+.glab .sg.moon .mnkid.join{opacity:0;transform:translate(24cqw,-2cqw) scale(.6)}
+.glab .sg.moon .mnkid.back{opacity:0;transform:translate(-30cqw,0)}
+
+/* ---- Àlọ́: the fire and the picture in the smoke ---- */
+.glab .sg.alo .alfire{position:absolute;left:50%;top:39cqw;translate:-50% 0;width:12cqw;height:7cqw;z-index:1}
+.glab .sg.alo .alfire i{position:absolute;bottom:0;left:calc(50% - 2.5cqw);width:5cqw;height:7cqw;border-radius:50% 50% 40% 40%/70% 70% 30% 30%;background:radial-gradient(ellipse at 50% 80%,#FFE08A,#FF8A1E 55%,transparent 70%);transform-origin:50% 100%;animation:sg-flame .5s ease-in-out infinite alternate}
+.glab .sg.alo .alfire i:nth-child(2){left:calc(50% - 5cqw);height:5cqw;animation-delay:-.2s}
+.glab .sg.alo .alfire i:nth-child(3){left:50%;height:5.4cqw;animation-delay:-.35s}
+@keyframes sg-flame{to{transform:scaleY(.8) skewX(4deg)}}
+.glab .sg.alo .alfire.low i{transition:transform .5s;transform:scaleY(.35);animation:none}
+.glab .sg.alo .alsmoke{position:absolute;left:50%;top:12cqw;translate:-50% 0;width:20cqw;z-index:2;opacity:0;transition:transform 1s ease-in,opacity .8s}
+.glab .sg.alo .alsmoke::before{content:'';position:absolute;inset:-2.6cqw;border-radius:50%;background:radial-gradient(rgba(240,232,220,.5),transparent 70%)}
+.glab .sg.alo .alsmoke.rise{opacity:1;animation:sg-up 1s ease-out}
+.glab .sg.alo .alsmoke.bag{opacity:0;transform:translate(11cqw,20cqw) scale(.2)}
+.glab .sg.alo .alsmoke.fade{opacity:.15}
+.glab .sg.alo .alsing{position:absolute;left:72%;top:28cqw;font:800 4cqw var(--disp,'Baloo 2'),sans-serif;color:#FFE08A;opacity:0;z-index:2}
+.glab .sg.alo.cheer .alsing{animation:sg-pop 1.6s ease-out}
+@keyframes sg-pop{0%{opacity:0;transform:scale(.5)}20%{opacity:1;transform:scale(1.1)}80%{opacity:1}100%{opacity:0}}
+
+/* ---- Nollywood: the clapperboard ---- */
+.glab .sg.nolly .nlboard{position:absolute;left:50%;top:12cqw;translate:-50% 0;width:24cqw;z-index:2;background:#1E1E24;border-radius:.8cqw;padding:3.4cqw 1.6cqw 1.6cqw;opacity:0}
+.glab .sg.nolly .nlboard.in{opacity:1;animation:sg-up .5s ease-out}
+.glab .sg.nolly .nlclap{position:absolute;left:0;right:0;top:0;height:2.6cqw;border-radius:.6cqw .6cqw 0 0;background:repeating-linear-gradient(135deg,#F4F1EA 0 2cqw,#1E1E24 2cqw 4cqw);transform-origin:0 100%;transform:rotate(-24deg);transition:transform .12s}
+.glab .sg.nolly .nlboard.clapped .nlclap{transform:none}
+.glab .sg.nolly .nlslate{display:block}
+.glab .sg.nolly .nlcall{position:absolute;left:50%;top:39cqw;translate:-50% 0;font:800 4.4cqw var(--disp,'Baloo 2'),sans-serif;color:#E8A317;opacity:0;z-index:3;text-shadow:0 .3cqw 0 #1E1E24}
+.glab .sg.nolly .nlcall.on{animation:sg-pop 1.8s ease-out}
+.glab .sg.nolly .nlcall.cut{color:#E8604A}
+.glab .sg.nolly.roll .sgw{animation:sg-dance .35s ease-in-out infinite alternate}
+
+/* ---- Ẹrù ìyàwó: the tray coming in, the gift table ---- */
+.glab .sg.eru .erbear{position:absolute;left:44cqw;top:12cqw;width:14cqw;z-index:2;opacity:0;transition:transform 1s ease-in,opacity .8s}
+.glab .sg.eru .erbear.in{opacity:1;animation:sg-walkin 1s ease-out}
+@keyframes sg-walkin{from{transform:translateX(30cqw);opacity:0}}
+.glab .sg.eru .erman svg{width:100%;display:block}
+.glab .sg.eru .ertray{position:absolute;left:-2cqw;right:-2cqw;top:-4cqw;padding:1cqw;background:#C9A06A;border-radius:50%/30%;box-shadow:0 .5cqw 0 #8E6A3A}
+.glab .sg.eru .erbear.out{opacity:0;transform:translateX(30cqw)}
+.glab .sg.eru .ertable{position:absolute;left:62cqw;width:32cqw;top:38.6cqw;display:flex;flex-wrap:wrap-reverse;gap:.4cqw;z-index:2}
+.glab .sg.eru .ergift{width:5cqw;padding:.3cqw;animation:sg-land .4s ease-out}
+
+/* ---- the Christmas bag: the thing out of the bag, to Nne ---- */
+.glab .sg.home .hmwrap{position:absolute;inset:0}
+.glab .sg.home .hmbag{position:absolute;left:50%;top:27cqw;translate:-50% 0;width:20cqw;height:14cqw;border-radius:1.4cqw;z-index:2;background:repeating-linear-gradient(90deg,#B23A2E 0 1.2cqw,#F4F1EA 1.2cqw 2.4cqw,#2E4E7A 2.4cqw 3.6cqw,#F4F1EA 3.6cqw 4.8cqw);box-shadow:inset 0 0 0 .4cqw rgba(0,0,0,.2),0 1cqw 1cqw rgba(40,24,10,.3)}
+.glab .sg.home .hmbag i{position:absolute;left:30%;right:30%;top:-2cqw;height:3cqw;border:.6cqw solid #1E1E24;border-bottom:0;border-radius:2cqw 2cqw 0 0}
+.glab .sg.home .hmbag.sgshake{animation:sg-no .1s linear 6 alternate}
+.glab .sg.home .hmthing{position:absolute;left:50%;top:22cqw;width:14cqw;translate:-50% 0;z-index:3;opacity:0;transition:transform 1s cubic-bezier(.3,.7,.3,1),opacity .6s}
+.glab .sg.home .hmthing.out{opacity:1;transform:translateY(-12cqw)}
+.glab .sg.home .hmthing.nne{transform:translate(-30cqw,2cqw) scale(.4);opacity:0}
+.glab .sg.home .hmthing.back{transform:translateY(2cqw) scale(.5);opacity:0}
+.glab .sg.home .hmnne{position:absolute;left:2cqw;top:10cqw;width:22cqw;display:flex;flex-wrap:wrap;gap:.4cqw;z-index:2}
+.glab .sg.home .hmgot{width:4.4cqw;padding:.3cqw;animation:sg-land .4s ease-out}
+
+/* ---- Bojúbojú: friends peeping from behind the hiding places ---- */
+.glab .sg.hide .hsrow{position:absolute;left:0;right:0;top:17cqw;height:26cqw;z-index:2}
+.glab .sg.hide .hspot{position:absolute;bottom:0;width:17cqw;height:24cqw;translate:-50% 0;padding:0;border:0;background:none;cursor:pointer}
+.glab .sg.hide .hsfriend{position:absolute;left:50%;bottom:6cqw;width:11cqw;translate:-50% 0;transform:translateY(12cqw);transition:transform .5s cubic-bezier(.3,.7,.3,1)}
+.glab .sg.hide .hsf svg{width:100%;display:block}
+.glab .sg.hide .hsitem{position:absolute;left:50%;top:-3cqw;width:10cqw;translate:-50% 0}
+.glab .sg.hide .hscover{position:absolute;left:0;right:0;bottom:0;height:13cqw;display:block}
+.glab .sg.hide .hscover svg{width:100%;height:100%;display:block}
+.glab .sg.hide .hspot.peek .hsfriend{transform:translateY(0)}
+.glab .sg.hide .hspot.caught .hsfriend{transform:translateY(-3cqw);animation:sg-dance .3s ease-in-out infinite alternate}
+.glab .sg.hide .hspot.duck .hsfriend{transform:translateY(12cqw)}
+
+/* ---- the wheelbarrows pushed along ---- */
+.glab .sg.barrow .bwlane{position:absolute;left:0;right:0;top:20cqw;height:24cqw;z-index:2}
+.glab .sg.barrow .bw{position:absolute;left:0;bottom:0;width:22cqw;height:24cqw;padding:0;border:0;background:none;cursor:pointer;transform:translateX(-26cqw)}
+.glab .sg.barrow .bwlane.sgo .bw{animation:sg-push 11s linear calc(var(--k) * 3.4s) both}
+.glab .sg.barrow .bwlane.stop .bw{animation-play-state:paused}
+@keyframes sg-push{from{transform:translateX(-26cqw)}to{transform:translateX(104cqw)}}
+.glab .sg.barrow .bw>svg{position:absolute;left:6.4cqw;bottom:0;width:15cqw;transform:scaleX(-1)}
+.glab .sg.barrow .bwload{position:absolute;left:10cqw;bottom:6cqw;width:9cqw}
+.glab .sg.barrow .bwboy{position:absolute;left:0;bottom:0;width:8cqw}
+.glab .sg.barrow .bwboy svg{width:100%;display:block}
+.glab .sg.barrow .bw.unload .bwload{transition:transform .9s ease-in,opacity .8s;transform:translate(30cqw,-16cqw) scale(.4);opacity:0}
+.glab .sg.barrow .bw .bwboy.no{animation:sg-no .12s linear 6 alternate}
+
+/* ---- Èsúsú: the member with her note, the Alájọ's card ---- */
+.glab .sg.esusu .esmem{position:absolute;left:46cqw;top:13cqw;width:13cqw;z-index:2;opacity:0;transition:transform 1s ease-in,opacity .8s}
+.glab .sg.esusu .esmem.in{opacity:1;animation:sg-walkin .9s ease-out}
+.glab .sg.esusu .esfig svg{width:100%;display:block}
+.glab .sg.esusu .esnote{position:absolute;left:-10cqw;top:-1cqw;width:16cqw;transform:rotate(-8deg);transition:transform .8s ease-in,opacity .6s}
+.glab .sg.esusu .esnote svg{width:100%;display:block;filter:drop-shadow(0 .4cqw .4cqw rgba(40,24,10,.3))}
+.glab .sg.esusu .esmem.pay .esnote{transform:translate(-14cqw,22cqw) scale(.4);opacity:0}
+.glab .sg.esusu .esmem.sgo{opacity:0;transform:translateX(30cqw)}
+.glab .sg.esusu .escard{position:absolute;left:3cqw;top:10cqw;width:16cqw;min-height:12cqw;padding:.8cqw;background:#FFFDF7;border:.3cqw solid #C9B98F;border-radius:.6cqw;display:flex;flex-direction:column;gap:.1cqw;z-index:2;font:800 1.8cqw var(--disp,'Baloo 2'),sans-serif;color:#2E6B4A}
+.glab .sg.esusu .escard b{text-align:center;color:#3B2E1E;border-bottom:.25cqw solid #2E6B4A}
+.glab .sg.esusu .escard i{font-style:normal;border-bottom:.15cqw solid #E6D6AE;animation:sg-land .3s}
+
+/* ---- closing time: the note held up, the piles ---- */
+.glab .sg.takings .tknote{position:absolute;left:50%;top:11cqw;translate:-50% 0;width:24cqw;z-index:3;opacity:0;transition:transform .8s ease-in,opacity .6s}
+.glab .sg.takings .tknote svg{width:100%;display:block;filter:drop-shadow(0 .6cqw .6cqw rgba(40,24,10,.35))}
+.glab .sg.takings .tknote.up{opacity:1;animation:sg-up .6s ease-out}
+.glab .sg.takings .tknote.pile{transform:translate(var(--tx),var(--ty)) scale(.3);opacity:0}
+.glab .sg.takings .tknote.back{transform:translate(20cqw,10cqw) scale(.4);opacity:0}
+.glab .sg.takings .tkpiles{position:absolute;left:20cqw;right:20cqw;top:38cqw;display:flex;justify-content:space-between;z-index:2}
+.glab .sg.takings .tkp{width:8cqw;height:3cqw;display:grid;place-items:center;border-radius:.4cqw;background:rgba(255,253,247,.6);border:.2cqw dashed #6B4226}
+.glab .sg.takings .tkp b{font:800 1.6cqw var(--disp,'Baloo 2'),sans-serif;color:#3B2412}
+.glab .sg.takings .tkp.has{background:#E8D8B0;border-style:solid;box-shadow:0 -.4cqw 0 #CFE0B0,0 -.8cqw 0 #D8C8E8;animation:sg-land .3s}
+
+/* ---- the okada ride: the sign, the bike ---- */
+.glab .sg.okada .oksign{position:absolute;left:58cqw;top:11cqw;z-index:2;opacity:0;transition:transform 1.2s ease-in,opacity .8s}
+.glab .sg.okada .oksign i{position:absolute;left:50%;top:100%;width:.8cqw;height:14cqw;translate:-50% 0;background:#6E6E6A}
+.glab .sg.okada .oksign .okw{display:block;padding:.8cqw 2.4cqw;background:#1F6B4A;color:#fff;border:.5cqw solid #fff;border-radius:.8cqw;box-shadow:0 0 0 .3cqw #1F6B4A;font:800 5.6cqw var(--disp,'Baloo 2'),sans-serif;letter-spacing:.2cqw}
+.glab .sg.okada .oksign .okw.l8,.glab .sg.okada .oksign .okw.l9,.glab .sg.okada .oksign .okw.l10,.glab .sg.okada .oksign .okw.l11,.glab .sg.okada .oksign .okw.l12{font-size:4.2cqw}
+.glab .sg.okada .oksign.in{opacity:1;animation:sg-signin 1.2s ease-out}
+@keyframes sg-signin{from{transform:translateX(40cqw);opacity:0}}
+.glab .sg.okada .oksign.past{opacity:0;transform:translateX(-80cqw)}
+.glab .sg.okada .okbike{position:absolute;left:14cqw;top:27cqw;width:26cqw;z-index:2;animation:sg-bump .3s ease-in-out infinite alternate}
+.glab .sg.okada .okbike svg{width:100%;display:block}
+@keyframes sg-bump{to{transform:translateY(-.3cqw)}}
+.glab .sg.okada .okbike.ride{animation:sg-bump .15s ease-in-out infinite alternate}
+.glab .sg.okada .okbike.brake{animation:sg-no .15s linear 4 alternate}
+
+/* ---- the Enugu train ---- */
+.glab .sg.train .trboard{position:absolute;left:50%;top:11cqw;translate:-50% 0;z-index:2;opacity:0}
+.glab .sg.train .trboard.in{opacity:1;animation:sg-up .5s ease-out}
+.glab .sg.train .trw{display:block;padding:.6cqw 2.6cqw;background:#F4F1EA;border:.6cqw solid #1F4E2E;border-radius:.4cqw;font:800 5.6cqw var(--disp,'Baloo 2'),sans-serif;color:#1F4E2E;letter-spacing:.2cqw}
+.glab .sg.train .trw.l8,.glab .sg.train .trw.l9,.glab .sg.train .trw.l10,.glab .sg.train .trw.l11,.glab .sg.train .trw.l12{font-size:4.2cqw}
+.glab .sg.train .trtrain{position:absolute;left:12cqw;top:33.4cqw;width:90cqw;z-index:1;transform:translateX(100cqw)}
+.glab .sg.train .trtrain svg{width:100%;display:block}
+.glab .sg.train .trtrain.come{transition:transform 2s cubic-bezier(.2,.7,.3,1);transform:none}
+.glab .sg.train .trtrain.leave{transition:transform 2s ease-in;transform:translateX(-120cqw)}
+.glab .sg.train .trtrain.through{transition:transform 1.4s linear;transform:translateX(-120cqw)}
+.glab .sg.train .tpax{transition:opacity .6s}
+.glab .sg.train.boarding .tpax{opacity:0}
+
+/* ---- the palace pigeons ---- */
+.glab .sg.pigeon .pgyard{position:absolute;left:0;right:0;top:22cqw;height:20cqw;z-index:2}
+.glab .sg.pigeon .pg{position:absolute;bottom:0;width:12cqw;padding:0;border:0;background:none;cursor:pointer;animation:sg-land2 1s ease-out calc(var(--k) * .2s) both;transition:transform 1.1s ease-in,opacity .9s}
+@keyframes sg-land2{from{transform:translate(10cqw,-24cqw);opacity:0}}
+.glab .sg.pigeon .pgb{display:block;width:11cqw}
+.glab .sg.pigeon .pgb svg{width:100%;display:block}
+.glab .sg.pigeon .pg .sgcard{position:absolute;left:2.6cqw;top:-8cqw;width:8cqw}
+.glab .sg.pigeon .pg.roof{transform:translate(4cqw,-30cqw) scale(.5);opacity:0}
+.glab .sg.pigeon .pg.flap{transform:translate(-10cqw,-20cqw) rotate(-20deg);opacity:0}
+
+/* ---- the udara tree: fruits falling ---- */
+.glab .sg.udara .udfall{position:absolute;inset:0;z-index:2}
+.glab .sg.udara .ud{position:absolute;top:12cqw;width:10cqw;padding:0;border:0;background:none;cursor:pointer;opacity:0}
+.glab .sg.udara .udfall.sgo .ud{animation:sg-drop2 7s linear calc(var(--k) * .7s) both}
+.glab .sg.udara .udfall.stop .ud{animation-play-state:paused}
+@keyframes sg-drop2{0%{opacity:0;transform:translateY(-4cqw)}6%{opacity:1}92%{opacity:1;transform:translateY(32cqw)}100%{opacity:0;transform:translateY(34cqw)}}
+.glab .sg.udara .udf{position:absolute;left:50%;top:-2.4cqw;width:4cqw;height:4cqw;translate:-50% 0;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFC060,#E07A1A)}
+.glab .sg.udara .udfall .ud.caught>*{transition:transform .8s ease-in,opacity .6s;transform:translate(0,18cqw) scale(.4);opacity:0}
+.glab .sg.udara .udfall .ud.roll>*{transition:transform 1s ease-in,opacity .8s;transform:translate(20cqw,20cqw) rotate(200deg);opacity:0}

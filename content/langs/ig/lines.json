@@ -1800,8 +1800,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Jide azụ na-ebu ihe m kwuru.",
-  "en": "Catch the fish carrying the thing I say.",
+  "text": "Pịa mkpụrụ ụdara nwere ihe m kwuru tupu ọ daa n'ala.",
+  "en": "Tap the udara fruit with the thing I say before it reaches the ground.",
   "status": "draft"
  },
  {
@@ -1809,8 +1809,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Lee foto a. Pịa Chioma, kwuo aha ya n'asụsụ Bekee, m ga-akụ ogene!",
-  "en": "Look at this picture. Tap Chioma, say its name in English, and I will ring the ogene!",
+  "text": "Lee foto a. Pịa Chioma, kwuo aha ya n'asụsụ Bekee, ka ihe nkiri malite!",
+  "en": "Look at this picture. Tap Chioma, say its name in English, and the film will start!",
   "status": "draft"
  },
  {
@@ -1818,8 +1818,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Ndị ahịa abịala! Mee ngwa nye onye ọ bụla ihe ọ chọrọ.",
-  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "text": "Pịa wilbarọ na-ebu ihe m kwuru tupu ọ gafee.",
+  "en": "Tap the wheelbarrow carrying the thing I say before it passes.",
   "status": "draft"
  },
  {
@@ -1872,8 +1872,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Kwuo mkpụrụedemede dị na ọkọlọtọ ahụ, ọgbọ ahụ ga-ekele Obi!",
-  "en": "Say the letter on the banner, and the age-grade will greet the Obi!",
+  "text": "Kwuo mkpụrụedemede nwata ahụ jidere n'asụsụ Bekee, ọ ga-abanye n'egwu ọnwa.",
+  "en": "Say the letter the child is holding in English, and they will join the moonlight play.",
   "status": "draft"
  },
  {
@@ -1899,8 +1899,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Kwuo aha ihe a n'asụsụ Bekee, onye ahịa ga-ere ya!",
-  "en": "Say this thing's name in English, and the trader will sell it!",
+  "text": "Kwuo aha ihe si n'akpa ahụ pụta n'asụsụ Bekee, ọ ga-aga n'aka Nne.",
+  "en": "Say the name of the thing that comes out of the bag in English, and it goes to Nne.",
   "status": "draft"
  },
  {
@@ -1953,8 +1953,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Kwuo ego dị gị n'aka n'asụsụ Bekee, wee kwụọ onye na-ere ọka ụgwọ.",
-  "en": "Say the money in your hand in English, and pay the corn seller.",
+  "text": "Kwuo ego ole Oga jidere n'asụsụ Bekee.",
+  "en": "Say how much money the Oga is holding, in English.",
   "status": "draft"
  },
  {
@@ -1971,8 +1971,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Gụọ okwu dị n'ụgbọ mmiri ahụ n'olu dara ụda, ọ ga-abịa n'ọnụ mmiri.",
-  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "text": "Gụọ aha ọdụ ụgbọ oloko ahụ n'olu dara ụda, ụgbọ oloko ga-akwụsị.",
+  "en": "Read the station board out loud, and the train will stop.",
   "status": "draft"
  },
  {

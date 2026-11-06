@@ -1800,8 +1800,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Mú ẹja tó gbé ohun tí mo bá sọ.",
-  "en": "Catch the fish carrying the thing I say.",
+  "text": "Tẹ ẹyẹlé tó gbé ohun tí mo sọ.",
+  "en": "Tap the pigeon carrying the thing I say.",
   "status": "draft"
  },
  {
@@ -1809,8 +1809,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Wo àwòrán yìí. Tẹ̀ Fúnkẹ́, sọ orúkọ rẹ̀ ní Gẹ̀ẹ́sì, màá sì lu dùndún!",
-  "en": "Look at this picture. Tap Fúnkẹ́, say its name in English, and I will beat the dundun!",
+  "text": "Wo àwòrán yìí nínú ìtàn Ìjàpá. Tẹ Fúnkẹ́, kí o sì sọ orúkọ rẹ̀ ní Gẹ̀ẹ́sì.",
+  "en": "Look at this picture in the story of Ìjàpá. Tap Fúnkẹ́ and say its name in English.",
   "status": "draft"
  },
  {
@@ -1818,8 +1818,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Àwọn oníbàárà ti dé! Tètè fún ẹnìkọ̀ọ̀kan ní ohun tó béèrè.",
-  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "text": "Àwọn ọ̀rẹ́ rẹ ti farapamọ́! Tẹ ẹni tó mú ohun tí mo sọ.",
+  "en": "Your friends are hiding! Tap the one holding the thing I say.",
   "status": "draft"
  },
  {
@@ -1872,8 +1872,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Sọ lẹ́tà tó wà lórí àsíá ẹlẹ́ṣin náà, yóò sì kí Ọba!",
-  "en": "Say the letter on the rider's banner, and he will greet the Oba!",
+  "text": "Sọ lẹ́tà tí wọ́n gbẹ́ sára igbá náà ní Gẹ̀ẹ́sì, a ó sì gbé e sórí àgbékọ́.",
+  "en": "Say the letter carved on the calabash in English, and it goes up on the rack.",
   "status": "draft"
  },
  {
@@ -1899,8 +1899,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Sọ orúkọ nǹkan yìí ní Gẹ̀ẹ́sì, alàtẹ yóò sì tà á!",
-  "en": "Say this thing's name in English, and the market caller will sell it!",
+  "text": "Sọ orúkọ ẹ̀bùn tó wà lórí àwo náà ní Gẹ̀ẹ́sì, a ó sì gbé e sórí tábìlì ẹrù ìyàwó.",
+  "en": "Say the name of the gift on the tray in English, and it goes onto the bride's gift table.",
   "status": "draft"
  },
  {
@@ -1953,8 +1953,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Sọ iye owó tó wà lọ́wọ́ rẹ ní Gẹ̀ẹ́sì, kí o sì san owó fún ẹni tó ń ta bọ̀lì.",
-  "en": "Say the money in your hand in English, and pay the boli seller.",
+  "text": "Sọ iye owó tí obìnrin náà mú wá ní Gẹ̀ẹ́sì, kí alájọ kọ ọ́ sílẹ̀.",
+  "en": "Say how much money the woman has brought, in English, so the ajo collector can write it down.",
   "status": "draft"
  },
  {
@@ -1971,8 +1971,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka ọ̀rọ̀ tó wà lára ọkọ̀ náà sókè, yóò sì dé etí omi.",
-  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "text": "Ka ọ̀rọ̀ tó wà lórí àmì ọ̀nà sókè, ọlọ́kadà yóò sì máa lọ.",
+  "en": "Read the word on the road sign out loud, and the okada rider will ride on.",
   "status": "draft"
  },
  {

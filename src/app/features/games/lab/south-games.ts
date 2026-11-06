@@ -15,7 +15,7 @@ import { talkingDrum } from './kalangu';
 import { liveAC } from './audioctx';
 
 export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
-  const { K, h, say, shuffle, micBox, line, F, io, LW, txt, spoken, letters, gaps, secs } = c;
+  const { K, h, say, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs } = c;
   const Y = L === 'yo';
   let ac = null;
   const later = (run, ms, f) => run.later(ms, f);
@@ -687,7 +687,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
         const t = (k + 1) * 70 + 500;
         if (k + 1 === n) {
           later(run, t, () => { got++; reached = Math.max(reached, n); run.good(b); mood(st, 'cheer'); say(K.en['n' + n], run); });
-          later(run, t + 900, () => kegs.slice(0, n).forEach((x) => x.classList.add('go'))); step(t + 2600);
+          later(run, t + 900, () => kegs.slice(0, n).forEach((x) => x.classList.add('sgo'))); step(t + 2600);
         } else {
           later(run, t, () => { run.bad(); mood(st, 'sad'); kegs[n - 1].classList.add('meant'); kegs.forEach((x) => x.classList.remove('full')); }); step(t + 2200);
         }
@@ -736,7 +736,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
           const b = h('<button type="button" class="okc" aria-label="' + m + '" style="--k:' + k + '"><span class="okin">' + oke(v++) + '<b class="oktag">' + naira(m) + '</b></span></button>');
           line2.appendChild(b);
           b.onclick = () => { if (busy || run.dead) return; busy = true;
-            if (m === p) { got++; if (p >= 100) hundreds++; run.good(b); mood(st, 'cheer'); say(K.en['n' + p], run); line2.classList.add('stop'); b.classList.add('sold'); knocks(run, 2, 1300, 120); step(2600); }
+            if (m === p) { got++; if (p >= 100) hundreds++; run.good(b); mood(st, 'cheer'); say(K.en['n' + p], run); line2.classList.add('stop'); b.classList.add('sgsold'); knocks(run, 2, 1300, 120); step(2600); }
             else { run.bad(); mood(st, 'sad'); bump(b, 'no', 900); later(run, 900, () => { busy = false; step(0); }); }
           };
         });
@@ -847,7 +847,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
           later(run, n * 380 + 600, then); },
         right: () => { gs.classList.add('dance'); gf.classList.add('dance'); knocks(run, 6, 200, 170); notes.innerHTML = Array.from({ length: 10 }, (_, k) => '<i style="--k:' + k + ';left:' + (10 + k * 8) + 'cqw"></i>').join('');
           later(run, 2800, () => { gs.classList.add('out'); gf.classList.add('out'); }); },
-        wrong: () => { gs.classList.add('shake'); gf.classList.add('shake'); later(run, 1400, () => { gs.classList.add('out'); gf.classList.add('out'); }); },
+        wrong: () => { gs.classList.add('sgshake'); gf.classList.add('sgshake'); later(run, 1400, () => { gs.classList.add('out'); gf.classList.add('out'); }); },
       });
     },
   };
@@ -1041,7 +1041,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
       const paper = st.querySelector('.nwpaper'), ww = st.querySelector('.nww');
       readAloud(run, done, { st,
         show: (t) => { ww.textContent = t; ww.className = 'nww l' + Math.min(12, Math.max(4, t.length)); paper.className = 'nwpaper'; void paper.offsetWidth; paper.classList.add('up'); },
-        right: () => { knocks(run, 2, 1300, 120); later(run, 1200, () => paper.classList.add('sold')); },
+        right: () => { knocks(run, 2, 1300, 120); later(run, 1200, () => paper.classList.add('sgsold')); },
         wrong: () => { knock(200, .3, .2); paper.classList.add('blow'); } });
     },
   };
@@ -1072,6 +1072,466 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
-  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall, 'j-rini': adire, 'j-gyada': cocoa, 'j-shanu': asoOke, 'j-garke': owambe, 'j-rubutu-say': naHouse, 'j-marubuci': signWriter, 'j-ruwa': newsStand }
-    : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall, 'j-rini': akwete, 'j-gyada': palmOil, 'j-shanu': abaShoes, 'j-garke': iriJi, 'j-rubutu-say': kola, 'j-marubuci': printer, 'j-ruwa': mgba };
+
+  /* ======================================================================================================
+     Round 6: the last slots that were Hausa games in local dress (letters aloud, naming aloud, market rush,
+     money, reading signs, catching the word). Each with its own play.
+     ====================================================================================================== */
+  const PICW = () => LW.length ? shuffle(LW).filter((w) => K.pic[w]) : shuffle(['goat', 'cat', 'dog', 'fish', 'cup', 'bread', 'egg', 'chair', 'book', 'spoon', 'mango', 'water'].filter((w) => K.pic[w] && K.en[w])).slice(0, 6);
+  const card = (w, cls = 'sgcard') => '<span class="' + cls + '"><img alt="" src="' + K.pic[w] + '"></span>';
+  /** three others for a word, from the lesson's words first, then any word with a picture */
+  const others = (w, W, n = 3) => { const pool = W.filter((x) => x !== w); const more = Object.keys(K.pic).filter((x) => K.en[x] && x !== w && pool.indexOf(x) < 0);
+    return shuffle(pool).concat(shuffle(more)).slice(0, n); };
+
+  /* ---------------- shared: say the letter you see (the Durbar's slot) ---------------- */
+  function letterSay(run, done, o) {
+    const L8 = shuffle((opts && opts.letters) || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')), N = L8.length; let i = 0, started = false; const missed = [];
+    const box = micBox(run); run.scr.appendChild(o.st); run.scr.appendChild(box);
+    const row = o.st.querySelector(o.row); row.innerHTML = L8.map(() => '<span></span>').join(''); row.classList.toggle('many', N > 13);
+    run.remind = () => say(line('j-durbar', 'how'), run);
+    function next() {
+      const L = L8[i]; run.item(L); o.show(L, i); row.children[i].classList.add('now');
+      later(run, 1200, () => {
+        box.listen(() => ({ target: L, until: L, maxWrong: 2, limit: 6000 }), (r) => {
+          box.busy = true;
+          if (!started) { started = true; run.clock(Math.max(150, 20 + N * 9), () => done({ right: run.right, part: run.right / N, missed: L8.slice(i).concat(missed) })); }
+          row.children[i].classList.remove('now');
+          if (r.value === L) { box.yay(); run.good(o.st); mood(o.st, 'cheer'); say(K.L[L], run); row.children[i].classList.add('on'); row.children[i].textContent = L; o.right(L, i); later(run, o.ms || 3000, step); return; }
+          run.bad(); box.nope(); mood(o.st, 'sad'); missed.push(L); row.children[i].classList.add('miss'); o.wrong(L, i); later(run, 2600, step);
+        }, () => L);
+        if (started) { box.busy = false; box.go(); } else box.cue();   // the first letter waits for a press; then she listens by herself
+      });
+    }
+    function step() { i++; if (i >= N) done({ right: run.right, finished: true, missed }); else next(); }
+    next();
+  }
+
+  /* ---------------- shared: name the picture out loud (Kalangu's and the auctioneer's slots) ---------------- */
+  function nameIt(run, done, o) {
+    const W = PICW(), among = W.map(spoken); let r = 0, got = 0;
+    const box = micBox(run); run.scr.appendChild(o.st); run.scr.appendChild(box);
+    run.clock(secs(150, W.length, 6), () => done({ right: got, part: got / W.length }));
+    run.remind = () => say(line(o.gid, 'how'), run);
+    function next() {
+      const w = W[r]; run.item(w); o.show(w, r);
+      later(run, o.wait || 900, () => autoRound(run, box, spoken(w), among, () => { got++; run.good(o.st); mood(o.st, 'cheer'); run.said = say(K.en[w], run); o.right(w, r); later(run, o.ms || 3400, step); },
+        () => { mood(o.st, 'sad'); o.wrong(w, r); later(run, 2600, step); }));
+    }
+    function step() { r++; if (r >= W.length) done({ right: got, finished: true, part: got / W.length }); else next(); }
+    next();
+  }
+
+  /* ---------------- shared: hear the word, touch its picture (the fishing and market-rush slots) ---------------- */
+  function findIt(run, done, o) {
+    const W = PICW(), N = W.length; let r = 0, got = 0, misses = 0, busy = true;
+    run.scr.appendChild(o.st);
+    run.clock(secs(150, N, 6), () => done({ right: got, part: got / N, misses }));
+    const sayW = () => say(K.en[W[r]], run); run.remind = sayW;
+    function next() {
+      const w = W[r]; run.item(w); busy = true;
+      const set = shuffle([w].concat(others(w, W, (o.n || 4) - 1)));
+      o.round(set, (b, x) => {
+        if (busy || run.dead) return; busy = true;
+        if (x === w) { got++; run.good(b); mood(o.st, 'cheer'); o.right(b); later(run, o.ms || 2400, step); }
+        else { misses++; run.bad(); mood(o.st, 'sad'); o.wrong(b); later(run, 2200, step); }
+      }, () => { if (busy || run.dead) return; busy = true; misses++; run.bad(); mood(o.st, 'sad'); later(run, 1200, step); });
+      later(run, o.lead || 700, () => { busy = false; sayW(); });
+    }
+    function step() { r++; if (r >= N) done({ right: got, finished: true, part: got / N, misses }); else next(); }
+    next();
+  }
+
+  /* ---------------- shared: say the value of the note (the suya seller's slot) ---------------- */
+  function noteSay(run, done, o) {
+    const NOTES = shuffle([20, 50, 100, 200, 500, 1000]), WORD = (n) => K.enText['n' + n].toLowerCase(), AMONG = NOTES.map(WORD).concat(['ten', 'five', 'two', 'one']); let r = 0, got = 0;
+    const box = micBox(run); run.scr.appendChild(o.st); run.scr.appendChild(box);
+    run.clock(150, () => done({ right: got, part: got / NOTES.length }));
+    run.remind = () => say(line('j-suya', 'how'), run);
+    function next() {
+      const n = NOTES[r]; o.show(n, r);
+      later(run, 1000, () => autoRound(run, box, WORD(n), AMONG, () => { got++; run.good(o.st); mood(o.st, 'cheer'); run.said = say(K.en['n' + n], run); o.right(n); later(run, 3000, step); },
+        () => { mood(o.st, 'sad'); o.wrong(n); later(run, 2400, step); }));
+    }
+    function step() { r++; if (r >= NOTES.length) done({ right: got, finished: true, part: got / NOTES.length }); else next(); }
+    next();
+  }
+  const NOTEC = { 20: ['#C9E0B0', '#5E8A3E'], 50: ['#B8D4EC', '#2E5E8E'], 100: ['#D8E8F0', '#4A6E8A'], 200: ['#D9C6E8', '#6A4A8A'], 500: ['#BFE3DA', '#2E7A6A'], 1000: ['#F0D7B8', '#8A5A2E'] };
+  const note = (n) => { const [a, b] = NOTEC[n]; return '<svg viewBox="0 0 100 50" aria-hidden="true"><rect x="1" y="1" width="98" height="48" rx="3" fill="' + a + '" stroke="' + b + '" stroke-width="2"/><circle cx="74" cy="25" r="15" fill="' + b + '" opacity=".25"/>' +
+    '<text x="8" y="19" font-size="13" font-weight="800" font-family="Baloo 2,Arial,sans-serif" fill="' + b + '">₦' + n + '</text><text x="92" y="44" text-anchor="end" font-size="11" font-weight="800" font-family="Baloo 2,Arial,sans-serif" fill="' + b + '">' + n + '</text>' +
+    '<path d="M8 30 h34 M8 36 h26" stroke="' + b + '" stroke-width="1.6" opacity=".5"/></svg>'; };
+
+  /* ================= Yoruba: Igbá, the calabash carvers of Ọ̀yọ́ (Haruffa, speaking) =================
+     The carver turns a calabash on his lap; a letter is cut into it. Say the letter: the pattern is burnt in round it and
+     the calabash goes up on the rack with the others. Wrong: it cracks and is put aside. */
+  function igbaBack() {
+    let g = '<defs><linearGradient id="sg-ig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3DDB0"/><stop offset="1" stop-color="#F3E7CC"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-ig)"/>';
+    g += '<path d="M0 34 H320 V120 H0 Z" fill="#C98A5A"/><path d="M0 30 H320 V38 H0 Z" fill="#7A4A26"/>';
+    g += '<path d="M0 120 H320 V200 H0 Z" fill="#D8B07A"/><path d="M0 120 H320" stroke="#A9764A" stroke-width="2"/>';
+    // finished calabashes stacked by the wall, the carver's helper burning patterns with a hot iron
+    [[24, 112], [44, 116], [34, 100], [282, 112], [302, 116]].forEach(([x, y], k) => { g += '<ellipse cx="' + x + '" cy="' + y + '" rx="11" ry="9" fill="' + ['#E8C98A', '#D9B070', '#C99A5A'][k % 3] + '" stroke="#7A4A26" stroke-width=".8"/><path d="M' + (x - 8) + ' ' + y + ' q8 -6 16 0" stroke="#5A3418" stroke-width="1" fill="none"/>'; });
+    g += person(52, 178, 60, { kind: 'man', robe: '#F4EBD0', hat: 'fila', hatc: '#7A2E5C', skin: 2, al: 'fwd', ar: 'fwd', cls: 'sgw' });
+    g += '<g class="sgopp">' + person(276, 180, 70, { kind: 'man', robe: '#E8D7A8', agbada: '#5A2E7A', hat: 'fila', hatc: '#5A2E7A', beard: 'w', skin: 3, al: 'fwd', ar: 'hip' }) + '</g>';
+    return svgBack(g);
+  }
+  const igba = {
+    cls: 'sgs sg-igba', scene: 'none', noHow: false,
+    play(run, done) {
+      const st = h('<div class="sg igba">' + igbaBack() + '<div class="cbrack sgrow"></div><div class="cbbowl"><b></b><i class="cbcrack"></i></div></div>');
+      const bowl = st.querySelector('.cbbowl'), b = bowl.querySelector('b');
+      letterSay(run, done, { st, row: '.cbrack',
+        show: (L) => { b.textContent = L; bowl.className = 'cbbowl'; void bowl.offsetWidth; bowl.classList.add('turn'); knock(500, .05, .2); },
+        right: () => { bowl.classList.add('burnt'); later(run, 1300, () => bowl.classList.add('rack')); },
+        wrong: () => { bowl.classList.add('crack'); knock(140, .2, .4); later(run, 1200, () => bowl.classList.add('aside')); } });
+    },
+  };
+
+  /* ================= Igbo: Egwu Ọnwa, moonlight play in the village square (Haruffa, speaking) =================
+     Under the full moon the children play; one at a time a child runs into the ring holding up a letter. Say it and the
+     child joins the dance, and a star with that letter lights up in the sky. Wrong: the child runs back, the star stays dim. */
+  function moonBack() {
+    let g = '<defs><linearGradient id="sg-mo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1C2448"/><stop offset=".7" stop-color="#3A4470"/><stop offset="1" stop-color="#5A5878"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-mo)"/>';
+    g += '<circle cx="270" cy="58" r="20" fill="#F6F0D2"/><circle cx="270" cy="58" r="30" fill="#F6F0D2" opacity=".12"/>';
+    // the compound walls and the iroko tree, dark against the sky
+    g += '<path d="M0 110 H110 V96 H0 Z M210 110 H320 V100 H210 Z" fill="#2A2438"/><path d="M40 110 Q34 60 48 40 Q20 30 30 14 Q60 4 80 20 Q100 14 96 40 Q70 44 62 110 Z" fill="#1E1A2C"/>';
+    g += '<path d="M0 110 H320 V200 H0 Z" fill="#6A5E6E"/><ellipse cx="160" cy="160" rx="130" ry="30" fill="#7E7280"/>';
+    // the ring of children clapping, the grandmother on her stool
+    [[34, 150], [62, 160], [258, 160], [286, 150], [112, 136], [208, 136]].forEach(([x, y], k) => { g += person(x, y, 36, { kind: k % 2 ? 'boy' : 'woman', robe: ['#B23A2E', '#E8A317', '#1F4E2E', '#2E4E7A'][k % 4], wrap: '#1F4E2E', hat: k % 2 ? 'hair' : 'braids', skin: k % 5, tight: 1, al: 'clap', ar: 'clap', cls: 'sgw' }); });
+    g += '<g class="sgopp">' + person(300, 196, 54, { kind: 'woman', robe: '#F4F1EA', wrap: '#B23A2E', hat: 'tie', hatc: '#1F4E2E', skin: 2, al: 'hip', ar: 'clap' }) + '</g>';
+    return svgBack(g);
+  }
+  const egwuOnwa = {
+    cls: 'sgs sg-moon', scene: 'none', noHow: false,
+    play(run, done) {
+      const st = h('<div class="sg moon">' + moonBack() + '<div class="mnstars sgrow"></div><div class="mnkid"><span class="mnfig"></span><b class="mncard"></b></div></div>');
+      const kid = st.querySelector('.mnkid'), fig2 = kid.querySelector('.mnfig'), cardB = kid.querySelector('.mncard');
+      letterSay(run, done, { st, row: '.mnstars',
+        show: (L, i) => { cardB.textContent = L; fig2.innerHTML = fig({ kind: i % 2 ? 'boy' : 'woman', robe: ['#E8A317', '#B23A2E', '#1F4E2E', '#7A2E5C'][i % 4], wrap: '#2E4E7A', hat: i % 2 ? 'hair' : 'braids', skin: i % 5, tight: 1, al: 'up', ar: 'up' });
+          kid.className = 'mnkid'; void kid.offsetWidth; kid.classList.add('in'); },
+        right: () => { kid.classList.add('dance'); knocks(run, 4, 700, 150); later(run, 1800, () => kid.classList.add('join')); },
+        wrong: () => { kid.classList.add('back'); } });
+    },
+  };
+
+  /* ================= Yoruba: Àlọ́, a story by the fire with Ìjàpá (Abubuwa, speaking) =================
+     Grandmother tells a tale of Ìjàpá the tortoise; each thing in the story rises in the smoke over the fire. Name it and
+     the children answer "Ààlọ̀!", and Ìjàpá puts it in his bag. Wrong: the fire sinks low. */
+  function aloBack() {
+    let g = '<defs><linearGradient id="sg-al" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#20223E"/><stop offset="1" stop-color="#4A3A48"/></linearGradient><radialGradient id="sg-fire" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#FFB347" stop-opacity=".55"/><stop offset="1" stop-color="#FFB347" stop-opacity="0"/></radialGradient></defs><rect width="320" height="200" fill="url(#sg-al)"/>';
+    g += '<path d="M0 104 H320 V200 H0 Z" fill="#5A4636"/><ellipse cx="160" cy="150" rx="140" ry="60" fill="url(#sg-fire)"/>';
+    g += '<rect x="0" y="40" width="80" height="64" fill="#3A2E38"/><path d="M-4 40 L40 22 L84 40 Z" fill="#2A2028"/><rect x="250" y="46" width="70" height="58" fill="#3A2E38"/>';
+    // the storyteller and the children round the fire
+    g += '<g class="sgopp">' + person(64, 170, 66, { kind: 'woman', robe: '#E8D7A8', wrap: '#2B4C9B', hat: 'gele', hatc: '#2B4C9B', skin: 3, al: 'up', ar: 'hip' }) + '</g>';
+    [[100, 182, 'boy'], [226, 182, 'woman'], [256, 176, 'boy'], [284, 182, 'woman']].forEach(([x, y, k], j) => { g += person(x, y, 36, { kind: k, robe: ['#E8A317', '#7A2E5C', '#2E6B4A', '#B23A2E'][j], wrap: '#2B4C9B', hat: k === 'boy' ? 'hair' : 'braids', skin: j + 1, tight: 1, al: 'clap', ar: 'clap', cls: 'sgw' }); });
+    // Ìjàpá with his bag
+    g += '<g transform="translate(206 172)"><ellipse cx="0" cy="0" rx="18" ry="11" fill="#6B5A2E"/><path d="M-14 -2 q14 -18 28 0" fill="#8E7A3E"/><path d="M-8 -6 l4 6 M0 -9 v8 M8 -6 l-4 6" stroke="#5A4A22" stroke-width="1.2"/><ellipse cx="20" cy="-4" rx="6" ry="5" fill="#8E7A3E"/><circle cx="22" cy="-6" r="1" fill="#1E1E24"/><path d="M-26 -6 q4 -10 10 -4 q2 8 -10 6 Z" fill="#C9A06A" stroke="#7A5A36"/></g>';
+    return svgBack(g);
+  }
+  const alo = {
+    cls: 'sgs sg-alo', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg alo">' + aloBack() + '<div class="alfire"><i></i><i></i><i></i></div><div class="alsmoke"></div><b class="alsing">Ààlọ̀!</b></div>');
+      const smoke = st.querySelector('.alsmoke'), fire = st.querySelector('.alfire');
+      nameIt(run, done, { st, gid: 'j-magana',
+        show: (w) => { smoke.className = 'alsmoke'; fire.className = 'alfire'; smoke.innerHTML = card(w); void smoke.offsetWidth; smoke.classList.add('rise'); },
+        right: () => { later(run, 1300, () => smoke.classList.add('bag')); },
+        wrong: () => { fire.classList.add('low'); smoke.classList.add('fade'); } });
+    },
+  };
+
+  /* ================= Igbo: Nollywood, on the film set (Abubuwa, speaking) =================
+     The prop for the next scene is held up on the clapperboard. Name it: "Action!", the board claps and the actors play the
+     scene. Wrong: "Cut!", the director shakes his head. */
+  function setBack() {
+    let g = '<rect width="320" height="200" fill="#E9DCC4"/><rect x="0" y="0" width="320" height="120" fill="#C9B08A"/>';
+    // the village set: a house front with a carved door, the lights on stands, the camera
+    g += '<rect x="186" y="36" width="120" height="84" fill="#E8D7B0"/><rect x="230" y="70" width="30" height="50" fill="#7A4A26"/><path d="M180 36 L246 14 L312 36 Z" fill="#8E6A3A"/>';
+    g += '<path d="M0 120 H320 V200 H0 Z" fill="#B8A07A"/><path d="M0 120 H320" stroke="#8E7A5A" stroke-width="2"/>';
+    [[20, 40], [300, 44]].forEach(([x, y]) => { g += '<path d="M' + x + ' 150 V' + y + '" stroke="#2A2A30" stroke-width="2"/><rect x="' + (x - 9) + '" y="' + (y - 10) + '" width="18" height="14" rx="2" fill="#2A2A30"/><path d="M' + (x - 7) + ' ' + (y + 4) + ' l-14 30 h42 l-14 -30 Z" fill="#FFF3C0" opacity=".25"/>'; });
+    g += '<g transform="translate(58 132)"><path d="M0 0 L-12 44 M0 0 L12 44 M0 0 V44" stroke="#2A2A30" stroke-width="2"/><rect x="-18" y="-18" width="34" height="20" rx="3" fill="#2A2A30"/><circle cx="20" cy="-8" r="7" fill="#3A3A44" stroke="#2A2A30" stroke-width="2"/></g>';
+    g += person(34, 186, 58, { kind: 'man', robe: '#1E1E24', hat: 'okpuf', hatc: '#1E1E24', skin: 3, al: 'fwd', ar: 'fwd', cls: 'sgw' });
+    // the actors in costume: a chief and his wife; the director in his chair
+    g += '<g class="sgw">' + person(208, 150, 56, { kind: 'man', robe: '#B23A2E', wrap: '#F4F1EA', hat: 'okpu', hatc: '#B23A2E', beads: 1, skin: 2, al: 'staff', ar: 'up' }) + '</g>';
+    g += '<g class="sgw">' + person(236, 152, 52, { kind: 'woman', robe: '#F4F1EA', wrap: '#B23A2E', hat: 'tie', hatc: '#E8A317', beads: 1, skin: 1, al: 'hip', ar: 'up' }) + '</g>';
+    g += '<g class="sgopp">' + person(292, 186, 62, { kind: 'man', robe: '#F4F1EA', hat: 'okpuf', hatc: '#2E4E7A', skin: 4, al: 'hip', ar: 'fwd' }) + '</g>';
+    return svgBack(g);
+  }
+  const nolly = {
+    cls: 'sgs sg-nolly', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg nolly">' + setBack() + '<div class="nlboard"><i class="nlclap"></i><span class="nlslate"></span></div><b class="nlcall"></b></div>');
+      const board = st.querySelector('.nlboard'), slate = st.querySelector('.nlslate'), call = st.querySelector('.nlcall');
+      nameIt(run, done, { st, gid: 'j-magana',
+        show: (w) => { slate.innerHTML = card(w); board.className = 'nlboard'; call.className = 'nlcall'; void board.offsetWidth; board.classList.add('in'); },
+        right: () => { call.textContent = 'ACTION!'; call.classList.add('on'); board.classList.add('clapped'); knock(1600, .04, .5); st.classList.add('roll'); later(run, 2600, () => st.classList.remove('roll')); },
+        wrong: () => { call.textContent = 'CUT!'; call.classList.add('on', 'cut'); knock(160, .2, .4); } });
+    },
+  };
+
+  /* ================= Yoruba: Ẹrù Ìyàwó, the engagement (Abubuwa, speaking) =================
+     The groom's people bring in the gifts on the list, one tray at a time; the Alága, the lady with the microphone, asks
+     what it is. Name it and it goes onto the gift table and both families clap. Wrong: the tray goes back out. */
+  function engageBack() {
+    let g = '<rect width="320" height="200" fill="#F6E8CC"/>' + canopy(0, 64, 320, '#FFFDF7', '#E8A317', 44);
+    g += '<path d="M0 64 H320 V200 H0 Z" fill="#EADBB8"/><path d="M0 150 H320 V200 H0 Z" fill="#D2BC90"/>';
+    // the two families in their aṣọ ẹbí: the bride's in gold and purple on the left, the groom's in blue on the right
+    for (let k = 0; k < 4; k++) g += person(14 + k * 18, 120, 38, { kind: k % 2 ? 'man' : 'woman', robe: '#7A2E5C', agbada: k % 2 ? '#7A2E5C' : 0, wrap: '#E8A317', hat: k % 2 ? 'fila' : 'gele', hatc: '#E8A317', skin: k, al: 'clap', ar: 'clap', cls: 'sgw' });
+    for (let k = 0; k < 4; k++) g += person(250 + k * 18, 120, 38, { kind: k % 2 ? 'woman' : 'man', robe: '#2B4C9B', agbada: k % 2 ? 0 : '#2B4C9B', wrap: '#F4F1EA', hat: k % 2 ? 'gele' : 'fila', hatc: '#F4F1EA', skin: k + 1, al: 'clap', ar: 'clap', cls: 'sgw' });
+    // the gift table, the Alága with her microphone
+    g += '<rect x="196" y="140" width="110" height="20" rx="3" fill="#FFFDF7" stroke="#D8C49A"/><rect x="200" y="160" width="4" height="22" fill="#B8A07A"/><rect x="298" y="160" width="4" height="22" fill="#B8A07A"/>';
+    g += '<g class="sgopp">' + person(40, 188, 64, { kind: 'woman', robe: '#E8A317', wrap: '#7A2E5C', hat: 'gele', hatc: '#E8A317', beads: 1, skin: 2, al: 'up', ar: 'hip' }) + '</g>';
+    return svgBack(g);
+  }
+  const eru = {
+    cls: 'sgs sg-eru', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg eru">' + engageBack() + '<div class="erbear"><span class="erman">' + fig({ kind: 'man', robe: '#2B4C9B', agbada: '#2B4C9B', hat: 'fila', hatc: '#F4F1EA', skin: 2, al: 'up', ar: 'up' }) + '</span><span class="ertray"></span></div><div class="ertable"></div></div>');
+      const bear = st.querySelector('.erbear'), tray = st.querySelector('.ertray'), table = st.querySelector('.ertable');
+      nameIt(run, done, { st, gid: 'j-dillali', wait: 1300,
+        show: (w) => { tray.innerHTML = card(w); bear.className = 'erbear'; void bear.offsetWidth; bear.classList.add('in'); },
+        right: (w) => { knocks(run, 4, 500, 150); later(run, 900, () => { table.insertAdjacentHTML('beforeend', card(w, 'ergift')); bear.classList.add('out'); }); },
+        wrong: () => { later(run, 600, () => bear.classList.add('out')); } });
+    },
+  };
+
+  /* ================= Igbo: Ọ̀bịbịa Ụlọ, home for Christmas (Abubuwa, speaking) =================
+     The family is back from the city and the big striped bag is opened in front of Nne. Each thing comes out of the bag;
+     name it and it goes to Nne, who dances. Wrong: it goes back into the bag. */
+  function homeBack() {
+    let g = '<defs><linearGradient id="sg-hm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7D9A0"/><stop offset="1" stop-color="#F3E8CC"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-hm)"/>';
+    g += '<rect x="20" y="36" width="190" height="80" fill="#F4F1EA"/><path d="M12 36 L115 12 L218 36 Z" fill="#8E3A2A"/><rect x="96" y="66" width="32" height="50" fill="#5A3A1E"/><rect x="40" y="60" width="30" height="22" fill="#7AA8C0"/><rect x="152" y="60" width="30" height="22" fill="#7AA8C0"/>';
+    g += '<path d="M0 116 H320 V200 H0 Z" fill="#C98A52"/><path d="M0 116 H320" stroke="#A9764A" stroke-width="2"/>';
+    // the car that brought them, still dusty from the road, with things tied on top
+    g += '<g transform="translate(250 126)"><path d="M-44 0 h88 v-14 q-4 -8 -14 -8 l-10 -14 h-34 l-12 14 q-14 0 -18 8 Z" fill="#E8E2D8" stroke="#8A8478"/><rect x="-24" y="-34" width="22" height="10" fill="#9AC0D4"/><rect x="2" y="-34" width="18" height="10" fill="#9AC0D4"/><circle cx="-26" cy="2" r="8" fill="#2A2A2A"/><circle cx="26" cy="2" r="8" fill="#2A2A2A"/><rect x="-26" y="-46" width="40" height="10" rx="2" fill="#B23A2E"/></g>';
+    // the children back from Lagos, the father, Nne on her stool
+    g += person(160, 188, 52, { kind: 'man', robe: '#2E4E7A', hat: 'okpuf', hatc: '#1E1E24', skin: 3, al: 'hip', ar: 'clap', cls: 'sgw' });
+    g += person(186, 190, 36, { kind: 'boy', robe: '#E8A317', hat: 'hair', skin: 2, al: 'clap', ar: 'clap', cls: 'sgw' }) + person(206, 190, 34, { kind: 'woman', robe: '#B23A2E', wrap: '#1F4E2E', hat: 'braids', skin: 1, tight: 1, al: 'clap', ar: 'clap', cls: 'sgw' });
+    g += '<g class="sgopp">' + person(40, 188, 62, { kind: 'woman', robe: '#F4F1EA', wrap: '#1F4E2E', hat: 'tie', hatc: '#B23A2E', beads: 1, skin: 2, al: 'up', ar: 'up' }) + '</g>';
+    return svgBack(g);
+  }
+  const homecoming = {
+    cls: 'sgs sg-home', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg home"><div class="hmwrap">' + homeBack() + '</div><div class="hmbag"><i></i></div><span class="hmthing"></span><div class="hmnne"></div></div>');
+      const thing = st.querySelector('.hmthing'), nne = st.querySelector('.hmnne'), bag = st.querySelector('.hmbag');
+      nameIt(run, done, { st, gid: 'j-dillali', wait: 1100,
+        show: (w) => { thing.innerHTML = card(w); thing.className = 'hmthing'; bump(bag, 'sgshake', 600); void thing.offsetWidth; thing.classList.add('out'); },
+        right: (w) => { later(run, 900, () => { thing.classList.add('nne'); }); later(run, 1600, () => nne.insertAdjacentHTML('beforeend', card(w, 'hmgot'))); knocks(run, 3, 600, 160); },
+        wrong: () => { later(run, 600, () => thing.classList.add('back')); } });
+    },
+  };
+
+  /* ================= Yoruba: Bojúbojú, hide and seek in the compound (Nemo hoto, tap) =================
+     Four friends are hiding behind the pots, the door, the mortar and the woodpile, each holding something. Laila says a
+     word; find the friend holding it: caught, they come out laughing. Wrong: that friend ducks back down. */
+  const HIDES = [[13, 'pot'], [36, 'door'], [64, 'mortar'], [87, 'wood']];
+  function hideBack() {
+    let g = '<defs><linearGradient id="sg-bj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7DCA8"/><stop offset="1" stop-color="#F3E7CC"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-bj)"/>';
+    g += '<path d="M0 44 H320 V130 H0 Z" fill="#B8643C"/><path d="M0 40 H320 V48 H0 Z" fill="#7A3E22"/><path d="M0 130 H320 V200 H0 Z" fill="#D8A86E"/><path d="M0 130 H320" stroke="#A9764A" stroke-width="2"/>';
+    g += '<g class="sgopp">' + person(160, 128, 52, { kind: 'boy', robe: '#2E6B4A', hat: 'hair', skin: 2, al: 'up', ar: 'up' }) + '</g>';   // the seeker, eyes covered, counting
+    return svgBack(g);
+  }
+  const cover = { pot: '<svg viewBox="0 0 60 56"><ellipse cx="30" cy="34" rx="28" ry="21" fill="#9A5A2E"/><ellipse cx="30" cy="16" rx="16" ry="5" fill="#6E3E1C"/><path d="M6 32 q24 10 48 0" stroke="#6E3E1C" stroke-width="2" fill="none"/></svg>',
+    door: '<svg viewBox="0 0 60 56"><rect x="6" y="0" width="48" height="56" fill="#6B4226"/><path d="M12 6 h36 v20 h-36 Z M12 30 h36 v22 h-36 Z" fill="none" stroke="#4A2C14" stroke-width="2"/><circle cx="46" cy="30" r="2.4" fill="#E8C060"/></svg>',
+    mortar: '<svg viewBox="0 0 60 56"><path d="M8 10 h44 l-6 30 h-32 Z" fill="#8E5A2E"/><rect x="20" y="40" width="20" height="16" fill="#7A4A22"/><ellipse cx="30" cy="10" rx="22" ry="5" fill="#5A3418"/><path d="M36 10 L48 -10" stroke="#C9A06A" stroke-width="5"/></svg>',
+    wood: '<svg viewBox="0 0 60 56">' + [0, 1, 2, 3, 4].map((k) => '<rect x="' + (2 + (k % 2) * 6) + '" y="' + (12 + k * 9) + '" width="52" height="8" rx="4" fill="' + (k % 2 ? '#8E6A42' : '#7A5A36') + '"/>').join('') + '</svg>' };
+  const hideSeek = {
+    cls: 'sgs sg-hide', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg hide">' + hideBack() + '<div class="hsrow">' + HIDES.map(([x, c], k) => '<button type="button" class="hspot" style="left:' + x + 'cqw;--k:' + k + '" aria-label="' + c + '"><span class="hsfriend"><span class="hsf"></span><span class="hsitem"></span></span><span class="hscover">' + cover[c] + '</span></button>').join('') + '</div></div>');
+      const spots = [...st.querySelectorAll('.hspot')];
+      findIt(run, done, { st, n: 4, lead: 1100,
+        round: (set, pick) => spots.forEach((b, k) => {
+          b.className = 'hspot'; b.querySelector('.hsitem').innerHTML = card(set[k]);
+          b.querySelector('.hsf').innerHTML = fig({ kind: k % 2 ? 'woman' : 'boy', robe: ['#E8A317', '#7A2E5C', '#2B4C9B', '#B23A2E'][k], wrap: '#2B4C9B', hat: k % 2 ? 'braids' : 'hair', skin: k + 1, tight: 1, al: 'up', ar: 'down' });
+          later(run, 150 + k * 120, () => b.classList.add('peek')); b.onclick = () => pick(b, set[k]); }),
+        right: (b) => { b.classList.add('caught'); knocks(run, 3, 800, 120); },
+        wrong: (b) => { b.classList.remove('peek'); b.classList.add('duck'); } });
+    },
+  };
+
+  /* ================= Igbo: the wheelbarrow boys of Onitsha Main Market (Nemo hoto, tap) =================
+     Wheelbarrows piled with goods are pushed past the shop, one behind the other. Laila says a word; stop the barrow that
+     carries it before it is gone. Right: it is unloaded into the shop. Wrong: the boy shouts and pushes on. */
+  function barrowBack() {
+    let g = '<rect width="320" height="200" fill="#EADFC8"/><rect x="0" y="0" width="320" height="96" fill="#D9C6A2"/>';
+    for (let k = 0; k < 6; k++) { const x = k * 56; g += '<rect x="' + (x + 4) + '" y="22" width="48" height="74" fill="' + ['#C9B08A', '#BFA47E'][k % 2] + '"/><rect x="' + (x + 4) + '" y="22" width="48" height="10" fill="' + ['#B23A2E', '#2E4E7A', '#1F4E2E'][k % 3] + '"/>' + [0, 1, 2].map((j) => '<rect x="' + (x + 8 + j * 15) + '" y="40" width="12" height="40" fill="' + ['#E8A317', '#F4F1EA', '#7A2E5C', '#2E6B4A'][(k + j) % 4] + '"/>').join(''); }
+    g += '<path d="M0 96 H320 V200 H0 Z" fill="#9A8A6A"/><path d="M0 96 H320" stroke="#7A6A4A" stroke-width="2"/>';
+    g += '<g class="sgopp">' + person(292, 104, 56, { kind: 'woman', robe: '#E8A317', wrap: '#B23A2E', hat: 'tie', hatc: '#B23A2E', skin: 2, al: 'hip', ar: 'fwd' }) + '</g>';
+    return svgBack(g);
+  }
+  const barrowSvg = '<svg viewBox="0 0 90 50" aria-hidden="true"><path d="M8 12 h52 l-6 18 h-40 Z" fill="#7A8A96" stroke="#4A5A66" stroke-width="1.4"/><path d="M60 14 L86 30 M14 30 L10 46 M54 30 L58 44" stroke="#4A5A66" stroke-width="2.4"/><circle cx="34" cy="40" r="8" fill="#2A2A2A"/><circle cx="34" cy="40" r="3" fill="#8A8A8A"/></svg>';
+  const barrows = {
+    cls: 'sgs sg-barrow', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg barrow">' + barrowBack() + '<div class="bwlane"></div></div>'); const lane = st.querySelector('.bwlane');
+      findIt(run, done, { st, n: 3, lead: 500,
+        round: (set, pick, gone) => { lane.innerHTML = '';
+          set.forEach((x, k) => { const b = h('<button type="button" class="bw" style="--k:' + k + '" aria-label="barrow"><span class="bwload">' + card(x) + '</span>' + barrowSvg + '<span class="bwboy">' + fig({ kind: 'man', robe: ['#F4F1EA', '#2E4E7A', '#1F4E2E'][k], hat: 'hair', skin: k + 2, al: 'fwd', ar: 'fwd', tight: 1 }) + '</span></button>');
+            b.onclick = () => { lane.classList.add('stop'); pick(b, x); };
+            b.addEventListener('animationend', (e) => { if (e.animationName === 'sg-push' && k === set.length - 1) gone(); });
+            lane.appendChild(b); });
+          lane.className = 'bwlane'; void lane.offsetWidth; lane.classList.add('sgo'); },
+        right: (b) => { b.classList.add('unload'); knocks(run, 2, 400, 160); },
+        wrong: (b) => { bump(b.querySelector('.bwboy'), 'no', 900); } });
+    },
+  };
+
+  /* ================= Yoruba: Èsúsú, the women's savings meeting (Lambobi, speaking) =================
+     Each member comes up to the table with her contribution. Say how much the note is: the Alájọ writes it in her card
+     and drops it in the box. Wrong: the member holds on to it and goes back. */
+  function esusuBack() {
+    let g = '<rect width="320" height="200" fill="#F2E3C4"/>' + canopy(0, 60, 320, '#2E6B4A', '#FFFDF7', 40);
+    g += '<path d="M0 60 H320 V200 H0 Z" fill="#E7D3AE"/><path d="M0 150 H320 V200 H0 Z" fill="#CFB68A"/>';
+    for (let k = 0; k < 6; k++) g += person(150 + k * 26, 128, 40, { kind: 'woman', robe: ['#2E6B4A', '#E8A317', '#7A2E5C'][k % 3], wrap: '#2B4C9B', hat: 'gele', hatc: ['#E8A317', '#2E6B4A', '#F4F1EA'][k % 3], skin: k, al: 'hip', cls: 'sgw' });
+    g += '<rect x="20" y="132" width="110" height="20" rx="3" fill="#8E5A2E"/><rect x="26" y="152" width="4" height="26" fill="#6B4226"/><rect x="120" y="152" width="4" height="26" fill="#6B4226"/>';
+    g += '<rect x="86" y="118" width="30" height="16" rx="2" fill="#5A6A78" stroke="#3A4A58"/><rect x="96" y="116" width="10" height="3" fill="#2A3A48"/>';
+    g += '<g class="sgopp">' + person(52, 136, 58, { kind: 'woman', robe: '#F4F1EA', wrap: '#2E6B4A', hat: 'gele', hatc: '#2E6B4A', beads: 1, skin: 3, al: 'fwd', ar: 'hip' }) + '</g>';
+    return svgBack(g);
+  }
+  const esusu = {
+    cls: 'sgs sg-esusu', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg esusu">' + esusuBack() + '<div class="esmem"><span class="esfig"></span><span class="esnote"></span></div><div class="escard"><b>ÀJỌ</b></div></div>');
+      const mem = st.querySelector('.esmem'), nt = st.querySelector('.esnote'), fg = st.querySelector('.esfig'), cardEl = st.querySelector('.escard');
+      noteSay(run, done, { st,
+        show: (n, r) => { nt.innerHTML = note(n); fg.innerHTML = fig({ kind: 'woman', robe: ['#E8A317', '#7A2E5C', '#2B4C9B', '#B23A2E', '#2E6B4A', '#5A2E7A'][r], wrap: '#1E3A7A', hat: 'gele', hatc: '#E8A317', skin: r, al: 'up', ar: 'hip' });
+          mem.className = 'esmem'; void mem.offsetWidth; mem.classList.add('in'); },
+        right: (n) => { mem.classList.add('pay'); later(run, 900, () => { knock(1300, .05, .3); cardEl.insertAdjacentHTML('beforeend', '<i>₦' + n + '</i>'); }); later(run, 1500, () => mem.classList.add('sgo')); },
+        wrong: () => { later(run, 500, () => mem.classList.add('sgo')); } });
+    },
+  };
+
+  /* ================= Igbo: Ọ̀gụ́gụ́ Ego, counting the day's takings at the shop (Lambobi, speaking) =================
+     Closing time at the shop. The Oga holds up each note from the day's sales; say how much it is and the apprentice adds
+     it to the right pile. Wrong: the Oga frowns and puts it back in the bag. */
+  function closeBack() {
+    let g = '<defs><linearGradient id="sg-cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9A86A"/><stop offset="1" stop-color="#F3DDB8"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-cl)"/>';
+    g += '<rect x="0" y="26" width="320" height="96" fill="#C9B08A"/>' + [0, 1, 2].map((s) => '<rect x="0" y="' + (50 + s * 26) + '" width="320" height="3" fill="#7A4A26"/>' + Array.from({ length: 16 }, (_, k) => '<rect x="' + (4 + k * 20) + '" y="' + (32 + s * 26) + '" width="16" height="18" fill="' + ['#B23A2E', '#2E4E7A', '#E8A317', '#F4F1EA', '#1F4E2E'][(k + s) % 5] + '"/>').join('')).join('');
+    g += '<path d="M0 122 H320 V200 H0 Z" fill="#9A7A56"/><rect x="60" y="138" width="200" height="16" rx="2" fill="#6B4226"/>';
+    g += '<g class="sgopp">' + person(258, 186, 72, { kind: 'man', robe: '#F4F1EA', wrap: '#1E3A7A', hat: 'okpu', hatc: '#B23A2E', skin: 3, al: 'up', ar: 'hip' }) + '</g>';
+    g += person(46, 186, 56, { kind: 'boy', robe: '#2E6B4A', hat: 'hair', skin: 2, al: 'fwd', ar: 'fwd', cls: 'sgw' });
+    return svgBack(g);
+  }
+  const takings = {
+    cls: 'sgs sg-takings', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg takings">' + closeBack() + '<span class="tknote"></span><div class="tkpiles">' + [20, 50, 100, 200, 500, 1000].map((n) => '<span class="tkp" data-n="' + n + '"><b>₦' + n + '</b></span>').join('') + '</div></div>');
+      const nt = st.querySelector('.tknote');
+      noteSay(run, done, { st,
+        show: (n) => { nt.innerHTML = note(n); nt.className = 'tknote'; void nt.offsetWidth; nt.classList.add('up'); },
+        right: (n) => { const p = st.querySelector('.tkp[data-n="' + n + '"]'), pr = io.rect(p), nr = io.rect(nt);
+          nt.style.setProperty('--tx', (pr.left + pr.width / 2 - (nr.left + nr.width / 2)) + 'px'); nt.style.setProperty('--ty', (pr.top - (nr.top + nr.height / 2)) + 'px');
+          later(run, 700, () => nt.classList.add('pile')); later(run, 1500, () => { p.classList.add('has'); knock(1200, .04, .25); }); },
+        wrong: () => { later(run, 500, () => nt.classList.add('back')); } });
+    },
+  };
+
+  /* ================= Yoruba: the okada ride through Ibadan (Karatu, speaking) =================
+     You ride pillion on the okada; at each junction a sign. Read it out loud: the rider turns and you ride on to the next.
+     Wrong: he brakes, shrugs, and the next sign comes. */
+  function okadaBack() {
+    let g = '<defs><linearGradient id="sg-ok2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE6F2"/><stop offset="1" stop-color="#F1EDE0"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-ok2)"/>';
+    // the brown roofs of Ibadan over the hills
+    for (let k = 0; k < 22; k++) { const x = k * 15, y = 70 + (k % 4) * 6 - Math.sin(k / 3) * 10; g += '<path d="M' + x + ' ' + (y + 14) + ' L' + (x + 7) + ' ' + y + ' L' + (x + 15) + ' ' + (y + 14) + ' Z" fill="' + ['#8E5A3A', '#A0683E', '#7A4A30'][k % 3] + '"/><rect x="' + (x + 1) + '" y="' + (y + 14) + '" width="13" height="10" fill="#D9C6A2"/>'; }
+    g += '<path d="M0 104 H320 V200 H0 Z" fill="#8C8C88"/><path d="M0 104 H320" stroke="#B8A07A" stroke-width="6"/><path d="M0 150 H320" stroke="#F2C230" stroke-width="2" stroke-dasharray="14 12" class="okdash"/>';
+    return svgBack(g);
+  }
+  const okadaSvg = (s) => '<svg viewBox="0 0 120 90" aria-hidden="true"><circle cx="22" cy="72" r="14" fill="#2A2A2A"/><circle cx="22" cy="72" r="5" fill="#8A8A8A"/><circle cx="98" cy="72" r="14" fill="#2A2A2A"/><circle cx="98" cy="72" r="5" fill="#8A8A8A"/>' +
+    '<path d="M22 72 L48 50 H80 L98 72 M80 50 L90 30 h10" stroke="#B23A2E" stroke-width="5" fill="none"/><rect x="44" y="42" width="40" height="10" rx="4" fill="#1E1E24"/>' +
+    '<g transform="translate(44 -6)">' + person(30, 66, 70, { kind: 'man', robe: '#E8A317', hat: 'fila', hatc: '#2B4C9B', skin: s, al: 'fwd', ar: 'fwd', tight: 1 }) + '</g><g transform="translate(22 -2)">' + person(30, 62, 54, { kind: 'boy', robe: '#2E6B4A', hat: 'hair', skin: 2, al: 'fwd', ar: 'down', tight: 1 }) + '</g></svg>';
+  const okada = {
+    cls: 'sgs sg-okada', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg okada">' + okadaBack() + '<div class="oksign"><i></i><b class="okw"></b></div><span class="okbike">' + okadaSvg(3) + '</span></div>');
+      const sign = st.querySelector('.oksign'), ww = st.querySelector('.okw'), bike = st.querySelector('.okbike');
+      readAloud(run, done, { st,
+        show: (t) => { ww.textContent = t; ww.className = 'okw l' + Math.min(12, Math.max(4, t.length)); sign.className = 'oksign'; bike.className = 'okbike'; void sign.offsetWidth; sign.classList.add('in'); },
+        right: () => { horn(false); bike.classList.add('ride'); later(run, 600, () => sign.classList.add('past')); },
+        wrong: () => { bike.classList.add('brake'); knock(120, .2, .35); later(run, 900, () => sign.classList.add('past')); } });
+    },
+  };
+
+  /* ================= Igbo: the Enugu train (Karatu, speaking) =================
+     The train runs down the line from Enugu; at each station its board. Read the board out loud and the train stops,
+     the passengers get on and the whistle blows. Wrong: the train runs through without stopping. */
+  function trainBack() {
+    let g = '<defs><linearGradient id="sg-tr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE0F0"/><stop offset="1" stop-color="#EAF2E4"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-tr)"/>';
+    g += '<path d="M0 90 Q60 50 120 76 T240 64 T320 80 V120 H0 Z" fill="#6E9A5A"/>' + [20, 70, 150, 230, 290].map((x) => '<path d="M' + x + ' 110 V80" stroke="#6B5236" stroke-width="3"/><ellipse cx="' + x + '" cy="76" rx="14" ry="8" fill="#3E6B2A"/>').join('');
+    g += '<path d="M0 120 H320 V200 H0 Z" fill="#B8A688"/><rect x="0" y="122" width="320" height="18" fill="#D8CDB8"/>';
+    g += '<path d="M0 150 H320 M0 160 H320" stroke="#6A6A6A" stroke-width="2.4"/>' + Array.from({ length: 32 }, (_, k) => '<rect x="' + (k * 10) + '" y="148" width="5" height="14" fill="#7A5A36"/>').join('');
+    // passengers waiting on the platform
+    [[30, 'woman'], [52, 'man'], [72, 'boy']].forEach(([x, k], j) => { g += person(x, 136, 40, { kind: k, robe: ['#B23A2E', '#F4F1EA', '#E8A317'][j], wrap: '#1F4E2E', hat: k === 'woman' ? 'tie' : (k === 'man' ? 'okpu' : 'hair'), hatc: '#B23A2E', skin: j + 1, al: 'down', cls: 'sgw tpax' }); });
+    return svgBack(g);
+  }
+  const trainSvg = '<svg viewBox="0 0 300 70" aria-hidden="true"><rect x="0" y="10" width="86" height="44" rx="6" fill="#1F4E2E"/><rect x="86" y="18" width="20" height="36" fill="#1F4E2E"/><rect x="92" y="4" width="10" height="16" fill="#2A2A2A"/>' +
+    [0, 1, 2].map((k) => '<rect x="' + (10 + k * 24) + '" y="18" width="18" height="14" rx="2" fill="#CFE6F2"/>').join('') + '<rect x="110" y="14" width="90" height="40" rx="4" fill="#E8A317"/><rect x="204" y="14" width="90" height="40" rx="4" fill="#E8A317"/>' +
+    [0, 1, 2].map((k) => '<rect x="' + (118 + k * 26) + '" y="22" width="18" height="14" rx="2" fill="#CFE6F2"/><rect x="' + (212 + k * 26) + '" y="22" width="18" height="14" rx="2" fill="#CFE6F2"/>').join('') +
+    [20, 70, 130, 180, 224, 274].map((x) => '<circle cx="' + x + '" cy="58" r="8" fill="#2A2A2A"/>').join('') + '</svg>';
+  const train = {
+    cls: 'sgs sg-train', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg train">' + trainBack() + '<div class="trboard"><b class="trw"></b></div><span class="trtrain">' + trainSvg + '</span></div>');
+      const board = st.querySelector('.trboard'), ww = st.querySelector('.trw'), tr = st.querySelector('.trtrain');
+      readAloud(run, done, { st, ms: 3800,
+        show: (t) => { ww.textContent = t; ww.className = 'trw l' + Math.min(12, Math.max(4, t.length)); board.className = 'trboard'; tr.className = 'trtrain'; st.classList.remove('boarding'); void tr.offsetWidth; tr.classList.add('come'); later(run, 50, () => board.classList.add('in')); },
+        right: () => { horn(false); st.classList.add('boarding'); later(run, 1800, () => { tr.classList.add('leave'); horn(false); }); },
+        wrong: () => { tr.classList.add('through'); } });
+    },
+  };
+
+  /* ================= Yoruba: the pigeons of the Ọba's palace (Abubuwa, tap) =================
+     Pigeons come down into the palace courtyard, each with a picture tied to its foot. Laila says a word; touch the pigeon
+     with that picture and it flies up to the roof. Wrong: it flaps off. */
+  function palaceBack() {
+    let g = '<defs><linearGradient id="sg-pp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CDE6F4"/><stop offset="1" stop-color="#F4E7C9"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-pp)"/>';
+    g += '<path d="M0 50 H320 V124 H0 Z" fill="#C2683C"/><path d="M-6 52 L160 26 L326 52 Z" fill="#7A3E22"/>' + [40, 90, 230, 280].map((x) => '<rect x="' + (x - 4) + '" y="52" width="8" height="72" fill="#5A3418"/>').join('');
+    g += '<rect x="136" y="70" width="48" height="54" fill="#4A2C14"/><path d="M140 74 h40 v46 h-40 Z" fill="none" stroke="#2A1408" stroke-width="2"/>';
+    g += '<path d="M0 124 H320 V200 H0 Z" fill="#D8B07A"/><path d="M0 124 H320" stroke="#A9764A" stroke-width="2"/>';
+    g += '<g class="sgopp">' + person(292, 128, 60, { kind: 'man', robe: '#F4EBD0', agbada: '#7A2E5C', hat: 'ade', hatc: '#E8C060', beads: 1, skin: 2, al: 'staff', ar: 'hip' }) + '</g>';
+    g += person(30, 128, 50, { kind: 'man', robe: '#B23A2E', hat: 'fila', hatc: '#B23A2E', skin: 3, al: 'fwd', ar: 'down', cls: 'sgw' });
+    return svgBack(g);
+  }
+  const pigeon = '<svg viewBox="0 0 60 44" aria-hidden="true"><ellipse cx="28" cy="26" rx="18" ry="12" fill="#B8BCC8"/><circle cx="44" cy="16" r="8" fill="#9AA0B0"/><path d="M50 16 l7 2 -7 2 Z" fill="#E8A317"/><circle cx="46" cy="14" r="1.4" fill="#1E1E24"/>' +
+    '<path class="pgw" d="M18 22 Q26 2 40 18 Z" fill="#8E94A4"/><path d="M10 26 L0 20 L4 30 Z" fill="#7A8090"/><path d="M26 38 v5 M32 38 v5" stroke="#C0584A" stroke-width="2"/><path d="M36 22 q4 4 10 0" stroke="#5E9A7A" stroke-width="2" fill="none"/></svg>';
+  const pigeons = {
+    cls: 'sgs sg-pigeon', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg pigeon">' + palaceBack() + '<div class="pgyard"></div></div>'); const yard = st.querySelector('.pgyard');
+      findIt(run, done, { st, n: 4, lead: 1200,
+        round: (set, pick) => { yard.innerHTML = '';
+          set.forEach((x, k) => { const b = h('<button type="button" class="pg" style="--k:' + k + ';left:' + (10 + k * 21) + 'cqw" aria-label="pigeon"><span class="pgb">' + pigeon + '</span>' + card(x) + '</button>'); b.onclick = () => pick(b, x); yard.appendChild(b); }); },
+        right: (b) => { b.classList.add('roof'); knocks(run, 3, 900, 90); },
+        wrong: (b) => { b.classList.add('flap'); } });
+    },
+  };
+
+  /* ================= Igbo: the udara tree (Abubuwa, tap) =================
+     The children shake the udara tree and the ripe fruits drop, each with a picture. Laila says a word; catch the fruit
+     with that picture before it reaches the ground: it goes in the basket. Wrong: it rolls away. */
+  function udaraBack() {
+    let g = '<defs><linearGradient id="sg-ud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8ECC8"/><stop offset="1" stop-color="#F1E8CC"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-ud)"/>';
+    g += '<path d="M150 200 Q144 120 160 60" stroke="#6B4A2E" stroke-width="16" fill="none"/><ellipse cx="160" cy="44" rx="170" ry="44" fill="#3E7A34"/><ellipse cx="80" cy="34" rx="70" ry="26" fill="#4E8E40"/><ellipse cx="250" cy="38" rx="70" ry="26" fill="#4E8E40"/>';
+    [[60, 60], [120, 70], [200, 66], [260, 58], [96, 48], [230, 46]].forEach(([x, y]) => { g += '<circle cx="' + x + '" cy="' + y + '" r="6" fill="#E89A2A"/>'; });
+    g += '<path d="M0 170 H320 V200 H0 Z" fill="#B8925A"/>';
+    g += '<g class="sgopp">' + person(40, 196, 46, { kind: 'boy', robe: '#B23A2E', hat: 'hair', skin: 2, al: 'up', ar: 'up' }) + '</g>' + person(288, 196, 44, { kind: 'woman', robe: '#1F4E2E', wrap: '#E8A317', hat: 'braids', skin: 1, tight: 1, al: 'clap', ar: 'clap', cls: 'sgw' });
+    return svgBack(g);
+  }
+  const udara = {
+    cls: 'sgs sg-udara', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg udara">' + udaraBack() + '<div class="udfall"></div><span class="udbask"></span></div>'); const fall = st.querySelector('.udfall');
+      findIt(run, done, { st, n: 4, lead: 500,
+        round: (set, pick, gone) => { fall.innerHTML = ''; fall.className = 'udfall';
+          set.forEach((x, k) => { const b = h('<button type="button" class="ud" style="--k:' + k + ';left:' + (12 + k * 20) + 'cqw" aria-label="udara"><i class="udf"></i>' + card(x) + '</button>'); b.onclick = () => { fall.classList.add('stop'); pick(b, x); };
+            b.addEventListener('animationend', (e) => { if (e.animationName === 'sg-drop2' && k === set.length - 1) gone(); }); fall.appendChild(b); });
+          void fall.offsetWidth; fall.classList.add('sgo'); },
+        right: (b) => { b.classList.add('caught'); knock(600, .06, .3); },
+        wrong: (b) => { b.classList.add('roll'); } });
+    },
+  };
+
+  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall, 'j-rini': adire, 'j-gyada': cocoa, 'j-shanu': asoOke, 'j-garke': owambe, 'j-rubutu-say': naHouse, 'j-marubuci': signWriter, 'j-ruwa': newsStand,
+      'j-durbar': igba, 'j-magana': alo, 'j-dillali': eru, 'j-nemo': hideSeek, 'j-suya': esusu, 'j-jirgi': okada, 'j-abubuwa': pigeons }
+    : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall, 'j-rini': akwete, 'j-gyada': palmOil, 'j-shanu': abaShoes, 'j-garke': iriJi, 'j-rubutu-say': kola, 'j-marubuci': printer, 'j-ruwa': mgba,
+      'j-durbar': egwuOnwa, 'j-magana': nolly, 'j-dillali': homecoming, 'j-nemo': barrows, 'j-suya': takings, 'j-jirgi': train, 'j-abubuwa': udara };
 }
