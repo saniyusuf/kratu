@@ -127,7 +127,7 @@ export class ZoomService {
       if (el.classList.contains('backdoor') || el.classList.contains('helpdome') || !inFlow(el)) return;
       add(el);
       // a child's in-flow descendants can hang below it (a hint under a fixed-size button): they must fit too, or the screen is cut off
-      // a scrolling box (.fitbox, the games board's rows) counts as its own size: what scrolls inside it never shrinks the screen
+      // a scrolling box (.fitbox, the games board's strip) counts as its own size: what scrolls inside it never shrinks the screen
       if (el.classList.contains('fitbox')) return;
       el.querySelectorAll<HTMLElement>('*').forEach((d) => { if (inFlow(d) && !d.parentElement?.closest('.fitbox')) add(d); });
     });

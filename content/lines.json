@@ -5954,5 +5954,328 @@
   "status": "live",
   "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
   "recorded": "6274085a87"
+ },
+ {
+  "key": "gd_hawan",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_fashe",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Letters float up in balloons. Pop the letter Laila says.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_hanzarin",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Help the market woman: quickly find the food Laila names.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_kifi",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Go fishing: catch the fish that carries the right picture.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_kalangu",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Beat the drum when you hear the right word.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_shayi",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_dillali",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_dalar",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Load the groundnut sacks onto the lorry and count them.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_suya",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Sell suya at the night market and count the money.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_allo",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Read the word on the allo board to the class.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_jirgi",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Read the word on each boat to let it sail.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_kwale",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Read the word on the canoe to paddle across the river.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_ruwa",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_tukwane",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Spell the word with the letter pots.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_bulo",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Spell the word brick by brick to build the wall.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_marubuci",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Help the letter writer spell the word on the envelope.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_karofi",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_shanu",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Find the cow with the right price at the cattle market.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
+ },
+ {
+  "key": "gd_garke",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "Count the cattle as they go into the kraal.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
+  "status": "planned",
+  "recorded": ""
  }
 ]
