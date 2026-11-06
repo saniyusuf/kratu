@@ -1722,5 +1722,608 @@
   "text": "A ó ṣe eré kékeré kan.",
   "en": "We are going to play a little game.",
   "status": "planned"
+ },
+ {
+  "key": "app_book_start",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Láti bẹ̀rẹ̀, tẹ̀ ìwé tó wà lókè yìí, ká bẹ̀rẹ̀ ẹ̀kọ́.",
+  "en": "To start, tap the book up here to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_more",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tẹ̀ ìwé náà láti máa bá ẹ̀kọ́ lọ.",
+  "en": "Tap the book to continue learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_or",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O tún lè tẹ̀ ẹ̀kọ́ kan, láti gbọ́ nípa rẹ̀ sí i.",
+  "en": "You can also press a lesson to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_first",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Fọ́ lẹ́tà àkọ́kọ́:",
+  "en": "Pop the first letter:",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_next",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Fọ́ lẹ́tà tó kàn.",
+  "en": "Pop the next letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_first",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A fẹ́ mọ̀ dájú pé o mọ àwọn lẹ́tà Gẹ̀ẹ́sì, bíi",
+  "en": "We want to make sure you know the English letters, like",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_yes",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Bí o bá mọ̀ wọ́n, tẹ̀ Fúnkẹ́ láti bẹ̀rẹ̀.",
+  "en": "If you know them, tap Fúnkẹ́ to begin.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_no",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Bí o kò bá mọ̀ wọ́n, kò burú, a ó jọ kọ́ wọn. Tẹ̀ pátákó dúdú láti bẹ̀rẹ̀ ẹ̀kọ́.",
+  "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_fish_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mú ẹja tó gbé ohun tí mo bá sọ.",
+  "en": "Catch the fish carrying the thing I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_drum_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wo àwòrán yìí. Tẹ̀ Fúnkẹ́, sọ orúkọ rẹ̀ ní Gẹ̀ẹ́sì, màá sì lu dùndún!",
+  "en": "Look at this picture. Tap Fúnkẹ́, say its name in English, and I will beat the dundun!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_market_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àwọn oníbàárà ti dé! Tètè fún ẹnìkọ̀ọ̀kan ní ohun tó béèrè.",
+  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_canoes_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ọ̀rọ̀ tó wà lára ọkọ̀ ojú omi kọ̀ọ̀kan, kí o sì tẹ̀ èyí tó bá àwòrán mu.",
+  "en": "Read the word on each canoe, then tap the one that matches the picture.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_pots_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Jẹ́ ká fi ìkòkò kọ ọ̀rọ̀ kan. Tẹ̀ àwọn lẹ́tà ní ọ̀kọ̀ọ̀kan.",
+  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_house_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Jẹ́ ká kọ́ ilé náà kí àkókò tó tán! Tẹ̀ Fúnkẹ́, kí o sì sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan. Lẹ́tà kọ̀ọ̀kan jẹ́ bíríkì kan.",
+  "en": "Let's build the house before time runs out! Tap Fúnkẹ́ and say the word's letters one by one. Every letter is a brick.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_learn",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kò burú! Jẹ́ ká jọ bẹ̀rẹ̀ ẹ̀kọ́. Tẹ̀ Fúnkẹ́ láti máa bá a lọ.",
+  "en": "No problem! Let's start learning together. Tap Fúnkẹ́ to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_go",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tẹ̀ Fúnkẹ́ láti máa bá a lọ.",
+  "en": "Tap Fúnkẹ́ to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ lẹ́tà tó wà lórí àsíá ẹlẹ́ṣin náà, yóò sì kí Ọba!",
+  "en": "Say the letter on the rider's banner, and he will greet the Oba!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_eg1",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Bí eré yìí ṣe ń lọ nìyí: sọ lẹ́tà tí o rí lórí àsíá ẹlẹ́ṣin náà, kí inú Ọba lè dùn.",
+  "en": "Here is how the game works: say the letter you see on the rider's banner, so the Oba is happy.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, tẹ̀ Fúnkẹ́ ká bẹ̀rẹ̀.",
+  "en": "Now press Fúnkẹ́ and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_dillali_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ orúkọ nǹkan yìí ní Gẹ̀ẹ́sì, alàtẹ yóò sì tà á!",
+  "en": "Say this thing's name in English, and the market caller will sell it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shayi_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ ohun tí o fẹ́ ní Gẹ̀ẹ́sì, ẹni tó ń tà á yóò sì fún ọ!",
+  "en": "Say what you want in English, and the seller will give it to you!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_gyada_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tẹ̀ òkìtì tí iye àpò kòkó rẹ̀ jẹ́ iye tí mo bá sọ.",
+  "en": "Tap the stack with as many cocoa sacks as the number I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shanu_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tẹ̀ èyí tí iye owó rẹ̀ bá ohun tí mo sọ mu.",
+  "en": "Tap the one whose price matches what I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka àwọn màlúù tó wà nínú ọgbà, kí o sì sọ iye wọn ní Gẹ̀ẹ́sì.",
+  "en": "Count the cows in the pen and say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_eg1",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Bí eré yìí ṣe ń lọ nìyí: ka àwọn màlúù tó wà nínú ọgbà, lẹ́yìn náà sọ iye wọn ní Gẹ̀ẹ́sì.",
+  "en": "Here is how the game works: count the cows in the pen, then say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_suya_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ iye owó tó wà lọ́wọ́ rẹ ní Gẹ̀ẹ́sì, kí o sì san owó fún ẹni tó ń ta bọ̀lì.",
+  "en": "Say the money in your hand in English, and pay the boli seller.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_allo_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ọ̀rọ̀ tó wà lórí pátákó sókè, a ó sì nù ún kúrò.",
+  "en": "Read the word on the board out loud, and we will wipe it clean.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_jirgi_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ọ̀rọ̀ tó wà lára ọkọ̀ náà sókè, yóò sì dé etí omi.",
+  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_marubuci_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, tàbí kí o tẹ̀ wọ́n lórí pátákó ìtẹ̀wé, akọ̀wé lẹ́tà yóò sì kọ wọ́n.",
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_ruwa_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ọ̀rọ̀ tó wà lórí ìkùukùu sókè, òjò yóò sì rọ̀ sórí oko.",
+  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_rini_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, tàbí kí o tẹ̀ wọ́n lórí pátákó ìtẹ̀wé, aláró yóò sì pa aṣọ náà láró.",
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the dyer will dye the cloth.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_game",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, jẹ́ ká ṣe eré kan pẹ̀lú àwọn lẹ́tà tí o ti kọ́!",
+  "en": "Now let's play a game with the letters you've learned!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_again",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ti fẹ́rẹ̀ ẹ́ ṣe é! Jẹ́ ká tún gbìyànjú lẹ́ẹ̀kan sí i.",
+  "en": "You were close! Let's try once more.",
+  "status": "draft"
+ },
+ {
+  "key": "s_game_open",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o lè ṣe eré yìí nígbàkígbà tí o bá fẹ́, láti ojú-ìwé àkọ́kọ́.",
+  "en": "Now you can play this game whenever you like, from the home page.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_50",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́ta àti wúrà àádọ́ta.",
+  "en": "Well done! You earned three stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_100",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́ta àti wúrà ọgọ́rùn-ún.",
+  "en": "Well done! You earned three stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_150",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́ta àti wúrà àádọ́jọ.",
+  "en": "Well done! You earned three stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_200",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́ta àti wúrà igba.",
+  "en": "Well done! You earned three stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_50",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́rin àti wúrà àádọ́ta.",
+  "en": "Well done! You earned four stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_100",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́rin àti wúrà ọgọ́rùn-ún.",
+  "en": "Well done! You earned four stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_150",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́rin àti wúrà àádọ́jọ.",
+  "en": "Well done! You earned four stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_200",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O ṣe dáadáa! O ti gba ìràwọ̀ mẹ́rin àti wúrà igba.",
+  "en": "Well done! You earned four stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_fada",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Ọmọ Ààfin!",
+  "en": "Now you are a Ọmọ Ààfin!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_jarumi",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Akọni!",
+  "en": "Now you are a Akọni!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_malami",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Olùkọ́!",
+  "en": "Now you are a Olùkọ́!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_dansarki",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Ọmọ Ọba!",
+  "en": "Now you are a Ọmọ Ọba!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_magaji",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Àrólé!",
+  "en": "Now you are a Àrólé!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_sarki",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Báyìí, o ti di Ọba!",
+  "en": "Now you are a Ọba!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_effort",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akitiyan rẹ ti mú ọ dé ipò tuntun!",
+  "en": "Your effort has brought you to a new level!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag1",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àpò wúrà rẹ àkọ́kọ́ ti kún!",
+  "en": "Your first bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag2",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àpò wúrà rẹ kejì ti kún!",
+  "en": "Your second bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag3",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àpò wúrà rẹ kẹta ti kún!",
+  "en": "Your third bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag4",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àpò wúrà rẹ kẹrin ti kún!",
+  "en": "Your fourth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag5",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Àpò wúrà rẹ karùn-ún ti kún!",
+  "en": "Your fifth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_1000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún kan.",
+  "en": "Your gold has reached 1,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_2000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún méjì.",
+  "en": "Your gold has reached 2,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_4000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún mẹ́rin.",
+  "en": "Your gold has reached 4,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_6000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún mẹ́fà.",
+  "en": "Your gold has reached 6,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_8000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún mẹ́jọ.",
+  "en": "Your gold has reached 8,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_10000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún mẹ́wàá.",
+  "en": "Your gold has reached 10,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_12000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún méjìlá.",
+  "en": "Your gold has reached 12,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_16000",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wúrà rẹ ti tó ẹgbẹ̀rún mẹ́rìndínlógún.",
+  "en": "Your gold has reached 16,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_first",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Èyí ni ipò àkọ́kọ́. Ipò mẹ́rin mìíràn ṣì wà níwájú.",
+  "en": "This is the first level. There are four more levels ahead.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep_first",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Máa gbìyànjú, títí o fi máa di Ọba!",
+  "en": "Keep trying, until you become an Oba!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Máa sapá báyìí!",
+  "en": "Keep up the effort like this!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Èyí ni ipò tó ga jùlọ!",
+  "en": "This is the highest level of all!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top_keep",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Máa kọ́ ẹ̀kọ́ lójoojúmọ́!",
+  "en": "Keep learning every day!",
+  "status": "draft"
  }
 ]

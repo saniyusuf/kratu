@@ -128,7 +128,8 @@
                     "assets/audio/ha/**",
                     "names_bank_expanded.json",
                     "assets/gender-*",
-                    "assets/example-*"
+                    "assets/example-*",
+                    "assets/games/**"
                   ]
                 },
                 {
@@ -160,7 +161,8 @@
                     "assets/audio/ha/**",
                     "names_bank_expanded.json",
                     "assets/gender-*",
-                    "assets/example-*"
+                    "assets/example-*",
+                    "assets/games/**"
                   ]
                 },
                 {

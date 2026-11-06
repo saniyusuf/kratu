@@ -1722,5 +1722,608 @@
   "text": "Anyị ga-egwu obere egwuregwu.",
   "en": "We are going to play a little game.",
   "status": "planned"
+ },
+ {
+  "key": "app_book_start",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ị malite, pịa akwụkwọ dị n'elu a ka ị malite ịmụ ihe.",
+  "en": "To start, tap the book up here to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_more",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa akwụkwọ ahụ ka ị gaa n'ihu ịmụ ihe.",
+  "en": "Tap the book to continue learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_or",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị nwekwara ike ịpị otu ihe ọmụmụ ka ị nụkwuo maka ya.",
+  "en": "You can also press a lesson to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_first",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gbawaa mkpụrụedemede mbụ:",
+  "en": "Pop the first letter:",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_next",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gbawaa mkpụrụedemede na-esote.",
+  "en": "Pop the next letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_first",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị chọrọ ịma na ị ma mkpụrụedemede Bekee, dịka",
+  "en": "We want to make sure you know the English letters, like",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_yes",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụrụ na ị ma ha, pịa Chioma ka ị malite.",
+  "en": "If you know them, tap Chioma to begin.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_no",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụrụ na ị maghị ha, ọ dịghị nsogbu, anyị ga-amụkọ ha ọnụ. Pịa bọọdụ ojii ka ị malite ịmụ ihe.",
+  "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_fish_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Jide azụ na-ebu ihe m kwuru.",
+  "en": "Catch the fish carrying the thing I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_drum_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee foto a. Pịa Chioma, kwuo aha ya n'asụsụ Bekee, m ga-akụ ogene!",
+  "en": "Look at this picture. Tap Chioma, say its name in English, and I will ring the ogene!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_market_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ndị ahịa abịala! Mee ngwa nye onye ọ bụla ihe ọ chọrọ.",
+  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_canoes_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gụọ okwu dị n'ụgbọ ọ bụla, wee pịa nke dabara na foto ahụ.",
+  "en": "Read the word on each one, then tap the one that matches the picture.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_pots_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka anyị jiri ite dee okwu. Pịa mkpụrụedemede ndị ahụ otu otu.",
+  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_house_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka anyị wuo ụlọ ahụ tupu oge agwụ! Pịa Chioma ma kwuo mkpụrụedemede okwu ahụ otu otu. Mkpụrụedemede ọ bụla bụ otu brik.",
+  "en": "Let's build the house before time runs out! Tap Chioma and say the word's letters one by one. Every letter is a brick.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_learn",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ dịghị nsogbu! Ka anyị malite ịmụkọ ihe ọnụ. Pịa Chioma ka ị gaa n'ihu.",
+  "en": "No problem! Let's start learning together. Tap Chioma to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_go",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa Chioma ka ị gaa n'ihu.",
+  "en": "Tap Chioma to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo mkpụrụedemede dị na ọkọlọtọ ahụ, ọgbọ ahụ ga-ekele Obi!",
+  "en": "Say the letter on the banner, and the age-grade will greet the Obi!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_eg1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke a bụ ka egwuregwu a si aga: kwuo mkpụrụedemede ị hụrụ na ọkọlọtọ ahụ, ka obi dị Obi ụtọ.",
+  "en": "Here is how the game works: say the letter you see on the banner, so the Obi is happy.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, pịa Chioma ka anyị malite.",
+  "en": "Now press Chioma and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_dillali_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo aha ihe a n'asụsụ Bekee, onye ahịa ga-ere ya!",
+  "en": "Say this thing's name in English, and the trader will sell it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shayi_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo ihe ị chọrọ n'asụsụ Bekee, onye na-ere ya ga-enye gị ya!",
+  "en": "Say what you want in English, and the seller will give it to you!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_gyada_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ìgwè nwere ọnụ ọgụgụ akpa garri m kwuru.",
+  "en": "Tap the stack with as many garri sacks as the number I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shanu_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa nke ọnụ ahịa ya dabara na ihe m kwuru.",
+  "en": "Tap the one whose price matches what I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gụọ ehi ndị dị n'ogige ahụ, wee kwuo ole ha dị n'asụsụ Bekee.",
+  "en": "Count the cows in the pen and say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_eg1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke a bụ ka egwuregwu a si aga: gụọ ehi ndị dị n'ogige ahụ, wee kwuo ole ha dị n'asụsụ Bekee.",
+  "en": "Here is how the game works: count the cows in the pen, then say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_suya_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo ego dị gị n'aka n'asụsụ Bekee, wee kwụọ onye na-ere ọka ụgwọ.",
+  "en": "Say the money in your hand in English, and pay the corn seller.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_allo_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gụọ okwu dị na bọọdụ ahụ n'olu dara ụda, anyị ga-ehicha ya.",
+  "en": "Read the word on the board out loud, and we will wipe it clean.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_jirgi_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gụọ okwu dị n'ụgbọ mmiri ahụ n'olu dara ụda, ọ ga-abịa n'ọnụ mmiri.",
+  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_marubuci_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo mkpụrụedemede okwu ahụ otu otu, ma ọ bụ pịa ha na kiibọọdụ, onye na-ede akwụkwọ ozi ga-ede ha.",
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_ruwa_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gụọ okwu dị n'igwe ojii ahụ n'olu dara ụda, mmiri ozuzo ga-ezo n'ubi.",
+  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_rini_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo mkpụrụedemede okwu ahụ otu otu, ma ọ bụ pịa ha na kiibọọdụ, a ga-esiji ha n'akwa ahụ.",
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and they will be dyed into the cloth.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_game",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ka anyị jiri mkpụrụedemede ị mụtara gwuo egwuregwu!",
+  "en": "Now let's play a game with the letters you've learned!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_again",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ fọrọ obere! Ka anyị nwaa ọzọ.",
+  "en": "You were close! Let's try once more.",
+  "status": "draft"
+ },
+ {
+  "key": "s_game_open",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị nwere ike igwu egwuregwu a mgbe ọ bụla ịchọrọ, site na peeji mbụ.",
+  "en": "Now you can play this game whenever you like, from the home page.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_50",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando atọ na ọlaedo iri ise.",
+  "en": "Well done! You earned three stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_100",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando atọ na ọlaedo otu narị.",
+  "en": "Well done! You earned three stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_150",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando atọ na ọlaedo otu narị na iri ise.",
+  "en": "Well done! You earned three stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_200",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando atọ na ọlaedo narị abụọ.",
+  "en": "Well done! You earned three stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_50",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando anọ na ọlaedo iri ise.",
+  "en": "Well done! You earned four stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_100",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando anọ na ọlaedo otu narị.",
+  "en": "Well done! You earned four stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_150",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando anọ na ọlaedo otu narị na iri ise.",
+  "en": "Well done! You earned four stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_200",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ị nwetala kpakpando anọ na ọlaedo narị abụọ.",
+  "en": "Well done! You earned four stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_fada",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Onye Obi!",
+  "en": "Now you are a Onye Obi!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_jarumi",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Dike!",
+  "en": "Now you are a Dike!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_malami",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Onye Nkuzi!",
+  "en": "Now you are a Onye Nkuzi!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_dansarki",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Nwa Eze!",
+  "en": "Now you are a Nwa Eze!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_magaji",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Onye Nketa!",
+  "en": "Now you are a Onye Nketa!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_sarki",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị bụzi Eze!",
+  "en": "Now you are a Eze!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_effort",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mgbalị gị ewetala gị n'ọkwa ọhụrụ!",
+  "en": "Your effort has brought you to a new level!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akpa ọlaedo gị mbụ ejupụtala!",
+  "en": "Your first bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akpa ọlaedo gị nke abụọ ejupụtala!",
+  "en": "Your second bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akpa ọlaedo gị nke atọ ejupụtala!",
+  "en": "Your third bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akpa ọlaedo gị nke anọ ejupụtala!",
+  "en": "Your fourth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag5",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akpa ọlaedo gị nke ise ejupụtala!",
+  "en": "Your fifth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_1000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola otu puku.",
+  "en": "Your gold has reached 1,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_2000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku abụọ.",
+  "en": "Your gold has reached 2,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_4000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku anọ.",
+  "en": "Your gold has reached 4,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_6000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku isii.",
+  "en": "Your gold has reached 6,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_8000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku asatọ.",
+  "en": "Your gold has reached 8,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_10000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku iri.",
+  "en": "Your gold has reached 10,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_12000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku iri na abụọ.",
+  "en": "Your gold has reached 12,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_16000",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọlaedo gị eruola puku iri na isii.",
+  "en": "Your gold has reached 16,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_first",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke a bụ ọkwa mbụ. Ọkwa anọ ọzọ dị n'ihu.",
+  "en": "This is the first level. There are four more levels ahead.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep_first",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nọgide na-agba mbọ, ruo mgbe ị ghọrọ Eze!",
+  "en": "Keep trying, until you become an Eze!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nọgide na-agba mbọ otu a!",
+  "en": "Keep up the effort like this!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke a bụ ọkwa kachasị elu!",
+  "en": "This is the highest level of all!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top_keep",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Na-amụ ihe kwa ụbọchị!",
+  "en": "Keep learning every day!",
+  "status": "draft"
  }
 ]
