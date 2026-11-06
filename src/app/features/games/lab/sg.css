@@ -173,3 +173,176 @@
 .glab .sg.akwete .akloom.woven .akrows{background:repeating-linear-gradient(45deg,transparent 0 2cqw,rgba(255,253,247,.25) 2cqw 2.4cqw),repeating-linear-gradient(-45deg,transparent 0 2cqw,rgba(255,253,247,.25) 2cqw 2.4cqw)}
 .glab .sg.akwete .akloom.tangle .akrows{filter:saturate(.3) brightness(.7);animation:sg-no .2s linear 4 alternate}
 .glab .sg.akwete .akloom.away{transition:transform 1s ease-in,opacity 1s;transform:translate(30cqw,8cqw) scale(.3);opacity:0}
+
+/* ================= round 5: numbers, counting, letters, reading ================= */
+/* ---- Kòkó: pods on the tree, the basket ---- */
+.glab .sg.cocoa .kkpods{position:absolute;inset:0;z-index:2}
+.glab .sg.cocoa .kkpod{position:absolute;width:4.4cqw;height:6.4cqw;padding:0;border:0;background:none;cursor:pointer;transition:transform .45s cubic-bezier(.3,.7,.3,1),opacity .3s}
+.glab .sg.cocoa .kkpod svg{width:100%;height:100%;display:block;overflow:visible}
+.glab .sg.cocoa .kkpod.picked{transform:translate(var(--tx),var(--ty)) scale(.6);opacity:0;pointer-events:none}
+.glab .sg.cocoa .kkpod.back{transition:none;opacity:0;transform:scale(.4)}
+.glab .sg.cocoa .kkbask{position:absolute;left:66cqw;top:30cqw;width:18cqw;height:11cqw;padding:0;border:0;cursor:pointer;z-index:3;border-radius:0 0 7cqw 7cqw;
+  background:repeating-linear-gradient(90deg,#C9A06A 0 1cqw,#A9824C 1cqw 1.4cqw),#C9A06A;box-shadow:inset 0 .8cqw 0 #8E6A3A,0 .8cqw 1cqw rgba(40,24,10,.35);transition:transform .8s ease-in,opacity .6s}
+.glab .sg.cocoa .kkbask::before{content:'';position:absolute;left:-1cqw;right:-1cqw;top:-.6cqw;height:1.4cqw;border-radius:1cqw;background:#8E6A3A}
+.glab .sg.cocoa .kkin{position:absolute;left:1.4cqw;right:1.4cqw;bottom:1.4cqw;display:flex;flex-wrap:wrap-reverse;justify-content:center;gap:.2cqw}
+.glab .sg.cocoa .kkin i{width:2.2cqw;height:1.6cqw;border-radius:50%;background:var(--c);border:.15cqw solid #8E5A14;animation:sg-land .3s ease-out}
+.glab .sg.cocoa .kkbask.hit{animation:sg-hop .3s}
+.glab .sg.cocoa .kkbask.carry{transform:translate(18cqw,4cqw) scale(.6);opacity:0}
+.glab .sg.cocoa .kkbask.tip{transition:transform .5s;transform:rotate(-70deg) translateY(-2cqw)}
+.glab .sg.cocoa .kkbask.tip .kkin{opacity:0;transition:opacity .4s .3s}
+
+/* ---- Mmanụ nkwụ: twenty kegs on two benches ---- */
+.glab .sg.oil .mnbench{position:absolute;left:50%;top:12cqw;translate:-50% 0;display:flex;flex-direction:column;gap:2cqw;z-index:2}
+.glab .sg.oil .mnrow{display:flex;gap:.6cqw;padding:0 1cqw .9cqw;border-bottom:1.1cqw solid #7A4A26;box-shadow:0 1.6cqw 0 -0.5cqw rgba(40,24,10,.25)}
+.glab .sg.oil .mnkeg{width:4.6cqw;height:5.8cqw;padding:0;border:0;background:none;cursor:pointer;transition:transform .7s ease-in,opacity .6s}
+.glab .sg.oil .mnkeg.gap{margin-left:2.2cqw}
+.glab .sg.oil .mnkeg svg{width:100%;height:100%;display:block}
+.glab .sg.oil .mnkeg .oil{transition:y .25s,height .25s}
+.glab .sg.oil .mnkeg.full .oil{y:7px;height:20px}
+.glab .sg.oil .mnkeg.meant{animation:sg-glow .5s ease-in-out 4 alternate}
+.glab .sg.oil .mnkeg.go{transform:translate(30cqw,6cqw) scale(.5);opacity:0;transition-delay:calc(var(--j) * 40ms)}
+@keyframes sg-glow{to{filter:drop-shadow(0 0 1.2cqw #FFF3A0) brightness(1.2)}}
+
+/* ---- Aṣọ Òkè: the cloths riding the line ---- */
+.glab .sg.oke .okline{position:absolute;left:0;right:0;top:17cqw;height:20cqw;z-index:2}
+.glab .sg.oke .okc{position:absolute;left:0;top:0;width:12cqw;padding:0;border:0;background:none;cursor:pointer;animation:sg-ride 18s linear calc(var(--k) * -4.5s) infinite}
+.glab .sg.oke .okline.stop .okc{animation-play-state:paused}
+@keyframes sg-ride{from{transform:translateX(-14cqw)}to{transform:translateX(102cqw)}}
+.glab .sg.oke .okin{display:block;position:relative;transform-origin:50% 0;animation:sg-sway 2.2s ease-in-out infinite alternate;transition:transform .9s ease-in,opacity .8s}
+.glab .sg.oke .okin svg{width:100%;display:block;filter:drop-shadow(0 .5cqw .4cqw rgba(40,24,10,.3))}
+.glab .sg.oke .okin::before{content:'';position:absolute;left:45%;top:-1cqw;width:1cqw;height:1.6cqw;background:#8E6A3A;border-radius:.2cqw}
+.glab .sg.oke .oktag{position:absolute;left:50%;bottom:-2cqw;translate:-50% 0;background:#FFFDF7;border:.25cqw solid #C9B98F;border-radius:.8cqw;padding:0 .8cqw;font:800 2.4cqw var(--disp,'Baloo 2'),sans-serif;color:#3B2E1E;white-space:nowrap}
+.glab .sg.oke .okc.no .okin{animation:sg-no .15s linear 6 alternate}
+.glab .sg.oke .okc.sold .okin{animation:none;transform:translate(30cqw,20cqw) scale(.4);opacity:0}
+@keyframes sg-sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+
+/* ---- Aba shoes: six boxes on the shelf ---- */
+.glab .sg.aba .abshelf{position:absolute;left:50%;top:12cqw;translate:-50% 0;display:grid;grid-template-columns:repeat(3,15cqw);gap:2.2cqw 2cqw;padding:1.4cqw;background:#8E5A2E;border-radius:1cqw;box-shadow:inset 0 0 0 .6cqw #6B4226,0 1cqw 1cqw rgba(40,24,10,.3);z-index:2}
+.glab .sg.aba .abbox{position:relative;height:11.4cqw;padding:0;border:0;cursor:pointer;background:linear-gradient(#F2E6CC,#D9C39A);border-radius:.6cqw;box-shadow:0 .4cqw 0 #A88A5A;transition:transform .2s}
+.glab .sg.aba .ablid{position:absolute;left:-.4cqw;right:-.4cqw;top:-.6cqw;height:2cqw;border-radius:.4cqw;background:#C0392B;transform-origin:0 100%;transition:transform .4s}
+.glab .sg.aba .abshoe{position:absolute;left:3cqw;right:3cqw;top:2.2cqw;display:block;transition:transform .8s cubic-bezier(.3,.7,.3,1),opacity .6s .5s}
+.glab .sg.aba .abshoe svg{width:100%;display:block}
+.glab .sg.aba .abtag{position:absolute;left:50%;bottom:.6cqw;translate:-50% 0;background:#FFFDF7;border-radius:.6cqw;padding:0 .8cqw;line-height:1.25;font:800 2.6cqw var(--disp,'Baloo 2'),sans-serif;color:#3B2E1E}
+.glab .sg.aba .abbox.open .ablid{transform:rotate(-70deg)}
+.glab .sg.aba .abbox.hop .abshoe{transform:translate(var(--tx),var(--ty)) scale(.5);opacity:0}
+.glab .sg.aba .abbox.no{animation:sg-no .12s linear 6 alternate}
+.glab .sg.aba .abbag{position:absolute;right:6cqw;top:40cqw;width:1px;height:1px}
+
+/* ---- Owámbẹ̀: the guests at the table ---- */
+.glab .sg.party .pguests{position:absolute;inset:0;z-index:2;transition:opacity .8s;pointer-events:none}
+.glab .sg.party .pguests.front{z-index:4}
+.glab .sg.party .ptable{position:absolute;left:16cqw;right:16cqw;top:33cqw;height:9cqw;background:#FFFDF7;border:.3cqw solid #D8C49A;border-radius:1cqw;z-index:3;display:flex;justify-content:space-around;box-shadow:0 1cqw 1cqw rgba(60,40,10,.2)}
+.glab .sg.party .ptable i{width:7cqw;height:2cqw;margin-top:-.8cqw;border-radius:50%;background:radial-gradient(#E0702A,#B8461A);box-shadow:0 .3cqw 0 #F4F1EA}
+.glab .sg.party .pg{position:absolute;width:9cqw;translate:-50% 0;animation:sg-in .5s ease-out both}
+.glab .sg.party .pg svg{width:100%;display:block}
+.glab .sg.party .pguests.dance .pg{animation:sg-dance .5s ease-in-out calc(var(--d) * -.17s) infinite alternate}
+.glab .sg.party .pguests.shake .pg{animation:sg-no .3s ease-in-out 3 alternate}
+.glab .sg.party .pguests.out{opacity:0}
+.glab .sg.party .pnotes{position:absolute;inset:0;z-index:3;pointer-events:none}
+.glab .sg.party .pnotes i{position:absolute;top:8cqw;width:3.2cqw;height:1.6cqw;background:#C9DCB8;border:.2cqw solid #6E8A5A;border-radius:.2cqw;animation:sg-fall 1.6s ease-in calc(var(--k) * .12s) both}
+@keyframes sg-in{from{opacity:0;transform:translateY(-2cqw)}}
+@keyframes sg-dance{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(-1.2cqw) rotate(4deg)}}
+@keyframes sg-fall{from{opacity:0;transform:translateY(-4cqw) rotate(0)}20%{opacity:1}to{opacity:0;transform:translateY(24cqw) rotate(200deg)}}
+
+/* ---- Iri Ji: the yams on the mat ---- */
+.glab .sg.yam .ijmat{position:absolute;left:13cqw;width:74cqw;top:41cqw;display:grid;grid-template-columns:1fr 1fr 18cqw 1fr 1fr;grid-auto-rows:5.2cqw;gap:.2cqw 1cqw;z-index:2;transition:transform 1s ease-in,opacity .8s}
+.glab .sg.yam .ij{display:block;transform:rotate(calc(var(--k) * 7deg - 14deg));animation:sg-in .4s ease-out both}
+.glab .sg.yam .ij svg{width:100%;display:block}
+.glab .sg.yam .ij:nth-child(4n+1){grid-column:1}.glab .sg.yam .ij:nth-child(4n+2){grid-column:2}.glab .sg.yam .ij:nth-child(4n+3){grid-column:4}.glab .sg.yam .ij:nth-child(4n+4){grid-column:5}
+.glab .sg.yam .ijmat.barn{transform:translate(-14cqw,-16cqw) scale(.4);opacity:0}
+.glab .sg.yam .ijmat.out{opacity:0}
+
+/* ---- Iná dé: the house and its windows ---- */
+.glab .sg.nepa .sgpic{left:auto;right:4cqw;translate:none;top:20cqw;width:11cqw}
+.glab .sg.nepa .nhouse{position:absolute;left:50%;top:13cqw;translate:-50% 0;width:56cqw;height:31cqw;background:#D8C8A8;border-radius:.4cqw;box-shadow:0 1cqw 1.2cqw rgba(20,10,20,.35);z-index:2}
+.glab .sg.nepa .nroof{position:absolute;left:-2cqw;right:-2cqw;top:-4.4cqw;height:4.6cqw;background:#5A4A5E;clip-path:polygon(4% 100%,50% 0,96% 100%)}
+.glab .sg.nepa .nwin{position:absolute;left:2cqw;right:2cqw;top:3cqw;display:flex;justify-content:center;gap:.8cqw}
+.glab .sg.nepa .nwin .sgslot{width:min(5.6cqw,calc(48cqw / var(--n,4)));height:8cqw;background:#2A2E4E;border:.5cqw solid #F4F1EA;border-radius:.3cqw;display:grid;place-items:center;transition:background .2s}
+.glab .sg.nepa .nwin .sgslot.wb{margin-left:2cqw}
+.glab .sg.nepa .nwin .sgslot.on{background:#FFE08A;box-shadow:0 0 2cqw #FFD25A}
+.glab .sg.nepa .nwin .sgslot b{font:800 min(4.4cqw,calc(36cqw / var(--n,4))) var(--disp,'Baloo 2'),sans-serif;color:#5A3A1E}
+.glab .sg.nepa .ndoor{position:absolute;left:50%;bottom:0;translate:-50% 0;width:7cqw;height:13cqw;background:#6B4226;border-radius:.4cqw .4cqw 0 0}
+.glab .sg.nepa .nsay{position:absolute;left:24%;top:16cqw;translate:-50% 0;background:#3A2E4E;border-radius:2cqw;padding:0 1.6cqw;white-space:nowrap;font:800 4cqw var(--disp,'Baloo 2'),sans-serif;color:#FFE08A;text-shadow:0 0 1.4cqw #FFB000;opacity:0;transition:opacity .3s,transform .3s;transform:scale(.6)}
+.glab .sg.nepa .nhouse.lit{background:#F2E2BE}
+.glab .sg.nepa .nhouse.lit .nsay{opacity:1;transform:scale(1)}
+.glab .sg.nepa .nhouse.lit .nwin .sgslot{box-shadow:0 0 3cqw #FFD25A}
+.glab .sg.nepa .nhouse.dark .nwin .sgslot{background:#1A1C30;box-shadow:none}
+.glab .sg.nepa .nhouse.dark .nwin .sgslot b{color:#3A3E5A}
+
+/* ---- Ọjị: the kola bowl ---- */
+.glab .sg.kola .sgpic{left:auto;right:4cqw;translate:none;top:18cqw;width:11cqw}
+.glab .sg.kola .ojbowl{position:absolute;left:50%;top:25cqw;translate:-50% 0;width:44cqw;height:12cqw;border-radius:0 0 26cqw 26cqw / 0 0 14cqw 14cqw;z-index:2;
+  background:linear-gradient(#8E5A2E,#5A3418);box-shadow:inset 0 1.6cqw 0 #3E2210,0 1cqw 1.2cqw rgba(40,20,6,.35);transition:transform .9s cubic-bezier(.3,.7,.3,1)}
+.glab .sg.kola .ojbowl::after{content:'';position:absolute;left:50%;bottom:-2.4cqw;translate:-50% 0;width:14cqw;height:2.6cqw;background:#5A3418;border-radius:0 0 1cqw 1cqw}
+.glab .sg.kola .ojlobes{position:absolute;left:2cqw;right:2cqw;top:-1.6cqw;display:flex;justify-content:center;gap:.5cqw}
+.glab .sg.kola .ojlobes .sgslot{width:min(5.4cqw,calc(46cqw / var(--n,4)));height:5cqw;display:grid;place-items:center}
+.glab .sg.kola .ojlobes .sgslot.wb{margin-left:1.6cqw}
+.glab .sg.kola .ojlobes .sgslot b{width:100%;height:100%;display:grid;place-items:center;border-radius:50% 50% 45% 45%;background:var(--c);box-shadow:inset 0 -.5cqw 0 rgba(0,0,0,.18);font:800 min(3.4cqw,calc(30cqw / var(--n,4))) var(--disp,'Baloo 2'),sans-serif;color:#3B2412;animation:sg-land .35s ease-out}
+.glab .sg.kola .ojbowl.lift{transform:translateY(-6cqw)}
+.glab .sg.kola .ojbowl.share .sgslot b{transition:transform .9s ease-in,opacity .8s;opacity:0;transform:translate(calc((var(--i,0) - 2) * 8cqw),-8cqw) scale(.5)}
+.glab .sg.kola .ojbowl.share .sgslot:nth-child(odd) b{transform:translate(-30cqw,-6cqw) scale(.5)}
+.glab .sg.kola .ojbowl.share .sgslot:nth-child(even) b{transform:translate(30cqw,-6cqw) scale(.5)}
+.glab .sg.kola .ojbowl.tip{transform:rotate(-14deg) translateX(-4cqw)}
+.glab .sg.kola .ojbowl.tip .sgslot b{transition:transform .8s ease-in,opacity .7s;transform:translate(-14cqw,12cqw) rotate(-120deg);opacity:0}
+
+/* ---- the sign writer: the signboard ---- */
+.glab .sg.sign .sgpic{left:auto;right:4cqw;translate:none;top:10cqw;width:10cqw}
+.glab .sg.sign .swboard{position:absolute;left:50%;top:27cqw;translate:-50% 0;width:54cqw;height:13cqw;background:#F4F1EA;border:.8cqw solid #2B4C9B;border-radius:.6cqw;z-index:2;opacity:0;box-shadow:0 1cqw 1cqw rgba(40,24,10,.3);transition:transform .9s cubic-bezier(.3,.7,.3,1),opacity .4s}
+.glab .sg.sign .swboard.in{opacity:1}
+.glab .sg.sign .swslots{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;gap:.6cqw}
+.glab .sg.sign .swslots .sgslot{width:min(5cqw,calc(50cqw / var(--n,4)));height:9cqw;border-bottom:.3cqw dashed #C9B98F;display:grid;place-items:center}
+.glab .sg.sign .swslots .sgslot.wb{margin-left:2cqw}
+.glab .sg.sign .swslots .sgslot b{font:800 min(7cqw,calc(60cqw / var(--n,4))) var(--disp,'Baloo 2'),sans-serif;color:#B23A2E;animation:sg-paint .45s ease-out both}
+.glab .sg.sign .swslots .sgslot.on{border-bottom-color:transparent}
+@keyframes sg-paint{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.glab .sg.sign .swboard.up{transform:translateY(-6.6cqw) scale(.62)}
+.glab .sg.sign .swboard.run .sgslot b{transition:transform 1.2s ease-in,filter 1s;transform:scaleY(1.6) translateY(1.6cqw);filter:blur(.15cqw)}
+.glab .sg.sign .swboard.away{opacity:0}
+
+/* ---- the Onitsha printer: the composing stick, the press, the page ---- */
+.glab .sg.press .sgpic{left:auto;right:4cqw;translate:none;top:18cqw;width:11cqw}
+.glab .sg.press .prstick{position:absolute;left:50%;top:28cqw;translate:-50% 0;min-width:30cqw;height:9cqw;padding:.8cqw 1.4cqw;background:linear-gradient(#9A9AA0,#6E6E76);border-radius:.6cqw;z-index:2;box-shadow:inset 0 .4cqw 0 rgba(255,255,255,.3),0 .8cqw 1cqw rgba(30,30,30,.35)}
+.glab .sg.press .prslots{display:flex;justify-content:center;gap:.3cqw;height:100%}
+.glab .sg.press .prslots .sgslot{width:min(5cqw,calc(52cqw / var(--n,4)));height:100%;background:rgba(40,40,46,.35);border-radius:.3cqw;display:grid;place-items:center}
+.glab .sg.press .prslots .sgslot.wb{margin-left:1.4cqw}
+.glab .sg.press .prslots .sgslot b{width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(#C8C8CE,#9A9AA2);border-radius:.3cqw;font:800 min(4.6cqw,calc(40cqw / var(--n,4))) var(--disp,'Baloo 2'),sans-serif;color:#2A2A30;animation:sg-drop .3s ease-out}
+@keyframes sg-drop{from{transform:translateY(-3cqw);opacity:0}}
+.glab .sg.press .prstick.spill .sgslot b{transition:transform .9s ease-in,opacity .8s;transform:translateY(18cqw) rotate(160deg);opacity:0}
+.glab .sg.press .prplate{position:absolute;left:50%;top:13cqw;translate:-50% 0;width:40cqw;height:6cqw;background:linear-gradient(#3A3A40,#1E1E24);border-radius:.6cqw;z-index:3;transition:transform .35s ease-in}
+.glab .sg.press .prplate::before{content:'';position:absolute;left:50%;top:-3cqw;width:2cqw;height:3cqw;translate:-50% 0;background:#3A3A40}
+.glab .sg.press .prplate.down{transform:translateY(13cqw)}
+.glab .sg.press .prpage{position:absolute;left:50%;top:28cqw;translate:-50% 0;width:28cqw;height:10cqw;background:#FFFDF7;box-shadow:0 .5cqw .8cqw rgba(40,24,10,.3);display:grid;place-items:center;z-index:1;opacity:0}
+.glab .sg.press .prpage b{font:800 4cqw Georgia,serif;color:#1E1E24;letter-spacing:.2cqw}
+.glab .sg.press .prpage.out{z-index:3;animation:sg-page 2s ease-in-out forwards}
+@keyframes sg-page{0%{opacity:1;transform:translateY(0)}45%{opacity:1;transform:translateY(12cqw)}100%{opacity:0;transform:translate(26cqw,26cqw) scale(.3)}}
+
+/* ---- Ìwé Ìròyìn: the paper in the vendor's hands ---- */
+.glab .sg.news .nwvend{position:absolute;left:50%;top:23cqw;translate:-50% 0;width:14cqw;z-index:1}
+.glab .sg.news .nwvend svg{width:100%;display:block}
+.glab .sg.news .nwpaper{position:absolute;left:50%;top:10cqw;translate:-50% 0;width:40cqw;height:21cqw;background:#FAF7EE;border:.2cqw solid #C9C3B0;box-shadow:0 .8cqw 1cqw rgba(40,24,10,.3);z-index:2;display:flex;flex-direction:column;align-items:center;opacity:0;transition:transform .9s ease-in,opacity .6s}
+.glab .sg.news .nwpaper.up{animation:sg-up .5s ease-out both}
+.glab .sg.news .nwhead{width:100%;text-align:center;font:800 2.8cqw Georgia,serif;color:#B23A2E;border-bottom:.3cqw double #1E1E24;padding:.3cqw 0}
+.glab .sg.news .nww{flex:1;display:grid;place-items:center;font:800 7cqw var(--disp,'Baloo 2'),sans-serif;color:#1E1E24;letter-spacing:.2cqw}
+.glab .sg.news .nww.l7,.glab .sg.news .nww.l8{font-size:5.6cqw}
+.glab .sg.news .nww.l9,.glab .sg.news .nww.l10,.glab .sg.news .nww.l11,.glab .sg.news .nww.l12{font-size:4.4cqw}
+.glab .sg.news .nwcol{position:absolute;left:2cqw;right:2cqw;bottom:1.2cqw;height:2cqw;background:repeating-linear-gradient(#B8B4A8 0 .2cqw,transparent .2cqw .6cqw)}
+.glab .sg.news .nwpaper.sold{animation:none;opacity:0;transform:translate(-30cqw,18cqw) scale(.3)}
+.glab .sg.news .nwpaper.blow{animation:none;opacity:0;transform:translate(50cqw,-16cqw) rotate(40deg) scale(.6)}
+@keyframes sg-up{from{opacity:0;transform:translateY(6cqw)}to{opacity:1;transform:none}}
+
+/* ---- Mgba: the crier's board, the two wrestlers ---- */
+.glab .sg.mgba .mgboard{position:absolute;left:50%;top:9.6cqw;translate:-50% 0;min-width:30cqw;padding:.6cqw 2.4cqw;background:#F4F1EA;border:.7cqw solid #6B4226;border-radius:.6cqw;z-index:2;text-align:center;opacity:0}
+.glab .sg.mgba .mgboard.up{animation:sg-up .5s ease-out both}
+.glab .sg.mgba .mgw{font:800 6.4cqw var(--disp,'Baloo 2'),sans-serif;color:#1E1E24;letter-spacing:.2cqw}
+.glab .sg.mgba .mgw.l8,.glab .sg.mgba .mgw.l9,.glab .sg.mgba .mgw.l10,.glab .sg.mgba .mgw.l11,.glab .sg.mgba .mgw.l12{font-size:4.8cqw}
+.glab .sg.mgba .mgring{position:absolute;left:50%;top:25cqw;translate:-50% 0;width:28cqw;height:21cqw;z-index:1}
+.glab .sg.mgba .mgus,.glab .sg.mgba .mgthem{position:absolute;bottom:0;width:11cqw;transform-origin:50% 100%;transition:transform .7s cubic-bezier(.5,0,.6,1)}
+.glab .sg.mgba .mgus{left:3.4cqw;animation:sg-grip 1s ease-in-out infinite alternate}
+.glab .sg.mgba .mgthem{right:3.4cqw;transform:scaleX(-1);animation:sg-grip2 1s ease-in-out infinite alternate}
+.glab .sg.mgba .mgus svg,.glab .sg.mgba .mgthem svg{width:100%;display:block}
+@keyframes sg-grip{to{transform:translateX(.8cqw) rotate(4deg)}}
+@keyframes sg-grip2{to{transform:scaleX(-1) translateX(.8cqw) rotate(4deg)}}
+.glab .sg.mgba .mgring.throw .mgus{animation:none;transform:rotate(10deg)}
+.glab .sg.mgba .mgring.throw .mgthem{animation:none;transform:scaleX(-1) translate(-4cqw,-1cqw) rotate(-90deg)}
+.glab .sg.mgba .mgring.slip .mgus{animation:none;transform:translate(-2cqw,0) rotate(-80deg)}
+.glab .sg.mgba .mgring.slip .mgthem{animation:none;transform:scaleX(-1) rotate(-6deg)}

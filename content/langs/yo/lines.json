@@ -1845,8 +1845,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Jẹ́ ká kọ́ ilé náà kí àkókò tó tán! Tẹ̀ Fúnkẹ́, kí o sì sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan. Lẹ́tà kọ̀ọ̀kan jẹ́ bíríkì kan.",
-  "en": "Let's build the house before time runs out! Tap Fúnkẹ́ and say the word's letters one by one. Every letter is a brick.",
+  "text": "Sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, tàbí tẹ̀ wọ́n. Lẹ́tà kọ̀ọ̀kan yóò tan iná fèrèsé kan.",
+  "en": "Say the letters of the word one by one, or press them. Each letter switches on the light in one window.",
   "status": "draft"
  },
  {
@@ -1917,8 +1917,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ òkìtì tí iye àpò kòkó rẹ̀ jẹ́ iye tí mo bá sọ.",
-  "en": "Tap the stack with as many cocoa sacks as the number I say.",
+  "text": "Ká iye èso kòkó tí mo bá sọ sínú apẹ̀rẹ̀, lẹ́yìn náà tẹ apẹ̀rẹ̀ náà.",
+  "en": "Pick as many cocoa pods as the number I say into the basket, then press the basket.",
   "status": "draft"
  },
  {
@@ -1926,8 +1926,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Tẹ̀ èyí tí iye owó rẹ̀ bá ohun tí mo sọ mu.",
-  "en": "Tap the one whose price matches what I say.",
+  "text": "Aṣọ òkè ń kọjá lórí okùn. Tẹ èyí tí iye owó rẹ̀ jẹ́ iye tí mo sọ.",
+  "en": "The aso-oke cloths are passing on the line. Tap the one whose price is the one I say.",
   "status": "draft"
  },
  {
@@ -1935,8 +1935,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka àwọn màlúù tó wà nínú ọgbà, kí o sì sọ iye wọn ní Gẹ̀ẹ́sì.",
-  "en": "Count the cows in the pen and say how many in English.",
+  "text": "Ka àwọn àlejò tó jókòó síbi tábìlì, kí o sì sọ iye wọn ní Gẹ̀ẹ́sì.",
+  "en": "Count the guests at the table and say how many in English.",
   "status": "draft"
  },
  {
@@ -1980,8 +1980,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, tàbí kí o tẹ̀ wọ́n lórí pátákó ìtẹ̀wé, akọ̀wé lẹ́tà yóò sì kọ wọ́n.",
-  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "text": "Sọ àwọn lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, tàbí tẹ̀ wọ́n, ayàwòrán yóò sì kọ wọ́n sórí pátákó ṣọ́ọ̀bù.",
+  "en": "Say the letters of the word one by one, or press them, and the sign writer will paint them on the shop's board.",
   "status": "draft"
  },
  {
@@ -1989,8 +1989,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka ọ̀rọ̀ tó wà lórí ìkùukùu sókè, òjò yóò sì rọ̀ sórí oko.",
-  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "text": "Ka ọ̀rọ̀ tó wà lórí ìwé ìròyìn náà sókè.",
+  "en": "Read the word on the newspaper out loud.",
   "status": "draft"
  },
  {

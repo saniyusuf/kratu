@@ -1845,8 +1845,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka anyị wuo ụlọ ahụ tupu oge agwụ! Pịa Chioma ma kwuo mkpụrụedemede okwu ahụ otu otu. Mkpụrụedemede ọ bụla bụ otu brik.",
-  "en": "Let's build the house before time runs out! Tap Chioma and say the word's letters one by one. Every letter is a brick.",
+  "text": "Kwuo mkpụrụedemede okwu ahụ otu otu, ma ọ bụ pịa ha. Mkpụrụedemede ọ bụla bụ otu iberibe ọjị n'okwa.",
+  "en": "Say the letters of the word one by one, or press them. Each letter is one kola lobe in the bowl.",
   "status": "draft"
  },
  {
@@ -1917,8 +1917,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Pịa ìgwè nwere ọnụ ọgụgụ akpa garri m kwuru.",
-  "en": "Tap the stack with as many garri sacks as the number I say.",
+  "text": "Pịa ịtụ nke na-eme ọnụ ọgụgụ m kwuru, a ga-eji mmanụ nkwụ juo ha.",
+  "en": "Tap the keg that makes the number I say, and they will be filled with palm oil.",
   "status": "draft"
  },
  {
@@ -1926,8 +1926,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Pịa nke ọnụ ahịa ya dabara na ihe m kwuru.",
-  "en": "Tap the one whose price matches what I say.",
+  "text": "Pịa igbe akpụkpọ ụkwụ nke ọnụ ahịa ya bụ nke m kwuru.",
+  "en": "Tap the shoe box whose price is the one I say.",
   "status": "draft"
  },
  {
@@ -1935,8 +1935,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Gụọ ehi ndị dị n'ogige ahụ, wee kwuo ole ha dị n'asụsụ Bekee.",
-  "en": "Count the cows in the pen and say how many in English.",
+  "text": "Gụọ ji ndị dị n'ute ahụ, wee kwuo ole ha dị n'asụsụ Bekee.",
+  "en": "Count the yams on the mat and say how many in English.",
   "status": "draft"
  },
  {
@@ -1980,8 +1980,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Kwuo mkpụrụedemede okwu ahụ otu otu, ma ọ bụ pịa ha na kiibọọdụ, onye na-ede akwụkwọ ozi ga-ede ha.",
-  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "text": "Kwuo mkpụrụedemede okwu ahụ otu otu, ma ọ bụ pịa ha, onye na-ebi akwụkwọ ga-edobe ha n'igwe obibi akwụkwọ.",
+  "en": "Say the letters of the word one by one, or press them, and the printer will set them in the press.",
   "status": "draft"
  },
  {
@@ -1989,8 +1989,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Gụọ okwu dị n'igwe ojii ahụ n'olu dara ụda, mmiri ozuzo ga-ezo n'ubi.",
-  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "text": "Gụọ okwu dị na bọọdụ ahụ n'olu dara ụda, onye mgba gị ga-atụda onye nke ọzọ.",
+  "en": "Read the word on the board out loud, and your wrestler will throw the other one.",
   "status": "draft"
  },
  {
