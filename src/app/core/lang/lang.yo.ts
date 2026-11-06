@@ -222,10 +222,10 @@ export const LANG: LangPack = {
   "Ƙirgen shanu": "Ka Màlúù",
   "Mai suya": "Bọ̀lì",
   "Kwale-kwale": "Regatta",
-  "Allo": "Pátákó",
+  "Allo": "Ìlẹ̀kùn Ààfin",
   "Jirgin ruwa": "Ọkọ̀ Ojú Omi",
   "Ruwan sama": "Òjò",
-  "Tukwane": "Ìkòkò",
+  "Tukwane": "Ayò",
   "Ginin bulo": "Kọ́ Ilé",
   "Marubucin wasiƙa": "Akọ̀wé Lẹ́tà",
   "Karofi": "Àdìrẹ",
@@ -245,7 +245,7 @@ export const LANG: LangPack = {
   "Counting the herd · speaking": "Counting the cows · speaking",
   "The suya seller · speaking": "The boli seller · speaking",
   "The canoes": "The regatta canoes",
-  "The writing board · speaking": "The school board · speaking",
+  "The writing board · speaking": "The carved palace door · speaking",
   "The ferry · speaking": "The lagoon ferry · speaking",
   "Rain on the farm · speaking": "Rain on the cassava farm · speaking",
   "The Kano dye pits · speaking": "Adire, the indigo cloth · speaking",
@@ -259,7 +259,8 @@ export const LANG: LangPack = {
   "Find the cow with the right price at the cattle market.": "Find the animal with the right price at the market.",
   "Count the cattle as they go into the kraal.": "Count the cows as they go into the pen.",
   "Run the tea stall: serve each customer the thing they ask for.": "Run the tea stall: serve each customer the thing they ask for.",
-  "Be the auctioneer: say the name of each thing to sell it.": "Be the market caller: say the name of each thing to sell it."
+  "Be the auctioneer: say the name of each thing to sell it.": "Be the market caller: say the name of each thing to sell it.",
+  "Clay pots": "The ayo board"
  },
  "kids": {
   "m": "Bayo",

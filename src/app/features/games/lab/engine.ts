@@ -819,6 +819,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   };
 
   Object.assign(GAMES, moreGames({ K, KART, h, say, sfx, drum, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs, batches }));   // the Arewa games (games2.ts)
+  // a language build's own games in place of the Hausa ones (Yoruba / Igbo, south-games.ts): each keeps the Hausa game's slot,
+  // gate and placement texts, with its own title, picture and play
+  if (SKIN && SKIN.games) { var OWN = SKIN.games({ K, h, say, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs }); Object.keys(OWN).forEach(function (k) { GAMES[k] = Object.assign({}, GAMES[k], OWN[k]); }); }
 
   // no "do you know this game?" before a game any more (Sani 2026-11-04): only the course's first step asks that, about the
   // letters. Every game opens on its own how-to the first time, and the gate's intro after that.

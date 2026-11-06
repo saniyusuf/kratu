@@ -1712,7 +1712,7 @@
   "gender": "any",
   "text": "Echegbula onwe gị. Ka anyị buru ụzọ mụta ha.",
   "en": "Don't worry. Let us learn them first.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_gate_play",
@@ -1721,7 +1721,7 @@
   "gender": "any",
   "text": "Anyị ga-egwu obere egwuregwu.",
   "en": "We are going to play a little game.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "app_book_start",
@@ -1836,8 +1836,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka anyị jiri ite dee okwu. Pịa mkpụrụedemede ndị ahụ otu otu.",
-  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "text": "Ka anyị kee ọla aka! Pịa mkpụrụ aka nwere mkpụrụedemede okwu ahụ otu otu.",
+  "en": "Let's string a coral necklace! Tap the beads with the word's letters one after another.",
   "status": "draft"
  },
  {
@@ -1962,8 +1962,8 @@
   "lang": "ig",
   "voice": "laila",
   "gender": "any",
-  "text": "Gụọ okwu dị na bọọdụ ahụ n'olu dara ụda, anyị ga-ehicha ya.",
-  "en": "Read the word on the board out loud, and we will wipe it clean.",
+  "text": "Gụọ okwu dị na mgbidi ahụ n'olu dara ụda, onye ese ga-eme ya uli.",
+  "en": "Read the word on the wall out loud, and the painter will turn it into uli.",
   "status": "draft"
  },
  {

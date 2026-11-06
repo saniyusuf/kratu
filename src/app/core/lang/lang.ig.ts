@@ -223,10 +223,10 @@ export const LANG: LangPack = {
   "Ƙirgen shanu": "Gụọ Ehi",
   "Mai suya": "Ọka na Ube",
   "Kwale-kwale": "Ụgbọ Osimiri",
-  "Allo": "Bọọdụ",
+  "Allo": "Uli",
   "Jirgin ruwa": "Ụgbọ Mmiri",
   "Ruwan sama": "Mmiri Ozuzo",
-  "Tukwane": "Ite",
+  "Tukwane": "Aka",
   "Ginin bulo": "Wuo Ụlọ",
   "Marubucin wasiƙa": "Onye Ode Akwụkwọ",
   "Karofi": "Akwete",
@@ -246,7 +246,7 @@ export const LANG: LangPack = {
   "Counting the herd · speaking": "Counting the cows · speaking",
   "The suya seller · speaking": "Roast corn and ube · speaking",
   "The canoes": "The river canoes",
-  "The writing board · speaking": "The school board · speaking",
+  "The writing board · speaking": "The uli wall · speaking",
   "The ferry · speaking": "The Niger ferry · speaking",
   "Rain on the farm · speaking": "Rain on the yam farm · speaking",
   "The Kano dye pits · speaking": "Akwete cloth · speaking",
@@ -259,7 +259,8 @@ export const LANG: LangPack = {
   "Spell the word by dyeing each letter cloth in the Kano dye pits.": "Spell the word, a dyed letter cloth at a time.",
   "Find the cow with the right price at the cattle market.": "Find the animal with the right price at the market.",
   "Count the cattle as they go into the kraal.": "Count the cows as they go into the pen.",
-  "Be the auctioneer: say the name of each thing to sell it.": "Be the Onitsha trader: say the name of each thing to sell it."
+  "Be the auctioneer: say the name of each thing to sell it.": "Be the Onitsha trader: say the name of each thing to sell it.",
+  "Clay pots": "The coral beads"
  },
  "kids": {
   "m": "Ebuka",

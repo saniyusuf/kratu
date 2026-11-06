@@ -8,4 +8,6 @@ export interface GameSkin {
   cap?: (kind: string, x: number, y: number, w: number, c?: string, c2?: string, c3?: string, side?: number) => string;
   /** a game's own pieces in place of the Hausa ones (the king, his guards, the counted things …), by the Hausa export's name */
   art: Record<string, (...a: any[]) => any>;
+  /** the build's own games, by game id, in place of the Hausa ones (south-games.ts); given the engine's helpers */
+  games?: (c: any) => Record<string, any>;
 }

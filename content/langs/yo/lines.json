@@ -1712,7 +1712,7 @@
   "gender": "any",
   "text": "Má ṣe dààmú. Jẹ́ ká kọ́ wọn ná.",
   "en": "Don't worry. Let us learn them first.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_gate_play",
@@ -1721,7 +1721,7 @@
   "gender": "any",
   "text": "A ó ṣe eré kékeré kan.",
   "en": "We are going to play a little game.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "app_book_start",
@@ -1836,8 +1836,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Jẹ́ ká fi ìkòkò kọ ọ̀rọ̀ kan. Tẹ̀ àwọn lẹ́tà ní ọ̀kọ̀ọ̀kan.",
-  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "text": "Jẹ́ ká ta ayò! Tẹ àwọn kóró tó ní lẹ́tà ọ̀rọ̀ náà ní ọ̀kọ̀ọ̀kan, kí wọ́n bọ́ sínú ihò.",
+  "en": "Let's play ayo! Tap the seeds with the word's letters one after another, and they drop into the pits.",
   "status": "draft"
  },
  {
@@ -1962,8 +1962,8 @@
   "lang": "yo",
   "voice": "laila",
   "gender": "any",
-  "text": "Ka ọ̀rọ̀ tó wà lórí pátákó sókè, a ó sì nù ún kúrò.",
-  "en": "Read the word on the board out loud, and we will wipe it clean.",
+  "text": "Ka ọ̀rọ̀ tó wà lórí ìlẹ̀kùn sókè, gbẹ́nàgbẹ́nà yóò sì gbẹ́ ẹ.",
+  "en": "Read the word on the door out loud, and the carver will carve it.",
   "status": "draft"
  },
  {

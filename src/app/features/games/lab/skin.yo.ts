@@ -3,5 +3,6 @@ import { GameSkin } from './skin-type';
 import { makeScenes } from './scenes';
 import { makeArt } from './south-art';
 import { capYo } from './south';
+import { southGames } from './south-games';
 
-export const SKIN: GameSkin | null = { code: 'yo', scene: makeScenes('yo'), cap: capYo, art: makeArt('yo') };
+export const SKIN: GameSkin | null = { code: 'yo', scene: makeScenes('yo'), cap: capYo, art: makeArt('yo'), games: (g) => southGames(g, 'yo') };
