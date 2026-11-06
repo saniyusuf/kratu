@@ -15,6 +15,7 @@ import { ObjLessonScreen } from './features/lessons/obj';
 import { NemoScreen } from './features/lessons/nemo';
 import { RubutuScreen } from './features/lessons/rubutu';
 import { KaratuScreen } from './features/lessons/karatu';
+import { GamesBoard } from './features/games/board/board';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'blank' },   // nothing renders (or speaks) under the loader; app.ts picks the first screen once everything is ready
@@ -35,6 +36,7 @@ export const routes: Routes = [
   { path: 'haruffa/gwada', component: GateScreen },   // the gate: do you know them all?
   { path: 'fashe', component: FasheScreen },
   // the games load only when one opens: their scenes are most of the app's script (Sani 2026-11-04, cheap tablets)
+  { path: 'wasanni', component: GamesBoard },   // the games board: the games this child has won (Sani 2026-11-05)
   { path: 'wasanni/:id', loadComponent: () => import('./features/games/lab/gamelab').then((m) => m.GameLabScreen) },   // the judging games, reached from the settings for now
   { path: 'blank', component: BlankScreen },
   { path: '**', redirectTo: 'gender' },

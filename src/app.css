@@ -173,6 +173,13 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 @keyframes paperOut{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(-50%,-50%) scale(.94);opacity:0}}
 #app .frame > .s.nav-in.nav-fade{animation:navFade .15s ease-out both}
 @keyframes navFade{from{opacity:0}to{opacity:1}}
+/* Home <-> Wasanni (Sani 2026-11-05): the board grows as a circle out of the bottom-right corner over home, and on the
+   way back the board (now the still copy) shrinks into the same corner, uncovering home underneath. */
+#app .frame > .s.nav-in.nav-grow:not(.nav-back){position:relative;z-index:4;animation:growIn var(--nav-ms,600ms) cubic-bezier(.5,0,.3,1) both}
+#app .frame > .ghost.nav-out.nav-grow:not(.nav-back){animation:none}
+#app .frame > .ghost.nav-out.nav-grow.nav-back{animation:growOut var(--nav-ms,600ms) cubic-bezier(.5,0,.3,1) both}
+@keyframes growIn{from{clip-path:circle(0 at calc(100% - 42px) calc(100% - 42px))}to{clip-path:circle(150% at calc(100% - 42px) calc(100% - 42px))}}
+@keyframes growOut{from{clip-path:circle(150% at calc(100% - 42px) calc(100% - 42px))}to{clip-path:circle(0 at calc(100% - 42px) calc(100% - 42px))}}
 @media (prefers-reduced-motion:reduce){#app .frame > .s.nav-in,#app .frame > .ghost.nav-out{animation:none}}
 /* The camera guide (Sani 2026-09-17): one generous target ring in the middle of the picture, and the app's own pointing
    hand showing which way the child should move. The hand sits on the far side of the ring and points across it, so it
@@ -707,3 +714,66 @@ body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
 /* the tiles' white names sat on light colours (blue, green, yellow) below the contrast minimum: each name now sits on a
    dark wash of its own tile's colour, so every tile reads clearly and keeps its colour (Sani 2026-11-04) */
 #app .s.lesson .catcard .nm{display:inline-block;padding:2px 10px;border-radius:999px;background:rgba(36,22,6,.5);line-height:1.35}
+
+/* Wasanni, the games board (Sani 2026-11-05, board page option 4). A row per kind of game, each led by its picture and
+   scrolling sideways on its own; the rows scroll up and down inside a box of fixed height, so the fit never changes as
+   they scroll. No scrollbars. The cards drop in row by row as the board arrives. The bottom-right corner is the book. */
+#app .s.wasanni{gap:6px;padding:14px 92px 12px;background:var(--paper);background-image:radial-gradient(rgba(150,120,70,.10) 1.6px,transparent 1.6px);background-size:20px 20px}
+#app .s.wasanni .wrows{width:100%;height:468px;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y proximity;scrollbar-width:none;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px}
+#app .s.wasanni .lrow{margin-top:0;padding-top:0}
+#app .s.wasanni .wrows::-webkit-scrollbar,#app .s.wasanni .wrail::-webkit-scrollbar{display:none}
+#app .s.wasanni .wrow{flex:none;display:flex;align-items:center;gap:14px;height:150px;scroll-snap-align:start}
+#app .s.wasanni .whead{flex:none;width:112px;height:112px;border-radius:14px;display:grid;place-items:center;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+#app .s.wasanni .whead svg{width:72%}
+#app .s.wasanni .whead img{width:76%;height:76%;object-fit:cover;border-radius:10px;border:3px solid #fff}
+#app .s.wasanni .whead b{font:800 36px var(--disp,'Baloo 2'),sans-serif;color:#fff;letter-spacing:2px}
+#app .s.wasanni .wrail{flex:1;min-width:0;height:150px;display:flex;align-items:center;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-x:contain;padding:0 30px 0 2px}
+#app .s.wasanni .wcard{flex:none;width:172px;padding:0;border:0;background:none;cursor:pointer;scroll-snap-align:start;-webkit-tap-highlight-color:transparent;
+  animation:wdrop .42s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(.3s + var(--r,0) * .12s + var(--c,0) * .05s)}
+#app .s.wasanni .wrow{--r:0}
+#app .s.wasanni .wcard svg{display:block;width:100%;height:auto;overflow:visible;pointer-events:none}
+#app .s.wasanni .wcard:active{transform:scale(.96)}
+#app .s.wasanni .wempty{height:126px;border-radius:16px;border:4px dashed #D8C9A6;cursor:default}
+@keyframes wdrop{from{opacity:0;transform:translateY(-26px) scale(.8)}to{opacity:1;transform:none}}
+#app .s.wasanni>.wbook{position:absolute;right:0;bottom:0;width:84px;height:84px;border:0;padding:0;border-radius:100% 0 18px 0;background:#8E5BB5;cursor:pointer;z-index:10;-webkit-tap-highlight-color:transparent}
+#app .block.active .s.wasanni>.wbook{position:fixed;right:6px;bottom:6px}
+#app .s.wasanni>.wbook:active{transform:scale(.96)}
+#app .s.wasanni .wbookic{position:absolute;right:12px;bottom:10px;width:38px;height:50px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
+@media (prefers-reduced-motion:reduce){#app .s.wasanni .wcard{animation:none}}
+
+/* The course book (shared/book/book.ts). Kept here, not in the component: Angular takes a component's styles away when
+   its last copy closes, and the still copy of the chooser that the screen movements show would lose its book (5 Nov). */
+app-course-book{position:relative;display:flex;justify-content:center;width:100%;margin:30px 0 30px;
+  --cbc-tl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-tr:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 1 30 0)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");
+  --cbc-bl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(1 0 0 -1 0 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-br:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 -1 30 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E")}
+app-course-book.talk{z-index:3}
+app-course-book .cbook{--c:1;position:relative;width:480px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:2400px;translate:calc(var(--c) * -25%) 0;transform-origin:50% 60%;-webkit-tap-highlight-color:transparent}
+app-course-book .cbook.breath{animation:cbbreath 3s ease-in-out infinite}
+@keyframes cbbreath{50%{transform:translateY(-6px) scale(1.02)}}
+app-course-book.talk .cbook.breath{animation:cbtalk 1.3s ease-in-out infinite}
+@keyframes cbtalk{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+app-course-book .cbpool{position:absolute;left:50%;top:50%;width:884px;height:624px;margin:-312px 0 0 -442px;border-radius:50%;pointer-events:none;will-change:opacity;
+  background:radial-gradient(closest-side,rgba(255,214,120,.75),rgba(255,214,120,.25) 60%,rgba(255,214,120,0));animation:cbhal 3s ease-in-out infinite}
+app-course-book.talk .cbpool{animation:cbhalf .65s ease-in-out infinite alternate}
+@keyframes cbhal{50%{opacity:.55}}
+@keyframes cbhalf{to{opacity:.55}}
+app-course-book .cbshadow{position:absolute;left:50%;bottom:-30px;width:458px;height:62px;margin-left:-229px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(60,35,10,.45),rgba(60,35,10,0));animation:cbshd 3s ease-in-out infinite}
+@keyframes cbshd{50%{transform:scaleX(.94);opacity:.8}}
+app-course-book .cbback{position:absolute;inset:-21px -22px -19px;border-radius:22px;background:linear-gradient(#B8322F,#8E2220);box-shadow:0 14px 0 #8E2220;opacity:0}
+app-course-book .cbback::after{content:"";position:absolute;inset:12px;border-radius:14px;border:3px dashed #F2C14E;opacity:.9}
+app-course-book .cbback::before{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tl),var(--cbc-tr),var(--cbc-bl),var(--cbc-br);background-position:left top,right top,left bottom,right bottom}
+app-course-book .cbleaves{position:absolute;inset:21px 22px 19px;border-radius:6px;box-shadow:0 5px 0 #F2E3BE,0 10px 0 #E6D2A4,0 11px 0 #C9AE78}
+app-course-book .cbribbon{position:absolute;left:66%;bottom:-26px;width:28px;height:46px;background:#2F6DB5;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);box-shadow:inset 0 8px 0 #00000022;z-index:5}
+app-course-book .cbpages{position:absolute;left:-10%;top:-50%;width:120%;height:200%;z-index:4;pointer-events:none}
+app-course-book .cbcover{position:absolute;top:-3px;bottom:-3px;right:-3px;width:calc(50% + 3px);transform-origin:left center;transform-style:preserve-3d;z-index:5;will-change:transform}
+app-course-book .cbfront,app-course-book .cbinside{position:absolute;inset:0;border-radius:4px 16px 16px 4px;backface-visibility:hidden;overflow:hidden}
+app-course-book .cbfront{box-shadow:0 12px 0 #8E2220}
+app-course-book .cbfront::after{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tr),var(--cbc-br);background-position:right top,right bottom}
+app-course-book .cbinside{transform:rotateY(180deg);border-radius:16px 4px 4px 16px;background:#FBF3DE repeating-linear-gradient(transparent 0 13px,rgba(201,174,116,.35) 13px 14px);border:3px solid #C9AE74}
+app-course-book .cbhand{position:absolute;left:0;top:0;z-index:25;pointer-events:none;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 4px 3px rgba(59,46,30,.28))}
+app-course-book .cbook.down{animation:none;transform:scale(.96);transition:transform .12s ease-out}
+@media (prefers-reduced-motion:reduce){app-course-book .cbook,app-course-book .cbpool,app-course-book .cbshadow{animation:none!important}}
+
+/* the still copy of the board must keep its cards: their drop-in would start again from nothing in the copy */
+#app .frame > .ghost.wasanni .wcard{animation:none}

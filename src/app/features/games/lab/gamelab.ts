@@ -153,7 +153,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
     if (r.pass) {
       // straight on to the next step of the course, never back to the menu (Sani 2026-11-03)
       if (step) { const nx = this.course.finish(+step); if (nx) { const rt = this.course.route(nx); reopen(this.router.serializeUrl(this.router.createUrlTree(['/' + rt.path], { queryParams: rt.query }))); return; } }
-      const n = q.get('next'); this.router.navigateByUrl(n && n.startsWith('/') ? n : '/home'); return;
+      const n = q.get('next'); this.router.navigateByUrl(n && n.startsWith('/') ? n : this.away()); return;
     }
     if (r.tries < 2) { reopen(here(2)); return; }
     // the letters missed are taught again on their own, and the game comes back (its intro, a fresh first try)
@@ -176,5 +176,7 @@ export class GameLabScreen implements OnInit, OnDestroy {
     }, () => { this.unl = null; this.router.navigateByUrl(next.startsWith('/') ? next : '/home'); });
   }
   again(): void { this.game?.again(); }
-  leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigate(['/home']); }
+  leave(): void { this.game?.stop(); this.bus.stopAll(); this.router.navigateByUrl(this.away()); }
+  /** Where a game goes when it is left or done outside the course: the games board when it was opened from there. */
+  private away(): string { return this.route.snapshot.queryParamMap.get('from') === 'wasanni' ? '/wasanni' : '/home'; }
 }

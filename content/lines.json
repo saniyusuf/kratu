@@ -4454,11 +4454,29 @@
   "text": "Za mu yi ɗan wasa.",
   "en": "We are going to play a little game.",
   "screens": [
-   "Haruffa · gwada"
+   "Haruffa · gwada",
+   "Wasanni · board"
   ],
-  "said_when": "The invitation, before the question. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
-  "status": "unused",
+  "said_when": "On arriving at the games board, and the ear there: there is no recorded \"pick a game\" line yet (5 Nov). On the gate it was replaced by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
+  "status": "live",
   "recorded": "328256a87d"
+ },
+ {
+  "key": "s_wb_home",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "",
+   "f": ""
+  },
+  "en": "To go home, press the book.",
+  "screens": [
+   "Wasanni · board"
+  ],
+  "said_when": "The first time on the games board, while the hand points at the book in the corner. Needs Sani's Hausa (boy and girl).",
+  "status": "planned",
+  "recorded": ""
  },
  {
   "key": "s_gate_first",

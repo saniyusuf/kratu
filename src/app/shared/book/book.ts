@@ -67,39 +67,6 @@ const SLOW = 1.5;
   <span #cover class="cbcover"><span class="cbfront" [innerHTML]="coverSvg"></span><span class="cbinside"></span></span>
   <span #hand class="cbhand" [innerHTML]="handSvg"></span>
 </button>`,
-  styles: [`
-:host{position:relative;display:flex;justify-content:center;width:100%;margin:30px 0 30px;
-  --cbc-tl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-tr:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 1 30 0)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");
-  --cbc-bl:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(1 0 0 -1 0 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E");--cbc-br:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath transform=%27matrix(-1 0 0 -1 30 30)%27 d=%27M0 0h30q-4 4-4 10-6 0-10 4-4 4-4 10Q8 24 0 30z%27 fill=%27%23F2C14E%27/%3E%3C/svg%3E")}
-:host(.talk){z-index:3}
-.cbook{--c:1;position:relative;width:480px;aspect-ratio:23/15;border:0;background:none;padding:0;cursor:pointer;perspective:2400px;translate:calc(var(--c) * -25%) 0;transform-origin:50% 60%;-webkit-tap-highlight-color:transparent}
-.cbook.breath{animation:cbbreath 3s ease-in-out infinite}
-@keyframes cbbreath{50%{transform:translateY(-6px) scale(1.02)}}
-:host(.talk) .cbook.breath{animation:cbtalk 1.3s ease-in-out infinite}
-@keyframes cbtalk{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
-.cbpool{position:absolute;left:50%;top:50%;width:884px;height:624px;margin:-312px 0 0 -442px;border-radius:50%;pointer-events:none;will-change:opacity;
-  background:radial-gradient(closest-side,rgba(255,214,120,.75),rgba(255,214,120,.25) 60%,rgba(255,214,120,0));animation:cbhal 3s ease-in-out infinite}
-:host(.talk) .cbpool{animation:cbhalf .65s ease-in-out infinite alternate}
-@keyframes cbhal{50%{opacity:.55}}
-@keyframes cbhalf{to{opacity:.55}}
-.cbshadow{position:absolute;left:50%;bottom:-30px;width:458px;height:62px;margin-left:-229px;border-radius:50%;pointer-events:none;
-  background:radial-gradient(closest-side,rgba(60,35,10,.45),rgba(60,35,10,0));animation:cbshd 3s ease-in-out infinite}
-@keyframes cbshd{50%{transform:scaleX(.94);opacity:.8}}
-.cbback{position:absolute;inset:-21px -22px -19px;border-radius:22px;background:linear-gradient(#B8322F,#8E2220);box-shadow:0 14px 0 #8E2220;opacity:0}
-.cbback::after{content:"";position:absolute;inset:12px;border-radius:14px;border:3px dashed #F2C14E;opacity:.9}
-.cbback::before{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tl),var(--cbc-tr),var(--cbc-bl),var(--cbc-br);background-position:left top,right top,left bottom,right bottom}
-.cbleaves{position:absolute;inset:21px 22px 19px;border-radius:6px;box-shadow:0 5px 0 #F2E3BE,0 10px 0 #E6D2A4,0 11px 0 #C9AE78}
-.cbribbon{position:absolute;left:66%;bottom:-26px;width:28px;height:46px;background:#2F6DB5;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);box-shadow:inset 0 8px 0 #00000022;z-index:5}
-.cbpages{position:absolute;left:-10%;top:-50%;width:120%;height:200%;z-index:4;pointer-events:none}
-.cbcover{position:absolute;top:-3px;bottom:-3px;right:-3px;width:calc(50% + 3px);transform-origin:left center;transform-style:preserve-3d;z-index:5;will-change:transform}
-.cbfront,.cbinside{position:absolute;inset:0;border-radius:4px 16px 16px 4px;backface-visibility:hidden;overflow:hidden}
-.cbfront{box-shadow:0 12px 0 #8E2220}
-.cbfront::after{content:"";position:absolute;inset:0;pointer-events:none;background:no-repeat 0 0/38px;background-image:var(--cbc-tr),var(--cbc-br);background-position:right top,right bottom}
-.cbinside{transform:rotateY(180deg);border-radius:16px 4px 4px 16px;background:#FBF3DE repeating-linear-gradient(transparent 0 13px,rgba(201,174,116,.35) 13px 14px);border:3px solid #C9AE74}
-.cbhand{position:absolute;left:0;top:0;z-index:25;pointer-events:none;opacity:0;will-change:transform,opacity;filter:drop-shadow(0 4px 3px rgba(59,46,30,.28))}
-.cbook.down{animation:none;transform:scale(.96);transition:transform .12s ease-out}
-@media (prefers-reduced-motion:reduce){.cbook,.cbpool,.cbshadow{animation:none!important}}
-`],
 })
 export class CourseBook implements AfterViewInit, OnDestroy {
   /** The book was pressed: open the next lesson. */

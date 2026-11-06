@@ -573,5 +573,5 @@ export class FasheScreen implements OnInit, OnDestroy {
     const g = this.bus.gk(k);
     if (this.bus.has(g)) await this.bus.play(g);
   }
-  leave(): void { this.stopped = true; this.bus.stopAll(); this.router.navigate(['/home']); }
+  leave(): void { this.stopped = true; this.bus.stopAll(); this.router.navigate([this.route.snapshot.queryParamMap.get('from') === 'wasanni' ? '/wasanni' : '/home']); }
 }

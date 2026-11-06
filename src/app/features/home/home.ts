@@ -15,7 +15,6 @@ import { CourseBook } from '../../shared/book/book';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ScreenTransition } from '../../core/nav/screen-transition.service';
-import { SettingsPanel } from '../settings/panel';
 import { GAMES_CORNER_SVG } from './games-corner';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
@@ -58,7 +57,6 @@ export class HomeScreen implements OnInit, OnDestroy {
   private readonly leaveBox = viewChild.required(Leave);
   private readonly courseBook = viewChild.required(CourseBook);
   private readonly san = inject(DomSanitizer);
-  private readonly panel = inject(SettingsPanel);
   readonly grid = this.san.bypassSecurityTrustHtml(HOMEGRID_HTML);
   readonly gamesSvg = this.san.bypassSecurityTrustHtml(GAMES_CORNER_SVG);
   /** What moves while Laila talks (Sani 2026-11-05): the book while she invites the child to press it, the tiles while she
@@ -155,6 +153,6 @@ export class HomeScreen implements OnInit, OnDestroy {
     this.flow.open(ROUTE[act] || 'home');
   }
   leave(): void { this.leaveBox().show(); }
-  /** The games corner opens the games list, today's Wasanni page of the settings. */
-  games(): void { this.bus.stopAll(); this.show(null); this.panel.games(); }
+  /** The games corner opens the games board, which grows out of it (ScreenTransition 'grow'). */
+  games(): void { this.bus.stopAll(); this.show(null); this.router.navigate(['/wasanni']); }
 }

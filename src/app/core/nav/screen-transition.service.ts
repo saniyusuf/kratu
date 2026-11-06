@@ -8,6 +8,7 @@ const DEPTH: [RegExp, number][] = [
   [/^\/misali/, 7], [/^\/(haruffa|abubuwa|rubutu|lambobi|nemo|karatu)\/koyo/, 7], [/^\/(haruffa|abubuwa|rubutu|lambobi|nemo|karatu)/, 6],
 ];
 const depth = (url: string): number => { for (const [re, d] of DEPTH) if (re.test(url)) return d; return 5; };
+const isBoard = (url: string) => /^\/wasanni(\?|$)/.test(url), isGame = (url: string) => /^\/(wasanni\/|fashe)/.test(url);
 
 /**
  * Two movements, by what the change means (Sani 17 Sep).
@@ -15,6 +16,8 @@ const depth = (url: string): number => { for (const [re, d] of DEPTH) if (re.tes
  *    a new page laid down: PAPER.
  *  · From the chooser into a lesson and everything deeper, the child is travelling and the door brings them back, so the
  *    screens SLIDE, reversed on the way out.
+ *  · Home and the games board (Sani 2026-11-05): the board GROWS as a circle out of the Wasanni corner and shrinks back
+ *    into it on the way home; between the board and a game the screen simply fades in.
  * The screen being left is a still copy of itself (the router has already taken the real one away); the one arriving is
  * live from the first frame, so a child who taps during the movement is answered and the movement is cut short.
  */
@@ -26,7 +29,8 @@ export class ScreenTransition {
   readonly on = signal(!matchMedia('(prefers-reduced-motion: reduce)').matches);
   private static readonly SLIDE_MS = 320;
   private static readonly PAPER_MS = 340;
-  private kind: 'slide' | 'paper' | 'fade' = 'slide';
+  private static readonly GROW_MS = 600;
+  private kind: 'slide' | 'paper' | 'fade' | 'grow' = 'slide';
   private plainNext = false;
   private ghost: HTMLElement | null = null;
   private dir = 1; private fromZ = 1; private armed = false;
@@ -46,16 +50,21 @@ export class ScreenTransition {
     if (this.plainNext) { this.plainNext = false; if (this.on()) { this.kind = 'fade'; this.armed = true; } return; }
     if (!this.on()) return;
     const from = this.router.url, a = depth(from), b = depth(to);
-    if (a < 0 || b < 0 || a === b) { this.armed = false; return; }   // the loader's blank stop, and same-level moves, do not move
+    if ((isBoard(from) && isGame(to)) || (isGame(from) && isBoard(to))) { this.kind = 'fade'; this.armed = true; return; }
+    const grow = (/^\/home/.test(from) && isBoard(to)) || (isBoard(from) && /^\/home/.test(to));
+    if (!grow && (a < 0 || b < 0 || a === b)) { this.armed = false; return; }   // the loader's blank stop, and same-level moves, do not move
     // a lesson on either side means the child is travelling; the opening run is only ever a new page
-    this.kind = Math.max(a, b) >= 6 ? 'slide' : 'paper';
-    this.dir = b > a ? 1 : -1;
+    this.kind = grow ? 'grow' : Math.max(a, b) >= 6 ? 'slide' : 'paper';
+    this.dir = grow ? (isBoard(to) ? 1 : -1) : b > a ? 1 : -1;
     const live = document.querySelector<HTMLElement>('#app .frame > .s'); const frame = document.querySelector<HTMLElement>('#app .frame');
     if (!live || !frame) { this.armed = false; return; }
     this.fromZ = this.zoom.z();
     const g = live.cloneNode(true) as HTMLElement;
     g.classList.add('ghost'); g.removeAttribute('id'); g.setAttribute('aria-hidden', 'true');
     g.querySelectorAll('video, audio').forEach((m) => m.remove());   // a copy must never play anything
+    // a copied canvas comes out blank (the chooser's book draws its pages on one): paint the live picture into the copy
+    const cv = live.querySelectorAll('canvas'), cc = g.querySelectorAll('canvas');
+    cv.forEach((c, i) => { try { cc[i].width = c.width; cc[i].height = c.height; cc[i].getContext('2d')?.drawImage(c, 0, 0); } catch { /* tainted or gone */ } });
     frame.appendChild(g); this.ghost = g; this.armed = true;
   }
 
@@ -68,12 +77,13 @@ export class ScreenTransition {
     }
     if (!this.armed || !this.on() || !g) { this.drop(); return; }
     const frame = screen.parentElement!, k = this.kind;
-    const ms = k === 'slide' ? ScreenTransition.SLIDE_MS : ScreenTransition.PAPER_MS;
+    const ms = k === 'grow' ? ScreenTransition.GROW_MS : k === 'slide' ? ScreenTransition.SLIDE_MS : ScreenTransition.PAPER_MS;
     frame.style.setProperty('--nav-dir', String(this.dir));
     frame.style.setProperty('--nav-ms', ms + 'ms');
     g.style.zoom = String(this.fromZ / (this.zoom.z() || 1));   // the copy keeps the size it had, whatever the new screen needs
-    screen.classList.add('nav-in', 'nav-' + k); g.classList.add('nav-out', 'nav-' + k);
-    const end = () => { screen.classList.remove('nav-in', 'nav-' + k); this.drop(); document.removeEventListener('pointerdown', end, true); clearTimeout(t); };
+    const back = this.dir < 0 ? ['nav-back'] : [];
+    screen.classList.add('nav-in', 'nav-' + k, ...back); g.classList.add('nav-out', 'nav-' + k, ...back);
+    const end = () => { screen.classList.remove('nav-in', 'nav-' + k, 'nav-back'); this.drop(); document.removeEventListener('pointerdown', end, true); clearTimeout(t); };
     const t = setTimeout(end, ms + 60);
     document.addEventListener('pointerdown', end, true);   // a tap lands on the new screen and cuts the movement short
   }

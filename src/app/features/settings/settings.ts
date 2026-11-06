@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { IdentityService, Person } from '../../core/identity/identity.service';
@@ -9,7 +9,6 @@ import { GAME_LIST } from '../games/lab/game-list';
 import { CourseService } from '../../core/state/course.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { LEVEL_AT, TITLES, levelOf } from '../../core/state/zinari';
-import { SettingsPanel } from './panel';
 
 type Stage = 'who' | 'confirm' | 'code' | 'students' | 'games' | 'course';
 const CODE = '064662118';
@@ -123,9 +122,6 @@ export class Settings {
   });
   permsOK(): boolean { return !!this.session.perms()?.mic; }
 
-  /** The chooser's games corner opens the panel straight at Wasanni. */
-  private readonly panel = inject(SettingsPanel);
-  private readonly asked = effect(() => { const a = this.panel.ask(); if (a) untracked(() => { this.open(); this.stage.set(a.stage); }); });
   open(): void { this.bus.stopAll(); this.stage.set('who'); this.pending.set(null); this.isOpen.set(true); if (this.session.debug) { this.refreshStatus(); this.fillDevices(); } }
   close(): void { this.isOpen.set(false); }
   backdrop(e: Event): void { if ((e.target as HTMLElement).id === 'admin') this.close(); }
