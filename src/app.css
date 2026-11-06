@@ -733,7 +733,6 @@ body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
 #app .s.wasanni .wrow{--r:0}
 #app .s.wasanni .wcard svg{display:block;width:100%;height:auto;overflow:visible;pointer-events:none}
 #app .s.wasanni .wcard:active{transform:scale(.96)}
-#app .s.wasanni .wempty{height:126px;border-radius:16px;border:4px dashed #D8C9A6;cursor:default}
 @keyframes wdrop{from{opacity:0;transform:translateY(-26px) scale(.8)}to{opacity:1;transform:none}}
 #app .s.wasanni>.wbook{position:absolute;right:0;bottom:0;width:84px;height:84px;border:0;padding:0;border-radius:100% 0 18px 0;background:#8E5BB5;cursor:pointer;z-index:10;-webkit-tap-highlight-color:transparent}
 #app .block.active .s.wasanni>.wbook{position:fixed;right:6px;bottom:6px}

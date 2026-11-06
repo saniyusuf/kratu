@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../../shared/paint';
 import { AudioBus } from '../../../core/audio/audio-bus.service';
 import { CourseService } from '../../../core/state/course.service';
-import { ProgressService } from '../../../core/state/progress.service';
 import { SessionService } from '../../../core/state/session.service';
 import { ZoomService } from '../../../core/zoom/zoom.service';
 import { Door, Ear } from '../../../shared/chrome/chrome';
@@ -19,9 +18,8 @@ interface Row { k: Kind; colour: string; head: SafeHtml; games: { id: string; na
 /**
  * Wasanni, the games board (Sani 2026-11-05): a row for each kind of game — letters, things, reading, spelling, numbers —
  * each opening with a picture of what it practises and scrolling sideways on its own; the rows scroll up and down when
- * they do not fit. Only the games the child has WON are on it (passed in the course; in the settings simulator, every
- * game step before the simulated one); a row with none is left out, and a child with none sees each row's empty frames.
- * A card opens its game in free play, and leaving or finishing it comes back here. The bottom-right corner holds the
+ * they do not fit. Every game is on it and every one can be played, won or not (Sani 2026-11-06). A card opens its
+ * game in free play, and leaving or finishing it comes back here. The bottom-right corner holds the
  * book: it, and the door, go home, the board shrinking back into the corner it grew from (ScreenTransition 'grow').
  */
 @Component({
@@ -37,7 +35,6 @@ interface Row { k: Kind; colour: string; head: SafeHtml; games: { id: string; na
       <span class="whead" [style.background]="r.colour" [innerHTML]="r.head"></span>
       <div class="wrail">
         @for (g of r.games; track g.id; let ci = $index) {<button class="wcard" [style.--c]="ci" [attr.aria-label]="g.name" [innerHTML]="g.svg" (click)="play(g.id)"></button>}
-        @if (!r.games.length) {@for (e of empties; track e) {<span class="wcard wempty" [style.--c]="e"></span>}}
       </div>
     </div>
   }
@@ -49,34 +46,25 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly router = inject(Router);
   private readonly course = inject(CourseService);
-  private readonly progress = inject(ProgressService);
   private readonly session = inject(SessionService);
   private readonly zoom = inject(ZoomService);
   private readonly san = inject(DomSanitizer);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly spotter = new Spotter(this.hostEl.nativeElement, this.zoom);
   readonly bookSvg = this.san.bypassSecurityTrustHtml(BOOK_COVER_SVG);
-  readonly empties = [0, 1, 2];
   readonly rows: Row[] = this.build();
   private asks = 0; private dead = false; private readonly off: (() => void)[] = [];
 
-  /** The games this child has won: a game step of the course passed (or the game passed outside the course), and in
-   *  the simulator every game step before the simulated one. */
-  private won(): Set<string> {
-    const at = this.course.at(), out = new Set<string>();
-    for (const s of this.course.steps) {
-      if (s.t !== 'game' || !s.game || !BOARD_GAMES[s.game]) continue;
-      if (this.progress.passed('s' + s.n) || this.progress.passed('g' + s.game) || (at != null && s.n < at)) out.add(s.game);
-    }
-    return out;
-  }
+  /** Every game, in each row in the order the course first meets it (Sani 2026-11-06: all games, all playable). */
   private build(): Row[] {
-    const won = this.won(), any = won.size > 0;
+    const first = new Map<string, number>();
+    for (const s of this.course.steps) if (s.t === 'game' && s.game && !first.has(s.game)) first.set(s.game, s.n);
+    const at = (id: string) => first.get(id) ?? Infinity;
     return KINDS.map((k) => ({
       k, colour: KIND_COLOUR[k], head: this.san.bypassSecurityTrustHtml(headHtml(k)),
-      games: GAME_LIST.filter((g) => won.has(g.id) && BOARD_GAMES[g.id]?.kind === k)
+      games: GAME_LIST.filter((g) => BOARD_GAMES[g.id]?.kind === k).sort((x, y) => at(x.id) - at(y.id))
         .map((g) => ({ id: g.id, name: g.name, svg: this.san.bypassSecurityTrustHtml(cardSvg(g.id, g.name)) })),
-    })).filter((r) => !any || r.games.length);   // none won yet: every row, with its empty frames
+    }));
   }
 
   ngAfterViewInit(): void {
