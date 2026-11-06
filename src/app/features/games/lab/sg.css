@@ -131,3 +131,45 @@
 @keyframes sg-hand{0%{opacity:1;transform:none}100%{opacity:1;transform:translate(48cqw,-1cqw)}}
 .glab .sg.stall .scoins{position:absolute;left:13.4cqw;top:54.4cqw;width:6cqw;display:flex;flex-wrap:wrap;gap:.15cqw;justify-content:center;z-index:2}
 .glab .sg.stall .scoins i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#C98A0C);display:block}
+
+/* ---- the spoken-letters keyboard (Àdìrẹ, Akwete): A–M at the left of Laila, N–Z at the right ---- */
+.glab .scr.sgs>.sgkb{position:absolute;left:8.5cqw;right:2.5cqw;bottom:2cqw;display:flex;justify-content:space-between;z-index:4;pointer-events:none}
+.glab .sgkb .sgkh{display:grid;grid-template-columns:repeat(7,4cqw);gap:.4cqw;padding:.8cqw;border-radius:1.6cqw;background:rgba(255,253,247,.9);box-shadow:0 .6cqw 1cqw rgba(30,18,6,.3);pointer-events:auto}
+.glab .sgkb .sgk{height:4cqw;border:.3cqw solid #C9B98F;border-radius:.8cqw;background:#fff;font:800 2.4cqw var(--disp,'Baloo 2'),sans-serif;color:#3B2E1E;padding:0;cursor:pointer}
+.glab .sgkb .sgk:active{transform:scale(.9)}
+.glab .sgkb .sgk.good{background:#4CAF50;border-color:#4CAF50;color:#fff}
+.glab .sgkb .sgk.bad{background:#FBE9E2;border-color:#C9A27A}
+.glab .sgkb.locked .sgk{opacity:.5;pointer-events:none}
+
+/* ---- Àdìrẹ: the white cloth on the board, its raffia ties, the dip into indigo, the line of finished cloths ---- */
+.glab .sg.adire .sgpic{left:auto;right:4cqw;translate:none;top:22cqw;width:11cqw}
+.glab .sg.adire .adcloth{position:absolute;left:50%;top:9cqw;width:50cqw;height:26cqw;translate:-50% 0;background:linear-gradient(#FBF8F0,#EDE6D6);border-radius:.6cqw;box-shadow:0 .6cqw 1cqw rgba(40,24,10,.25);display:grid;place-items:center;z-index:2;opacity:0;transform:translateY(-6cqw)}
+.glab .sg.adire .adcloth.in{transition:transform .7s ease-out,opacity .4s;opacity:1;transform:none}
+.glab .sg.adire .adslots{display:flex;gap:.6cqw;flex-wrap:nowrap}
+.glab .sg.adire .adslots .sgslot{width:min(6.4cqw,calc(44cqw / var(--n,4)));aspect-ratio:1;border-radius:50%;border:.3cqw dashed #C9B48A}
+.glab .sg.adire .adslots .sgslot.on{border-color:transparent}
+.glab .sg.adire .adslots .sgslot.wb{margin-left:1.6cqw}
+.glab .sg.adire .adcloth.dip{transition:transform .9s ease-in;transform:translateY(22cqw) scaleY(.4)}
+.glab .sg.adire .adcloth.blue{transition:transform .8s ease-out,background .1s;transform:none;background:radial-gradient(circle at 20% 30%,#3A5DA8 0 8%,transparent 9%),radial-gradient(circle at 70% 70%,#3A5DA8 0 9%,transparent 10%),linear-gradient(#1E3A7A,#163060)}
+.glab .sg.adire .adcloth.blue .sgslot svg circle{fill:#F4F1EA;stroke:#F4F1EA}
+.glab .sg.adire .adcloth.blue .sgslot svg path{opacity:0}
+.glab .sg.adire .adstain{position:absolute;inset:20% 30%;border-radius:50%;background:radial-gradient(#8A5A2A,rgba(138,90,42,0) 70%);opacity:0;transition:opacity .5s}
+.glab .sg.adire .adcloth.stain .adstain{opacity:.9}
+.glab .sg.adire .adcloth.away{transition:transform .9s ease-in,opacity .9s;transform:translateY(-8cqw);opacity:0}
+.glab .sg.adire .adline{position:absolute;left:50%;top:36.4cqw;translate:-50% 0;display:flex;gap:.6cqw;z-index:1}
+.glab .sg.adire .adline i{width:4cqw;height:5cqw;display:block;border-radius:0 0 .6cqw .6cqw;background:radial-gradient(circle at 40% 40%,#F4F1EA 0 18%,transparent 20%),linear-gradient(#1E3A7A,#163060);animation:sg-rise .6s ease-out}
+
+/* ---- Akwete: the loom, a woven band per letter ---- */
+.glab .sg.akwete .sgpic{left:auto;right:4cqw;translate:none;top:22cqw;width:11cqw}
+.glab .sg.akwete .akloom{position:absolute;left:50%;top:7.6cqw;translate:-50% 0;width:34cqw;height:34cqw;z-index:2;border:1.2cqw solid #6B4226;border-top-width:1.6cqw;border-bottom-width:1.6cqw;background:#3E2A1A;opacity:0}
+.glab .sg.akwete .akloom.in{transition:opacity .4s;opacity:1}
+.glab .sg.akwete .akwarp{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#E8DCC0 0 .25cqw,transparent .25cqw 1.4cqw)}
+.glab .sg.akwete .akrows{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column}
+.glab .sg.akwete .akrows .sgslot{height:min(4.4cqw,calc(31cqw / var(--n,4)));display:grid;place-items:center;border-bottom:.2cqw dashed rgba(232,220,192,.5)}
+.glab .sg.akwete .akrows .sgslot.wb{margin-top:.8cqw}
+.glab .sg.akwete .akrows .sgslot.on{background:var(--c);box-shadow:inset 0 .3cqw 0 rgba(255,255,255,.2),inset 0 -.3cqw 0 rgba(0,0,0,.25);animation:sg-weave .4s ease-out}
+@keyframes sg-weave{from{transform:scaleX(.1);transform-origin:0 50%}to{transform:none}}
+.glab .sg.akwete .akrows .sgslot b{font:800 min(3.4cqw,calc(24cqw / var(--n,4))) var(--disp,'Baloo 2'),sans-serif;color:#FFFDF7;text-shadow:0 .2cqw 0 rgba(0,0,0,.4)}
+.glab .sg.akwete .akloom.woven .akrows{background:repeating-linear-gradient(45deg,transparent 0 2cqw,rgba(255,253,247,.25) 2cqw 2.4cqw),repeating-linear-gradient(-45deg,transparent 0 2cqw,rgba(255,253,247,.25) 2cqw 2.4cqw)}
+.glab .sg.akwete .akloom.tangle .akrows{filter:saturate(.3) brightness(.7);animation:sg-no .2s linear 4 alternate}
+.glab .sg.akwete .akloom.away{transition:transform 1s ease-in,opacity 1s;transform:translate(30cqw,8cqw) scale(.3);opacity:0}

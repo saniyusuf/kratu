@@ -248,7 +248,7 @@ export const LANG: LangPack = {
   "The writing board · speaking": "The carved palace door · speaking",
   "The ferry · speaking": "The lagoon ferry · speaking",
   "Rain on the farm · speaking": "Rain on the cassava farm · speaking",
-  "The Kano dye pits · speaking": "Adire, the indigo cloth · speaking",
+  "The Kano dye pits · speaking": "Tie and dye · speaking",
   "The Sallah riders are coming! Say each letter as its horseman rides past.": "The Ojude Oba riders are coming! Say each letter as its horseman rides past.",
   "Beat the drum when you hear the right word.": "Say the word and the dundun plays.",
   "Load the groundnut sacks onto the lorry and count them.": "Load the cocoa sacks onto the lorry and count them.",

@@ -281,6 +281,117 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
+
+  /* ---------------- shared: spell a word by saying its letters (or pressing them) (Rubutu, speaking) ---------------- */
+  function sayLetters(run, done, o) {
+    const W = LW.length ? shuffle(LW) : shuffle(['mango', 'bread', 'horse', 'chair', 'table', 'spoon', 'plate', 'onion', 'water', 'orange'].filter((w) => K.en[w] && K.pic[w])).slice(0, 4);
+    let wi = 0, li = 0, words = 0, quiet = 0, stamp = '';
+    const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), key = (L) => '<button type="button" class="sgk" data-l="' + L + '">' + L + '</button>';
+    const kb = h('<div class="sgkb"><div class="sgkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="sgkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
+    const box = micBox(run); run.scr.appendChild(o.st); run.scr.appendChild(kb); run.scr.appendChild(box);
+    run.clock(secs(150, W.length, 4), () => done({ right: words, part: words / W.length }));
+    run.remind = () => say(K.en[W[wi]], run);
+    const pic = o.st.querySelector('.sgpic img'), slots = o.st.querySelector(o.slots);
+    function word() {
+      const w = letters(W[wi]); li = 0; run.item(W[wi]); pic.src = K.pic[W[wi]]; kb.classList.remove('locked');
+      slots.innerHTML = w.split('').map(() => '<span class="sgslot"></span>').join(''); gaps(slots, W[wi]); o.st.style.setProperty('--n', String(w.length));
+      if (o.start) o.start(wi); box.cue();
+      later(run, 700, () => { run.said = say(K.en[W[wi]], run); if (run.auto) go(); });
+    }
+    function go() { box.busy = true; Promise.resolve(run.said).then(() => later(run, 450, () => { if (!run.dead && !run.listening) { box.busy = false; box.go(); } })); }
+    function nextWord(ms) { later(run, ms, () => { wi++; if (wi >= W.length) done({ right: words, finished: true, part: words / W.length }); else word(); }); }
+    function take(got, kbtn) {
+      const w = letters(W[wi]);
+      for (let k = 0; k < got.length && li < w.length; k++) {
+        const L = String(got[k]).toUpperCase();
+        if (L === w[li]) { const sl = slots.children[li]; o.letter(sl, L, li); sl.classList.add('on'); if (kbtn) bump(kbtn, 'good', 500); li++; }
+        else { run.bad(); if (kbtn) bump(kbtn, 'bad', 700); li = -1; break; }
+      }
+      if (li < 0) { box.busy = true; kb.classList.add('locked'); mood(o.st, 'sad'); o.spoil(); nextWord(2600); return; }
+      if (li >= w.length) { box.busy = true; kb.classList.add('locked'); words++; run.good(slots); mood(o.st, 'cheer'); o.win(words); nextWord(o.winMs || 3600); return; }
+      if (run.auto && !kbtn) go(); else box.cue();
+    }
+    box.listen(() => { const w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, (r) => {
+      if (stamp !== wi + ':' + li || box.busy) return;
+      const got = r.value || [];
+      if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }
+      quiet = 0; take(got);
+    }, () => letters(W[wi]).slice(li).split(''));
+    kb.addEventListener('click', (e) => { const b = e.target.closest('.sgk'); if (b && !run.dead && !box.busy) { run.auto = false; take([b.dataset.l], b); } });
+    const onKey = (e) => { if (run.dead) { document.removeEventListener('keydown', onKey); return; }
+      const L = (e.key || '').toUpperCase(); if (L.length === 1 && L >= 'A' && L <= 'Z' && !box.busy) { e.preventDefault(); run.auto = false; take([L], kb.querySelector('[data-l="' + L + '"]')); } };
+    document.addEventListener('keydown', onKey); run.offs.push(() => document.removeEventListener('keydown', onKey));
+    word();
+  }
+
+  /* ================= Yoruba: Àdìrẹ, tie and dye at Itoku (Rubutu, speaking) =================
+     A white cloth on the dyer's board. Each letter said right is tied into the cloth with raffia (a little knot with its
+     letter). The whole word tied: the cloth goes down into the indigo pot, comes up blue, the ties are cut and the white
+     pattern shows where they were; it is hung on the line with the others. A wrong letter: a brown stain, the cloth is
+     taken away. */
+  function adireBack() {
+    let g = '<defs><linearGradient id="sg-ad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4EEF4"/><stop offset="1" stop-color="#F3E7CC"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-ad)"/>';
+    // the market lane of Itoku: lines of adire hung to dry, in every blue
+    for (let row = 0; row < 2; row++) { const y = 18 + row * 26; g += '<path d="M0 ' + y + ' Q160 ' + (y + 6) + ' 320 ' + y + '" stroke="#6B4226" stroke-width="1" fill="none"/>';
+      for (let k = 0; k < 11; k++) { const x = 4 + k * 29 + row * 12, c = ['#1E3A7A', '#2B4C9B', '#163060', '#3A5DA8'][(k + row) % 4];
+        g += '<path d="M' + x + ' ' + (y + 2) + ' h22 v' + (20 - row * 4) + ' q-11 3 -22 0 Z" fill="' + c + '"/>' + [0, 1, 2].map((j) => '<circle cx="' + (x + 5 + j * 6) + '" cy="' + (y + 8 + (j % 2) * 5) + '" r="2" fill="none" stroke="#C9D8F0" stroke-width=".8"/>').join(''); } }
+    g += '<path d="M0 96 H320 V200 H0 Z" fill="#C9AE84"/><path d="M0 96 H320" stroke="#A88E64" stroke-width="2"/>';
+    // the indigo pots sunk in the ground, a dyer bent over one, a woman selling folded cloth
+    [[22, 176], [62, 184], [262, 182]].forEach(([x, y]) => { g += '<ellipse cx="' + x + '" cy="' + y + '" rx="16" ry="5" fill="#7A4A26"/><ellipse cx="' + x + '" cy="' + y + '" rx="13" ry="3.6" fill="#0E1E44"/>'; });
+    g += person(36, 168, 66, { kind: 'woman', robe: '#2B4C9B', wrap: '#163060', hat: 'gele', hatc: '#3A5DA8', skin: 2, al: 'fwd', ar: 'fwd', cls: 'sgw' });
+    g += '<g class="sgopp">' + person(290, 170, 70, { kind: 'woman', robe: '#E8A317', wrap: '#1E3A7A', wrap2: '#3A5DA8', hat: 'gele', hatc: '#1E3A7A', beads: 1, skin: 3, al: 'hip', ar: 'hold' }) + '</g>';
+    g += '<g transform="translate(268 184)">' + [0, 1, 2, 3].map((k) => '<rect x="-12" y="' + (-k * 4) + '" width="24" height="4" rx="1" fill="' + ['#1E3A7A', '#2B4C9B', '#163060', '#3A5DA8'][k] + '"/>').join('') + '</g>';
+    return svgBack(g);
+  }
+  const knot = (L) => '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15" fill="#F4F1EA" stroke="#C9B48A" stroke-width="2"/><path d="M8 14 Q20 20 32 14 M8 26 Q20 20 32 26" stroke="#B88A3A" stroke-width="2.4" fill="none"/>' +
+    '<text x="20" y="26.4" text-anchor="middle" font-size="17" font-weight="800" font-family="Baloo 2,Arial,sans-serif" fill="#1E3A7A">' + L + '</text></svg>';
+  const adire = {
+    cls: 'sgs sg-adire', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg adire">' + adireBack() + '<div class="sgpic"><img alt=""></div><div class="adcloth"><div class="adslots"></div><i class="adstain"></i></div><div class="adpot"></div><div class="adline"></div></div>');
+      const cloth = st.querySelector('.adcloth'), line2 = st.querySelector('.adline');
+      sayLetters(run, done, { st, slots: '.adslots',
+        start: () => { cloth.className = 'adcloth'; void cloth.offsetWidth; cloth.classList.add('in'); },
+        letter: (sl, L) => { sl.innerHTML = knot(L); knock(520, .06, .3); },
+        spoil: () => { cloth.classList.add('stain'); knock(150, .2, .4); later(run, 1300, () => cloth.classList.add('away')); },
+        // down into the indigo, up blue, the ties cut: the pattern shows; then it joins the line
+        win: (n) => { later(run, 300, () => cloth.classList.add('dip')); later(run, 1400, () => cloth.classList.add('blue'));
+          later(run, 2400, () => { cloth.classList.add('away'); line2.insertAdjacentHTML('beforeend', '<i style="--k:' + (n - 1) + '"></i>'); }); },
+        winMs: 3400 });
+    },
+  };
+
+  /* ================= Igbo: Akwete, the upright loom (Rubutu, speaking) =================
+     Each letter said right weaves one band across the loom, its letter woven in; the whole word woven and the weaver
+     beats it tight, the Akwete diamonds come up in the cloth, she cuts it off and folds it onto her pile. A wrong letter
+     tangles the thread and the piece is cut away. */
+  function akweteBack() {
+    let g = '<defs><linearGradient id="sg-aw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EADCC8"/><stop offset="1" stop-color="#F3E7D2"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-aw)"/>';
+    // the weaving shed: a thatched roof on posts, other looms with cloth in progress, the women of Akwete at work
+    g += '<path d="M0 0 H320 V24 Q160 34 0 24 Z" fill="#B8925A"/>' + Array.from({ length: 40 }, (_, k) => '<path d="M' + (k * 8) + ' 0 L' + (k * 8 + 3) + ' 28" stroke="#8E6A3A" stroke-width="1" opacity=".6"/>').join('');
+    [[30, '#B23A2E'], [280, '#1F4E2E']].forEach(([x, c]) => { g += '<rect x="' + (x - 22) + '" y="40" width="4" height="90" fill="#6B4226"/><rect x="' + (x + 18) + '" y="40" width="4" height="90" fill="#6B4226"/><rect x="' + (x - 22) + '" y="40" width="44" height="4" fill="#6B4226"/>' +
+      Array.from({ length: 10 }, (_, k) => '<path d="M' + (x - 16 + k * 4) + ' 44 V100" stroke="#E8DCC0" stroke-width=".8"/>').join('') + [0, 1, 2, 3].map((k) => '<rect x="' + (x - 18) + '" y="' + (100 + k * 6) + '" width="36" height="6" fill="' + [c, '#E8A317', '#1E1E24', '#F4F1EA'][k] + '"/>').join(''); });
+    g += '<path d="M0 132 H320 V200 H0 Z" fill="#B48A5A"/><path d="M0 132 H320" stroke="#8E6A3A" stroke-width="2"/>';
+    g += person(30, 172, 58, { kind: 'woman', robe: '#F4F1EA', wrap: '#B23A2E', hat: 'tie', hatc: '#E8A317', skin: 1, al: 'fwd', ar: 'fwd', cls: 'sgw' });
+    g += '<g class="sgopp">' + person(292, 176, 72, { kind: 'woman', robe: '#E8A317', wrap: '#1F4E2E', wrap2: '#B23A2E', hat: 'tie', hatc: '#B23A2E', beads: 1, skin: 3, al: 'hold', ar: 'hip' }) + '</g>';
+    g += '<g transform="translate(262 186)">' + [0, 1, 2].map((k) => '<rect x="-14" y="' + (-k * 5) + '" width="28" height="5" rx="1" fill="' + ['#B23A2E', '#1F4E2E', '#E8A317'][k] + '"/>').join('') + '</g>';
+    return svgBack(g);
+  }
+  const BANDS = ['#B23A2E', '#E8A317', '#1F4E2E', '#1E1E24', '#7A2E5C', '#F4F1EA'];
+  const akwete = {
+    cls: 'sgs sg-akwete', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg akwete">' + akweteBack() + '<div class="sgpic"><img alt=""></div><div class="akloom"><div class="akwarp"></div><div class="akrows"></div></div></div>');
+      const loom = st.querySelector('.akloom');
+      sayLetters(run, done, { st, slots: '.akrows',
+        start: () => { loom.className = 'akloom'; void loom.offsetWidth; loom.classList.add('in'); },
+        letter: (sl, L, k) => { sl.style.setProperty('--c', BANDS[k % BANDS.length]); sl.innerHTML = '<b>' + L + '</b>'; knock(240, .08, .4); later(run, 90, () => knock(240, .06, .3)); },
+        spoil: () => { loom.classList.add('tangle'); knock(120, .25, .4); later(run, 1300, () => loom.classList.add('away')); },
+        win: () => { knocks(run, 4, 260, 160); later(run, 700, () => loom.classList.add('woven')); later(run, 2300, () => loom.classList.add('away')); },
+        winMs: 3400 });
+    },
+  };
+
   /* ================= Yoruba: Ayò Ọlọ́pọ́n, the ayo board ================= */
   const seed = (Lt) => '<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="22" rx="16" ry="14.5" fill="#5A3A22"/><ellipse cx="20" cy="20" rx="15" ry="14" fill="#C9B48A"/>' +
     '<ellipse cx="15" cy="14" rx="6" ry="3.6" fill="#fff" opacity=".35"/><path d="M8 25 Q20 34 32 25" stroke="#8C7550" stroke-width="1.4" fill="none" opacity=".6"/>' +
@@ -462,5 +573,5 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
-  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall } : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall };
+  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall, 'j-rini': adire } : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall, 'j-rini': akwete };
 }
