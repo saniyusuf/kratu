@@ -284,7 +284,8 @@ const qrg = (id, c, o0, o1, extra = '') => '<radialGradient id="' + Q + '-' + id
 /* a tiny seeded random so the coals and meat look the same every time */
 const rnd = (s) => () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
 
-export function stand(): string {
+export function stand(o: any = null): string {   // o (the Yoruba and Igbo builds only): { item, sign, goods }
+  const item = (o && o.item) || stick;
   const r = rnd(7);
   const SK = '#6B4022', SKD = '#4A2A14', SKL = '#9A5E30';
   // the coal bed, seen from a little above: lumps with glowing cracks
@@ -295,7 +296,7 @@ export function stand(): string {
   let sticks = '';
   for (let i = 0; i < 14; i++) { const x = 40 + i * 13.3 + (r() - .5) * 2, lean = (r() - .5) * 2.4;
     if (Math.abs(x - 149) < 4) continue;   // his hand holds this one (drawn with the hand)
-    sticks += stick(x, lean, r); }
+    sticks += item(x, lean, r); }
   // the man, behind the trough (his lower half shows under it)
   const legs = '<path d="M98.6 192 L97.4 207 L126.6 207 L125.4 192 Z" fill="#CFC4A8"/><path d="M114 192 L126.6 207 L125.4 192 Z" fill="#000" opacity=".12"/>' +
     '<path d="M100.6 206 L100.2 224 H108.6 L109.2 206 Z M114.8 206 L115.4 224 H123.8 L123.4 206 Z" fill="#3A3A42"/><path d="M119 206 L119.6 224 H123.8 L123.4 206 Z" fill="#000" opacity=".2"/>' +
@@ -335,7 +336,7 @@ export function stand(): string {
     '<ellipse cx="87.8" cy="128.2" rx="5.6" ry="2.6" transform="rotate(-28 87.8 128.2)" fill="#C7B994"/>' + fan +
     '<path d="M70.6 136.6 Q72.6 134 75.4 135.4 Q77.8 137.6 76.6 140.8 Q74.4 142.4 72 141.2 Q70 139.4 70.6 136.6 Z" fill="' + SK + '"/><path d="M71.4 137.2 q1.4 -.6 2.4 .4 M71 139 q1.4 -.4 2.4 .6" stroke="' + SKD + '" stroke-width=".5" fill="none"/>';
   // his left arm (viewer's right): turning a stick, its handle in his fingers
-  const held = stick(149, -.6, rnd(3));
+  const held = item(149, -.6, rnd(3));
   const armR = '<path d="M130.6 101.8 Q137.8 104.4 139.4 114.6 L141.6 126.4 Q137.2 129.4 132 127.4 L130.8 116 Z" fill="#C4B898"/>' +
     '<path d="M131.6 108 Q136 116 137.4 126.6" stroke="#000" stroke-opacity=".16" stroke-width=".7" fill="none"/>' +
     '<path d="M132 125.6 Q138.4 140 143.6 154.8 L151 152.4 Q146 138 142.6 124.6 Z" fill="' + SKD + '"/><path d="M144.6 154.4 L150.6 152.6 Q148 144 146 138 Q144 146 144.6 154.4 Z" fill="' + QU('glowup') + '"/>' +
@@ -354,7 +355,7 @@ export function stand(): string {
     '<g fill="#4A3C38">' + [70.6, 122.6, 174.6, 77.6, 129.6, 181.6].map((x, i) => '<circle cx="' + x + '" cy="' + (i < 3 ? 162 : 188) + '" r=".9"/>').join('') + '</g>' +
     // SUYA, brushed in cream paint, a red stripe under it
     '<path d="M86 184.6 Q126 181.4 168 184.2" stroke="#B3261E" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".85"/>' +
-    '<text x="127" y="180" text-anchor="middle" transform="rotate(-1.5 127 176)" font-family="\'Arial Black\',\'Baloo 2\',sans-serif" font-weight="900" font-size="18" letter-spacing="2.4" fill="#EDE0BE" opacity=".9">SUYA</text>' +
+    '<text x="127" y="180" text-anchor="middle" transform="rotate(-1.5 127 176)" font-family="\'Arial Black\',\'Baloo 2\',sans-serif" font-weight="900" font-size="18" letter-spacing="2.4" fill="#EDE0BE" opacity=".9">' + ((o && o.sign) || 'SUYA') + '</text>' +
     // the angle-iron legs, a shelf bar, soft shadows where they meet the ground
     '<path d="M41 194 h4 v33 h-4 Z M207 194 h4 v33 h-4 Z" fill="#1E1614"/><path d="M33 213 H219 V216 H33 Z" fill="#241A16"/>' +
     '<path d="M26.4 194 h6.4 v39 h-6.4 Z M219.2 194 h6.4 v39 h-6.4 Z" fill="' + QU('leg') + '"/>';
@@ -369,11 +370,12 @@ export function stand(): string {
   const table = '<path d="M238 162 v70 h3.6 v-70 Z M291 162 v70 h3.6 v-70 Z" fill="#4A3020"/><path d="M243 166 v62 h2.4 v-62 Z M286 166 v62 h2.4 v-62 Z" fill="#2E1E14"/>' +
     '<path d="M234 157.6 H298 V162 H234 Z" fill="' + QU('wood') + '"/>' + grain + '<path d="M236 162 H296 V167 H236 Z" fill="#3E2818"/>' +
     '<path d="M237 157.8 L239 150.6 L261 150 L263.6 157.6 Z" fill="#D6CFBE"/><path d="M239 152 h21 M238.6 153.6 h22 M238.2 155.2 h23" stroke="#8A8478" stroke-width=".5" stroke-dasharray="3 1 5 1"/>' +
+    ((o && o.goods != null) ? o.goods : (
     '<path d="M263 157.8 Q272 154 283.6 157.8 Z" fill="#CFC8B4"/>' + slices +
     '<g fill="none" stroke="#E8D6E8" stroke-width=".6"><ellipse cx="268" cy="152.6" rx="1.6" ry="1"/><ellipse cx="275" cy="151.6" rx="1.8" ry="1.1"/><ellipse cx="279.6" cy="153.6" rx="1.4" ry=".9"/></g>' +
     '<path d="M285 152.4 L286.6 157.6 H295.4 L297 152.4 Z" fill="#F2EEE4"/><path d="M285 152.4 H297" stroke="#1F5FA8" stroke-width="1" stroke-linecap="round"/><path d="M286 152.4 Q291 147.6 296 152.4 Z" fill="#9A3A16"/>' +
     '<g fill="#5A1A08"><circle cx="289.6" cy="151" r=".4"/><circle cx="292.4" cy="150.4" r=".4"/><circle cx="291" cy="149.6" r=".35"/></g>' +
-    '<path d="M244 159.4 L262 158.6" stroke="#B9BEC6" stroke-width="1.4" stroke-linecap="round"/><path d="M262 158.6 L268 158.4" stroke="#3A2618" stroke-width="2" stroke-linecap="round"/>';
+    '<path d="M244 159.4 L262 158.6" stroke="#B9BEC6" stroke-width="1.4" stroke-linecap="round"/><path d="M262 158.6 L268 158.4" stroke="#3A2618" stroke-width="2" stroke-linecap="round"/>'));
   const smoke = '<g class="sy5-smk"><ellipse cx="96" cy="128" rx="10" ry="7" fill="' + QU('puff') + '"/><ellipse cx="90" cy="112" rx="13" ry="9" fill="' + QU('puff') + '" opacity=".7"/></g>' +
     '<g class="sy5-smk sy5-s2"><ellipse cx="170" cy="130" rx="11" ry="7" fill="' + QU('puff') + '"/><ellipse cx="176" cy="114" rx="14" ry="9" fill="' + QU('puff') + '" opacity=".7"/></g>';
   const ground = '<ellipse cx="128" cy="233" rx="126" ry="9" fill="' + QU('pool') + '"/><ellipse cx="128" cy="232.6" rx="110" ry="5" fill="' + QU('shadow') + '"/>' +

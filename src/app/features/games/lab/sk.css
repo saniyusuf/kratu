@@ -49,4 +49,8 @@
 @keyframes sk5-cl{to{transform:rotate(-14deg)}}
 @keyframes sk5-cr{to{transform:rotate(14deg)}}
 @keyframes sk5-no{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-@media (prefers-reduced-motion:reduce){.glab .gbg .sk5 *{animation:none!important}}
+/* the pieces inside the games (south-art.ts): the band's sticks swing from the shoulder, the age-grade dances in */
+.glab .sallah.sk5b .drumarm{transform-box:view-box}
+.glab .sk5r .x-fig.dance{animation:sk5-dance .9s ease-in-out infinite alternate}
+.glab .sk5r svg+svg .x-fig.dance{animation-delay:-.45s}
+@media (prefers-reduced-motion:reduce){.glab .gbg .sk5 *,.glab .sk5r *{animation:none!important}}

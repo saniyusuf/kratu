@@ -104,7 +104,7 @@ export function kalanguScene(): string {
 /* ---------------- people ---------------- */
 interface Fig {
   kind: 'man' | 'woman' | 'girl'; skin: number; robe: string; robe2: string; trim: string;
-  hat?: 'hula' | 'zanna' | 'borno' | 'turban' | 'kallabi' | 'hijab'; hatc?: string; hatc2?: string; hatc3?: string; capside?: number;
+  hat?: 'hula' | 'zanna' | 'borno' | 'turban' | 'kallabi' | 'hijab'; hatc?: string; hatc2?: string; hatc3?: string; capside?: number; hatsvg?: string;
   wrap?: string; wrap2?: string; shawl?: string;
   al?: string; ar?: string;              // arm paths (shoulder first) or a pose name
   hl?: string; hr?: string;              // what each hand holds (drawn inside the arm, so it moves with it)
@@ -136,6 +136,7 @@ function head(o: Fig, sk) {
   if (o.hat === 'kallabi') front = `<path d="M17 21 Q14 5 30 4 Q46 5 43 21 Q36 14 30 15 Q24 14 17 21 Z" fill="${o.hatc}"/>` +
     `<path d="M23 7 Q16 -6 27 -3 Q30 -10 34 -3 Q45 -7 37 7 Z" fill="${o.hatc}"/><path d="M27 -3 Q29 3 30 6 M34 -3 Q32 3 31 6" stroke="${o.hatc2}" stroke-width="1" fill="none"/>` +
     `<path d="M18 16 Q30 9 42 16" stroke="${o.hatc2}" stroke-width="1.4" fill="none"/>`;
+  if (o.hatsvg) front = o.hatsvg;   // the Yoruba and Igbo builds draw their own hats (skin.*.ts); the Hausa never sets it
   if (o.hat === 'hijab') front = `<path d="M17 24 Q16 8 30 8 Q44 8 43 24 Q38 16 30 16 Q22 16 17 24 Z" fill="${o.hatc}"/>`;
   const r = girl ? 10.5 : 11, cy = girl ? 26 : 25;
   return `<g class="kl-head" style="transform-origin:30px ${cy + r}px">${back}` +
@@ -176,7 +177,7 @@ function body(o: Fig) {
     `<path d="M9 124 Q30 131 51 124" stroke="${o.trim}" stroke-width="1.6" fill="none"/>`);
 }
 /** one standing figure in a 60×140 box, feet on y 134; `scale` shrinks a child about her feet */
-function figure(o: Fig, cls = '', scale = 1): string {
+export function figure(o: Fig, cls = '', scale = 1): string {
   const sk = SKIN[o.skin % 4], sleeve = o.kind === 'woman' ? o.robe : o.robe, w = o.kind === 'man' ? 10 : 8;
   const inner = `<ellipse cx="30" cy="135" rx="24" ry="3.4" fill="rgba(40,24,10,.25)"/>` +
     `<g class="kl-body" style="transform-origin:30px 134px">${o.behind || ''}` +
@@ -199,7 +200,7 @@ export function dancers(): string {
 
 /* ---------------- the band ---------------- */
 /** the kalangu, the hourglass talking drum, lying across: two heads, the cords between them, a leather band at the waist */
-function talkingDrum(x, y, len = 26, r = 9) {
+export function talkingDrum(x, y, len = 26, r = 9) {
   let cords = ''; for (let k = -3; k <= 3; k++) cords += `<path d="M${x} ${y + k * r / 3.4} L${x + len} ${y - k * r / 3.4}" stroke="#F1E2C0" stroke-width=".7"/>`;
   return `<g class="kl-drum" style="transform-origin:${x + len / 2}px ${y}px">` +
     `<path d="M${x} ${y - r} Q${x + len / 2} ${y - r * .3} ${x + len} ${y - r} L${x + len} ${y + r} Q${x + len / 2} ${y + r * .3} ${x} ${y + r} Z" fill="url(#k4-wood)"/>` + cords +
