@@ -49,6 +49,10 @@
 @keyframes sk5-cl{to{transform:rotate(-14deg)}}
 @keyframes sk5-cr{to{transform:rotate(14deg)}}
 @keyframes sk5-no{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+/* Dánfó (Yoruba j-jirgi): the jetty under the waiting people becomes the pavement kerb */
+.glab .scr.jirgi .fstage:has(.sk5bus) .bank3::before{background:linear-gradient(#D2CCBE,#B4AC9E);border-radius:0;box-shadow:0 .6cqw 0 rgba(30,20,8,.25)}
+.glab .scr.jirgi .fstage:has(.sk5bus) .bank3::after{display:none}
+.glab .scr.jirgi .ferry .sk5bus{animation-duration:.6s}
 /* the pieces inside the games (south-art.ts): the band's sticks swing from the shoulder, the age-grade dances in */
 .glab .sallah.sk5b .drumarm{transform-box:view-box}
 .glab .sk5r .x-fig.dance{animation:sk5-dance .9s ease-in-out infinite alternate}

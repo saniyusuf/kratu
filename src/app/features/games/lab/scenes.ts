@@ -228,6 +228,30 @@ export function makeScenes(L: 'yo' | 'ig'): Record<string, () => string> {
   }
 
   /* ---------------- Karatu: the ferry (Jirgin ruwa): the Lagos ferry jetty / the Niger at Onitsha under the bridge ---------------- */
+  /* Yoruba (Dánfó, Sani 2026-11-06 "not direct substitutes"): a Lagos bus stop. The danfo pulls up on the road across the
+     middle with its word on the side; the people wait on the near pavement under the shelter, the street behind them:
+     two-storey shophouses with balconies and painted signs, a keke, hawkers with trays on their heads, the city beyond. */
+  function busStop() {
+    const k = kt('bus'), f = k.folk;
+    const city = [10, 40, 66, 96, 130, 170, 204, 236, 268, 296].map((x, i) => '<rect x="' + x + '" y="' + (34 + (i * 13) % 22) + '" width="' + (18 + i % 3 * 6) + '" height="' + (52 - (i * 13) % 22) + '" fill="' + ['#A9B4C0', '#C2CAD2', '#93A0AE'][i % 3] + '"/>' +
+      Array.from({ length: 4 }, (_, j) => '<path d="M' + (x + 3) + ' ' + (40 + (i * 13) % 22 + j * 9) + ' h' + (12 + i % 3 * 6) + '" stroke="#E8EEF4" stroke-width="1.6" stroke-dasharray="2 2" opacity=".7"/>').join('')).join('');
+    const SIGNS = ['MAMA T. PROVISIONS', 'GOD IS GOOD', 'PHONE & CHARGING', 'ALHAJA FABRICS', 'BUKA'];
+    let shops = ''; for (let i = 0; i < 5; i++) { const x = -4 + i * 66, w = 62, c = ['#E9D7B4', '#D6E2C8', '#F0D9C8', '#DCD6EA', '#F2E3B0'][i];
+      shops += '<path d="M' + x + ' 80 V44 H' + (x + w) + ' V80 Z" fill="' + c + '"/><path d="M' + (x - 2) + ' 44 L' + (x + 4) + ' 38 H' + (x + w - 4) + ' L' + (x + w + 2) + ' 44 Z" fill="url(#' + k.q + 'zinc)"/>' +
+        '<path d="M' + x + ' 60 H' + (x + w) + ' V62 H' + x + ' Z" fill="#8A6A46"/>' + [8, 26, 44].map((dx) => '<rect x="' + (x + dx) + '" y="48" width="9" height="10" fill="#5A6A72"/><path d="M' + (x + dx) + ' 58 h9" stroke="#3A2A1E" stroke-width="1.2"/>').join('') +
+        '<path d="M' + (x + 1) + ' 62 V58 M' + (x + w - 1) + ' 62 V58" stroke="#5A3A22"/><path d="M' + (x + 1) + ' 58 H' + (x + w - 1) + '" stroke="#5A3A22" stroke-width=".8"/>' +
+        '<rect x="' + (x + 6) + '" y="64" width="' + (w - 12) + '" height="7" fill="' + ['#C62828', '#1F3A78', '#2E7D5A', '#7A2E5C', '#E8A317'][i] + '"/><text x="' + (x + w / 2) + '" y="69.6" font-size="4" text-anchor="middle" font-family="Arial Black,Baloo 2,sans-serif" fill="#fff">' + SIGNS[i] + '</text>' +
+        '<rect x="' + (x + 22) + '" y="72" width="16" height="8" fill="#3A2A1E"/>'; }
+    const road = '<path d="M0 80 H320 V104 H0 Z" fill="#5E5A56"/><path d="M0 92 H320" stroke="#F2E8C8" stroke-width="1" stroke-dasharray="10 8"/><path d="M0 80 H320" stroke="#9A948C" stroke-width="1.4"/>' +
+      '<path d="M0 104 H320 V109 H0 Z" fill="#C9C2B4"/><path d="M0 104 H320" stroke="#8A847A" stroke-width=".8"/>' + Array.from({ length: 16 }, (_, i) => '<path d="M' + (i * 20) + ' 104 v5" stroke="#E8E2D2" stroke-width="2"/>').join('');
+    // the shelter on the near pavement (the BRT-style roof on two posts), and the waiting area
+    const shelter = '<path d="M4 120 H96 L92 114 H8 Z" fill="#1F6B4A"/><path d="M10 120 V166 M90 120 V166" stroke="#5A6A72" stroke-width="2"/><path d="M8 120 V96" stroke="#5A6A72" stroke-width="1.6"/><rect x="0" y="88" width="18" height="10" rx="1" fill="#F6C12B" stroke="#1F6B4A" stroke-width=".8"/><text x="9" y="92.4" font-size="3.4" text-anchor="middle" font-family="Arial Black,sans-serif" fill="#1B1B1B">BUS</text><text x="9" y="96.4" font-size="3.4" text-anchor="middle" font-family="Arial Black,sans-serif" fill="#1B1B1B">STOP</text>';
+    const hawkers = f(1, 186, 150, 30, { kind: 'woman', load: '<ellipse rx="10" ry="2.4" fill="#B5BCC0"/><g fill="#E8A317"><circle cx="-4" cy="-2" r="2"/><circle cx="0" cy="-2.6" r="2"/><circle cx="4" cy="-2" r="2"/></g>', al: 'load' }) +
+      f(4, 222, 152, 28, { kind: 'man', robe: '#E8A317', hat: 'fila', hatc: '#1F3A78', hr: '<rect x="-2" y="-14" width="5" height="16" fill="#1F6B4A"/>' }) + f(2, 270, 148, 22, { kind: 'boy' });
+    return sceneSvg('bus', k.defs(), sky(k, 'day') + sun(282, 22, 8) + city + '<path d="M0 86 H320" stroke="#7A8690" stroke-width="2"/>' + shops + road + keke(300, 100, 1.2, '#F6C12B') +
+      ground(109, '#C9B48A', '#B9A27A') + '<path d="M0 109 H320 V120 H0 Z" fill="#D2CCBE"/>' + shelter + hawkers + tufts(150, 196, 10, '#8A7A4A'));
+  }
+
   function ferry() {
     const k = kt('fer'), f = k.folk;
     const far = Y ? [20, 50, 76, 110, 140].map((x, i) => '<rect x="' + x + '" y="' + (70 - i * 5 % 18) + '" width="' + (14 + i % 3 * 4) + '" height="' + (34 + i * 5 % 18) + '" fill="' + ['#9AA6B2', '#B5BEC6', '#8A96A2'][i % 3] + '"/>').join('') +
@@ -294,7 +318,7 @@ export function makeScenes(L: 'yo' | 'ig'): Record<string, () => string> {
 
   return {
     'j-durbar': durbar, 'j-abubuwa': fishing, 'j-magana': drum, 'j-dillali': caller, 'j-nemo': rush, 'j-shayi': seller, 'j-gyada': stacks, 'j-shanu': livestock,
-    'j-garke': herd, 'j-suya': night, 'j-karatu': canoes, 'j-allo': school, 'j-jirgi': ferry, 'j-ruwa': rain, 'j-rubutu': pots, 'j-rubutu-say': build,
+    'j-garke': herd, 'j-suya': night, 'j-karatu': canoes, 'j-allo': school, 'j-jirgi': Y ? busStop : ferry, 'j-ruwa': rain, 'j-rubutu': pots, 'j-rubutu-say': build,
     'j-marubuci': post, 'j-rini': dye,
   };
 }

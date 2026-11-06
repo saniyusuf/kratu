@@ -215,6 +215,39 @@ export function makeArt(L) {
       '<span class="kl-notes"><i>♪</i><i>♫</i><i>♪</i><i>♫</i></span>';
   }
 
+  /* ---------------- the people waiting to travel (Hausa: JR.waiter), and the Lagos danfo (Hausa: JR.engineBoat) ---------------- */
+  const WAITERS = Y
+    ? [{ kind: 'woman', robe: '#E8A317', wrap: '#1F3A78', hat: 'gele', hatc: '#1F3A78', load: '<ellipse rx="8" ry="2.4" fill="#B5BCC0"/><path d="M-6 -2 Q0 -7 6 -2" fill="#E8A317"/>' }, { kind: 'man', robe: '#F4EBD0', hat: 'fila', hatc: '#2E5E8A', hr: '<rect x="-3" y="0" width="7" height="9" rx="1" fill="#5A3A22"/>' },
+      { kind: 'boy', robe: '#2E7D5A', hat: 'hair' }, { kind: 'woman', robe: '#C2185B', wrap: '#7A2E5C', wrap2: '#E8B830', hat: 'gele', hatc: '#C2185B', ipele: '#7A2E5C' }, { kind: 'man', robe: '#5B8FC9', hat: 'gobi', hatc: '#7A2E5C', agbada: '#1F3A78' }]
+    : [{ kind: 'woman', robe: '#F4F1EA', wrap: '#8E1B2A', wrap2: '#E8B830', hat: 'tie', hatc: '#8E1B2A', beads: 1, load: '<ellipse rx="8" ry="2.4" fill="#C62828"/>' }, { kind: 'man', robe: '#B71C1C', hat: 'okpu', hatc: '#1E1E24', hatc2: '#B71C1C', hr: '<rect x="-3" y="0" width="7" height="9" rx="1" fill="#5A3A22"/>' },
+      { kind: 'boy', robe: '#E8A317', hat: 'hair' }, { kind: 'woman', robe: '#1F6B4A', wrap: '#E8A317', hat: 'tie', hatc: '#E8A317' }, { kind: 'man', robe: '#F4F1EA', hat: 'okpuf', hatc: '#B71C1C', hatc2: '#1E1E24', wrapper: '#1F4E2E', beads: 1 }];
+  const waitAt = (k) => ({ ...WAITERS[k % WAITERS.length], skin: k });
+  const jrWaiter = (k) => '<svg class="jr4w" viewBox="-6 -14 72 150" overflow="visible" aria-hidden="true">' + person(30, 134, 140, { ...waitAt(k), cls: 'w-fig' }) + '</svg>';
+  /** the danfo, the yellow Lagos minibus with its black stripes, side door slid open, the conductor at the door; the word
+      painted big on a white panel on its side (420 x 165 like the boat, the door where the boat's plank meets the gunwale) */
+  function danfoBus(word, pax) {
+    const n = word.length, W = Math.max(150, Math.min(250, n * 24)), cx = 262, x = cx - W / 2, fs = Math.min(38, Math.floor(W / (n * .72)));
+    const fit = n > 7 ? ' textLength="' + (W - 12) + '" lengthAdjust="spacingAndGlyphs"' : '';
+    let win = ''; for (let i = 0; i < 4; i++) { const wx = 150 + i * 56; win += '<rect x="' + wx + '" y="36" width="48" height="34" rx="4" fill="#9FC8DA"/><path d="M' + (wx + 4) + ' 66 L' + (wx + 20) + ' 40" stroke="#fff" stroke-width="3" opacity=".35"/>' +
+      '<circle cx="' + (wx + 24) + '" cy="52" r="7" fill="' + SKT[i % 6] + '"/><path d="M' + (wx + 12) + ' 70 Q' + (wx + 24) + ' 58 ' + (wx + 36) + ' 70 Z" fill="' + ['#7A2E5C', '#2E5E8A', '#E8A317', '#2E7D5A'][i] + '"/>'; }
+    const wheel = (wx) => '<circle cx="' + wx + '" cy="140" r="20" fill="#1E1E1E"/><circle cx="' + wx + '" cy="140" r="9" fill="#9E9E9E"/><circle cx="' + wx + '" cy="140" r="3" fill="#4A4A4A"/>';
+    return '<svg class="eb ' + 'sk5bus" viewBox="0 0 420 165" overflow="visible" aria-hidden="true">' +
+      '<ellipse cx="220" cy="160" rx="200" ry="6" fill="rgba(0,0,0,.3)"/>' +
+      '<g class="eb-wake"><circle cx="412" cy="132" r="6" fill="#B9B4AC" opacity=".6"/><circle cx="424" cy="126" r="8" fill="#C9C4BC" opacity=".4"/></g>' +
+      '<path d="M22 140 V58 Q22 26 52 22 L380 18 Q404 18 406 40 L408 140 Z" fill="#F6C12B"/><path d="M22 112 H408 V122 H22 Z M22 128 H408 V132 H22 Z" fill="#1B1B1B"/>' +
+      '<path d="M300 20 L380 18 Q404 18 406 40 L408 140 L330 140 Q340 80 300 20 Z" fill="#1a0e06" opacity=".08"/><path d="M26 30 Q40 22 120 21" stroke="#fff" stroke-width="3" opacity=".35" fill="none"/>' +
+      '<path d="M30 36 Q30 30 38 30 L62 30 L62 70 L30 70 Z" fill="#9FC8DA"/><path d="M34 66 L52 34" stroke="#fff" stroke-width="3" opacity=".35"/>' +
+      // the open door: the dark doorway, the step, the conductor leaning out with one hand on the rail
+      '<path d="M76 30 H134 V140 H76 Z" fill="#2A2A2A"/><path d="M76 118 H134 V124 H76 Z" fill="#4A4A4A"/><path d="M136 30 H142 V140 H136 Z" fill="#E0A81E"/>' +
+      person(96, 124, 86, { kind: 'man', skin: 2, robe: '#2E5E8A', trou: '#3B3B3B', hat: 'hair', ar: 'up', al: 'wave', alc: 'x-wv' }) +
+      win + '<g class="eb-board"><rect x="' + (x - 4) + '" y="74" width="' + (W + 8) + '" height="36" rx="4" fill="#FFFFFF" stroke="#1B1B1B" stroke-width="3"/>' +
+      '<text x="' + cx + '" y="' + (92 + Math.round(fs * .36)) + '" text-anchor="middle" font-size="' + fs + '" font-weight="900" letter-spacing="2"' + fit + ' fill="#1B1B1B" style="font-family:var(--disp,sans-serif)">' + word + '</text></g>' +
+      '<rect x="398" y="96" width="10" height="12" rx="2" fill="#FF8A3A"/><rect x="20" y="96" width="8" height="14" rx="2" fill="#FFF6C8"/><path d="M18 136 H60 V142 H18 Z M370 136 H410 V142 H370 Z" fill="#3A3A3A"/>' +
+      wheel(70) + wheel(350) +
+      '<g class="eb-pax">' + person(170, 70, 34, { ...waitAt(pax), al: 'down', ar: 'down' }) + '</g>' +
+      '<g class="eb-plank"><path d="M84 124 L134 124 L130 130 L80 130 Z" fill="#6A6A6A"/></g></svg>';
+  }
+
   /* ---------------- the evening grill (Hausa: SY.stand): boli, or roast corn with ube ---------------- */
   function boli(x, lean, r) {   // a ripe plantain roasting on the grill, lying front to back, charred in patches
     const x0 = x + 1.6 + lean, x1 = x - 1.4 - lean * .4, w = 2.6 + r() * .6;
@@ -239,7 +272,8 @@ export function makeArt(L) {
   // the morning tea stall: tea-and-bread stalls stand on southern streets too, so it keeps its build; its board says TEA
   const stall = () => teaStall().replace('>SHAYI<', '>TEA<');
 
-  const art = { emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
+  const art = { jrWaiter, emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
   if (!Y) art.durbarRider = ageGrade;
+  if (Y) art.engineBoat = danfoBus;
   return art;
 }
