@@ -1,7 +1,9 @@
 /* The games for the list in the settings, apart from the engine so the settings never pull every game into the
    start-up script (Sani 2026-11-04: lighter start on cheap tablets). */
-/** The games, for the list in the settings. The balloons are the app's own screen. */
-export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = [
+import { t } from '../../../core/lang/t';
+
+/** The games, for the list in the settings. Names go through t(): a language build calls each by its own game's name. */
+export const GAME_LIST: { id: string; name: string; en: string; section: string; q?: Record<string, string> }[] = ([
   { id: 'fashe', name: 'Fashe haruffa', en: 'Pop the balloons · the whole A–Z', section: 'Haruffa' },
   { id: 'j-durbar', name: 'Hawan Sallah', en: 'Durbar, the whole A–Z mixed up · speaking', section: 'Haruffa' },
   { id: 'j-abubuwa', name: 'Kamun kifi', en: 'Catch the fish', section: 'Abubuwa' },
@@ -21,4 +23,4 @@ export const GAME_LIST: { id: string; name: string; en: string; section: string;
   { id: 'j-rubutu-say', name: 'Ginin bulo', en: 'Build the house · speaking', section: 'Rubutu' },
   { id: 'j-marubuci', name: 'Marubucin wasiƙa', en: 'The letter writer · speaking', section: 'Rubutu' },
   { id: 'j-rini', name: 'Karofi', en: 'The Kano dye pits · speaking', section: 'Rubutu' },
-];
+] as { id: string; name: string; en: string; section: string; q?: Record<string, string> }[]).map((g) => ({ ...g, name: t(g.name), en: t(g.en) }));

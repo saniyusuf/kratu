@@ -21,6 +21,7 @@ import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } fro
 import { liveAC, closeAC } from './audioctx';
 import { BAG, U_DEFS } from './unlock-art';
 import { playUnlock } from './unlock';
+import { t } from '../../../core/lang/t';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -55,6 +56,10 @@ export interface GameOpts { letters?: string[]; words?: string[]; lesson?: boole
    *  lesson of the words missed. `tries` is this attempt (1 or 2), `first` whether the child has never met this game (only then
    *  does Laila explain it), `sim` lets an adult mark words as failed before playing (the course simulator). */
   gate?: { tries: number; first: boolean; sim: boolean }; }
+
+import { SKIN } from './skin';
+/** a language build's own piece in place of the Hausa one (skin.ts), else the Hausa one */
+const SK_ = (n: string, f: any): any => (SKIN && SKIN.art[n]) || f;
 
 export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: GameOpts = {}): GameHandle {
   const KART = bootArt(), K = io.K, F = io.female ? 1 : 0, bg = frame.querySelector('.gbg');
@@ -210,7 +215,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
        with the child's voice, the REC tag, a hop when right and a head-shake when wrong */
     var box = h('<div class="mic micx"><span class="yn yes abc-start x-laila cue" role="button" aria-label="Laila"><span class="lglow"></span><span class="hearrings"></span>' +
       '<span class="lmw"><span class="lm">' + K.laila + '</span></span><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>' +
-      '<span class="lhand">👆🏾</span><small>Faɗa</small></span></div>');
+      '<span class="lhand">👆🏾</span><small>' + t('Faɗa') + '</small></span></div>');
     var btn = box.querySelector('.x-laila'), raf = 0;
     function level() { if (run.dead) { raf = 0; return; } btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
     box.listen = function (opts, heard, right) {
@@ -247,12 +252,12 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     run.scr.className = 'scr p ' + g.cls;
     var PAINT = { 'j-abubuwa': 'underriver', 'j-magana': 'courtyard', 'j-nemo': 'market', 'j-lambobi': 'nightvillage', 'j-karatu': 'riverart', 'j-rubutu': 'potteryard', 'j-rubutu-say': 'savanna' };
     var scene = KART.scene[g.scene || PAINT[gid]] || '';
-    if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + argunguScene() + argunguWater() + '</div>';   // Argungu on festival day
+    if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + SK_('argunguScene', argunguScene)() + SK_('argunguWater', argunguWater)() + '</div>';   // Argungu on festival day
     scene = restScene(gid) || scene;   // the drawn scenes of 2026-10-25 (rest.ts)
-    bg.classList.remove('cheer', 'sad'); bg.innerHTML = scene; run.scr.innerHTML ='<div class="eye">' + g.title + '</div>';   // the scene fills the whole screen, behind the game's box
+    bg.classList.remove('cheer', 'sad'); bg.innerHTML = scene; run.scr.innerHTML ='<div class="eye">' + t(g.title) + '</div>';   // the scene fills the whole screen, behind the game's box
     var go = function () {
       if (run.dead) return;
-      var cd = h('<div class="cdown"><b></b></div>'); run.scr.appendChild(cd); var steps = ['3', '2', '1', 'Fara!'], i = 0;
+      var cd = h('<div class="cdown"><b></b></div>'); run.scr.appendChild(cd); var steps = ['3', '2', '1', t('Fara!')], i = 0;
       (function tick() {
         if (run.dead) return; if (i >= steps.length) { cd.remove(); g.play(run, function (r) { result(run, r); }); return; }
         var b = cd.querySelector('b'); b.textContent = steps[i]; b.classList.remove('in'); void b.offsetWidth; b.classList.add('in'); drum(i === 3); i++; run.later(i === 4 ? 650 : 600, tick);
@@ -277,7 +282,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
    *  pass line after the third, the tries, and Laila to press. She explains the game only the first time it is met. */
   function intro(run, how, go) {
     var g = GAMES[gid], items = gateItems(), sim = opts.gate.sim;
-    var o = h('<div class="gintro">' + tries(opts.gate.tries) + '<div class="gi-ban">' + g.title + '</div>' +
+    var o = h('<div class="gintro">' + tries(opts.gate.tries) + '<div class="gi-ban">' + t(g.title) + '</div>' +
       (items.length ? '<div class="gi-chips' + (items.length > 10 ? ' many' : '') + '">' + items.map(function (k) { return '<button type="button" class="gi-chip" data-k="' + k + '" aria-label="' + (K.pic[k] ? spoken(k) : k) + '">' + chip(k) + '</button>'; }).join('') + '</div>' : '') +
       stars4(0) + '<div class="gi-go">' + lailaBtn('talking') + '<span class="gi-hand">👉🏾</span></div>' +
       (sim ? '<div class="gi-sim"><small>Simulate: tap pictures to mark them failed</small><button type="button" class="gi-skip">Skip to results ›</button></div>' : '') + '</div>');
@@ -383,7 +388,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   function result(run, r) {
     if (opts.gate && !r.learn && r.banner) { run.stop(); gateResult(run, r); return; }
     if (!r.learn && !r.banner) {
-      run.stop(); var bn = h('<div class="finish"><b>' + (r.finished ? 'An gama!' : 'Lokaci ya ƙare!') + '</b></div>'); run.scr.appendChild(bn); drum(true);
+      run.stop(); var bn = h('<div class="finish"><b>' + (r.finished ? t('An gama!') : t('Lokaci ya ƙare!')) + '</b></div>'); run.scr.appendChild(bn); drum(true);
       r.banner = true; setTimeout(function () { if (!gone) result(run, r); }, 1300); return;
     }
     run.stop(); var g = GAMES[gid];
@@ -395,9 +400,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     var gold = r.learn ? 0 : Math.max(50, Math.floor((100 + run.right * 20 + secs) / 50) * 50);
     res.scr.className = 'scr r' + (stars === 5 ? ' top' : ''); bg.innerHTML = '';
     res.scr.innerHTML = (stars === 5 ? '<div class="conf">' + Array.from({ length: 36 }, function (_, i) { return '<i style="left:' + (i * 37 % 100) + '%;animation-delay:-' + (i * 7 % 15) / 10 + 's;background:' + ['#FFD54A', '#E63946', '#1FA1D8', '#2FAE9E', '#8A5FBF', '#4CAF50'][i % 6] + '"></i>'; }).join('') + '</div>' : '') +
-      '<div class="eye">' + g.title + ' · sakamako</div>' +
-      (r.learn ? '<p class="big">Ba komai!</p>' : '<div class="stars">' + [1, 2, 3, 4, 5].map(function (i) { return '<i class="' + (i <= stars ? '' : 'off') + '" style="animation-delay:' + (i * .3) + 's">★</i>'; }).join('') + '</div>' +
-        (stars === 5 ? '<div class="topbanner">★ Mafi girma ★</div>' : '') +
+      '<div class="eye">' + t(g.title) + ' · ' + t('sakamako') + '</div>' +
+      (r.learn ? '<p class="big">' + t('Ba komai!') + '</p>' : '<div class="stars">' + [1, 2, 3, 4, 5].map(function (i) { return '<i class="' + (i <= stars ? '' : 'off') + '" style="animation-delay:' + (i * .3) + 's">★</i>'; }).join('') + '</div>' +
+        (stars === 5 ? '<div class="topbanner">★ ' + t('Mafi girma') + ' ★</div>' : '') +
         '<div class="gold"><span class="coin">Z</span><b>+' + gold + '</b><small>Zinari</small></div>') +
       '<div class="place">' + (r.learn ? g.placeNo : g.place(r, run)) + '</div>' +
       lailaBtn('cue', 'Danna Laila');
@@ -427,7 +432,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         function askable(w) { return !ASK || ASK.indexOf(w) >= 0; }
         var slots = [null, null, null, null, null, null, null, null, null], asked = {}, used = {}, t0 = [0, 1, 2].map(function () { return performance.now() - Math.random() * 20000; });
         var pond = h('<div class="pond2 ag"></div>');
-        var bank = h('<div class="kamun"><span class="fisher">' + argFisher() + '</span><span class="kw">' + basket() + '<b class="kn">0 / ' + N + '</b></span></div>');
+        var bank = h('<div class="kamun"><span class="fisher">' + SK_('argFisher', argFisher)() + '</span><span class="kw">' + SK_('basket', basket)() + '<b class="kn">0 / ' + N + '</b></span></div>');
         bg.appendChild(bank); run.scr.appendChild(pond); run.clock(secs(120, N, 6), function () { done({ right: r, part: r / N }); });
         run.remind = function () { say(K.en[target], run); };
         function dur(row) { return 26 + row * 4; }
@@ -435,7 +440,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         function swimming() { return slots.filter(Boolean); }
         function addFish(w, s) {
           var row = s % 3, ph = Math.floor(s / 3), d = dur(row); used[w] = true;
-          var f = h('<button type="button" class="fish2 fish3 f4" data-w="' + w + '" style="top:' + (row * 32) + '%;animation-duration:' + d + 's" aria-label="fish">' + fish4(K.pic[w]) + '</button>');
+          var f = h('<button type="button" class="fish2 fish3 f4" data-w="' + w + '" style="top:' + (row * 32) + '%;animation-duration:' + d + 's" aria-label="fish">' + SK_('fish4', fish4)(K.pic[w]) + '</button>');
           f._row = row; f._ph = ph; f._born = performance.now(); f.style.animationDelay = '-' + (along(f) * d).toFixed(2) + 's'; slots[s] = f;
           f.onclick = function () {
             if (busy || run.dead || slots.indexOf(f) < 0) return; busy = true; n++; var at0 = slots.indexOf(f); slots[at0] = null; refill(at0);
@@ -452,7 +457,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         function land(f) {
           var fr = io.rect(frame), fb = io.rect(f), mr = io.rect(bank.querySelector('.fisher')), kr = io.rect(bank.querySelector('.kw'));
           var w0 = fb.width * 126 / 262, h0 = fb.height * 60 / 110, c0x = fb.left + fb.width * 199 / 262 - fr.left, c0y = fb.top + fb.height * 56 / 110 - fr.top;
-          var fl = h('<div class="flyer">' + fish4('', true) + '</div>');
+          var fl = h('<div class="flyer">' + SK_('fish4', fish4)('', true) + '</div>');
           fl.style.cssText = 'left:' + (c0x - w0 / 2) + 'px;top:' + (c0y - h0 / 2) + 'px;width:' + w0 + 'px;height:' + h0 + 'px';
           frame.appendChild(fl); f.style.visibility = 'hidden'; run.later(400, function () { f.remove(); });
           var hx = mr.left - fr.left + mr.width * 22 / 120, hy = mr.top - fr.top + mr.height * 70 / 130;      // the hoop, dipped
@@ -514,7 +519,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
        Wrong: the plate turns red (never a cross), the kakaki sighs, the dancers stop and shake their heads; the word is never
        shown or said. Laila waits for the first press; from then on she listens by herself as each picture comes in (if
        she hears nothing she listens once more, then waits for a press again). */
-    'j-magana': { title: 'Kalangu', cls: 'drum', scene: (KART.scene.kalangu = KL.kalanguScene(), 'kalangu'),
+    'j-magana': { title: 'Kalangu', cls: 'drum', scene: (KART.scene.kalangu = SK_('kalanguScene', KL.kalanguScene)(), 'kalangu'),
       instr: ['Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!', 'Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!'], ask: ['Ka iya faɗin sunayen abubuwa da Turanci?', 'Kin iya faɗin sunayen abubuwa da Turanci?'],
       placeNo: 'Abubuwa would start at Dabbobi, with the lessons.',
       place: function (r) { return r.right >= 6 ? 'Said every word: those sets would be skipped.' : 'Said ' + r.right + ' of 6: the sets they could not say would be taught.'; },
@@ -523,7 +528,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var among = words.map(spoken);
         var stage = h('<div class="kl-stage">' +
           '<span class="kl-poles"><i></i><i></i></span><div class="kl-easel"><div class="kl-board"><img alt=""></div><div class="plate"><span class="pf">?</span><span class="pb"></span></div></div>' +
-          '<div class="kl-dancers">' + KL.dancers() + '</div><div class="kl-band">' + KL.band() + '</div></div>');
+          '<div class="kl-dancers">' + SK_('dancers', KL.dancers)() + '</div><div class="kl-band">' + SK_('band', KL.band)() + '</div></div>');
         var row = h('<div class="krow' + (N > 10 ? ' many' : '') + '">' + words.map(function () { return '<span class="kd">' + KART.minidrum() + '</span>'; }).join('') + '</div>');
         var box = micBox(run);
         run.scr.appendChild(stage); run.scr.appendChild(row); run.scr.appendChild(box);
@@ -589,7 +594,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           run.item(q[c]); say(K.en[q[c]], run);
         }
         function lay() {
-          mat.innerHTML = goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '" aria-label="' + spoken(k) + '">' + bowl2(K.pic[k]) + '</button>'; }).join('');
+          mat.innerHTML = goods.map(function (k) { return '<button type="button" class="mi2 bowl" data-k="' + k + '" aria-label="' + spoken(k) + '">' + SK_('bowl2', bowl2)(K.pic[k]) + '</button>'; }).join('');
           [].forEach.call(mat.children, wire);
         }
         function wire(b) {
@@ -703,7 +708,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           var gp = gaps(top.querySelector('.spslots'), W[wi]); top.classList.toggle('long', w.length + gp > 6);
           pad.innerHTML = ''; pad.classList.toggle('two', pool.length > 9); pad.style.setProperty('--n', String(pool.length)); top.style.setProperty('--n', String(w.length + gp * .5));   // sizes for a long word (sc-tukwane.css)
           pool.forEach(function (L) {
-            var b = h('<button type="button" class="pot2" aria-label="' + L + '">' + tukPot(L) + '</button>');
+            var b = h('<button type="button" class="pot2" aria-label="' + L + '">' + SK_('tukPot', tukPot)(L) + '</button>');
             b.onclick = function () {
               if (b.disabled || run.dead || busy) return;
               if (L === w[li]) {
@@ -711,7 +716,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
                 var br = io.rect(b), sr = io.rect(slot);
                 b.style.setProperty('--tx', (sr.left + sr.width / 2 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (sr.top + sr.height / 2 - (br.top + br.height / 2)) + 'px');
                 b.classList.add('fly');                                 // the pot lifts off its place into the box
-                run.later(560, function () { slot.innerHTML = '<span class="mp">' + tukPot(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
+                run.later(560, function () { slot.innerHTML = '<span class="mp">' + SK_('tukPot', tukPot)(L) + '</span>'; slot.classList.add('on'); b.classList.add('gone'); say(K.L[L], run); run.spark(slot, 5); });
                 if (li >= w.length) { busy = true; run.later(700, function () { run.good(top.querySelector('.spslots')); react(run.scr, 'cheer'); words++; }); nextWord(); }
               } else {
                 // a wrong pot cracks: a crash, the word is marked wrong, and on to the next word
@@ -739,7 +744,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
         var LES = LW.length > 0, ALL = W.reduce(function (a, w) { return a + letters(w).length; }, 0), lt = 0, done1 = 0, rightW = 0;
         var top = h('<div class="sp hs"><span class="sppic"><img alt=""></span><div class="spslots"></div><span class="hpct"><b>0</b>%</span></div>');
         /* the house is the red-earth Hausa house of the scene behind (sc-bulo.ts buloHouse, Sani 2026-10-26) */
-        var site = h('<div class="site">' + buloHouse() + '</div>');
+        var site = h('<div class="site">' + SK_('buloHouse', buloHouse)() + '</div>');
         /* the lessons' A–Z keys (abcgrid/abckey, design.css) as in Marubucin wasiƙa: A–M left, N–Z right, Laila between them */
         var ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''), key = function (L) { return '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>'; };
         var kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');

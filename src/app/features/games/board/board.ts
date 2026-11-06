@@ -10,6 +10,7 @@ import { Laila } from '../../../shared/laila/laila';
 import { Spotter } from '../../../shared/lesson/helpers';
 import { BOOK_COVER_SVG } from '../../../shared/book/book-svg';
 import { GAME_LIST } from '../lab/game-list';
+import { t } from '../../../core/lang/t';
 
 /** The games in board order (Sani 2026-11-06): letters, things, reading, spelling, numbers. `line` is the game's
  *  description; its Hausa is still to come from Sani, so `en` is the stand-in shown as the subtitle meanwhile. */
@@ -87,7 +88,7 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
   readonly card = CARD;
   readonly games: Game[] = ORDER.map((o) => {
     const g = GAME_LIST.find((x) => x.id === o.id);
-    return { ...o, name: g?.name || o.id, q: g?.q, pic: 'assets/games/' + o.id + '.webp', pic2: TWO.has(o.id) ? 'assets/games/' + o.id + '-2.webp' : null };
+    return { ...o, en: t(o.en), name: g?.name || o.id, q: g?.q, pic: 'assets/games/' + o.id + '.webp', pic2: TWO.has(o.id) ? 'assets/games/' + o.id + '-2.webp' : null };
   });
   readonly sel = signal<Game>(this.games[0]);
   /** The first card showing at the strip's left edge. */

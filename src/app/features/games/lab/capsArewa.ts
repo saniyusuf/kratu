@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { SKIN } from './skin';
 /*
  * Northern caps, drawn (Sani 2026-10-27: "the caps can also be northern arewa style cap, both the Bornu cap and the
  * Hausa cap"). One helper every game's people use, so the men in the markets, the river, the allo and the fields wear
@@ -106,6 +107,7 @@ function borno(x, y, w, c, c2, c3) {
 
 /** the cap only, drawn over the head; kind 'hula' | 'zanna' | 'borno' */
 export function arewaCap(kind, x, y, w, c, c2, c3, side = 1) {
+  if (SKIN && SKIN.cap) return SKIN.cap(kind, x, y, w, c, c2, c3, side);   // a language build's own hats (skin.ts)
   c = c || '#F4F1EA';
   c2 = c2 || (light(c) ? '#7A1F2B' : '#F2E6C4');
   if (kind === 'borno') return '<g class="cap-b">' + borno(x, y, w, c, c2, c3 || (light(c) ? '#1E5B3A' : '#E0A526')) + '</g>';

@@ -22,6 +22,10 @@ import * as SY from './sc-suya';
 import { teaStall, umbrellaBench, roadBehind, cupTap, served, waiter, CUSTOMERS } from './teastall';
 import { liveAC } from './audioctx';
 
+import { SKIN } from './skin';
+/** a language build's own piece in place of the Hausa one (skin.ts), else the Hausa one */
+const SK_ = (n: string, f: any): any => (SKIN && SKIN.art[n]) || f;
+
 export function moreGames(c: any): Record<string, any> {
   const { K, h, say, sfx, drum, shuffle, micBox, line, F, io, LW, txt, spoken, letters, gaps, secs, batches } = c, opts = c.opts || {};
   const later = (run, ms, f) => run.later(ms, f);
@@ -83,8 +87,8 @@ export function moreGames(c: any): Record<string, any> {
         const L8 = shuffle(opts.letters || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')), N = L8.length; let i = 0; const missed = [];
         // the emir at his gate with his court about him: a dogari each side, his attendant fanning him (no horses behind: Sani 2026-10-24)
         const st = h('<div class="dstage">' +
-          '<div class="sallahw">' + sallahBand() + '</div><span class="gg l">' + dogari(2) + '</span><span class="gg r">' + dogari(3) + '</span>' +
-          '<div class="courtw"><span class="cw dg l">' + dogari(0) + '</span><div class="emirw">' + emirThrone() + '</div><span class="cw fk">' + maiFanka() + '</span><span class="cw dg r">' + dogari(1) + '</span></div>' +
+          '<div class="sallahw">' + SK_('sallahBand', sallahBand)() + '</div><span class="gg l">' + SK_('dogari', dogari)(2) + '</span><span class="gg r">' + SK_('dogari', dogari)(3) + '</span>' +
+          '<div class="courtw"><span class="cw dg l">' + SK_('dogari', dogari)(0) + '</span><div class="emirw">' + SK_('emirThrone', emirThrone)() + '</div><span class="cw fk">' + SK_('maiFanka', maiFanka)() + '</span><span class="cw dg r">' + SK_('dogari', dogari)(1) + '</span></div>' +
           '<div class="rlane"></div></div>');
         const looks = shuffle(Array.from({ length: RIDER_COUNT }, (_, k) => k));   // a different horseman each time
         const row = h('<div class="lrow' + (N > 12 ? ' many' : '') + '">' + L8.map(() => '<span></span>').join('') + '</div>');
@@ -98,7 +102,7 @@ export function moreGames(c: any): Record<string, any> {
         /** a horseman gallops in with his letter and reins in before the emir */
         function arrive(L, look) {
           lane.innerHTML = ''; lane.classList.remove('enter'); if (scene) scene.classList.remove('open', 'cheer'); st.classList.remove('open'); posts();   // the gate swings shut behind the last one
-          const rw = h('<div class="rw">' + durbarRider(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
+          const rw = h('<div class="rw">' + SK_('durbarRider', durbarRider)(L, look) + '</div>'); lane.appendChild(rw); emir.classList.remove('cross', 'pleased'); court.classList.remove('pleased');
           rw.classList.add('gallop'); void rw.offsetWidth; rw.classList.add('in'); hooves(1.1); return rw;
         }
         /** right: the horse prances (the zormo), then kneels to greet the emir; rider and emir smile (Sani 2026-10-22).
@@ -207,7 +211,7 @@ export function moreGames(c: any): Record<string, any> {
         const N = items.length, among = (LW.length ? items : G.flat()).map(spoken);
         const LIMIT = 10000;   // ms to say each thing
         let r = 0, sold = 0, tick = 0;
-        const st = h('<div class="dstage mk"><div class="dillw">' + auctioneer() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + crowdKw(3) + '</div></div>');
+        const st = h('<div class="dstage mk"><div class="dillw">' + SK_('auctioneer', auctioneer)() + '</div><div class="stall"><div class="dealw"></div></div><div class="crowd">' + SK_('crowdKw', crowdKw)(3) + '</div></div>');
         // the photo stands on a wooden easel whose feet are on the square's ground (Sani 2026-10-27: nothing floats)
         const board = h('<div class="mkboard"><div class="mkeasel"><i class="lg b"></i><i class="lg l"></i><i class="lg r"></i></div><div class="mkgoods"></div><div class="mkdrawn"></div><div class="mkfx"></div><div class="mktime"><i></i></div></div>');
         const tally = h('<div class="tally"><span class="coin s">Z</span> <b>0</b> / ' + N + '</div>');
@@ -284,9 +288,9 @@ export function moreGames(c: any): Record<string, any> {
       place: (r) => r.right >= 7 ? 'Ordered everything by name: food and drink words are known.' : 'Ordered ' + r.right + ' of 7: Nemo hoto would start from the four-picture rounds.',
       play(run, done) {
         const MENU = ['tea', 'bread', 'egg', 'sugar', 'milk', 'cup', 'spoon', 'kettle', 'water'], ORDER = shuffle(MENU).slice(0, 7), WAIT = 15000; let r = 0, got = 0, last = -1;
-        const st = h('<div class="tstage">' + roadBehind() + '<div class="tsw">' + teaStall() + '</div><div class="ubw">' + umbrellaBench() + '</div>' +
+        const st = h('<div class="tstage">' + SK_('roadBehind', roadBehind)() + '<div class="tsw">' + SK_('teaStall', teaStall)() + '</div><div class="ubw">' + SK_('umbrellaBench', umbrellaBench)() + '</div>' +
           CUSTOMERS.map((c) => '<div class="tgot" style="left:' + c.x + 'cqw;bottom:' + c.hand + 'cqw"></div>').join('') +
-          '<div class="twaiter">' + waiter() + '<div class="ttray"></div></div>' +
+          '<div class="twaiter">' + SK_('waiter', waiter)() + '<div class="ttray"></div></div>' +
           '<div class="teasel" aria-hidden="true"><i></i><i></i><i></i></div><div class="tcard"></div><div class="twait"><i></i></div><div class="tbub"></div><div class="tserve"></div></div>');   // the picture stands on the stand's menu easel (Sani 2026-10-27)
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 7 }));
@@ -299,14 +303,14 @@ export function moreGames(c: any): Record<string, any> {
           sv.style.setProperty('--dx', ((R.left + x * u - (S.left + S.width / 2)) / u).toFixed(2) + 'cqw'); sv.style.setProperty('--dy', ((R.bottom - y * u - (S.top + S.height / 2)) / u).toFixed(2) + 'cqw');
           void sv.offsetWidth; sv.classList.add('show'); later(run, 700, () => sv.classList.add('fly'));
         }
-        function hand(who, w) { const g = gots[who]; g.className = 'tgot'; g.innerHTML = served(w); void g.offsetWidth; g.classList.add('on'); }
+        function hand(who, w) { const g = gots[who]; g.className = 'tgot'; g.innerHTML = SK_('served', served)(w); void g.offsetWidth; g.classList.add('on'); }
         function next() {
           const w = ORDER[r], who = shuffle([0, 1, 2, 3].filter((k) => k !== last))[0], c = CUSTOMERS[who]; last = who;
           let left = WAIT, over = false;
           st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
           sv.className = 'tserve'; sv.innerHTML = '';
           // the bubble shows the order drawn, as it will be served
-          bub.className = 'tbub'; bub.innerHTML = served(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
+          bub.className = 'tbub'; bub.innerHTML = SK_('served', served)(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
           bar.className = 'twait on'; fill.style.transform = 'scaleX(1)';
           const end = () => { over = true; bar.classList.remove('on'); bub.classList.remove('on'); };
           const miss = () => { end(); cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); };
@@ -318,14 +322,14 @@ export function moreGames(c: any): Record<string, any> {
           speakRound(run, box, w, MENU, () => {
             end(); got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad');
             // the picture becomes the thing as it is served
-            card.classList.add('turn'); sv.innerHTML = served(w);
+            card.classList.add('turn'); sv.innerHTML = SK_('served', served)(w);
             if (who === 0) {   // the man at the stand takes it from the seller's hand
               fly(c.x, c.hand); later(run, 1800, () => { sv.className = 'tserve'; hand(0, w); }); step(3000); return;
             }
             // the bench: it lands on the helper's tray, he walks it over, hands it on and walks back
             const T = tray.getBoundingClientRect(), R = st.getBoundingClientRect(), u = R.width / 100;
             fly((T.left + T.width / 2 - R.left) / u, (R.bottom - T.top - T.height / 2) / u);
-            later(run, 1800, () => { sv.className = 'tserve'; tray.innerHTML = served(w); tray.classList.add('on');
+            later(run, 1800, () => { sv.className = 'tserve'; tray.innerHTML = SK_('served', served)(w); tray.classList.add('on');
               helper.classList.add('walk'); helper.style.transform = 'translateX(' + (c.x - 4.5 - 39).toFixed(1) + 'cqw)'; });
             later(run, 3450, () => { helper.classList.remove('walk'); tray.classList.remove('on'); hand(who, w); });
             later(run, 3800, () => { helper.classList.add('walk', 'back'); helper.style.transform = ''; });
@@ -346,7 +350,7 @@ export function moreGames(c: any): Record<string, any> {
          drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {
         const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0, busy = false;
-        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + gyLorry() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
+        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + SK_('gyLorry', gyLorry)() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
         const row = h('<div class="stacks2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(row);
         run.clock(150, () => done({ right: got, part: got / 8, reached }));
@@ -364,7 +368,7 @@ export function moreGames(c: any): Record<string, any> {
           const n = N[r], cap = n <= 10 ? 10 : 20, k = n <= 10 ? 3 : 2;
           const opts = shuffle([n].concat(shuffle([-3, -2, -1, 1, 2, 3].map((d) => n + d).filter((x) => x >= 1 && x <= cap)).slice(0, k)));
           row.innerHTML = ''; row.classList.toggle('big', cap === 20);
-          opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + gySacks(m, cap) + '</button>'); row.appendChild(b);
+          opts.forEach((m) => { const b = h('<button type="button" class="stk" aria-label="' + m + ' sacks">' + SK_('gySacks', gySacks)(m, cap) + '</button>'); row.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m !== n) {
                 // wrong: the right pile glows for a moment, and the lorry leaves empty
@@ -375,7 +379,7 @@ export function moreGames(c: any): Record<string, any> {
               const br = io.rect(b), lr = io.rect(lw);
               b.style.setProperty('--tx', (lr.left + lr.width * .35 - (br.left + br.width / 2)) + 'px'); b.style.setProperty('--ty', (lr.top + lr.height * .3 - (br.top + br.height / 2)) + 'px');
               b.classList.add('fly'); row.querySelectorAll('.stk').forEach((o) => { if (o !== b) o.classList.add('fade'); });
-              later(run, 500, () => { lw.querySelector('.load').innerHTML = gyLorryLoad(n); });
+              later(run, 500, () => { lw.querySelector('.load').innerHTML = SK_('gyLorryLoad', gyLorryLoad)(n); });
               const loaded = 500 + n * 90 + 400;
               later(run, loaded, () => { bump(lw, 'thump', 500); horn(true); });
               later(run, loaded + 500, () => lw.classList.add('away', 'zoom'));   // off it speeds, in approval
@@ -422,8 +426,8 @@ export function moreGames(c: any): Record<string, any> {
           // four kinds every round, never four of one: one cow (the two breeds take turns), two goats, the rams
           const kinds = shuffle([v++ % 2 ? 'cr' : 'cw', 'gr', 'gw', 'rb', 'ru']).slice(0, 4);
           opts.forEach((m, k) => {
-            const b = h('<button type="button" class="beast2" aria-label="' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + ';--px:' + dabRump(kinds[k]).toFixed(1) + '%">' +
-              priceBoard(m) + '<span class="post"></span>' + dabba(kinds[k]) + '</button>');
+            const b = h('<button type="button" class="beast2" aria-label="' + m + '" style="--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's;--i:' + k + ';--px:' + SK_('dabRump', dabRump)(kinds[k]).toFixed(1) + '%">' +
+              SK_('priceBoard', priceBoard)(m) + '<span class="post"></span>' + SK_('dabba', dabba)(kinds[k]) + '</button>');
             pen.appendChild(b);
             b.onclick = () => { if (run.dead || busy) return; busy = true;
               if (m === p) {
@@ -462,7 +466,7 @@ export function moreGames(c: any): Record<string, any> {
         RANGE.forEach(([a, b]) => { let n; do n = a + Math.floor(Math.random() * (b - a + 1)); while (n === SIZES[SIZES.length - 1]); SIZES.push(n); });
         let r = 0, reached = 0, misses = 0, v = 0;
         const grass = [[4, 2, 0], [16, 6, 1], [27, 1, 2], [36, 5, 0], [47, 2, 1], [56, 7, 2], [9, 9, 1], [31, 9, 2]].map(([x, y, k]) => '<i class="tf" style="left:' + x + 'cqw;bottom:' + y + 'cqw">' + tuft(k) + '</i>').join('');
-        const st = h('<div class="gstage herd"><div class="field">' + grass + '</div><div class="queue"></div><div class="hman">' + herdsman() + '</div><div class="gkraal">' + kraalBack() + '<div class="gkpen"></div>' + kraalFront() + '<b class="cnt2">0</b></div></div>');
+        const st = h('<div class="gstage herd"><div class="field">' + grass + '</div><div class="queue"></div><div class="hman">' + SK_('herdsman', herdsman)() + '</div><div class="gkraal">' + SK_('kraalBack', kraalBack)() + '<div class="gkpen"></div>' + SK_('kraalFront', kraalFront)() + '<b class="cnt2">0</b></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.remind = () => say(line('j-garke', 'how'), run);
         const queue = st.querySelector('.queue'), pen = st.querySelector('.gkpen'), pen3 = st.querySelector('.gkraal'), cnt = st.querySelector('.cnt2'), hman = st.querySelector('.hman');
@@ -471,7 +475,7 @@ export function moreGames(c: any): Record<string, any> {
         const sayIf = (k, alt = null) => io.has && !io.has(k) ? (alt ? say(alt, run) : Promise.resolve(!run.dead)) : say(k, run);
         // the grazing herd on the left, where the cows come from; each grazes on its own clock
         const gz = () => '--gd:' + (-Math.random() * 6).toFixed(2) + 's;--gs:' + (5 + Math.random() * 3).toFixed(2) + 's';
-        for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', '<span class="qcow" style="' + gz() + '">' + zebu(v++) + '</span>');
+        for (let k = 0; k < 3; k++) queue.insertAdjacentHTML('beforeend', '<span class="qcow" style="' + gz() + '">' + SK_('zebu', zebu)(v++) + '</span>');
         // ten places in the kraal: the near row (two each side, the middle left clear over Laila) fills first, then the far row
         // of six, so every cow can be seen and counted
         const SLOT = [6.5, 16, 37.5, 47].map((x) => [x, 2.8]).concat([0, 1, 2, 3, 4, 5].map((k) => [6.4 + k * 8.2, 8.8]));
@@ -479,7 +483,7 @@ export function moreGames(c: any): Record<string, any> {
         function bringIn(n, then) {
           pen.innerHTML = ''; cnt.textContent = '?'; pen3.classList.remove('done', 'sad'); hman.classList.add('step');
           for (let k = 0; k < n; k++) later(run, k * 420, () => { if (run.dead) return;
-            const [x, y] = SLOT[k], c = h('<span class="gc' + (y > 5 ? ' back' : '') + '" style="left:' + x + 'cqw;bottom:' + y + 'cqw;--dx:' + (-(x + 10)) + 'cqw;' + gz() + '">' + kraalCow(v++) + '</span>');
+            const [x, y] = SLOT[k], c = h('<span class="gc' + (y > 5 ? ' back' : '') + '" style="left:' + x + 'cqw;bottom:' + y + 'cqw;--dx:' + (-(x + 10)) + 'cqw;' + gz() + '">' + SK_('kraalCow', kraalCow)(v++) + '</span>');
             pen.appendChild(c); if (k % 2 === 0) cowbell(1);
           });
           later(run, n * 420 + 900, () => { hman.classList.remove('step'); if (!run.dead) then(); });
@@ -534,7 +538,7 @@ export function moreGames(c: any): Record<string, any> {
               if (res.value === w) {
                 box.yay(); run.good(pen); react(run, 'cheer'); reached = Math.max(reached, n);
                 // the number is heard, then the bells clonk up the herd and they low together, content
-                say(K.en['n' + n], run).then(() => { if (run.dead) return; countUp(n, 300, () => { happyHerd(); pen3.classList.add('done'); later(run, 1600, () => letOut(step)); }, true); });
+                say(K.en['n' + n], run).then(() => { if (run.dead) return; countUp(n, 300, () => { SK_('happyHerd', happyHerd)(); pen3.classList.add('done'); later(run, 1600, () => letOut(step)); }, true); });
                 return;
               }
               misses++; run.bad(); box.nope(); react(run, 'sad'); moo(); pen3.classList.add('sad'); st.classList.add('cross');
@@ -553,14 +557,14 @@ export function moreGames(c: any): Record<string, any> {
       place: (r) => r.right >= 6 ? 'Paid with every note by name, to a thousand: Lambobi would skip the hundreds.' : 'Named ' + r.right + ' of 6 notes: Lambobi would start at the tens.',
       play(run, done) {
         const NOTES = shuffle([20, 50, 100, 200, 500, 1000]), AMONG = NOTES.map((n) => K.enText['n' + n].toLowerCase()).concat(['ten', 'five', 'two', 'one']); let r = 0, got = 0;
-        const st = h('<div class="sgstage"><div class="grillw">' + SY.stand() + '</div></div>');
+        const st = h('<div class="sgstage"><div class="grillw">' + SK_('stand', SY.stand)() + '</div></div>');
         const hand = h('<div class="handn"></div>'), wraps = h('<div class="wraps">' + NOTES.map(() => '<i></i>').join('') + '</div>');
         const box = micBox(run);
         run.scr.appendChild(st); run.scr.appendChild(hand); run.scr.appendChild(wraps); run.scr.appendChild(box);
         run.clock(150, () => done({ right: got, part: got / 6 }));
         run.remind = () => say(line('j-suya', 'how'), run);
         function next() {
-          const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = SY.note(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
+          const n = NOTES[r], w = K.enText['n' + n].toLowerCase(); hand.innerHTML = SK_('note', SY.note)(n); hand.classList.remove('paid'); void hand.offsetWidth; hand.classList.add('in');
           autoRound(run, box, w, AMONG, () => {
             got++; run.good(hand); sayW(run, K.en['n' + n]); hand.classList.add('paid'); wraps.children[r].classList.add('on'); later(run, 1700, step);
           }, () => { wraps.children[r].classList.add('miss'); st.classList.add('cross'); later(run, 1500, () => { st.classList.remove('cross'); hand.classList.add('paid'); }); later(run, 1900, step); });
@@ -584,7 +588,7 @@ export function moreGames(c: any): Record<string, any> {
         run.remind = () => say(line('j-allo', 'how'), run);
         const aw = st.querySelector('.allow2');
         function next() {
-          const w = W[r]; run.item(w); alloWrite(aw, txt(w).toUpperCase());
+          const w = W[r]; run.item(w); SK_('alloWrite', alloWrite)(aw, txt(w).toUpperCase());
           autoRound(run, box, spoken(w), among, () => {
             got++; longest = Math.max(longest, letters(w).length); run.good(aw); sayW(run, K.en[w]); prog.children[r].classList.add('on');
             alloWash(aw); later(run, 2350, step);
@@ -605,7 +609,7 @@ export function moreGames(c: any): Record<string, any> {
         // a lesson's words: every one; the jetty holds five at most, and when they have all gone the next people walk on
         const W = LW.length ? shuffle(LW) : shuffle(['cup', 'bed', 'pen', 'cow', 'egg', 'key', 'hat', 'map'].filter((w) => K.en[w])).slice(0, 5); let r = 0, got = 0;
         const N = W.length, GR = batches(W, 5), among = W.map(spoken); let gi = 0, g0 = 0;
-        const queue = (n, off) => Array.from({ length: n }, (_, k) => '<span class="pq">' + JR.waiter(k + off) + '</span>').join('');
+        const queue = (n, off) => Array.from({ length: n }, (_, k) => '<span class="pq">' + SK_('jrWaiter', JR.waiter)(k + off) + '</span>').join('');
         const st = h('<div class="fstage"><div class="bank3">' + queue(GR[0].length, 0) + '</div><div class="ferry"></div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(secs(150, N, 5), () => done({ right: got, part: got / N }));
@@ -623,7 +627,7 @@ export function moreGames(c: any): Record<string, any> {
         function next() {
           if (r - g0 >= GR[gi].length) { g0 += GR[gi].length; gi++; bank.innerHTML = queue(GR[gi].length, g0); }   // the next people come down the jetty
           // the passenger is the same person who waits on the jetty
-          const w = W[r]; run.item(w); ferry.innerHTML = JR.engineBoat(txt(w).toUpperCase(), g0 + GR[gi].length - 1 - (r - g0)); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
+          const w = W[r]; run.item(w); ferry.innerHTML = SK_('engineBoat', JR.engineBoat)(txt(w).toUpperCase(), g0 + GR[gi].length - 1 - (r - g0)); ferry.className = 'ferry'; void ferry.offsetWidth; ferry.classList.add('drift');
           JR.puttPutt(2.2); later(run, 2300, () => ferry.classList.add('moor'));
           autoRound(run, box, spoken(w), among, () => {
             got++; run.good(ferry); sayW(run, K.en[w]);
@@ -659,9 +663,9 @@ export function moreGames(c: any): Record<string, any> {
         const FL = batches(W, 6), among = W.map(spoken); let r = 0, got = 0, fi = 0, f0 = 0, fgot = 0;
         const X = [13, 28, 43, 58, 73, 88];   // the six seedlings along the near ridge, in cqw
         const snd = ruwaSound(run), fin = (res) => { snd.close(); done(res); };
-        const st = h('<div class="rstage">' + FL[0].map((_, k) => '<div class="mbox" style="left:' + (X[k] - 4.5) + 'cqw">' + millet(k) + '</div>').join('') +
-          '<div class="rrain">' + rainSheet() + '</div><div class="rcloud">' + wordCloud() + '<b class="rww"></b></div>' +
-          '<div class="rreap">' + reaper() + '</div></div>');
+        const st = h('<div class="rstage">' + FL[0].map((_, k) => '<div class="mbox" style="left:' + (X[k] - 4.5) + 'cqw">' + SK_('millet', millet)(k) + '</div>').join('') +
+          '<div class="rrain">' + rainSheet() + '</div><div class="rcloud">' + SK_('wordCloud', wordCloud)() + '<b class="rww"></b></div>' +
+          '<div class="rreap">' + SK_('reaper', reaper)() + '</div></div>');
         const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
         run.clock(secs(150, W.length, 6), () => fin({ right: got, part: got / W.length }));
         run.remind = () => say(line('j-ruwa', 'how'), run);
@@ -724,7 +728,7 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const W = LW.length ? shuffle(LW) : shuffle(['mama', 'baba', 'aunt', 'uncle'].filter((w) => K.en[w] && K.pic[w])); let wi = 0, li = 0, words = 0;   // a lesson's words: every one
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const st = h('<div class="mstage"><div class="marw">' + A.marubuci() + '</div><div class="wsbd">' + wsBoard() + '</div><div class="env">' + envelopeArt() + '</div><div class="wsbd wspin">' + wsPins() + '</div><div class="achw">' + postRider() + '</div></div>');
+        const st = h('<div class="mstage"><div class="marw">' + SK_('marubuci', A.marubuci)() + '</div><div class="wsbd">' + wsBoard() + '</div><div class="env">' + envelopeArt() + '</div><div class="wsbd wspin">' + wsPins() + '</div><div class="achw">' + SK_('postRider', postRider)() + '</div></div>');
         const snd = wasikaSound(run), fin = (r) => { snd.close(); done(r); };
         const key = (L) => '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>';   // the lessons' keys (design.css); A–M on the left, N–Z on the right, Laila between them
         const kb = h('<div class="mkb abcgrid"><div class="mkh">' + ABC.slice(0, 13).map(key).join('') + '</div><div class="mkh">' + ABC.slice(13).map(key).join('') + '</div></div>');
@@ -783,7 +787,7 @@ export function moreGames(c: any): Record<string, any> {
         const W = LW.length ? shuffle(LW) : shuffle(['mango', 'bread', 'horse', 'sheep', 'chair', 'table', 'spoon', 'plate', 'camel', 'onion', 'water', 'banana', 'orange'].filter((w) => K.en[w] && K.pic[w])).slice(0, 4);   // a lesson's words: every one
         let wi = 0, li = 0, words = 0;
         const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const st = h('<div class="dstage2"><div class="dyframe"><i class="dyp l"></i><i class="dyp r"></i></div><div class="dycl">' + dyeCloth() +
+        const st = h('<div class="dstage2"><div class="dyframe"><i class="dyp l"></i><i class="dyp r"></i></div><div class="dycl">' + SK_('dyeCloth', dyeCloth)() +
           '<span class="dypic"><img alt=""></span><span class="dyslots"></span><i class="dyspl"></i></div><div class="dystack"></div></div>');
         const snd = riniSound(run), fin = (r) => { snd.close(); done(r); };
         const key = (L) => '<button type="button" class="abckey" data-l="' + L + '">' + L + '</button>';
@@ -809,7 +813,7 @@ export function moreGames(c: any): Record<string, any> {
           const w = letters(W[wi]);
           for (let k = 0; k < got.length && li < w.length; k++) {
             const L = String(got[k]).toUpperCase();
-            if (L === w[li]) { const s = slots.children[li]; s.innerHTML = dyeLetter(L); s.classList.add('on'); snd.dip(); bump(cloth, 'dip', 450);
+            if (L === w[li]) { const s = slots.children[li]; s.innerHTML = SK_('dyeLetter', dyeLetter)(L); s.classList.add('on'); snd.dip(); bump(cloth, 'dip', 450);
               const C = cloth.getBoundingClientRect(), R = s.getBoundingClientRect(), k = C.width / cloth.offsetWidth || 1; spl.style.left = ((R.left + R.width / 2 - C.left) / k) + 'px'; bump(spl, 'fly', 600); if (key) bump(key, 'good', 500); li++; }
             else { run.bad(cloth); if (key) bump(key, 'bad', 700); slots.children[li].innerHTML = dyeSpoil(); slots.children[li].classList.add('bad'); snd.spoil(); li = -1; break; }
           }

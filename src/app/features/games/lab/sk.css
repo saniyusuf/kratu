@@ -1,0 +1,52 @@
+/* The Yoruba and Igbo game scenes (south.ts, scenes-yo.ts, scenes-ig.ts): scoped under .glab .gbg .sk5, keyframes sk5-…,
+   transform and opacity only, a few slow loops for cheap tablets. People are drawn in 60x140 boxes (pivots in those units). */
+.glab .gbg .sk5 .x-bird,.glab .gbg .sk5 .x-cl0,.glab .gbg .sk5 .x-leaf,.glab .gbg .sk5 .x-leaf2,.glab .gbg .sk5 .x-crown,.glab .gbg .sk5 .x-bob,.glab .gbg .sk5 .x-smoke,.glab .gbg .sk5 .x-pk,.glab .gbg .sk5 .x-drive,.glab .gbg .sk5 .x-rip,.glab .gbg .sk5 .x-glow{transform-box:fill-box}
+.glab .gbg .sk5 .x-cl0{animation:sk5-drift var(--d,60s) ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-bird{transform-origin:50% 50%;animation:sk5-fly 8s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-leaf{transform-origin:50% 100%;animation:sk5-leaf 4.6s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-leaf2{transform-origin:50% 100%;animation:sk5-leaf 3.4s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-crown{transform-origin:50% 100%;animation:sk5-crown 6s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-rip{animation:sk5-rip 5s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-bob{transform-origin:50% 100%;animation:sk5-bob 3.2s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-smoke{transform-origin:50% 100%;animation:sk5-smoke 3.6s ease-out infinite}
+.glab .gbg .sk5 .x-pk{transform-origin:20% 100%;animation:sk5-peck 2.8s ease-in-out infinite}
+.glab .gbg .sk5 .x-drive{animation:sk5-drive 26s linear infinite}
+.glab .gbg .sk5 .x-glow{transform-origin:50% 50%;animation:sk5-glow 4s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-fig.sway{animation:sk5-sway 2.6s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-fig.dance{animation:sk5-dance .9s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-fig.dance+.x-fig.dance{animation-delay:-.45s}
+.glab .gbg .sk5 .x-al.play,.glab .gbg .sk5 .x-ar.play{animation:sk5-beat .5s ease-in-out infinite alternate}
+.glab .gbg .sk5 .x-head{transition:transform .3s}
+.glab .gbg .sk5 .x-ms,.glab .gbg .sk5 .x-mf{transition:opacity .25s}
+/* cheer: people hop and wave, the clappers clap */
+.glab .gbg.cheer .sk5 .x-fig.hop{animation:sk5-hop .4s ease-in-out infinite alternate}
+.glab .gbg.cheer .sk5 .x-fig.nod .x-head{animation:sk5-nod .45s ease-in-out infinite alternate}
+.glab .gbg.cheer .sk5 .x-al.x-wv{animation:sk5-wl .5s ease-in-out infinite alternate}
+.glab .gbg.cheer .sk5 .x-ar.x-wv{animation:sk5-wr .5s ease-in-out infinite alternate}
+.glab .gbg.cheer .sk5 .x-al.x-cl{animation:sk5-cl .22s ease-in-out infinite alternate}
+.glab .gbg.cheer .sk5 .x-ar.x-cl{animation:sk5-cr .22s ease-in-out infinite alternate}
+/* sad: heads shake, smiles turn down */
+.glab .gbg.sad .sk5 .x-head{animation:sk5-no .32s ease-in-out infinite alternate}
+.glab .gbg.sad .sk5 .x-ms{opacity:0}
+.glab .gbg.sad .sk5 .x-mf{opacity:1}
+@keyframes sk5-drift{to{transform:translateX(18px)}}
+@keyframes sk5-fly{0%{transform:translate(0,0)}50%{transform:translate(14px,-4px)}100%{transform:translate(28px,1px)}}
+@keyframes sk5-leaf{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+@keyframes sk5-crown{from{transform:skewX(-1.2deg)}to{transform:skewX(1.2deg)}}
+@keyframes sk5-rip{to{transform:translateX(6px)}}
+@keyframes sk5-bob{to{transform:translateY(-1.4px)}}
+@keyframes sk5-smoke{0%{opacity:.6;transform:translateY(0) scale(.8)}100%{opacity:0;transform:translateY(-12px) scale(1.5)}}
+@keyframes sk5-peck{0%,70%,100%{transform:none}80%{transform:rotate(28deg)}}
+@keyframes sk5-drive{from{transform:translateX(-60px)}to{transform:translateX(380px)}}
+@keyframes sk5-glow{to{opacity:.12}}
+@keyframes sk5-sway{from{transform:rotate(-1.6deg)}to{transform:rotate(1.6deg)}}
+@keyframes sk5-dance{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-4px) rotate(3deg)}}
+@keyframes sk5-beat{from{transform:rotate(0)}to{transform:rotate(-16deg)}}
+@keyframes sk5-hop{to{transform:translateY(-9px)}}
+@keyframes sk5-nod{from{transform:rotate(-4deg)}to{transform:rotate(5deg)}}
+@keyframes sk5-wl{from{transform:rotate(-8deg)}to{transform:rotate(18deg)}}
+@keyframes sk5-wr{from{transform:rotate(8deg)}to{transform:rotate(-18deg)}}
+@keyframes sk5-cl{to{transform:rotate(-14deg)}}
+@keyframes sk5-cr{to{transform:rotate(14deg)}}
+@keyframes sk5-no{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@media (prefers-reduced-motion:reduce){.glab .gbg .sk5 *{animation:none!important}}

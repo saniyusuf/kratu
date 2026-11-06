@@ -76,7 +76,7 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
 @if (intro()) {
 <div class="pintro nofit" [class.ready]="introReady()">
   <div class="ptries">@for (i of [1, 2]; track i) {<i [class.on]="i <= tryN"></i>}</div>
-  <div class="pban">Fashe haruffa</div>
+  <div class="pban">{{ t('Fashe haruffa') }}</div>
   <div class="pboard">@for (L of all; track L) {<button type="button" [style.--c]="colour(L)" [style.--i]="$index" [class.fail]="marked().includes(L)" (click)="mark(L)">{{ L }}</button>}</div>
   <div class="pstars"><i></i><i></i><i></i><span class="pline"></span><i></i></div>
   <div class="pgo"><app-laila-btn label="" [size]="130" [speak]="introSpeak()" [cue]="introReady()" (pressed)="go()" /></div>

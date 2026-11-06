@@ -18,6 +18,7 @@ import { garkeScene } from './sc-garke';
 import { dillaliScene } from './sc-dillali';
 import { ruwaScene } from './sc-ruwa';
 import { riniScene } from './sc-rini';
+import { SKIN } from './skin';
 
 /** the drawn background of each reworked game, by game id (sc-*.ts, wired in as each is drawn) */
 const SCENE: Record<string, () => string> = {
@@ -27,7 +28,7 @@ const SCENE: Record<string, () => string> = {
 };
 /** the scenes are fixed drawings (no chance in them), so each string is built once and kept for the next round */
 const BUILT: Record<string, string> = {};
-export function restScene(gid: string): string | null { const f = SCENE[gid]; return f ? (BUILT[gid] ??= f()) : null; }
+export function restScene(gid: string): string | null { const f = (SKIN && SKIN.scene[gid]) || SCENE[gid]; return f ? (BUILT[gid] ??= f()) : null; }
 
 /** the scene's people react: .cheer after a right answer, .sad after a wrong one (the classes sit on .gbg) */
 export function react(scr: HTMLElement, kind: 'cheer' | 'sad'): void {
