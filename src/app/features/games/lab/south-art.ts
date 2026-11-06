@@ -288,7 +288,19 @@ export function makeArt(L) {
       '<rect width="80" height="100" fill="' + (Y ? '#E9D3AE' : '#DCCDB0') + '"/><rect x="6" y="8" width="30" height="70" fill="' + (Y ? '#B98A58' : '#8C6A4A') + '" opacity=".55"/>' +
       '<path d="M0 60 H80 V100 H0 Z" fill="#C9A878"/><path d="M44 14 h30 v22 h-30 Z" fill="' + (Y ? '#2E5E8A' : '#B71C1C') + '" opacity=".35"/>' +
       person(40, kid ? 196 : 226, kid ? 175 : 210, { ...o, skin: (who.length * 3) % 6, al: 'hold', ar: 'hold' }) + '</svg>'; };
-  const art = { shopper, jrWaiter, emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
+  /** the fisherman: no Argungu gourd floats down here; he stands in a dugout canoe on the lagoon (Yoruba) or the Niger
+      (Igbo) with his hand-net, the same .homa net the game swings to scoop and throw (120 x 130 like the Hausa one) */
+  const argFisher = () => '<svg class="fisher2" viewBox="0 0 120 130" overflow="visible" aria-hidden="true">' +
+    person(64, 76, 64, Y ? { kind: 'man', robe: '#C9D8E4', trou: '#2E5E8A', hat: 'fila', hatc: '#7A2E5C', skin: 2, al: 'down', ar: 'down' }
+                         : { kind: 'man', robe: '#F4F1EA', wrapper: '#1F4E2E', hat: 'okpu', hatc: '#B71C1C', hatc2: '#1E1E24', skin: 3, al: 'down', ar: 'down' }) +
+    '<path d="M26 70 Q30 82 52 83 L104 82 Q114 80 116 70 Q70 74 26 70 Z" fill="#6B4226"/><path d="M26 70 Q70 74 116 70 Q70 76.6 26 70 Z" fill="#8E5E36"/>' +
+    '<path d="M34 78 Q70 82 108 78" stroke="#3E2414" stroke-width=".8" fill="none" opacity=".6"/><path d="M102 64 L112 86" stroke="#7A5530" stroke-width="1.6"/><path d="M110 82 l4 8 l-6 -2 Z" fill="#7A5530"/>' +
+    '<g class="homa"><path d="M58 48 L14 24" stroke="#7A5530" stroke-width="2.2" stroke-linecap="round"/>' +
+    '<g class="hoop"><path d="M14 22 Q-8 26 -5 46 Q10 60 26 40 Z" fill="#FFFDF4" opacity=".45"/><path d="M4 28 L18 50 M-3 38 L10 56 M10 24 L24 42 M-4 48 L14 26 M4 56 L22 34" stroke="#5A3A1E" stroke-width=".7" opacity=".6"/>' +
+    '<path d="M14 22 Q-8 26 -5 46 Q10 60 26 40" fill="none" stroke="#5E3A1C" stroke-width="2.6" stroke-linecap="round"/></g>' +
+    '<circle cx="56" cy="47" r="2.6" fill="' + SKT[2] + '"/><circle cx="48" cy="43" r="2.6" fill="' + SKT[2] + '"/></g>' +
+    '<ellipse cx="72" cy="83" rx="44" ry="2.4" fill="#0E3E52" opacity=".25"/><path class="ripple" d="M20 76 Q63 72 118 76" stroke="#E9FBFF" stroke-width="1.2" fill="none" opacity=".8"/></svg>';
+  const art = { argFisher, shopper, jrWaiter, emirThrone, dogari, maiFanka, sallahBand, dancers, band, stand: grill, teaStall: stall };
   if (!Y) art.durbarRider = ageGrade;
   if (Y) art.engineBoat = danfoBus;
   return art;
