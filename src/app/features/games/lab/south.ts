@@ -58,17 +58,6 @@ const POSE = {
   play: ['M16 45 Q10 60 20 58', [22, 57]],
 };
 const mir = (d) => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, x, y) => (60 - +x) + ' ' + y);
-function arm(side, pose, sleeve, sk, cls = '', w = 9, hold = '') {
-  const L = side === 'l';
-  let [d, [hx, hy]] = POSE[pose] || POSE.down;
-  if (!L) { d = mir(d); hx = 60 - hx; }
-  if (/wave|load|up/.test(pose)) cls += ' x-up';
-  return '<g class="x-a' + side + (cls ? ' ' + cls : '') + '" style="transform-origin:' + (L ? '16px 45px' : '44px 45px') + '">' +
-    '<path d="' + d + '" stroke="' + dk(sleeve, 0.3) + '" stroke-width="' + (w + 1.4) + '" stroke-linecap="round" fill="none"/>' +
-    '<path d="' + d + '" stroke="' + sleeve + '" stroke-width="' + w + '" stroke-linecap="round" fill="none"/>' +
-    '<circle cx="' + hx + '" cy="' + hy + '" r="3.7" fill="' + sk + '"/>' + (hold ? '<g transform="translate(' + hx + ' ' + hy + ')">' + hold + '</g>' : '') + '</g>';
-}
-
 /** the build's hats, drawn over a head whose crown is near (x, y), half-width w (same frame as capsArewa.arewaCap) */
 export function hat(kind, x, y, w, c = '#C0392B', c2 = '#F4EBD0') {
   const P2 = (dx, dy) => f1(x + dx * w) + ' ' + f1(y - dy * w);
@@ -87,10 +76,15 @@ export function hat(kind, x, y, w, c = '#C0392B', c2 = '#F4EBD0') {
       '<path d="M' + P2(-.6, .95) + ' Q' + P2(-.2, .5) + ' ' + P2(-.4, .3) + '" stroke="' + lt(c, 0.25) + '" stroke-width="' + f1(w * .08) + '" fill="none" opacity=".6"/></g>';
   if (kind === 'okpuf') // a titled man's red cap with an eagle feather
     return hat('okpu', x, y, w, c, c2) + '<path d="M' + P2(.5, .9) + ' Q' + P2(1.3, 2.2) + ' ' + P2(1.0, 2.9) + ' Q' + P2(.75, 2.1) + ' ' + P2(.3, .95) + ' Z" fill="#F4F1EA" stroke="#5A4A3A" stroke-width=".3"/>';
-  if (kind === 'gele') // the women's head-tie, tied high with its pleats fanned out
-    return '<g class="cap-gl"><path d="M' + P2(-1.1, -.1) + ' Q' + P2(-1.4, 1.2) + ' ' + P2(-.4, 1.5) + ' Q' + P2(-.2, 2.4) + ' ' + P2(.6, 2.2) + ' Q' + P2(1.6, 2.0) + ' ' + P2(1.3, .9) + ' Q' + P2(1.25, .2) + ' ' + P2(1.1, -.1) + ' Q' + P2(0, .2) + ' ' + P2(-1.1, -.1) + ' Z" fill="' + c + '"/>' +
-      '<path d="M' + P2(-.9, .5) + ' Q' + P2(0, 1.5) + ' ' + P2(1.1, .6) + ' M' + P2(-.6, 1.2) + ' Q' + P2(.2, 2.0) + ' ' + P2(1.2, 1.4) + ' M' + P2(-.2, 1.6) + ' Q' + P2(.4, 2.3) + ' ' + P2(.9, 1.9) + '" stroke="' + dk(c, 0.22) + '" stroke-width="' + f1(w * .07) + '" fill="none"/>' +
-      '<path d="M' + P2(-1.0, .1) + ' Q' + P2(0, .35) + ' ' + P2(1.05, .1) + '" stroke="' + lt(c, 0.35) + '" stroke-width="' + f1(w * .08) + '" fill="none"/></g>';
+  if (kind === 'gele') { // the women's head-tie in stiff aso-òkè: a band round the head, a tall pleated fan rising behind, the ends fanned out at the side
+    const d = dk(c, 0.25), l = lt(c, 0.3);
+    let pleats = ''; for (let k = 0; k < 7; k++) { const a = -1.15 + k * .36; pleats += '<path d="M' + P2(.15, .9) + ' Q' + P2(a * .8, 2.0) + ' ' + P2(a * 1.25, 2.55 - Math.abs(a) * .35) + '" stroke="' + (k % 2 ? d : l) + '" stroke-width="' + f1(w * .07) + '" fill="none"/>'; }
+    return '<g class="cap-gl"><path d="M' + P2(-1.1, .9) + ' Q' + P2(-1.75, 1.9) + ' ' + P2(-1.45, 2.45) + ' Q' + P2(-.4, 2.85) + ' ' + P2(.6, 2.75) + ' Q' + P2(1.7, 2.55) + ' ' + P2(1.65, 1.6) + ' Q' + P2(1.5, 1.0) + ' ' + P2(1.1, .8) + ' Z" fill="' + c + '"/>' + pleats +
+      '<path d="M' + P2(-1.1, -.15) + ' Q' + P2(-1.25, .9) + ' ' + P2(-.6, 1.25) + ' Q' + P2(.2, 1.45) + ' ' + P2(1.0, 1.2) + ' Q' + P2(1.3, .6) + ' ' + P2(1.12, -.15) + ' Q' + P2(0, .2) + ' ' + P2(-1.1, -.15) + ' Z" fill="' + c + '"/>' +
+      '<path d="M' + P2(-1.12, .1) + ' Q' + P2(0, .45) + ' ' + P2(1.12, .1) + ' M' + P2(-1.15, .5) + ' Q' + P2(0, .9) + ' ' + P2(1.18, .5) + '" stroke="' + d + '" stroke-width="' + f1(w * .06) + '" fill="none"/>' +
+      '<path d="M' + P2(1.05, .4) + ' Q' + P2(1.75, .55) + ' ' + P2(1.95, 1.1) + ' Q' + P2(1.5, 1.05) + ' ' + P2(1.1, .9) + ' Z" fill="' + d + '"/>' +
+      '<path d="M' + P2(-1.0, .05) + ' Q' + P2(0, .3) + ' ' + P2(1.05, .05) + '" stroke="' + l + '" stroke-width="' + f1(w * .09) + '" fill="none"/>' +
+      '<path d="M' + P2(-1.45, 2.45) + ' Q' + P2(-.4, 2.85) + ' ' + P2(.6, 2.75) + ' Q' + P2(1.7, 2.55) + ' ' + P2(1.65, 1.6) + '" stroke="' + d + '" stroke-width="' + f1(w * .08) + '" fill="none"/></g>'; }
   if (kind === 'tie') // the Igbo head-tie, smaller, knotted at the front
     return '<g class="cap-t"><path d="M' + P2(-1.08, -.1) + ' C' + P2(-1.2, 1.0) + ' ' + P2(-.4, 1.35) + ' ' + P2(.2, 1.3) + ' C' + P2(.9, 1.25) + ' ' + P2(1.25, .9) + ' ' + P2(1.08, -.1) + ' Q' + P2(0, .15) + ' ' + P2(-1.08, -.1) + ' Z" fill="' + c + '"/>' +
       '<path d="M' + P2(-.3, 1.2) + ' q' + f1(w * .3) + ' ' + f1(-w * .7) + ' ' + f1(w * .7) + ' ' + f1(-w * .2) + ' q' + f1(-w * .1) + ' ' + f1(w * .5) + ' ' + f1(-w * .7) + ' ' + f1(w * .2) + ' Z" fill="' + dk(c, 0.18) + '"/>' +
@@ -105,57 +99,118 @@ export function hat(kind, x, y, w, c = '#C0392B', c2 = '#F4EBD0') {
   return '';
 }
 
+/* ---------- people, r2 (Sani 2026-11-06 "more real, very Yoruba / very Igbo"): drawn like the Hawan Sallah court ----------
+   Lit from the upper left: every body and sleeve gets a shaded right side and a lit left edge laid over its cloth (so a
+   pattern keeps its shading), the folds are drawn, faces have whites to the eyes, a nose with nostrils, two-tone lips, ears,
+   a jaw and a neck in shadow; hands have a thumb. Dress by build: agbada over buba and sokoto, iro and buba with gele and
+   ìpèlé (Yoruba); isiagu, wrappers tied at the waist, george, head-ties and coral (Igbo). Same box, classes and options. */
+const INK = '#24160C';
+const shadeOver = (d, k = .2) => '<path d="' + d + '" fill="#1a0e06" opacity="' + k + '"/>';
+const vec = (d) => { const n = d.match(/-?\d+(?:\.\d+)?/g).map(Number); return [n[n.length - 4], n[n.length - 3], n[n.length - 2], n[n.length - 1]]; };
+function hand(x, y, a, sk, open) {
+  const r = (a * 180 / Math.PI).toFixed(0);
+  if (open) return '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + r + ')"><path d="M-2.6 -1.2 Q-3 3.4 -1.6 6.6 L-1 9 M0 -1.4 L.2 9.6 M1.8 -1.2 L2.2 9 M3.4 -.6 L3.6 7.6" stroke="' + sk + '" stroke-width="1.5" stroke-linecap="round"/>' +
+    '<ellipse cx=".4" cy="1.6" rx="3.6" ry="3.8" fill="' + sk + '"/><path d="M-3 1 Q-5.6 2 -6 4.6" stroke="' + sk + '" stroke-width="1.5" stroke-linecap="round" fill="none"/></g>';
+  return '<g transform="translate(' + f1(x) + ' ' + f1(y) + ') rotate(' + r + ')"><path d="M-3 -1.6 Q-3.6 2.6 -1.4 4.6 Q1.6 5.4 3.2 3 Q3.8 .2 2.6 -2.2 Z" fill="' + sk + '"/>' +
+    '<path d="M-1.6 4.2 Q.2 5.2 2.4 3.6" stroke="' + dk(sk, .35) + '" stroke-width=".5" fill="none"/><path d="M2.6 -1.4 Q4.4 .4 3.6 2.8" stroke="' + sk + '" stroke-width="1.6" stroke-linecap="round" fill="none"/>' +
+    '<path d="M-2.4 -.8 Q-2.6 1.6 -1.6 3" stroke="' + lt(sk, .3) + '" stroke-width=".6" fill="none" opacity=".7"/></g>';
+}
+function arm(side, pose, sleeve, sk, cls = '', w = 9, hold = '', wide = 0) {
+  const L = side === 'l';
+  let d, hx, hy;
+  if (pose.includes('|')) { const [pd, ph] = pose.split('|'); d = pd; [hx, hy] = ph.split(',').map(Number); }   // a drawn arm, 'path|hx,hy', already on its side
+  else { [d, [hx, hy]] = POSE[pose] || POSE.down; if (!L) { d = mir(d); hx = 60 - hx; } }
+  if (/wave|load|up/.test(pose)) cls += ' x-up';
+  const [qx, qy, ex, ey] = vec(d), a = Math.atan2(ey - qy, ex - qx) - Math.PI / 2, open = /wave|up/.test(pose);
+  const cuffX = ex - (ex - qx) * .16, cuffY = ey - (ey - qy) * .16;
+  // the wide Yoruba sleeve (agbada, buba): a bell of cloth hanging from the elbow
+  const bell = wide ? '<path d="M' + f1(qx - 1) + ' ' + f1(qy - 2) + ' Q' + f1((qx + ex) / 2 + (L ? -wide : wide)) + ' ' + f1((qy + ey) / 2 + wide * .8) + ' ' + f1(cuffX + (L ? -wide * .5 : wide * .5)) + ' ' + f1(cuffY + 1) +
+    ' L' + f1(cuffX + (L ? 3 : -3)) + ' ' + f1(cuffY - 1) + ' Z" fill="' + sleeve + '"/>' + '<path d="M' + f1(qx - 1) + ' ' + f1(qy - 2) + ' Q' + f1((qx + ex) / 2 + (L ? -wide : wide)) + ' ' + f1((qy + ey) / 2 + wide * .8) + ' ' + f1(cuffX + (L ? -wide * .5 : wide * .5)) + ' ' + f1(cuffY + 1) + '" stroke="#1a0e06" stroke-opacity=".25" stroke-width=".7" fill="none"/>' : '';
+  return '<g class="x-a' + side + (cls ? ' ' + cls : '') + '" style="transform-origin:' + (L ? '16px 45px' : '44px 45px') + '">' +
+    '<path d="' + d + '" stroke="#1a0e06" stroke-opacity=".35" stroke-width="' + (w + 1.2) + '" stroke-linecap="round" fill="none"/>' +
+    '<path d="' + d + '" stroke="' + sleeve + '" stroke-width="' + w + '" stroke-linecap="round" fill="none"/>' +
+    '<path d="' + d + '" stroke="#1a0e06" stroke-opacity=".16" stroke-width="' + f1(w * .45) + '" stroke-linecap="round" fill="none" transform="translate(' + (L ? 1.6 : 1.6) + ' .4)"/>' +
+    '<path d="' + d + '" stroke="#fff" stroke-opacity=".16" stroke-width="' + f1(w * .22) + '" stroke-linecap="round" fill="none" transform="translate(-' + f1(w * .28) + ' 0)"/>' + bell +
+    hand(ex, ey + 1.4, a, sk, open) + (hold ? '<g transform="translate(' + hx + ' ' + hy + ')">' + hold + '</g>' : '') + '</g>';
+}
+function face(o, sk) {
+  const skd = dk(sk, .3), lip = mix(sk, '#5A1A12', .45), lipL = mix(sk, '#B0504A', .4);
+  return '<path d="M26.2 33 Q26.2 39.6 25.2 43.4 H34.8 Q33.8 39.6 33.8 33 Z" fill="' + dk(sk, .12) + '"/><path d="M26.2 34 Q30 38.6 33.8 34 V37.6 Q30 40.4 26.2 37.6 Z" fill="#1a0e06" opacity=".25"/>' +
+    '<ellipse cx="19.4" cy="26" rx="2.1" ry="3.3" fill="' + sk + '"/><ellipse cx="40.6" cy="26" rx="2.1" ry="3.3" fill="' + skd + '"/><path d="M19.2 24.4 q-1 1.6 .2 3.4" stroke="' + skd + '" stroke-width=".6" fill="none"/>' +
+    '<path d="M30 13.2 C37 13.2 40.9 18.4 40.7 24.8 C40.5 30.8 37.6 35.6 33.6 37.4 Q30 38.8 26.4 37.4 C22.4 35.6 19.5 30.8 19.3 24.8 C19.1 18.4 23 13.2 30 13.2 Z" fill="' + sk + '"/>' +
+    '<path d="M35.4 15 C39.6 17.4 41 21.4 40.7 25.6 C40.4 31 37.4 35.6 33.6 37.4 Q31.4 38.2 29.6 38.2 Q36.4 34 37.2 26.6 Q37.6 19.6 35.4 15 Z" fill="#1a0e06" opacity=".22"/>' +
+    '<path d="M22.6 18.6 Q25.6 14.6 30.6 14.6 Q25.6 16.4 23.8 20.6 Z M21.8 28.6 Q22.4 31.4 24 32.6 Q22.2 31.8 21.4 29.6 Z" fill="#fff" opacity=".18"/>' +
+    (o.marks ? '<path d="M21.8 27 l3.2 -.6 M21.9 28.8 l3.2 -.4 M22.1 30.6 l3 -.2 M38.2 27 l-3.2 -.6 M38.1 28.8 l-3.2 -.4 M37.9 30.6 l-3 -.2" stroke="' + dk(sk, .45) + '" stroke-width=".55" stroke-linecap="round"/>' : '') +
+    '<path d="M22.8 21.4 Q25.4 19.8 28 20.8 M32 20.8 Q34.6 19.8 37.2 21.4" stroke="' + INK + '" stroke-width="1.05" fill="none" stroke-linecap="round"/>' +
+    '<path d="M23.4 24.6 Q25.6 22.8 27.9 24.5 Q25.6 26 23.4 24.6 Z M32.1 24.5 Q34.4 22.8 36.6 24.6 Q34.4 26 32.1 24.5 Z" fill="#F2EADC"/>' +
+    '<circle cx="25.8" cy="24.5" r="1.15" fill="#2A160A"/><circle cx="34.2" cy="24.5" r="1.15" fill="#2A160A"/><circle cx="26.2" cy="24.1" r=".38" fill="#fff"/><circle cx="34.6" cy="24.1" r=".38" fill="#fff"/>' +
+    '<path d="M23.2 24.4 Q25.6 22.4 28.1 24.3 M31.9 24.3 Q34.4 22.4 36.8 24.4" stroke="' + INK + '" stroke-width=".7" fill="none"/>' +
+    '<path d="M29.6 25.4 Q29.4 28.4 28.2 29.6" stroke="' + skd + '" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M27 29.6 Q27.8 31 30 30.8 Q32.2 31 33 29.6 Q32 30.2 30 30.2 Q28 30.2 27 29.6 Z" fill="' + skd + '"/>' +
+    '<ellipse cx="28.3" cy="30.1" rx=".7" ry=".4" fill="#1a0e06" opacity=".6"/><ellipse cx="31.7" cy="30.1" rx=".7" ry=".4" fill="#1a0e06" opacity=".6"/>' +
+    '<g class="x-ms"><path d="M26.2 32.6 Q28.2 32 30 32.5 Q31.8 32 33.8 32.6 Q32.4 35.6 30 35.6 Q27.6 35.6 26.2 32.6 Z" fill="' + lipL + '"/><path d="M26.2 32.6 Q28.2 32 30 32.5 Q31.8 32 33.8 32.6 Q30 33.6 26.2 32.6 Z" fill="' + lip + '"/><path d="M26.6 32.9 Q30 34.2 33.4 32.9 Q30 33.5 26.6 32.9 Z" fill="#fff" opacity=".85"/></g>' +
+    '<g class="x-mf" opacity="0"><path d="M26.6 34 Q30 32.2 33.4 34 Q30 33.4 26.6 34 Z" fill="' + lip + '"/><path d="M27 34.2 Q30 35.6 33 34.2 Q30 35 27 34.2 Z" fill="' + lipL + '"/></g>' +
+    (o.beard ? '<path d="M21.6 29 Q22.4 37 27 38.4 Q30 39.4 33 38.4 Q37.6 37 38.4 29 Q36.4 34.6 33 35.6 Q30 36.4 27 35.6 Q23.6 34.6 21.6 29 Z" fill="' + (o.beard === 'w' ? '#E2DCD2' : '#1E120A') + '"/><path d="M26.4 31.6 Q30 30.4 33.6 31.6 Q30 31.2 26.4 31.6 Z" fill="' + (o.beard === 'w' ? '#E2DCD2' : '#1E120A') + '"/>' : '');
+}
 function head(o, sk) {
-  const cy = 25;
-  let back = '', front = '';
-  if (o.hat === 'hair') front = '<path d="M19.4 23 Q18.4 12.6 30 12.8 Q41.6 12.6 40.6 23 Q37 16.6 30 17 Q23 16.6 19.4 23 Z" fill="#1E120A"/>';
-  else if (o.hat === 'braids') front = '<path d="M19.4 23 Q18.4 12.6 30 12.8 Q41.6 12.6 40.6 23 Q37 16.6 30 17 Q23 16.6 19.4 23 Z" fill="#1E120A"/><path d="M24 14 V9 M30 13 V7.6 M36 14 V9" stroke="#1E120A" stroke-width="1.8" stroke-linecap="round"/>';
-  else if (o.hat) front = hat(o.hat, 30, o.hat === 'gele' || o.hat === 'tie' ? 20 : 18.5, 11.4, o.hatc || '#C0392B', o.hatc2 || '#F4EBD0');
-  const veil = o.hat === 'ade';
-  return '<g class="x-head" style="transform-origin:30px 37px">' + back +
-    '<path d="M26 32 h8 v10 h-8 Z" fill="' + dk(sk, 0.1) + '"/>' +
-    '<path d="M19.6 23.6 q-2.6 .2 -2.2 2.8 q.4 2.4 2.6 2 Z M40.4 23.6 q2.6 .2 2.2 2.8 q-.4 2.4 -2.6 2 Z" fill="' + dk(sk, 0.08) + '"/>' +
-    '<path d="M30 ' + (cy - 11.4) + ' C36.6 ' + (cy - 11.4) + ' 40.8 ' + (cy - 6.2) + ' 40.6 ' + cy + ' C40.4 ' + (cy + 6.4) + ' 36.4 ' + (cy + 11.8) + ' 30 ' + (cy + 11.8) + ' C23.6 ' + (cy + 11.8) + ' 19.6 ' + (cy + 6.4) + ' 19.4 ' + cy + ' C19.2 ' + (cy - 6.2) + ' 23.4 ' + (cy - 11.4) + ' 30 ' + (cy - 11.4) + ' Z" fill="' + sk + '"/>' +
-    '<path d="M36.6 15.6 Q41.4 20 40.4 27.4 Q39 34.4 31.4 36.6 Q37 32 37.6 25.6 Q38 20 36.6 15.6 Z" fill="' + dk(sk, 0.28) + '" opacity=".7"/>' +
-    '<path d="M23 18.6 q3.8 -3.6 9 -3 q-5 .8 -7.6 4 Z" fill="' + lt(sk, 0.4) + '" opacity=".45"/>' +
-    '<path d="M24.3 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z M32.7 24.2 q1.5 -2.4 3 0 q-1.5 2.2 -3 0 Z" fill="#1A0E06"/><path d="M25.9 23.3 h.7 v.7 h-.7 Z M34.3 23.3 h.7 v.7 h-.7 Z" fill="#fff" opacity=".85"/>' +
-    '<path d="M23.2 21 q2.4 -1.4 4.8 -.2 M32 20.8 q2.4 -1.2 4.8 .2" stroke="#1A0E06" stroke-width="1" fill="none" stroke-linecap="round"/>' +
-    '<path d="M29.8 23.4 q.4 2.4 .8 3.4 M27.4 27.6 q1.2 1.2 2.6 .5 q1.4 .7 2.6 -.5" stroke="' + dk(sk, 0.45) + '" stroke-width=".85" fill="none" stroke-linecap="round"/>' +
-    '<path class="x-ms" d="M26.2 30.4 Q30 33.8 33.8 30.4" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
-    '<path class="x-mf" d="M26.6 32.6 Q30 30 33.4 32.6" stroke="#3A1A0A" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0"/>' +
-    (o.beard ? '<path d="M21.4 28 Q22 37.6 30 38.4 Q38 37.6 38.6 28 Q36 33.4 30 33.4 Q24 33.4 21.4 28 Z" fill="' + (o.beard === 'w' ? '#E8E4DC' : '#24160C') + '"/>' : '') +
-    (o.marks ? '<path d="M21.6 26.4 h3 M21.8 28.4 h3 M21.6 30.4 h3 M35.4 26.4 h3 M35.2 28.4 h3 M35.4 30.4 h3" stroke="' + dk(sk, 0.4) + '" stroke-width=".6"/>' : '') +
-    front + (o.beads ? '<path d="M24 38 Q30 44 36 38" stroke="#E64A19" stroke-width="2.4" fill="none"/><path d="M24 38 Q30 44 36 38" stroke="#FF8A65" stroke-width=".8" fill="none" stroke-dasharray="1 1.4"/>' : '') +
+  let hair = '', front = '';
+  if (o.hat === 'hair' || o.hat === 'none') hair = '<path d="M19.4 23.4 Q18.6 12.4 30 12.4 Q41.4 12.4 40.6 23.4 Q39 17 30 16.8 Q21 17 19.4 23.4 Z" fill="#1E120A"/><path d="M21 19 Q30 13.6 39 19" stroke="#3A2A1E" stroke-width=".5" fill="none" stroke-dasharray=".6 .8"/>';
+  else if (o.hat === 'braids') hair = '<path d="M19.4 23.4 Q18.6 12.4 30 12.4 Q41.4 12.4 40.6 23.4 Q39 17 30 16.8 Q21 17 19.4 23.4 Z" fill="#1E120A"/>' +
+    [22, 26, 30, 34, 38].map((x, i) => '<path d="M' + x + ' ' + (15.6 - (i === 2 ? 1 : 0)) + ' Q' + (x + (x - 30) * .25) + ' 9 ' + (x + (x - 30) * .35) + ' ' + (6.6 + Math.abs(x - 30) * .3) + '" stroke="#1E120A" stroke-width="1.7" stroke-linecap="round" fill="none"/>').join('') +
+    '<path d="M21 18 L39 18 M24 14.6 L36 14.6" stroke="#5A3A22" stroke-width=".4"/>';
+  else if (o.hat) { hair = '<path d="M19.6 23.6 Q19.4 18.4 21.6 16.6 L22.4 21 Z M40.4 23.6 Q40.6 18.4 38.4 16.6 L37.6 21 Z" fill="#1E120A"/>';
+    front = hat(o.hat, 30, o.hat === 'gele' || o.hat === 'tie' ? 20 : 18.5, 11.6, o.hatc || '#C0392B', o.hatc2 || '#F4EBD0'); }
+  const ear = o.kind === 'woman' ? '<circle cx="19.2" cy="30" r="1" fill="#E8B830"/><circle cx="40.8" cy="30" r="1" fill="#C9A227"/>' : '';
+  const beads = o.beads ? '<path d="M24 39.6 Q30 45.4 36 39.6" stroke="#B71C1C" stroke-width="2.8" fill="none"/><path d="M24 39.6 Q30 45.4 36 39.6" stroke="#FF8A65" stroke-width="1" fill="none" stroke-dasharray="1.1 1.5"/>' +
+    (o.kind === 'woman' ? '<path d="M23.4 41 Q30 49 36.6 41" stroke="#C62828" stroke-width="2.2" fill="none"/>' : '') : '';
+  return '<g class="x-head" style="transform-origin:30px 37px">' + face(o, sk) + hair + ear + front + beads +
     (o.load ? '<g transform="translate(30 ' + (o.hat === 'gele' ? -4 : 4) + ') scale(1.4)">' + o.load + '</g>' : '') + (o.face || '') + '</g>';
 }
+/** the lit side and the shaded side of a cloth shape, laid over it */
+const light = (d) => '<path d="' + d + '" fill="#fff" opacity=".1"/>';
 function body(o, sk) {
-  const r = o.robe, r2 = o.robe2 || dk(o.robe, 0.2), t = o.trim || '#F4EBD0';
-  if (o.kind === 'man') // buba and sokoto, or an agbada over them (o.agbada), or an Igbo isiagu (robe = a pattern url)
-    return '<path d="M21 118 h7 v14 h-9 Z M32 118 h7 l2 14 h-9 Z" fill="' + (o.trou || '#E8DFC8') + '"/><path d="M17 131 h11 v3 h-12 Z M32 131 h11 l1 3 h-12 Z" fill="#3A2416"/>' +
-      (o.agbada ? '<path d="M14 43 Q30 37 46 43 Q60 72 58 112 Q48 117 40 115 L38 70 L22 70 L20 115 Q12 117 2 112 Q0 72 14 43 Z" fill="' + r + '"/>' +
-        '<path d="M38 70 L40 115 Q48 117 58 112 Q60 72 46 43 Q44 60 38 70 Z" fill="#000" opacity=".14"/>' +
-        '<path d="M24 46 Q30 64 36 46" fill="none" stroke="' + t + '" stroke-width="1.6"/><path d="M23 52 q-3 10 3 14 q5 2 7 -4" stroke="' + t + '" stroke-width="1.2" fill="none"/>'
-      : '<path d="M15 43 Q30 38 45 43 L48 98 Q30 103 12 98 Z" fill="' + r + '"/><path d="M38 42 Q44 42 45 43 L48 98 Q43 100 40 100 Z" fill="#000" opacity=".14"/>' +
-        '<path d="M25 44 L30 54 L35 44" fill="none" stroke="' + t + '" stroke-width="1.3"/><path d="M14 96 Q30 101 47 96" stroke="' + t + '" stroke-width="1.1" fill="none"/>' +
-        '<path d="M20 98 L22 120 H38 L40 98 Z" fill="' + (o.trou || '#E8DFC8') + '"/>');
+  const r = o.robe, t = o.trim || '#F4EBD0', trou = o.trou || '#E8DFC8', shoe = o.shoe || '#4A2E1A';
+  const feet = '<path d="M17.6 131.4 Q17.4 128.6 20 128.4 H28 Q29.2 130 28.6 133.6 H17.6 Z M31.4 128.4 H40 Q42.6 128.6 42.4 131.4 L42.4 133.6 H31.4 Q30.8 130 31.4 128.4 Z" fill="' + shoe + '"/><path d="M18 132.6 H28.4 M31.6 132.6 H42" stroke="#1a0e06" stroke-opacity=".4" stroke-width=".7"/>';
+  if (o.kind === 'man') {
+    // sokoto (or a wrapper tied at the waist, o.wrapper, as Igbo chiefs wear it), then the buba / isiagu, then the agbada
+    const legs = o.wrapper
+      ? '<path d="M14 92 L46 92 L47.4 130 Q30 132.4 12.6 130 Z" fill="' + o.wrapper + '"/>' + shadeOver('M34 92 L46 92 L47.4 130 Q41 131.4 36 131.2 Q37.6 110 34 92 Z', .2) + '<path d="M38 92 Q36 112 39 130" stroke="#1a0e06" stroke-opacity=".3" stroke-width=".8" fill="none"/><path d="M12.6 129 Q30 131.4 47.4 129" stroke="' + t + '" stroke-width="1" fill="none"/>'
+      : '<path d="M19.6 96 L29.6 96 L28.8 129 L20.4 129 Q19 112 19.6 96 Z M30.4 96 L40.4 96 Q41 112 39.6 129 L31.2 129 Z" fill="' + trou + '"/>' + shadeOver('M35 96 L40.4 96 Q41 112 39.6 129 L35.6 129 Z', .2) + '<path d="M24.6 100 L24.2 128 M30 96 V104" stroke="#1a0e06" stroke-opacity=".2" stroke-width=".6"/>';
+    const top = 'M15.6 44 Q30 38.6 44.4 44 Q47.4 70 48 100 Q30 104.6 12 100 Q12.6 70 15.6 44 Z';
+    const buba = '<path d="' + top + '" fill="' + r + '"/>' + shadeOver('M36 41.6 Q41 42 44.4 44 Q47.4 70 48 100 Q42 102 37 102.4 Q40 72 36 41.6 Z', .2) + light('M15.6 44 Q19 42.4 22 41.8 Q19 70 18.4 101.6 Q15 101 12 100 Q12.6 70 15.6 44 Z') +
+      '<path d="M25 43 L30 52 L35 43" fill="none" stroke="' + t + '" stroke-width="1.4"/><path d="M30 52 V66" stroke="' + t + '" stroke-width=".8" stroke-dasharray="1.4 1"/>' +
+      '<path d="M21 60 Q22 80 20 99 M39 62 Q38.6 80 40 99" stroke="#1a0e06" stroke-opacity=".16" stroke-width=".8" fill="none"/><path d="M12.4 98.4 Q30 103 47.6 98.4" stroke="' + t + '" stroke-width="1" fill="none"/>';
+    const agbada = o.agbada ? (() => { const c = o.agbada === 1 ? r : o.agbada, c2 = o.robe2 || t;
+      return '<path d="M13.6 43.4 Q30 37.4 46.4 43.4 Q58 68 57.6 114 Q50 118.6 41.6 116.4 L39.6 74 Q30 78 20.4 74 L18.4 116.4 Q10 118.6 2.4 114 Q2 68 13.6 43.4 Z" fill="' + c + '"/>' +
+        shadeOver('M41.6 116.4 L39.6 74 Q42 60 44 46 Q56 70 57.6 114 Q50 118.6 41.6 116.4 Z', .22) + light('M2.4 114 Q2 68 13.6 43.4 Q16 46 16 50 Q8 80 9.6 117 Q5 116 2.4 114 Z') +
+        '<path d="M23 43.6 Q30 64 37 43.6" fill="none" stroke="' + c2 + '" stroke-width="1.8"/><path d="M22.4 52 Q19.6 62 23.6 68 Q29 71 31 64 Q31.6 58 27 57" fill="none" stroke="' + c2 + '" stroke-width="1.3"/>' +
+        '<circle cx="24.6" cy="62.4" r="2.2" fill="none" stroke="' + c2 + '" stroke-width=".9"/><path d="M8 80 Q6 98 7.6 114 M52 80 Q54 98 52.4 114 M14 60 Q11 86 12.4 116 M46 60 Q49 86 47.6 116" stroke="#1a0e06" stroke-opacity=".2" stroke-width=".9" fill="none"/>' +
+        '<path d="M2.4 113 Q10 117.6 18.4 115.4 M41.6 115.4 Q50 117.6 57.6 113" stroke="' + c2 + '" stroke-width="1.1" fill="none"/>'; })() : '';
+    const sash = o.sash ? '<path d="M14 88 Q30 92 46 88 L46 93 Q30 97 14 93 Z" fill="' + o.sash + '"/>' : '';
+    return legs + feet + buba + sash + agbada;
+  }
   if (o.kind === 'boy')
-    return '<path d="M22 108 h6 v24 h-7 Z M32 108 h6 l1 24 h-7 Z" fill="' + (o.trou || '#3B4A6B') + '"/><path d="M19 130 h9 v4 h-10 Z M32 130 h9 l1 4 h-10 Z" fill="#3A2416"/>' +
-      '<path d="M17 45 Q30 40 43 45 L46 110 Q30 114 14 110 Z" fill="' + r + '"/><path d="M36 45 Q42 44 43 45 L46 110 Q42 112 38 112 Z" fill="#000" opacity=".14"/>' +
-      '<path d="M25 46 L30 54 L35 46" fill="none" stroke="' + t + '" stroke-width="1.2"/>';
-  // woman / girl: a buba blouse, an iro (or george) wrapper, sometimes an ipele over the shoulder
-  return '<path d="M20 130 h8 v4 h-9 Z M32 130 h8 l1 4 h-9 Z" fill="' + dk(sk, 0.35) + '"/>' +
-    '<path d="M14 43 Q30 38 46 43 L49 84 L11 84 Z" fill="' + r + '"/><path d="M37 41 Q43 41 46 43 L49 84 L39 84 Z" fill="#000" opacity=".13"/>' +
-    '<path d="M23 43 Q30 51 37 43" fill="none" stroke="' + t + '" stroke-width="1.4"/>' +
-    '<path d="M10 82 L50 82 L53 131 Q30 135 7 131 Z" fill="' + (o.wrap || '#2F6B9A') + '"/><path d="M10 82 L50 82 L50.6 88 L9.4 88 Z" fill="' + (o.wrap2 || dk(o.wrap || '#2F6B9A', 0.3)) + '"/>' +
-    '<path d="M42 90 Q40 110 45 131 M20 92 Q18 112 16 131" stroke="rgba(0,0,0,.22)" stroke-width="1.1" fill="none"/>' +
-    (o.ipele ? '<path d="M44 44 Q52 70 49 96 L42 94 Q44 70 38 46 Z" fill="' + o.ipele + '"/>' : '');
+    return '<path d="M21.6 106 L29.4 106 L28.8 129 L21.6 129 Z M30.6 106 L38.4 106 L38.4 129 L31.2 129 Z" fill="' + (o.trou || '#3B4A6B') + '"/>' + feet +
+      '<path d="M17 46 Q30 41 43 46 L45.4 108 Q30 111.6 14.6 108 Z" fill="' + r + '"/>' + shadeOver('M36 44 Q40 44.4 43 46 L45.4 108 Q41 109.6 37.4 109.8 Q39 76 36 44 Z', .2) + light('M17 46 Q19 45 21 44.4 Q19 76 18.6 109.4 Q16.4 109 14.6 108 Z') +
+      '<path d="M25 45 L30 53 L35 45" fill="none" stroke="' + t + '" stroke-width="1.2"/>';
+  // woman / girl: buba blouse, iro (Yoruba) or a double george wrapper (Igbo), tied at the waist with its tuck, an ìpèlé over the shoulder
+  const wrap = o.wrap || '#2F6B9A', wrap2 = o.wrap2 || wrap;
+  return '<path d="M20 130 Q20 128.4 22 128.4 H28.4 V133.6 H19.4 Z M31.6 128.4 H38 Q40 128.4 40 130 L40.6 133.6 H31.6 Z" fill="' + (o.shoe || dk(sk, .4)) + '"/>' +
+    '<path d="M14 43.4 Q30 38.4 46 43.4 Q48.6 62 49.4 86 L10.6 86 Q11.4 62 14 43.4 Z" fill="' + r + '"/>' + shadeOver('M36.6 41 Q42 41.6 46 43.4 Q48.6 62 49.4 86 L39 86 Q40.4 62 36.6 41 Z', .2) + light('M14 43.4 Q17 42 20 41.4 Q17.6 62 17.6 86 L10.6 86 Q11.4 62 14 43.4 Z') +
+    '<path d="M22.6 43 Q30 51.6 37.4 43" fill="none" stroke="' + t + '" stroke-width="1.5"/><path d="M14 60 Q30 64 46.6 60" stroke="#1a0e06" stroke-opacity=".12" stroke-width=".8" fill="none"/>' +
+    '<path d="M9.6 82 Q30 78 50.4 82 L53.4 130.6 Q30 134.6 6.6 130.6 Z" fill="' + wrap + '"/>' + shadeOver('M38 81 Q45 81 50.4 82 L53.4 130.6 Q47 132.4 41.6 132.8 Q42.6 104 38 81 Z', .22) + light('M9.6 82 Q13 81 16.6 80.6 Q15 106 14.4 132.6 Q10 131.8 6.6 130.6 Z') +
+    (wrap2 !== wrap ? '<path d="M9.4 82 Q30 78 50.6 82 L51.6 100 Q30 96.4 8.8 100 Z" fill="' + wrap2 + '"/>' + shadeOver('M40 80.6 Q46 81 50.6 82 L51.6 100 Q46 98.6 41 98.4 Z', .2) : '') +
+    '<path d="M9.6 82 Q30 78 50.4 82 L50.6 86 Q30 82.4 9.4 86 Z" fill="#1a0e06" opacity=".18"/><path d="M36 82.6 Q40 88 38.4 94 Q36 90 33.6 86 Z" fill="' + (wrap2 !== wrap ? wrap2 : wrap) + '"/><path d="M36 82.6 Q40 88 38.4 94" stroke="#1a0e06" stroke-opacity=".3" stroke-width=".6" fill="none"/>' +
+    '<path d="M42 92 Q40 112 45 130.6 M20 94 Q18 114 15.6 131.6 M30 96 Q31 114 29.6 132.4" stroke="#1a0e06" stroke-opacity=".2" stroke-width=".9" fill="none"/>' +
+    (o.ipele ? '<path d="M44.4 43 Q53.6 66 50.6 98 L43 96.4 Q45 70 38.6 45 Z" fill="' + o.ipele + '"/>' + shadeOver('M47 52 Q53 72 50.6 98 L47 97.4 Q49 74 45 54 Z', .22) : '');
 }
+
 /** a standing person with feet at (x, y), h units tall. o: kind man|woman|boy|girl, skin, robe, robe2, trim, trou, wrap,
  *  wrap2, ipele, agbada, hat (fila gobi okpu okpuf gele tie ade crownr hair braids), hatc, hatc2, beads, beard, marks,
  *  al / ar (arm poses), alc / arc (arm classes), hl / hr (things in the hands), load (on the head), cls, flip */
 export function person(x, y, h, o) {
-  const s = h / 140, sk = SKT[(o.skin || 0) % SKT.length], w = o.kind === 'man' ? 11 : 8.6;
-  const arms = arm('l', o.al || 'down', o.sl || o.robe, sk, o.alc || '', w, o.hl || '') + arm('r', o.ar || 'down', o.sl || o.robe, sk, o.arc || '', w, o.hr || '');
+  const s = h / 140, sk = SKT[(o.skin || 0) % SKT.length], w = o.kind === 'man' ? 10 : 8.2;
+  const wide = o.agbada ? 4.4 : (o.kind === 'woman' && !o.tight ? 2.2 : 0), sl = o.sl || (o.agbada && o.agbada !== 1 ? o.agbada : o.robe);
+  const arms = arm('l', o.al || 'down', sl, sk, o.alc || '', w, o.hl || '', wide) + arm('r', o.ar || 'down', sl, sk, o.arc || '', w, o.hr || '', wide);
   const inner = '<ellipse cx="30" cy="135" rx="22" ry="3.4" fill="rgba(40,24,10,.28)"/>' +
     '<g class="x-fig' + (o.cls ? ' ' + o.cls : '') + '" style="transform-origin:30px 134px"' + (o.flip ? ' transform="translate(60 0) scale(-1 1)"' : '') + '>' + (o.behind || '') +
     body(o, sk) + arms + head(o, sk) + (o.front || '') + '</g>';
@@ -292,6 +347,21 @@ export function shed(x, y, w, goods = ['#C62828', '#E8A317', '#4E8A3A'], o = {})
 }
 export const umbrella = (x, y, c1, c2, s = 1) => '<g><path d="M' + x + ' ' + y + ' V' + f1(y - 14 * s) + '" stroke="#5A4A3A" stroke-width="' + f1(.6 * s) + '"/><path d="M' + f1(x - 11 * s) + ' ' + f1(y - 12 * s) + ' Q' + x + ' ' + f1(y - 22 * s) + ' ' + f1(x + 11 * s) + ' ' + f1(y - 12 * s) + ' Z" fill="' + c1 + '"/>' +
   '<path d="M' + x + ' ' + f1(y - 18.6 * s) + ' L' + f1(x - 4 * s) + ' ' + f1(y - 12 * s) + ' L' + f1(x + 4 * s) + ' ' + f1(y - 12 * s) + ' Z" fill="' + c2 + '"/></g>';
+/** a ceremonial umbrella (the àgbòrùn over a chief or an age group): a deep dome of gores, a fringed valance, a carved pole */
+export function parasol(x, y, r, c1, c2, fr = '#E8B830') {
+  let g = '<path d="M' + f1(x) + ' ' + f1(y) + ' V' + f1(y - r * 2.2) + '" stroke="#4A2E1A" stroke-width="' + f1(r * .08) + '"/>';
+  const top = y - r * 2.4, rim = y - r * 1.5;
+  for (let k = 0; k < 6; k++) { const a = x - r + k * r / 3, b = a + r / 3;
+    g += '<path d="M' + f1(x) + ' ' + f1(top) + ' Q' + f1(x + (a - x) * .6) + ' ' + f1(top + r * .1) + ' ' + f1(a) + ' ' + f1(rim) + ' L' + f1(b) + ' ' + f1(rim) + ' Q' + f1(x + (b - x) * .6) + ' ' + f1(top + r * .1) + ' ' + f1(x) + ' ' + f1(top) + ' Z" fill="' + (k % 2 ? c2 : c1) + '"/>'; }
+  g += '<path d="M' + f1(x) + ' ' + f1(top) + ' Q' + f1(x + r * .6) + ' ' + f1(top + r * .1) + ' ' + f1(x + r) + ' ' + f1(rim) + ' L' + f1(x + r * .3) + ' ' + f1(rim) + ' Z" fill="#1a0e06" opacity=".16"/>';
+  let v = 'M' + f1(x - r) + ' ' + f1(rim) + ' H' + f1(x + r) + ' V' + f1(rim + r * .22);
+  for (let k = 6; k > 0; k--) v += ' Q' + f1(x - r + (k - .5) * r / 3) + ' ' + f1(rim + r * .42) + ' ' + f1(x - r + (k - 1) * r / 3) + ' ' + f1(rim + r * .22);
+  g += '<path d="' + v + ' Z" fill="' + fr + '"/>';
+  for (let k = 0; k <= 12; k++) g += '<path d="M' + f1(x - r + k * r / 6) + ' ' + f1(rim + r * .3) + ' v' + f1(r * .14) + '" stroke="' + fr + '" stroke-width="' + f1(r * .05) + '"/>';
+  return '<g class="x-bob">' + g + '<circle cx="' + f1(x) + '" cy="' + f1(top - r * .08) + '" r="' + f1(r * .1) + '" fill="' + fr + '"/></g>';
+}
+/** a flag on a pole, rippling */
+export const flag = (x, y, h, c1, c2) => '<path d="M' + x + ' ' + y + ' V' + f1(y - h) + '" stroke="#5A4A3A" stroke-width=".8"/><g class="x-leaf2" style="transform-origin:' + x + 'px ' + f1(y - h) + 'px"><path d="M' + x + ' ' + f1(y - h) + ' Q' + f1(x + 6) + ' ' + f1(y - h - 1.6) + ' ' + f1(x + 12) + ' ' + f1(y - h + .6) + ' V' + f1(y - h + 7) + ' Q' + f1(x + 6) + ' ' + f1(y - h + 5) + ' ' + x + ' ' + f1(y - h + 7) + ' Z" fill="' + c1 + '"/><path d="M' + x + ' ' + f1(y - h + 2.4) + ' Q' + f1(x + 6) + ' ' + f1(y - h + .8) + ' ' + f1(x + 12) + ' ' + f1(y - h + 3) + ' V' + f1(y - h + 4.6) + ' Q' + f1(x + 6) + ' ' + f1(y - h + 2.6) + ' ' + x + ' ' + f1(y - h + 4.4) + ' Z" fill="' + c2 + '"/></g>';
 /** a party canopy (the owambe tent): striped cloth on poles, a scalloped edge */
 export function canopy(x, y, w, c1, c2, h = 30) {
   let s = '<path d="M' + x + ' ' + f1(y - h) + ' L' + f1(x + w * .5) + ' ' + f1(y - h - 10) + ' L' + f1(x + w) + ' ' + f1(y - h) + ' Z" fill="' + c1 + '"/>';

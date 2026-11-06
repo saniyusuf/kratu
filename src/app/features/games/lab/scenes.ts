@@ -9,7 +9,7 @@
  * makeScenes('yo' | 'ig') gives the scenes by game id; skin.yo.ts / skin.ig.ts hand them to the engine (rest.ts).
  */
 import { kit, person, crowd, rect, sun, cloud, birds, ridge, forest, ground, tufts, water, oilPalm, coconut, plantain, bigTree, bush, cocoaTree,
-  cassava, yamMound, house, compound, obi, shed, umbrella, canopy, road, danfo, keke, lorry, canoe, goat, hen, bunting, sceneSvg, f1, dk, lt, SKT } from './south';
+  cassava, yamMound, house, compound, obi, shed, umbrella, canopy, road, danfo, keke, lorry, canoe, goat, hen, bunting, parasol, flag, sceneSvg, f1, dk, lt, SKT } from './south';
 
 /** the people of each build, by turn: men and women in that region's dress (u = the scene's pattern urls) */
 function folkOf(L, u) {
@@ -59,19 +59,55 @@ export function makeScenes(L: 'yo' | 'ig'): Record<string, () => string> {
 
   /* ---------------- Haruffa: the king's festival (Hawan Sallah's twin): Ojúde Ọba at Ijẹ̀bú-Òde, Ofala at Onitsha ---------------- */
   function durbar() {
-    const k = kt('dur'), f = k.folk;
-    // the palace front: Yoruba, the Awujale's long white palace with its red roof and carved posts; Igbo, the Obi's red-earth palace with uli
-    const palace = Y ? compound(70, 104, 180, 30, '#F1E6D2', { pid: k.pid, roof: 'zinc' }) + '<rect x="146" y="64" width="28" height="40" fill="#7A3B1E"/><path d="M140 64 L160 50 L180 64 Z" fill="#B23A2E"/>'
-      : obi(80, 104, 160, 30, { pid: k.pid, roof: 'zinc' }) + '<rect x="146" y="70" width="28" height="34" fill="#2A1A10"/>';
-    const flags = bunting(0, 50, 320, 46, Y ? ['#1F3A78', '#E8A317', '#7A2E5C', '#2E7D5A'] : ['#B71C1C', '#F4F1EA', '#1F6B4A', '#E8A317'], 10);
-    // the age groups in their matching cloth (aṣọ ẹbí / the age grades), packed along the palace wall
-    let groups = '';
-    const set = Y ? [['#1F3A78', 'gele'], ['#7A2E5C', 'fila'], ['#E8A317', 'gele'], ['#2E7D5A', 'fila']] : [['#B71C1C', 'okpu'], ['#F4F1EA', 'tie'], ['#1F6B4A', 'okpu'], ['#E8A317', 'tie']];
-    for (let i = 0; i < 16; i++) { const [c, h] = set[Math.floor(i / 4) % 4], left = i < 8, x = left ? 6 + i * 8.6 : 246 + (i - 8) * 9;
-      groups += f(i, x, 132 + (i % 2) * 2, 24, { kind: h === 'gele' || h === 'tie' ? 'woman' : 'man', robe: c, wrap: c, hatc: c, hat: h, cls: 'hop', ar: i % 3 ? 'down' : 'wave', arc: 'x-wv' }); }
-    return sceneSvg('dur', k.defs(), sky(k, 'morn') + sun(260, 34, 10) + ridge(96, 3, '#9BB98A', 2) + forest(88, '#5E8F4E', 2) +
-      farTown(96, k, .7, 3) + ground(104, Y ? '#D9B98A' : '#C98A5A', Y ? '#C9A26A' : '#B4643A') + palace + flags +
-      crowd(0, 70, 112, 12, CLOTH, HATS, 1.3) + crowd(250, 320, 112, 12, CLOTH, HATS, 1.3) + groups + tufts(150, 196, 18, '#9A8A5A'));
+    const k = kt('dur'), f = k.folk, q = k.q;
+    // Ojúde Ọba: the Awujale's palace at Ijẹ̀bú-Òde, two storeys of white arcades under a red roof, a gate tower with the
+    // royal crest; Ofala: the Obi's palace at Onitsha, a long portico of white columns, a red roof and an uli frieze
+    const arches = (x0, x1, y, h, n, wall, dark) => { let g = '';
+      for (let i = 0; i < n; i++) { const a = x0 + (x1 - x0) * i / n + 2, w = (x1 - x0) / n - 4;
+        g += '<path d="M' + f1(a) + ' ' + y + ' V' + f1(y - h * .6) + ' Q' + f1(a + w / 2) + ' ' + f1(y - h * 1.02) + ' ' + f1(a + w) + ' ' + f1(y - h * .6) + ' V' + y + ' Z" fill="' + dark + '"/>' +
+          '<path d="M' + f1(a + w * .1) + ' ' + y + ' V' + f1(y - h * .5) + '" stroke="' + wall + '" stroke-width=".5" opacity=".5"/>'; }
+      return g; };
+    const palaceY = Y
+      ? '<path d="M44 108 V70 H276 V108 Z" fill="#F4EEE2"/><path d="M200 108 V70 H276 V108 Z" fill="#1a0e06" opacity=".07"/>' +
+        '<path d="M40 70 L52 60 H268 L280 70 Z" fill="#A8432E"/><path d="M40 89 H280 V91.4 H40 Z" fill="#B23A2E"/><path d="M38 70 H282 V72 H38 Z" fill="#7A2E1E"/>' +
+        arches(46, 138, 89, 16, 6, '#F4EEE2', '#5A4636') + arches(182, 274, 89, 16, 6, '#F4EEE2', '#5A4636') + arches(46, 138, 108, 15, 6, '#F4EEE2', '#4A382A') + arches(182, 274, 108, 15, 6, '#F4EEE2', '#4A382A') +
+        // the gate tower: a pediment with the crest, carved posts (opó) each side of the great doors
+        '<path d="M136 108 V56 H184 V108 Z" fill="#FAF6EC"/><path d="M132 56 L160 38 L188 56 Z" fill="#A8432E"/><path d="M132 56 H188 V59 H132 Z" fill="#7A2E1E"/>' +
+        '<circle cx="160" cy="49" r="5" fill="#E8B830"/><circle cx="160" cy="49" r="3.2" fill="#1F5B8A"/><path d="M157.6 49 L160 45.6 L162.4 49 L160 52.4 Z" fill="#E8B830"/>' +
+        '<path d="M146 108 V74 Q160 62 174 74 V108 Z" fill="#6E3A1E"/><path d="M160 108 V68" stroke="#3A1E0E" stroke-width="1"/>' +
+        [150, 154, 166, 170].map((x) => '<circle cx="' + x + '" cy="88" r=".8" fill="#E8B830"/><circle cx="' + x + '" cy="96" r=".8" fill="#E8B830"/>').join('') +
+        [140, 180].map((x) => '<path d="M' + (x - 2.4) + ' 108 V66 H' + (x + 2.4) + ' V108 Z" fill="#8A5A2E"/><circle cx="' + x + '" cy="72" r="2" fill="#6E3A1E"/><path d="M' + (x - 2) + ' 80 h4 M' + (x - 2) + ' 90 h4 M' + (x - 2) + ' 100 h4" stroke="#E8C39A" stroke-width=".5"/>').join('') +
+        flag(44, 60, 16, '#1F3A78', '#E8B830') + flag(276, 60, 16, '#7A2E5C', '#E8B830') + flag(160, 38, 12, '#2E7D5A', '#F4EBD0')
+      : '<path d="M30 108 V76 H290 V108 Z" fill="#F4F1EA"/><path d="M210 108 V76 H290 V108 Z" fill="#1a0e06" opacity=".07"/>' +
+        '<path d="M30 76 H290 V83 H30 Z" fill="url(#' + q + 'uli)"/><path d="M24 76 L40 66 H280 L296 76 Z" fill="#9E2A20"/>' +
+        Array.from({ length: 14 }, (_, i) => { const x = 40 + i * 18.4; return '<path d="M' + f1(x - 1.6) + ' 108 V84 H' + f1(x + 1.6) + ' V108 Z" fill="#FFFFFF"/><path d="M' + f1(x + .4) + ' 108 V84 H' + f1(x + 1.6) + ' V108 Z" fill="#1a0e06" opacity=".12"/>'; }).join('') +
+        '<path d="M42 108 V86 H278 V108 Z" fill="#3A2A20" opacity=".55"/>' +
+        '<path d="M128 108 V60 H192 V108 Z" fill="#FFFFFF"/><path d="M122 60 L160 40 L198 60 Z" fill="#9E2A20"/><path d="M128 60 H192 V66 H128 Z" fill="url(#' + q + 'uli)"/>' +
+        '<path d="M146 108 V80 Q160 70 174 80 V108 Z" fill="#2A1A10"/><circle cx="160" cy="51" r="5" fill="#B71C1C"/><circle cx="160" cy="51" r="2.6" fill="#F4F1EA"/>' +
+        flag(36, 66, 16, '#B71C1C', '#F4F1EA') + flag(284, 66, 16, '#1F6B4A', '#E8B830');
+    const flags = bunting(0, 54, 320, 50, Y ? ['#1F3A78', '#E8A317', '#7A2E5C', '#2E7D5A'] : ['#B71C1C', '#F4F1EA', '#1F6B4A', '#E8A317'], 10);
+    // the stands: chiefs and guests seated under awnings, fanning themselves
+    const stand = (x, w, c1, c2) => { let g = canopy(x, 112, w, c1, c2, 22);
+      for (let i = 0; i < Math.floor(w / 9); i++) g += f(i + 3, x + 5 + i * 9, 112, 15, { kind: i % 3 === 1 ? 'woman' : 'man', agbada: Y && i % 3 === 0 ? 1 : 0, al: i % 4 === 0 ? 'wave' : 'down', alc: 'x-wv', beads: !Y && i % 2 === 0 });
+      return g + '<path d="M' + x + ' 106 H' + (x + w) + ' V112 H' + x + ' Z" fill="' + (Y ? '#7A2E5C' : '#1F4E2E') + '"/><path d="M' + x + ' 106 H' + (x + w) + '" stroke="#E8B830" stroke-width=".8"/>'; };
+    // the age groups (regbẹrẹgbẹ / the age grades): each in its own matching cloth under its own umbrella, two rows deep
+    const group = (x0, n, c, c2, hatK, kind, y, h) => { let g = '';
+      for (let i = 0; i < n; i++) g += f(i + x0, x0 + i * h * .36, y + (i % 2) * 1.2, h, { kind, robe: c, wrap: c, wrap2: kind === 'woman' ? c2 : undefined, hat: hatK, hatc: kind === 'woman' ? c2 : c, hatc2: c2, agbada: kind === 'man' && Y ? 1 : 0, robe2: c2, beads: !Y,
+        cls: 'hop', ar: i % 3 === 1 ? 'wave' : 'down', arc: 'x-wv', al: i % 4 === 2 ? 'wave' : 'down', alc: 'x-wv' });
+      return g; };
+    const G = Y ? [['#1F3A78', '#E8B830', 'gele', 'woman'], ['#7A2E5C', '#E8B830', 'fila', 'man'], ['#2E7D5A', '#F4EBD0', 'gele', 'woman'], ['#E8A317', '#7A2E5C', 'gobi', 'man']]
+      : [['#B71C1C', '#1E1E24', 'okpuf', 'man'], ['#F4F1EA', '#8E1B2A', 'tie', 'woman'], ['#1F4E2E', '#E8B830', 'okpu', 'man'], ['#E8A317', '#1E1E24', 'tie', 'woman']];
+    const groups = parasol(26, 126, 10, G[0][0], G[0][1]) + parasol(294, 126, 10, G[3][0], G[3][1]) + parasol(60, 128, 9, G[1][0], G[1][1]) + parasol(258, 128, 9, G[2][0], G[2][1]) +
+      group(6, 6, G[0][0], G[0][1], G[0][2], G[0][3], 128, 22) + group(240, 6, G[3][0], G[3][1], G[3][2], G[3][3], 128, 22) +
+      group(2, 5, G[1][0], G[1][1], G[1][2], G[1][3], 142, 28) + group(252, 5, G[2][0], G[2][1], G[2][2], G[2][3], 142, 28);
+    // the ground: beaten earth with dust, shadows of the crowd, a few leaves
+    const dust = '<ellipse cx="160" cy="160" rx="120" ry="20" fill="#fff" opacity=".07"/><path d="M0 116 H320 V122 Q160 126 0 122 Z" fill="#1a0e06" opacity=".08"/>';
+    const haze = '<rect y="84" width="320" height="26" fill="url(#' + q + 'haze)"/>';
+    const defs = '<linearGradient id="' + q + 'haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3DA" stop-opacity="0"/><stop offset=".7" stop-color="#FFF3DA" stop-opacity=".35"/><stop offset="1" stop-color="#FFF3DA" stop-opacity="0"/></linearGradient>';
+    return sceneSvg('dur', k.defs(defs), sky(k, 'morn') + sun(266, 30, 10) + birds(90, 30, 3) + ridge(98, 3, '#9BB98A', 2) + forest(92, '#5E8F4E', 2) +
+      farTown(98, k, .6, 3) + haze + ground(108, Y ? '#D9B98A' : '#C98A5A', Y ? '#C9A26A' : '#B4643A') + palaceY + flags +
+      crowd(0, 44, 113, 9, CLOTH, HATS, 1.4) + crowd(276, 320, 113, 9, CLOTH, HATS, 1.4) + stand(84, 52, Y ? '#F4EBD0' : '#F4F1EA', Y ? '#7A2E5C' : '#B71C1C') + stand(184, 52, Y ? '#F4EBD0' : '#F4F1EA', Y ? '#1F3A78' : '#1F4E2E') +
+      dust + groups + tufts(150, 196, 14, '#9A8A5A'));
   }
 
   /* ---------------- Abubuwa: fishing (Kamun kifi): the lagoon at Ẹ̀pẹ́ / Oguta Lake, the bank on top and the water seen from below ---------------- */

@@ -22,6 +22,8 @@ const RIDERS: V[] = [
   { coat: ['#9A8478', '#5E4A40'], mane: '#2B1E18', cap: ['#00695C', '#FFD54A', '#C62828'], pat: 'stripe', plume: '#FFD54A', robe: '#B71C1C', trim: '#FFD54A', turban: '#FFFFFF', veil: true, spear: false, skin: 1, flag: ['#00695C', '#FFD54A'] },
 ];
 export const RIDER_COUNT = RIDERS.length;
+/** a language build's own horsemen in place of these (skin.yo.ts: Ojúde Ọba riders); the Hausa build never calls it */
+export function useRiders(list: V[]): void { RIDERS.splice(0, RIDERS.length, ...list.slice(0, RIDERS.length)); }
 let gid = 0;
 
 /** a colour made lighter (k > 0, toward white) or darker (k < 0, toward black) */

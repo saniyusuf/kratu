@@ -13,9 +13,10 @@
  * makeArt('yo' | 'ig') gives them by the names engine.ts and games2.ts look up (SK_ in those files).
  */
 import { person, hat, dk, lt, f1, SKT } from './south';
-import { figure, talkingDrum } from './kalangu';
+import { talkingDrum } from './kalangu';
 import { stand } from './sc-suya';
 import { teaStall } from './teastall';
+import { useRiders } from './durbar';
 
 let gid = 0;
 
@@ -32,6 +33,15 @@ const whisk = (x0, y0, x, y) => '<path d="M' + x0 + ' ' + y0 + ' L' + x + ' ' + 
 
 export function makeArt(L) {
   const Y = L === 'yo';
+  // Ojúde Ọba's horsemen: the Balogun families' riders in flowing agbada of aso-òkè colours and white or coloured turbans, no veils
+  if (Y) useRiders([
+    { coat: ['#8B5A2B', '#4E2E14'], mane: '#1A0E06', cap: ['#7A2E5C', '#E8B830', '#F4EBD0'], pat: 'diamond', plume: '#E8B830', robe: '#F4EBD0', trim: '#7A2E5C', turban: '#7A2E5C', veil: false, spear: false, skin: 0, flag: ['#7A2E5C', '#E8B830'] },
+    { coat: ['#B5562A', '#7A3416'], mane: '#4E1E08', cap: ['#1F3A78', '#E8B830', '#FFFFFF'], pat: 'stripe', plume: '#FFFFFF', robe: '#5B8FC9', trim: '#E8B830', turban: '#FFFFFF', veil: false, spear: true, skin: 1, flag: ['#1F3A78', '#E8B830'] },
+    { coat: ['#E8E4DC', '#A9A49A'], mane: '#8C877C', cap: ['#2E7D5A', '#E8B830', '#7A2E5C'], pat: 'check', plume: '#2E7D5A', robe: '#2E7D5A', trim: '#F4EBD0', turban: '#F4EBD0', veil: false, spear: false, skin: 2, flag: ['#2E7D5A', '#F4EBD0'] },
+    { coat: ['#3A2A20', '#120A06'], mane: '#000000', cap: ['#E8B830', '#7A2E5C', '#FFFFFF'], pat: 'star', plume: '#7A2E5C', robe: '#7A2E5C', trim: '#E8B830', turban: '#E8B830', veil: false, spear: false, skin: 3, flag: ['#E8A317', '#7A2E5C'] },
+    { coat: ['#C9A262', '#8B6A34'], mane: '#3A2410', cap: ['#C2185B', '#FFFFFF', '#1F3A78'], pat: 'diamond', plume: '#C2185B', robe: '#FFFFFF', trim: '#C2185B', turban: '#1F3A78', veil: false, spear: true, skin: 0, flag: ['#C2185B', '#FFFFFF'] },
+    { coat: ['#9A8478', '#5E4A40'], mane: '#2B1E18', cap: ['#1F3A78', '#E8B830', '#C62828'], pat: 'stripe', plume: '#E8B830', robe: '#1F3A78', trim: '#E8B830', turban: '#FFFFFF', veil: false, spear: false, skin: 1, flag: ['#1F3A78', '#FFFFFF'] },
+  ]);
 
   /* ---------------- the king on his throne (Hausa: emirThrone, 200 x 250) ---------------- */
   function emirThrone() {
@@ -160,41 +170,44 @@ export function makeArt(L) {
   const defs = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
     '<linearGradient id="k4-wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A0703E"/><stop offset="1" stop-color="#6E4626"/></linearGradient>' +
     '<linearGradient id="k4-steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9CED6"/><stop offset="1" stop-color="#7A8088"/></linearGradient></defs></svg>';
+  /** a person in the kalangu stage's frame and classes (kalangu.css moves .kl-body, .kl-head, .kl-al, .kl-ar, .kl-ms / .kl-mf) */
+  const kfig = (o, sc = 1) => '<svg class="kl-fig" viewBox="-14 -14 88 152" aria-hidden="true">' +
+    person(30, 134, 140 * sc, { ...o, cls: 'kl-body', alc: 'kl-al', arc: 'kl-ar' }).replace('class="x-head"', 'class="x-head kl-head"').replace('class="x-ms"', 'class="x-ms kl-ms"').replace('class="x-mf" opacity="0"', 'class="x-mf kl-mf"') + '</svg>';
   function dancers() {
     const D = Y ? [
-      [{ kind: 'woman', skin: 0, robe: '#E8A317', robe2: '#B87A0A', trim: '#7A2E5C', wrap: '#7A2E5C', wrap2: '#E8B830', shawl: '#7A2E5C', hatsvg: hat('gele', 30, 20, 11.6, '#E8A317'), al: 'up', ar: 'out', hl: hanky(10, 4, '#FFFFFF') }, 1],
-      [{ kind: 'man', skin: 1, robe: '#F4EBD0', robe2: '#B8A77E', trim: '#7A2E5C', hat: 'zanna', hatc: '#7A2E5C', hatc2: '#E8B830', al: 'out', ar: 'up' }, 1],
-      [{ kind: 'girl', skin: 2, robe: '#2E7D5A', robe2: '#14503A', trim: '#E8B830', hatsvg: hair, al: 'clap', ar: 'clap' }, .8],
-      [{ kind: 'man', skin: 3, robe: '#1F3A78', robe2: '#13244E', trim: '#C9D6F2', hat: 'hula', hatc: '#1F3A78', hatc2: '#C9D6F2', beard: true, al: 'hip', ar: 'high', hr: roundFan(42, 12, 46, -2, 8, '#C9A35A', '#7A2E5C', '#1F3A78') }, 1],
+      [{ kind: 'woman', skin: 0, robe: '#E8A317', trim: '#7A2E5C', wrap: '#7A2E5C', wrap2: '#E8B830', ipele: '#7A2E5C', hat: 'gele', hatc: '#E8A317', al: 'up', ar: 'out', hl: hanky(0, 0, '#FFFFFF') }, 1],
+      [{ kind: 'man', skin: 1, robe: '#F4EBD0', robe2: '#7A2E5C', agbada: '#F4EBD0', trim: '#7A2E5C', hat: 'gobi', hatc: '#7A2E5C', hatc2: '#E8B830', al: 'out', ar: 'up' }, 1],
+      [{ kind: 'woman', skin: 2, robe: '#2E7D5A', trim: '#E8B830', wrap: '#14503A', hat: 'braids', tight: 1, al: 'clap', ar: 'clap' }, .8],
+      [{ kind: 'man', skin: 3, robe: '#1F3A78', trim: '#C9D6F2', hat: 'fila', hatc: '#1F3A78', hatc2: '#C9D6F2', beard: 'w', marks: 1, al: 'hip', ar: 'up', hr: roundFan(0, 0, 3, -12, 8, '#C9A35A', '#7A2E5C', '#1F3A78') }, 1],
     ] : [
-      [{ kind: 'woman', skin: 0, robe: '#F4F1EA', robe2: '#C9C2B0', trim: '#8E1B2A', wrap: '#8E1B2A', wrap2: '#E8B830', hatsvg: hat('tie', 30, 20, 11.6, '#8E1B2A', '#E8B830'), al: 'up', ar: 'out', hl: hanky(10, 4, '#E8B830') }, 1],
-      [{ kind: 'man', skin: 1, robe: '#B71C1C', robe2: '#7F1414', trim: '#E8B830', hat: 'hula', al: 'up', ar: 'up' }, 1],
-      [{ kind: 'girl', skin: 2, robe: '#E8A317', robe2: '#B87A0A', trim: '#1F4E2E', hatsvg: hair, al: 'clap', ar: 'clap' }, .8],
-      [{ kind: 'man', skin: 3, robe: '#F4F1EA', robe2: '#C9C2B0', trim: '#B71C1C', hat: 'zanna', beard: true, al: 'hip', ar: 'high', hr: roundFan(42, 12, 46, -2, 8, '#E8C35A', '#B71C1C', '#1E1E24') }, 1],
+      [{ kind: 'woman', skin: 0, robe: '#F4F1EA', trim: '#8E1B2A', wrap: '#8E1B2A', wrap2: '#E8B830', hat: 'tie', hatc: '#8E1B2A', hatc2: '#E8B830', beads: 1, al: 'up', ar: 'out', hl: hanky(0, 0, '#E8B830') }, 1],
+      [{ kind: 'man', skin: 1, robe: '#B71C1C', trim: '#E8B830', trou: '#F4F1EA', hat: 'okpu', hatc: '#1E1E24', hatc2: '#E8B830', sash: '#E8B830', al: 'up', ar: 'up' }, 1],
+      [{ kind: 'woman', skin: 2, robe: '#E8A317', trim: '#1F4E2E', wrap: '#1F4E2E', hat: 'braids', tight: 1, beads: 1, al: 'clap', ar: 'clap' }, .8],
+      [{ kind: 'man', skin: 3, robe: '#F4F1EA', trim: '#B71C1C', wrapper: '#8E1B2A', hat: 'okpuf', hatc: '#B71C1C', hatc2: '#1E1E24', beads: 1, beard: 'w', al: 'hip', ar: 'up', hr: roundFan(0, 0, 3, -12, 8, '#E8C35A', '#B71C1C', '#1E1E24') }, 1],
     ];
-    return defs + D.map(([o, s], i) => '<span class="kl-dn d' + i + '">' + figure(o, '', s) + '</span>').join('');
+    return defs + D.map(([o, s], i) => '<span class="kl-dn d' + i + '">' + kfig(o, s) + '</span>').join('');
   }
   function band() {
-    const tdrum = (o) => figure({ ...o, kind: 'man', behind: talkingDrum(-12, 70, 26, 8.5), al: 'M16 46 Q2 54 -2 66|-3,68',
-      ar: 'M44 46 Q50 66 30 72|28,72', hr: '<path d="M28 72 Q20 62 13 64" stroke="#4E2E14" stroke-width="1.8" fill="none" stroke-linecap="round"/>' });
-    const igba = (o) => figure({ ...o, kind: 'man', behind: '<path d="M18 44 L50 86" stroke="#6B4422" stroke-width="2.4"/>',
+    const tdrum = (o) => kfig({ ...o, kind: 'man', behind: talkingDrum(-12, 70, 26, 8.5), al: 'M16 46 Q2 54 -2 66|-3,68',
+      ar: 'M44 46 Q50 66 30 72|28,72', hr: '<path d="M0 0 Q-8 -10 -15 -8" stroke="#4E2E14" stroke-width="1.8" fill="none" stroke-linecap="round"/>' });
+    const igba = (o) => kfig({ ...o, kind: 'man', behind: '<path d="M18 44 L50 86" stroke="#6B4422" stroke-width="2.4"/>',
       al: 'M16 46 Q8 70 34 76|36,76', ar: 'M44 46 Q58 54 56 64|56,66',
-      hl: '<path d="M36 76 L48 66" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>', hr: '<path d="M56 66 L52 78" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>',
-      front: '<g class="kl-drum" style="transform-origin:46px 92px"><rect x="34" y="78" width="26" height="28" rx="3" fill="url(#k4-wood)"/>' +
-        '<path d="M34 84 L60 100 M34 100 L60 84" stroke="#F1E2C0" stroke-width=".8"/><ellipse cx="47" cy="78" rx="13" ry="3.4" fill="#F1E2C0" stroke="#8B5A2B" stroke-width=".8"/>' +
-        '<ellipse cx="47" cy="106" rx="13" ry="3" fill="#5E3A1C"/></g>' });
-    // the lead: Yoruba, a shekere player shaking the gourd high; Igbo, the ogene player, the bell raised and struck
+      hl: '<path d="M0 0 L12 -10" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>', hr: '<path d="M0 0 L-4 12" stroke="#4E2E14" stroke-width="1.6" stroke-linecap="round"/>',
+      front: '<g class="kl-drum" style="transform-origin:46px 92px"><rect x="34" y="80" width="26" height="28" rx="3" fill="url(#k4-wood)"/>' +
+        '<path d="M34 86 L60 102 M34 102 L60 86" stroke="#F1E2C0" stroke-width=".8"/><ellipse cx="47" cy="80" rx="13" ry="3.4" fill="#F1E2C0" stroke="#8B5A2B" stroke-width=".8"/>' +
+        '<ellipse cx="47" cy="108" rx="13" ry="3" fill="#5E3A1C"/></g>' });
+    // the lead: Yoruba, a shèkèrè player shaking the beaded gourd high; Igbo, the ogene player, the bell raised and struck
     const lead = Y
-      ? figure({ kind: 'man', skin: 0, robe: '#7A2E5C', robe2: '#4E1A3A', trim: '#E8B830', hat: 'hula', hatc: '#7A2E5C', hatc2: '#E8B830',
+      ? kfig({ kind: 'man', skin: 0, robe: '#7A2E5C', trim: '#E8B830', hat: 'fila', hatc: '#7A2E5C', hatc2: '#E8B830',
         al: 'M16 46 Q30 42 40 24|40,24', ar: 'M44 46 Q58 34 50 18|50,18',
         behind: '<g class="kl-horn" style="transform-origin:45px 20px"><ellipse cx="45" cy="10" rx="11" ry="13" fill="#C98A3A"/><path d="M45 -3 v-6" stroke="#8B5A2B" stroke-width="3"/>' +
           '<path d="M35 6 Q45 12 55 6 M34 12 Q45 18 56 12 M36 18 Q45 23 54 18" stroke="#F4EBD0" stroke-width="1" fill="none" stroke-dasharray="1.4 1.6"/></g>' })
-      : figure({ kind: 'man', skin: 0, robe: '#F4F1EA', robe2: '#C9C2B0', trim: '#B71C1C', hat: 'hula',
-        al: 'M16 46 Q26 40 34 22|34,22', ar: 'M44 46 Q60 40 56 26|56,26', hr: '<path d="M56 26 L44 12" stroke="#4E2E14" stroke-width="1.8" stroke-linecap="round"/>',
+      : kfig({ kind: 'man', skin: 0, robe: '#F4F1EA', trim: '#B71C1C', trou: '#8E1B2A', hat: 'okpu', hatc: '#B71C1C', hatc2: '#1E1E24', beads: 1,
+        al: 'M16 46 Q26 40 34 22|34,22', ar: 'M44 46 Q60 40 56 26|56,26', hr: '<path d="M0 0 L-12 -14" stroke="#4E2E14" stroke-width="1.8" stroke-linecap="round"/>',
         behind: '<g class="kl-horn" style="transform-origin:34px 22px"><path d="M34 24 L42 -6 Q36 -10 30 -6 Z" fill="url(#k4-steel)"/><path d="M34 24 L28 2 Q24 2 24 6 Z" fill="#8A8F96"/><path d="M30 -6 Q36 -10 42 -6" stroke="#4A4E54" stroke-width="1.4" fill="none"/></g>' });
-    const C = Y ? [['#2E5E8A', '#F4EBD0', 'hula', '#2E5E8A'], ['#E8A317', '#7A2E5C', 'zanna', '#7A2E5C'], ['#F4EBD0', '#1F3A78', 'borno']]
-      : [['#1E1E24', '#E8B830', 'hula'], ['#8E1B2A', '#F4F1EA', 'zanna'], ['#F4F1EA', '#B71C1C', 'hula']];
-    const m = (k) => ({ skin: k + 1, robe: C[k][0], robe2: dk(C[k][0], .3), trim: C[k][1], hat: C[k][2], hatc: C[k][3], hatc2: '#E8B830' });
+    const C = Y ? [['#2E5E8A', '#F4EBD0', 'fila'], ['#E8A317', '#7A2E5C', 'gobi'], ['#F4EBD0', '#1F3A78', 'fila']]
+      : [['#1E1E24', '#E8B830', 'okpu'], ['#8E1B2A', '#F4F1EA', 'okpu'], ['#F4F1EA', '#B71C1C', 'okpuf']];
+    const m = (k) => ({ skin: k + 1, robe: C[k][0], trim: C[k][1], hat: C[k][2], hatc: Y ? C[k][0] === '#F4EBD0' ? '#1F3A78' : C[k][0] : '#B71C1C', hatc2: Y ? '#E8B830' : '#1E1E24', beads: !Y });
     return defs + '<span class="kl-bm k">' + lead + '</span>' +
       '<span class="kl-bm d1">' + (Y ? tdrum(m(0)) : igba(m(0))) + '</span>' +
       '<span class="kl-bm d2">' + (Y ? tdrum(m(1)) : igba(m(1))) + '</span>' +
