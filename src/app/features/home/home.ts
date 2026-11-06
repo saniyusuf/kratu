@@ -16,6 +16,7 @@ import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ScreenTransition } from '../../core/nav/screen-transition.service';
 import { GAMES_CORNER_SVG } from './games-corner';
+import { t } from '../../core/lang/t';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
@@ -37,11 +38,12 @@ const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers:
 <div class="hvig" aria-hidden="true"></div>
 <app-course-book [hold]="true" [class.talk]="arrival() === 'book'" (pressed)="book()" (settled)="respot()" />
 <div #gridHost style="display:contents" [innerHTML]="grid" (click)="tile($event)"></div>
-<div class="lrow"><button class="lbtn" [class.cue]="cue()" aria-label="Danna kan Laila" (click)="start()"><span class="lglow"></span><app-laila [size]="110" />@if (cue()) {<span class="lhand">👆🏾</span>}<span class="lhint">Fara</span></button></div>
-<button class="gcorner" aria-label="Wasanni" [innerHTML]="gamesSvg" (click)="games()"></button>
+<div class="lrow"><button class="lbtn" [class.cue]="cue()" [attr.aria-label]="t('Danna kan Laila')" (click)="start()"><span class="lglow"></span><app-laila [size]="110" />@if (cue()) {<span class="lhand">👆🏾</span>}<span class="lhint">{{ t('Fara') }}</span></button></div>
+<button class="gcorner" [attr.aria-label]="t('Wasanni')" [innerHTML]="gamesSvg" (click)="games()"></button>
 <app-leave />`,
 })
 export class HomeScreen implements OnInit, OnDestroy {
+  readonly t = t;
   private readonly bus = inject(AudioBus);
   private readonly flow = inject(LessonFlow);
   private readonly session = inject(SessionService);

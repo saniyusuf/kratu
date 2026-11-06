@@ -3,6 +3,7 @@ import { LoaderService } from '../../core/loader/loader.service';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { ClipsService } from '../../core/clips/clips.service';
 import { Laila } from '../../shared/laila/laila';
+import { t } from '../../core/lang/t';
 
 /** The first screen: the Kratu word fills in letter by letter as the pieces arrive. Styled by app.css (#loader). */
 @Component({
@@ -15,18 +16,19 @@ import { Laila } from '../../shared/laila/laila';
   <div class="ld-word">
     @for (on of L.letters(); track $index) {<span [class]="'kratu'[$index] + (on ? ' on' : '')">{{ 'Kratu'[$index] }}</span>}
   </div>
-  <div class="ld-step">@if (L.step()) {Mataki {{ L.step() }} / 4 · Step {{ L.step() }} of 4}</div>
+  <div class="ld-step">@if (L.step()) {<ng-container>{{ t('Mataki') }}</ng-container> {{ L.step() }} / 4 · Step {{ L.step() }} of 4}</div>
   <div class="ld-msg"><b>{{ L.headHa() }}</b><small>{{ L.headEn() }}</small></div>
   <div class="ld-barrow"><div class="ld-bar"><i [style.width.%]="L.pct()"></i></div><span class="ld-pct">{{ L.pct() }}%</span></div>
   <div class="ld-eta">{{ L.eta() }}</div>
   <div class="ld-steps">@for (c of L.chips(); track c.id) {<span [class]="c.state === 'ok' ? 'done' : c.state">{{ c.label }}@if (c.text) { · {{ c.text }}}</span>}</div>
   @if (L.noteHa()) {<div class="ld-note"><b>{{ L.noteHa() }}</b><small>{{ L.noteEn() }}</small></div>}
-  <button class="ld-retry" (click)="L.retry()">Sake gwadawa · Try again</button>
-  <button class="ld-skip" [hidden]="!L.showSkip()" (click)="L.skip()">Ci gaba haka · Continue anyway</button>
+  <button class="ld-retry" (click)="L.retry()">{{ t('Sake gwadawa') }} · Try again</button>
+  <button class="ld-skip" [hidden]="!L.showSkip()" (click)="L.skip()">{{ t('Ci gaba haka') }} · Continue anyway</button>
 </div>`,
   styles: [`:host{display:contents}`],
 })
 export class LoaderScreen {
+  readonly t = t;
   readonly L = inject(LoaderService);
   private readonly bus = inject(AudioBus);
   private readonly clips = inject(ClipsService);

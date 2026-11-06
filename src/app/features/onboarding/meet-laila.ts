@@ -7,6 +7,7 @@ import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Laila } from '../../shared/laila/laila';
+import { t } from '../../core/lang/t';
 
 /** Screen 2 · Meet Laila. She introduces herself; she is pressable while she talks, a press cuts her off and goes on. */
 @Component({
@@ -16,16 +17,17 @@ import { Laila } from '../../shared/laila/laila';
   template: `
 <app-ear (pressed)="intro()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
-<button class="startlaila" [class.cue]="cue()" [class.talking]="talking()" aria-label="Danna Laila mu fara" (click)="go()">
+<button class="startlaila" [class.cue]="cue()" [class.talking]="talking()" [attr.aria-label]="t('Danna Laila mu fara')" (click)="go()">
   <span class="startring"></span>
   <span class="meethalo"></span><app-laila [size]="210" cls="meet-lm" />
   @if (cue()) {<span class="meet-hand">👆🏾</span>}
 </button>
-<div class="pr" style="font-size:clamp(22px,3vw,30px)">Sunana Laila</div>
-<div class="starthint">Danna kan Laila mu fara<br><small>click Laila to start</small></div>
-<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> Ci gaba</button>`,
+<div class="pr" style="font-size:clamp(22px,3vw,30px)">{{ t('Sunana Laila') }}</div>
+<div class="starthint">{{ t('Danna kan Laila mu fara') }}<br><small>{{ t('click Laila to start') }}</small></div>
+<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}</button>`,
 })
 export class MeetLailaScreen implements OnInit, OnDestroy {
+  readonly t = t;
   private readonly session = inject(SessionService);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));

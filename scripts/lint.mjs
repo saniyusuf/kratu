@@ -3,6 +3,9 @@
 // clips and no two words share a picture or an English name.  →  npm run lint:content   (exit 1 on any error)
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { lintLang } from './lang-lint.mjs';
+const LANG_ARG = process.argv.indexOf('--lang');
+if (LANG_ARG > 0) process.exit(lintLang(process.argv[LANG_ARG + 1]) ? 1 : 0);   // a demo language's own chain
 const lines = JSON.parse(readFileSync('content/lines.json', 'utf8')), W = JSON.parse(readFileSync('content/words.json', 'utf8'));
 const errors = [], warns = [];
 // --- the code: every quoted literal, so dynamic keys ('s_qd_' + key) are matched by their prefix

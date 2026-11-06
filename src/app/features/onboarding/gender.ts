@@ -6,6 +6,7 @@ import { SessionService, Gender } from '../../core/state/session.service';
 import { Ear } from '../../shared/chrome/chrome';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
+import { t } from '../../core/lang/t';
 
 /** Screen 0 · Gender, always first: two photos, Laila greets and the ear repeats. */
 @Component({
@@ -15,14 +16,15 @@ import { ZoomService } from '../../core/zoom/zoom.service';
   template: `
 <app-ear [spot]="spot() === 'dome'" (pressed)="tour()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
-<div class="hi" style="font-size:clamp(26px,4vw,38px)">Sannu!</div>
+<div class="hi" style="font-size:clamp(26px,4vw,38px)">{{ t('Sannu!') }}</div>
 <div class="mk"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
 <div class="cards2">
-  <button class="pcard girl" [class.spot]="spot() === 'girl'" (click)="pick('f')"><img class="gph" alt="Mace" src="assets/gender-girl.webp"><div class="nm">Mace</div><span class="phand">👆🏾</span></button>
-  <button class="pcard boy" [class.spot]="spot() === 'boy'" (click)="pick('m')"><img class="gph" alt="Namiji" src="assets/gender-boy.webp"><div class="nm">Namiji</div><span class="phand">👆🏾</span></button>
+  <button class="pcard girl" [class.spot]="spot() === 'girl'" (click)="pick('f')"><img class="gph" [alt]="t('Mace')" src="assets/gender-girl.webp"><div class="nm">{{ t('Mace') }}</div><span class="phand">👆🏾</span></button>
+  <button class="pcard boy" [class.spot]="spot() === 'boy'" (click)="pick('m')"><img class="gph" [alt]="t('Namiji')" src="assets/gender-boy.webp"><div class="nm">{{ t('Namiji') }}</div><span class="phand">👆🏾</span></button>
 </div>`,
 })
 export class GenderScreen implements OnInit, OnDestroy {
+  readonly t = t;
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);

@@ -1,0 +1,1726 @@
+[
+ {
+  "key": "app_act_desc_letters",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede. N'ebe a, anyị ga-amụta mkpụrụedemede Bekee.",
+  "en": "Letters. Here we learn the English letters.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_quiz",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Chọta foto. A ga-akpọ aha otu ihe, mgbe ahụ pịa foto ya.",
+  "en": "Find the picture. The name of a thing will be said, then tap its picture.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_spell",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ide ihe. N'ebe a, anyị ga-amụta ide okwu Bekee, mkpụrụedemede n'otu n'otu.",
+  "en": "Writing. Here we learn to write English words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_pick",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Họrọ otu ihe ọmụmụ, ka ị nụ ihe gbasara ya.",
+  "en": "Pick a lesson, to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_board_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee mkpụrụedemede niile. Ka anyị mụta ha ìgwè n'ìgwè.",
+  "en": "Here are all the letters. Let's learn them group by group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_animals",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anụmanụ. Ihe ọmụmụ a bụ maka anụmanụ dị iche iche bi gburugburu anyị.",
+  "en": "Animals. This lesson is about the different animals that live around us.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_body",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ahụ. Ihe ọmụmụ a bụ maka akụkụ ahụ mmadụ dị iche iche.",
+  "en": "The body. This lesson is about the different parts of the human body.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_food",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nri. Ihe ọmụmụ a bụ maka nri dị iche iche anyị na-eri kwa ụbọchị.",
+  "en": "Food. This lesson is about the different foods we eat every day.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_home",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ihe ụlọ. Ihe ọmụmụ a bụ maka ihe anyị na-eji n'ụlọ.",
+  "en": "Household things. This lesson is about the things used at home.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_nature",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Okike. Ihe ọmụmụ a bụ maka ihe dị n'okike na gburugburu anyị.",
+  "en": "Nature. This lesson is about the things in nature and our surroundings.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_vehicles",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ụgbọ njem. Ihe ọmụmụ a bụ maka ụgbọala na ihe ndị ọzọ anyị na-anya.",
+  "en": "Vehicles. This lesson is about cars and the different things we ride.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_animals",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto anụmanụ. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of animals. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_body",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto akụkụ ahụ. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of body parts. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_food",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto nri. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of food. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_home",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto ihe ụlọ. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of household things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_nature",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto ihe okike. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of things in nature. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_numbers",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-amụta ịgụ ọnụ. A ga-egosi mkpịsị aka. Gụọ mkpịsị aka ndị e weliri elu, mgbe ahụ kwuo ọnụọgụ ahụ n'asụsụ Bekee.",
+  "en": "Now we'll learn to count. Fingers will be shown. Count the fingers that are up, then say the number in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_vehicles",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto ụgbọ njem. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of vehicles. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_kudos",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma!",
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "app_press_allo",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "pịa bọọdụ ojii.",
+  "en": "press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_tap",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa foto ihe a kpọrọ aha ya.",
+  "en": "Tap the picture of the thing that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_wrong",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mba, ọ bụghị nke ahụ. Gee ntị ọzọ, nwaa ọzọ.",
+  "en": "No, not that one. Listen again, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_good",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ugbu a, ị maala ịgụ ihe!",
+  "en": "Well done! Now you can read!",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee otu okwu. Anyị ga-agụ okwu a ọnụ. Mkpụrụedemede n'otu n'otu.",
+  "en": "Here is a word. We'll read this word together. Letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_word",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, gụọ okwu ahụ niile ọnụ, n'olu dị elu.",
+  "en": "Now read the whole word, out loud.",
+  "status": "draft"
+ },
+ {
+  "key": "app_remind",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gee ntị, nke a bụ",
+  "en": "Listen, this is",
+  "status": "draft"
+ },
+ {
+  "key": "app_retry",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mba, nwaa ọzọ.",
+  "en": "No, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_scatter_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-agwakọta ha.",
+  "en": "Now we'll mix them up.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, dee ya n'asụsụ Bekee. Ụzọ abụọ dị.",
+  "en": "Now write it in English. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke mbụ.",
+  "en": "Tap or say the first letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke abụọ.",
+  "en": "Tap or say the second letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke atọ.",
+  "en": "Tap or say the third letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke anọ.",
+  "en": "Tap or say the fourth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_5",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke ise.",
+  "en": "Tap or say the fifth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_6",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke isii.",
+  "en": "Tap or say the sixth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_7",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke asaa.",
+  "en": "Tap or say the seventh letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_8",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke asatọ.",
+  "en": "Tap or say the eighth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_9",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ma ọ bụ kwuo mkpụrụedemede nke itoolu.",
+  "en": "Tap or say the ninth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_speak",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa Chioma, kwuo mkpụrụedemede ahụ.",
+  "en": "Press Chioma and say the letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_tap",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ma ọ bụ pịa mkpụrụedemede ọ bụla.",
+  "en": "Or tap any letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_stage_done",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! I mechaala ìgwè a.",
+  "en": "Well done! You've finished this group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_menu_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ọmụmụ dị iche iche. Pịa foto ọ bụla ka ịmata ihe dị n'ime ya.",
+  "en": "Here are the different lessons. Tap any picture to find out what's in it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_go",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Dee ya, mkpụrụedemede n'otu n'otu.",
+  "en": "Write it, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_test",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ule! Dee nke ọ bụla, mkpụrụedemede n'otu n'otu.",
+  "en": "Now, a test! Write each one, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_tap_white",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa Chioma ka anyị malite.",
+  "en": "Press Chioma to start.",
+  "status": "draft"
+ },
+ {
+  "key": "app_wannan",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke a bụ",
+  "en": "This is",
+  "status": "draft"
+ },
+ {
+  "key": "app_yn_hint_no",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ma ọ bụghị ya,",
+  "en": "If not,",
+  "status": "draft"
+ },
+ {
+  "key": "app_z_speak",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mgbe ọ bụla ịchọrọ ikwu okwu, pịa Chioma. Aga m ege ntị nke ọma!",
+  "en": "Whenever you want to speak, press Chioma. I'll listen carefully!",
+  "status": "draft"
+ },
+ {
+  "key": "s0",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ndewo! Ọ bụrụ na ị bụ nwa agbọghọ, pịa nke ọcha. Ọ bụrụ na ị bụ nwa nwoke, pịa nke uhie.",
+  "en": "Hello! If you are a girl, tap the white one. If you are a boy, tap the red one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_abc_say",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa Chioma, mgbe ahụ kwuo mkpụrụedemede ị hụrụ.",
+  "en": "Press Chioma, then say the letter you see.",
+  "status": "draft"
+ },
+ {
+  "key": "s_act_desc_things",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ihe dị iche iche. N'ebe a, anyị ga-amụta aha ihe n'asụsụ Bekee, site na foto.",
+  "en": "Things. Here we learn the names of things in English, with pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_all_done",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma! Ugbu a, ị maala mkpụrụedemede na okwu niile.",
+  "en": "Well done! Now you know all the letters and words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_alone2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mmadụ nọ n'akụkụ gị. Biko, nọrọ naanị gị n'ihu kamera.",
+  "en": "There is someone next to you. Please sit alone in front of the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_back",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Nnọọ, ị lọtala!",
+   "m": "Ka ị laghachi azụ, pịa ụzọ a.",
+   "f": "Ka ị laghachi azụ, pịa ụzọ a."
+  },
+  "en": "Welcome back!",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_actions",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Omume. Ihe ọmụmụ a bụ maka ihe anyị na-eme kwa ụbọchị. Dịka iri nri, ịṅụ mmiri, ịgba ọsọ na igwu egwu.",
+  "en": "Actions. This lesson is about the things we do every day. Like eating, drinking, running and playing.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_clothing",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Uwe. Ihe ọmụmụ a bụ maka uwe anyị na-eyi.",
+  "en": "Clothing. This lesson is about the clothes we wear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_people",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ndị mmadụ. Ihe ọmụmụ a bụ maka ndị mmadụ nọ gburugburu anyị. Mama, papa, ụmụaka na ndị nkuzi.",
+  "en": "People. This lesson is about the people around us. Mum, dad, children and teachers.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_school",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ụlọ akwụkwọ. Ihe ọmụmụ a bụ maka ihe anyị na-eji n'ụlọ akwụkwọ.",
+  "en": "School. This lesson is about the things we use at school.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_actions",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto omume. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of actions. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_clothing",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto uwe. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of clothes. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_people",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto ndị mmadụ. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of people. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_school",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-ahụ foto ihe ụlọ akwụkwọ. Anyị ga-amụta aha ha n'asụsụ Bekee.",
+  "en": "Now we'll see pictures of school things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_closer",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Bịaruo kamera nso.",
+  "en": "Come closer to the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_ear",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ka ị nụ ya ọzọ, pịa ntị a.",
+  "en": "To hear it again, press this ear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_go",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, pịa Chioma ka anyị malite.",
+  "en": "Now press Chioma and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_intro2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ịgụ ihe. N'ebe a, anyị ga-agụ okwu, mkpụrụedemede n'otu n'otu, mgbe ahụ okwu ahụ niile ọnụ.",
+  "en": "Reading. Here we read words, letter by letter, then all at once.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_lesson",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-agụ aha ihe ndị a n'asụsụ Bekee.",
+  "en": "Now we'll read the names of these things in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_test",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-eme obere ule maka okwu ị mụtara. A ga-egosi gị otu okwu, gụọ ya niile ọnụ.",
+  "en": "Now we'll do a small test on the words you learned. A word will be shown, and you read it whole.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Okwu dị mkpụmkpụ. N'ebe a, anyị ga-agụ okwu dị mkpụmkpụ, nwere mkpụrụedemede atọ.",
+  "en": "Short words. Here we read short, three-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k45",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Okwu dị n'etiti. N'ebe a, anyị ga-agụ okwu nwere mkpụrụedemede anọ na ise.",
+  "en": "Medium words. Here we read four- and five-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_klong",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Okwu dị ogologo. N'ebe a, anyị ga-agụ okwu dị ogologo.",
+  "en": "Long words. Here we read long words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_knum",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọnụọgụ. N'ebe a, anyị ga-agụ aha ọnụọgụ n'asụsụ Bekee.",
+  "en": "Numbers. Here we read the names of numbers in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_check",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-eme obere ule, ka anyị mara na ị ghọtara mkpụrụedemede ị mụtara.",
+  "en": "Now we'll do a small test, to make sure you understood the letters you learned.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nnukwu ule. Kwuo mkpụrụedemede niile, otu n'otu.",
+  "en": "The big test. Say all the letters, one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ule ikpeazụ. A ga-agwakọta mkpụrụedemede ma gosi gị ha. Kwuo ha niile.",
+  "en": "The last test. The letters will be shown mixed up; say them all.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_look",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee mkpụrụedemede anọ. Gee ntị, leba anya.",
+  "en": "Here are four letters. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị ga-ahụ mkpụrụedemede ọhụrụ abụọ ị ga-amụta. Nke a bụ ọkwa ọhụrụ, nke dị ezigbo mkpa.",
+  "en": "Now you'll see two new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ị ga-ahụ mkpụrụedemede ọhụrụ anọ ị ga-amụta. Nke a bụ ọkwa ọhụrụ, nke dị ezigbo mkpa.",
+  "en": "Now you'll see four new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_recall",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, kwuo ya n'onwe gị.",
+  "en": "Now you say it yourself.",
+  "status": "draft"
+ },
+ {
+  "key": "s_laila2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Aha m bụ Chioma. Abụ m enyi gị n'ọmụmụ ihe. Ugbu a, pịa isi m ka anyị malite.",
+  "en": "My name is Chioma. I'm your learning friend. Now press my head and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_leave",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-akwụsị ọmụmụ ihe a. Ọ bụrụ na i mechaala, pịa Chioma. Ma ọ bụghị ya, pịa bọọdụ ojii.",
+  "en": "The session will end. If you are done, press Chioma. If not, press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "s_light",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Chọta ebe ìhè dị karịa.",
+  "en": "Find a brighter spot.",
+  "status": "draft"
+ },
+ {
+  "key": "s_loading",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Biko, chere ntakịrị. A na-edozi ihe niile.",
+  "en": "Please wait a little. Everything is getting ready.",
+  "status": "draft"
+ },
+ {
+  "key": "s_look",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Leba anya na kamera.",
+  "en": "Look at the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_big",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, nnukwu ule! Anyị ga-anwale ọnụọgụ niile ị mụtara, ka anyị mara na ị ma ha. A ga-egosi gị otu ọnụọgụ, a ga-akpọ aha ya n'asụsụ Igbo, mgbe ahụ gị onwe gị ga-akpọ aha ya n'asụsụ Bekee. Ọ bụrụ na i chefuola aha ya n'asụsụ Bekee,",
+  "en": "Now the big test! We'll test all the numbers you learned, to make sure you know them. A number will be shown, its name said in Igbo, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_focus5",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-amụgharị ndị siiri gị ike, ya na ụfọdụ ndị ị maara, ka anyị mekwuo ha ọzọ.",
+  "en": "Now we'll learn again the ones you struggled with, together with a few you know, for extra practice.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_hundreds",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, narị: narị abụọ, narị atọ, ruo narị itoolu, mgbe ahụ puku.",
+  "en": "Now the hundreds: two hundred, three hundred, up to nine hundred, then a thousand.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "N'ebe a, anyị ga-amụta ọnụọgụ. Nke mbụ, anyị ga-eji mkpịsị aka gụọ ọnụ, site na otu ruo iri. Mgbe ahụ, anyị ga-amụta akara ọnụọgụ.",
+  "en": "Here we learn numbers. First we count on our fingers, one to ten. Then we learn the number signs.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_palms",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee aka. Gụọ mkpịsị aka ndị e weliri elu.",
+  "en": "Here is a hand. Count the fingers that are up.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_sym2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, akara ọnụọgụ site na iri na otu ruo iri abụọ.",
+  "en": "Now the number signs from eleven to twenty.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_symbols",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-amụta akara ọnụọgụ ndị ị mụtara, site na otu ruo iri.",
+  "en": "Now we'll learn the signs of the numbers you learned, one to ten.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_tens",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-amụta ọnụọgụ ndị buru ibu: iri atọ, iri anọ, iri ise, ruo narị.",
+  "en": "Now we'll learn the big numbers: thirty, forty, fifty, up to a hundred.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_again2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gee ntị ọzọ. N'asụsụ Bekee, ọ bụ:",
+  "en": "Listen again. In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_allright",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị zara ha niile nke ọma! Ugbu a, anyị ga-aga n'ihu.",
+  "en": "You got them all right! Now we go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_focus",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Foto ndị ị ga-ahụ ugbu a bụ ndị siiri gị ike. Anyị ga-amụgharị ha.",
+   "f": "Foto ndị ị ga-ahụ ugbu a bụ ndị siiri gị ike. Anyị ga-amụgharị ha.",
+   "any": "Ka anyị mụgharịa ndị a."
+  },
+  "en": "The pictures you'll see now are the ones you struggled with. We'll learn them again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_go",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị ga-emeli ya!",
+  "en": "You can do it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_inen",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "N'asụsụ Bekee, ọ bụ:",
+  "en": "In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_look",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee foto. Gee ntị, leba anya.",
+  "en": "Here are three pictures. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_miss",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke ahụ ezighi ezi. Ka anyị gaa n'ihu.",
+  "en": "That one wasn't right. Let's go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_new3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, lee foto ise ọzọ.",
+  "en": "Now here are five more pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_next",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ka anyị gaa na nke ọzọ.",
+  "en": "Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_retake",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ụfọdụ ezighi ezi. Anyị ga-amụgharị ha, mgbe ahụ anyị ga-eme ule ahụ ọzọ.",
+  "en": "Some weren't right. We'll learn them again, then take the test again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_right",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ndị ị zara nke ọma:",
+  "en": "Here are the ones you got right:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_say",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo ya n'asụsụ Bekee.",
+  "en": "Say it in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_test2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, anyị ga-eme obere ule, ka anyị mara na ị ma ha. A ga-egosi gị otu foto, a ga-akpọ aha ya n'asụsụ Igbo, mgbe ahụ gị onwe gị ga-akpọ aha ya n'asụsụ Bekee. Ọ bụrụ na i chefuola aha ya n'asụsụ Bekee,",
+  "en": "Now we'll do a small test, to make sure you know them. A picture will be shown, its name said in Igbo, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_three",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke ahụ siri ike. Ugbu a, ka anyị gaa na nke ọzọ.",
+  "en": "That one is hard. Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_turn",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụ oge gị. Pịa Chioma, kpọọ aha ya n'asụsụ Bekee.",
+  "en": "Your turn. Press Chioma and say its name in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_wrong",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ndị a kwa, anyị ga-amụgharị ha:",
+  "en": "And these, we'll learn again:",
+  "status": "draft"
+ },
+ {
+  "key": "s_p1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Ebuka, sị: Aha m bụ Ebuka.",
+   "f": "Anyị ga-ese vidiyo gị ka ị na-akpọ aha gị. Dịka ọmụmaatụ, ọ bụrụ na aha gị bụ Chichi, sị: Aha m bụ Chichi."
+  },
+  "en": "We will take a video of you saying your name. For example, if your name is Ebuka, say: Aha m bụ Ebuka.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Lee nwa nwoke aha ya bụ Ebuka. Ọ na-akpọ aha ya.",
+   "f": "Lee nwa agbọghọ aha ya bụ Chichi. Ọ na-akpọ aha ya."
+  },
+  "en": "Here is the boy Ebuka / the girl Chichi, saying the name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ọ bụ oge gị. Pịa Chioma, mgbe ahụ gwa anyị aha gị.",
+  "en": "Now you: press Chioma, then say your name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị chọrọ kamera na maikrofon ka ihe a rụọ ọrụ. Pịa 'Allow'.",
+  "en": "We need the camera and the microphone for this to work. Tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm_no",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "E nyeghị ikike. Nwaa ọzọ, pịa 'Allow'.",
+  "en": "Permission was not given. Try again and tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_again",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ka anyị nwaa ọzọ, were ndị ọhụrụ. Gee ntị nke ọma.",
+  "en": "Now let's play again, with new ones. Listen carefully.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_q4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Foto anọ. A ga-egosi gị foto anọ, a ga-akpọ aha otu n'ime ha n'asụsụ Bekee, mgbe ahụ pịa ya.",
+  "en": "Four pictures. You'll see four pictures, one will be named in English, and you tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_qnum",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọnụọgụ. A ga-akpọ otu ọnụọgụ n'asụsụ Bekee, mgbe ahụ pịa akara ya.",
+  "en": "Numbers. A number will be said in English, and you tap its sign.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_tap",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa akara ọnụọgụ a kpọrọ.",
+  "en": "Tap the sign of the number that was said.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_intro2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "N'ebe a, anyị ga-amụta ide aha ihe n'asụsụ Bekee, mkpụrụedemede n'otu n'otu. A ga-egosi gị foto, mgbe ahụ dee aha ya.",
+  "en": "Here we learn to write the names of things in English, letter by letter. A picture will be shown, and you write its name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_turn",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụ oge gị. Họrọ ihe ọmụmụ.",
+  "en": "Your turn. Pick a lesson.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_wow",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma!",
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede atọ. N'ebe a, anyị ga-ede okwu nwere mkpụrụedemede atọ, n'otu n'otu.",
+  "en": "Three letters. Here we write three-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede anọ. N'ebe a, anyị ga-ede okwu nwere mkpụrụedemede anọ, n'otu n'otu.",
+  "en": "Four letters. Here we write four-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r5",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede ise. N'ebe a, anyị ga-ede okwu nwere mkpụrụedemede ise, n'otu n'otu.",
+  "en": "Five letters. Here we write five-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rlong",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Okwu dị ogologo. N'ebe a, anyị ga-ede okwu dị ogologo, mkpụrụedemede n'otu n'otu.",
+  "en": "Long words. Here we write long words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rnum",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọnụọgụ. N'ebe a, anyị ga-ede aha ọnụọgụ n'asụsụ Bekee, mkpụrụedemede n'otu n'otu.",
+  "en": "Numbers. Here we write the names of numbers in English, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_face",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anaghị m ahụ gị nke ọma. Biko, ka anyị nwaa ọzọ.",
+  "en": "I can't see you well. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_name",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anụghị m aha gị nke ọma. Biko, ka anyị nwaa ọzọ.",
+  "en": "I couldn't hear you say your name. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_laila",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa Chioma ka ị nwaa ọzọ.",
+  "en": "Click Chioma to try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_door",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ma ọ bụ pịa ụzọ a ka ị malitegharịa.",
+  "en": "Or click this door to go back and start again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sannu",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ndewo,",
+  "en": "Hello,",
+  "status": "draft"
+ },
+ {
+  "key": "s_say_it",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kwuo ya ugbu a.",
+  "en": "Say it now.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke mbụ bụ:",
+  "en": "The first letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke abụọ bụ:",
+  "en": "The second letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke atọ bụ:",
+  "en": "The third letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke anọ bụ:",
+  "en": "The fourth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_5",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke ise bụ:",
+  "en": "The fifth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_6",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke isii bụ:",
+  "en": "The sixth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_7",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke asaa bụ:",
+  "en": "The seventh letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_8",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke asatọ bụ:",
+  "en": "The eighth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_9",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke itoolu bụ:",
+  "en": "The ninth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_press",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pịa ya.",
+  "en": "Tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_spelt",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A na-ede ya otu a:",
+  "en": "It is written like this:",
+  "status": "draft"
+ },
+ {
+  "key": "s_still",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nọrọ jụụ.",
+  "en": "Hold still.",
+  "status": "draft"
+ },
+ {
+  "key": "s_welcome",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nnọọ!",
+  "en": "Welcome!",
+  "status": "draft"
+ },
+ {
+  "key": "sx_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọmụmaatụ! Lee anya, gee ntị ka e si eme ya.",
+  "en": "Example! Watch and listen to how it's done.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_k_letters",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Aga m agụ mkpụrụedemede ndị a, otu n'otu. Gee ntị.",
+  "en": "I will read the letters, one by one. Listen.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_laila",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe m ga-ekwu:",
+  "en": "Here is what I'll say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_now",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụ oge gị. Nwaa ya.",
+  "en": "Your turn. Try it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_name",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Aha m bụ Chioma. Abụ m enyi gị n'ọmụmụ ihe.",
+  "en": "My name is Chioma. I am your learning friend.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_together",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọnụ, anyị ga-amụta asụsụ Bekee.",
+  "en": "Together we are going to learn English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_have",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Enwere m ihe ọmụmụ ndị mara mma nke ukwuu.",
+  "en": "I have amazing lessons.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-amụta mkpụrụedemede Bekee.",
+  "en": "We will learn the English alphabet.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-amụta ịgụ na ide ihe n'asụsụ Bekee.",
+  "en": "We will learn to read and write in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l3",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-amụta ịgụ ọnụ.",
+  "en": "We will learn to count.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l4",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-amụta aha ihe dịka anụmanụ na nri, n'asụsụ Bekee.",
+  "en": "We will learn the names of things like animals and foods, in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_more",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Na ọtụtụ ihe ọzọ na-atọ ụtọ.",
+  "en": "And many other amazing things.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_talk",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị ga-enwe ike ịgwa m okwu. Aga m anọnyere gị.",
+  "en": "You will be able to speak to me and I will be with you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_glad",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Obi dị m ụtọ ịhụ gị.",
+  "en": "I am happy to see you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_cont",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ka anyị gaa n'ihu site n'ebe anyị kwụsịrị.",
+  "en": "Now let us continue from where we stopped.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_say",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ị ga-eme ka i kwuo ya n'asụsụ Bekee. Ị ga-apị Chioma, mgbe ahụ ị ga-asị:",
+  "en": "Here is what you will do to say it in English. You will press Chioma, then you will say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_read",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ị ga-eme ka ị gụọ ya n'asụsụ Bekee. Ị ga-apị Chioma, mgbe ahụ ị ga-agụ okwu a:",
+  "en": "Here is what you will do to read it in English. You will press Chioma, then you will read the word:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_spell",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ị ga-eme ka i dee ya n'asụsụ Bekee. Ị ga-apị Chioma, mgbe ahụ ị ga-ekwu mkpụrụedemede ndị a:",
+  "en": "Here is what you will do to write it in English. You will press Chioma, then you will say the letters:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_find",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ị ga-eme. Gee ntị, mgbe ahụ pịa foto a kpọrọ aha ya.",
+  "en": "Here is what you will do. Listen, then press the picture that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_findnum",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ihe ị ga-eme. Gee ntị, mgbe ahụ pịa akara ọnụọgụ a kpọrọ.",
+  "en": "Here is what you will do. Listen, then press the number that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_start",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, a ga-egosi gị foto anọ. Gee ntị n'aha a kpọrọ n'asụsụ Bekee, mgbe ahụ pịa ya.",
+  "en": "Now you will be shown four pictures. Listen for the name said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_start",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, a ga-egosi gị akara ọnụọgụ. Gee ntị n'ọnụọgụ a kpọrọ n'asụsụ Bekee, mgbe ahụ pịa ya.",
+  "en": "Now you will be shown numbers. Listen for the one said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_plan",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-ekwu mkpụrụedemede ndị a, otu n'otu. Ụzọ abụọ dị.",
+  "en": "We will say the letters one after another. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke mbụ, site n'olu.",
+  "en": "The first, with your voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nke abụọ, site na bọọdụ.",
+  "en": "The second, with the board.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v1",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke mbụ, aga m eji olu m kwuo ya.",
+  "en": "The first letter, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v2",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede nke abụọ kwa, aga m eji olu m kwuo ya.",
+  "en": "The second letter too, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_kb",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mkpụrụedemede ikpeazụ, aga m apị ya na bọọdụ.",
+  "en": "And the last letter, I will press it on the board.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_intro",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee bọlụn ndị nwere mkpụrụedemede. Jiri mkpịsị aka gị pịa bọlụn, ọ ga-agbawa.",
+  "en": "Here are balloons with letters. Press a balloon with your finger and it bursts.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_done",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị mere nke ọma, anyị emechaala egwuregwu a!",
+  "en": "Well done, we've finished the game!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_demo",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lee ọmụmaatụ. Aga m agbawa nke mbụ:",
+  "en": "Here is an example. I'll pop the first one:",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_go",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ugbu a, ọ bụ gị.",
+  "en": "Now you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_after",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Gbawaa mkpụrụedemede na-esote",
+  "en": "Pop the letter after",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_task",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Chọta mkpụrụedemede mbụ nke Bekee, gbawaa ya. Mgbe ahụ, nke na-esote ya, n'usoro.",
+  "en": "Find the first letter of English and pop it. Then the letter after it, in order.",
+  "status": "draft"
+ },
+ {
+  "key": "s_eg_watch",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Aga m egosi gị ọzọ. Lezie anya.",
+  "en": "I will show you again. Pay attention.",
+  "status": "planned"
+ },
+ {
+  "key": "s_eg_ok",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "O zighi ezi, mana ị ga-amụta ya.",
+  "en": "That was not right, but you will learn.",
+  "status": "planned"
+ },
+ {
+  "key": "s_pop_clock",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị nwere oge iji mechaa mkpụrụedemede niile, site na A ruo Z.",
+  "en": "You have time to finish all the letters, A to Z.",
+  "status": "planned"
+ },
+ {
+  "key": "s_pop_scoring",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụrụ na i mee ya nke ọma, oge ga-abawanye. Ọ bụrụ na i mehie, oge ga-ebelata.",
+  "en": "Get it right and time goes up. Get it wrong and time goes down.",
+  "status": "planned"
+ },
+ {
+  "key": "s_pop_luck",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụrụ na oge agwụ, ị gaghị emeri. Ka ọ gaara gị nke ọma!",
+  "en": "If the time runs out, you have not won. Good luck!",
+  "status": "planned"
+ },
+ {
+  "key": "s_pop_timeup",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Oge agwụla. Ka anyị buru ụzọ mụta mkpụrụedemede.",
+  "en": "Time is up. Let us learn the letters first.",
+  "status": "planned"
+ },
+ {
+  "key": "s_pop_know",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị ma mkpụrụedemede niile.",
+  "en": "You know your letters.",
+  "status": "planned"
+ },
+ {
+  "key": "s_gate_q",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ị ma mkpụrụedemede niile?",
+  "en": "Do you know all the letters?",
+  "status": "planned"
+ },
+ {
+  "key": "s_gate_z",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "…ruo Z?",
+  "en": "…all the way to Z?",
+  "status": "planned"
+ },
+ {
+  "key": "s_gate_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ọ bụrụ na ị ma ha, pịa Chioma. Ọ bụrụ na ị maghị ha, pịa bọọdụ ojii.",
+  "en": "If you know them, tap Chioma. If you do not, tap the slate.",
+  "status": "planned"
+ },
+ {
+  "key": "s_gate_calm",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Echegbula onwe gị. Ka anyị buru ụzọ mụta ha.",
+  "en": "Don't worry. Let us learn them first.",
+  "status": "planned"
+ },
+ {
+  "key": "s_gate_play",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anyị ga-egwu obere egwuregwu.",
+  "en": "We are going to play a little game.",
+  "status": "planned"
+ }
+]

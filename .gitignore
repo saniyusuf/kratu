@@ -62,3 +62,18 @@ tools/names_gender.json
 docs/
 
 .playwright-mcp/
+
+# Local voices for the demo languages (MMS and fine-tunes): the Python env stays on this machine
+tools/.venv-tts/
+tools/.venv-xtts/
+tools/.venv-yarn/
+tools/.yarngpt/
+tools/.spitch-ha-test/
+tools/.genimg-*/
+tools/.qa/
+tools/.sheet*
+tools/.soup*
+scripts/.sheet.tmp.mjs
+tools/.hedra-*/
+tools/.qa2/
+tools/.genvid/

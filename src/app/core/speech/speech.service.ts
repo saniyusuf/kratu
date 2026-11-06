@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { AudioBus } from '../audio/audio-bus.service';
 import { WordsService } from '../clips/words.service';
+import { t } from '../lang/t';
 
 export interface HearOptions {
   /** One expected word (with its aliases) — the grammar is the vocabulary plus this word. */
@@ -215,7 +216,7 @@ export class SpeechService {
       const from = Math.max(askedAt, this.bus.engine.lastSound) + 200;   // after the press AND after Laila's last sound: her voice never reaches the recogniser
       for (const b of this.preroll) if (b.t - (b.d.length / (this.ctx?.sampleRate || 48000)) * 1000 >= from) { try { this.rec.acceptWaveformFloat(b.d, this.ctx!.sampleRate); } catch { this.feedErr++; } }
       this.preroll = [];
-      this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set('Ina saurara…');
+      this.feeding = true; this.peak = 0; this.bus.setMic(true); this.listening.set(true); this.fb.set(t('Ina saurara…'));
       again = () => { if (o.limit) return; if (tmo) clearTimeout(tmo); if (Date.now() - opened > UNTIL_CAP) { end(); return; } tmo = setTimeout(end, UNTIL_QUIET); };
       const end = () => { if (!lastRaw && this.peak > 0.12) { this.strikes++; if (this.strikes >= 2) setTimeout(() => this.restart('no answer twice while the microphone heard sound'), 50); } else this.strikes = 0; if (!o.match && pend) { if (o.multi) pend.toLowerCase().split(/\s+/).forEach((tok) => { const c = this.classify(tok); if (c) letters.push(c); }); else { fin(this.classifyPhrase(pend), pend); return; } } fin(null, lastRaw); };
       tmo = setTimeout(end, o.limit || (o.multi ? 10000 : o.until ? UNTIL_QUIET : 8000));
@@ -223,7 +224,7 @@ export class SpeechService {
     // the multi result: letters are the value
     const origResolve = resolve; resolve = (r) => { origResolve(o.multi ? { value: letters, raw: r.raw, tries: r.tries } : r); };
     if (!this.model) {
-      this.loadModel(); this.preparing.set(true); this.fb.set('Ana shirya murya…'); const t0 = Date.now();
+      this.loadModel(); this.preparing.set(true); this.fb.set(t('Ana shirya murya…')); const t0 = Date.now();
       const wait = () => { if (finished || my !== this.seq) { this.preparing.set(false); return; } if (this.model) { this.preparing.set(false); go(); } else if (this.failed || Date.now() - t0 > 90000) { this.preparing.set(false); finished = true; this.simulate(o, my).then(resolve); } else setTimeout(wait, 250); };
       wait(); return handle;
     }

@@ -3,6 +3,8 @@ import { ClipsService } from '../clips/clips.service';
 import { WordsService } from '../clips/words.service';
 import { IdentityService } from '../identity/identity.service';
 import { SpeechService } from '../speech/speech.service';
+import { LANG } from '../lang/lang';
+import { t } from '../lang/t';
 
 export interface Piece { id: 'speech' | 'face' | 'names' | 'pictures'; ha: string; en: string; heavy: boolean; dl?: () => Promise<'skip' | void>; prep?: () => Promise<void>; }
 type St = 'wait' | 'busy' | 'ok' | 'skip' | 'fail';
@@ -31,9 +33,9 @@ export class LoaderService {
   readonly failed = signal(false);
   readonly stage = signal<'names' | 'download' | 'wake' | 'ready' | 'fail'>('names');
   readonly step = signal(1);
-  readonly headHa = signal('Ana shirya Kratu…');
+  readonly headHa = signal(t('Ana shirya Kratu…'));
   readonly headEn = signal('Getting ready · after this it works without internet');
-  readonly bubbleHa = signal('Ina zuwa…');
+  readonly bubbleHa = signal(t('Ina zuwa…'));
   readonly bubbleEn = signal('Coming…');
   readonly pct = signal(0);
   readonly eta = signal('');
@@ -49,9 +51,10 @@ export class LoaderService {
       prep: () => this.prepSpeech() },
     { id: 'face', ha: 'Fuska', en: 'face', heavy: true,
       dl: async () => { if (!this.identity.present()) return 'skip'; await this.fetchFaceModels(); return undefined; },
-      prep: async () => { this.prog('face', 'ana tadawa · starting'); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', 'a shirye · ready · ' + (this.identity.model() || '')); } },
+      prep: async () => { this.prog('face', t('ana tadawa') + ' · starting'); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', t('a shirye') + ' · ready · ' + (this.identity.model() || '')); } },
     { id: 'names', ha: 'Sunaye', en: 'names', heavy: false,
-      dl: async () => { await this.clips.load(); await this.words.load(); const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
+      dl: async () => { await this.clips.load(); await this.words.load(); if (!LANG.namesBank) return 'skip';   // the bank is Hausa TTS: another language's build says the name in the child's own voice
+        const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
     { id: 'pictures', ha: 'Hotuna', en: 'pictures', heavy: false,
       dl: () => this.fetchMedia(),
       prep: async () => { await (document.fonts?.ready ?? Promise.resolve()); const first = Object.values(this.words.cats()).slice(0, 4).flatMap((c) => c.slice(0, 2)); await Promise.all(first.filter((w) => w.img).map((w) => new Promise<void>((res) => { const im = new Image(); im.onload = im.onerror = () => res(); im.src = w.img!; }))); } },
@@ -59,7 +62,7 @@ export class LoaderService {
 
   constructor() { this.speech.filesProvider = () => this.fetchSpeechFiles(); }
 
-  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.map((p) => ({ id: p.id, label: p.ha + ' · ' + p.en, text: '', state: 'wait' }))); this.round(); return this.done; }
+  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.map((p) => ({ id: p.id, label: t(p.ha) + ' · ' + p.en, text: '', state: 'wait' }))); this.round(); return this.done; }
   retry(): void { this.round(); }
   skip(): void { this.finish(); }
 
@@ -68,7 +71,7 @@ export class LoaderService {
     const small = this.pieces.filter((p) => !p.heavy && !this.dlDone(p)), heavy = this.pieces.filter((p) => p.heavy && !this.dlDone(p)), preps: Promise<void>[] = [];
     await Promise.all(small.map((p) => this.runDl(p).then(() => { preps.push(this.runPrep(p)); }, () => undefined)));
     if (this.showFail(small)) return;
-    for (const p of heavy) { let tries = 0; for (;;) { tries++; try { await this.runDl(p); preps.push(this.runPrep(p)); break; } catch { if (tries >= 3) break; this.prog(p.id, 'sake gwadawa · retrying'); await new Promise((r) => setTimeout(r, 3000)); } } }
+    for (const p of heavy) { let tries = 0; for (;;) { tries++; try { await this.runDl(p); preps.push(this.runPrep(p)); break; } catch { if (tries >= 3) break; this.prog(p.id, t('sake gwadawa') + ' · retrying'); await new Promise((r) => setTimeout(r, 3000)); } } }
     if (this.showFail(heavy)) return;
     this.paint();
     const timer = setTimeout(() => this.finish(), this.PREP_MAX);
@@ -77,8 +80,8 @@ export class LoaderService {
   private showFail(list: Piece[]): boolean {
     const bad = list.filter((p) => this.dl[p.id] === 'fail'); if (!bad.length) return false;
     this.fails++; this.failed.set(true); this.stage.set('fail'); this.step.set(0);
-    this.headHa.set('Wani abu bai zo ba'); this.headEn.set('Something did not load: ' + bad.map((p) => p.en + ' (' + (this.errs[p.id] || '?') + ')').join(', ') + ' · check the connection, then try again');
-    this.bubbleHa.set('Kai!'); this.bubbleEn.set('Oh no'); if (this.fails >= 2) this.showSkip.set(true); return true;
+    this.headHa.set(t('Wani abu bai zo ba')); this.headEn.set('Something did not load: ' + bad.map((p) => p.en + ' (' + (this.errs[p.id] || '?') + ')').join(', ') + ' · check the connection, then try again');
+    this.bubbleHa.set(t('Kai!')); this.bubbleEn.set('Oh no'); if (this.fails >= 2) this.showSkip.set(true); return true;
   }
   private finish(): void { if (this.finished()) return; this.times['finish'] = Math.round(performance.now()); this.finished.set(true); this.paint(); setTimeout(() => this.resolveDone(), 900); }
   private dlDone(p: Piece): boolean { return this.dl[p.id] === 'ok' || this.dl[p.id] === 'skip'; }
@@ -97,7 +100,7 @@ export class LoaderService {
   }
   private prog(id: string, text: string): void { this.ptext[id] = text || ''; this.chips.update((cs) => cs.map((c) => c.id === id ? { ...c, text: this.ptext[id] } : c)); }
   private note(ha: string, en: string): void { this.noteHa.set(ha); this.noteEn.set(en); }
-  private stageSet(key: 'names' | 'download' | 'wake' | 'ready', n: number, ha: string, en: string, bha: string, ben: string): void { this.stage.set(key); this.step.set(n); this.headHa.set(ha); this.headEn.set(en); this.bubbleHa.set(bha); this.bubbleEn.set(ben); }
+  private stageSet(key: 'names' | 'download' | 'wake' | 'ready', n: number, ha: string, en: string, bha: string, ben: string): void { this.stage.set(key); this.step.set(n); this.headHa.set(t(ha)); this.headEn.set(t(en)); this.bubbleHa.set(t(bha)); this.bubbleEn.set(ben); }
   private paint(): void {
     let got = 0, total = 0, frac = 0, n = 0;
     const letters = this.pieces.map((p) => { const b = this.bytes[p.id]; if (b?.total) { got += Math.min(b.got, b.total); total += b.total; } const f = this.dlDone(p) ? 1 : (b?.total ? Math.min(0.98, b.got / b.total) : 0); n++; frac += f; return this.dlDone(p); });
@@ -122,7 +125,7 @@ export class LoaderService {
     if (this.samples.length < 2 || now - this.samples[0][0] < 1500 || !total) { this.eta.set(''); return; }
     const rate = (got - this.samples[0][1]) / ((now - this.samples[0][0]) / 1000); if (rate <= 0) { this.eta.set(''); return; }
     const left = (total - got) / rate; const s5 = Math.round(left / 5) * 5, min = Math.max(1, Math.round(left / 60));
-    this.eta.set(left < 8 ? '' : left < 90 ? `kimanin daƙiƙa ${s5} · about ${s5} seconds left` : `kimanin minti ${min} · about ${min} minute${min > 1 ? 's' : ''} left`);
+    this.eta.set(left < 8 ? '' : left < 90 ? t('kimanin daƙiƙa') + ` ${s5} · about ${s5} seconds left` : t('kimanin minti') + ` ${min} · about ${min} minute${min > 1 ? 's' : ''} left`);
   }
 
   // ---- downloads: every file through Cache Storage, with a byte count and a stall guard
@@ -167,11 +170,11 @@ export class LoaderService {
     const files: Record<string, ArrayBuffer> = {}; man.files.forEach((f: any) => { files[f.path] = bufs['vosk-model/' + (gz ? f.gz : f.path)]; }); return files;
   }
   private async prepSpeech(): Promise<void> {
-    const t0 = Date.now(); const tick = setInterval(() => this.prog('speech', (this.speechFiles ? 'ana tadawa · starting · ' : 'ana buɗewa · unpacking · ') + Math.round((Date.now() - t0) / 1000) + ' s'), 1000);
+    const t0 = Date.now(); const tick = setInterval(() => this.prog('speech', (this.speechFiles ? t('ana tadawa') + ' · starting · ' : t('ana buɗewa') + ' · unpacking · ') + Math.round((Date.now() - t0) / 1000) + ' s'), 1000);
     let kicked = false, lastWhy = '';
     try {
       await new Promise<void>((res, rej) => { const start = Date.now(); const w = () => { if (this.speech.ready()) { res(); return; } const st = this.speech.state(); if (st === 'failed') { lastWhy = this.speech.error(); if (kicked) { rej(new Error(lastWhy || 'failed')); return; } kicked = true; this.speech.retry(this.speechFiles); this.speechFiles = null; } else if (st === 'idle') { this.speech.loadModel(this.speechFiles); this.speechFiles = null; } if (Date.now() - start > 600000) { rej(new Error('timeout')); return; } setTimeout(w, 250); }; w(); });
-      this.prog('speech', 'a shirye · ready');
+      this.prog('speech', t('a shirye') + ' · ready');
     } finally { clearInterval(tick); }
   }
   /**
@@ -214,7 +217,7 @@ export class LoaderService {
         got += f.size; show();
       }
     }));
-    this.prog('pictures', 'a shirye · ready');
+    this.prog('pictures', t('a shirye') + ' · ready');
   }
   /** Resolves true once the service worker controls this page, false if it does not take over. */
   private swDriving(): Promise<boolean> {

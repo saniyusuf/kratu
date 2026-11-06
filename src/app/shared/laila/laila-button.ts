@@ -1,5 +1,6 @@
 import { Component, ElementRef, inject, input, output } from '@angular/core';
 import { Laila } from './laila';
+import { t } from '../../core/lang/t';
 
 /**
  * The Laila press button every lesson uses: glow, hear-rings, her head, the beak the letters fly from, the listening
@@ -9,13 +10,14 @@ import { Laila } from './laila';
   selector: 'app-laila-btn',
   imports: [Laila],
   host: {
-    class: 'yn yes abc-start x-laila', role: 'button', '[attr.aria-label]': 'label()', style: 'padding:1px 6px',   // a real <button> in the design: the browser's own padding is part of its width
+    class: 'yn yes abc-start x-laila', role: 'button', '[attr.aria-label]': 't(label())', style: 'padding:1px 6px',   // a real <button> in the design: the browser's own padding is part of its width
     '[class.cue]': 'cue()', '[class.armed]': 'armed()', '[class.rec]': 'rec()', '[class.speak]': 'speak()', '[class.prep]': 'prep()', '[class.yay]': 'yay()', '[class.nope]': 'nope()',
     '[style.--amp]': 'amp()', '(click)': 'pressed.emit()',
   },
-  template: `<span class="lglow"></span><span class="hearrings"></span><app-laila [size]="size()" /><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="lhand">{{ nope() ? '👋🏾' : '👆🏾' }}</span><small>{{ label() }}</small>`,
+  template: `<span class="lglow"></span><span class="hearrings"></span><app-laila [size]="size()" /><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="lhand">{{ nope() ? '👋🏾' : '👆🏾' }}</span><small>{{ t(label()) }}</small>`,
 })
 export class LailaButton {
+  readonly t = t;
   readonly label = input('Faɗa');
   readonly size = input(112);
   readonly cue = input(false); readonly armed = input(false); readonly rec = input(false); readonly speak = input(false); readonly prep = input(false);

@@ -11,6 +11,7 @@ import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { Spotter, firstHints, flyText, joy, shakeNo, wait } from '../../shared/lesson/helpers';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
+import { t, tx } from '../../core/lang/t';
 
 /**
  * One press, one entry. Inside it the child may try twice; a second wrong letter ends the entry as wrong rather than
@@ -39,10 +40,10 @@ const BETWEEN: Record<number, string> = { 12: 'j-durbar', 20: 'j-durbar' };
   imports: [Door, Ear, LailaButton],
   host: { class: 's lesson learn', '[class.hearing]': 'rec() || armed()' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="abcshow" [class.off]="!big()"><span class="abcbig" [style.--c]="bigColor()">{{ big() }}</span></div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [attr.data-l]="L" [style.--c]="color($index)" [class.active]="active()[$index]" [class.on]="st()[$index] === 'on'" [class.done]="st()[$index] === 'done'" [class.bad]="st()[$index] === 'bad'">{{ st()[$index] === 'done' ? L : '' }}</span>}</div>
-<div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+<div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
 <div class="yesno ynpair abcq lone"><app-laila-btn #lb label="Laila" [size]="132" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [nope]="nope()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" /></div>`,
 })
 export class HaruffaLearnScreen implements OnInit, OnDestroy {
@@ -58,6 +59,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
   private readonly lb = viewChild.required<LailaButton>('lb');
   private readonly slotsRef = viewChild.required<ElementRef<HTMLElement>>('slots');
   readonly all = ALL; readonly color = LETTER_COLOR;
+  readonly t = t; readonly tx = tx;
   readonly eye = signal('Haruffa · koyo · rukuni 1');
   readonly st = signal<('' | 'on' | 'done' | 'bad')[]>(ALL.map(() => '')); readonly active = signal<boolean[]>(ALL.map(() => false));
   readonly big = signal(''); readonly bigColor = signal('var(--red)');
@@ -180,7 +182,7 @@ export class HaruffaLearnScreen implements OnInit, OnDestroy {
       return true;
     }
     miss(1);   // one failed entry is one miss, however many tries it held
-    shakeNo(this.nope); this.setSt(L, 'bad'); this.fb('bad', r.heard ? ('Wannan ' + r.heard + ' ne — sake gwadawa.') : 'Ban ji ba — sake gwadawa.'); return false;
+    shakeNo(this.nope); this.setSt(L, 'bad'); this.fb('bad', r.heard ? (t('Wannan ') + r.heard + t(' ne') + ' — ' + t('sake gwadawa.')) : 'Ban ji ba — sake gwadawa.'); return false;
   }
   // ---- the four steps of a group ----
   private async present(group: string[]): Promise<void> { for (const L of group) { if (this.stopped) return; this.showLetter(L); await this.sayLetter('app_wannan', L); await wait(500); } this.hideLetter(); }

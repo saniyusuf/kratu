@@ -25,10 +25,10 @@ const STAGES = [
   imports: [Door, Ear, LailaButton, AlloButton, ResultsGrid],
   host: { class: 's lesson word obj', '[class.lambobi]': "mode === 'numbers'", '[class.hearing]': 'rec() || armed()', '[class.presenting]': 'presenting()' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ eye() }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
 <div class="objrow" [class.many]="rowItems().length > 5">@for (it of rowItems(); track it.k) {<span class="oslot active" [class.on]="onItem() === it.k" [class.done]="marks()[it.k] === 'done'" [class.miss]="marks()[it.k] === 'miss'" [attr.data-item]="it.k"></span>}</div>
-<div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+<div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
 <div class="yesno ynpair objq" [hidden]="resultsOn()" [class.nohand]="nohand()">
   <app-laila-btn #lb label="Faɗa" [size]="112" [cue]="cue()" [armed]="armed()" [rec]="rec()" [speak]="speak()" [yay]="yay()" [nope]="nope()" [prep]="speech.preparing()" [amp]="speech.amp()" (pressed)="lailaPressed()" />
   <app-allo-btn #dk (pressed)="pressDk()" />

@@ -8,6 +8,8 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { voiceLang } from './lang-voice.mjs';
+if (process.argv.includes('--lang') && !process.argv.includes('--word')) { const a = process.argv.slice(2); process.exit(await voiceLang(a[a.indexOf('--lang') + 1], a) ? 1 : 0); }   // a demo language: its own lines and words
 const env = existsSync('.env') ? Object.fromEntries(readFileSync('.env', 'utf8').split('\n').filter((l) => l.includes('=') && !l.startsWith('#')).map((l) => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()])) : {};
 const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google', TARGET_DB = -18.5;
 const args = process.argv.slice(2), only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');

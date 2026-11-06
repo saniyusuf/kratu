@@ -1,3 +1,5 @@
+import { LANG } from '../lang/lang';
+
 /**
  * The child's own name, cut from the login recording — the NAME only, never the "sunana" in front of it (Sani 2026-09-17).
  * The recording is split into spoken pieces at the pauses, and the last piece is the name: a child says "Sunana … Sani".
@@ -47,16 +49,19 @@ export function stillFrame(video: HTMLVideoElement, w = 512): string | null {
   } catch { return null; }
 }
 
-/** The name protocol: only the words after the last "sunana" count, up to four, cut at a trailing "ne". */
-const CARRIER_STOP = new Set(['ne', 'ni', 'ce']);
+/** The name protocol: only the words after the last carrier ("sunana" in Hausa) count, up to four, cut at a trailing "ne". */
+const CARRIER_STOP = new Set(LANG.carrierStop);
+const CARRIER = new RegExp(LANG.carrier.join('|'), 'g');
 export function extractName(t: string): string {
   if (!t) return '';
-  const s = ' ' + t.toLowerCase().replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ') + ' ';
-  const ms = s.match(/ suna ?na /g); if (!ms) return '';
+  // another language's transcript may carry tone marks and dotted letters (orúkọ, aha m bụ): folded to a–z first
+  const low = LANG.fold ? t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') : t.toLowerCase();
+  const s = ' ' + low.replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ') + ' ';
+  const ms = s.match(CARRIER); if (!ms) return '';
   const last = ms[ms.length - 1], idx = s.lastIndexOf(last);
   let rest = s.slice(idx + last.length).trim().split(' ').filter(Boolean);
   while (rest.length && CARRIER_STOP.has(rest[0])) rest.shift();
-  const end = rest.indexOf('ne'); if (end > 0) rest = rest.slice(0, end);
+  const end = rest.findIndex((w, i) => i > 0 && LANG.carrierEnd.includes(w)); if (end > 0) rest = rest.slice(0, end);
   rest = rest.slice(0, 4);
   return rest.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }

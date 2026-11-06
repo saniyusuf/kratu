@@ -12,6 +12,7 @@ import { AlloButton } from '../../shared/lesson/allo-button';
 import { Spotter, wait } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
+import { t, tx } from '../../core/lang/t';
 
 /** The four she names out loud, and the one she stops at. */
 const SHOWN = ['A', 'B', 'C', 'D'];
@@ -74,23 +75,23 @@ const SHOWN = ['A', 'B', 'C', 'D'];
     <g fill="#7FA35B"><circle cx="460" cy="120" r="42"/><circle cx="430" cy="138" r="30"/><circle cx="1215" cy="118" r="38"/><path d="M455 150h10v32h-10zM1210 145h10v36h-10z" fill="#8A5A34"/></g>
   </svg>
 </div>
-<div class="eyebrow">Mu gani · haruffa</div>
+<div class="eyebrow">{{ tx('Mu gani · haruffa') }}</div>
 
 @if (phase() === 'invite') {
   <button class="startlaila gatestart" [class.talking]="speak()" [class.cue]="ready()"
-          aria-label="Danna Laila mu fara" (click)="begin()">
+          [attr.aria-label]="t('Danna Laila mu fara')" (click)="begin()">
     <span class="meethalo"></span><app-laila [size]="190" cls="meet-lm" />
     @if (ready()) {<span class="meet-hand">👆🏾</span>}
   </button>
-  <div class="starthint" [class.show]="ready()">Danna kan Laila mu fara<br><small>tap Laila to begin</small></div>
+  <div class="starthint" [class.show]="ready()">{{ t('Danna kan Laila mu fara') }}<br><small>{{ t('tap Laila to begin') }}</small></div>
 } @else {
-  <div class="gribbon">Haruffa</div>
+  <div class="gribbon">{{ t('Haruffa') }}</div>
   <div class="gboard" [class.all]="saidAt() > 4" aria-hidden="true">
     @for (L of all; track L) {
       <b [style.--c]="colour(L)" [style.--i]="$index" [class.ex]="$index < 4" [class.lit]="lit() === L" [class.said]="$index < 4 ? saidAt() > $index : saidAt() > 4">{{ L }}</b>
     }
   </div>
-  <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
+  <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>
   <div class="yesno ynpair gateq" [class.nohand]="!cue()">
     <app-laila-btn #lb label="Na sani" [size]="132" [cue]="cue()" [speak]="speak()" (pressed)="yes()" />
     <app-allo-btn label="Ban sani ba" (pressed)="no()" />
@@ -109,6 +110,7 @@ export class GateScreen implements OnInit, OnDestroy {
   readonly balloons = [{ L: 'K', x: 2, d: 0, w: 19, s: 1 }, { L: 'R', x: 9, d: -9, w: 23, s: .8 }, { L: 'A', x: 15, d: -4, w: 21, s: .9 },
     { L: 'T', x: 78, d: -12, w: 20, s: .85 }, { L: 'U', x: 85, d: -2, w: 24, s: 1 }, { L: 'M', x: 92, d: -15, w: 22, s: .75 }];
   /** Which letter she is saying right now, and how many she has got through. */
+  readonly t = t; readonly tx = tx;
   readonly lit = signal(''); readonly saidAt = signal(0);
   readonly speak = signal(false); readonly cue = signal(false);
   readonly fbCls = signal(''); readonly fbText = signal('');

@@ -64,15 +64,20 @@ export class Spotter {
   private el: HTMLElement | null = null; private hand: HTMLElement | null = null;
   constructor(private readonly s: HTMLElement, private readonly zoom: ZoomService) {}
   unspot(): void { if (this.el) { this.el.classList.remove('spot2'); this.el = null; } if (this.hand) { this.hand.remove(); this.hand = null; } }
+  /**
+   * The hand floats above the whole app, at body level, in screen pixels (Sani 13 Oct): a screen box clips its content
+   * (overflow:hidden) and the ear and the door sit in the window's corners, outside it, so a hand drawn inside the
+   * screen was cut off exactly where it pointed. Sized with the zoom (--z) so it matches the screen it points into.
+   */
   spot(t: Element | null, where: 'above' | 'below' | 'left' | 'right'): void {
     this.unspot(); if (!t) return; this.el = t as HTMLElement; t.classList.add('spot2');
-    const sR = this.zoom.rect(this.s), r = this.zoom.rect(t); const h = document.createElement('span'); h.className = 'spothand';
-    let x = r.left + r.width / 2 - sR.left - 22, y: number;
-    if (where === 'above') { h.textContent = '👇🏾'; y = r.top - sR.top - 34; }
-    else if (where === 'below') { h.textContent = '👆🏾'; y = r.bottom - sR.top - 30; }
-    else if (where === 'right') { h.textContent = '👈🏾'; x = r.right - sR.left + 6; y = r.top + r.height / 2 - sR.top - 22; }
-    else { h.textContent = '👉🏾'; x = r.left - sR.left - 52; y = r.top + r.height / 2 - sR.top - 22; }
-    h.style.left = x + 'px'; h.style.top = y + 'px'; this.s.appendChild(h); this.hand = h;
+    const r = t.getBoundingClientRect(), z = this.zoom.z(); const h = document.createElement('span'); h.className = 'spothand float';
+    let x = r.left + r.width / 2 - 22 * z, y: number;
+    if (where === 'above') { h.textContent = '👇🏾'; y = r.top - 34 * z; }
+    else if (where === 'below') { h.textContent = '👆🏾'; y = r.bottom - 30 * z; }
+    else if (where === 'right') { h.textContent = '👈🏾'; x = r.right + 6 * z; y = r.top + r.height / 2 - 22 * z; }
+    else { h.textContent = '👉🏾'; x = r.left - 52 * z; y = r.top + r.height / 2 - 22 * z; }
+    h.style.left = x + 'px'; h.style.top = y + 'px'; document.body.appendChild(h); this.hand = h;
   }
 }
 

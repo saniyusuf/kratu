@@ -789,3 +789,13 @@ app-course-book .cbhand{position:absolute;left:0;top:0;z-index:25;pointer-events
 app-course-book .cbook.down{animation:none;transform:scale(.96);transition:transform .12s ease-out}
 @media (prefers-reduced-motion:reduce){app-course-book .cbook,app-course-book .cbpool,app-course-book .cbshadow{animation:none!important}}
 
+
+/* ---------------------------------------------------------------------------------------------------------------
+   The pointing hands float above the whole app (Sani 13 Oct). A screen box clips (overflow:hidden) and the ear and
+   the door sit in the window's corners, outside it, so a hand drawn inside the screen was cut off exactly where it
+   pointed. The Spotter's and the example's hands now live at body level in screen pixels, scaled with --z, above the
+   corners (z50), the frame glow (z60) and the settings gear (z70); app.ts clears them whenever the screen changes. */
+body > .spothand.float,body > .misalihand.float{position:fixed;left:0;top:0;z-index:95;line-height:1;pointer-events:none}
+body > .spothand.float{font-size:calc(44px * var(--z,1));animation:handbob .8s ease-in-out infinite;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
+body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform .6s cubic-bezier(.3,.8,.3,1);will-change:transform;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
+@media (prefers-reduced-motion:reduce){body > .misalihand.float{transition:none}}
