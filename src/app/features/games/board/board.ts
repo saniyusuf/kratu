@@ -10,6 +10,7 @@ import { Laila } from '../../../shared/laila/laila';
 import { Spotter } from '../../../shared/lesson/helpers';
 import { BOOK_COVER_SVG } from '../../../shared/book/book-svg';
 import { GAME_LIST } from '../lab/game-list';
+import { GamePreview } from '../../../shared/game-preview/game-preview';
 
 /** The games in board order (Sani 2026-11-06): letters, things, reading, spelling, numbers. `line` is the game's
  *  description; its Hausa is still to come from Sani, so `en` is the stand-in shown as the subtitle meanwhile. */
@@ -34,16 +35,14 @@ const ORDER: { id: string; line: string; en: string }[] = [
   { id: 'j-shanu', line: 'gd_shanu', en: "Find the cow with the right price at the cattle market." },
   { id: 'j-garke', line: 'gd_garke', en: "Count the cattle as they go into the kraal." }
 ];
-/** Games whose scene has a second still: the preview crossfades between the two. */
-const TWO = new Set(['j-rini', 'j-ruwa']);
 /** Cards an arrow press moves the strip by, and a card's width plus the gap after it (design px). */
 const STEP = 3, CARD = 194;
 
-interface Game { id: string; name: string; line: string; en: string; pic: string; pic2: string | null; q?: Record<string, string>; }
+interface Game { id: string; name: string; line: string; en: string; pic: string; q?: Record<string, string>; }
 
 /**
- * Wasanni, the games board, layout 1 (Sani 2026-11-06): a preview screen on top showing the picked game's scene with a
- * slow drift, its name on a band along the bottom and a big green play button; under it a strip of all 19 games with
+ * Wasanni, the games board, layout 1 (Sani 2026-11-06): a preview screen on top playing the picked game's own scene,
+ * live (GamePreview), its name on a band along the bottom and a big green play button; under it a strip of all 19 games with
  * real arrows, three cards a press. Pressing a card picks it (gold edge, a little lift): the preview swaps to it and
  * Laila describes it. Only the play button, or the preview itself, opens the game, in free play; leaving or finishing
  * it comes back here. The first card is picked on arrival. Every game is on it and every one can be played.
@@ -52,14 +51,14 @@ interface Game { id: string; name: string; line: string; en: string; pic: string
  */
 @Component({
   selector: 'app-games-board',
-  imports: [Door, Ear, Laila],
+  imports: [Door, Ear, Laila, GamePreview],
   host: { class: 's lesson wasanni' },
   template: `
 <app-door (pressed)="home()" />
 <app-ear (pressed)="arrive()" />
 <div class="wprev" role="button" [attr.aria-label]="sel().name" (click)="play()">
   @for (g of [sel()]; track g.id) {
-    <div class="wscene" [class.two]="!!g.pic2"><img class="wkb" [src]="g.pic" alt="">@if (g.pic2) {<img class="wkb wkb2" [src]="g.pic2" alt="">}</div>
+    <div class="wscene"><app-game-preview [gid]="g.id" /></div>
     <div class="wband"><b>{{ g.name }}</b>@if (session.captions()) {<small>{{ g.en }}</small>}</div>
   }
   <button class="wplay" aria-label="Fara wasa" (click)="play(); $event.stopPropagation()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button>
@@ -87,7 +86,7 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
   readonly card = CARD;
   readonly games: Game[] = ORDER.map((o) => {
     const g = GAME_LIST.find((x) => x.id === o.id);
-    return { ...o, name: g?.name || o.id, q: g?.q, pic: 'assets/games/' + o.id + '.webp', pic2: TWO.has(o.id) ? 'assets/games/' + o.id + '-2.webp' : null };
+    return { ...o, name: g?.name || o.id, q: g?.q, pic: 'assets/games/' + o.id + '.webp' };
   });
   readonly sel = signal<Game>(this.games[0]);
   /** The first card showing at the strip's left edge. */
