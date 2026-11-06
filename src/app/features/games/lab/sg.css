@@ -104,3 +104,30 @@
 .glab .sg.iwe .sgopt.shudder{animation:sg-chip .1s linear 6}
 .glab .sg.iwe .sgopt.shudder svg{opacity:.7;transition:opacity .4s}
 .glab .sg.iwe .sgpic{left:auto;right:3cqw;translate:none}
+
+/* ---- Ìyá Àkàrà / the okpa seller: the customer at the stall, the parcel, the calabash of coins ---- */
+.glab .sg.stall .sgflame{transform-box:fill-box;transform-origin:50% 100%;animation:sg-flame .5s ease-in-out infinite alternate}
+@keyframes sg-flame{to{transform:scaleY(1.25);opacity:.8}}
+.glab .sg.stall .sgfry{transform-box:fill-box;transform-origin:center;animation:sg-fry .7s ease-in-out calc(var(--k) * -.15s) infinite alternate}
+@keyframes sg-fry{to{transform:translateY(-1.2px) scale(1.06)}}
+.glab .sg.stall .sgsteam{animation:sg-glow 1.8s ease-in-out infinite alternate}
+@keyframes sg-glow{to{opacity:.12}}
+.glab .sg.stall .scust{position:absolute;left:66cqw;bottom:6cqw;width:12cqw;z-index:2;transform:translateX(40cqw);opacity:0}
+.glab .sg.stall .scust.come{transition:transform 1s ease-out,opacity .3s;transform:none;opacity:1}
+.glab .sg.stall .scust.leave{transition:transform 1.2s ease-in,opacity 1.2s ease-in;transform:translateX(40cqw);opacity:0}
+.glab .sg.stall .sfig svg{width:100%;height:auto;display:block;overflow:visible}
+.glab .sg.stall .scust.come .sfig{animation:sg-hop .45s ease-in-out 2}
+.glab .sg.stall .sbub{position:absolute;left:50%;bottom:100%;translate:-50% -.6cqw;width:12cqw;padding:.8cqw;background:#FFFDF7;border-radius:1.6cqw;box-shadow:0 .4cqw 0 rgba(59,46,30,.2);opacity:0;transition:opacity .3s}
+.glab .sg.stall .sbub::after{content:"";position:absolute;left:46%;top:100%;border:1cqw solid transparent;border-top-color:#FFFDF7}
+.glab .sg.stall .scust.waiting .sbub,.glab .sg.stall .scust.glad .sbub{opacity:1}
+.glab .sg.stall .sbub img{width:100%;aspect-ratio:1;object-fit:contain;display:block;border-radius:1cqw}
+.glab .sg.stall .swait{display:block;height:.8cqw;margin-top:.6cqw;background:#E3D3AC;border-radius:1cqw;overflow:hidden}
+.glab .sg.stall .swait i{display:block;height:100%;background:#2FAE9E;transform-origin:0 50%}
+.glab .sg.stall .scust.sad .sbub img{filter:grayscale(.8);opacity:.6}
+.glab .sg.stall .scust.sad .sfig{animation:sg-no .3s ease-in-out 3 alternate}
+.glab .sg.stall .sserve{position:absolute;left:20cqw;top:44cqw;width:6cqw;opacity:0;z-index:3}
+.glab .sg.stall .sserve svg{width:100%;height:auto;display:block}
+.glab .sg.stall .sserve.fly{animation:sg-hand .9s ease-in-out forwards}
+@keyframes sg-hand{0%{opacity:1;transform:none}100%{opacity:1;transform:translate(48cqw,-1cqw)}}
+.glab .sg.stall .scoins{position:absolute;left:13.4cqw;top:54.4cqw;width:6cqw;display:flex;flex-wrap:wrap;gap:.15cqw;justify-content:center;z-index:2}
+.glab .sg.stall .scoins i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#C98A0C);display:block}

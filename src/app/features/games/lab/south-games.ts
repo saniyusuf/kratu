@@ -195,6 +195,92 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
+
+  /* ================= the morning food seller: Ìyá Àkàrà (Yoruba) / the okpa seller (Igbo) (Nemo hoto, speaking) =================
+     A customer comes up to the stall and shows what they want (the picture in their bubble). Press Laila and say it in
+     English: the seller wraps it and hands it over, the coins drop into her calabash and the customer goes off happy.
+     Wrong, or too slow: the customer frowns and walks away with nothing. */
+  const SHOPPERS = Y
+    ? [{ kind: 'boy', robe: '#F4EBD0', trou: '#2E5E8A', hat: 'hair', skin: 2 }, { kind: 'man', robe: '#3E7CB1', agbada: '#F4EBD0', hat: 'fila', hatc: '#7A2E5C', skin: 3 },
+       { kind: 'woman', robe: '#F2C230', wrap: '#5A2E7A', hat: 'gele', hatc: '#5A2E7A', beads: 1, skin: 1 }, { kind: 'woman', robe: '#F4F1EA', wrap: '#2E5E8A', hat: 'braids', tight: 1, skin: 4 },
+       { kind: 'man', robe: '#2E7D5A', hat: 'gobi', hatc: '#2E7D5A', skin: 5 }]
+    : [{ kind: 'boy', robe: '#F4F1EA', trou: '#7A2E1E', hat: 'hair', skin: 2 }, { kind: 'man', robe: '#B71C1C', hat: 'okpu', hatc: '#B71C1C', hatc2: '#1E1E24', skin: 3 },
+       { kind: 'woman', robe: '#F4F1EA', wrap: '#1F4E2E', hat: 'tie', hatc: '#E8A317', beads: 1, skin: 1 }, { kind: 'woman', robe: '#2B4C9B', wrap: '#2B4C9B', hat: 'braids', tight: 1, skin: 4 },
+       { kind: 'man', robe: '#1E1E24', wrapper: '#E8A317', hat: 'okpu', hatc: '#1E1E24', hatc2: '#B71C1C', skin: 0 }];
+  function stallBack() {
+    const sky = Y ? ['#F9D9A8', '#FCEBD0'] : ['#E8EEF0', '#F6EAD6'];
+    let g = '<defs><linearGradient id="sg-st" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + sky[0] + '"/><stop offset="1" stop-color="' + sky[1] + '"/></linearGradient>' +
+      '<radialGradient id="sg-fire"><stop offset="0" stop-color="#FFE07A"/><stop offset=".55" stop-color="#F57C00"/><stop offset="1" stop-color="#F57C00" stop-opacity="0"/></radialGradient></defs><rect width="320" height="200" fill="url(#sg-st)"/>';
+    // the street behind: a row of shops with their signs, a rusty zinc roof line, the morning sun low
+    g += '<circle cx="270" cy="40" r="16" fill="#FFE7A3" opacity=".9"/>';
+    const SIG = Y ? ['IYA BOLA STORES', 'GOD\'S TIME', 'ALHAJA PROVISIONS'] : ['CHIDI & SONS', 'ONYE AYALA', 'NNE OKPA VENDOR'];
+    for (let k = 0; k < 3; k++) { const x = 4 + k * 106; g += '<rect x="' + x + '" y="34" width="100" height="56" fill="' + ['#E9D7B4', '#D9C8E4', '#CFE3D4'][k] + '"/><path d="M' + (x - 2) + ' 34 L' + (x + 102) + ' 30 L' + (x + 102) + ' 36 L' + (x - 2) + ' 40 Z" fill="#8E6A4A"/>' +
+      '<rect x="' + (x + 8) + '" y="42" width="84" height="11" fill="' + ['#C62828', '#1F3A78', '#2E7D5A'][k] + '"/><text x="' + (x + 50) + '" y="50.4" text-anchor="middle" font-size="6.4" font-weight="800" font-family="Arial,sans-serif" fill="#FFFDF7">' + SIG[k] + '</text>' +
+      '<rect x="' + (x + 36) + '" y="60" width="28" height="30" fill="#4A3424"/>'; }
+    g += '<path d="M0 90 H320 V200 H0 Z" fill="#C9A274"/><path d="M0 90 H320" stroke="#9C7A52" stroke-width="2"/><path d="M0 98 H320" stroke="#B48C60" stroke-width="1" opacity=".5"/>';
+    // the queue still waiting, far back
+    g += person(300, 118, 30, { ...SHOPPERS[3], cls: 'sgw' }) + person(286, 118, 34, { ...SHOPPERS[1], cls: 'sgw' });
+    // the seller on her low stool, and her things
+    g += '<g class="sgopp">' + person(30, 162, 78, Y ? { kind: 'woman', robe: '#E8A317', wrap: '#1F3A78', hat: 'gele', hatc: '#C62828', beads: 1, skin: 2, al: 'hold', ar: 'fwd' }
+      : { kind: 'woman', robe: '#F4F1EA', wrap: '#B23A2E', wrap2: '#1F4E2E', hat: 'tie', hatc: '#1F4E2E', beads: 1, skin: 2, al: 'hold', ar: 'fwd' }) + '</g>';
+    g += '<g transform="translate(-26 0)">';
+    if (Y) {
+      // the fire of three stones, the big black wok of oil with the akara frying, the basin of bean paste, a tray of akara, a loaf
+      g += '<ellipse cx="100" cy="164" rx="22" ry="6" fill="url(#sg-fire)" class="sgflame"/><path d="M84 166 l6 -8 M116 166 l-6 -8 M98 168 l2 -9" stroke="#5A3A1E" stroke-width="3"/>';
+      g += '<path d="M76 146 Q100 168 124 146 Z" fill="#1E1E1E"/><ellipse cx="100" cy="146" rx="24" ry="5" fill="#C98A1E"/>' + [0, 1, 2, 3, 4].map((k) => '<circle class="sgfry" style="--k:' + k + '" cx="' + (88 + k * 6) + '" cy="' + (145 + (k % 2)) + '" r="3.2" fill="#B5651D"/>').join('');
+      g += '<path d="M90 140 q-4 -8 1 -14 M106 140 q4 -8 -1 -14" stroke="#fff" stroke-width="1.6" opacity=".45" fill="none" class="sgsteam"/>';
+      g += '<ellipse cx="146" cy="160" rx="16" ry="5" fill="#C9C2B5"/><path d="M130 160 Q146 172 162 160 Z" fill="#9EA4A8"/><ellipse cx="146" cy="160" rx="13" ry="3.4" fill="#E8DCC0"/>';
+      g += '<rect x="132" y="132" width="34" height="5" fill="#8B5A2B"/>' + [0, 1, 2, 3, 4, 5].map((k) => '<circle cx="' + (136 + (k % 3) * 9) + '" cy="' + (128 + (k > 2 ? 0 : -1)) + '" r="3.6" fill="#B5651D"/>').join('') + '<path d="M132 137 V160 M166 137 V160" stroke="#6B4226" stroke-width="2"/>';
+    } else {
+      // the okpa basin with its leaf-wrapped cakes and the steam, the flask of hot water, a loaf on the stool
+      g += '<ellipse cx="104" cy="158" rx="26" ry="7" fill="#5A6E7A"/><path d="M78 158 Q104 178 130 158 Z" fill="#46565F"/><ellipse cx="104" cy="158" rx="22" ry="5" fill="#2E3A40"/>';
+      g += [0, 1, 2, 3, 4].map((k) => '<g transform="translate(' + (90 + k * 7) + ' ' + (154 + (k % 2)) + ')"><rect x="-3.4" y="-3" width="7" height="6" rx="1.4" fill="#3F7A3A"/><path d="M-3.4 0 H3.6" stroke="#2A5A26" stroke-width=".8"/></g>').join('');
+      g += '<path d="M96 146 q-4 -8 1 -14 M112 146 q4 -8 -1 -14" stroke="#fff" stroke-width="1.6" opacity=".5" fill="none" class="sgsteam"/>';
+      g += '<rect x="138" y="138" width="12" height="24" rx="3" fill="#C62828"/><rect x="140" y="134" width="8" height="5" fill="#2A2A2A"/><rect x="154" y="152" width="20" height="9" rx="3" fill="#E7B46E"/><path d="M154 156 H174" stroke="#C62828" stroke-width="1.6"/>';
+    }
+    g += '</g>';
+    // her calabash for the money
+    g += '<g transform="translate(52 182)"><path d="M-12 0 Q0 12 12 0 Z" fill="#C68B4E"/><ellipse rx="12" ry="3" fill="#8B5A2B"/></g>';
+    return svgBack(g);
+  }
+  /** what the seller hands over: wrapped in newspaper (akara) or still in its leaf (okpa), else on a little plate */
+  const parcel = () => Y ? '<svg viewBox="0 0 40 30" aria-hidden="true"><path d="M4 8 L36 4 L34 26 L6 28 Z" fill="#E8E2D2"/><path d="M8 12 H30 M8 16 H28 M8 20 H31" stroke="#8A8A8A" stroke-width="1"/><circle cx="20" cy="9" r="5" fill="#B5651D"/></svg>'
+    : '<svg viewBox="0 0 40 30" aria-hidden="true"><rect x="6" y="6" width="28" height="18" rx="4" fill="#3F7A3A"/><path d="M6 15 H34 M20 6 V24" stroke="#2A5A26" stroke-width="1.4"/><path d="M14 4 q2 -4 0 -6 M24 4 q2 -4 0 -6" stroke="#fff" stroke-width="1" opacity=".6" fill="none"/></svg>';
+  const foodStall = {
+    cls: 'sgs sg-stall', scene: 'none',
+    play(run, done) {
+      const MENU = Y ? ['beans', 'pepper', 'onion', 'bread', 'egg', 'tea', 'milk', 'sugar', 'water'] : ['plate', 'bread', 'egg', 'tea', 'milk', 'sugar', 'water', 'pepper', 'spoon'];
+      const ORDER = shuffle(MENU).slice(0, 7), WAIT = 15000, among = MENU.map(spoken); let r = 0, got = 0, coins = 0;
+      const st = h('<div class="sg stall">' + stallBack() + '<div class="scust"><div class="sbub"><img alt=""><span class="swait"><i></i></span></div><div class="sfig"></div><span class="sgot"></span></div>' +
+        '<div class="sserve">' + parcel() + '</div><div class="scoins"></div></div>');
+      const box = micBox(run); run.scr.appendChild(st); run.scr.appendChild(box);
+      run.clock(150, () => done({ right: got, part: got / ORDER.length }));
+      run.remind = () => say(line('j-shayi', 'how'), run);
+      const cust = st.querySelector('.scust'), img = cust.querySelector('img'), fill = cust.querySelector('.swait i'), fig = cust.querySelector('.sfig'), serve = st.querySelector('.sserve'), purse = st.querySelector('.scoins');
+      function next() {
+        const w = ORDER[r]; run.item(w); let left = WAIT, over = false;
+        fig.innerHTML = '<svg viewBox="0 0 60 140" aria-hidden="true">' + person(30, 134, SHOPPERS[r % SHOPPERS.length].kind === 'boy' || SHOPPERS[r % SHOPPERS.length].tight ? 112 : 140, { ...SHOPPERS[r % SHOPPERS.length], al: 'hold', ar: 'hold' }) + '</svg>';
+        cust.className = 'scust'; img.src = K.pic[w]; void cust.offsetWidth; cust.classList.add('come'); serve.className = 'sserve'; fill.style.transform = 'scaleX(1)';
+        const end = () => { over = true; cust.classList.remove('waiting'); };
+        const miss = () => { end(); knock(160, .14, .4); cust.classList.add('sad'); mood(st, 'sad'); later(run, 1200, () => cust.classList.add('leave')); step(2600); };
+        later(run, 900, () => { if (!run.dead) cust.classList.add('waiting'); });
+        (function tick() { if (over || run.dead) return;
+          if (!run.listening && !box.busy) { left -= 100; fill.style.transform = 'scaleX(' + Math.max(0, left / WAIT).toFixed(3) + ')'; }
+          if (left <= 0) { box.busy = true; miss(); return; }
+          later(run, 100, tick); })();
+        autoRound(run, box, spoken(w), among, () => {
+          end(); got++; run.good(cust.querySelector('.sbub')); run.said = say(K.en[w], run); mood(st, 'cheer');
+          // wrapped and handed over; the coins drop into the calabash; off they go
+          serve.classList.add('fly'); later(run, 900, () => { serve.className = 'sserve'; cust.classList.add('glad'); });
+          later(run, 1300, () => { coins++; knock(1400, .05, .25); later(run, 120, () => knock(1250, .05, .2)); purse.innerHTML = Array.from({ length: Math.min(coins, 12) }, (_, k) => '<i style="--k:' + k + '"></i>').join(''); });
+          later(run, 1900, () => cust.classList.add('leave')); step(3000);
+        }, () => miss());
+      }
+      function step(ms) { later(run, ms, () => { r++; if (r >= ORDER.length) done({ right: got, finished: true, part: got / ORDER.length }); else next(); }); }
+      next();
+    },
+  };
+
   /* ================= Yoruba: Ayò Ọlọ́pọ́n, the ayo board ================= */
   const seed = (Lt) => '<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="22" rx="16" ry="14.5" fill="#5A3A22"/><ellipse cx="20" cy="20" rx="15" ry="14" fill="#C9B48A"/>' +
     '<ellipse cx="15" cy="14" rx="6" ry="3.6" fill="#fff" opacity=".35"/><path d="M8 25 Q20 34 32 25" stroke="#8C7550" stroke-width="1.4" fill="none" opacity=".6"/>' +
@@ -376,5 +462,5 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
-  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta } : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries };
+  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall } : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall };
 }
