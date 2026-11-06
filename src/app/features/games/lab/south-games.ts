@@ -10,7 +10,7 @@
  *             turns it into an uli pattern; the wall fills with uli.
  * Hausa never loads this file's games (SKIN is null there). Drawn SVG, transform and opacity only (sg.css, under .sg).
  */
-import { person, SKT, dk, lt, f1 } from './south';
+import { person, SKT, dk, lt, f1, water, lorry, flag, bunting, canopy, keke } from './south';
 import { talkingDrum } from './kalangu';
 import { liveAC } from './audioctx';
 
@@ -86,6 +86,114 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     }
     word();
   }
+
+
+  /* ---------------- shared: read the words, tap the one for the picture (Karatu) ---------------- */
+  function readRounds(n = 4) {
+    const SPARE = ['CAT', 'DOG', 'SUN', 'BUS', 'CUP', 'BED', 'HAT', 'PEN', 'GOAT', 'FISH', 'BOOK', 'MILK', 'BREAD', 'MANGO', 'WATER', 'CHAIR'];
+    const src = LW.length ? LW : ['cat', 'dog', 'sun', 'bus', 'cup'];
+    return shuffle(src).map((w) => {
+      const t = txt(w).toUpperCase(), all = src.map((x) => txt(x).toUpperCase()).concat(SPARE).filter((x, k, a) => x !== t && a.indexOf(x) === k);
+      const near = shuffle(all).sort((a, b) => (Math.abs(a.length - t.length) - Math.abs(b.length - t.length)) || ((b[0] === t[0] ? 1 : 0) - (a[0] === t[0] ? 1 : 0)));
+      return [w, [t].concat(near.slice(0, n - 1))];
+    });
+  }
+  function pickGame(run, done, o) {
+    const R = readRounds(o.n), N = R.length; let r = 0, got = 0, busy = false;
+    run.scr.appendChild(o.st); const pic = o.st.querySelector('.sgpic img'), lane = o.st.querySelector(o.lanes);
+    run.clock(secs(120, N, 5), () => done({ right: got, part: got / N, misses: run.miss }));
+    run.remind = () => say(line(o.gid, 'how'), run);
+    function round() {
+      busy = false; const item = R[r]; run.item(item[0]); pic.src = K.pic[item[0]]; lane.innerHTML = ''; if (o.start) o.start();
+      shuffle(item[1]).forEach((w, k) => {
+        const b = h('<button type="button" class="sgopt" aria-label="' + w.toLowerCase() + '" style="--k:' + k + '">' + o.piece(w, k) + '</button>');
+        b.onclick = () => {
+          if (run.dead || busy) return; busy = true;
+          if (w === item[1][0]) { run.good(b); got++; mood(o.st, 'cheer'); o.right(b, k); }
+          else { run.bad(); mood(o.st, 'sad'); o.wrong(b, k); }
+          r++; later(run, 2300, () => { if (r >= N) done({ right: got, finished: true, part: got / N, misses: run.miss }); else round(); });
+        };
+        lane.appendChild(b);
+      });
+    }
+    round();
+  }
+  function horn(lo) { [0, .22].forEach((d) => { try { ac = liveAC(ac); const t = ac.currentTime + d, o = ac.createOscillator(), g = ac.createGain(); o.type = 'square'; o.frequency.value = lo ? 180 : (d ? 392 : 330);
+    g.gain.setValueAtTime(.12, t); g.gain.setValueAtTime(.12, t + .16); g.gain.exponentialRampToValueAtTime(.001, t + .2); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + .22); } catch (e) { /* no sound */ } }); }
+
+  /* ================= Yoruba: the Lagos boat regatta (Karatu) ================= */
+  function regattaBack() {
+    let g = '<defs><linearGradient id="sg-rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE3F4"/><stop offset="1" stop-color="#E4F2F7"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-rg)"/>';
+    // Lagos Island across the lagoon: towers, the long bridge
+    [[150, 30], [162, 44], [176, 36], [190, 52], [206, 40], [222, 30], [236, 46], [252, 34]].forEach(([x, hh], k) => { g += '<rect x="' + x + '" y="' + (62 - hh) + '" width="12" height="' + hh + '" fill="' + (k % 2 ? '#9AAAB6' : '#B4C2CC') + '"/>' + Array.from({ length: Math.floor(hh / 6) }, (_, j) => '<path d="M' + (x + 2) + ' ' + (64 - hh + j * 6) + ' h8" stroke="#E8F0F4" stroke-width="1" opacity=".7"/>').join(''); });
+    g += '<path d="M0 58 Q80 54 140 60 L320 56" stroke="#8C98A2" stroke-width="2.4" fill="none"/>' + Array.from({ length: 14 }, (_, k) => '<path d="M' + (k * 24) + ' 58 v6" stroke="#8C98A2" stroke-width="1.4"/>').join('');
+    g += water(62, 138, '#3E9CC4', '#CFEFFA');
+    // the near shore at the left: the spectators' stand under canopies, drummers, flags
+    g += '<path d="M0 62 Q30 60 60 64 L72 92 Q40 98 0 96 Z" fill="#D8B07A"/>';
+    g += canopy(2, 84, 58, '#E8A317', '#FFFDF7', 18);
+    [8, 18, 28, 38, 48].forEach((x, k) => { g += person(x, 88, 22, k % 2 ? { kind: 'woman', robe: ['#2B4C9B', '#C62828', '#7A2E5C'][k % 3], wrap: '#1E3A7A', hat: 'gele', hatc: ['#E8A317', '#2B4C9B', '#C62828'][k % 3], skin: k, al: 'wave', cls: 'sgw' } : { kind: 'man', robe: '#F4EBD0', agbada: ['#2E7D5A', '#1F3A78', '#7A2E5C'][k % 3], hat: 'fila', hatc: '#7A2E5C', skin: k, ar: 'wave', cls: 'sgw' }); });
+    g += flag(64, 90, 22, '#2E7D32', '#FFFFFF');
+    // the finish: a line of buoys and bunting at the right
+    g += bunting(282, 70, 316, 66, ['#C62828', '#E8A317', '#2E7D32', '#2B4C9B'], 3) + Array.from({ length: 6 }, (_, k) => '<circle cx="' + (288 + (k % 2) * 3) + '" cy="' + (78 + k * 20) + '" r="2.6" fill="#E8A317" stroke="#B5651D"/>').join('') + '<path d="M288 74 V200" stroke="#FFFDF7" stroke-width=".8" stroke-dasharray="3 3" opacity=".8"/>';
+    return svgBack(g);
+  }
+  const ROWC = [['#C62828', '#FFD54A'], ['#2B4C9B', '#FFFFFF'], ['#2E7D32', '#F2C230'], ['#7A2E5C', '#F4EBD0']];
+  const racer = (w, k) => {
+    const [c1, c2] = ROWC[k % 4], n = w.length, fs = Math.min(15, 150 / (n * .72)), fit = n > 7 ? ' textLength="104" lengthAdjust="spacingAndGlyphs"' : '';
+    let pad = ''; for (let i = 0; i < 4; i++) { const x = 52 + i * 26; pad += person(x, 32, 30, { kind: 'man', robe: c2, hat: 'fila', hatc: c1, skin: i + k, al: 'fwd', ar: 'fwd', cls: 'sgpad' }) + '<path class="sgoar" d="M' + (x - 10) + ' 20 L' + (x - 22) + ' 46" stroke="#6B4226" stroke-width="2.4" stroke-linecap="round"/>'; }
+    return '<svg viewBox="0 0 200 60" aria-hidden="true">' + pad + '<path d="M4 30 Q20 48 60 50 L170 50 Q194 46 198 26 Q110 34 4 30 Z" fill="' + c1 + '"/><path d="M4 30 Q110 34 198 26" stroke="' + c2 + '" stroke-width="3" fill="none"/>' +
+      '<path d="M10 38 Q100 46 192 34" stroke="' + dk(c1, .35) + '" stroke-width="1.4" fill="none"/><path d="M198 26 l6 -14 l-2 16 Z" fill="' + c2 + '"/>' +
+      '<rect x="44" y="34" width="112" height="15" rx="3" fill="#FFFDF7"/><text x="100" y="46.4" text-anchor="middle" font-size="' + fs.toFixed(1) + '" font-weight="800" font-family="Baloo 2,Arial,sans-serif" fill="#1B1B1B"' + fit + '>' + w + '</text></svg>';
+  };
+  const regatta = {
+    cls: 'sgs sg-reg', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg reg">' + regattaBack() + '<div class="sgpic"><img alt=""></div><div class="rlanes"></div></div>');
+      pickGame(run, done, { st, gid: 'j-karatu', lanes: '.rlanes', n: 4, piece: racer,
+        // the right canoe's crew dig in and race over the finish line; the drums on the shore roll
+        right: (b) => { b.classList.add('race'); knocks(run, 8, 140, 120); },
+        // a wrong one: the crew lose the stroke and the canoe turns aside, drifting
+        wrong: (b) => { b.classList.add('stall'); knock(120, .2, .4); } });
+    },
+  };
+
+  /* ================= Igbo: the painted lorries of Upper Iweka (Karatu) ================= */
+  function iwekaBack() {
+    let g = '<defs><linearGradient id="sg-iw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8E6EE"/><stop offset="1" stop-color="#F1E6D2"/></linearGradient></defs><rect width="320" height="200" fill="url(#sg-iw)"/>';
+    // the park: a long zinc-roofed shed of booking offices, the UPPER IWEKA sign, the flyover behind
+    g += '<path d="M0 34 H320 V40 H0 Z" fill="#8C98A2"/>' + Array.from({ length: 9 }, (_, k) => '<rect x="' + (12 + k * 38) + '" y="40" width="5" height="22" fill="#9AA6AE"/>').join('');
+    g += '<path d="M0 62 L320 58 L320 66 L0 70 Z" fill="#A8B2B8"/><path d="M0 70 H320 V96 H0 Z" fill="#E8D8B8"/>';
+    for (let k = 0; k < 7; k++) { const x = 4 + k * 46; g += '<rect x="' + x + '" y="72" width="40" height="24" fill="' + ['#2E7D5A', '#C62828', '#2B4C9B', '#E8A317'][k % 4] + '" opacity=".85"/><rect x="' + (x + 4) + '" y="76" width="32" height="7" fill="#FFFDF7"/><rect x="' + (x + 12) + '" y="85" width="16" height="11" fill="#3E2E1A"/>'; }
+    g += '<rect x="96" y="20" width="128" height="16" rx="2" fill="#1F4E2E"/><text x="160" y="31.6" text-anchor="middle" font-size="9" font-weight="800" font-family="Arial Black,Arial,sans-serif" fill="#FFFDF7">UPPER IWEKA PARK</text>';
+    g += '<path d="M0 96 H320 V200 H0 Z" fill="#C9AE84"/><path d="M0 96 H320" stroke="#A88E64" stroke-width="2"/>';
+    // the crowd of the park: a trader with her head-load, a loader in a singlet, a man in isiagu and red cap, a keke
+    g += person(18, 120, 34, { kind: 'woman', robe: '#F4F1EA', wrap: '#8E1B2A', hat: 'tie', hatc: '#1F6B4A', skin: 1, al: 'load', load: '<ellipse rx="8" ry="2.6" fill="#C62828"/><path d="M-6 -2 Q0 -6 6 -2" fill="#E8A317"/>', cls: 'sgw' });
+    g += person(300, 120, 36, { kind: 'man', robe: '#1E1E24', wrapper: '#B71C1C', hat: 'okpu', hatc: '#B71C1C', hatc2: '#1E1E24', skin: 3, ar: 'wave', cls: 'sgw' });
+    g += keke(278, 118, 1.6);
+    return svgBack(g);
+  }
+  const LORC = ['#1F6B4A', '#2B4C9B', '#B23A2E', '#7A2E5C'];
+  const truck = (w, k) => {
+    const c = LORC[k % 4], n = w.length, fs = Math.min(12, 100 / (n * .72)), fit = n > 7 ? ' textLength="62" lengthAdjust="spacingAndGlyphs"' : '';
+    // a Bedford-style lorry, front three-quarter: the painted wooden body, the destination board over the cab
+    return '<svg viewBox="0 0 90 80" aria-hidden="true"><ellipse cx="45" cy="76" rx="40" ry="3.4" fill="rgba(40,24,10,.3)"/>' +
+      '<path d="M6 30 H62 V66 H6 Z" fill="' + c + '"/><path d="M6 30 H62" stroke="#E8B830" stroke-width="2.4"/><path d="M6 44 H62 M6 56 H62" stroke="' + dk(c, .3) + '" stroke-width="1"/>' +
+      '<path d="M10 36 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6 l6 6 l6 -6" stroke="#F2C230" stroke-width="1.2" fill="none"/>' +
+      '<path d="M62 36 H78 Q86 38 86 48 V66 H62 Z" fill="#C62828"/><path d="M65 39 H77 Q82 40 83 48 H65 Z" fill="#9FC8DA"/><rect x="78" y="56" width="8" height="5" fill="#E8E2D2"/>' +
+      '<rect x="4" y="64" width="84" height="5" fill="#2A2A2A"/><circle cx="20" cy="70" r="7.6" fill="#2A2A2A"/><circle cx="20" cy="70" r="3" fill="#9E9E9E"/><circle cx="72" cy="70" r="7.6" fill="#2A2A2A"/><circle cx="72" cy="70" r="3" fill="#9E9E9E"/>' +
+      '<rect x="6" y="6" width="74" height="20" rx="2" fill="#FFFDF7" stroke="' + c + '" stroke-width="2"/><text x="43" y="21.4" text-anchor="middle" font-size="' + fs.toFixed(1) + '" font-weight="800" font-family="Baloo 2,Arial,sans-serif" fill="#1B1B1B"' + fit + '>' + w + '</text></svg>';
+  };
+  const lorries = {
+    cls: 'sgs sg-iwe', scene: 'none',
+    play(run, done) {
+      const st = h('<div class="sg iwe">' + iwekaBack() + '<div class="sgpic"><img alt=""></div><div class="ilanes"></div></div>');
+      pickGame(run, done, { st, gid: 'j-karatu', lanes: '.ilanes', n: 4, piece: truck,
+        // the right lorry hoots and pulls out of the park in a cloud of dust
+        right: (b) => { horn(); b.classList.add('drive'); },
+        // a wrong one: a low hoot, it shudders and stays put
+        wrong: (b) => { horn(true); b.classList.add('shudder'); } });
+    },
+  };
 
   /* ================= Yoruba: Ayò Ọlọ́pọ́n, the ayo board ================= */
   const seed = (Lt) => '<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="22" rx="16" ry="14.5" fill="#5A3A22"/><ellipse cx="20" cy="20" rx="15" ry="14" fill="#C9B48A"/>' +
@@ -268,5 +376,5 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
-  return Y ? { 'j-rubutu': ayo, 'j-allo': door } : { 'j-rubutu': aka, 'j-allo': uli };
+  return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta } : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries };
 }

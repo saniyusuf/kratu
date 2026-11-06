@@ -80,3 +80,27 @@
 .glab .sg.uli .utile.smudge b{opacity:.35}
 .glab .sg.uli.full .utile{animation:sg-hop .5s ease-in-out 2}
 @media (prefers-reduced-motion:reduce){.glab .sg *{animation-duration:.01s!important}}
+
+/* ---- the Lagos regatta: four racing canoes in lanes, the finish at the right ---- */
+.glab .sg.reg .sgpic{left:auto;right:3cqw;translate:none;top:8.4cqw}
+.glab .sg.reg .rlanes{position:absolute;left:14cqw;top:22cqw;width:60cqw;display:grid;gap:.6cqw;z-index:2}
+.glab .sg .sgopt{padding:0;border:0;background:none;cursor:pointer;display:block}
+.glab .sg .sgopt svg{width:100%;height:auto;display:block;overflow:visible}
+.glab .sg.reg .sgopt{width:34cqw;margin-left:calc(var(--k) * 3cqw);animation:sg-bob 2.2s ease-in-out calc(var(--k) * -.5s) infinite}
+.glab .sg.reg .sgopt .sgoar{transform-box:fill-box;transform-origin:50% 0}
+.glab .sg.reg .sgopt.race{animation:sg-race 1.8s cubic-bezier(.4,0,.6,1) forwards}
+.glab .sg.reg .sgopt.race .sgoar{animation:sg-oar .3s ease-in-out infinite alternate}
+@keyframes sg-race{to{transform:translateX(60cqw)}}
+@keyframes sg-oar{from{transform:rotate(-14deg)}to{transform:rotate(18deg)}}
+.glab .sg.reg .sgopt.stall{animation:sg-stall 1.8s ease-out forwards}
+@keyframes sg-stall{to{transform:translate(-3cqw,1cqw) rotate(-6deg);opacity:.55}}
+
+/* ---- Upper Iweka: four lorries waiting in their bays ---- */
+.glab .sg.iwe .sgpic{top:9.4cqw}
+.glab .sg.iwe .ilanes{position:absolute;left:50%;translate:-50% 0;top:30cqw;display:flex;gap:2cqw;z-index:2}
+.glab .sg.iwe .sgopt{width:19cqw}
+.glab .sg.iwe .sgopt.drive{animation:sg-drive 1.8s ease-in forwards}
+@keyframes sg-drive{20%{transform:translateY(-.4cqw)}100%{transform:translateX(90cqw)}}
+.glab .sg.iwe .sgopt.shudder{animation:sg-chip .1s linear 6}
+.glab .sg.iwe .sgopt.shudder svg{opacity:.7;transition:opacity .4s}
+.glab .sg.iwe .sgpic{left:auto;right:3cqw;translate:none}

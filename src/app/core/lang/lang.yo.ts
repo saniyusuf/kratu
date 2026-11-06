@@ -244,7 +244,7 @@ export const LANG: LangPack = {
   "The groundnut pyramids": "The cocoa sacks",
   "Counting the herd · speaking": "Counting the cows · speaking",
   "The suya seller · speaking": "The boli seller · speaking",
-  "The canoes": "The regatta canoes",
+  "The canoes": "The boat regatta",
   "The writing board · speaking": "The carved palace door · speaking",
   "The ferry · speaking": "The lagoon ferry · speaking",
   "Rain on the farm · speaking": "Rain on the cassava farm · speaking",
