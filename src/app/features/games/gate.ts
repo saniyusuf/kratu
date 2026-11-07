@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
@@ -57,6 +57,13 @@ const SHOWN = ['A', 'B', 'C', 'D'];
 :host .yesno{position:relative;z-index:2}
 :host .fb{position:relative;z-index:2}
 :host .startlaila{z-index:2}
+.gtries{position:absolute;top:28px;right:120px;z-index:2;display:flex;gap:10px}
+.gtries i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.5);box-shadow:inset 0 0 0 3px rgba(122,82,0,.35)}
+.gtries i.on{background:radial-gradient(circle at 35% 30%,#FFF1A8,#F7C93E 50%,#C98A0C);box-shadow:0 0 10px rgba(255,213,74,.7)}
+.gboard.simon b{cursor:pointer;opacity:1}
+.gboard b.fail{filter:grayscale(.85) brightness(.8);transform:scale(.88) rotate(-5deg);box-shadow:0 0 0 3px #E63946}
+.gsim{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 20px;background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--body)}
+.gsim button{font:800 14px var(--disp);color:#3B2E1E;background:#FFD54A;border:0;border-radius:99px;padding:7px 18px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.gbal,.gribbon,.gboard.all b{animation:none}}
 `],
   template: `
@@ -75,6 +82,7 @@ const SHOWN = ['A', 'B', 'C', 'D'];
   </svg>
 </div>
 <div class="eyebrow">Mu gani · haruffa</div>
+@if (tries) {<div class="gtries" aria-hidden="true">@for (i of [1, 2]; track i) {<i [class.on]="i <= tries"></i>}</div>}
 
 @if (phase() === 'invite') {
   <button class="startlaila gatestart" [class.talking]="speak()" [class.cue]="ready()"
@@ -85,9 +93,9 @@ const SHOWN = ['A', 'B', 'C', 'D'];
   <div class="starthint" [class.show]="ready()">Danna kan Laila mu fara<br><small>tap Laila to begin</small></div>
 } @else {
   <div class="gribbon">Haruffa</div>
-  <div class="gboard" [class.all]="saidAt() > 4" aria-hidden="true">
+  <div class="gboard" [class.all]="saidAt() > 4" [class.simon]="sim" aria-hidden="true">
     @for (L of all; track L) {
-      <b [style.--c]="colour(L)" [style.--i]="$index" [class.ex]="$index < 4" [class.lit]="lit() === L" [class.said]="$index < 4 ? saidAt() > $index : saidAt() > 4">{{ L }}</b>
+      <b [style.--c]="colour(L)" [style.--i]="$index" [class.ex]="$index < 4" [class.lit]="lit() === L" [class.said]="$index < 4 ? saidAt() > $index : saidAt() > 4" [class.fail]="marked().includes(L)" (click)="mark(L)">{{ L }}</b>
     }
   </div>
   <div class="fb" [class]="'fb ' + fbCls()">{{ fbText() }}</div>
@@ -95,6 +103,7 @@ const SHOWN = ['A', 'B', 'C', 'D'];
     <app-laila-btn #lb label="Na sani" [size]="132" [cue]="cue()" [speak]="speak()" (pressed)="yes()" />
     <app-allo-btn label="Ban sani ba" (pressed)="no()" />
   </div>
+  @if (sim) {<div class="gsim"><small>Simulate: tap letters to mark them failed (the balloons stop at the first one)</small><button type="button" (click)="toBalloons(true)">Skip to results ›</button></div>}
 }`,
 })
 export class GateScreen implements OnInit, OnDestroy {
@@ -103,6 +112,15 @@ export class GateScreen implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly course = inject(CourseService);
   private readonly plan = inject(PlanService);
+  /** The course's balloon step (?step=n), and which try this is (?try=1|2, ?best=): the letters screen is the balloons'
+   *  only intro (Sani 2026-11-07), so it carries the try dots and passes all three on. A bare visit is the placement. */
+  private readonly q = inject(ActivatedRoute).snapshot.queryParamMap;
+  private readonly step = this.q.get('step');
+  readonly tries = this.q.get('try') === '2' ? 2 : this.q.get('try') === '1' || this.step ? 1 : 0;
+  /** The course simulator (or ?debug): an adult taps letters to count them as failed, or skips to the results. */
+  readonly sim = !!this.step && (this.course.on() || this.session.debug);
+  readonly marked = signal<string[]>([]);
+  mark(L: string): void { if (!this.sim) return; const m = this.marked(); this.marked.set(m.includes(L) ? m.filter((x) => x !== L) : [...m, L]); }
   readonly shown = SHOWN;
   readonly all = ALL;
   /** The letters drifting up behind the board: a hint of the balloon game that comes next. */
@@ -177,12 +195,19 @@ export class GateScreen implements OnInit, OnDestroy {
     this.spotter.unspot(); this.speak.set(false); this.cue.set(true);
   }
 
-  /** Says they know them: straight to the game, which is where the claim gets tested. The gate was its intro, so the
-   *  balloons start at once, with no second intro (?go=1, Sani 2026-11-07). */
+  /** Says they know them: straight into the balloons, which is where the claim gets tested (they have no intro). */
   yes(): void {
     if (this.phase() !== 'ask') return;            // an answer while she is still asking is fine (Sani 2026-10-12)
-    this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
-    this.router.navigate(['/fashe'], { queryParams: { go: 1 } });
+    this.toBalloons(false);
+  }
+  /** On to the balloons, with the step, the try and the best so far; the simulator's marks (or its skip) go too. */
+  toBalloons(skip: boolean): void {
+    this.seq++; this.stopped = true; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
+    const qp: Record<string, string> = {};
+    for (const k of ['step', 'try', 'best']) { const v = this.q.get(k); if (v) qp[k] = v; }
+    if (this.marked().length) qp['fail'] = this.marked().join('');
+    if (skip) qp['end'] = '1';
+    this.router.navigate(['/fashe'], { queryParams: qp });
   }
 
   /** Says they do not: no fuss, no second question, into the lesson. */
@@ -195,6 +220,8 @@ export class GateScreen implements OnInit, OnDestroy {
     if (this.bus.has(g)) await this.bus.play(g); else await wait(500);
     this.speak.set(false);
     if (this.stopped) return;
+    // the course's balloon step: learn the whole alphabet, then back here and on to the balloons
+    if (this.step) { this.router.navigate(['/haruffa/koyo'], { queryParams: { letters: ALL.join(''), back: '/haruffa/gwada?step=' + this.step } }); return; }
     // the course from its first letters, A B C D (Sani 2026-11-04): the course's own Durbar and balloons come after
     this.plan.save({ hits: 0, wrong: 0, asked: 0, start: 'haruffa_ah', at: Date.now() });
     const st = this.course.placed([]); if (!st) { this.router.navigate(['/haruffa/koyo']); return; }
