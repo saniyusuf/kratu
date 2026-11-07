@@ -13,6 +13,7 @@ import { Spotter, wait } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 import { t, tx } from '../../core/lang/t';
+import { LANG } from '../../core/lang/lang';
 
 /** The four she names out loud, and the one she stops at. */
 const SHOWN = ['A', 'B', 'C', 'D'];
@@ -65,6 +66,17 @@ const SHOWN = ['A', 'B', 'C', 'D'];
 <div class="gscene nofit" aria-hidden="true">
   <span class="gsun"></span>
   @for (b of balloons; track b.L) {<span class="gbal" [style.left.%]="b.x" [style.--c]="colour(b.L)" [style.--d.s]="b.d" [style.--w.s]="b.w" [style.--s]="b.s"><b>{{ b.L }}</b></span>}
+  @if (lang === 'yo') {
+  <svg class="gtown" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMax slice">
+    <path fill="#D6A27A" d="M0 170h1600v90H0z"/>
+    <path fill="#E8D2B4" d="M60 110h170v70h-170z"/><path fill="#9FA9AE" d="M46 110L145.0 76L244 110z"/><path fill="#8A5A34" d="M129.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M74 126h26v20h-26zM190 126h26v20h-26z"/><path fill="#DCC3A6" d="M330 90h150v90h-150z"/><path fill="#A7B1B5" d="M316 90L405.0 56L494 90z"/><path fill="#8A5A34" d="M389.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M344 106h26v20h-26zM440 106h26v20h-26z"/><path fill="#E8D2B4" d="M760 116h190v64h-190z"/><path fill="#99A4A9" d="M746 116L855.0 82L964 116z"/><path fill="#8A5A34" d="M839.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M774 132h26v20h-26zM910 132h26v20h-26z"/><path fill="#DCC3A6" d="M1080 96h150v84h-150z"/><path fill="#9FA9AE" d="M1066 96L1155.0 62L1244 96z"/><path fill="#8A5A34" d="M1139.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M1094 112h26v20h-26zM1190 112h26v20h-26z"/><path fill="#E8D2B4" d="M1360 110h180v70h-180z"/><path fill="#A7B1B5" d="M1346 110L1450.0 76L1554 110z"/><path fill="#8A5A34" d="M1434.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M1374 126h26v20h-26zM1500 126h26v20h-26z"/><path d="M266 182 Q276 120.0 270 60" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M270 60 q-34 -10 -68 -2" /><path d="M270 60 q34 -10 68 -2" /><path d="M270 60 q-26 4 -52 26" /><path d="M270 60 q26 4 52 26" /><path d="M270 60 q-8 -20 -16 -22" /><path d="M270 60 q10 -18 20 -18" /></g><path d="M1286 182 Q1296 115.0 1290 50" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M1290 50 q-34 -10 -68 -2" /><path d="M1290 50 q34 -10 68 -2" /><path d="M1290 50 q-26 4 -52 26" /><path d="M1290 50 q26 4 52 26" /><path d="M1290 50 q-8 -20 -16 -22" /><path d="M1290 50 q10 -18 20 -18" /></g><path d="M1556 182 Q1566 122.5 1560 65" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M1560 65 q-34 -10 -68 -2" /><path d="M1560 65 q34 -10 68 -2" /><path d="M1560 65 q-26 4 -52 26" /><path d="M1560 65 q26 4 52 26" /><path d="M1560 65 q-8 -20 -16 -22" /><path d="M1560 65 q10 -18 20 -18" /></g>
+  </svg>
+  } @else if (lang === 'ig') {
+  <svg class="gtown" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMax slice">
+    <path fill="#C98A5E" d="M0 170h1600v90H0z"/>
+    <g fill="#7FA35B"><circle cx="40" cy="130" r="50"/><circle cx="560" cy="120" r="56"/><circle cx="610" cy="140" r="40"/><circle cx="1500" cy="125" r="54"/></g><path fill="#C98E5E" d="M120 120h160v60h-160z"/><path fill="#B9A06E" d="M96 126Q200.0 60 304 126z"/><path fill="#8A5A34" d="M184.0 132h32v48h-32z"/><path fill="#E2C8A8" d="M400 100h150v80h-150z"/><path fill="#9FA9AE" d="M386 100L475.0 66L564 100z"/><path fill="#8A5A34" d="M459.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M414 116h26v20h-26zM510 116h26v20h-26z"/><path fill="#C98E5E" d="M760 116h200v64h-200z"/><path fill="#B9A06E" d="M736 122Q860.0 56 984 122z"/><path fill="#8A5A34" d="M844.0 132h32v48h-32z"/><path fill="#E2C8A8" d="M1100 104h160v76h-160z"/><path fill="#A7B1B5" d="M1086 104L1180.0 70L1274 104z"/><path fill="#8A5A34" d="M1164.0 134h32v46h-32z"/><path fill="#6E8FA8" d="M1114 120h26v20h-26zM1220 120h26v20h-26z"/><path d="M326 182 Q336 115.0 330 50" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M330 50 q-34 -10 -68 -2" /><path d="M330 50 q34 -10 68 -2" /><path d="M330 50 q-26 4 -52 26" /><path d="M330 50 q26 4 52 26" /><path d="M330 50 q-8 -20 -16 -22" /><path d="M330 50 q10 -18 20 -18" /></g><path d="M1326 182 Q1336 117.5 1330 55" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M1330 55 q-34 -10 -68 -2" /><path d="M1330 55 q34 -10 68 -2" /><path d="M1330 55 q-26 4 -52 26" /><path d="M1330 55 q26 4 52 26" /><path d="M1330 55 q-8 -20 -16 -22" /><path d="M1330 55 q10 -18 20 -18" /></g><path d="M1416 182 Q1426 125.0 1420 70" stroke="#8A5A34" stroke-width="9" fill="none"/><g fill="none" stroke="#5E8A4A" stroke-width="10" stroke-linecap="round"><path d="M1420 70 q-34 -10 -68 -2" /><path d="M1420 70 q34 -10 68 -2" /><path d="M1420 70 q-26 4 -52 26" /><path d="M1420 70 q26 4 52 26" /><path d="M1420 70 q-8 -20 -16 -22" /><path d="M1420 70 q10 -18 20 -18" /></g>
+  </svg>
+  } @else {
   <svg class="gtown" viewBox="0 0 1600 260" preserveAspectRatio="xMidYMax slice">
     <path fill="#E2B98C" d="M0 170h1600v90H0z"/>
     <g fill="#D29A6A"><path d="M40 120h170v60H40z"/><path d="M40 120l-8-22 22 14zM210 120l8-22-22 14z"/><path d="M260 95h120v85H260z"/><path d="M260 95l-8-24 22 16zM380 95l8-24-22 16z"/>
@@ -74,6 +86,7 @@ const SHOWN = ['A', 'B', 'C', 'D'];
     <g fill="none" stroke="#F4E2C4" stroke-width="5" opacity=".7"><path d="M285 112l15 10 15-10 15 10 15-10 15 10M1075 106l15 10 15-10 15 10 15-10M840 126l15 10 15-10 15 10 15-10 15 10"/></g>
     <g fill="#7FA35B"><circle cx="460" cy="120" r="42"/><circle cx="430" cy="138" r="30"/><circle cx="1215" cy="118" r="38"/><path d="M455 150h10v32h-10zM1210 145h10v36h-10z" fill="#8A5A34"/></g>
   </svg>
+  }
 </div>
 <div class="eyebrow">{{ tx('Mu gani · haruffa') }}</div>
 
@@ -111,6 +124,8 @@ export class GateScreen implements OnInit, OnDestroy {
     { L: 'T', x: 78, d: -12, w: 20, s: .85 }, { L: 'U', x: 85, d: -2, w: 24, s: 1 }, { L: 'M', x: 92, d: -15, w: 22, s: .75 }];
   /** Which letter she is saying right now, and how many she has got through. */
   readonly t = t; readonly tx = tx;
+  /** the town under the balloons: the northern mud town in Hausa, a southern one (zinc roofs, palms; an obi in Igbo) otherwise */
+  readonly lang = LANG.code;
   readonly lit = signal(''); readonly saidAt = signal(0);
   readonly speak = signal(false); readonly cue = signal(false);
   readonly fbCls = signal(''); readonly fbText = signal('');

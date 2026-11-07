@@ -650,8 +650,9 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 
 /* Full screen means full screen (Sani 2026-10-23): for the games, the app's 6px paper margin and the frame's rounded
    corners go, so the scene runs to every edge of the tablet with no bright rim. */
-body:has(.s.gamelab) #app,body:has(.s.fashe) #app{padding:0;background:#1A1424}
-#app .frame:has(>.s.gamelab),#app .frame:has(>.s.fashe){border-radius:0;background:none}
+body:has(.s.gamelab) #app,body:has(.s.fashe) #app,body:has(.s.gate) #app{padding:0;background:#1A1424}
+#app .frame:has(>.s.gamelab),#app .frame:has(>.s.fashe),#app .frame:has(>.s.gate){border-radius:0;background:none}
+#app .frame>.s.gate{border-radius:0}   /* the letters gate is full screen too: no cream rim (kratu-book 2ef8fac) */
 #app .frame>.s.gamelab{border-radius:0}
 /* Fashe haruffa, full screen: one big sky from edge to edge with the clouds along the top, and the balloons rising out
    of the grass; the clock floats on the sky, and the A–Z strip and Laila stand on the sandy ground below. */
