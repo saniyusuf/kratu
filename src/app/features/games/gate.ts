@@ -177,11 +177,12 @@ export class GateScreen implements OnInit, OnDestroy {
     this.spotter.unspot(); this.speak.set(false); this.cue.set(true);
   }
 
-  /** Says they know them: straight to the game, which is where the claim gets tested. */
+  /** Says they know them: straight to the game, which is where the claim gets tested. The gate was its intro, so the
+   *  balloons start at once, with no second intro (?go=1, Sani 2026-11-07). */
   yes(): void {
     if (this.phase() !== 'ask') return;            // an answer while she is still asking is fine (Sani 2026-10-12)
     this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
-    this.router.navigate(['/fashe']);
+    this.router.navigate(['/fashe'], { queryParams: { go: 1 } });
   }
 
   /** Says they do not: no fuss, no second question, into the lesson. */
