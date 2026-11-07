@@ -167,7 +167,9 @@ export class FasheScreen implements OnInit, OnDestroy {
    */
   private readonly course = inject(CourseService);
   private readonly cgate = inject(CourseGate);
-  readonly intro = signal(true); readonly introReady = signal(false); readonly introSpeak = signal(false);
+  /** Straight from the letters question (?go=1): that screen was the intro, so the balloons start at once (Sani 2026-11-07). */
+  private readonly straight = this.route.snapshot.queryParamMap.get('go') === '1';
+  readonly intro = signal(!this.straight); readonly introReady = signal(false); readonly introSpeak = signal(false);
   readonly marked = signal<string[]>([]);
   readonly sim = this.course.on() || this.session.debug;
   readonly tryN = this.route.snapshot.queryParamMap.get('try') === '2' ? 2 : 1;
@@ -196,7 +198,7 @@ export class FasheScreen implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     document.addEventListener('keydown', this.onKey);
-    afterPaint().then(() => { this.measure(); this.fill(); this.eye.set('Mu gani · A → Z'); this.introLine(); });
+    afterPaint().then(() => { this.measure(); this.fill(); this.eye.set('Mu gani · A → Z'); if (this.straight) this.start(); else this.introLine(); });
   }
   ngOnDestroy(): void {
     this.stopped = true; this.stopClock(); if (this.bumpT) clearTimeout(this.bumpT);

@@ -198,7 +198,7 @@ export class GateScreen implements OnInit, OnDestroy {
   yes(): void {
     if (this.phase() !== 'ask') return;            // an answer while she is still asking is fine (Sani 2026-10-12)
     this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.session.owedGame.set(false);
-    this.router.navigate(['/fashe']);
+    this.router.navigate(['/fashe'], { queryParams: { go: 1 } });   // the balloons start at once: this screen was their intro (Sani 2026-11-07)
   }
 
   /** Says they do not: no fuss, no second question, into the lesson. */
