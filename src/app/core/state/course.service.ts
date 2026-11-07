@@ -74,7 +74,8 @@ export class CourseService {
     const n = String(s.n), ws = s.items.join(',');
     if (s.t === 'start') return { path: 'haruffa/gwada', query: {} };
     if (s.t === 'game') {
-      if (s.game === 'fashe') return { path: 'fashe', query: { step: n } };
+      // the balloons are always met through the letters screen, whose Na sani starts them (Sani 2026-11-07)
+      if (s.game === 'fashe') return { path: 'haruffa/gwada', query: { step: n } };
       if (s.game === 'nemo') return { path: 'nemo', query: { pick: 'q4', words: ws, step: n } };
       const q: Record<string, string> = { next: '/home', step: n };
       if (s.kind === 'letters') q['letters'] = s.items.join(''); else if (ws) q['words'] = ws;

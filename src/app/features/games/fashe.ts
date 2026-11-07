@@ -52,7 +52,7 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
 @Component({
   selector: 'app-fashe',
   imports: [Door, Ear, LailaButton],
-  host: { class: 's lesson fashe', '[class.introon]': 'intro()' },
+  host: { class: 's lesson fashe' },
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ tx(eye()) }}</div>
 <div class="poptime" [class.low]="low()" [class.off]="!ticking()">
@@ -72,39 +72,9 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
 <div class="yesno ynpair abcq lone popask">
   <app-laila-btn #lb label="Laila" [size]="96" [speak]="speak()" [yay]="yay()" [nope]="nope()" (pressed)="again()" />
   <span class="ask" [class.bad]="bad()">A → Z <b>{{ gone() }}</b></span>
-</div>
-@if (intro()) {
-<div class="pintro nofit" [class.ready]="introReady()">
-  <div class="ptries">@for (i of [1, 2]; track i) {<i [class.on]="i <= tryN"></i>}</div>
-  <div class="pban">{{ t('Fashe haruffa') }}</div>
-  <div class="pboard">@for (L of all; track L) {<button type="button" [style.--c]="colour(L)" [style.--i]="$index" [class.fail]="marked().includes(L)" (click)="mark(L)">{{ L }}</button>}</div>
-  <div class="pstars"><i></i><i></i><i></i><span class="pline"></span><i></i></div>
-  <div class="pgo"><app-laila-btn label="" [size]="130" [speak]="introSpeak()" [cue]="introReady()" (pressed)="go()" /></div>
-  @if (sim) {<div class="psim"><small>Simulate: tap letters to mark them failed (the game stops at the first one)</small><button type="button" (click)="skipToEnd()">Skip to results ›</button></div>}
-</div>
-}`,
+</div>`,
   styles: [`
-.pintro{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px 60px;background:rgba(28,20,12,.58);animation:pfade .35s ease-out both}
-.pban{font:800 40px/1 var(--disp);color:#5A3A00;padding:12px 70px 14px;background:linear-gradient(180deg,#FFE58A,#F7C93E 55%,#D99A12);
-  clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%);filter:drop-shadow(0 5px 0 rgba(0,0,0,.3));animation:ppop .5s cubic-bezier(.3,1.5,.5,1) both}
-.pboard{display:grid;grid-template-columns:repeat(13,48px);gap:8px;padding:14px 18px;border-radius:18px;background:linear-gradient(180deg,#9A6534,#7A4A22);
-  box-shadow:inset 0 0 0 4px rgba(255,220,160,.25),0 8px 0 rgba(0,0,0,.35)}
-.pboard button{height:54px;border:0;padding:0;border-radius:10px;background:#FFFDF7;font:800 31px/1 var(--disp);color:var(--c);box-shadow:0 3px 0 rgba(0,0,0,.28);
-  outline:4px solid transparent;outline-offset:-4px;animation:ppop .4s cubic-bezier(.3,1.5,.5,1) calc(var(--i) * 30ms) both;transition:transform .15s,filter .15s,outline-color .15s;cursor:default}
-.pboard button.fail{outline-color:#E63946;filter:grayscale(.85) brightness(.8);transform:scale(.88) rotate(-5deg)}
-.pstars{display:flex;align-items:center;gap:12px}
-.pstars i{font-style:normal;font-size:46px;line-height:1;color:rgba(255,255,255,.28)}
-.pstars i::before{content:"★"}
 .pline{width:5px;height:56px;border-radius:3px;background:#fff;margin:0 6px;box-shadow:0 0 10px rgba(255,255,255,.7)}
-.ptries{position:absolute;top:28px;right:120px;display:flex;gap:10px}
-.ptries i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
-.ptries i.on{background:radial-gradient(circle at 35% 30%,#FFF1A8,#F7C93E 50%,#C98A0C);box-shadow:0 0 10px rgba(255,213,74,.7)}
-.pgo{position:relative;display:flex;align-items:center;gap:8px;color:#fff}
-.phand{font-size:56px;line-height:1;opacity:0;transition:opacity .3s}
-.pintro.ready .phand{opacity:1;animation:phand 1s ease-in-out infinite}
-.psim{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:10px 20px;background:rgba(0,0,0,.55);color:#fff;font:700 14px var(--body)}
-.psim button{font:800 14px var(--disp);color:#3B2E1E;background:#FFD54A;border:0;border-radius:99px;padding:7px 18px;cursor:pointer}
-.pintro:has(.psim) .pboard button{cursor:pointer}
 /* the A–Z strip as a wooden board: empty sockets fill with letter tiles as they pop (Sani 2026-11-02); no tick badge */
 .abcslots{width:min(720px,96%)!important;gap:6px!important;padding:10px 14px;border-radius:14px;background:linear-gradient(180deg,#9A6534,#7A4A22);
   box-shadow:inset 0 0 0 3px rgba(255,220,160,.25),0 6px 0 rgba(74,44,18,.35)}
@@ -114,11 +84,6 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
 .aslot.done::after{display:none!important}
 .popask .ask{background:linear-gradient(180deg,#FFE58A,#F7C93E 55%,#E0A21A)!important;border:0!important;color:#5A3A00!important;box-shadow:0 4px 0 rgba(122,82,0,.35)}
 .popask .ask b{color:#7A2E00!important}
-:host(.introon) .popask,:host(.introon) .abcslots,:host(.introon) .poptime{opacity:0}
-@keyframes pfade{from{opacity:0}}
-@keyframes ppop{from{opacity:0;transform:scale(.6)}}
-@keyframes phand{50%{translate:-10px 0}}
-@media (prefers-reduced-motion:reduce){.pintro,.pban,.pboard button,.phand{animation:none!important}}
 `],
 })
 export class FasheScreen implements OnInit, OnDestroy {
@@ -160,35 +125,14 @@ export class FasheScreen implements OnInit, OnDestroy {
 
   colour(L: string): string { return LETTER_COLOR(ALL.indexOf(L)); }
 
-  /**
-   * The game's intro (Sani 2026-11-02), the same as every other game's: the name on a gold ribbon, the whole A–Z on a board,
-   * the four stars with the pass line, the tries, and Laila to press. The balloons already rise behind the mask.
-   * With the course simulator on (or ?debug) an adult can tap letters to count them as failed and skip to the ending.
-   */
   private readonly course = inject(CourseService);
   private readonly cgate = inject(CourseGate);
-  /** Straight from the letters question (?go=1): that screen was the intro, so the balloons start at once (Sani 2026-11-07). */
-  private readonly straight = this.route.snapshot.queryParamMap.get('go') === '1';
-  readonly intro = signal(!this.straight); readonly introReady = signal(false); readonly introSpeak = signal(false);
-  readonly marked = signal<string[]>([]);
-  readonly sim = this.course.on() || this.session.debug;
-  readonly tryN = this.route.snapshot.queryParamMap.get('try') === '2' ? 2 : 1;
-  private introSeq = 0;
-  mark(L: string): void { if (!this.sim) return; const m = this.marked(); this.marked.set(m.includes(L) ? m.filter((x) => x !== L) : [...m, L]); }
-  private async introLine(): Promise<void> {
-    const my = ++this.introSeq; this.introReady.set(false); this.introSpeak.set(true);
-    await this.bus.play(this.bus.gk('s_g_go'));
-    if (my !== this.introSeq || !this.intro()) return;
-    this.introSpeak.set(false); this.introReady.set(true);
-  }
-  go(): void {
-    if (!this.intro()) return;
-    this.introSeq++; this.bus.stopAll(); this.intro.set(false); this.introSpeak.set(false);
-    const m = this.marked();
-    if (m.length) { this.simEnd(m); return; }              // marked letters but pressed Laila: the same as skipping
-    this.start();
-  }
-  skipToEnd(): void { if (!this.intro()) return; this.introSeq++; this.bus.stopAll(); this.intro.set(false); this.simEnd(this.marked()); }
+  /**
+   * No intro of its own (Sani 2026-11-07: "this screen should not be there at all"): the balloons start as soon as the
+   * screen opens. In the course the letters screen (/haruffa/gwada) comes first and carries the tries; an adult using
+   * the course simulator (or ?debug) marks letters failed there, which arrive as ?fail=… (and ?end=1 to skip to the
+   * results).
+   */
   /** The simulated ending: the game stops at the first letter marked failed, or goes through to Z. */
   private simEnd(m: string[]): void {
     const first = ALL.findIndex((L) => m.includes(L));
@@ -198,7 +142,11 @@ export class FasheScreen implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     document.addEventListener('keydown', this.onKey);
-    afterPaint().then(() => { this.measure(); this.fill(); this.eye.set('Mu gani · A → Z'); if (this.straight) this.start(); else this.introLine(); });
+    afterPaint().then(() => {
+      this.measure(); this.fill(); this.eye.set('Mu gani · A → Z');
+      const q = this.route.snapshot.queryParamMap, fail = (q.get('fail') || '').split('').filter((L) => ALL.includes(L));
+      if (fail.length || q.get('end') === '1') this.simEnd(fail); else this.start();
+    });
   }
   ngOnDestroy(): void {
     this.stopped = true; this.stopClock(); if (this.bumpT) clearTimeout(this.bumpT);
@@ -347,7 +295,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     this.hit(+(el.dataset['b'] || 0));
   }
   private key(e: KeyboardEvent): void {
-    if (this.intro() || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     const L = (e.key || '').toUpperCase();
     if (!/^[A-Z]$/.test(L)) return;                       // any other key does nothing at all: no sound, no penalty
     const b = this.bubs().find((x) => x.L === L && x.state === '');
@@ -444,7 +392,6 @@ export class FasheScreen implements OnInit, OnDestroy {
   }
   /** The ear, and Laila herself: the same reminder again. */
   async again(): Promise<void> {
-    if (this.intro()) { this.bus.stopAll(); this.introLine(); return; }
     if (!this.target()) return;
     this.bus.stopAll(); await this.remind();
   }
@@ -541,7 +488,7 @@ export class FasheScreen implements OnInit, OnDestroy {
       await wait(300);
       if (this.stopped) return;
       await this.router.navigateByUrl('/blank', { skipLocationChange: true });
-      this.router.navigate(['/fashe'], { queryParams: { try: '2', best: at } });
+      this.router.navigate(['/haruffa/gwada'], { queryParams: { try: '2', best: at } });   // the second try starts at the letters screen too
       return;
     }
     if (this.outOfTime) await this.sayMaybe('s_pop_timeup');   // "Lokaci ya ƙare. Mu koyi haruffa tukuna."
@@ -568,9 +515,9 @@ export class FasheScreen implements OnInit, OnDestroy {
       await this.sayMaybe(a.lines[0]); if (this.stopped) return; this.stopped = true; this.bus.stopAll(); this.progress.unlockGame('fashe'); this.cgate.passed(+step, a); return;
     }
     this.fb('bad', this.outOfTime ? 'Lokaci ya ƙare' : this.reached + ' / 25');
-    if (!second) { await this.sayMaybe('s_pop_again'); await wait(300); if (this.stopped) return; this.cgate.reopen('/fashe?step=' + step + '&try=2&best=' + at); return; }
+    if (!second) { await this.sayMaybe('s_pop_again'); await wait(300); if (this.stopped) return; this.cgate.reopen('/haruffa/gwada?step=' + step + '&try=2&best=' + at); return; }
     if (this.outOfTime) await this.sayMaybe('s_pop_timeup'); await wait(400); if (this.stopped) return; this.stopped = true; this.bus.stopAll();
-    this.router.navigate(['/haruffa/koyo'], { queryParams: { letters: ALL.slice(Math.min(at, ALL.length - 1)).join(''), back: '/fashe?step=' + step + '&try=1' } });
+    this.router.navigate(['/haruffa/koyo'], { queryParams: { letters: ALL.slice(Math.min(at, ALL.length - 1)).join(''), back: '/haruffa/gwada?step=' + step + '&try=1' } });
   }
   /** A line that is written but not yet recorded: the screen still says it, the speaker stays quiet. */
   private async sayMaybe(k: string): Promise<void> {
