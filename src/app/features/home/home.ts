@@ -142,8 +142,16 @@ export class HomeScreen implements OnInit, OnDestroy {
     const host = this.gridHost().nativeElement; host.querySelectorAll('.htile').forEach((x) => x.classList.toggle('hot', x === t)); host.querySelector('.homegrid')?.classList.add('has-sel');
     const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.show(null);
     let k = 'app_act_desc_' + act; if (!this.bus.has(k)) k = FALLBACK[act] || k;
-    this.bus.play(k).then((ok) => { if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white'); });
+    // the tile is in focus while its own line plays — it grows and shrinks in its ring — and settles when the line ends or
+    // is cut off; the next tap takes the focus (Sani 2026-11-07: as it was before the new home)
+    host.querySelectorAll('.htile.speak').forEach((x) => x.classList.remove('speak'));
+    const mine = ++this.saying;
+    this.bus.play(k, { onStart: () => { if (mine === this.saying) t.classList.add('speak'); } }).then((ok) => {
+      if (mine === this.saying) t.classList.remove('speak');
+      if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white');
+    });
   }
+  private saying = 0;
   start(): void {
     // A tapped tile still wins — free play is one tap — but with nothing tapped she opens the plan's own
     // next step instead of doing nothing, so a child who chooses nothing is still learning.

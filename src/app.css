@@ -569,6 +569,15 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.home .htile .hlk{width:28px}
 #app .s.home .htile .hdn{width:26px;right:4px;top:4px}
 #app .s.home .htile.hot,#app .s.home .homegrid.snake .htile{filter:none;opacity:1}
+/* A tapped tile (Sani 2026-11-07: "focus on each lesson like before"): the old chooser's cue, a white and a gold ring
+   and a slow grow-and-shrink, while Laila describes it (.speak, set by the line's start and end); afterwards it keeps its
+   ring, still, as the lesson Laila will open. */
+#app .s.home .htile.hot{z-index:2;box-shadow:0 0 0 5px #fff,0 0 0 10px var(--yellow)}
+#app .s.home .htile.speak{z-index:3;box-shadow:0 0 0 5px #fff,0 0 0 10px var(--yellow),0 0 26px 10px rgba(255,201,60,.8);animation:growshrink 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#app .s.home .htile.speak{animation:none}}
+/* the "press Laila" hand sits over her, not under her: in the flow it pushed "Fara" off the bottom of the screen */
+#app .s.home .lbtn{position:relative}
+#app .s.home .lbtn .lhand{position:absolute;left:calc(50% + 26px);top:72px;margin:0}
 #app .s.home .homegrid.snake .htile{box-shadow:0 0 0 4px #FFD24D,0 0 18px 4px rgba(255,200,60,.8);animation:hsnake 2.1s ease-in-out infinite;animation-delay:calc(var(--i) * .18s)}
 @keyframes hsnake{0%,40%,100%{transform:none}10%{transform:translateY(-12px) scale(1.2)}22%{transform:translateY(0) scale(.96)}30%{transform:scale(1)}}
 #app .s.home .homegrid>i{position:absolute;grid-row:1;pointer-events:none;opacity:0}
