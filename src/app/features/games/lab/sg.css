@@ -528,3 +528,5 @@
 .glab .sg.udara .udf{position:absolute;left:50%;top:-2.4cqw;width:4cqw;height:4cqw;translate:-50% 0;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFC060,#E07A1A)}
 .glab .sg.udara .udfall .ud.caught>*{transition:transform .8s ease-in,opacity .6s;transform:translate(0,18cqw) scale(.4);opacity:0}
 .glab .sg.udara .udfall .ud.roll>*{transition:transform 1s ease-in,opacity .8s;transform:translate(20cqw,20cqw) rotate(200deg);opacity:0}
+/* the own backdrop carried out to the screen's edges (engine farBack) */
+.glab>.gbg>.sgfar{position:absolute;inset:0;width:100%;height:100%;display:block;filter:blur(3px) brightness(.88)}

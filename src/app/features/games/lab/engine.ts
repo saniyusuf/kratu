@@ -245,6 +245,14 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   }
 
 
+  /* A game that draws its own backdrop inside the box: on a screen wider (or taller) than the box, the strips beside it
+     show the same backdrop stretched to the whole screen and softened, so the scenery runs on to the edges. */
+  function farBack(run) {
+    var sb = run.scr.querySelector('.sgback'); if (!sb || run.dead) return;
+    var c = sb.cloneNode(true); c.setAttribute('class', 'sgfar'); c.setAttribute('preserveAspectRatio', 'none');
+    bg.innerHTML = ''; bg.appendChild(c);
+  }
+
   /* ---------- the three screens every game shares ---------- */
   function start() {
     if (live) live.stop();
@@ -254,12 +262,13 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
     var scene = KART.scene[g.scene || PAINT[gid]] || '';
     if (gid === 'j-abubuwa') scene = '<div class="scene paint">' + SK_('argunguScene', argunguScene)() + SK_('argunguWater', argunguWater)() + '</div>';   // Argungu on festival day
     scene = restScene(gid) || scene;   // the drawn scenes of 2026-10-25 (rest.ts)
+    if (g.scene === 'none') scene = '';   // a game with its own backdrop (south-games.ts) never shows the slot's old scene round it
     bg.classList.remove('cheer', 'sad'); bg.innerHTML = scene; run.scr.innerHTML ='<div class="eye">' + t(g.title) + '</div>';   // the scene fills the whole screen, behind the game's box
     var go = function () {
       if (run.dead) return;
       var cd = h('<div class="cdown"><b></b></div>'); run.scr.appendChild(cd); var steps = ['3', '2', '1', t('Fara!')], i = 0;
       (function tick() {
-        if (run.dead) return; if (i >= steps.length) { cd.remove(); g.play(run, function (r) { result(run, r); }); return; }
+        if (run.dead) return; if (i >= steps.length) { cd.remove(); g.play(run, function (r) { result(run, r); }); if (g.scene === 'none') farBack(run); return; }
         var b = cd.querySelector('b'); b.textContent = steps[i]; b.classList.remove('in'); void b.offsetWidth; b.classList.add('in'); drum(i === 3); i++; run.later(i === 4 ? 650 : 600, tick);
       })();
     };
