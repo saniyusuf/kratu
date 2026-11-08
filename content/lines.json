@@ -1019,6 +1019,27 @@
   "review": "Sani 11 Oct 23:30 wording"
  },
  {
+  "key": "app_locked",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Wannan darasi a rufe yake yanzu. Za a buɗe maka shi idan ka kai gare shi a cikin littafi.",
+   "f": "Wannan darasi a rufe yake yanzu. Za a buɗe miki shi idan kin kai gare shi a cikin littafi."
+  },
+  "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
+  "screens": [
+   "Zaɓi darasi · home"
+  ],
+  "said_when": "On the chooser, after a locked tile's own description; then app_book_start with the hand on the book (Sani 2026-11-08).",
+  "review": "draft, needs Sani's review",
+  "status": "live",
+  "recorded": {
+   "m": "08304e7d96",
+   "f": "9940d4b3de"
+  }
+ },
+ {
   "key": "app_board_intro",
   "lang": "ha",
   "voice": "laila",
