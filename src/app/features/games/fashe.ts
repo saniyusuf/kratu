@@ -429,12 +429,7 @@ export class FasheScreen implements OnInit, OnDestroy {
     const say = async (k: string) => this.skipIntro || (await this.bus.play(k)) || this.skipIntro;
     if (!(await say(this.bus.gk('s_pop_intro')))) { this.unpoint(); return; }
     if (!(await say(this.bus.gk('s_pop_task')))) { this.unpoint(); return; }
-    // The clock is explained while it is on screen and full, so the warning is attached to the thing it
-    // is about. Each of these plays only once recorded; until then the bar says it on its own.
-    for (const k of ['s_pop_clock', 's_pop_scoring', 's_pop_luck']) {
-      const g = this.bus.gk(k);
-      if (this.bus.has(g) && !(await say(g))) { this.unpoint(); return; }
-    }
+    // The clock is not explained in words: the bar says it on its own (Sani 2026-11-09: the clock lines are not needed).
     this.introducing = false;
     this.unpoint();                                         // no demonstration (Sani 2026-10-12): the child starts at A
     if (this.stopped) return;
@@ -472,7 +467,6 @@ export class FasheScreen implements OnInit, OnDestroy {
       this.eye.set('Mu gani · A → Z');
       this.fb('good', 'Madalla! ' + this.reached + ' / 25');
       await this.bus.play('s_pop_done');
-      await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
       this.session.owedGame.set(false);
       if (this.stopped) return;

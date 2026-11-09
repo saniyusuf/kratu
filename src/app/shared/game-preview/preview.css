@@ -1,0 +1,48 @@
+/* The live previews (previews.ts): the scene fills the box; each moving piece is a .pv group, moved by transform and
+   opacity only. A piece keeps its own inner movements from the game's styles, but never its placing in the game. */
+.gprevhost{display:block;position:absolute;inset:0}
+.glab.gprev{position:absolute;inset:0;background:#2B2418}
+.glab.gprev>.gbg{position:absolute;inset:0}
+.glab.gprev .gpv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.glab.gprev .gpv .pvbox>svg{position:static!important;left:auto!important;top:auto!important;right:auto!important;bottom:auto!important;width:100%!important;height:100%!important;transform:none!important;translate:none!important;margin:0!important;opacity:1!important;display:block!important}
+.glab.gprev .pv{transform-box:view-box}
+.glab.gprev .pv-d1{animation-delay:-1s!important}.glab.gprev .pv-d2{animation-delay:-2.6s!important}.glab.gprev .pv-d3{animation-delay:-4.2s!important}.glab.gprev .pv-d4{animation-delay:-5.4s!important}
+.glab.gprev .pv-ride{animation:pv-ride 9s linear infinite}
+@keyframes pv-ride{from{transform:translateX(330px)}to{transform:translateX(-130px)}}
+.glab.gprev .pv-drive{animation:pv-drive 10s ease-in-out infinite}
+@keyframes pv-drive{0%{transform:translateX(-160px)}35%,65%{transform:translateX(150px)}100%{transform:translateX(340px)}}
+.glab.gprev .pv-walk{animation:pv-walk 14s linear infinite}
+@keyframes pv-walk{from{transform:translateX(-100px)}to{transform:translateX(340px)}}
+.glab.gprev .pv-in{animation:pv-in 7s ease-in-out infinite}
+@keyframes pv-in{0%{transform:translateX(-90px);opacity:1}70%{transform:translateX(170px);opacity:1}85%,100%{transform:translateX(200px);opacity:0}}
+.glab.gprev .pv-swim{animation:pv-swim 11s linear infinite}
+@keyframes pv-swim{0%{transform:translate(340px,0)}50%{transform:translate(130px,-6px)}100%{transform:translate(-90px,0)}}
+.glab.gprev .pv-sail{animation:pv-sail 13s linear infinite}
+@keyframes pv-sail{0%{transform:translate(-160px,0) rotate(0)}25%{transform:translate(-30px,-2px) rotate(-1deg)}50%{transform:translate(90px,0) rotate(1deg)}75%{transform:translate(210px,-2px) rotate(-1deg)}100%{transform:translate(340px,0) rotate(0)}}
+.glab.gprev .pv-fly{animation:pv-fly 12s linear infinite}
+@keyframes pv-fly{0%{transform:translate(-60px,0)}50%{transform:translate(160px,-10px)}100%{transform:translate(380px,4px)}}
+.glab.gprev .pv-cloud{animation:pv-cloud 20s ease-in-out infinite alternate}
+@keyframes pv-cloud{to{transform:translateX(180px)}}
+.glab.gprev .pv-rise{animation:pv-rise 8s linear infinite}
+@keyframes pv-rise{0%{transform:translate(0,0)}50%{transform:translate(6px,-130px)}100%{transform:translate(-4px,-270px)}}
+.glab.gprev .pv-sway{transform-origin:280px 150px;animation:pv-sway 2.4s ease-in-out infinite alternate}
+@keyframes pv-sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.glab.gprev .pv-bob{animation:pv-bob 1.6s ease-in-out infinite alternate}
+@keyframes pv-bob{to{transform:translateY(-3px)}}
+.glab.gprev .pv-dip{animation:pv-dip 3.4s ease-in-out infinite}
+@keyframes pv-dip{0%,100%{transform:translateY(0)}45%,60%{transform:translateY(16px)}}
+.glab.gprev .pv-beat{transform-origin:160px 150px;animation:pv-beat .8s ease-in-out infinite}
+@keyframes pv-beat{0%,100%{transform:scale(1)}20%{transform:scale(1.06,.96)}}
+.glab.gprev .pv-tap{transform-origin:184px 112px;animation:pv-tap .8s ease-in-out infinite}
+@keyframes pv-tap{0%,100%{transform:rotate(-24deg)}20%{transform:rotate(8deg)}}
+.glab.gprev .pv-ring{transform-box:fill-box;transform-origin:center;animation:pv-ring 1.6s ease-out infinite;opacity:0}
+@keyframes pv-ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.glab.gprev .pv-hop{animation:pv-hop 2.4s ease-in-out infinite}
+@keyframes pv-hop{0%,30%,100%{transform:translateY(0)}12%{transform:translateY(-10px)}}
+.glab.gprev .pv-grow{transform-box:fill-box;transform-origin:50% 100%;animation:pv-grow 6s ease-in-out infinite}
+@keyframes pv-grow{0%{transform:scaleY(.35);opacity:.6}60%,90%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.35);opacity:.6}}
+.glab.gprev .pv-rain{animation:pv-rain 6s ease-in-out infinite}
+@keyframes pv-rain{0%,100%{opacity:.25}40%,70%{opacity:.9}}
+.glab.gprev .pv-build{transform-box:fill-box;transform-origin:50% 100%;animation:pv-build 6s ease-in-out infinite}
+@keyframes pv-build{0%{transform:scaleY(.1);opacity:0}40%,85%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+@media (prefers-reduced-motion:reduce){.glab.gprev .pv,.glab.gprev .pv *,.glab.gprev .scene *{animation:none!important}}

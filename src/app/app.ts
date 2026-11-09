@@ -66,6 +66,8 @@ export class App implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.zoom.start(); this.nav.start();
+    // a pointing hand floats at body level (Spotter): a screen that is left takes its hand with it
+    this.router.events.subscribe((e) => { if (e instanceof NavigationStart) document.querySelectorAll('body > .float').forEach((h) => h.remove()); });
     // on a tablet the browser's address and status bars ate a seventh of the height, and the whole layout shrank with it
     // (Sani 2026-10-23, 7-inch Samsung): a touch in the browser takes the app full screen, again after the child swipes
     // out of it. Android only locks the orientation in full screen, so the lock follows it. Bigger screens keep what

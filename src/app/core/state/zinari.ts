@@ -4,8 +4,8 @@
  * and the bag is full when the title is reached. No title at the start. Gold is only ever added: no deductions, no
  * streaks. Boys' and girls' titles mirror each other.
  */
-/** Where each bag is full and its title reached. One place to change them (Sani is choosing between these and 1000/2000/4000/6000/10000). */
-export const LEVEL_AT = [2000, 4000, 8000, 12000, 16000];
+/** Where each bag is full and its title reached (Sani 2026-11-09: the simpler amounts). One place to change them. */
+export const LEVEL_AT = [1000, 2000, 4000, 6000, 10000];
 export interface Title { key: string; at: number; m: string; f: string; colour: string; now: string; }
 export const TITLES: Title[] = [
   { key: 'jarumi', m: 'Jarumi', f: 'Jaruma', colour: '#E63946', now: 's_z_now_jarumi' },
@@ -24,9 +24,9 @@ export function nextTitle(total: number): Title | null { return TITLES[levelOf(t
 export function bags(total: number): number[] {
   return LEVEL_AT.map((hi, i) => { const lo = i ? LEVEL_AT[i - 1] : 0; return Math.max(0, Math.min(1, (total - lo) / (hi - lo))); });
 }
-/** The amount line for each bag's total; every amount Sani may choose is recorded, so changing LEVEL_AT needs no new clip. */
+/** The amount line for each bag's total (the 8,000 / 12,000 / 16,000 lines went with the old amounts, Sani 2026-11-09). */
 const GOLD_LINE: Record<number, string> = { 1000: 's_z_gold_1000', 2000: 's_z_gold_2000', 4000: 's_z_gold_4000', 6000: 's_z_gold_6000',
-  8000: 's_z_gold_8000', 10000: 's_z_gold_10000', 12000: 's_z_gold_12000', 16000: 's_z_gold_16000' };
+  10000: 's_z_gold_10000' };
 const BAG_LINE = ['s_z_bag1', 's_z_bag2', 's_z_bag3', 's_z_bag4', 's_z_bag5'];
 /**
  * Laila's lines when title i (0 to 4) is unlocked, in the page's order: the effort, the title, the bag full, the amount,

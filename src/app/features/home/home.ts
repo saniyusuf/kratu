@@ -15,11 +15,17 @@ import { CourseBook } from '../../shared/book/book';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ScreenTransition } from '../../core/nav/screen-transition.service';
+import { CourseService } from '../../core/state/course.service';
 import { GAMES_CORNER_SVG } from './games-corner';
 import { t } from '../../core/lang/t';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
+/** Each tile's first lesson in the course: the tile opens once the child has reached it (Sani 2026-11-08). */
+const FIRST: Record<string, (s: { t: string; kind: string; game?: string }) => boolean> = {
+  letters: (s) => s.t === 'lesson' && s.kind === 'letters', things: (s) => s.t === 'lesson' && s.kind === 'words', quiz: (s) => s.game === 'nemo',
+  numbers: (s) => s.t === 'lesson' && s.kind === 'numbers', read: (s) => s.t === 'lesson' && s.kind === 'read', spell: (s) => s.t === 'lesson' && s.kind === 'spell',
+};
 const FALLBACK: Record<string, string> = { things: 's_act_desc_things', numbers: 's_n_intro', read: 's_k_intro2' };
 
 /**
@@ -51,6 +57,7 @@ export class HomeScreen implements OnInit, OnDestroy {
   /** What the plan says comes next: the book opens it, and so does Laila when no tile is picked. */
   private readonly step = inject(PlanService).next();
   private readonly progress = inject(ProgressService);
+  private readonly course = inject(CourseService);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly zoom = inject(ZoomService);
   private readonly nav = inject(ScreenTransition);
@@ -76,14 +83,19 @@ export class HomeScreen implements OnInit, OnDestroy {
     if (this.bus.blocked()) this.bookTimer = window.setTimeout(() => this.courseBook().begin(), 10000); else this.courseBook().begin();
   }
   private bookTimer = 0;
-  /** Each tile's progress: the wave's height, the padlock, the medal. Locked tiles still open when pressed, for now. */
+  /** Each tile's progress: the wave's height, the padlock until the course reaches its first lesson, the medal. */
   private marks(): void {
     this.gridHost().nativeElement.querySelectorAll<HTMLElement>('.htile').forEach((t) => {
       const l = LESSON[t.dataset['act'] || '']; if (!l) return;
-      const p = this.progress.share(l), open = this.progress.open(l);
+      const p = this.progress.share(l), open = this.reached(t.dataset['act'] || '');
       t.classList.toggle('lock', !open); t.classList.toggle('done', open && p >= 1); t.classList.toggle('zero', p <= 0);
       t.style.setProperty('--p', Math.round(p * 100) + '%');
     });
+  }
+  /** Whether the child has reached this tile's first lesson in the course (the simulator's step, or their own place). */
+  private reached(act: string): boolean {
+    const f = FIRST[act], at = this.course.now(); if (!f || at == null) return false;
+    const first = this.course.steps.find((s) => f(s)); return !!first && at >= first.n;
   }
   /** A sample session started from the settings is greeted first: "Sannu, Musa!" · the name · "Barka da zuwa!" */
   private async arrive(): Promise<void> {
@@ -125,10 +137,10 @@ export class HomeScreen implements OnInit, OnDestroy {
   /** The book slides to the middle as its cover opens; the hand follows it there. */
   respot(): void { if (this.pointing) this.pointAtBook(true); }
   ngOnDestroy(): void { clearTimeout(this.leaving); clearTimeout(this.bookTimer); this.spotter.unspot(); this.bus.stopAll(); }
-  pick(): void { this.bus.stopAll(); this.invite(); }
+  pick(): void { this.saying++; this.bus.stopAll(); this.invite(); }
   /** The book opens the plan's next step — the letters gate first, then whatever it decided (Sani 2026-10-11). */
   book(): void {
-    this.bus.stopAll(); this.show(null); this.cue.set(false);
+    this.saying++; this.bus.stopAll(); this.show(null); this.cue.set(false);
     clearTimeout(this.leaving); this.leaving = window.setTimeout(() => { this.nav.plain(); this.next(); }, 150);   // just long enough to see it pressed; no slide
   }
   private next(): void {
@@ -144,8 +156,25 @@ export class HomeScreen implements OnInit, OnDestroy {
     const host = this.gridHost().nativeElement; host.querySelectorAll('.htile').forEach((x) => x.classList.toggle('hot', x === t)); host.querySelector('.homegrid')?.classList.add('has-sel');
     const act = t.dataset['act'] || ''; this.act.set(act); this.cue.set(false); this.show(null);
     let k = 'app_act_desc_' + act; if (!this.bus.has(k)) k = FALLBACK[act] || k;
-    this.bus.play(k).then((ok) => { if (!ok) return; this.cue.set(true); this.bus.play('app_w_tap_white'); });
+    // the tile is in focus while its own line plays — it grows and shrinks in its ring — and settles when the line ends or
+    // is cut off; the next tap takes the focus (Sani 2026-11-07: as it was before the new home)
+    host.querySelectorAll('.htile.speak').forEach((x) => x.classList.remove('speak'));
+    const mine = ++this.saying;
+    const locked = !this.reached(act);
+    this.bus.play(k, { onStart: () => { if (mine === this.saying) t.classList.add('speak'); } }).then(async (ok) => {
+      if (mine === this.saying) t.classList.remove('speak');
+      if (!ok || mine !== this.saying) return;
+      if (!locked) { this.cue.set(true); this.bus.play('app_w_tap_white'); return; }
+      // a locked lesson (Sani 2026-11-08): "it opens when you reach it in the book", then the way there, the book
+      // pulsing with the hand on it only while that line plays; Laila now opens the book's step, not this tile
+      this.act.set(null);
+      if (!(await this.bus.play(this.bus.gk('app_locked'))) || mine !== this.saying) return;
+      this.show('book');
+      await this.bus.play(this.bus.gk(this.progress.started() ? 'app_book_more' : 'app_book_start'));
+      if (mine === this.saying) this.show(null);
+    });
   }
+  private saying = 0;
   start(): void {
     // A tapped tile still wins — free play is one tap — but with nothing tapped she opens the plan's own
     // next step instead of doing nothing, so a child who chooses nothing is still learning.

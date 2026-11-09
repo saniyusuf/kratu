@@ -158,7 +158,7 @@ const wader = (x, y, s, heron, cls = '') => { const b = heron ? '#8E98A0' : '#FB
     '<circle cx="-1.8" cy="-23.8" r=".35" fill="#1A1A1A"/></g></g>'; };
 export const bird = (x, y, s, cls) => '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="x-bird ' + cls + '"><path d="M-4 0 Q-2 -2 0 0 Q2 -2 4 0" stroke="#3A3A44" stroke-width=".7" fill="none" stroke-linecap="round"/></g></g>';
 /** a dugout canoe, centre (x, y), length l */
-const canoe = (x, y, l, c = '#7A4A26') => '<g><path d="M' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + f1(x - l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + x + ' ' + f1(y + l * 0.07) + ' Q' + f1(x + l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + f1(x + l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + x + ' ' + f1(y - l * 0.01) + ' ' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Z" fill="' + c + '"/>' +
+export const canoe = (x, y, l, c = '#7A4A26') => '<g><path d="M' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + f1(x - l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + x + ' ' + f1(y + l * 0.07) + ' Q' + f1(x + l * 0.3) + ' ' + f1(y + l * 0.07) + ' ' + f1(x + l / 2) + ' ' + f1(y - l * 0.08) + ' Q' + x + ' ' + f1(y - l * 0.01) + ' ' + f1(x - l / 2) + ' ' + f1(y - l * 0.08) + ' Z" fill="' + c + '"/>' +
   '<path d="M' + f1(x - l * 0.46) + ' ' + f1(y - l * 0.055) + ' Q' + x + ' ' + f1(y + l * 0.02) + ' ' + f1(x + l * 0.46) + ' ' + f1(y - l * 0.055) + '" stroke="' + lt(c, 0.3) + '" stroke-width="' + f1(l * 0.012) + '" fill="none"/>' +
   '<path d="M' + f1(x - l * 0.3) + ' ' + f1(y + l * 0.035) + ' Q' + x + ' ' + f1(y + l * 0.06) + ' ' + f1(x + l * 0.3) + ' ' + f1(y + l * 0.035) + '" stroke="' + dk(c, 0.3) + '" stroke-width="' + f1(l * 0.01) + '" fill="none"/></g>';
 

@@ -569,6 +569,15 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.home .htile .hlk{width:28px}
 #app .s.home .htile .hdn{width:26px;right:4px;top:4px}
 #app .s.home .htile.hot,#app .s.home .homegrid.snake .htile{filter:none;opacity:1}
+/* A tapped tile (Sani 2026-11-07: "focus on each lesson like before"): the old chooser's cue, a white and a gold ring
+   and a slow grow-and-shrink, while Laila describes it (.speak, set by the line's start and end); afterwards it keeps its
+   ring, still, as the lesson Laila will open. */
+#app .s.home .htile.hot{z-index:2;box-shadow:0 0 0 5px #fff,0 0 0 10px var(--yellow)}
+#app .s.home .htile.speak{z-index:3;box-shadow:0 0 0 5px #fff,0 0 0 10px var(--yellow),0 0 26px 10px rgba(255,201,60,.8);animation:growshrink 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){#app .s.home .htile.speak{animation:none}}
+/* the "press Laila" hand sits over her, not under her: in the flow it pushed "Fara" off the bottom of the screen */
+#app .s.home .lbtn{position:relative}
+#app .s.home .lbtn .lhand{position:absolute;left:calc(50% + 26px);top:72px;margin:0}
 #app .s.home .homegrid.snake .htile{box-shadow:0 0 0 4px #FFD24D,0 0 18px 4px rgba(255,200,60,.8);animation:hsnake 2.1s ease-in-out infinite;animation-delay:calc(var(--i) * .18s)}
 @keyframes hsnake{0%,40%,100%{transform:none}10%{transform:translateY(-12px) scale(1.2)}22%{transform:translateY(0) scale(.96)}30%{transform:scale(1)}}
 #app .s.home .homegrid>i{position:absolute;grid-row:1;pointer-events:none;opacity:0}
@@ -648,12 +657,13 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .s.gate .gateabc b{transition:opacity .22s,transform .38s cubic-bezier(.2,1.7,.4,1),filter .25s}
 @media (prefers-reduced-motion:reduce){#app .s.gate .yn.spot2{animation:none}}
 
-/* Full screen means full screen (Sani 2026-10-23): for the games, the app's 6px paper margin and the frame's rounded
+/* Full screen means full screen (Sani 2026-10-23): for the games and the letters gate, the app's 6px paper margin and the frame's rounded
    corners go, so the scene runs to every edge of the tablet with no bright rim. */
 body:has(.s.gamelab) #app,body:has(.s.fashe) #app,body:has(.s.gate) #app{padding:0;background:#1A1424}
 #app .frame:has(>.s.gamelab),#app .frame:has(>.s.fashe),#app .frame:has(>.s.gate){border-radius:0;background:none}
-#app .frame>.s.gate{width:100%;height:100%;border-radius:0}   /* the letters gate is full screen too: no cream rim (kratu-book 2ef8fac) */
 #app .frame>.s.gamelab{border-radius:0}
+/* the letters gate, the course's first game (Sani 2026-11-07: "not full screen"): its sky and village run to every edge too */
+#app .frame>.s.gate{width:100%;height:100%;border-radius:0}
 /* Fashe haruffa, full screen: one big sky from edge to edge with the clouds along the top, and the balloons rising out
    of the grass; the clock floats on the sky, and the A–Z strip and Laila stand on the sandy ground below. */
 #app .frame>.s.fashe{width:100%;height:100%;border-radius:0;padding:0 0 14px;gap:0;background:linear-gradient(180deg,#E6D3A2,#D2B97F)}
@@ -735,16 +745,12 @@ html[lang=ig] #app .s.fashe .stage{background:linear-gradient(180deg,#C08868,#A9
 
 /* Wasanni, the games board, layout 1 (Sani 2026-11-06): the preview screen on top (660x330 in the 1024x640 design), the
    strip of all the games below with real arrows, Laila at the bottom, the book in the bottom-right corner. Everything
-   that moves is transform or opacity: the preview's slow drift, the crossfade, the pop of a new pick, the strip's slide,
+   that moves is transform or opacity: the live preview (shared/game-preview), the pop of a new pick, the strip's slide,
    the play button's pulse, Laila's talking. */
 #app .s.wasanni{gap:18px;padding:16px 16px 8px;justify-content:flex-start;background:var(--paper);background-image:radial-gradient(rgba(150,120,70,.10) 1.6px,transparent 1.6px);background-size:20px 20px}
 #app .s.wasanni .lrow{margin-top:0;padding-top:0}
 #app .s.wasanni .wprev{position:relative;flex:none;width:660px;height:330px;border-radius:22px;border:8px solid #2B2418;background:#2B2418;overflow:hidden;cursor:pointer;box-shadow:0 8px 20px rgba(43,36,24,.28)}
 #app .s.wasanni .wscene{position:absolute;inset:0;animation:wpop .35s cubic-bezier(.3,1.4,.5,1) both}
-#app .s.wasanni .wkb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:wkb 8s ease-in-out infinite alternate;will-change:transform}
-#app .s.wasanni .wkb2{animation:wkb 8s ease-in-out infinite alternate,wcross 12s ease-in-out infinite}
-@keyframes wkb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-2%,-1.5%)}}
-@keyframes wcross{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
 @keyframes wpop{from{transform:scale(.96);opacity:.4}to{transform:none;opacity:1}}
 #app .s.wasanni .wband{position:absolute;left:0;right:0;bottom:0;padding:10px 120px 12px 22px;text-align:left;background:linear-gradient(transparent,rgba(20,14,6,.78) 40%);color:#fff;display:flex;flex-direction:column;gap:2px}
 #app .s.wasanni .wband b{font:800 34px/1.05 var(--disp,'Baloo 2'),sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.4)}
@@ -771,7 +777,7 @@ html[lang=ig] #app .s.fashe .stage{background:linear-gradient(180deg,#C08868,#A9
 #app .block.active .s.wasanni>.wbook{position:fixed;right:6px;bottom:6px}
 #app .s.wasanni>.wbook:active{transform:scale(.96)}
 #app .s.wasanni .wbookic{position:absolute;right:12px;bottom:10px;width:38px;height:50px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
-@media (prefers-reduced-motion:reduce){#app .s.wasanni .wkb,#app .s.wasanni .wscene,#app .s.wasanni .wplay,#app .s.wasanni .wlaila.talk .lm{animation:none}#app .s.wasanni .wkb2{opacity:0}#app .s.wasanni .wrail{transition:none}}
+@media (prefers-reduced-motion:reduce){#app .s.wasanni .wscene,#app .s.wasanni .wplay,#app .s.wasanni .wlaila.talk .lm{animation:none}#app .s.wasanni .wrail{transition:none}}
 
 /* The course book (shared/book/book.ts). Kept here, not in the component: Angular takes a component's styles away when
    its last copy closes, and the still copy of the chooser that the screen movements show would lose its book (5 Nov). */

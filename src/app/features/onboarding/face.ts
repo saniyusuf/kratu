@@ -22,6 +22,12 @@ const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
  *  microphone away from the recording, so there the recording alone carries the name (Sani 2026-09-22). iPadOS reports
  *  itself as a Mac, hence the touch check. */
+/**
+ * The browser's recogniser sends the recording to its maker's servers (Chrome: Google). Never (Sani 2026-11-09): nothing about
+ * a child goes over the air. The name is not written down; Laila says only "Barka da zuwa" to a new child, and the child's
+ * own recording, kept with their record on the tablet, is what carries their name.
+ */
+const NAME_ONLINE = false;
 const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /**
@@ -216,7 +222,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   // ---- the name: the browser's recogniser (Hausa, then English), as the design does ----
   private startSR(lang = LANG.sr): void {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
+    if (!NAME_ONLINE || !SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
     // Kept where it works (Chrome with internet), but on a leash (Sani 2026-09-22): if it is not listening within
     // SR_START_WAIT the ring starts anyway, and whatever it has not heard by the end of the 10 s capture, the recording carries.
     this.clearSrWait();
@@ -366,9 +372,11 @@ export class FaceScreen implements OnInit, OnDestroy {
         await this.greet({ id: 'new', ...this.pending } as Person, false, own.url); this.confetti(); this.enter(); return;
       }
       if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? t('Ba na ganin ki sosai') : t('Ba na ganin ka sosai'))); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
-    } else if (heardName) {
-      // no face engine on this device: the name alone opens the session, nothing is stored
-      this.welcome({ id: 'tmp', name: heardName, key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
+    } else if (heardName || own?.url) {
+      // no face engine on this device: the child's own recording (or a name) opens the session, nothing is stored in the
+      // identity store. With the online recogniser gone (Sani 2026-11-09) there is never a written name here, so the
+      // recording alone must be enough, and Laila says just "Barka da zuwa".
+      this.welcome({ id: 'tmp', name: heardName || '', key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
     }
     this.missText.set('🤔 ' + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
