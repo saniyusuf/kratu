@@ -1676,17 +1676,6 @@
   }
  },
  {
-  "key": "app_w_spell_lesson",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
   "key": "app_w_spell_test",
   "lang": "ha",
   "voice": "laila",
@@ -1734,39 +1723,6 @@
   "said_when": "",
   "status": "live",
   "recorded": "9afab410b8"
- },
- {
-  "key": "app_wen_cat",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
-  "key": "app_wen_goat",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
-  "key": "app_wha_goat",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
  },
  {
   "key": "app_yn_hint_no",
@@ -1817,62 +1773,6 @@
   "addresses_both": true
  },
  {
-  "key": "s_abc_done",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Madalla! Yanzu kaa san haruffa duka.",
-   "f": "Madalla! Kin riga kin ƙware haruffa duka!"
-  },
-  "en": "Well done! Now you know all the letters.",
-  "screens": [
-   "Haruffa · landing"
-  ],
-  "said_when": "",
-  "status": "unused",
-  "recorded": {
-   "m": "4e54c07c44",
-   "f": "e4b48b3a58"
-  },
-  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
- },
- {
-  "key": "s_abc_done2",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
-  "key": "s_abc_intro",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "A nan za mu koyi haruffan Turanci gaba ɗaya. Za a nuna maka harafi, sai ka faɗa shi. Kamar haka:",
-   "f": "A nan za mu koyi haruffan Turanci gaba ɗaya. Za a nuna miki harafi, sai ki faɗa shi. Kamar haka:"
-  },
-  "en": "Here we learn the whole English alphabet. A letter will be shown, and you say it. Like this:",
-  "screens": [
-   "Haruffa · landing"
-  ],
-  "said_when": "",
-  "status": "unused",
-  "recorded": {
-   "m": "a0739a1cc9",
-   "f": "a929470f14"
-  },
-  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
- },
- {
   "key": "s_abc_say",
   "lang": "ha",
   "voice": "laila",
@@ -1892,27 +1792,6 @@
    "m": "d147db2e89",
    "f": "0e215bb95f"
   }
- },
- {
-  "key": "s_abc_turn",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Yanzu kai. Idan kaa san haruffa, danna Laila mu fara.",
-   "f": "Yanzu, idan kin san haruffa, danna Laila mu fara."
-  },
-  "en": "Your turn. If you know the letters, press Laila and we'll start.",
-  "screens": [
-   "Haruffa · landing"
-  ],
-  "said_when": "",
-  "status": "unused",
-  "recorded": {
-   "m": "38affb63fa",
-   "f": "359c8a7225"
-  },
-  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
  },
  {
   "key": "s_act_desc_things",
@@ -1947,20 +1826,6 @@
    "m": "31b7de2802",
    "f": "347dc94c2f"
   }
- },
- {
-  "key": "s_alone",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
  },
  {
   "key": "s_alone2",
@@ -2160,38 +2025,6 @@
   "recorded": {
    "m": "8c10c43106",
    "f": "4a1e07079c"
-  }
- },
- {
-  "key": "s_enrol",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
-  "key": "s_face",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Za mu ɗauki bidiyonka kana faɗin sunanka. Misali, idan sunanka Musa ne, ka ce: Sunana Musa. Danna kan Laila idan ka shirya.",
-   "f": "Za mu ɗauki bidiyonki kina faɗin sunanki. Misali, idan sunanki Aisha ne, ki ce: Sunana Aisha. Danna kan Laila idan kin shirya."
-  },
-  "en": "We'll take a video of you saying your name. For example, if your name is Musa, say: My name is Musa. Tap Laila when you're ready.",
-  "screens": [],
-  "said_when": "retired 14 Sep: it ended with \"press Laila\", which s_p3 already says",
-  "status": "unused",
-  "recorded": {
-   "m": "9ddead5893",
-   "f": "042c9e4099"
   }
  },
  {
@@ -2460,20 +2293,6 @@
   }
  },
  {
-  "key": "s_l_recall2",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
   "key": "s_laila2",
   "lang": "ha",
   "voice": "laila",
@@ -2693,20 +2512,6 @@
   "recorded": "ee45f798f3"
  },
  {
-  "key": "s_new",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
   "key": "s_o_again2",
   "lang": "ha",
   "voice": "laila",
@@ -2871,17 +2676,6 @@
   "said_when": "",
   "status": "live",
   "recorded": "23dbd23510"
- },
- {
-  "key": "s_o_redo",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
  },
  {
   "key": "s_o_retake",
@@ -3597,35 +3391,6 @@
   }
  },
  {
-  "key": "s_teach_part",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "To. Mu koyi wannan rukuni tukuna.",
-  "en": "Alright. Let's learn this group first.",
-  "screens": [
-   "Haruffa · landing"
-  ],
-  "said_when": "",
-  "status": "unused",
-  "recorded": "fa0b020f3d",
-  "note": "the \"do you know the alphabet?\" gate is gone: the lesson teaches straight away (Sani 2026-09-24)"
- },
- {
-  "key": "s_verify",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "",
-   "f": ""
-  },
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
- },
- {
   "key": "s_welcome",
   "lang": "ha",
   "voice": "laila",
@@ -3713,17 +3478,6 @@
    "m": "c2f21150ae",
    "f": "c48ce5a0f6"
   }
- },
- {
-  "key": "sx_right",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "",
-  "en": "",
-  "screens": [],
-  "said_when": "",
-  "status": "pruned"
  },
  {
   "key": "s_w_name",
@@ -4156,66 +3910,6 @@
   "recorded": "c19a27e75c"
  },
  {
-  "key": "s_pop_demo",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ga misali. Zan fasa na farko:",
-   "f": "Ga misali. Zan fasa na farko:"
-  },
-  "en": "Here is an example. I'll pop the first one:",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "before Laila points at A and pops it; the letter itself is said next No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
-  "status": "unused",
-  "recorded": {
-   "m": "d1600e46ad",
-   "f": "d1600e46ad"
-  }
- },
- {
-  "key": "s_pop_go",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Yanzu kai.",
-   "f": "Yanzu ke."
-  },
-  "en": "Now you.",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "after the example, and when a child stalls No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
-  "status": "unused",
-  "recorded": {
-   "m": "263e421bf0",
-   "f": "6dcc5f7497"
-  }
- },
- {
-  "key": "s_pop_after",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka fasa harafin bayan",
-   "f": "Ki fasa harafin bayan"
-  },
-  "en": "Pop the letter after",
-  "screens": [
-   "Fasa haruffa"
-  ],
-  "said_when": "before each letter, followed by the letter just popped, in Nigerian English No demonstration and no naming of other letters in the game (Sani 12 Oct 15:18).",
-  "status": "unused",
-  "recorded": {
-   "m": "70d8bd1712",
-   "f": "58bf78405a"
-  }
- },
- {
   "key": "s_pop_task",
   "lang": "ha",
   "voice": "laila",
@@ -4320,69 +4014,6 @@
   "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
-  "key": "s_pop_clock",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "Kana da lokaci ka gama dukan haruffa, A zuwa Z.",
-   "f": "Kina da lokaci ki gama dukan haruffa, A zuwa Z."
-  },
-  "en": "You have time to finish all the letters, A to Z.",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "The rules, once, before the child's own run.",
-  "status": "unused",
-  "recorded": {
-   "m": "027ca65078",
-   "f": "91ce015600"
-  },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
- },
- {
-  "key": "s_pop_scoring",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "In ka samu daidai, lokaci zai ƙaru. In ka kuskure, lokaci zai ragu.",
-   "f": "In kin samu daidai, lokaci zai ƙaru. In kin kuskure, lokaci zai ragu."
-  },
-  "en": "Get it right and time goes up. Get it wrong and time goes down.",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "The rules, once, before the child's own run.",
-  "status": "unused",
-  "recorded": {
-   "m": "e2c222154f",
-   "f": "691df801de"
-  },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
- },
- {
-  "key": "s_pop_luck",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "In lokaci ya ƙare, ba ka ci wasan ba. Sa'a!",
-   "f": "In lokaci ya ƙare, ba ki ci wasan ba. Sa'a!"
-  },
-  "en": "If the time runs out, you have not won. Good luck!",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "The last thing she says before the clock starts.",
-  "status": "unused",
-  "recorded": {
-   "m": "7ce44492f4",
-   "f": "37f3971bc5"
-  },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
- },
- {
   "key": "s_pop_timeup",
   "lang": "ha",
   "voice": "laila",
@@ -4396,60 +4027,6 @@
   "status": "live",
   "recorded": "72f71991ee",
   "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
- },
- {
-  "key": "s_gate_q",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "Ka san dukan haruffa?",
-   "f": "Kin san dukan haruffa?"
-  },
-  "en": "Do you know all the letters?",
-  "screens": [
-   "Haruffa · gwada"
-  ],
-  "said_when": "The gate, before she names them. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
-  "status": "unused",
-  "recorded": {
-   "m": "b0274f1a09",
-   "f": "d7d3d001e7"
-  }
- },
- {
-  "key": "s_gate_z",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "any",
-  "text": "…har zuwa Z?",
-  "en": "…all the way to Z?",
-  "screens": [
-   "Haruffa · gwada"
-  ],
-  "said_when": "After A B C D, to make the question the whole alphabet. Dropped from the gate (Sani 12 Oct 13:02).",
-  "status": "unused",
-  "recorded": "1d8b913fd1"
- },
- {
-  "key": "s_gate_how",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "In ka sani, ka danna Laila. In ba ka sani ba, ka danna allo.",
-   "f": "In kin sani, ki danna Laila. In ba ki sani ba, ki danna allo."
-  },
-  "en": "If you know them, tap Laila. If you do not, tap the slate.",
-  "screens": [
-   "Haruffa · gwada"
-  ],
-  "said_when": "The two choices, named. Replaced on the gate by s_gate_first / s_gate_yes / s_gate_no (12 Oct).",
-  "status": "unused",
-  "recorded": {
-   "m": "6e58c1d637",
-   "f": "6208b02828"
-  }
  },
  {
   "key": "s_gate_calm",
@@ -4571,48 +4148,6 @@
   }
  },
  {
-  "key": "s_g_lanterns_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya faɗin haruffan Turanci ɗaya-ɗaya?",
-   "f": "Kin iya faɗin haruffan Turanci ɗaya-ɗaya?"
-  },
-  "en": "Can you say the English letters one by one?",
-  "screens": [
-   "Wasanni · Hawan Sallah"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "26b0e857a4",
-   "f": "ea490c452e"
-  }
- },
- {
-  "key": "s_g_fish_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka san sunayen abubuwa da Turanci?",
-   "f": "Kin san sunayen abubuwa da Turanci?"
-  },
-  "en": "Do you know the names of things in English?",
-  "screens": [
-   "Wasanni · Kamun kifi"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "029b78dffb",
-   "f": "5b4514cfcf"
-  }
- },
- {
   "key": "s_g_fish_how",
   "lang": "ha",
   "voice": "laila",
@@ -4631,27 +4166,6 @@
   "recorded": {
    "m": "53f849aff6",
    "f": "1f0c0a92ce"
-  }
- },
- {
-  "key": "s_g_drum_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya faɗin sunayen abubuwa da Turanci?",
-   "f": "Kin iya faɗin sunayen abubuwa da Turanci?"
-  },
-  "en": "Can you say the names of things in English?",
-  "screens": [
-   "Wasanni · Kalangu"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "32b8c247e9",
-   "f": "e0398907a8"
   }
  },
  {
@@ -4676,27 +4190,6 @@
   }
  },
  {
-  "key": "s_g_market_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Za ka iya gane abu idan an faɗe shi da Turanci?",
-   "f": "Za ki iya gane abu idan an faɗe shi da Turanci?"
-  },
-  "en": "Can you find a thing when it is said in English?",
-  "screens": [
-   "Wasanni · Hanzarin kasuwa"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "e9eab7ce17",
-   "f": "7f3f8be51c"
-  }
- },
- {
   "key": "s_g_market_how",
   "lang": "ha",
   "voice": "laila",
@@ -4715,48 +4208,6 @@
   "recorded": {
    "m": "67dddae6c4",
    "f": "9636616126"
-  }
- },
- {
-  "key": "s_g_stars_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya ƙirga da Turanci?",
-   "f": "Kin iya ƙirga da Turanci?"
-  },
-  "en": "Can you count in English?",
-  "screens": [
-   "Wasanni · Ƙirga taurari"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "8b3629a584",
-   "f": "cc07b93ddc"
-  }
- },
- {
-  "key": "s_g_canoes_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya karanta kalmomi da Turanci?",
-   "f": "Kin iya karanta kalmomi da Turanci?"
-  },
-  "en": "Can you read words in English?",
-  "screens": [
-   "Wasanni · Kwale-kwale"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "5db245a523",
-   "f": "d53bb96960"
   }
  },
  {
@@ -4781,27 +4232,6 @@
   }
  },
  {
-  "key": "s_g_pots_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya rubuta kalmomi da Turanci?",
-   "f": "Kin iya rubuta kalmomi da Turanci?"
-  },
-  "en": "Can you spell words in English?",
-  "screens": [
-   "Wasanni · Tukwane"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "1efb92ac43",
-   "f": "574634d374"
-  }
- },
- {
   "key": "s_g_pots_how",
   "lang": "ha",
   "voice": "laila",
@@ -4820,27 +4250,6 @@
   "recorded": {
    "m": "779858dfd0",
    "f": "88cbd11f6a"
-  }
- },
- {
-  "key": "s_g_house_ask",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Ka iya faɗin haruffan kalma ɗaya bayan ɗaya?",
-   "f": "Kin iya faɗin haruffan kalma ɗaya bayan ɗaya?"
-  },
-  "en": "Can you say the letters of a word one after another?",
-  "screens": [
-   "Wasanni · Ginin bulo"
-  ],
-  "said_when": "First thing on the game: Na sani (Laila) or Ban sani ba (slate). Unreviewed: Claude draft.",
-  "status": "unused",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": {
-   "m": "763254c827",
-   "f": "e203377670"
   }
  },
  {
@@ -4934,48 +4343,6 @@
   "recorded": {
    "m": "4565a2b83a",
    "f": "af7a385b20"
-  }
- },
- {
-  "key": "s_g_durbar_good",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Idan ka faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada.",
-   "f": "Idan kin faɗi harafin daidai, Sarki zai yi farin ciki ya ɗaga masa hannu, masu gadi za su buɗe ƙofa, kuma mahayin zai shiga fada."
-  },
-  "en": "If you say the letter right, the Sarki is happy and waves to him, the guards open the gate, and the horseman goes into the palace.",
-  "screens": [
-   "Wasanni · Hawan Sallah"
-  ],
-  "said_when": "In the example, after the right answer: the emir waves and the rider rides into the palace. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
-  "status": "unused",
-  "review": "approved: Sani 24 Oct",
-  "recorded": {
-   "m": "dc9b2d1419",
-   "f": "ffbea56fcb"
-  }
- },
- {
-  "key": "s_g_durbar_bad",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Idan baka faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya.",
-   "f": "Idan baki faɗi daidai ba, Sarki zai ɓata rai, ƙofa za ta zauna a rufe. kuma mahayin zai koma baya."
-  },
-  "en": "If you don't say it right, the Sarki will be upset, the gate stays shut, and the horseman turns back.",
-  "screens": [
-   "Wasanni · Hawan Sallah"
-  ],
-  "said_when": "In the example, after the wrong answer: the emir turns away and the rider rides back out. Unused since 25 Oct: the example says only s_g_durbar_eg1.",
-  "status": "unused",
-  "review": "approved: Sani 24 Oct (\"baka/baki\" as one word; \"Sarki zai ɓata rai\"; a full stop after \"a rufe\" for the falling tone, \"kuma\" kept lowercase as recorded)",
-  "recorded": {
-   "m": "4d49b55e4f",
-   "f": "f355c3626e"
   }
  },
  {
@@ -5484,27 +4851,6 @@
   }
  },
  {
-  "key": "s_z_now_fada",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Yanzu kai Ɗan Fada ne!",
-   "f": "Yanzu ke 'Yar Fada ce!"
-  },
-  "en": "Now you are a Ɗan Fada / 'Yar Fada!",
-  "screens": [
-   "Wasanni · results"
-  ],
-  "said_when": "A passed course game: the child's title after the gold.",
-  "status": "unused",
-  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed · unused since Ɗan Fada was dropped (Sani 2026-11-04)",
-  "recorded": {
-   "m": "1569298468",
-   "f": "85e60477e1"
-  }
- },
- {
   "key": "s_z_now_jarumi",
   "lang": "ha",
   "voice": "laila",
@@ -5820,27 +5166,6 @@
   }
  },
  {
-  "key": "s_z_gold_8000",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Zinarinka ya kai dubu takwas.",
-   "f": "Zinarinki ya kai dubu takwas."
-  },
-  "en": "Your Zinari have reached 8,000.",
-  "screens": [
-   "Wasanni · title unlock"
-  ],
-  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "unused",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
-  "recorded": {
-   "m": "0525dd3bfa",
-   "f": "e9c80f3b3d"
-  }
- },
- {
   "key": "s_z_gold_10000",
   "lang": "ha",
   "voice": "laila",
@@ -5859,48 +5184,6 @@
   "recorded": {
    "m": "c2d21ef918",
    "f": "6bd007c4da"
-  }
- },
- {
-  "key": "s_z_gold_12000",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Zinarinka ya kai dubu goma sha biyu.",
-   "f": "Zinarinki ya kai dubu goma sha biyu."
-  },
-  "en": "Your Zinari have reached 12,000.",
-  "screens": [
-   "Wasanni · title unlock"
-  ],
-  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "unused",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
-  "recorded": {
-   "m": "98659bce4f",
-   "f": "f11984c2a7"
-  }
- },
- {
-  "key": "s_z_gold_16000",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "pair",
-  "text": {
-   "m": "Zinarinka ya kai dubu goma sha shida.",
-   "f": "Zinarinki ya kai dubu goma sha shida."
-  },
-  "en": "Your Zinari have reached 16,000.",
-  "screens": [
-   "Wasanni · title unlock"
-  ],
-  "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "unused",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
-  "recorded": {
-   "m": "a575e14505",
-   "f": "8a54a3daf2"
   }
  },
  {
