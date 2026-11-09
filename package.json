@@ -25,7 +25,12 @@
     "lint:ig": "node scripts/lint.mjs --lang ig",
     "voice:ig": "node scripts/voice.mjs --lang ig",
     "start:ig": "npm run content:ig && ng serve --configuration ig --port 4203",
-    "build:ig": "npm run content:ig && npm run lint:ig && ng build --configuration production,ig"
+    "build:ig": "npm run content:ig && npm run lint:ig && ng build --configuration production,ig",
+    "content:pcm": "node scripts/build-content.mjs --lang pcm",
+    "lint:pcm": "node scripts/lint.mjs --lang pcm",
+    "voice:pcm": "node scripts/voice.mjs --lang pcm",
+    "start:pcm": "npm run content:pcm && ng serve --configuration pcm --port 4204",
+    "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

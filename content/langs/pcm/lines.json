@@ -1,0 +1,2836 @@
+[
+ {
+  "key": "app_act_desc_letters",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Letters. For here, we go learn the English letters.",
+  "en": "Letters. Here we learn the English letters.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_quiz",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Find the picture. We go call the name of one thing, then you go press im picture.",
+  "en": "Find the picture. The name of a thing will be said, then tap its picture.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_spell",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Writing. For here, we go learn how to write English words, one letter one letter.",
+  "en": "Writing. Here we learn to write English words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_pick",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Pick one lesson, make you hear more about am.",
+  "en": "Pick a lesson, to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_start",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "To start, press the book wey dey up here, make we begin learn.",
+   "f": "To start, press the book wey dey up here, make we begin learn."
+  },
+  "en": "To start, tap the book up here to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_more",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Press the book make we continue to learn.",
+   "f": "Press the book make we continue to learn."
+  },
+  "en": "Tap the book to continue learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_or",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You fit also press one lesson to hear more about am.",
+   "f": "You fit also press one lesson to hear more about am."
+  },
+  "en": "You can also press a lesson to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_locked",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "This lesson never open yet. E go open for you when you reach am for the book.",
+   "f": "This lesson never open yet. E go open for you when you reach am for the book."
+  },
+  "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
+  "status": "draft"
+ },
+ {
+  "key": "app_board_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "See all the letters here. Make we learn them, group by group.",
+  "en": "Here are all the letters. Let's learn them group by group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_animals",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Animals. This lesson na about the different animals wey dey live around us.",
+  "en": "Animals. This lesson is about the different animals that live around us.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_body",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Body. This lesson na about the different parts of our body.",
+  "en": "The body. This lesson is about the different parts of the human body.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_food",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Food. This lesson na about the different food wey we dey chop every day.",
+  "en": "Food. This lesson is about the different foods we eat every day.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_home",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "House things. This lesson na about the things wey we dey use for house.",
+  "en": "Household things. This lesson is about the things used at home.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_nature",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nature. This lesson na about the things wey dey for nature, around us.",
+  "en": "Nature. This lesson is about the things in nature and our surroundings.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_vehicles",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Motor and the rest. This lesson na about motor, and the different things wey we dey ride.",
+  "en": "Vehicles. This lesson is about cars and the different things we ride.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_animals",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of animals. We go learn their name for English.",
+  "en": "Now we'll see pictures of animals. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_body",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of body parts. We go learn their name for English.",
+  "en": "Now we'll see pictures of body parts. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_food",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of food. We go learn their name for English.",
+  "en": "Now we'll see pictures of food. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_home",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of house things. We go learn their name for English.",
+  "en": "Now we'll see pictures of household things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_nature",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of things for nature. We go learn their name for English.",
+  "en": "Now we'll see pictures of things in nature. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_numbers",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go learn how to count. We go show you fingers. Count the fingers wey stand up, then talk the number for English.",
+  "en": "Now we'll learn to count. Fingers will be shown. Count the fingers that are up, then say the number in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_vehicles",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of motor and the rest. We go learn their name for English.",
+  "en": "Now we'll see pictures of vehicles. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_kudos",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Well done!",
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "app_press_allo",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "press the black slate.",
+  "en": "press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_tap",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press the picture of the thing wey we call.",
+  "en": "Tap the picture of the thing that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_wrong",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "No, no be that one. Listen again, try again.",
+  "en": "No, not that one. Listen again, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_good",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "f": "Well done! Now you fit read!",
+   "any": "Well done! Now you fit read!"
+  },
+  "en": "Well done! Now you can read!",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "See one word here. We go read this word together. One letter one letter.",
+  "en": "Here is a word. We'll read this word together. Letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_word",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now read the whole word, loud.",
+  "en": "Now read the whole word, out loud.",
+  "status": "draft"
+ },
+ {
+  "key": "app_remind",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Listen, this one na",
+   "f": "Listen, this one na"
+  },
+  "en": "Listen, this is",
+  "status": "draft"
+ },
+ {
+  "key": "app_retry",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "No, try again.",
+  "en": "No, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_scatter_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go mix them up.",
+  "en": "Now we'll mix them up.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Now write am for English. E get two ways.",
+   "f": "Now write am for English. E get two ways."
+  },
+  "en": "Now write it in English. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the first letter.",
+  "en": "Tap or say the first letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the second letter.",
+  "en": "Tap or say the second letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the third letter.",
+  "en": "Tap or say the third letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the fourth letter.",
+  "en": "Tap or say the fourth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_5",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the fifth letter.",
+  "en": "Tap or say the fifth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_6",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the sixth letter.",
+  "en": "Tap or say the sixth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_7",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the seventh letter.",
+  "en": "Tap or say the seventh letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_8",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the eighth letter.",
+  "en": "Tap or say the eighth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_9",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press or talk the ninth letter.",
+  "en": "Tap or say the ninth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_speak",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Press Ese, then talk the letter.",
+   "f": "Press Ese, then talk the letter."
+  },
+  "en": "Press Laila and say the letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_tap",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Or press any letter.",
+   "f": "Or press any letter."
+  },
+  "en": "Or tap any letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_stage_done",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Well done! You don finish this group.",
+   "f": "Well done! You don finish this group."
+  },
+  "en": "Well done! You've finished this group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_menu_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "See the different lessons here. Press any picture to know wetin dey inside.",
+  "en": "Here are the different lessons. Tap any picture to find out what's in it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_go",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Write am, one letter one letter.",
+   "f": "Write am, one letter one letter."
+  },
+  "en": "Write it, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_test",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now, small test! Write each one, one letter one letter.",
+  "en": "Now, a test! Write each one, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_tap_white",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press Ese to start.",
+  "en": "Press Laila to start.",
+  "status": "draft"
+ },
+ {
+  "key": "app_wannan",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "This one na",
+  "en": "This is",
+  "status": "draft"
+ },
+ {
+  "key": "app_yn_hint_no",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "If no be so,",
+  "en": "If not,",
+  "status": "draft"
+ },
+ {
+  "key": "app_z_speak",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Anytime wey you wan talk, press Ese. I go listen well well!",
+  "en": "Whenever you want to speak, press Laila. I'll listen carefully!",
+  "status": "draft"
+ },
+ {
+  "key": "s0",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Hello! If you be girl, press the white one. If you be boy, press the red one.",
+  "en": "Hello! If you are a girl, tap the white one. If you are a boy, tap the red one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_abc_say",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Press Ese, then talk the letter wey you see.",
+   "f": "Press Ese, then talk the letter wey you see."
+  },
+  "en": "Press Laila, then say the letter you see.",
+  "status": "draft"
+ },
+ {
+  "key": "s_act_desc_things",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Things. For here, we go learn the name of things for English, with pictures.",
+  "en": "Things. Here we learn the names of things in English, with pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_all_done",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! Now you sabi all the letters and the words.",
+   "f": "Well done! Now you sabi all the letters and the words."
+  },
+  "en": "Well done! Now you know all the letters and words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_alone2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Somebody dey near you. Abeg, sidon alone for front of the camera.",
+   "f": "Somebody dey near you. Abeg, sidon alone for front of the camera."
+  },
+  "en": "There is someone next to you. Please sit alone in front of the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_back",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Welcome back!",
+   "m": "To go back, press this door.",
+   "f": "To go back, press this door."
+  },
+  "en": "Welcome back!",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_actions",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Actions. This lesson na about the things wey we dey do every day. Like to chop, to drink, to run and to play.",
+  "en": "Actions. This lesson is about the things we do every day. Like eating, drinking, running and playing.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_clothing",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Clothes. This lesson na about the clothes wey we dey wear.",
+  "en": "Clothing. This lesson is about the clothes we wear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_people",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "People. This lesson na about the people wey dey around us. Mama, papa, pikin and teacher.",
+  "en": "People. This lesson is about the people around us. Mum, dad, children and teachers.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_school",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "School. This lesson na about the things wey we dey use for school.",
+  "en": "School. This lesson is about the things we use at school.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_actions",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of actions. We go learn their name for English.",
+  "en": "Now we'll see pictures of actions. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_clothing",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of clothes. We go learn their name for English.",
+  "en": "Now we'll see pictures of clothes. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_people",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of people. We go learn their name for English.",
+  "en": "Now we'll see pictures of people. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_school",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go see pictures of school things. We go learn their name for English.",
+  "en": "Now we'll see pictures of school things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_closer",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Come near the camera small.",
+   "f": "Come near the camera small."
+  },
+  "en": "Come closer to the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_ear",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "To hear am again, press this ear.",
+   "f": "To hear am again, press this ear."
+  },
+  "en": "To hear it again, press this ear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_go",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now press Ese, make we start.",
+   "f": "Now press Ese, make we start."
+  },
+  "en": "Now press Laila and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_intro2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Reading. For here, we go read words, one letter one letter, then all of am together.",
+  "en": "Reading. Here we read words, letter by letter, then all at once.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_lesson",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go read the name of these things for English.",
+  "en": "Now we'll read the names of these things in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_test",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go do small test on the words wey you don learn. We go show you one word, and you go read the whole of am.",
+   "f": "Now we go do small test on the words wey you don learn. We go show you one word, and you go read the whole of am."
+  },
+  "en": "Now we'll do a small test on the words you learned. A word will be shown, and you read it whole.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Short words. For here, we go read short words, wey get three letters.",
+  "en": "Short words. Here we read short, three-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k45",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Medium words. For here, we go read words wey get four and five letters.",
+  "en": "Medium words. Here we read four- and five-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_klong",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Long words. For here, we go read long words.",
+  "en": "Long words. Here we read long words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_knum",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Numbers. For here, we go read the name of numbers for English.",
+  "en": "Numbers. Here we read the names of numbers in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_check",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go do small test, to make sure say you understand the letters wey you learn.",
+   "f": "Now we go do small test, to make sure say you understand the letters wey you learn."
+  },
+  "en": "Now we'll do a small test, to make sure you understood the letters you learned.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The big test. Talk all the letters, one after the other.",
+   "f": "The big test. Talk all the letters, one after the other."
+  },
+  "en": "The big test. Say all the letters, one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The last test. We go show the letters, all mixed up. Talk all of them.",
+   "f": "The last test. We go show the letters, all mixed up. Talk all of them."
+  },
+  "en": "The last test. The letters will be shown mixed up; say them all.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_look",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See four letters here. Listen and look.",
+   "f": "See four letters here. Listen and look."
+  },
+  "en": "Here are four letters. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you go see two new letters to learn. This one na new stage, and e important well well.",
+   "f": "Now you go see two new letters to learn. This one na new stage, and e important well well."
+  },
+  "en": "Now you'll see two new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you go see four new letters to learn. This one na new stage, and e important well well.",
+   "f": "Now you go see four new letters to learn. This one na new stage, and e important well well."
+  },
+  "en": "Now you'll see four new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_recall",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you talk am by yourself.",
+   "f": "Now you talk am by yourself."
+  },
+  "en": "Now you say it yourself.",
+  "status": "draft"
+ },
+ {
+  "key": "s_laila2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "My name na Ese. I be your learning friend. Now press my head, make we start.",
+   "f": "My name na Ese. I be your learning friend. Now press my head, make we start."
+  },
+  "en": "My name is Laila. I'm your learning friend. Now press my head and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_leave",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The lesson wan end. If you don finish, press Ese. If you never finish, press the black slate.",
+  "en": "The session will end. If you are done, press Laila. If not, press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "s_light",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Find place wey get more light.",
+   "f": "Find place wey get more light."
+  },
+  "en": "Find a brighter spot.",
+  "status": "draft"
+ },
+ {
+  "key": "s_loading",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Abeg wait small. Everything dey get ready.",
+  "en": "Please wait a little. Everything is getting ready.",
+  "status": "draft"
+ },
+ {
+  "key": "s_look",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Look the camera.",
+   "f": "Look the camera."
+  },
+  "en": "Look at the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_big",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now, the big test! We go test all the numbers wey you don learn, to make sure say you sabi them. We go show you one number, we go call im name for Pidgin, and you go talk im name for English. If you don forget im English name,",
+   "f": "Now, the big test! We go test all the numbers wey you don learn, to make sure say you sabi them. We go show you one number, we go call im name for Pidgin, and you go talk im name for English. If you don forget im English name,"
+  },
+  "en": "Now the big test! We'll test all the numbers you learned, to make sure you know them. A number will be shown, its name said in Hausa, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_focus5",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go learn again the ones wey hard you, together with some wey you sabi, make you practise more.",
+   "f": "Now we go learn again the ones wey hard you, together with some wey you sabi, make you practise more."
+  },
+  "en": "Now we'll learn again the ones you struggled with, together with a few you know, for extra practice.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_hundreds",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now the hundreds: two hundred, three hundred, reach nine hundred, then one thousand.",
+  "en": "Now the hundreds: two hundred, three hundred, up to nine hundred, then a thousand.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "For here, we go learn numbers. First, we go count with our fingers, from one reach ten. Then we go learn how numbers dey look when we write them.",
+  "en": "Here we learn numbers. First we count on our fingers, one to ten. Then we learn the number signs.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_palms",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "See one hand here. Count the fingers wey stand up.",
+  "en": "Here is a hand. Count the fingers that are up.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_sym2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now the numbers as we dey write them, from eleven reach twenty.",
+  "en": "Now the number signs from eleven to twenty.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_symbols",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go learn how to write the numbers wey you don learn, from one reach ten.",
+   "f": "Now we go learn how to write the numbers wey you don learn, from one reach ten."
+  },
+  "en": "Now we'll learn the signs of the numbers you learned, one to ten.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_tens",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now we go learn the big numbers: thirty, forty, fifty, reach one hundred.",
+  "en": "Now we'll learn the big numbers: thirty, forty, fifty, up to a hundred.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_again2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Listen again. For English, na:",
+   "f": "Listen again. For English, na:"
+  },
+  "en": "Listen again. In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_allright",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You get all of them correct! Now we dey go front.",
+   "f": "You get all of them correct! Now we dey go front."
+  },
+  "en": "You got them all right! Now we go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_focus",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The pictures wey you go see now na the ones wey hard you. We go learn them again.",
+   "f": "The pictures wey you go see now na the ones wey hard you. We go learn them again.",
+   "any": "Make we learn these ones again."
+  },
+  "en": "The pictures you'll see now are the ones you struggled with. We'll learn them again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_go",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You fit do am!",
+   "f": "You fit do am!"
+  },
+  "en": "You can do it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_inen",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "For English, na:",
+  "en": "In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_look",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See three pictures here. Listen and look.",
+   "f": "See three pictures here. Listen and look."
+  },
+  "en": "Here are three pictures. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_miss",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "That one no correct. Make we dey go.",
+  "en": "That one wasn't right. Let's go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_new3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now see five more pictures.",
+  "en": "Now here are five more pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_next",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now, make we go the next one.",
+  "en": "Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_retake",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Some no correct. We go learn them again, then do the test again.",
+  "en": "Some weren't right. We'll learn them again, then take the test again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_right",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See the ones wey you get correct:",
+   "f": "See the ones wey you get correct:"
+  },
+  "en": "Here are the ones you got right:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_say",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk am for English.",
+   "f": "Talk am for English."
+  },
+  "en": "Say it in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_test2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go do small test, to make sure say you sabi them. We go show you one picture, we go call im name for Pidgin, and you go talk im name for English. If you don forget im English name,",
+   "f": "Now we go do small test, to make sure say you sabi them. We go show you one picture, we go call im name for Pidgin, and you go talk im name for English. If you don forget im English name,"
+  },
+  "en": "Now we'll do a small test, to make sure you know them. A picture will be shown, its name said in Hausa, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_three",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "That one hard. Now, make we go the next one.",
+  "en": "That one is hard. Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_turn",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Na your turn. Press Ese, then talk im name for English.",
+   "f": "Na your turn. Press Ese, then talk im name for English."
+  },
+  "en": "Your turn. Press Laila and say its name in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_wrong",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "And these ones, we go learn them again:",
+  "en": "And these, we'll learn again:",
+  "status": "draft"
+ },
+ {
+  "key": "s_p1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "We go take video of you as you dey talk your name. For example, if your name na Tobi, talk say: My name na Tobi.",
+   "f": "We go take video of you as you dey talk your name. For example, if your name na Amaka, talk say: My name na Amaka."
+  },
+  "en": "We will take a video of you saying your name. For example, if your name is Musa, say: Sunana Musa.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "See one boy here, Tobi. E dey talk im name.",
+   "f": "See one girl here, Amaka. E dey talk her name."
+  },
+  "en": "Here is the boy Musa / the girl Aisha, saying the name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now na you: press Ese, then talk your name.",
+   "f": "Now na you: press Ese, then talk your name."
+  },
+  "en": "Now you: press Laila, then say your name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We need the camera and the microphone make this one work. Press 'Allow'.",
+  "en": "We need the camera and the microphone for this to work. Tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm_no",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Dem no give permission. Try again, and press 'Allow'.",
+  "en": "Permission was not given. Try again and tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_again",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now make we play again, with new ones. Listen well well.",
+   "f": "Now make we play again, with new ones. Listen well well."
+  },
+  "en": "Now let's play again, with new ones. Listen carefully.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_q4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Four pictures. You go see four pictures. We go call one of them for English, and you go press am.",
+   "f": "Four pictures. You go see four pictures. We go call one of them for English, and you go press am."
+  },
+  "en": "Four pictures. You'll see four pictures, one will be named in English, and you tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_qnum",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Numbers. We go call one number for English, and you go press how e dey look when we write am.",
+   "f": "Numbers. We go call one number for English, and you go press how e dey look when we write am."
+  },
+  "en": "Numbers. A number will be said in English, and you tap its sign.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_tap",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press the number wey we call.",
+  "en": "Tap the sign of the number that was said.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_intro2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "For here, we go learn how to write the name of things for English, one letter one letter. We go show you one picture, and you go write im name.",
+   "f": "For here, we go learn how to write the name of things for English, one letter one letter. We go show you one picture, and you go write im name."
+  },
+  "en": "Here we learn to write the names of things in English, letter by letter. A picture will be shown, and you write its name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_turn",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Na your turn. Pick one lesson.",
+   "f": "Na your turn. Pick one lesson."
+  },
+  "en": "Your turn. Pick a lesson.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_wow",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done!",
+   "f": "Well done!"
+  },
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Three letters. For here, we go write words wey get three letters, one letter one letter.",
+  "en": "Three letters. Here we write three-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Four letters. For here, we go write words wey get four letters, one letter one letter.",
+  "en": "Four letters. Here we write four-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r5",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Five letters. For here, we go write words wey get five letters, one letter one letter.",
+  "en": "Five letters. Here we write five-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rlong",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Long words. For here, we go write long words, one letter one letter.",
+  "en": "Long words. Here we write long words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rnum",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Numbers. For here, we go write the name of numbers for English, one letter one letter.",
+  "en": "Numbers. Here we write the names of numbers in English, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_face",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "I no dey see you well. Abeg, make we try again.",
+   "f": "I no dey see you well. Abeg, make we try again."
+  },
+  "en": "I can't see you well. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_name",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "I no hear as you talk your name. Abeg, make we try again.",
+   "f": "I no hear as you talk your name. Abeg, make we try again."
+  },
+  "en": "I couldn't hear you say your name. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_laila",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Press Ese to try again.",
+   "f": "Press Ese to try again."
+  },
+  "en": "Click Laila to try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_door",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Or press this door to go back and start again.",
+   "f": "Or press this door to go back and start again."
+  },
+  "en": "Or click this door to go back and start again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sannu",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Hello,",
+  "en": "Hello,",
+  "status": "draft"
+ },
+ {
+  "key": "s_say_it",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk am now.",
+   "f": "Talk am now."
+  },
+  "en": "Say it now.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The first letter na:",
+  "en": "The first letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The second letter na:",
+  "en": "The second letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The third letter na:",
+  "en": "The third letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The fourth letter na:",
+  "en": "The fourth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_5",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The fifth letter na:",
+  "en": "The fifth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_6",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The sixth letter na:",
+  "en": "The sixth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_7",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The seventh letter na:",
+  "en": "The seventh letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_8",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The eighth letter na:",
+  "en": "The eighth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_9",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The ninth letter na:",
+  "en": "The ninth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_press",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press am.",
+  "en": "Tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_spelt",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Na so dem dey write am:",
+  "en": "It is written like this:",
+  "status": "draft"
+ },
+ {
+  "key": "s_still",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "No shake.",
+   "f": "No shake."
+  },
+  "en": "Hold still.",
+  "status": "draft"
+ },
+ {
+  "key": "s_welcome",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Welcome!",
+  "en": "Welcome!",
+  "status": "draft"
+ },
+ {
+  "key": "sx_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Example! Watch and listen how we dey do am.",
+   "f": "Example! Watch and listen how we dey do am."
+  },
+  "en": "Example! Watch and listen to how it's done.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_k_letters",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "I go read the letters, one by one. Listen.",
+   "f": "I go read the letters, one by one. Listen."
+  },
+  "en": "I will read the letters, one by one. Listen.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_laila",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "See wetin I go talk:",
+  "en": "Here is what I'll say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_now",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Na your turn. Try am.",
+   "f": "Na your turn. Try am."
+  },
+  "en": "Your turn. Try it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_name",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "My name na Ese. I be your learning friend.",
+   "f": "My name na Ese. I be your learning friend."
+  },
+  "en": "My name is Laila. I am your learning friend.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_together",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Together, we go learn English.",
+  "en": "Together we are going to learn English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_have",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "I get lessons wey sweet well well.",
+  "en": "I have amazing lessons.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We go learn the English alphabet.",
+  "en": "We will learn the English alphabet.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We go learn how to read and write for English.",
+  "en": "We will learn to read and write in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We go learn how to count.",
+  "en": "We will learn to count.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We go learn the name of things like animals and food, for English.",
+  "en": "We will learn the names of things like animals and foods, in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_more",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "And plenty other things wey sweet.",
+  "en": "And many other amazing things.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_talk",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You go fit talk to me, and I go dey with you.",
+   "f": "You go fit talk to me, and I go dey with you."
+  },
+  "en": "You will be able to speak to me and I will be with you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_glad",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "I happy to see you.",
+   "f": "I happy to see you."
+  },
+  "en": "I am happy to see you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_cont",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Now make we continue from where we stop.",
+  "en": "Now let us continue from where we stopped.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_say",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See wetin you go do to talk am for English. You go press Ese, then you go talk say:",
+   "f": "See wetin you go do to talk am for English. You go press Ese, then you go talk say:"
+  },
+  "en": "Here is what you will do to say it in English. You will press Laila, then you will say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_read",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See wetin you go do to read am for English. You go press Ese, then you go read the word:",
+   "f": "See wetin you go do to read am for English. You go press Ese, then you go read the word:"
+  },
+  "en": "Here is what you will do to read it in English. You will press Laila, then you will read the word:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_spell",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See wetin you go do to write am for English. You go press Ese, then you go talk the letters:",
+   "f": "See wetin you go do to write am for English. You go press Ese, then you go talk the letters:"
+  },
+  "en": "Here is what you will do to write it in English. You will press Laila, then you will say the letters:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_find",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See wetin you go do. Listen, then press the picture wey we call.",
+   "f": "See wetin you go do. Listen, then press the picture wey we call."
+  },
+  "en": "Here is what you will do. Listen, then press the picture that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_findnum",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See wetin you go do. Listen, then press the number wey we call.",
+   "f": "See wetin you go do. Listen, then press the number wey we call."
+  },
+  "en": "Here is what you will do. Listen, then press the number that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_start",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go show you four pictures. Listen for the name wey we call for English, then press am.",
+   "f": "Now we go show you four pictures. Listen for the name wey we call for English, then press am."
+  },
+  "en": "Now you will be shown four pictures. Listen for the name said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_start",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now we go show you numbers. Listen for the one wey we call for English, then press am.",
+   "f": "Now we go show you numbers. Listen for the one wey we call for English, then press am."
+  },
+  "en": "Now you will be shown numbers. Listen for the one said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_plan",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We go talk the letters, one after the other. E get two ways.",
+  "en": "We will say the letters one after another. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The first one, with your voice.",
+  "en": "The first, with your voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The second one, with the board.",
+  "en": "The second, with the board.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The first letter, I go talk am with my voice.",
+  "en": "The first letter, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "The second letter too, I go talk am with my voice.",
+  "en": "The second letter too, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_kb",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "And the last letter, I go press am for the board.",
+  "en": "And the last letter, I will press it on the board.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_intro",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See balloons wey get letters. Press one balloon with your finger, and e go burst.",
+   "f": "See balloons wey get letters. Press one balloon with your finger, and e go burst."
+  },
+  "en": "Here are balloons with letters. Press a balloon with your finger and it bursts.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_done",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Well done, we don finish the game!",
+  "en": "Well done, we've finished the game!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_task",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Find the first letter for English, and burst am. Then the letter wey follow am.",
+   "f": "Find the first letter for English, and burst am. Then the letter wey follow am."
+  },
+  "en": "Find the first letter of English and pop it. Then the letter after it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_first",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Burst the first letter:",
+   "f": "Burst the first letter:"
+  },
+  "en": "Pop the first letter:",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_next",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Burst the next letter.",
+   "f": "Burst the next letter."
+  },
+  "en": "Pop the next letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_eg_watch",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "I go show you again. Look well.",
+   "f": "I go show you again. Look well."
+  },
+  "en": "I will show you again. Pay attention.",
+  "status": "draft"
+ },
+ {
+  "key": "s_eg_ok",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "E no correct, but you go learn am.",
+   "f": "E no correct, but you go learn am."
+  },
+  "en": "That was not right, but you will learn.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_timeup",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Time don finish. Make we learn the letters first.",
+  "en": "Time is up. Let us learn the letters first.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_calm",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "No worry. Make we learn them first.",
+   "f": "No worry. Make we learn them first."
+  },
+  "en": "Don't worry. Let us learn them first.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_play",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "We wan play small game.",
+  "en": "We are going to play a little game.",
+  "status": "draft"
+ },
+ {
+  "key": "s_wb_home",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "If you wan go back home, press the book.",
+   "f": "If you wan go back home, press the book."
+  },
+  "en": "To go home, press the book.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_first",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "We wan make sure say you sabi the English letters, like",
+   "f": "We wan make sure say you sabi the English letters, like"
+  },
+  "en": "We want to make sure you know the English letters, like",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_yes",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "If you sabi them, press Ese make we start.",
+   "f": "If you sabi them, press Ese make we start."
+  },
+  "en": "If you know them, tap Laila to begin.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_no",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "If you no sabi them, no wahala, we go learn them together. Press the black slate make we start to learn.",
+   "f": "If you no sabi them, no wahala, we go learn them together. Press the black slate make we start to learn."
+  },
+  "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_fish_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Catch the fish wey carry the thing wey I talk.",
+   "f": "Catch the fish wey carry the thing wey I talk."
+  },
+  "en": "Catch the fish carrying the thing I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_drum_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Look this picture. Press Ese, talk im name for English, and I go beat the drum!",
+   "f": "Look this picture. Press Ese, talk im name for English, and I go beat the drum!"
+  },
+  "en": "Look at this picture. Tap Laila, say its name in English, and I will beat the drum!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_market_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The buyers don come! Quick quick, give each person wetin dem ask for.",
+   "f": "The buyers don come! Quick quick, give each person wetin dem ask for."
+  },
+  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_canoes_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey each canoe, then press the one wey match the picture.",
+   "f": "Read the word wey dey each canoe, then press the one wey match the picture."
+  },
+  "en": "Read the word in each canoe, then tap the one that matches the picture.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_pots_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Make we build one word with pots. Press the letters, one after the other.",
+   "f": "Make we build one word with pots. Press the letters, one after the other."
+  },
+  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_house_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Make we build the house before time finish! Press Ese, and talk the letters of the word one by one. Every letter na one brick.",
+   "f": "Make we build the house before time finish! Press Ese, and talk the letters of the word one by one. Every letter na one brick."
+  },
+  "en": "Let's build the house before time runs out! Tap Laila and say the word's letters one by one. Every letter is a brick.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_learn",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "No wahala! Make we start to learn together. Press Ese to continue.",
+  "en": "No problem! Let's start learning together. Tap Laila to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_go",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Press Ese to continue.",
+  "en": "Tap Laila to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk the letter wey dey the horse rider flag, and e go greet the emir!",
+   "f": "Talk the letter wey dey the horse rider flag, and e go greet the emir!"
+  },
+  "en": "Say the letter on the horseman's banner, and he will greet the emir!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_eg1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See how the game dey go: talk the letter wey you see for the horse rider flag, make the emir happy.",
+   "f": "See how the game dey go: talk the letter wey you see for the horse rider flag, make the emir happy."
+  },
+  "en": "Here is how the game works: say the letter you see on the horseman's flag, so the Sarki is happy.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now, press Ese make we start.",
+   "f": "Now, press Ese make we start."
+  },
+  "en": "Now, press Laila and we will start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_dillali_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk the name of this thing for English, and the auctioneer go sell am!",
+   "f": "Talk the name of this thing for English, and the auctioneer go sell am!"
+  },
+  "en": "Say this thing's name in English, and the auctioneer will sell it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shayi_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk wetin you want for English, and the tea seller go give you!",
+   "f": "Talk wetin you want for English, and the tea seller go give you!"
+  },
+  "en": "Say what you want in English, and the tea seller will give it to you!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_gyada_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Press the pile wey get the same number of bags as the number wey I talk.",
+   "f": "Press the pile wey get the same number of bags as the number wey I talk."
+  },
+  "en": "Tap the stack with as many sacks as the number I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shanu_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Press the animal wey im price na the one wey I talk.",
+   "f": "Press the animal wey im price na the one wey I talk."
+  },
+  "en": "Tap the animal whose price matches what I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Count the cows wey dey inside the pen, and talk how many for English.",
+   "f": "Count the cows wey dey inside the pen, and talk how many for English."
+  },
+  "en": "Count the cows in the pen and say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_eg1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "See how the game dey go: count the cows wey dey inside the pen, then talk how many for English.",
+   "f": "See how the game dey go: count the cows wey dey inside the pen, then talk how many for English."
+  },
+  "en": "Here is how the game works: count the cows in the pen, then say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_suya_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk the money wey dey your hand for English, and pay the suya seller.",
+   "f": "Talk the money wey dey your hand for English, and pay the suya seller."
+  },
+  "en": "Say the money in your hand in English, and pay the suya seller.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_allo_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey the board loud, and we go wash am clean.",
+   "f": "Read the word wey dey the board loud, and we go wash am clean."
+  },
+  "en": "Read the word on the board out loud, and we will wash it clean.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_jirgi_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey the boat loud, and e go come reach the river side.",
+   "f": "Read the word wey dey the boat loud, and e go come reach the river side."
+  },
+  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_marubuci_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk the letters of the word one by one, or press them for the board, and the letter writer go write them.",
+   "f": "Talk the letters of the word one by one, or press them for the board, and the letter writer go write them."
+  },
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_ruwa_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey the cloud loud, and rain go fall for the farm.",
+   "f": "Read the word wey dey the cloud loud, and rain go fall for the farm."
+  },
+  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_rini_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Talk the letters of the word one by one, or press them for the board, and the dyer go dye the cloth.",
+   "f": "Talk the letters of the word one by one, or press them for the board, and the dyer go dye the cloth."
+  },
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the dyer will dye the cloth.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_game",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now make we play one game with the letters wey you don learn!",
+   "f": "Now make we play one game with the letters wey you don learn!"
+  },
+  "en": "Now let's play a game with the letters you've learned!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_again",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You near am! Make we try one more time.",
+   "f": "You near am! Make we try one more time."
+  },
+  "en": "You were close! Let's try once more.",
+  "status": "draft"
+ },
+ {
+  "key": "s_game_open",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you fit play this game anytime wey you want, from the home page.",
+   "f": "Now you fit play this game anytime wey you want, from the home page."
+  },
+  "en": "Now you can play this game whenever you like, from the home page.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_50",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get three stars and fifty gold.",
+   "f": "Well done! You don get three stars and fifty gold."
+  },
+  "en": "Well done! You earned three stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_100",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get three stars and one hundred gold.",
+   "f": "Well done! You don get three stars and one hundred gold."
+  },
+  "en": "Well done! You earned three stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_150",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get three stars and one hundred and fifty gold.",
+   "f": "Well done! You don get three stars and one hundred and fifty gold."
+  },
+  "en": "Well done! You earned three stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_200",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get three stars and two hundred gold.",
+   "f": "Well done! You don get three stars and two hundred gold."
+  },
+  "en": "Well done! You earned three stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_50",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get four stars and fifty gold.",
+   "f": "Well done! You don get four stars and fifty gold."
+  },
+  "en": "Well done! You earned four stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_100",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get four stars and one hundred gold.",
+   "f": "Well done! You don get four stars and one hundred gold."
+  },
+  "en": "Well done! You earned four stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_150",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get four stars and one hundred and fifty gold.",
+   "f": "Well done! You don get four stars and one hundred and fifty gold."
+  },
+  "en": "Well done! You earned four stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_200",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Well done! You don get four stars and two hundred gold.",
+   "f": "Well done! You don get four stars and two hundred gold."
+  },
+  "en": "Well done! You earned four stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_jarumi",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you don become Champion!",
+   "f": "Now you don become Champion!"
+  },
+  "en": "Now you are a Jarumi / Jaruma!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_malami",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you don become Teacher!",
+   "f": "Now you don become Teacher!"
+  },
+  "en": "Now you are a Malami / Malama!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_dansarki",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you don become Prince!",
+   "f": "Now you don become Princess!"
+  },
+  "en": "Now you are a Ɗan Sarki / 'Yar Sarki!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_magaji",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you don become Chief!",
+   "f": "Now you don become Chief!"
+  },
+  "en": "Now you are a Magaji / Magajiya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_sarki",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Now you don become King!",
+   "f": "Now you don become Queen!"
+  },
+  "en": "Now you are a Sarki / Sarauniya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_effort",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your hard work don carry you reach new level!",
+   "f": "Your hard work don carry you reach new level!"
+  },
+  "en": "Your effort has brought you to a new level!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag1",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your first bag of gold don full!",
+   "f": "Your first bag of gold don full!"
+  },
+  "en": "Your first bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag2",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your second bag of gold don full!",
+   "f": "Your second bag of gold don full!"
+  },
+  "en": "Your second bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag3",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your third bag of gold don full!",
+   "f": "Your third bag of gold don full!"
+  },
+  "en": "Your third bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag4",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your fourth bag of gold don full!",
+   "f": "Your fourth bag of gold don full!"
+  },
+  "en": "Your fourth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag5",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your fifth bag of gold don full!",
+   "f": "Your fifth bag of gold don full!"
+  },
+  "en": "Your fifth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_1000",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your gold don reach one thousand.",
+   "f": "Your gold don reach one thousand."
+  },
+  "en": "Your Zinari have reached 1,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_2000",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your gold don reach two thousand.",
+   "f": "Your gold don reach two thousand."
+  },
+  "en": "Your Zinari have reached 2,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_4000",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your gold don reach four thousand.",
+   "f": "Your gold don reach four thousand."
+  },
+  "en": "Your Zinari have reached 4,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_6000",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your gold don reach six thousand.",
+   "f": "Your gold don reach six thousand."
+  },
+  "en": "Your Zinari have reached 6,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_10000",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Your gold don reach ten thousand.",
+   "f": "Your gold don reach ten thousand."
+  },
+  "en": "Your Zinari have reached 10,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_first",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "This one na the first level. Four more levels dey front.",
+  "en": "This is the first level. There are four more levels ahead.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep_first",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Keep trying, till you become King!",
+   "f": "Keep trying, till you become Queen!"
+  },
+  "en": "Keep trying, until you become Sarki / Sarauniya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Keep the hard work like this!",
+  "en": "Keep up the effort like this!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "This one na the highest level of all!",
+  "en": "This is the highest level of all!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top_keep",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Keep learning every day!",
+  "en": "Keep learning every day!",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hawan",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The Sallah horse riders dey come! Talk each letter as the horse rider dey pass.",
+   "f": "The Sallah horse riders dey come! Talk each letter as the horse rider dey pass."
+  },
+  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_fashe",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Letters dey fly up inside balloons. Burst the letter wey I talk.",
+   "f": "Letters dey fly up inside balloons. Burst the letter wey I talk."
+  },
+  "en": "Letters float up in balloons. Pop the letter Laila says.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hanzarin",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Help the market woman: quick quick, find the food wey I call.",
+   "f": "Help the market woman: quick quick, find the food wey I call."
+  },
+  "en": "Help the market woman: quickly find the food Laila names.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kifi",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Make we go catch fish! Catch the fish wey carry the correct picture.",
+   "f": "Make we go catch fish! Catch the fish wey carry the correct picture."
+  },
+  "en": "Go fishing: catch the fish that carries the right picture.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kalangu",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "When you hear the correct word, beat the drum.",
+   "f": "When you hear the correct word, beat the drum."
+  },
+  "en": "Beat the drum when you hear the right word.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shayi",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You be the tea seller. Give each buyer the thing wey e ask for.",
+   "f": "You be the tea seller. Give each buyer the thing wey e ask for."
+  },
+  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dillali",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "You be the auctioneer: talk the name of each thing, so you fit sell am.",
+   "f": "You be the auctioneer: talk the name of each thing, so you fit sell am."
+  },
+  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dalar",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Load the groundnut bags for the lorry. Then count them.",
+   "f": "Load the groundnut bags for the lorry. Then count them."
+  },
+  "en": "Load the groundnut sacks onto the lorry and count them.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_suya",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Sell suya for the night market, and count the money.",
+   "f": "Sell suya for the night market, and count the money."
+  },
+  "en": "Sell suya at the night market and count the money.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_allo",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey the board for the class.",
+   "f": "Read the word wey dey the board for the class."
+  },
+  "en": "Read the word on the allo board to the class.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_jirgi",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey each boat, make e fit sail.",
+   "f": "Read the word wey dey each boat, make e fit sail."
+  },
+  "en": "Read the word on each boat to let it sail.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kwale",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word, and the canoe go cross the river.",
+   "f": "Read the word, and the canoe go cross the river."
+  },
+  "en": "Read the word on the canoe to paddle across the river.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_ruwa",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Read the word wey dey the rain cloud, and the rain go make the millet grow.",
+   "f": "Read the word wey dey the rain cloud, and the rain go make the millet grow."
+  },
+  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_tukwane",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Write the word with the letter pots.",
+   "f": "Write the word with the letter pots."
+  },
+  "en": "Spell the word with the letter pots.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_bulo",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Write the word, one brick after the other, make you build the wall.",
+   "f": "Write the word, one brick after the other, make you build the wall."
+  },
+  "en": "Spell the word brick by brick to build the wall.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_marubuci",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Help the letter writer. Write the word.",
+   "f": "Help the letter writer. Write the word."
+  },
+  "en": "Help the letter writer spell the word on the envelope.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_karofi",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Write the word with the dye cloth from Kano.",
+   "f": "Write the word with the dye cloth from Kano."
+  },
+  "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shanu",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Find the cow wey im price correct, for the cow market.",
+   "f": "Find the cow wey im price correct, for the cow market."
+  },
+  "en": "Find the cow with the right price at the cattle market.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_garke",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Count the cows as dem dey enter the pen.",
+   "f": "Count the cows as dem dey enter the pen."
+  },
+  "en": "Count the cattle as they go into the kraal.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "pcm",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "The stars dey wait! Press them one after the other, from one.",
+   "f": "The stars dey wait! Press them one after the other, from one."
+  },
+  "en": "The stars are waiting! Press them in order, from one.",
+  "status": "draft"
+ }
+]

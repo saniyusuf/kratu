@@ -1,7 +1,7 @@
 // Records a demo language: every line and every word name whose clip is missing or whose text changed.
 //   node scripts/voice.mjs --lang sw [--dry-run] [--only key] [--force] [--lines-only | --words-only]
 // The voice is set in content/langs/<code>/lang.json → tts: Google's free voice where it speaks the language, else a
-// local MMS-family model (tools/tts_mms.py in tools/.venv-tts). What each clip was made from is kept in recorded.json.
+// local MMS-family model, or a paid Nigerian voice (spitch, plotweaver) (tools/tts_mms.py in tools/.venv-tts). What each clip was made from is kept in recorded.json.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, copyFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -28,6 +28,18 @@ async function spitch(text, lang, voice, dest, enc = {}, speed) {
     if (r.ok) { const tmp = join(tmpdir(), 'kratu-spitch-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.mp3'); writeFileSync(tmp, Buffer.from(await r.arrayBuffer())); encode(tmp, dest, enc); rmSync(tmp, { force: true }); return; }
     if (r.status === 402 || r.status === 401 || i >= 3) throw new Error('spitch ' + r.status);   // no credit or a bad key: retrying will not help
     await new Promise((res) => setTimeout(res, 2000 * (i + 1)));
+  }
+}
+
+/** PlotWeaver (paid, Nigerian voices, servers in the US): the key is PLOTWEAVER_API_KEY in tools/.env.plotweaver, read here
+ *  and never printed. Only Laila's catalogue lines and word names go to it: never a child's own recording or name. */
+const pwKey = () => { const f = 'tools/.env.plotweaver', m = existsSync(f) ? /^PLOTWEAVER_API_KEY=(.+)$/m.exec(readFileSync(f, 'utf8')) : null; if (!m) throw new Error('no PLOTWEAVER_API_KEY in ' + f); return m[1].trim(); };
+async function plotweaver(text, lang, voice, dest, enc = {}, model) {
+  for (let i = 0; ; i++) {
+    const r = await fetch('https://api.plotweaver.app/v1/speech', { method: 'POST', headers: { 'X-API-Key': pwKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: lang, voice_id: voice, normalize: true, ...(model ? { model } : {}) }) });
+    if (r.ok) { const tmp = join(tmpdir(), 'kratu-pw-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.wav'); writeFileSync(tmp, Buffer.from(await r.arrayBuffer())); encode(tmp, dest, enc); rmSync(tmp, { force: true }); return; }
+    if ([400, 401, 402, 403, 422].includes(r.status) || i >= 4) throw new Error('plotweaver ' + r.status + ' ' + (await r.text()).slice(0, 160));   // a bad key, no credit or a refused text: retrying will not help
+    const wait = Number(r.headers.get('retry-after')) || 2 * (i + 1); await new Promise((res) => setTimeout(res, wait * 1000));
   }
 }
 
@@ -82,13 +94,13 @@ export async function voiceLang(code, args) {
     execFileSync('tools/.venv-tts/bin/python', ['tools/tts_mms.py', '--model', tts.model, '--jobs', join(tmp, 'jobs.json')].concat(tts.rate ? ['--rate', String(tts.rate)] : []), { stdio: ['ignore', 'ignore', 'inherit'] });
     for (const p of todo) { try { encode(same.get(p.text), dir + '/' + p.key + '.ogg', enc); rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
     rmSync(tmp, { recursive: true, force: true });
-  } else if (tts.provider === 'google' || tts.provider === 'edge' || tts.provider === 'spitch') {
+  } else if (tts.provider === 'google' || tts.provider === 'edge' || tts.provider === 'spitch' || tts.provider === 'plotweaver') {
     for (const p of todo) {
       const dest = dir + '/' + p.key + '.ogg';
-      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else if (tts.provider === 'spitch') await spitch(p.text, tts.lang || code, tts.voice, dest, enc, tts.speed); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
+      try { if (same.has(p.text)) copyFileSync(same.get(p.text), dest); else { if (tts.provider === 'edge') edge(p.text, tts.voice, dest, enc); else if (tts.provider === 'spitch') await spitch(p.text, tts.lang || code, tts.voice, dest, enc, tts.speed); else if (tts.provider === 'plotweaver') await plotweaver(p.text, tts.lang || code, tts.voice, dest, enc, tts.model); else await google(p.text, tts.voice, dest, enc); same.set(p.text, dest); } rec[p.key] = H(p.text); made++; console.log('made  ' + p.key); if (made % 20 === 0) save(); }
       catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); }
     }
-  } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge, spitch or mms');
+  } else if (todo.length) throw new Error('lang.json tts.provider must be google, edge, spitch, plotweaver or mms');
   for (const p of enTodo) { try { if (pack.english.provider !== 'edge') throw new Error('english.provider must be edge'); edge(p.text, pack.english.voice, p.dest, encEn); rec[p.rk] = H(p.text); made++; console.log('made  ' + p.rk); if (made % 20 === 0) save(); } catch (e) { failed++; console.log('FAIL  ' + p.rk + ' ' + (e.message || e)); } }
   save();
   console.log(`voice[${code}]: ${made} made, ${failed} failed`); return failed;

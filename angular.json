@@ -170,6 +170,32 @@
                   "input": "langs/ig/public"
                 }
               ]
+            },
+            "pcm": {
+              "outputPath": "dist/kratu-pcm",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/lang/lang.ts",
+                  "with": "src/app/core/lang/lang.pcm.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "assets/clips.json",
+                    "assets/words.json",
+                    "assets/media.json",
+                    "assets/audio/ha/**",
+                    "names_bank_expanded.json"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "langs/pcm/public"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -200,6 +226,12 @@
             },
             "ig-production": {
               "buildTarget": "kratu:build:production,ig"
+            },
+            "pcm": {
+              "buildTarget": "kratu:build:development,pcm"
+            },
+            "pcm-production": {
+              "buildTarget": "kratu:build:production,pcm"
             }
           },
           "defaultConfiguration": "development",
