@@ -1622,7 +1622,7 @@
   "gender": "any",
   "text": "Aga m egosi gị ọzọ. Lezie anya.",
   "en": "I will show you again. Pay attention.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_eg_ok",
@@ -1631,7 +1631,7 @@
   "gender": "any",
   "text": "O zighi ezi, mana ị ga-amụta ya.",
   "en": "That was not right, but you will learn.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_pop_clock",
@@ -1667,7 +1667,7 @@
   "gender": "any",
   "text": "Oge agwụla. Ka anyị buru ụzọ mụta mkpụrụedemede.",
   "en": "Time is up. Let us learn the letters first.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_pop_know",
@@ -2324,6 +2324,270 @@
   "gender": "any",
   "text": "Na-amụ ihe kwa ụbọchị!",
   "en": "Keep learning every day!",
+  "status": "draft"
+ },
+ {
+  "key": "app_locked",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ihe ọmụmụ a emepebeghị ugbu a. Ọ ga-emepe mgbe ị ruru ya n'akwụkwọ ahụ.",
+   "f": "Ihe ọmụmụ a emepebeghị ugbu a. Ọ ga-emepe mgbe ị ruru ya n'akwụkwọ ahụ."
+  },
+  "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
+  "status": "draft"
+ },
+ {
+  "key": "s_wb_home",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ọ bụrụ na ịchọrọ ịlaghachi n'ụlọ, pịa akwụkwọ ahụ.",
+   "f": "Ọ bụrụ na ịchọrọ ịlaghachi n'ụlọ, pịa akwụkwọ ahụ."
+  },
+  "en": "To go home, press the book.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hawan",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Egwu ọnwa: kwuo mkpụrụedemede nwata ọ bụla na-ebuli elu.",
+   "f": "Egwu ọnwa: kwuo mkpụrụedemede nwata ọ bụla na-ebuli elu."
+  },
+  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_fashe",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mkpụrụedemede na-efe elu n'ime balloon. Gbawaa mkpụrụedemede m kwuru.",
+   "f": "Mkpụrụedemede na-efe elu n'ime balloon. Gbawaa mkpụrụedemede m kwuru."
+  },
+  "en": "Letters float up in balloons. Pop the letter Laila says.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hanzarin",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kwụsị wilbarọ Onitsha na-ebu ihe m kwuru.",
+   "f": "Kwụsị wilbarọ Onitsha na-ebu ihe m kwuru."
+  },
+  "en": "Help the market woman: quickly find the food Laila names.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kifi",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Jide mkpụrụ ụdara nwere foto ziri ezi tupu ọ daa n'ala.",
+   "f": "Jide mkpụrụ ụdara nwere foto ziri ezi tupu ọ daa n'ala."
+  },
+  "en": "Go fishing: catch the fish that carries the right picture.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kalangu",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "N'ebe a na-ese ihe nkiri Nollywood: kpọọ aha ihe ọ bụla a chọrọ maka ihe nkiri ahụ.",
+   "f": "N'ebe a na-ese ihe nkiri Nollywood: kpọọ aha ihe ọ bụla a chọrọ maka ihe nkiri ahụ."
+  },
+  "en": "Beat the drum when you hear the right word.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shayi",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Nyere onye na-ere okpa aka: nye onye ọ bụla na-azụ ahịa ihe ọ chọrọ.",
+   "f": "Nyere onye na-ere okpa aka: nye onye ọ bụla na-azụ ahịa ihe ọ chọrọ."
+  },
+  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dillali",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ọbịbịa Krismas: kpọọ aha ihe ọ bụla si n'akpa ahụ pụta.",
+   "f": "Ọbịbịa Krismas: kpọọ aha ihe ọ bụla si n'akpa ahụ pụta."
+  },
+  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dalar",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Tinye mmanụ nkwụ n'ime galọn ruo ọnụọgụ m kwuru.",
+   "f": "Tinye mmanụ nkwụ n'ime galọn ruo ọnụọgụ m kwuru."
+  },
+  "en": "Load the groundnut sacks onto the lorry and count them.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_suya",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mgbe a na-emechi ụlọ ahịa: kwuo ego ole akwụkwọ ego ọ bụla bụ.",
+   "f": "Mgbe a na-emechi ụlọ ahịa: kwuo ego ole akwụkwọ ego ọ bụla bụ."
+  },
+  "en": "Sell suya at the night market and count the money.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_allo",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Gụọ okwu dị na mgbidi ahụ, onye na-ese ihe ga-eme ya uli.",
+   "f": "Gụọ okwu dị na mgbidi ahụ, onye na-ese ihe ga-eme ya uli."
+  },
+  "en": "Read the word on the allo board to the class.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_jirgi",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Gụọ bọọdụ ọdụ ụgbọ oloko ka ụgbọ oloko Enugu kwụsị.",
+   "f": "Gụọ bọọdụ ọdụ ụgbọ oloko ka ụgbọ oloko Enugu kwụsị."
+  },
+  "en": "Read the word on each boat to let it sail.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kwale",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Họrọ ụgbọala dị n'Upper Iweka nwere okwu kwekọrọ na foto ahụ.",
+   "f": "Họrọ ụgbọala dị n'Upper Iweka nwere okwu kwekọrọ na foto ahụ."
+  },
+  "en": "Read the word on the canoe to paddle across the river.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_ruwa",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Gụpụta okwu dị na bọọdụ ahụ, onye mgba gị ga-emeri.",
+   "f": "Gụpụta okwu dị na bọọdụ ahụ, onye mgba gị ga-emeri."
+  },
+  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_tukwane",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Dee okwu ahụ site n'itinye aka n'eriri.",
+   "f": "Dee okwu ahụ site n'itinye aka n'eriri."
+  },
+  "en": "Spell the word with the letter pots.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_bulo",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Dee okwu ahụ, otu mkpụrụ ọjị maka mkpụrụedemede ọ bụla.",
+   "f": "Dee okwu ahụ, otu mkpụrụ ọjị maka mkpụrụedemede ọ bụla."
+  },
+  "en": "Spell the word brick by brick to build the wall.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_marubuci",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Nyere onye na-ebi akwụkwọ Onitsha aka ịhazi okwu ahụ.",
+   "f": "Nyere onye na-ebi akwụkwọ Onitsha aka ịhazi okwu ahụ."
+  },
+  "en": "Help the letter writer spell the word on the envelope.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_karofi",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kpaa mkpụrụedemede ọ bụla n'ime akwa Akwete.",
+   "f": "Kpaa mkpụrụedemede ọ bụla n'ime akwa Akwete."
+  },
+  "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shanu",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Chọta igbe akpụkpọ ụkwụ Aba nwere ọnụahịa ziri ezi.",
+   "f": "Chọta igbe akpụkpọ ụkwụ Aba nwere ọnụahịa ziri ezi."
+  },
+  "en": "Find the cow with the right price at the cattle market.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_garke",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Gụọ ji ọhụrụ dị n'ute, ma kwuo ole ha dị.",
+   "f": "Gụọ ji ọhụrụ dị n'ute, ma kwuo ole ha dị."
+  },
+  "en": "Count the cattle as they go into the kraal.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "ig",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kpakpando na-eche! Pịa ha n'usoro, site n'otu.",
+   "f": "Kpakpando na-eche! Pịa ha n'usoro, site n'otu."
+  },
+  "en": "The stars are waiting! Press them in order, from one.",
   "status": "draft"
  }
 ]
