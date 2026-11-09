@@ -4576,8 +4576,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Idan baka sani ba, ba damuwa, za mu koye su tare. Ka danna baƙin allo don mu fara koyo.",
-   "f": "Idan baki sani ba, ba damuwa, za mu koye su tare. Ki danna baƙin allo don mu fara koyo."
+   "m": "Ba damuwa. Za mu koye su tare. Ka danna baƙin allo.",
+   "f": "Ba damuwa. Za mu koye su tare. Ki danna baƙin allo."
   },
   "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
   "screens": [
@@ -4585,10 +4585,10 @@
   ],
   "said_when": "The second choice, with the hand on the slate. Unreviewed: Claude draft from Sani's English (12 Oct).",
   "status": "live",
-  "review": "Sani 12 Oct 14:38: 'baka sani ba' (the voice read 'ba ka sani' and lost the last 'ba')",
+  "review": "Sani picked this wording 2026-11-09 (round 2)",
   "recorded": {
-   "m": "e736f54e55",
-   "f": "089d01b8ad"
+   "m": "faed7bca32",
+   "f": "a01e8db245"
   }
  },
  {
@@ -5068,8 +5068,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka danna tarin buhunan da yawansu ya kai lambar da na faɗa.",
-   "f": "Ki danna tarin buhunan da yawansu ya kai lambar da na faɗa."
+   "m": "Ka danna tarin buhu da yawansu ya yi daidai da lambar da na faɗa.",
+   "f": "Ki danna tarin buhu da yawansu ya yi daidai da lambar da na faɗa."
   },
   "en": "Tap the stack with as many sacks as the number I say.",
   "screens": [
@@ -5077,10 +5077,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "review": "Sani picked this wording 2026-11-09 (round 2)",
   "recorded": {
-   "m": "ac4d217651",
-   "f": "79336374dd"
+   "m": "5846094c01",
+   "f": "55f2361307"
   }
  },
  {
@@ -6158,8 +6158,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka loda buhunan gyaɗa a kan babbar mota, ka ƙirga su.",
-   "f": "Ki loda buhunan gyaɗa a kan babbar mota, ki ƙirga su."
+   "m": "Ka loda buhun gyaɗa a babbar mota. Sannan ka ƙirga su.",
+   "f": "Ki loda buhun gyaɗa a babbar mota. Sannan ki ƙirga su."
   },
   "en": "Load the groundnut sacks onto the lorry and count them.",
   "screens": [
@@ -6168,10 +6168,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "16137d51e7",
-   "f": "8f8cfa7786"
+   "m": "ad4a1b43df",
+   "f": "a6fc6b14d7"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (round 2)"
  },
  {
   "key": "gd_suya",
@@ -6326,8 +6326,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka taimaki marubucin wasiƙa ya rubuta kalmar da ke kan ambulan.",
-   "f": "Ki taimaki marubucin wasiƙa ya rubuta kalmar da ke kan ambulan."
+   "m": "Ka taimaki marubucin wasiƙa. Ka rubuta kalmar.",
+   "f": "Ki taimaki marubucin wasiƙa. Ki rubuta kalmar."
   },
   "en": "Help the letter writer spell the word on the envelope.",
   "screens": [
@@ -6336,10 +6336,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "a5858e0121",
-   "f": "d1bd7a0b12"
+   "m": "8fd9af30ca",
+   "f": "8375ca9fe3"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (round 2)"
  },
  {
   "key": "gd_karofi",
