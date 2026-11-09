@@ -1024,19 +1024,19 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Wannan darasi a rufe yake yanzu. Za a buɗe maka shi idan ka kai gare shi a cikin littafi.",
-   "f": "Wannan darasi a rufe yake yanzu. Za a buɗe miki shi idan kin kai gare shi a cikin littafi."
+   "m": "Lokacin wannan darasi bai yi ba tukuna. Ka bi littafin.",
+   "f": "Lokacin wannan darasi bai yi ba tukuna. Ki bi littafin."
   },
   "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
   "screens": [
    "Zaɓi darasi · home"
   ],
   "said_when": "On the chooser, after a locked tile's own description; then app_book_start with the hand on the book (Sani 2026-11-08).",
-  "review": "draft, needs Sani's review",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "status": "live",
   "recorded": {
-   "m": "08304e7d96",
-   "f": "9940d4b3de"
+   "m": "b3900f191f",
+   "f": "e1ff0624cd"
   }
  },
  {
@@ -4283,8 +4283,8 @@
   "voice": "laila",
   "gender": "mf",
   "text": {
-   "m": "Zan nuna maka kuma. Ka kula.",
-   "f": "Zan nuna miki kuma. Ki kula."
+   "m": "Zan sake nuna maka. Ka kula.",
+   "f": "Zan sake nuna miki. Ki kula."
   },
   "en": "I will show you again. Pay attention.",
   "screens": [
@@ -4293,10 +4293,10 @@
   "said_when": "Third wrong answer in an example, just before Laila gives the answer herself.",
   "status": "live",
   "recorded": {
-   "m": "ce410ed1e1",
-   "f": "73f4e5db16"
+   "m": "f8e6eb0a48",
+   "f": "166fffe73e"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "s_eg_ok",
@@ -4304,8 +4304,8 @@
   "voice": "laila",
   "gender": "mf",
   "text": {
-   "m": "Ba daidai ba ne, amma za ka koya.",
-   "f": "Ba daidai ba ne, amma za ki koya."
+   "m": "Ba haka ba. Amma za ka gane nan da nan.",
+   "f": "Ba haka ba. Amma za ki gane nan da nan."
   },
   "en": "That was not right, but you will learn.",
   "screens": [
@@ -4314,10 +4314,10 @@
   "said_when": "After Laila has given the answer herself, instead of praise.",
   "status": "live",
   "recorded": {
-   "m": "b0dee50840",
-   "f": "cda6f570f2"
+   "m": "c1e8e459f4",
+   "f": "fdbd74fd84"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "s_pop_clock",
@@ -4513,8 +4513,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Don ka koma gida, ka danna littafin.",
-   "f": "Don ki koma gida, ki danna littafin."
+   "m": "Idan kana so ka koma gida, ka danna littafin.",
+   "f": "Idan kina so ki koma gida, ki danna littafin."
   },
   "en": "To go home, press the book.",
   "screens": [
@@ -4523,10 +4523,10 @@
   "said_when": "The first time on the games board, while the hand points at the book in the corner. Needs Sani's Hausa (boy and girl).",
   "status": "live",
   "recorded": {
-   "m": "e3ec04e734",
-   "f": "2a17105fa5"
+   "m": "adea450866",
+   "f": "f62805df83"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "s_gate_first",
@@ -4723,8 +4723,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Masu saye sun zo! Ka ba kowa abin da ya roƙa da sauri.",
-   "f": "Masu saye sun zo! Ki ba kowa abin da ya roƙa da sauri."
+   "m": "Masu saye sun zo! Da sauri, ka ba kowane ɗaya abin da ya nema.",
+   "f": "Masu saye sun zo! Da sauri, ki ba kowane ɗaya abin da ya nema."
   },
   "en": "The shoppers are here! Quickly give each one what they ask for.",
   "screens": [
@@ -4732,10 +4732,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "68e1374c5c",
-   "f": "3f28fada69"
+   "m": "67dddae6c4",
+   "f": "9636616126"
   }
  },
  {
@@ -4890,15 +4890,15 @@
   "lang": "ha",
   "voice": "laila",
   "gender": "any",
-  "text": "Ba komai! Mu fara koyo tare. Danna Laila don a ci gaba.",
+  "text": "Ba damuwa! Mu fara koyo tare. Danna Laila don a ci gaba.",
   "en": "No problem! Let's start learning together. Tap Laila to continue.",
   "screens": [
    "Wasanni · all games"
   ],
   "said_when": "After Ban sani ba. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, games moved into the app 14 Oct",
-  "recorded": "148f562d1c"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
+  "recorded": "caf557172b"
  },
  {
   "key": "s_g_go",
@@ -5047,8 +5047,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka faɗi abin da kake so da Turanci, sai mai shayi ya ba ka!",
-   "f": "Ki faɗi abin da kike so da Turanci, sai mai shayi ya ba ki!"
+   "m": "Ka faɗi abin da kake so da Turanci. Mai shayi zai miƙa maka!",
+   "f": "Ki faɗi abin da kike so da Turanci. Mai shayi zai miƙa miki!"
   },
   "en": "Say what you want in English, and the tea seller will give it to you!",
   "screens": [
@@ -5056,10 +5056,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "9efb1b7226",
-   "f": "076230ed3e"
+   "m": "a1f1598ed8",
+   "f": "ad31f3d804"
   }
  },
  {
@@ -5194,8 +5194,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka karanta kalmar da ke kan jirgin ruwa da ƙarfi, sai ya zo bakin ruwa.",
-   "f": "Ki karanta kalmar da ke kan jirgin ruwa da ƙarfi, sai ya zo bakin ruwa."
+   "m": "Ka karanta kalmar da ke kan jirgin ruwa da ƙarfi. Jirgin zai zo bakin ruwa.",
+   "f": "Ki karanta kalmar da ke kan jirgin ruwa da ƙarfi. Jirgin zai zo bakin ruwa."
   },
   "en": "Read the word on the boat out loud, and it will come to the bank.",
   "screens": [
@@ -5203,10 +5203,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Arewa games 16 Oct",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "65d64b0cf4",
-   "f": "5967e0b99a"
+   "m": "e4c7975f1a",
+   "f": "35a7df54b2"
   }
  },
  {
@@ -5215,8 +5215,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ka danna su a kan allo. Sai marubuci ya rubuta su.",
-   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ki danna su a kan allo. Sai marubuci ya rubuta su."
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko kuma ka danna su a kan allo. Sai marubuci ya rubuta su.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko kuma ki danna su a kan allo. Sai marubuci ya rubuta su."
   },
   "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
   "screens": [
@@ -5224,10 +5224,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft 26 Oct (say or type; \"allo\" for the keys as in Misali · rubutu), for Sani to hear",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "cf12b1daf9",
-   "f": "aa7269e92b"
+   "m": "0643fea1f3",
+   "f": "dc4121ba30"
   }
  },
  {
@@ -5236,8 +5236,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka karanta kalmar da ke kan girgije da ƙarfi, sai ruwan sama ya sauka a gona.",
-   "f": "Ki karanta kalmar da ke kan girgije da ƙarfi, sai ruwan sama ya sauka a gona."
+   "m": "Ka karanta kalmar da ke kan girgije da ƙarfi, domin a yi ruwan sama a gona.",
+   "f": "Ki karanta kalmar da ke kan girgije da ƙarfi, domin a yi ruwan sama a gona."
   },
   "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
   "screens": [
@@ -5245,10 +5245,10 @@
   ],
   "said_when": "After Na sani, before the 3-2-1; also the reminder after 10 s of quiet. Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, Ruwan sama 2 Nov",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "3e514817c2",
-   "f": "6c8df9932a"
+   "m": "447859a218",
+   "f": "92f4cb5331"
   }
  },
  {
@@ -5299,8 +5299,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka kusa! Mu sake gwadawa sau ɗaya.",
-   "f": "Kin kusa! Mu sake gwadawa sau ɗaya."
+   "m": "Kaa kusa. Mu sake gwadawa sau ɗaya.",
+   "f": "Kin kusa. Mu sake gwadawa sau ɗaya."
   },
   "en": "You were close! Let's try once more.",
   "screens": [
@@ -5308,10 +5308,10 @@
   ],
   "said_when": "After a first try at the balloons that did not reach Z; the second try starts straight away (Sani 22 Oct). Unreviewed: Claude draft.",
   "status": "live",
-  "review": "unreviewed: Claude draft, 22 Oct",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "eaba33183d",
-   "f": "641bd45737"
+   "m": "4645c247a1",
+   "f": "87d818bb95"
   }
  },
  {
@@ -5657,8 +5657,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Buhun zinarinka na farko ya cika!",
-   "f": "Buhun zinarinki na farko ya cika!"
+   "m": "Buhunka na farko na zinari ya cika!",
+   "f": "Buhunki na farko na zinari ya cika!"
   },
   "en": "Your first bag of gold is full!",
   "screens": [
@@ -5666,10 +5666,10 @@
   ],
   "said_when": "A title unlocked: after the title's name, as bag 1 fills.",
   "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "a2ceee8f1d",
-   "f": "f8b5ad5196"
+   "m": "f1038f5c6e",
+   "f": "9533269ef0"
   }
  },
  {
@@ -5678,8 +5678,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Buhun zinarinka na biyu ya cika!",
-   "f": "Buhun zinarinki na biyu ya cika!"
+   "m": "Buhunka na biyu na zinari ya cika!",
+   "f": "Buhunki na biyu na zinari ya cika!"
   },
   "en": "Your second bag of gold is full!",
   "screens": [
@@ -5687,10 +5687,10 @@
   ],
   "said_when": "A title unlocked: after the title's name, as bag 2 fills.",
   "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "0e5095da10",
-   "f": "e1e236f060"
+   "m": "df36ae9792",
+   "f": "529e72631d"
   }
  },
  {
@@ -5699,8 +5699,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Buhun zinarinka na uku ya cika!",
-   "f": "Buhun zinarinki na uku ya cika!"
+   "m": "Buhunka na uku na zinari ya cika!",
+   "f": "Buhunki na uku na zinari ya cika!"
   },
   "en": "Your third bag of gold is full!",
   "screens": [
@@ -5708,10 +5708,10 @@
   ],
   "said_when": "A title unlocked: after the title's name, as bag 3 fills.",
   "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "c64f69cce2",
-   "f": "02b23c2354"
+   "m": "64a4c1f23d",
+   "f": "62255cc2eb"
   }
  },
  {
@@ -5720,8 +5720,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Buhun zinarinka na huɗu ya cika!",
-   "f": "Buhun zinarinki na huɗu ya cika!"
+   "m": "Buhunka na huɗu na zinari ya cika!",
+   "f": "Buhunki na huɗu na zinari ya cika!"
   },
   "en": "Your fourth bag of gold is full!",
   "screens": [
@@ -5729,10 +5729,10 @@
   ],
   "said_when": "A title unlocked: after the title's name, as bag 4 fills.",
   "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "d554c30807",
-   "f": "1bd6470d86"
+   "m": "072077a9c9",
+   "f": "f21a8b9687"
   }
  },
  {
@@ -5741,8 +5741,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Buhun zinarinka na biyar ya cika!",
-   "f": "Buhun zinarinki na biyar ya cika!"
+   "m": "Buhunka na biyar na zinari ya cika!",
+   "f": "Buhunki na biyar na zinari ya cika!"
   },
   "en": "Your fifth bag of gold is full!",
   "screens": [
@@ -5750,10 +5750,10 @@
   ],
   "said_when": "A title unlocked: after the title's name, as bag 5 fills.",
   "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)",
   "recorded": {
-   "m": "bbc7586d78",
-   "f": "3ab2bad87d"
+   "m": "fb94569a29",
+   "f": "6e757e68ab"
   }
  },
  {
@@ -6095,8 +6095,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka buga kalangu idan ka ji kalmar da ta dace.",
-   "f": "Ki buga kalangu idan kin ji kalmar da ta dace."
+   "m": "Idan ka ji kalmar da ta dace, ka buga kalangu.",
+   "f": "Idan kin ji kalmar da ta dace, ki buga kalangu."
   },
   "en": "Beat the drum when you hear the right word.",
   "screens": [
@@ -6105,10 +6105,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "07afc8989e",
-   "f": "aa75d0e292"
+   "m": "ee8c35a7a1",
+   "f": "7bfb8059a5"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "gd_shayi",
@@ -6116,8 +6116,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka kula da rumfar shayi: ka ba kowane mai saye abin da ya nema.",
-   "f": "Ki kula da rumfar shayi: ki ba kowane mai saye abin da ya nema."
+   "m": "Kai ne mai shayi. Ka bai wa kowane mai saye abin da ya nema.",
+   "f": "Ke ce mai shayi. Ki bai wa kowane mai saye abin da ya nema."
   },
   "en": "Run the tea stall: serve each customer the thing they ask for.",
   "screens": [
@@ -6126,10 +6126,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "d9dd99dcbd",
-   "f": "6e2d2bba61"
+   "m": "2ab6fa979c",
+   "f": "549da3e51d"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "gd_dillali",
@@ -6242,8 +6242,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka karanta kalmar da ke kan kwale-kwale domin mu tsallaka kogi.",
-   "f": "Ki karanta kalmar da ke kan kwale-kwale domin mu tsallaka kogi."
+   "m": "Ka karanta kalmar. Sai kwale-kwale ya tsallaka kogi.",
+   "f": "Ki karanta kalmar. Sai kwale-kwale ya tsallaka kogi."
   },
   "en": "Read the word on the canoe to paddle across the river.",
   "screens": [
@@ -6252,10 +6252,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "ed42c00bda",
-   "f": "6b49c74806"
+   "m": "84eb9e6947",
+   "f": "72500ce7f8"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "gd_ruwa",
@@ -6347,8 +6347,8 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Ka rubuta kalmar ta hanyar rina kowane zanen harafi a Karofin Kano.",
-   "f": "Ki rubuta kalmar ta hanyar rina kowane zanen harafi a Karofin Kano."
+   "m": "Ka rubuta kalmar da zanen rini na Kano.",
+   "f": "Ki rubuta kalmar da zanen rini na Kano."
   },
   "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
   "screens": [
@@ -6357,10 +6357,10 @@
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
   "status": "live",
   "recorded": {
-   "m": "56a4be7a00",
-   "f": "18fc00afee"
+   "m": "656b593642",
+   "f": "4990c4f0e0"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "Sani picked this wording 2026-11-09 (boy heard; girl form follows it)"
  },
  {
   "key": "gd_shanu",
