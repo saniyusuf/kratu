@@ -465,7 +465,6 @@ export class FasheScreen implements OnInit, OnDestroy {
       this.eye.set('Mu gani · A → Z');
       this.fb('good', 'Madalla! ' + this.reached + ' / 25');
       await this.bus.play('s_pop_done');
-      await this.sayMaybe('s_pop_know');                    // "Ka san haruffa." — you know your letters
       await wait(400);
       this.session.owedGame.set(false);
       if (this.stopped) return;

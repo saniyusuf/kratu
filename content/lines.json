@@ -4398,27 +4398,6 @@
   "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
-  "key": "s_pop_know",
-  "lang": "ha",
-  "voice": "laila",
-  "gender": "mf",
-  "text": {
-   "m": "Ka san haruffa.",
-   "f": "Kin san haruffa."
-  },
-  "en": "You know your letters.",
-  "screens": [
-   "Fashe haruffa"
-  ],
-  "said_when": "Finished the whole alphabet inside the time.",
-  "status": "live",
-  "recorded": {
-   "m": "4307ad5265",
-   "f": "30256b11c6"
-  },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
- },
- {
   "key": "s_gate_q",
   "lang": "ha",
   "voice": "laila",
