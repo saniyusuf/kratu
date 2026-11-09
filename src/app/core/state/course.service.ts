@@ -8,7 +8,7 @@ export interface StepRoute { path: string; query: Record<string, string>; }
 interface Place { at: number; known: string[]; }
 
 /**
- * The course: the 233-step ladder, walked by the book (Sani 2026-11-04: "map the book to move through the course").
+ * The course: the 234-step ladder, walked by the book (Sani 2026-11-04: "map the book to move through the course").
  * Each child has their own place, kept per child; the balloons' placement sets it, and finishing a step (a lesson played
  * out, a game passed) moves it on. Letter steps whose letters the child already showed they know are skipped.
  * The simulator in the settings (Sani 2026-11-02) overrides the child's place while it is on: an adult picks any step,

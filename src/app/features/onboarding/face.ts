@@ -20,6 +20,12 @@ const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
  *  microphone away from the recording, so there the recording alone carries the name (Sani 2026-09-22). iPadOS reports
  *  itself as a Mac, hence the touch check. */
+/**
+ * The browser's recogniser sends the recording to its maker's servers (Chrome: Google). Never (Sani 2026-11-09): nothing about
+ * a child goes over the air. The name is not written down; Laila says only "Barka da zuwa" to a new child, and the child's
+ * own recording, kept with their record on the tablet, is what carries their name.
+ */
+const NAME_ONLINE = false;
 const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /**
@@ -212,7 +218,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   // ---- the name: the browser's recogniser (Hausa, then English), as the design does ----
   private startSR(lang = 'ha-NG'): void {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
+    if (!NAME_ONLINE || !SR || APPLE_TOUCH) { this.srLive = true; this.armCheck(); return; }   // nothing to wait for: the recording carries the name
     // Kept where it works (Chrome with internet), but on a leash (Sani 2026-09-22): if it is not listening within
     // SR_START_WAIT the ring starts anyway, and whatever it has not heard by the end of the 10 s capture, the recording carries.
     this.clearSrWait();

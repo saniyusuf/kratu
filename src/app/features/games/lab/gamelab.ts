@@ -52,6 +52,7 @@ const LINES: Record<string, { how: string }> = {
   'j-marubuci': { how: 's_g_marubuci_how' },
   'j-ruwa': { how: 's_g_ruwa_how' },
   'j-rini': { how: 's_g_rini_how' },
+  'j-lambobi': { how: 's_g_stars_how' },
 };
 
 /**

@@ -4291,8 +4291,12 @@
    "Misali · samples"
   ],
   "said_when": "Third wrong answer in an example, just before Laila gives the answer herself.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "ce410ed1e1",
+   "f": "73f4e5db16"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_eg_ok",
@@ -4308,8 +4312,12 @@
    "Misali · samples"
   ],
   "said_when": "After Laila has given the answer herself, instead of praise.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "b0dee50840",
+   "f": "cda6f570f2"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_pop_clock",
@@ -4325,8 +4333,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The rules, once, before the child's own run.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "027ca65078",
+   "f": "91ce015600"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_pop_scoring",
@@ -4342,8 +4354,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The rules, once, before the child's own run.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "e2c222154f",
+   "f": "691df801de"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_pop_luck",
@@ -4359,8 +4375,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The last thing she says before the clock starts.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "7ce44492f4",
+   "f": "37f3971bc5"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_pop_timeup",
@@ -4373,8 +4393,9 @@
    "Fashe haruffa"
   ],
   "said_when": "The clock reached zero; the child goes to Haruffa.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": "72f71991ee",
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_pop_know",
@@ -4390,8 +4411,12 @@
    "Fashe haruffa"
   ],
   "said_when": "Finished the whole alphabet inside the time.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "4307ad5265",
+   "f": "30256b11c6"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_gate_q",
@@ -4488,16 +4513,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Don ka koma gida, ka danna littafin.",
+   "f": "Don ki koma gida, ki danna littafin."
   },
   "en": "To go home, press the book.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "The first time on the games board, while the hand points at the book in the corner. Needs Sani's Hausa (boy and girl).",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "e3ec04e734",
+   "f": "2a17105fa5"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "s_gate_first",
@@ -5489,8 +5518,8 @@
    "Wasanni · results"
   ],
   "said_when": "A passed course game: the child's title after the gold.",
-  "status": "live",
-  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed",
+  "status": "unused",
+  "review": "draft: Claude, from the forms on the Zinari page (Sani 12 Oct); girls' forms unconfirmed · unused since Ɗan Fada was dropped (Sani 2026-11-04)",
   "recorded": {
    "m": "1569298468",
    "f": "85e60477e1"
@@ -5982,16 +6011,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Mahayan Sallah suna zuwa! Ka faɗi harafin da ke kan tutar kowane mahayin doki.",
+   "f": "Mahayan Sallah suna zuwa! Ki faɗi harafin da ke kan tutar kowane mahayin doki."
   },
   "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "35e98cb6f8",
+   "f": "6432e7d1cf"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_fashe",
@@ -5999,16 +6032,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Haruffa suna tashi a cikin balan-balan. Ka fasa harafin da na faɗa.",
+   "f": "Haruffa suna tashi a cikin balan-balan. Ki fasa harafin da na faɗa."
   },
   "en": "Letters float up in balloons. Pop the letter Laila says.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "46b24cfabf",
+   "f": "40e723f82c"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_hanzarin",
@@ -6016,16 +6053,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka taimaki matar kasuwa: ka yi sauri ka nemo abincin da na faɗa.",
+   "f": "Ki taimaki matar kasuwa: ki yi sauri ki nemo abincin da na faɗa."
   },
   "en": "Help the market woman: quickly find the food Laila names.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "d117be16d8",
+   "f": "13d185ba46"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_kifi",
@@ -6033,16 +6074,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Mu je kamun kifi! Ka kama kifin da ke ɗauke da hoton da ya dace.",
+   "f": "Mu je kamun kifi! Ki kama kifin da ke ɗauke da hoton da ya dace."
   },
   "en": "Go fishing: catch the fish that carries the right picture.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "afb7070b89",
+   "f": "b68b46a448"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_kalangu",
@@ -6050,16 +6095,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka buga kalangu idan ka ji kalmar da ta dace.",
+   "f": "Ki buga kalangu idan kin ji kalmar da ta dace."
   },
   "en": "Beat the drum when you hear the right word.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "07afc8989e",
+   "f": "aa75d0e292"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_shayi",
@@ -6067,16 +6116,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka kula da rumfar shayi: ka ba kowane mai saye abin da ya nema.",
+   "f": "Ki kula da rumfar shayi: ki ba kowane mai saye abin da ya nema."
   },
   "en": "Run the tea stall: serve each customer the thing they ask for.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "d9dd99dcbd",
+   "f": "6e2d2bba61"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_dillali",
@@ -6084,16 +6137,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Kai ne dillali: ka faɗi sunan kowane abu domin ka sayar da shi.",
+   "f": "Ke ce dillaliya: ki faɗi sunan kowane abu domin ki sayar da shi."
   },
   "en": "Be the auctioneer: say the name of each thing to sell it.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "6bb7daf1c0",
+   "f": "a6d10a6b35"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_dalar",
@@ -6101,16 +6158,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka loda buhunan gyaɗa a kan babbar mota, ka ƙirga su.",
+   "f": "Ki loda buhunan gyaɗa a kan babbar mota, ki ƙirga su."
   },
   "en": "Load the groundnut sacks onto the lorry and count them.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "16137d51e7",
+   "f": "8f8cfa7786"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_suya",
@@ -6118,16 +6179,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka sayar da suya a kasuwar dare, ka ƙirga kuɗin.",
+   "f": "Ki sayar da suya a kasuwar dare, ki ƙirga kuɗin."
   },
   "en": "Sell suya at the night market and count the money.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "ac4617b1e2",
+   "f": "6e5c923235"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_allo",
@@ -6135,16 +6200,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka karanta wa ajin kalmar da ke kan allo.",
+   "f": "Ki karanta wa ajin kalmar da ke kan allo."
   },
   "en": "Read the word on the allo board to the class.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "bb8128e009",
+   "f": "9d1e534d55"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_jirgi",
@@ -6152,16 +6221,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka karanta kalmar da ke kan kowane jirgin ruwa domin ya tafi.",
+   "f": "Ki karanta kalmar da ke kan kowane jirgin ruwa domin ya tafi."
   },
   "en": "Read the word on each boat to let it sail.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "6e94732e90",
+   "f": "a0b8f94015"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_kwale",
@@ -6169,16 +6242,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka karanta kalmar da ke kan kwale-kwale domin mu tsallaka kogi.",
+   "f": "Ki karanta kalmar da ke kan kwale-kwale domin mu tsallaka kogi."
   },
   "en": "Read the word on the canoe to paddle across the river.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "ed42c00bda",
+   "f": "6b49c74806"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_ruwa",
@@ -6186,16 +6263,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka karanta kalmar da ke kan girgijen hadari, sai ruwan sama ya sa gero ya girma.",
+   "f": "Ki karanta kalmar da ke kan girgijen hadari, sai ruwan sama ya sa gero ya girma."
   },
   "en": "Read the word on the storm cloud so the rain makes the millet grow.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "cf159f96a8",
+   "f": "e76a76c157"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_tukwane",
@@ -6203,16 +6284,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka rubuta kalmar da tukwanen haruffa.",
+   "f": "Ki rubuta kalmar da tukwanen haruffa."
   },
   "en": "Spell the word with the letter pots.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "d2fc6287b9",
+   "f": "30b8e7ace8"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_bulo",
@@ -6220,16 +6305,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka rubuta kalmar bulo bayan bulo domin ka gina katanga.",
+   "f": "Ki rubuta kalmar bulo bayan bulo domin ki gina katanga."
   },
   "en": "Spell the word brick by brick to build the wall.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "729d7db1d3",
+   "f": "c15285ce25"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_marubuci",
@@ -6237,16 +6326,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka taimaki marubucin wasiƙa ya rubuta kalmar da ke kan ambulan.",
+   "f": "Ki taimaki marubucin wasiƙa ya rubuta kalmar da ke kan ambulan."
   },
   "en": "Help the letter writer spell the word on the envelope.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "a5858e0121",
+   "f": "d1bd7a0b12"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_karofi",
@@ -6254,16 +6347,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka rubuta kalmar ta hanyar rina kowane zanen harafi a Karofin Kano.",
+   "f": "Ki rubuta kalmar ta hanyar rina kowane zanen harafi a Karofin Kano."
   },
   "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "56a4be7a00",
+   "f": "18fc00afee"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_shanu",
@@ -6271,16 +6368,20 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka nemo saniyar da farashinta ya dace a kasuwar shanu.",
+   "f": "Ki nemo saniyar da farashinta ya dace a kasuwar shanu."
   },
   "en": "Find the cow with the right price at the cattle market.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "491d10185f",
+   "f": "9894d01382"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
  },
  {
   "key": "gd_garke",
@@ -6288,15 +6389,40 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "",
-   "f": ""
+   "m": "Ka ƙirga shanun yayin da suke shiga garke.",
+   "f": "Ki ƙirga shanun yayin da suke shiga garke."
   },
   "en": "Count the cattle as they go into the kraal.",
   "screens": [
    "Wasanni · board"
   ],
   "said_when": "On the games board, when this game's card is pressed (and for the first card on arrival). English stand-in from the preview design (6 Nov): needs Sani's Hausa, boy and girl, before it is recorded.",
-  "status": "planned",
-  "recorded": ""
+  "status": "live",
+  "recorded": {
+   "m": "2b09aacf6f",
+   "f": "d66690de82"
+  },
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Taurari suna jira! Ka danna su bisa tsari, daga ɗaya.",
+   "f": "Taurari suna jira! Ki danna su bisa tsari, daga ɗaya."
+  },
+  "en": "The stars are waiting! Press them in order, from one.",
+  "screens": [
+   "Wasanni · Ƙirga taurari"
+  ],
+  "said_when": "Before the first play of Ƙirga taurari (course step 36), and on the ear.",
+  "status": "live",
+  "review": "unreviewed: Claude draft (the game's own instruction text since 14 Oct), 2026-11-09",
+  "recorded": {
+   "m": "b854089acf",
+   "f": "c8a996701c"
+  }
  }
 ]

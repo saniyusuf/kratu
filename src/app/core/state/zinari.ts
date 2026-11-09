@@ -4,8 +4,8 @@
  * and the bag is full when the title is reached. No title at the start. Gold is only ever added: no deductions, no
  * streaks. Boys' and girls' titles mirror each other.
  */
-/** Where each bag is full and its title reached. One place to change them (Sani is choosing between these and 1000/2000/4000/6000/10000). */
-export const LEVEL_AT = [2000, 4000, 8000, 12000, 16000];
+/** Where each bag is full and its title reached (Sani 2026-11-09: the simpler amounts). One place to change them. */
+export const LEVEL_AT = [1000, 2000, 4000, 6000, 10000];
 export interface Title { key: string; at: number; m: string; f: string; colour: string; now: string; }
 export const TITLES: Title[] = [
   { key: 'jarumi', m: 'Jarumi', f: 'Jaruma', colour: '#E63946', now: 's_z_now_jarumi' },

@@ -175,6 +175,7 @@ export class Settings {
   async del(p: Person): Promise<void> {
     if (this.sure() !== p.id) { this.sure.set(p.id); if (this.sureT) clearTimeout(this.sureT); this.sureT = setTimeout(() => this.sure.set(null), 4000); return; }   // a second tap within 4 s deletes
     this.sure.set(null); try { await this.identity.api?.store.remove(p.id); } catch { /* ignore */ }
+    forget(p.id);   // and everything kept about them: place in the course, placement, lessons, games, Zinari, hints (Sani 2026-11-09)
     if (this.session.personId() === p.id) this.session.personId.set(null); this.loadStudents();
   }
 
@@ -195,4 +196,14 @@ export class Settings {
     this.micOut.set((r.raw ? 'heard “' + r.raw + '”' : 'heard nothing') + ' · ' + Math.round((Date.now() - t0) / 1000) + ' s · mic ' + Math.round((h?.peak || 0) * 100) + '%' + (h?.rate ? ' · ' + h.rate + ' Hz' : '') + ' · audio ' + (this.speech.audioInfo.ctx || '?') + (this.speech.audioInfo.muted ? ' · track MUTED' : '') + ' · device: ' + (this.speech.audioInfo.device || '?')); this.refreshStatus();
   }
   async resetEngines(): Promise<void> { try { await this.speech.reset(); } catch { /* ignore */ } location.reload(); }
+}
+
+/** Every entry kept on this tablet against a child's id (course.service, plan.service, progress.service, session.service). */
+function forget(id: string): void {
+  if (!id) return;
+  const exact = ['kratu_course_' + id, 'kratu_plan_' + id, 'kratu_prog_' + id, 'kratu_hints_' + id];
+  try {
+    const all: string[] = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k) all.push(k); }
+    for (const k of all) if (exact.includes(k) || k.startsWith('kratu_prog_' + id + '_')) localStorage.removeItem(k);
+  } catch { /* private mode */ }
 }
