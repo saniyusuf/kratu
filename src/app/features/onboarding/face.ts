@@ -368,9 +368,11 @@ export class FaceScreen implements OnInit, OnDestroy {
         await this.greet({ id: 'new', ...this.pending } as Person, false, own.url); this.confetti(); this.enter(); return;
       }
       if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? 'Ba na ganin ki sosai' : 'Ba na ganin ka sosai')); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
-    } else if (heardName) {
-      // no face engine on this device: the name alone opens the session, nothing is stored
-      this.welcome({ id: 'tmp', name: heardName, key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
+    } else if (heardName || own?.url) {
+      // no face engine on this device: the child's own recording (or a name) opens the session, nothing is stored in the
+      // identity store. With the online recogniser gone (Sani 2026-11-09) there is never a written name here, so the
+      // recording alone must be enough, and Laila says just "Barka da zuwa".
+      this.welcome({ id: 'tmp', name: heardName || '', key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
     }
     this.missText.set('🤔 ' + (this.session.g() === 'f' ? 'Ban ji sunan ki sosai ba' : 'Ban ji sunan ka sosai ba')); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
