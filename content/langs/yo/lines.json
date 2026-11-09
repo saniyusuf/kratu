@@ -1622,7 +1622,7 @@
   "gender": "any",
   "text": "Màá tún fi hàn ọ́. Fara balẹ̀.",
   "en": "I will show you again. Pay attention.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_eg_ok",
@@ -1631,7 +1631,7 @@
   "gender": "any",
   "text": "Kò tọ̀nà, ṣùgbọ́n wàá kọ́ ọ.",
   "en": "That was not right, but you will learn.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_pop_clock",
@@ -1667,7 +1667,7 @@
   "gender": "any",
   "text": "Àkókò ti tán. Jẹ́ ká kọ́ àwọn lẹ́tà ná.",
   "en": "Time is up. Let us learn the letters first.",
-  "status": "planned"
+  "status": "draft"
  },
  {
   "key": "s_pop_know",
@@ -2324,6 +2324,270 @@
   "gender": "any",
   "text": "Máa kọ́ ẹ̀kọ́ lójoojúmọ́!",
   "en": "Keep learning every day!",
+  "status": "draft"
+ },
+ {
+  "key": "app_locked",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ẹ̀kọ́ yìí kò tíì ṣí. Yóò ṣí fún ọ nígbà tí o bá dé ibẹ̀ nínú ìwé.",
+   "f": "Ẹ̀kọ́ yìí kò tíì ṣí. Yóò ṣí fún ọ nígbà tí o bá dé ibẹ̀ nínú ìwé."
+  },
+  "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
+  "status": "draft"
+ },
+ {
+  "key": "s_wb_home",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Bí o bá fẹ́ padà sílé, tẹ ìwé náà.",
+   "f": "Bí o bá fẹ́ padà sílé, tẹ ìwé náà."
+  },
+  "en": "To go home, press the book.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hawan",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Agbẹ́gbá ń gbẹ́ lẹ́tà kan sára igbá kọ̀ọ̀kan. Sọ lẹ́tà náà, kí a gbé e sórí àgbékọ́.",
+   "f": "Agbẹ́gbá ń gbẹ́ lẹ́tà kan sára igbá kọ̀ọ̀kan. Sọ lẹ́tà náà, kí a gbé e sórí àgbékọ́."
+  },
+  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_fashe",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Àwọn lẹ́tà ń fò sókè nínú bàlúù. Fọ́ lẹ́tà tí mo bá sọ.",
+   "f": "Àwọn lẹ́tà ń fò sókè nínú bàlúù. Fọ́ lẹ́tà tí mo bá sọ."
+  },
+  "en": "Letters float up in balloons. Pop the letter Laila says.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hanzarin",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Bojúbojú! Wá ọ̀rẹ́ tó mú ohun tí mo bá sọ.",
+   "f": "Bojúbojú! Wá ọ̀rẹ́ tó mú ohun tí mo bá sọ."
+  },
+  "en": "Help the market woman: quickly find the food Laila names.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kifi",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Àwọn ẹyẹlé ń bọ́ sílẹ̀ ní àgbàlá ààfin. Tẹ èyí tó gbé àwòrán tó tọ́.",
+   "f": "Àwọn ẹyẹlé ń bọ́ sílẹ̀ ní àgbàlá ààfin. Tẹ èyí tó gbé àwòrán tó tọ́."
+  },
+  "en": "Go fishing: catch the fish that carries the right picture.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kalangu",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ìyá àgbà ń pa àlọ́ Ìjàpá lẹ́gbẹ̀ẹ́ iná. Sọ orúkọ ohun kọ̀ọ̀kan nínú ìtàn náà.",
+   "f": "Ìyá àgbà ń pa àlọ́ Ìjàpá lẹ́gbẹ̀ẹ́ iná. Sọ orúkọ ohun kọ̀ọ̀kan nínú ìtàn náà."
+  },
+  "en": "Beat the drum when you hear the right word.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shayi",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ran Ìyá Àkàrà lọ́wọ́: fún oníbàárà kọ̀ọ̀kan ní ohun tí ó béèrè.",
+   "f": "Ran Ìyá Àkàrà lọ́wọ́: fún oníbàárà kọ̀ọ̀kan ní ohun tí ó béèrè."
+  },
+  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dillali",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ẹrù ìyàwó ń dé lórí àwo. Sọ orúkọ ọ̀kọ̀ọ̀kan fún tábìlì ẹ̀bùn.",
+   "f": "Ẹrù ìyàwó ń dé lórí àwo. Sọ orúkọ ọ̀kọ̀ọ̀kan fún tábìlì ẹ̀bùn."
+  },
+  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dalar",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ká iye èso kòkó tí mo bá sọ, lẹ́yìn náà tẹ apẹ̀rẹ̀.",
+   "f": "Ká iye èso kòkó tí mo bá sọ, lẹ́yìn náà tẹ apẹ̀rẹ̀."
+  },
+  "en": "Load the groundnut sacks onto the lorry and count them.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_suya",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ní ìpàdé èsúsú, sọ iye owó tí obìnrin kọ̀ọ̀kan mú wá.",
+   "f": "Ní ìpàdé èsúsú, sọ iye owó tí obìnrin kọ̀ọ̀kan mú wá."
+  },
+  "en": "Sell suya at the night market and count the money.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_allo",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka ọ̀rọ̀ kọ̀ọ̀kan lórí ìlẹ̀kùn ààfin, gbẹ́nàgbẹ́nà yóò sì gbẹ́ ẹ.",
+   "f": "Ka ọ̀rọ̀ kọ̀ọ̀kan lórí ìlẹ̀kùn ààfin, gbẹ́nàgbẹ́nà yóò sì gbẹ́ ẹ."
+  },
+  "en": "Read the word on the allo board to the class.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_jirgi",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Gun ọ̀kadà, kí o sì ka gbogbo àmì ọ̀nà sókè.",
+   "f": "Gun ọ̀kadà, kí o sì ka gbogbo àmì ọ̀nà sókè."
+  },
+  "en": "Read the word on each boat to let it sail.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kwale",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yan ọkọ̀ regatta tí ọ̀rọ̀ rẹ̀ bá àwòrán mu.",
+   "f": "Yan ọkọ̀ regatta tí ọ̀rọ̀ rẹ̀ bá àwòrán mu."
+  },
+  "en": "Read the word on the canoe to paddle across the river.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_ruwa",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka àkọlé ìwé ìròyìn sókè níbi ìtajà ìwé ìròyìn.",
+   "f": "Ka àkọlé ìwé ìròyìn sókè níbi ìtajà ìwé ìròyìn."
+  },
+  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_tukwane",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Fi kóró sínú ihò ọpọ́n ayò láti kọ ọ̀rọ̀ náà.",
+   "f": "Fi kóró sínú ihò ọpọ́n ayò láti kọ ọ̀rọ̀ náà."
+  },
+  "en": "Spell the word with the letter pots.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_bulo",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kọ ọ̀rọ̀ náà ní lẹ́tà kọ̀ọ̀kan, iná yóò sì tàn: Iná dé!",
+   "f": "Kọ ọ̀rọ̀ náà ní lẹ́tà kọ̀ọ̀kan, iná yóò sì tàn: Iná dé!"
+  },
+  "en": "Spell the word brick by brick to build the wall.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_marubuci",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ran ayàwòrán pátákó lọ́wọ́ láti kọ ọ̀rọ̀ náà sórí pátákó ṣọ́ọ̀bù.",
+   "f": "Ran ayàwòrán pátákó lọ́wọ́ láti kọ ọ̀rọ̀ náà sórí pátákó ṣọ́ọ̀bù."
+  },
+  "en": "Help the letter writer spell the word on the envelope.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_karofi",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "So lẹ́tà kọ̀ọ̀kan mọ́ aṣọ, lẹ́yìn náà rẹ ẹ́ ní aró.",
+   "f": "So lẹ́tà kọ̀ọ̀kan mọ́ aṣọ, lẹ́yìn náà rẹ ẹ́ ní aró."
+  },
+  "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shanu",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mú aṣọ òkè tí iye owó rẹ̀ tọ́ bí ó ṣe ń kọjá.",
+   "f": "Mú aṣọ òkè tí iye owó rẹ̀ tọ́ bí ó ṣe ń kọjá."
+  },
+  "en": "Find the cow with the right price at the cattle market.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_garke",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka àwọn àlejò tó jókòó síbi tábìlì owámbẹ̀, kí o sì sọ iye wọn.",
+   "f": "Ka àwọn àlejò tó jókòó síbi tábìlì owámbẹ̀, kí o sì sọ iye wọn."
+  },
+  "en": "Count the cattle as they go into the kraal.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "yo",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Àwọn ìràwọ̀ ń dúró! Tẹ̀ wọ́n ní tẹ̀léntẹ̀lé, láti ọ̀kan.",
+   "f": "Àwọn ìràwọ̀ ń dúró! Tẹ̀ wọ́n ní tẹ̀léntẹ̀lé, láti ọ̀kan."
+  },
+  "en": "The stars are waiting! Press them in order, from one.",
   "status": "draft"
  }
 ]

@@ -17,9 +17,9 @@
  "namesBank": false,
  "muteFilms": true,
  "tts": {
-  "provider": "spitch",
-  "voice": "funmi",
-  "speed": 0.8,
+  "provider": "plotweaver",
+  "lang": "yo",
+  "voice": "morenike",
   "lufs": -17.7
  },
  "status": "draft",
