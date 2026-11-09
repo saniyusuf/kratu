@@ -4333,12 +4333,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The rules, once, before the child's own run.",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "027ca65078",
    "f": "91ce015600"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
  },
  {
   "key": "s_pop_scoring",
@@ -4354,12 +4354,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The rules, once, before the child's own run.",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "e2c222154f",
    "f": "691df801de"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
  },
  {
   "key": "s_pop_luck",
@@ -4375,12 +4375,12 @@
    "Fashe haruffa"
   ],
   "said_when": "The last thing she says before the clock starts.",
-  "status": "live",
+  "status": "unused",
   "recorded": {
    "m": "7ce44492f4",
    "f": "37f3971bc5"
   },
-  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page)"
+  "review": "unreviewed: Claude draft, 2026-11-09 (for Sani to hear on the listening page) · not needed (Sani 2026-11-09)"
  },
  {
   "key": "s_pop_timeup",
@@ -5854,8 +5854,8 @@
    "Wasanni · title unlock"
   ],
   "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "status": "unused",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
   "recorded": {
    "m": "0525dd3bfa",
    "f": "e9c80f3b3d"
@@ -5896,8 +5896,8 @@
    "Wasanni · title unlock"
   ],
   "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "status": "unused",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
   "recorded": {
    "m": "98659bce4f",
    "f": "f11984c2a7"
@@ -5917,8 +5917,8 @@
    "Wasanni · title unlock"
   ],
   "said_when": "A title unlocked: the amount the bag holds (only the amounts in LEVEL_AT are used).",
-  "status": "live",
-  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov)",
+  "status": "unused",
+  "review": "unreviewed: Claude draft from the unlock page's script (Sani approved it for listening, 4 Nov) · not needed (Sani 2026-11-09)",
   "recorded": {
    "m": "a575e14505",
    "f": "8a54a3daf2"
