@@ -77,3 +77,6 @@ scripts/.sheet.tmp.mjs
 tools/.hedra-*/
 tools/.qa2/
 tools/.genvid/
+
+# PlotWeaver dev key, local only
+tools/.env.plotweaver
