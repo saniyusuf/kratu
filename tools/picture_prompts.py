@@ -81,7 +81,7 @@ C = {
             elder_m='a white babban riga and a red-and-white turban', elder_f='an atamfa wrapper and a large mayafi veil',
             soup='a bowl of Hausa taushe soup, thick orange pumpkin and groundnut soup with spinach and pieces of meat'),
  'yo': dict(people='Yoruba', region='south-western Nigeria', mum='a traditional Yoruba iro and buba in aso-oke fabric with a tall matching gele head-tie',
-            dad='a traditional Yoruba buba and sokoto with a soft tall fila gobi cap of woven aso-oke cloth, its top folded over and drooping to one side of the head', boy='a small indigo adire buba and sokoto (Yoruba tie-dye cloth with pale resist patterns) with a matching soft traditional Yoruba cloth cap (gobi) sewn from the same indigo adire cloth, folded over to one side of the head, plain cloth with no logo', girl='a small iro and buba with a gele, hair in shuku braids',
+            dad='a traditional Yoruba buba and sokoto with a soft tall fila gobi cap of woven aso-oke cloth, its top folded over and drooping to one side of the head', boy='a small indigo adire buba and sokoto (Yoruba tie-dye cloth with pale resist patterns), bare head with short neat black hair, no cap, no hat', girl='a small iro and buba with a gele, hair in shuku braids',
             elder_m='a flowing agbada over buba and sokoto with a soft abeti-aja fila cap whose two side flaps fold up like a dog\'s ears', elder_f='an iro and buba with a gele and coral beads',
             soup='a bowl of Yoruba efo riro, rich green spinach stew with peppers, pieces of meat and fish'),
  'ig': dict(people='Igbo', region='south-eastern Nigeria', mum='a george wrapper with a lace blouse, a tall head-tie and coral beads',
@@ -117,11 +117,13 @@ def lang(code):
      'wrapper': f'a folded colourful wrapper cloth of the kind {pp} women wear, laid neatly on a plain surface' if code != 'sw' else 'a folded colourful kanga cloth, the East African women\'s wrapper, laid neatly on a plain surface',
      'miya': f'close-up of {c["soup"]}, only the bowl on a plain wooden table',
     }
-    if code == 'yo':   # Sani (10 Nov): Yoruba boys in adire or striped aso-oke with a matching fila, never a hula; no tribal marks. Never write 'fila' in a prompt: the model prints the FILA sportswear logo on the cap
-        OKE = 'a small Yoruba buba and sokoto in hand-woven striped aso-oke cloth (navy blue, purple and orange stripes) with a matching soft traditional Yoruba cloth cap (gobi) sewn from the same striped aso-oke, folded over to one side of the head, plain cloth with no logo'
+    if code == 'yo':   # Sani (10 Nov): Yoruba boys in adire or striped aso-oke, bareheaded (no cap: the model kept drawing it wrong,
+        # and the word 'fila' prints the FILA sportswear logo); no tribal marks. Teacher and grandfather bareheaded too.
+        OKE = 'a small Yoruba buba and sokoto in hand-woven striped aso-oke cloth (navy blue, purple and orange stripes), bare head with short neat black hair, no cap, no hat'
         d['friend'] = d['friend'].replace('both wearing ' + c['boy'], 'one wearing ' + c['boy'] + ', the other wearing ' + OKE)
         d['brother'] = d['brother'].replace(c['boy'], OKE + ',')
-        d['teacher'] = d['teacher'].replace('beside a blackboard', 'beside a clean blackboard with nothing written on it')
+        d['teacher'] = 'one friendly Yoruba teacher wearing a traditional Yoruba buba and sokoto in woven aso-oke cloth, bare head with short neat black hair, no cap, no hat, standing beside a clean blackboard with nothing written on it holding a piece of chalk in a classroom'
+        d['grandfather'] = 'one smiling Yoruba grandfather wearing a flowing agbada over buba and sokoto, bare head with short grey hair, no cap, no hat, standing in front of his home in south-western Nigeria'
     if code == 'sw':
         d.update({'soldier': 'one Kenya Defence Forces soldier in camouflage uniform with a Kenyan flag patch and beret, standing at ease, detailed uniform',
                   'policeman': 'one Kenya Police officer in a dark blue uniform, cap and badge, standing beside a road, detailed uniform',
