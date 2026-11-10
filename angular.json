@@ -196,6 +196,32 @@
                   "input": "langs/pcm/public"
                 }
               ]
+            },
+            "hapw": {
+              "outputPath": "dist/kratu-hapw",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/lang/lang.ts",
+                  "with": "src/app/core/lang/lang.hapw.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "assets/clips.json",
+                    "assets/words.json",
+                    "assets/media.json",
+                    "assets/audio/ha/**",
+                    "names_bank_expanded.json"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "langs/hapw/public"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -232,6 +258,9 @@
             },
             "pcm-production": {
               "buildTarget": "kratu:build:production,pcm"
+            },
+            "hapw": {
+              "buildTarget": "kratu:build:development,hapw"
             }
           },
           "defaultConfiguration": "development",

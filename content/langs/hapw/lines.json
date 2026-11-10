@@ -1,0 +1,2836 @@
+[
+ {
+  "key": "app_act_desc_letters",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Haruffa. A nan za mu koyi haruffan Turanci.",
+  "en": "Letters. Here we learn the English letters.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_quiz",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Nemo hoto. Za a faɗi sunan abu, sannan a danna hotonsa.",
+  "en": "Find the picture. The name of a thing will be said, then tap its picture.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_desc_spell",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Rubutu. A nan za mu koyi rubuta kalmomin Turanci, harafi-harafi.",
+  "en": "Writing. Here we learn to write English words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_act_pick",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Zaɓi darasi ɗaya, don jin ƙarin bayani a kansa.",
+  "en": "Pick a lesson, to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_start",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna littafin nan da yake sama don mu fara koyo.",
+   "f": "Ki danna littafin nan da yake sama don mu fara koyo."
+  },
+  "en": "To start, tap the book up here to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_more",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna littafin nan da yake sama don mu ci gaba da koyo.",
+   "f": "Ki danna littafin nan da yake sama don mu ci gaba da koyo."
+  },
+  "en": "Tap the book to continue learning.",
+  "status": "draft"
+ },
+ {
+  "key": "app_book_or",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Za ka iya danna darasi don sake ƙara jin bayani a kansa.",
+   "f": "Za ki iya danna darasi don sake ƙara jin bayani a kansa."
+  },
+  "en": "You can also press a lesson to hear more about it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_locked",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Lokacin wannan darasi bai yi ba tukuna. Ka bi littafin.",
+   "f": "Lokacin wannan darasi bai yi ba tukuna. Ki bi littafin."
+  },
+  "en": "This lesson is locked for now. It will open for you when you reach it in the book.",
+  "status": "draft"
+ },
+ {
+  "key": "app_board_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ga dukkan haruffa. Mu koyi su rukuni-rukuni.",
+  "en": "Here are all the letters. Let's learn them group by group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_animals",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Dabbobi. Wannan darasi ne game da dabbobi iri-iri da suke rayuwa a kewayenmu.",
+  "en": "Animals. This lesson is about the different animals that live around us.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_body",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Jiki. Wannan darasi ne game da sassa daban-daban na jikin mutum.",
+  "en": "The body. This lesson is about the different parts of the human body.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_food",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Abinci. Wannan darasi ne game da abinci iri-iri da muke ci a kullum.",
+  "en": "Food. This lesson is about the different foods we eat every day.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_home",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kayan gida. Wannan darasi ne game da kayayyakin da ake amfani da su a gida.",
+  "en": "Household things. This lesson is about the things used at home.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_nature",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanayi. Wannan darasi ne game da abubuwan da ke cikin yanayi da muhalli.",
+  "en": "Nature. This lesson is about the things in nature and our surroundings.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_desc_vehicles",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Motoci. Wannan darasi ne game da motoci da abubuwan hawa daban-daban.",
+  "en": "Vehicles. This lesson is about cars and the different things we ride.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_animals",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan dabbobi. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of animals. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_body",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan sassan jiki. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of body parts. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_food",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan abinci. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of food. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_home",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan kayan gida. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of household things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_nature",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan abubuwan yanayi. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of things in nature. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_numbers",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu koyi ƙirga. Za a nuna yatsun hannu. A ƙirga yatsun da aka ɗaga, sannan a faɗi lambar da Turanci.",
+  "en": "Now we'll learn to count. Fingers will be shown. Count the fingers that are up, then say the number in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_cat_start_vehicles",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan motoci. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of vehicles. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "app_kudos",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Madalla!",
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "app_press_allo",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "danna baƙin allo.",
+  "en": "press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_tap",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna hoton abin da aka faɗa.",
+  "en": "Tap the picture of the thing that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "app_quiz_wrong",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A'a, ba wannan ba. A sake saurara, a sake gwadawa.",
+  "en": "No, not that one. Listen again, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_good",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "f": "Madalla! Yanzu kin iya karatu!",
+   "any": "Madalla! Yanzu ka iya karatu!"
+  },
+  "en": "Well done! Now you can read!",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ga kalma. Za mu karanta wannan kalma tare. Harafi, harafi.",
+  "en": "Here is a word. We'll read this word together. Letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_read_word",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, a karanta kalmar gaba ɗaya, da babbar murya.",
+  "en": "Now read the whole word, out loud.",
+  "status": "draft"
+ },
+ {
+  "key": "app_remind",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Ka saurara, wannan shi ne",
+   "f": "Ki saurara, wannan shi ne"
+  },
+  "en": "Listen, this is",
+  "status": "draft"
+ },
+ {
+  "key": "app_retry",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A'a, sake gwadawa.",
+  "en": "No, try again.",
+  "status": "draft"
+ },
+ {
+  "key": "app_scatter_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, za mu gauraya su.",
+  "en": "Now we'll mix them up.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Yanzu, ka rubuta shi da Turanci. Akwai hanyoyi biyu.",
+   "f": "Yanzu, ki rubuta shi da Turanci. Akwai hanyoyi biyu."
+  },
+  "en": "Now write it in English. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na farko.",
+  "en": "Tap or say the first letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na biyu.",
+  "en": "Tap or say the second letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na uku.",
+  "en": "Tap or say the third letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na huɗu.",
+  "en": "Tap or say the fourth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_5",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na biyar.",
+  "en": "Tap or say the fifth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_6",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na shida.",
+  "en": "Tap or say the sixth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_7",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na bakwai.",
+  "en": "Tap or say the seventh letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_8",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na takwas.",
+  "en": "Tap or say the eighth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_ord_9",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna ko a faɗi harafi na tara.",
+  "en": "Tap or say the ninth letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_speak",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Ka danna Laila, ka faɗi harafin.",
+   "f": "Ki danna Laila, ki faɗi harafin."
+  },
+  "en": "Press Laila and say the letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_spell_way_tap",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Ko kuma ka danna kowane harafi.",
+   "f": "Ko kuma ki danna kowane harafi."
+  },
+  "en": "Or tap any letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_stage_done",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Madalla! Kaa gama wannan rukuni.",
+   "f": "Madalla! Kin gama wannan rukuni."
+  },
+  "en": "Well done! You've finished this group.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_menu_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ga darussa dabam-dabam. Danna kowane hoto don sanin abin da ke cikinsa.",
+  "en": "Here are the different lessons. Tap any picture to find out what's in it.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_go",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Ka rubuta shi, harafi-harafi.",
+   "f": "Ki rubuta shi, harafi-harafi."
+  },
+  "en": "Write it, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_spell_test",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, jarrabawa! A rubuta kowanne, harafi-harafi.",
+  "en": "Now, a test! Write each one, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "app_w_tap_white",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna Laila don farawa.",
+  "en": "Press Laila to start.",
+  "status": "draft"
+ },
+ {
+  "key": "app_wannan",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan shi ne",
+  "en": "This is",
+  "status": "draft"
+ },
+ {
+  "key": "app_yn_hint_no",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Idan baa haka ba,",
+  "en": "If not,",
+  "status": "draft"
+ },
+ {
+  "key": "app_z_speak",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Duk lokacin da ake son yin magana, a danna kan Laila. Zan saurara da kyau!",
+  "en": "Whenever you want to speak, press Laila. I'll listen carefully!",
+  "status": "draft"
+ },
+ {
+  "key": "s0",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sannu! Idan ke mace ce, danna fari. Idan kai namiji ne, danna ja.",
+  "en": "Hello! If you are a girl, tap the white one. If you are a boy, tap the red one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_abc_say",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna kan Laila, sai ka faɗi harafin da ka gani.",
+   "f": "Ki danna kan Laila, sai ki faɗi harafin da kin gani."
+  },
+  "en": "Press Laila, then say the letter you see.",
+  "status": "draft"
+ },
+ {
+  "key": "s_act_desc_things",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Abubuwa. A nan za mu koyi sunayen abubuwa da Turanci, da hotuna.",
+  "en": "Things. Here we learn the names of things in English, with pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_all_done",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Yanzu kaa iya haruffa da kalmomi duka.",
+   "f": "Madalla! Yanzu kin iya haruffa da kalmomi duka."
+  },
+  "en": "Well done! Now you know all the letters and words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_alone2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Akwai wani a kusa da kai. Don Allah, ka zauna kai kaɗai a gaban kyamara.",
+   "f": "Akwai wani a kusa da ke. Don Allah, ki zauna ke kaɗai a gaban kyamara."
+  },
+  "en": "There is someone next to you. Please sit alone in front of the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_back",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "any": "Barka da dawowa!",
+   "m": "Don komawa baya, ka danna wannan ƙofa.",
+   "f": "Don komawa baya, ki danna wannan ƙofa."
+  },
+  "en": "Welcome back!",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_actions",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ayyuka. Wannan darasi ne game da abubuwan da muke yi a kullum. Kamar ci, sha, gudu da wasa.",
+  "en": "Actions. This lesson is about the things we do every day. Like eating, drinking, running and playing.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_clothing",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tufafi. Wannan darasi ne game da tufafin da muke sawa a jiki.",
+  "en": "Clothing. This lesson is about the clothes we wear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_people",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Mutane. Wannan darasi ne game da mutanen da ke kewaye da mu. Mama, baba, yara da malamai.",
+  "en": "People. This lesson is about the people around us. Mum, dad, children and teachers.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_desc_school",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Makaranta. Wannan darasi ne game da kayan makaranta da muke amfani da su.",
+  "en": "School. This lesson is about the things we use at school.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_actions",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan ayyuka. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of actions. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_clothing",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan tufafi. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of clothes. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_people",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan mutane. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of people. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_cat_start_school",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu ga hotunan kayan makaranta. Za mu koyi sunayensu da Turanci.",
+  "en": "Now we'll see pictures of school things. We'll learn their names in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_closer",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Matso kusa da kyamara.",
+   "f": "Matso kusa da kyamara."
+  },
+  "en": "Come closer to the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_ear",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Don sake ji, ka danna wannan kunne.",
+   "f": "Don sake ji, ki danna wannan kunne."
+  },
+  "en": "To hear it again, press this ear.",
+  "status": "draft"
+ },
+ {
+  "key": "s_go",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, ka danna kan Laila mu fara.",
+   "f": "Yanzu, ki danna kan Laila mu fara."
+  },
+  "en": "Now press Laila and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_intro2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Karatu. A nan za mu karanta kalmomi, harafi bayan harafi, sannan gaba ɗaya.",
+  "en": "Reading. Here we read words, letter by letter, then all at once.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_lesson",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, za mu karanta sunayen waɗannan abubuwa da Turanci.",
+  "en": "Now we'll read the names of these things in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_k_test",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za mu yi ƙaramin jarrabawa a kan kalmomin da kaa koyaa. Za a nuna maka kalma, sai ka karanta ta gaba ɗaya.",
+   "f": "Yanzu za mu yi ƙaramin jarrabawa a kan kalmomin da kika koyaa. Za a nuna miki kalma, sai ki karanta ta gaba ɗaya."
+  },
+  "en": "Now we'll do a small test on the words you learned. A word will be shown, and you read it whole.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kalmomi gajeru. A nan za mu karanta kalmomi gajeru, masu haruffa uku.",
+  "en": "Short words. Here we read short, three-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_k45",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kalmomi matsakaita. A nan za mu karanta kalmomi masu haruffa huɗu da biyar.",
+  "en": "Medium words. Here we read four- and five-letter words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_klong",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kalmomi dogaye. A nan za mu karanta kalmomi dogaye.",
+  "en": "Long words. Here we read long words.",
+  "status": "draft"
+ },
+ {
+  "key": "s_kd_knum",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lambobi. A nan za mu karanta sunayen lambobi da Turanci.",
+  "en": "Numbers. Here we read the names of numbers in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_check",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kaa gane haruffan da kaa koyaa.",
+   "f": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kin gane haruffan da kika koyaa."
+  },
+  "en": "Now we'll do a small test, to make sure you understood the letters you learned.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Babbar jarrabawa. Ka faɗi haruffa duka, ɗaya bayan ɗaya.",
+   "f": "Babbar jarrabawa. Ki faɗi haruffa duka, ɗaya bayan ɗaya."
+  },
+  "en": "The big test. Say all the letters, one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_final2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Jarrabawa ta ƙarshe. Za a nuna haruffa a gauraye, ka faɗe su duka.",
+   "f": "Jarrabawa ta ƙarshe. Za a nuna haruffa a gauraye, ki faɗe su duka."
+  },
+  "en": "The last test. The letters will be shown mixed up; say them all.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_look",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga haruffa huɗu. Ka saurara, ka kalla.",
+   "f": "Ga haruffa huɗu. Ki saurara, ki kalla."
+  },
+  "en": "Here are four letters. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za ka ga sababbin haruffa biyu don koyo. Wannan sabon mataki ne, mai muhimmanci ƙwarai.",
+   "f": "Yanzu za ki ga sababbin haruffa biyu don koyo. Wannan sabon mataki ne, mai muhimmanci ƙwarai."
+  },
+  "en": "Now you'll see two new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_new4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za ka ga sababbin haruffa huɗu don koyo. Wannan sabon mataki ne, mai muhimmanci ƙwarai.",
+   "f": "Yanzu za ki ga sababbin haruffa huɗu don koyo. Wannan sabon mataki ne, mai muhimmanci ƙwarai."
+  },
+  "en": "Now you'll see four new letters to learn. This is a new stage, a very important one.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_recall",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, kai ka faɗi shi da kanka.",
+   "f": "Yanzu, ke ki faɗi shi da kanki."
+  },
+  "en": "Now you say it yourself.",
+  "status": "draft"
+ },
+ {
+  "key": "s_laila2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Sunana Laila. Ni ce abokiyar koyonka. Yanzu, ka danna kaina mu fara.",
+   "f": "Sunana Laila. Ni ce abokiyar koyonki. Yanzu, ki danna kaina mu fara."
+  },
+  "en": "My name is Laila. I'm your learning friend. Now press my head and we'll start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_leave",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za a ƙare zaman. Idan an gama, a danna Laila. In ba haka ba, a danna baƙin allo.",
+  "en": "The session will end. If you are done, press Laila. If not, press the black slate.",
+  "status": "draft"
+ },
+ {
+  "key": "s_light",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Nemi wuri mai haske.",
+   "f": "Nemi wuri mai haske."
+  },
+  "en": "Find a brighter spot.",
+  "status": "draft"
+ },
+ {
+  "key": "s_loading",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Don Allah a ɗan jira. Ana shirya komai.",
+  "en": "Please wait a little. Everything is getting ready.",
+  "status": "draft"
+ },
+ {
+  "key": "s_look",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Duba kyamara.",
+   "f": "Duba kyamara."
+  },
+  "en": "Look at the camera.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_big",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu babbar jarrabawa! Za mu gwada dukkan lambobin da kaa koyaa, don mu tabbata kaa gane su. Za a nuna maka lamba, a faɗi sunanta da Hausa, sai kai ka faɗi sunanta da Turanci. Idan kaa manta da sunanta da Turanci,",
+   "f": "Yanzu babbar jarrabawa! Za mu gwada dukkan lambobin da kika koyaa, don mu tabbata kin gane su. Za a nuna miki lamba, a faɗi sunanta da Hausa, sai ke ki faɗi sunanta da Turanci. Idan kin manta da sunanta da Turanci,"
+  },
+  "en": "Now the big test! We'll test all the numbers you learned, to make sure you know them. A number will be shown, its name said in Hausa, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_focus5",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za mu sake koyon waɗanda kaa sha wahala da su, tare da wasu kaɗan da kaa sani, don ƙarin maimaitawa.",
+   "f": "Yanzu za mu sake koyon waɗanda kika sha wahala da su, tare da wasu kaɗan da kika sani, don ƙarin maimaitawa."
+  },
+  "en": "Now we'll learn again the ones you struggled with, together with a few you know, for extra practice.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_hundreds",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu ɗaruruwa: ɗari biyu, ɗari uku, har ɗari tara, sannan dubu.",
+  "en": "Now the hundreds: two hundred, three hundred, up to nine hundred, then a thousand.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A nan za mu koyi lambobi. Da farko, za mu ƙirga da yatsun hannu, daga ɗaya har goma. Sannan mu koyi alamun lambobi.",
+  "en": "Here we learn numbers. First we count on our fingers, one to ten. Then we learn the number signs.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_palms",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ga hannu. A ƙirga yatsun da aka ɗaga.",
+  "en": "Here is a hand. Count the fingers that are up.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_sym2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu alamun lambobi daga goma sha ɗaya har ashirin.",
+  "en": "Now the number signs from eleven to twenty.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_symbols",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za mu koyi alamun lambobin da kaa koyaa, daga ɗaya har goma.",
+   "f": "Yanzu za mu koyi alamun lambobin da kika koyaa, daga ɗaya har goma."
+  },
+  "en": "Now we'll learn the signs of the numbers you learned, one to ten.",
+  "status": "draft"
+ },
+ {
+  "key": "s_n_tens",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu za mu koyi manyan lambobi: talatin, arba'in, hamsin, har ɗari.",
+  "en": "Now we'll learn the big numbers: thirty, forty, fifty, up to a hundred.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_again2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka saurara kuma. Da Turanci, shi ne:",
+   "f": "Ki saurara kuma. Da Turanci, shi ne:"
+  },
+  "en": "Listen again. In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_allright",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kaa samu duka daidai! Yanzu za mu ci gaba.",
+   "f": "Kin samu dukka daidai! Yanzu za mu ci gaba."
+  },
+  "en": "You got them all right! Now we go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_focus",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Hotunan da za ka gani yanzu, su ne waɗanda kaa sha wahala da su. Za mu sake koyon su.",
+   "f": "Hotunan da za ki gani yanzu, su ne waɗanda kika sha wahala da su. Za mu sake koyon su.",
+   "any": "Bari mu sake koyon waɗannan."
+  },
+  "en": "The pictures you'll see now are the ones you struggled with. We'll learn them again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_go",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Za ka iya!",
+   "f": "Kin iyaa!"
+  },
+  "en": "You can do it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_inen",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Da Turanci, shi ne:",
+  "en": "In English, it is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_look",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga hotuna. Ka saurara, ka kalla.",
+   "f": "Ga hotuna. Ki saurara, ki kalla."
+  },
+  "en": "Here are three pictures. Listen and look.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_miss",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan ba daidai ba ne. Mu ci gaba.",
+  "en": "That one wasn't right. Let's go on.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_new3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu gaa wasu hotuna biyar.",
+  "en": "Now here are five more pictures.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_next",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, mu ci gaba zuwa na gaba.",
+  "en": "Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_retake",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Akwai waɗanda ba daidai ba. Za mu sake koyan su, sannan mu sake jarrabawar.",
+  "en": "Some weren't right. We'll learn them again, then take the test again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_right",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga waɗanda kaa samu daidai:",
+   "f": "Ga waɗanda kika samu daidai:"
+  },
+  "en": "Here are the ones you got right:",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_say",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗa da Turanci.",
+   "f": "Ki faɗa da Turanci."
+  },
+  "en": "Say it in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_test2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kaa gane su. Za a nuna maka hoto, a faɗi sunansa da Hausa, sai kai ka faɗi sunansa da Turanci. Idan kaa manta da sunansa da Turanci,",
+   "f": "Yanzu za mu yi ƙaramin jarrabawa, don mu tabbata kin gane su. Za a nuna miki hoto, a faɗi sunansa da Hausa, sai ke ki faɗi sunansa da Turanci. Idan kin manta da sunansa da Turanci,"
+  },
+  "en": "Now we'll do a small test, to make sure you know them. A picture will be shown, its name said in Hausa, and you say its name in English. If you've forgotten its English name,",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_three",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan yana da wuya. Yanzu, mu ci gaba zuwa na gaba.",
+  "en": "That one is hard. Now, on to the next.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_turn",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai. Ka danna Laila, ka faɗi sunansa da Turanci.",
+   "f": "Yanzu, ki danna Laila, ki faɗi sunansa da Turanci."
+  },
+  "en": "Your turn. Press Laila and say its name in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_o_wrong",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Waɗannan kuma, za mu sake koyan su:",
+  "en": "And these, we'll learn again:",
+  "status": "draft"
+ },
+ {
+  "key": "s_p1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Za mu ɗauki bidiyonka kana faɗin sunanka. Misali, idan sunanka Musa ne, ka ce: Sunana Musa.",
+   "f": "Za mu ɗauki bidiyonki kina faɗin sunanki. Misali, idan sunanki Aisha ne, ki ce: Sunana Aisha."
+  },
+  "en": "We will take a video of you saying your name. For example, if your name is Musa, say: Sunana Musa.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "f",
+  "text": {
+   "any": "Ga yaro Musa. Yana faɗin sunansa.",
+   "f": "Ga yarinya Aisha. Tana faɗin sunanta."
+  },
+  "en": "Here is the boy Musa / the girl Aisha, saying the name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_p3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai, ka faɗa mana sunanka. Ka danna kan Laila, sannan ka faɗa mana sunanka.",
+   "f": "Yanzu ke, ki faɗa mana sunanki. Ki danna kan Laila, sannan ki faɗa mana sunanki."
+  },
+  "en": "Now you: press Laila, then say your name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Muna buƙatar kyamara da makirufo domin aiki. A danna 'Allow'.",
+  "en": "We need the camera and the microphone for this to work. Tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_perm_no",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ba a ba da izini ba. A sake gwadawa, a danna 'Allow'.",
+  "en": "Permission was not given. Try again and tap 'Allow'.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_again",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu mu sake gwadawa, da sababbi. Ka saurara da kyau.",
+   "f": "Yanzu mu sake gwadawa, da sababbi. Ki saurara da kyau."
+  },
+  "en": "Now let's play again, with new ones. Listen carefully.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_q4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Hotuna huɗu. Za a nuna maka hotuna huɗu, a faɗi sunan ɗaya da Turanci, sai ka danna shi.",
+   "f": "Hotuna huɗu. Za a nuna miki hotuna huɗu, a faɗi sunan ɗaya da Turanci, sai ki danna shi."
+  },
+  "en": "Four pictures. You'll see four pictures, one will be named in English, and you tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qd_qnum",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Lambobi. Za a faɗi lamba da Turanci, sai ka danna alamarta.",
+   "f": "Lambobi. Za a faɗi lamba da Turanci, sai ki danna alamarta."
+  },
+  "en": "Numbers. A number will be said in English, and you tap its sign.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_tap",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna alamar lambar da aka faɗa.",
+  "en": "Tap the sign of the number that was said.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_intro2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "A nan za mu koyi rubuta sunayen abubuwa da Turanci, harafi-harafi. Za a nuna maka hoto, sai ka rubuta sunansa.",
+   "f": "A nan za mu koyi rubuta sunayen abubuwa da Turanci, harafi-harafi. Za a nuna miki hoto, sai ki rubuta sunansa."
+  },
+  "en": "Here we learn to write the names of things in English, letter by letter. A picture will be shown, and you write its name.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_turn",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai. Ka zaɓi darasi.",
+   "f": "Yanzu ke. Ki zaɓi darasi."
+  },
+  "en": "Your turn. Pick a lesson.",
+  "status": "draft"
+ },
+ {
+  "key": "s_r_wow",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Sannu da aiki!",
+   "f": "Kin iyaa sosai!"
+  },
+  "en": "Well done!",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Haruffa uku. A nan za mu rubuta kalmomi masu haruffa uku, harafi-harafi.",
+  "en": "Three letters. Here we write three-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Haruffa huɗu. A nan za mu rubuta kalmomi masu haruffa huɗu, harafi-harafi.",
+  "en": "Four letters. Here we write four-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_r5",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Haruffa biyar. A nan za mu rubuta kalmomi masu haruffa biyar, harafi-harafi.",
+  "en": "Five letters. Here we write five-letter words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rlong",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Kalmomi dogaye. A nan za mu rubuta kalmomi dogaye, harafi-harafi.",
+  "en": "Long words. Here we write long words, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_rd_rnum",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lambobi. A nan za mu rubuta sunayen lambobi da Turanci, harafi-harafi.",
+  "en": "Numbers. Here we write the names of numbers in English, letter by letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_face",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ba na ganin ka sosai. Don Allah, mu sake gwadawa.",
+   "f": "Ba na ganin ki sosai. Don Allah, mu sake gwadawa."
+  },
+  "en": "I can't see you well. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_name",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ban ji sunan ka sosai ba. Don Allah, mu sake gwadawa.",
+   "f": "Ban ji sunan ki sosai ba. Don Allah, mu sake gwadawa."
+  },
+  "en": "I couldn't hear you say your name. Please, let's try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_laila",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna kan Laila don sake gwadawa.",
+   "f": "Ki danna kan Laila don sake gwadawa."
+  },
+  "en": "Click Laila to try again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_retry_door",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ko kuma ka danna wannan ƙofa don komawa farko.",
+   "f": "Ko kuma ki danna wannan ƙofa don komawa farko."
+  },
+  "en": "Or click this door to go back and start again.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sannu",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Sannu,",
+  "en": "Hello,",
+  "status": "draft"
+ },
+ {
+  "key": "s_say_it",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi shi yanzu.",
+   "f": "Ki faɗi shi yanzu."
+  },
+  "en": "Say it now.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na farko shi ne:",
+  "en": "The first letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na biyu shi ne:",
+  "en": "The second letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na uku shi ne:",
+  "en": "The third letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na huɗu shi ne:",
+  "en": "The fourth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_5",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na biyar shi ne:",
+  "en": "The fifth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_6",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na shida shi ne:",
+  "en": "The sixth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_7",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na bakwai shi ne:",
+  "en": "The seventh letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_8",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na takwas shi ne:",
+  "en": "The eighth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_is_9",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na tara shi ne:",
+  "en": "The ninth letter is:",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_press",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "A danna shi.",
+  "en": "Tap it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_sp_spelt",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ana rubuta shi haka:",
+  "en": "It is written like this:",
+  "status": "draft"
+ },
+ {
+  "key": "s_still",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Tsaya cak.",
+   "f": "Tsaya cak."
+  },
+  "en": "Hold still.",
+  "status": "draft"
+ },
+ {
+  "key": "s_welcome",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Barka da zuwa!",
+  "en": "Welcome!",
+  "status": "draft"
+ },
+ {
+  "key": "sx_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Misali! Ka kalla, ka saurara yadda ake yi.",
+   "f": "Misali! Ki kalla, ki saurara yadda ake yi."
+  },
+  "en": "Example! Watch and listen to how it's done.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_k_letters",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ni zan karanta haruffan, ɗaya bayan ɗaya. Ka saurara.",
+   "f": "Ni zan karanta haruffan, ɗaya bayan ɗaya. Ki saurara."
+  },
+  "en": "I will read the letters, one by one. Listen.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_laila",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ga abin da zan faɗa:",
+  "en": "Here is what I'll say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_now",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai. Ka gwada.",
+   "f": "Yanzu ke. Ki gwada."
+  },
+  "en": "Your turn. Try it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_name",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Sunana Laila. Ni ce abokiyar koyonka.",
+   "f": "Sunana Laila. Ni ce abokiyar koyonki."
+  },
+  "en": "My name is Laila. I am your learning friend.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_together",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Tare, za mu koyi Turanci.",
+  "en": "Together we are going to learn English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_have",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ina da darussa masu kyau.",
+  "en": "I have amazing lessons.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu koyi haruffan Turanci.",
+  "en": "We will learn the English alphabet.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu koyi karatu da rubutu da Turanci.",
+  "en": "We will learn to read and write in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu koyi ƙirga.",
+  "en": "We will learn to count.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_l4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu koyi sunayen abubuwa kamar dabbobi da abinci da Turanci.",
+  "en": "We will learn the names of things like animals and foods, in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_more",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Da sauran abubuwa masu ban sha'awa da yawa.",
+  "en": "And many other amazing things.",
+  "status": "draft"
+ },
+ {
+  "key": "s_w_talk",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Za ka iya magana da ni. Zan kasance tare da kai.",
+   "f": "Za ki iya magana da ni. Zan kasance tare da ke."
+  },
+  "en": "You will be able to speak to me and I will be with you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_glad",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Na yi farin cikin ganinka.",
+   "f": "Na yi farin cikin ganinki."
+  },
+  "en": "I am happy to see you.",
+  "status": "draft"
+ },
+ {
+  "key": "s_b_cont",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Yanzu, mu ci gaba daga inda muka tsaya.",
+  "en": "Now let us continue from where we stopped.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_say",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga abin da za ka yi don ka faɗa da Turanci. Za ka danna Laila, sannan ka ce:",
+   "f": "Ga abin da za ki yi don ki faɗa da Turanci. Za ki danna Laila, sannan ki ce:"
+  },
+  "en": "Here is what you will do to say it in English. You will press Laila, then you will say:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_read",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga abin da za ka yi don ka karanta da Turanci. Za ka danna Laila, sannan ka karanta kalmar:",
+   "f": "Ga abin da za ki yi don ki karanta da Turanci. Za ki danna Laila, sannan ki karanta kalmar:"
+  },
+  "en": "Here is what you will do to read it in English. You will press Laila, then you will read the word:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_spell",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga abin da za ka yi don ka rubuta da Turanci. Za ka danna Laila, sannan ka faɗi haruffan:",
+   "f": "Ga abin da za ki yi don ki rubuta da Turanci. Za ki danna Laila, sannan ki faɗi haruffan:"
+  },
+  "en": "Here is what you will do to write it in English. You will press Laila, then you will say the letters:",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_find",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga abin da za ka yi. Ka saurara, sannan ka danna hoton da aka faɗa.",
+   "f": "Ga abin da za ki yi. Ki saurara, sannan ki danna hoton da aka faɗa."
+  },
+  "en": "Here is what you will do. Listen, then press the picture that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_do_findnum",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga abin da za ka yi. Ka saurara, sannan ka danna alamar lambar da aka faɗa.",
+   "f": "Ga abin da za ki yi. Ki saurara, sannan ki danna alamar lambar da aka faɗa."
+  },
+  "en": "Here is what you will do. Listen, then press the number that was named.",
+  "status": "draft"
+ },
+ {
+  "key": "s_q_start",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, za a nuna maka hotuna huɗu. Ka saurara sunan da aka faɗa da Turanci, sannan ka danna shi.",
+   "f": "Yanzu, za a nuna miki hotuna huɗu. Ki saurara sunan da aka faɗa da Turanci, sannan ki danna shi."
+  },
+  "en": "Now you will be shown four pictures. Listen for the name said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_qn_start",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, za a nuna maka alamomi. Ka saurara lambar da aka faɗa da Turanci, sannan ka danna ta.",
+   "f": "Yanzu, za a nuna miki alamomi. Ki saurara lambar da aka faɗa da Turanci, sannan ki danna ta."
+  },
+  "en": "Now you will be shown numbers. Listen for the one said in English, then press it.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_plan",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu faɗi haruffan ɗaya bayan ɗaya. Akwai hanyoyi biyu.",
+  "en": "We will say the letters one after another. There are two ways.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ta farko, da murya.",
+  "en": "The first, with your voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_w2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ta biyu, da allo.",
+  "en": "The second, with the board.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na farko, zan faɗa da murya.",
+  "en": "The first letter, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_v2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na biyu ma, zan faɗa da murya.",
+  "en": "The second letter too, I will say with my voice.",
+  "status": "draft"
+ },
+ {
+  "key": "sx_r_kb",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Harafi na ƙarshe kuwa, zan danna shi a kan allo.",
+  "en": "And the last letter, I will press it on the board.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_intro",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga balan-balan masu haruffa. Ka danna balan-balan da yatsanka, sai ya fashe.",
+   "f": "Ga balan-balan masu haruffa. Ki danna balan-balan da yatsanki, sai ya fashe."
+  },
+  "en": "Here are balloons with letters. Press a balloon with your finger and it bursts.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_done",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Madalla, mun gama wasan!",
+  "en": "Well done, we've finished the game!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_task",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka nemo harafi na farko na Turanci, ka fasa shi. Sannan harafin bayan sa.",
+   "f": "Ki nemo harafi na farko na Turanci, ki fasa shi. Sannan harafin bayan sa."
+  },
+  "en": "Find the first letter of English and pop it. Then the letter after it.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_first",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fasa harafin farko:",
+   "f": "Ki fasa harafin farko:"
+  },
+  "en": "Pop the first letter:",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_next",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka fasa harafi na gaba.",
+   "f": "Ki fasa harafi na gaba."
+  },
+  "en": "Pop the next letter.",
+  "status": "draft"
+ },
+ {
+  "key": "s_eg_watch",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Zan sake nuna maka. Ka kula.",
+   "f": "Zan sake nuna miki. Ki kula."
+  },
+  "en": "I will show you again. Pay attention.",
+  "status": "draft"
+ },
+ {
+  "key": "s_eg_ok",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Ba haka ba. Amma za ka gane nan da nan.",
+   "f": "Ba haka ba. Amma za ki gane nan da nan."
+  },
+  "en": "That was not right, but you will learn.",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_timeup",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Lokaci ya ƙare. Mu koyi haruffa tukuna.",
+  "en": "Time is up. Let us learn the letters first.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_calm",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "mf",
+  "text": {
+   "m": "Kada ka damu. Mu koyi su tukuna.",
+   "f": "Kada ki damu. Mu koyi su tukuna."
+  },
+  "en": "Don't worry. Let us learn them first.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_play",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Za mu yi ɗan wasa.",
+  "en": "We are going to play a little game.",
+  "status": "draft"
+ },
+ {
+  "key": "s_wb_home",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan kana so ka koma gida, ka danna littafin.",
+   "f": "Idan kina so ki koma gida, ki danna littafin."
+  },
+  "en": "To go home, press the book.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_first",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Muna so mu tabbatar cewa ka iya haruffan Turanci, kamar",
+   "f": "Muna so mu tabbatar cewa kin iya haruffan Turanci, kamar"
+  },
+  "en": "We want to make sure you know the English letters, like",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_yes",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka sani, ka danna Laila mu fara.",
+   "f": "Idan kin sani, ki danna Laila mu fara."
+  },
+  "en": "If you know them, tap Laila to begin.",
+  "status": "draft"
+ },
+ {
+  "key": "s_gate_no",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ba damuwa. Za mu koye su tare. Ka danna baƙin allo.",
+   "f": "Ba damuwa. Za mu koye su tare. Ki danna baƙin allo."
+  },
+  "en": "If you don't, no problem, we will learn them together. Tap the black slate to begin learning.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_fish_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka kama kifin da ke ɗauke da abin da na faɗa.",
+   "f": "Ki kama kifin da ke ɗauke da abin da na faɗa."
+  },
+  "en": "Catch the fish carrying the thing I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_drum_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Duba hoton nan. Ka danna Laila, ka faɗi sunansa da Turanci, sai in buga kalangu!",
+   "f": "Duba hoton nan. Ki danna Laila, ki faɗi sunansa da Turanci, sai in buga kalangu!"
+  },
+  "en": "Look at this picture. Tap Laila, say its name in English, and I will beat the drum!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_market_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Masu saye sun zo! Da sauri, ka ba kowane ɗaya abin da ya nema.",
+   "f": "Masu saye sun zo! Da sauri, ki ba kowane ɗaya abin da ya nema."
+  },
+  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_canoes_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke cikin kowane kwale-kwale, sannan ka danna wadda ta dace da hoton.",
+   "f": "Ki karanta kalmar da ke cikin kowane kwale-kwale, sannan ki danna wadda ta dace da hoton."
+  },
+  "en": "Read the word in each canoe, then tap the one that matches the picture.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_pots_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Bari mu gina kalma da tukwane. Ka danna haruffa ɗaya bayan ɗaya.",
+   "f": "Bari mu gina kalma da tukwane. Ki danna haruffa ɗaya bayan ɗaya."
+  },
+  "en": "Let's build a word with pots. Tap the letters one after another.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_house_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mu gina gida kafin lokaci ya ƙare! Ka danna Laila, ka faɗi haruffan kalmar ɗaya bayan ɗaya. Kowane harafi bulo ne.",
+   "f": "Mu gina gida kafin lokaci ya ƙare! Ki danna Laila, ki faɗi haruffan kalmar ɗaya bayan ɗaya. Kowane harafi bulo ne."
+  },
+  "en": "Let's build the house before time runs out! Tap Laila and say the word's letters one by one. Every letter is a brick.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_learn",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ba damuwa! Mu fara koyo tare. Danna Laila don a ci gaba.",
+  "en": "No problem! Let's start learning together. Tap Laila to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_go",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Danna Laila don a ci gaba.",
+  "en": "Tap Laila to continue.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi harafin da ke kan tutar mahayin doki, sai ya gaida sarki!",
+   "f": "Ki faɗi harafin da ke kan tutar mahayin doki, sai ya gaida sarki!"
+  },
+  "en": "Say the letter on the horseman's banner, and he will greet the emir!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_eg1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga yadda ake wasan: ka faɗi harafin da ka gani a kan tutar mahayin doki, domin Sarki ya yi murna.",
+   "f": "Ga yadda ake wasan: ki faɗi harafin da kika gani a kan tutar mahayin doki, domin Sarki ya yi murna."
+  },
+  "en": "Here is how the game works: say the letter you see on the horseman's flag, so the Sarki is happy.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_durbar_ready",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu, ka danna Laila mu fara.",
+   "f": "Yanzu, ki danna Laila mu fara."
+  },
+  "en": "Now, press Laila and we will start.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_dillali_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi sunan abin nan da Turanci, sai dillali ya sayar da shi!",
+   "f": "Ki faɗi sunan abin nan da Turanci, sai dillali ya sayar da shi!"
+  },
+  "en": "Say this thing's name in English, and the auctioneer will sell it!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shayi_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi abin da kake so da Turanci. Mai shayi zai miƙa maka!",
+   "f": "Ki faɗi abin da kike so da Turanci. Mai shayi zai miƙa miki!"
+  },
+  "en": "Say what you want in English, and the tea seller will give it to you!",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_gyada_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna tarin buhu da yawansu ya yi daidai da lambar da na faɗa.",
+   "f": "Ki danna tarin buhu da yawansu ya yi daidai da lambar da na faɗa."
+  },
+  "en": "Tap the stack with as many sacks as the number I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_shanu_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka danna dabbar da farashinta ya yi daidai da abin da na faɗa.",
+   "f": "Ki danna dabbar da farashinta ya yi daidai da abin da na faɗa."
+  },
+  "en": "Tap the animal whose price matches what I say.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka ƙirga shanun da ke cikin garke, ka faɗi yawansu da Turanci.",
+   "f": "Ki ƙirga shanun da ke cikin garke, ki faɗi yawansu da Turanci."
+  },
+  "en": "Count the cows in the pen and say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_garke_eg1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ga yadda ake wasan: ka ƙirga shanun da ke cikin garke, sai ka faɗi yawansu da Turanci.",
+   "f": "Ga yadda ake wasan: ki ƙirga shanun da ke cikin garke, sai ki faɗi yawansu da Turanci."
+  },
+  "en": "Here is how the game works: count the cows in the pen, then say how many in English.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_suya_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi kuɗin da ke hannunka da Turanci, sai ka biya mai suya.",
+   "f": "Ki faɗi kuɗin da ke hannunki da Turanci, sai ki biya mai suya."
+  },
+  "en": "Say the money in your hand in English, and pay the suya seller.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_allo_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan allo da ƙarfi, sai mu wanke shi.",
+   "f": "Ki karanta kalmar da ke kan allo da ƙarfi, sai mu wanke shi."
+  },
+  "en": "Read the word on the board out loud, and we will wash it clean.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_jirgi_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan jirgin ruwa da ƙarfi. Jirgin zai zo bakin ruwa.",
+   "f": "Ki karanta kalmar da ke kan jirgin ruwa da ƙarfi. Jirgin zai zo bakin ruwa."
+  },
+  "en": "Read the word on the boat out loud, and it will come to the bank.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_marubuci_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko kuma ka danna su a kan allo. Sai marubuci ya rubuta su.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko kuma ki danna su a kan allo. Sai marubuci ya rubuta su."
+  },
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the letter writer will write them.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_ruwa_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan girgije da ƙarfi, domin a yi ruwan sama a gona.",
+   "f": "Ki karanta kalmar da ke kan girgije da ƙarfi, domin a yi ruwan sama a gona."
+  },
+  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_rini_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ka danna su a kan allo. Sai mai rini ya rina zanen.",
+   "f": "Ki faɗi haruffan kalmar ɗaya bayan ɗaya. Ko ki danna su a kan allo. Sai mai rini ya rina zanen."
+  },
+  "en": "Say the letters of the word one by one, or press them on the keyboard, and the dyer will dye the cloth.",
+  "status": "draft"
+ },
+ {
+  "key": "s_l_game",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu mu yi wasa da haruffan da ka koya!",
+   "f": "Yanzu mu yi wasa da haruffan da kika koya!"
+  },
+  "en": "Now let's play a game with the letters you've learned!",
+  "status": "draft"
+ },
+ {
+  "key": "s_pop_again",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kaa kusa. Mu sake gwadawa sau ɗaya.",
+   "f": "Kin kusa. Mu sake gwadawa sau ɗaya."
+  },
+  "en": "You were close! Let's try once more.",
+  "status": "draft"
+ },
+ {
+  "key": "s_game_open",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu za ka iya buga wannan wasan a duk lokacin da kake so, daga shafin farko.",
+   "f": "Yanzu za ki iya buga wannan wasan a duk lokacin da kike so, daga shafin farko."
+  },
+  "en": "Now you can play this game whenever you like, from the home page.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_50",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari hamsin.",
+   "f": "Madalla! Kin samu taurari uku da zinari hamsin."
+  },
+  "en": "Well done! You earned three stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_100",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari."
+  },
+  "en": "Well done! You earned three stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_150",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari da hamsin.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari da hamsin."
+  },
+  "en": "Well done! You earned three stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_3_200",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari uku da zinari ɗari biyu.",
+   "f": "Madalla! Kin samu taurari uku da zinari ɗari biyu."
+  },
+  "en": "Well done! You earned three stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_50",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari hamsin.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari hamsin."
+  },
+  "en": "Well done! You earned four stars and 50 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_100",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari."
+  },
+  "en": "Well done! You earned four stars and 100 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_150",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari da hamsin.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari da hamsin."
+  },
+  "en": "Well done! You earned four stars and 150 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_got_4_200",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Madalla! Ka samu taurari huɗu da zinari ɗari biyu.",
+   "f": "Madalla! Kin samu taurari huɗu da zinari ɗari biyu."
+  },
+  "en": "Well done! You earned four stars and 200 gold.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_jarumi",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Jarumi ne!",
+   "f": "Yanzu ke Jaruma ce!"
+  },
+  "en": "Now you are a Jarumi / Jaruma!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_malami",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Malami ne!",
+   "f": "Yanzu ke Malama ce!"
+  },
+  "en": "Now you are a Malami / Malama!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_dansarki",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Ɗan Sarki ne!",
+   "f": "Yanzu ke 'Yar Sarki ce!"
+  },
+  "en": "Now you are a Ɗan Sarki / 'Yar Sarki!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_magaji",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Magaji ne!",
+   "f": "Yanzu ke Magajiya ce!"
+  },
+  "en": "Now you are a Magaji / Magajiya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_now_sarki",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Yanzu kai Sarki ne!",
+   "f": "Yanzu ke Sarauniya ce!"
+  },
+  "en": "Now you are a Sarki / Sarauniya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_effort",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ƙoƙarinka ya kai ka sabon matsayi!",
+   "f": "Ƙoƙarinki ya kai ki sabon matsayi!"
+  },
+  "en": "Your effort has brought you to a new level!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag1",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhunka na farko na zinari ya cika!",
+   "f": "Buhunki na farko na zinari ya cika!"
+  },
+  "en": "Your first bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag2",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhunka na biyu na zinari ya cika!",
+   "f": "Buhunki na biyu na zinari ya cika!"
+  },
+  "en": "Your second bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag3",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhunka na uku na zinari ya cika!",
+   "f": "Buhunki na uku na zinari ya cika!"
+  },
+  "en": "Your third bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag4",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhunka na huɗu na zinari ya cika!",
+   "f": "Buhunki na huɗu na zinari ya cika!"
+  },
+  "en": "Your fourth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_bag5",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Buhunka na biyar na zinari ya cika!",
+   "f": "Buhunki na biyar na zinari ya cika!"
+  },
+  "en": "Your fifth bag of gold is full!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_1000",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu ɗaya.",
+   "f": "Zinarinki ya kai dubu ɗaya."
+  },
+  "en": "Your Zinari have reached 1,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_2000",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu biyu.",
+   "f": "Zinarinki ya kai dubu biyu."
+  },
+  "en": "Your Zinari have reached 2,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_4000",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu huɗu.",
+   "f": "Zinarinki ya kai dubu huɗu."
+  },
+  "en": "Your Zinari have reached 4,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_6000",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu shida.",
+   "f": "Zinarinki ya kai dubu shida."
+  },
+  "en": "Your Zinari have reached 6,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_gold_10000",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Zinarinka ya kai dubu goma.",
+   "f": "Zinarinki ya kai dubu goma."
+  },
+  "en": "Your Zinari have reached 10,000.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_first",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan shi ne matsayi na farko. Akwai ƙarin matsayi guda huɗu a gaba.",
+  "en": "This is the first level. There are four more levels ahead.",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep_first",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ci gaba da ƙoƙari, har ka zama Sarki!",
+   "f": "Ci gaba da ƙoƙari, har ki zama Sarauniya!"
+  },
+  "en": "Keep trying, until you become Sarki / Sarauniya!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_keep",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ci gaba da ƙoƙari haka!",
+  "en": "Keep up the effort like this!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Wannan shi ne matsayi mafi girma duka!",
+  "en": "This is the highest level of all!",
+  "status": "draft"
+ },
+ {
+  "key": "s_z_top_keep",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Ci gaba da karatu kullum!",
+  "en": "Keep learning every day!",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hawan",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mahayan Sallah suna zuwa! Ka faɗi harafin da ke kan tutar kowane mahayin doki.",
+   "f": "Mahayan Sallah suna zuwa! Ki faɗi harafin da ke kan tutar kowane mahayin doki."
+  },
+  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_fashe",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Haruffa suna tashi a cikin balan-balan. Ka fasa harafin da na faɗa.",
+   "f": "Haruffa suna tashi a cikin balan-balan. Ki fasa harafin da na faɗa."
+  },
+  "en": "Letters float up in balloons. Pop the letter Laila says.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_hanzarin",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka taimaki matar kasuwa: ka yi sauri ka nemo abincin da na faɗa.",
+   "f": "Ki taimaki matar kasuwa: ki yi sauri ki nemo abincin da na faɗa."
+  },
+  "en": "Help the market woman: quickly find the food Laila names.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kifi",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Mu je kamun kifi! Ka kama kifin da ke ɗauke da hoton da ya dace.",
+   "f": "Mu je kamun kifi! Ki kama kifin da ke ɗauke da hoton da ya dace."
+  },
+  "en": "Go fishing: catch the fish that carries the right picture.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kalangu",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan ka ji kalmar da ta dace, ka buga kalangu.",
+   "f": "Idan kin ji kalmar da ta dace, ki buga kalangu."
+  },
+  "en": "Beat the drum when you hear the right word.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shayi",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kai ne mai shayi. Ka bai wa kowane mai saye abin da ya nema.",
+   "f": "Ke ce mai shayi. Ki bai wa kowane mai saye abin da ya nema."
+  },
+  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dillali",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Kai ne dillali: ka faɗi sunan kowane abu domin ka sayar da shi.",
+   "f": "Ke ce dillaliya: ki faɗi sunan kowane abu domin ki sayar da shi."
+  },
+  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_dalar",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka loda buhun gyaɗa a babbar mota. Sannan ka ƙirga su.",
+   "f": "Ki loda buhun gyaɗa a babbar mota. Sannan ki ƙirga su."
+  },
+  "en": "Load the groundnut sacks onto the lorry and count them.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_suya",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka sayar da suya a kasuwar dare, ka ƙirga kuɗin.",
+   "f": "Ki sayar da suya a kasuwar dare, ki ƙirga kuɗin."
+  },
+  "en": "Sell suya at the night market and count the money.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_allo",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta wa ajin kalmar da ke kan allo.",
+   "f": "Ki karanta wa ajin kalmar da ke kan allo."
+  },
+  "en": "Read the word on the allo board to the class.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_jirgi",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan kowane jirgin ruwa domin ya tafi.",
+   "f": "Ki karanta kalmar da ke kan kowane jirgin ruwa domin ya tafi."
+  },
+  "en": "Read the word on each boat to let it sail.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_kwale",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar. Sai kwale-kwale ya tsallaka kogi.",
+   "f": "Ki karanta kalmar. Sai kwale-kwale ya tsallaka kogi."
+  },
+  "en": "Read the word on the canoe to paddle across the river.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_ruwa",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka karanta kalmar da ke kan girgijen hadari, sai ruwan sama ya sa gero ya girma.",
+   "f": "Ki karanta kalmar da ke kan girgijen hadari, sai ruwan sama ya sa gero ya girma."
+  },
+  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_tukwane",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka rubuta kalmar da tukwanen haruffa.",
+   "f": "Ki rubuta kalmar da tukwanen haruffa."
+  },
+  "en": "Spell the word with the letter pots.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_bulo",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka rubuta kalmar bulo bayan bulo domin ka gina katanga.",
+   "f": "Ki rubuta kalmar bulo bayan bulo domin ki gina katanga."
+  },
+  "en": "Spell the word brick by brick to build the wall.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_marubuci",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka taimaki marubucin wasiƙa. Ka rubuta kalmar.",
+   "f": "Ki taimaki marubucin wasiƙa. Ki rubuta kalmar."
+  },
+  "en": "Help the letter writer spell the word on the envelope.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_karofi",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka rubuta kalmar da zanen rini na Kano.",
+   "f": "Ki rubuta kalmar da zanen rini na Kano."
+  },
+  "en": "Spell the word by dyeing each letter cloth in the Kano dye pits.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_shanu",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka nemo saniyar da farashinta ya dace a kasuwar shanu.",
+   "f": "Ki nemo saniyar da farashinta ya dace a kasuwar shanu."
+  },
+  "en": "Find the cow with the right price at the cattle market.",
+  "status": "draft"
+ },
+ {
+  "key": "gd_garke",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Ka ƙirga shanun yayin da suke shiga garke.",
+   "f": "Ki ƙirga shanun yayin da suke shiga garke."
+  },
+  "en": "Count the cattle as they go into the kraal.",
+  "status": "draft"
+ },
+ {
+  "key": "s_g_stars_how",
+  "lang": "hapw",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Taurari suna jira! Ka danna su bisa tsari, daga ɗaya.",
+   "f": "Taurari suna jira! Ki danna su bisa tsari, daga ɗaya."
+  },
+  "en": "The stars are waiting! Press them in order, from one.",
+  "status": "draft"
+ }
+]
