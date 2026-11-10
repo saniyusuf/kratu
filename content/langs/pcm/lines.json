@@ -1981,10 +1981,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "The buyers don come! Quick quick, give each person wetin dem ask for.",
-   "f": "The buyers don come! Quick quick, give each person wetin dem ask for."
+   "m": "Press the market woman wey hold the thing wey I call.",
+   "f": "Press the market woman wey hold the thing wey I call."
   },
-  "en": "The shoppers are here! Quickly give each one what they ask for.",
+  "en": "Tap the trader holding the thing I name.",
   "status": "draft"
  },
  {
@@ -2017,10 +2017,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Make we build the house before time finish! Press Ese, and talk the letters of the word one by one. Every letter na one brick.",
-   "f": "Make we build the house before time finish! Press Ese, and talk the letters of the word one by one. Every letter na one brick."
+   "m": "NEPA don take light! Press Ese, and talk the letters of the word one by one. Every letter go light one room.",
+   "f": "NEPA don take light! Press Ese, and talk the letters of the word one by one. Every letter go light one room."
   },
-  "en": "Let's build the house before time runs out! Tap Laila and say the word's letters one by one. Every letter is a brick.",
+  "en": "NEPA has taken the light! Tap Ese and say the word's letters one by one. Every letter lights a room.",
   "status": "draft"
  },
  {
@@ -2047,10 +2047,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Talk the letter wey dey the horse rider flag, and e go greet the emir!",
-   "f": "Talk the letter wey dey the horse rider flag, and e go greet the emir!"
+   "m": "Talk the letter wey dey the band flag, and the band go dance pass!",
+   "f": "Talk the letter wey dey the band flag, and the band go dance pass!"
   },
-  "en": "Say the letter on the horseman's banner, and he will greet the emir!",
+  "en": "Say the letter on the band's banner, and the band will dance past!",
   "status": "draft"
  },
  {
@@ -2083,10 +2083,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Talk the name of this thing for English, and the auctioneer go sell am!",
-   "f": "Talk the name of this thing for English, and the auctioneer go sell am!"
+   "m": "Talk the name of wetin the hawker hold for English, and the driver go buy am.",
+   "f": "Talk the name of wetin the hawker hold for English, and the driver go buy am."
   },
-  "en": "Say this thing's name in English, and the auctioneer will sell it!",
+  "en": "Say in English the name of what the hawker holds, and the driver will buy it.",
   "status": "draft"
  },
  {
@@ -2095,10 +2095,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Talk wetin you want for English, and the tea seller go give you!",
-   "f": "Talk wetin you want for English, and the tea seller go give you!"
+   "m": "Talk wetin the customer want for English, and Mama go dish am.",
+   "f": "Talk wetin the customer want for English, and Mama go dish am."
   },
-  "en": "Say what you want in English, and the tea seller will give it to you!",
+  "en": "Say in English what the customer wants, and Mama will dish it up.",
   "status": "draft"
  },
  {
@@ -2119,10 +2119,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Press the animal wey im price na the one wey I talk.",
-   "f": "Press the animal wey im price na the one wey I talk."
+   "m": "Press the phone case wey get the price wey I talk.",
+   "f": "Press the phone case wey get the price wey I talk."
   },
-  "en": "Tap the animal whose price matches what I say.",
+  "en": "Tap the phone case with the price I say.",
   "status": "draft"
  },
  {
@@ -2155,10 +2155,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Talk the money wey dey your hand for English, and pay the suya seller.",
-   "f": "Talk the money wey dey your hand for English, and pay the suya seller."
+   "m": "Talk how much money the customer hold for English, and Mama go bag the puff-puff.",
+   "f": "Talk how much money the customer hold for English, and Mama go bag the puff-puff."
   },
-  "en": "Say the money in your hand in English, and pay the suya seller.",
+  "en": "Say in English how much money the customer is holding, and Mama will bag the puff-puff.",
   "status": "draft"
  },
  {
@@ -2203,10 +2203,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Read the word wey dey the cloud loud, and rain go fall for the farm.",
-   "f": "Read the word wey dey the cloud loud, and rain go fall for the farm."
+   "m": "Read the word wey dey the board loud, and the match go show for TV.",
+   "f": "Read the word wey dey the board loud, and the match go show for TV."
   },
-  "en": "Read the word on the cloud out loud, and the rain will fall on the farm.",
+  "en": "Read the word on the board out loud, and the match comes on the TV.",
   "status": "draft"
  },
  {
@@ -2599,10 +2599,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "The Sallah horse riders dey come! Talk each letter as the horse rider dey pass.",
-   "f": "The Sallah horse riders dey come! Talk each letter as the horse rider dey pass."
+   "m": "Carnival Calabar don start! Talk each letter as each band dey dance come.",
+   "f": "Carnival Calabar don start! Talk each letter as each band dey dance come."
   },
-  "en": "The Sallah riders are coming! Say each letter as its horseman rides past.",
+  "en": "Calabar Carnival has started! Say each letter as each band dances up.",
   "status": "draft"
  },
  {
@@ -2623,10 +2623,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Help the market woman: quick quick, find the food wey I call.",
-   "f": "Help the market woman: quick quick, find the food wey I call."
+   "m": "For Mile 12 Market, find the woman wey dey sell the thing wey I call.",
+   "f": "For Mile 12 Market, find the woman wey dey sell the thing wey I call."
   },
-  "en": "Help the market woman: quickly find the food Laila names.",
+  "en": "At Mile 12 Market, find the trader selling the thing I name.",
   "status": "draft"
  },
  {
@@ -2659,10 +2659,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "You be the tea seller. Give each buyer the thing wey e ask for.",
-   "f": "You be the tea seller. Give each buyer the thing wey e ask for."
+   "m": "Help Mama Put for her buka: give each customer the food wey dem want.",
+   "f": "Help Mama Put for her buka: give each customer the food wey dem want."
   },
-  "en": "Run the tea stall: serve each customer the thing they ask for.",
+  "en": "Help Mama Put at her buka: give each customer the food they want.",
   "status": "draft"
  },
  {
@@ -2671,10 +2671,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "You be the auctioneer: talk the name of each thing, so you fit sell am.",
-   "f": "You be the auctioneer: talk the name of each thing, so you fit sell am."
+   "m": "Go-slow don hold for road. Name wetin the hawker dey sell, make the driver buy am.",
+   "f": "Go-slow don hold for road. Name wetin the hawker dey sell, make the driver buy am."
   },
-  "en": "Be the auctioneer: say the name of each thing to sell it.",
+  "en": "The traffic is stuck. Name what the hawker is selling so the driver buys it.",
   "status": "draft"
  },
  {
@@ -2695,10 +2695,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Sell suya for the night market, and count the money.",
-   "f": "Sell suya for the night market, and count the money."
+   "m": "Sell puff-puff for evening time, and talk the money wey each customer bring.",
+   "f": "Sell puff-puff for evening time, and talk the money wey each customer bring."
   },
-  "en": "Sell suya at the night market and count the money.",
+  "en": "Sell puff-puff in the evening and say the money each customer brings.",
   "status": "draft"
  },
  {
@@ -2743,10 +2743,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Read the word wey dey the rain cloud, and the rain go make the millet grow.",
-   "f": "Read the word wey dey the rain cloud, and the rain go make the millet grow."
+   "m": "For the viewing centre, read the word for the board make the TV come on.",
+   "f": "For the viewing centre, read the word for the board make the TV come on."
   },
-  "en": "Read the word on the storm cloud so the rain makes the millet grow.",
+  "en": "At the viewing centre, read the word on the board so the TV comes on.",
   "status": "draft"
  },
  {
@@ -2767,10 +2767,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Write the word, one brick after the other, make you build the wall.",
-   "f": "Write the word, one brick after the other, make you build the wall."
+   "m": "Light don go for the whole street. Spell the word, and every room go get light again.",
+   "f": "Light don go for the whole street. Spell the word, and every room go get light again."
   },
-  "en": "Spell the word brick by brick to build the wall.",
+  "en": "There is no light on the whole street. Spell the word and every room gets its light back.",
   "status": "draft"
  },
  {
@@ -2803,10 +2803,10 @@
   "voice": "laila",
   "gender": "pair",
   "text": {
-   "m": "Find the cow wey im price correct, for the cow market.",
-   "f": "Find the cow wey im price correct, for the cow market."
+   "m": "For Computer Village, find the phone case wey im price correct.",
+   "f": "For Computer Village, find the phone case wey im price correct."
   },
-  "en": "Find the cow with the right price at the cattle market.",
+  "en": "At Computer Village, find the phone case with the right price.",
   "status": "draft"
  },
  {

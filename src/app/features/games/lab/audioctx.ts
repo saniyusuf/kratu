@@ -8,4 +8,4 @@ export function liveAC(a: AudioContext | null | undefined): AudioContext {
   const c: AudioContext = new ((window as any).AudioContext || (window as any).webkitAudioContext)();
   open.add(c); return c;
 }
-export function closeAC(): void { open.forEach((c) => { try { c.close(); } catch { /* closed */ } }); open.clear(); }
+export function closeAC(): void { open.forEach((c) => { try { c.close().catch(() => { /* closed */ }); } catch { /* closed */ } }); open.clear(); }

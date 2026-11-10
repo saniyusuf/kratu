@@ -177,6 +177,10 @@
                 {
                   "replace": "src/app/core/lang/lang.ts",
                   "with": "src/app/core/lang/lang.pcm.ts"
+                },
+                {
+                  "replace": "src/app/features/games/lab/skin.ts",
+                  "with": "src/app/features/games/lab/skin.pcm.ts"
                 }
               ],
               "assets": [

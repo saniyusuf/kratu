@@ -12,10 +12,11 @@
  */
 import { person, SKT, dk, lt, f1, water, lorry, flag, bunting, canopy, keke } from './south';
 import { talkingDrum } from './kalangu';
+import { pidginGames } from './pidgin-games';
 import { liveAC } from './audioctx';
 import { CLOTH_DEFS, CLOTH, dressed, band, weather, zinc, louvre, sign, poles, chair, goat, hen, agama, flags, earth, town, smoke, onlooker, cloudy, birdsAt } from './south-dress';
 
-export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
+export function southGames(c: any, L: 'yo' | 'ig' | 'pcm'): Record<string, any> {
   const { K, h, say, shuffle, micBox, line, F, io, opts, LW, txt, spoken, letters, gaps, secs } = c;
   const Y = L === 'yo';
   let ac = null;
@@ -343,7 +344,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
       if (run.auto && !kbtn) go(); else box.cue();
     }
     box.listen(() => { const w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, (r) => {
-      if (stamp !== wi + ':' + li || box.busy) return;
+      if ((stamp && stamp !== wi + ':' + li) || box.busy) return;   // (the ?tester buttons answer without a listen, so no stamp)
       const got = r.value || [];
       if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }
       quiet = 0; take(got);
@@ -1839,6 +1840,7 @@ export function southGames(c: any, L: 'yo' | 'ig'): Record<string, any> {
     },
   };
 
+  if (L === 'pcm') return pidginGames(c, { autoRound, sayLetters, letterSay, nameIt, findIt, noteSay, readAloud, knock, knocks, mood, later, bump, svgBack, horn, note, card, fig, PRICES, naira, U });
   return Y ? { 'j-rubutu': ayo, 'j-allo': door, 'j-karatu': regatta, 'j-shayi': foodStall, 'j-rini': adire, 'j-gyada': cocoa, 'j-shanu': asoOke, 'j-garke': owambe, 'j-rubutu-say': naHouse, 'j-marubuci': signWriter, 'j-ruwa': newsStand,
       'j-durbar': igba, 'j-magana': alo, 'j-dillali': eru, 'j-nemo': hideSeek, 'j-suya': esusu, 'j-jirgi': okada, 'j-abubuwa': pigeons }
     : { 'j-rubutu': aka, 'j-allo': uli, 'j-karatu': lorries, 'j-shayi': foodStall, 'j-rini': akwete, 'j-gyada': palmOil, 'j-shanu': abaShoes, 'j-garke': iriJi, 'j-rubutu-say': kola, 'j-marubuci': printer, 'j-ruwa': mgba,

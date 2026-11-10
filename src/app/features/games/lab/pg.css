@@ -1,0 +1,186 @@
+/* The Naija Pidgin build's own games (pidgin-games.ts). Every rule under .glab .sg.<game>; keyframes pg-…; transform and opacity only.
+   Frame units: the 320 x 200 backdrop is 100cqw x 62.5cqw, so one backdrop point is .3125cqw. */
+.glab .sg .sgback .pggen,.glab .sg .sgback .pgspark,.glab .sg .sgback .pgedge,.glab .sg .sgback .pgedge2{transform-box:fill-box}
+.glab .sg .sgback .pggen{animation:pg-rumble .12s linear infinite alternate}
+@keyframes pg-rumble{to{transform:translate(.4px,-.3px)}}
+.glab .sg .sgback .pgspark{animation:pg-spark 3.3s steps(1) infinite}
+@keyframes pg-spark{0%,100%{opacity:0}40%{opacity:1}43%{opacity:0}47%{opacity:.8}50%{opacity:0}}
+.glab .sg .sgback .pgfanb{transform-box:view-box;transform-origin:0 0;animation:pg-spin .5s linear infinite}
+@keyframes pg-spin{to{transform:rotate(360deg)}}
+.glab .sg.ppuff .sgback .sgflame,.glab .sg.pbuka .sgback .sgflame{transform-box:fill-box;transform-origin:50% 100%;animation:pg-flame .5s ease-in-out infinite alternate}
+@keyframes pg-flame{to{transform:scaleY(1.25);opacity:.8}}
+.glab .sg.ppuff .sgback .sgfry{transform-box:fill-box;transform-origin:center;animation:pg-fry .7s ease-in-out calc(var(--k) * -.15s) infinite alternate}
+@keyframes pg-fry{to{transform:translateY(-1.2px) scale(1.06)}}
+.glab .sg.ppuff .sgback .sgsteam,.glab .sg.pbuka .sgback .sgsteam{animation:pg-steam 1.8s ease-in-out infinite alternate}
+@keyframes pg-steam{to{opacity:.1}}
+.glab .sg .pgfig svg,.glab .sg .ppfig svg,.glab .sg .pbfig svg,.glab .sg .pmfig svg,.glab .sg .psman svg,.glab .sg .pcd svg{width:100%;height:auto;display:block;overflow:visible}
+@keyframes pg-in{from{transform:translateX(34cqw);opacity:0}}
+@keyframes pg-pop{0%{opacity:0;transform:scale(.4)}18%{opacity:1;transform:scale(1.12)}30%{transform:scale(1)}85%{opacity:1}100%{opacity:0}}
+@keyframes pg-shake{0%,100%{transform:none}25%{transform:translateX(-.6cqw) rotate(-3deg)}75%{transform:translateX(.6cqw) rotate(3deg)}}
+
+/* ---- Up NEPA!: the face-me-I-face-you bungalow, one window per letter ---- */
+.glab .sg.pnepa::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .6s;
+  background:radial-gradient(ellipse 60cqw 26cqw at 50% 34cqw,rgba(255,231,163,.45),transparent 70%)}
+.glab .sg.pnepa.lit::before{opacity:1}
+.glab .sg.pnepa .pnrow{position:absolute;left:50%;top:28cqw;translate:-50% 0;z-index:2;padding:2.2cqw 2.4cqw 2cqw;
+  background:linear-gradient(#6A6274,#4E4858);border-radius:.3cqw;box-shadow:0 1.2cqw 1.6cqw rgba(0,0,0,.45)}
+.glab .sg.pnepa .pnroof{position:absolute;left:-2.4cqw;right:-2.4cqw;top:-3.2cqw;height:3.6cqw;display:block;
+  background:repeating-linear-gradient(90deg,#55606A 0 1.3cqw,#3E4850 1.3cqw 1.6cqw);clip-path:polygon(3% 0,97% 0,100% 100%,0 100%);box-shadow:inset 0 -.4cqw 0 rgba(0,0,0,.3)}
+.glab .sg.pnepa .pnwall{position:absolute;left:-1cqw;right:-1cqw;bottom:-1.6cqw;height:1.8cqw;display:block;background:#3A3444;border-radius:.2cqw}
+.glab .sg.pnepa .pnwin{display:flex;gap:1.2cqw}
+.glab .sg.pnepa .sgslot{width:min(6.6cqw,calc(54cqw / var(--n,4)));aspect-ratio:.82;display:grid;place-items:center;border:.45cqw solid #2A2432;border-radius:.3cqw;
+  background:repeating-linear-gradient(#1A1C30 0 .9cqw,#262A44 .9cqw 1.2cqw);transition:background .3s,box-shadow .3s}
+.glab .sg.pnepa .sgslot.wb{margin-left:2cqw}
+.glab .sg.pnepa .sgslot b{font:800 3.4cqw var(--disp,'Baloo 2'),sans-serif;color:#4A3208}
+.glab .sg.pnepa .sgslot.on{background:radial-gradient(circle at 50% 40%,#FFF6C8,#F2C230 75%);box-shadow:0 0 1.6cqw #FFE07A,0 0 .4cqw #FFF3B0 inset;animation:pg-light .35s steps(2)}
+@keyframes pg-light{0%{opacity:.3}50%{opacity:1}}
+.glab .sg.pnepa.lit .sgslot.on{box-shadow:0 0 2.6cqw #FFE07A,0 0 .4cqw #FFF3B0 inset}
+.glab .sg.pnepa.dark .sgslot.on{background:repeating-linear-gradient(#1A1C30 0 .9cqw,#262A44 .9cqw 1.2cqw);box-shadow:none;transition:background .15s}
+.glab .sg.pnepa.dark .sgslot.on b{color:#5A5A6A}
+.glab .sg.pnepa.dark .pnrow{animation:pg-shake .3s ease-in-out 2}
+.glab .sg.pnepa.lit .sgback .pggen{animation:none}
+.glab .sg.pnepa.lit .sgback .pggen .x-smoke{visibility:hidden}
+.glab .sg.pnepa .sgback .pglit{opacity:0;transition:opacity .5s}
+.glab .sg.pnepa.lit .sgback .pglit{opacity:1}
+.glab .sg.pnepa .pnsay{position:absolute;left:50%;top:17cqw;translate:-50% 0;z-index:3;opacity:0;pointer-events:none;white-space:nowrap;
+  font:800 6.4cqw var(--disp,'Baloo 2'),sans-serif;color:#FFE07A;text-shadow:0 .3cqw 0 #6A4A08,0 0 2cqw rgba(255,224,122,.8)}
+.glab .sg.pnepa.lit .pnsay{animation:pg-pop 3s ease-out forwards}
+.glab .sg.pnepa .sgpic{top:9.2cqw;width:10.4cqw}
+
+/* ---- Puff-Puff: the customer with the note, the bag, her tin ---- */
+.glab .sg.ppuff .ppcust{position:absolute;left:66cqw;bottom:6cqw;width:12cqw;z-index:2;opacity:0}
+.glab .sg.ppuff .ppcust.in{opacity:1;animation:pg-in 1s ease-out}
+.glab .sg.ppuff .ppcust.sgo{opacity:0;transform:translateX(34cqw);transition:transform 1.1s ease-in,opacity 1.1s ease-in}
+.glab .sg.ppuff .ppnote{position:absolute;left:-13cqw;top:6cqw;width:16cqw;transform:rotate(-8deg);transition:transform .8s ease-in,opacity .6s .2s}
+.glab .sg.ppuff .ppnote svg{width:100%;display:block;filter:drop-shadow(0 .4cqw .4cqw rgba(40,24,10,.3))}
+.glab .sg.ppuff .ppcust.pay .ppnote{transform:translate(-44cqw,16cqw) scale(.35);opacity:0}
+.glab .sg.ppuff .ppbag{position:absolute;left:47cqw;top:39cqw;width:6cqw;z-index:3;opacity:0}
+.glab .sg.ppuff .ppbag svg{width:100%;display:block}
+.glab .sg.ppuff .ppbag.give{animation:pg-give 1.1s ease-in-out forwards}
+@keyframes pg-give{0%{opacity:0;transform:translateY(2cqw)}25%{opacity:1;transform:none}100%{opacity:0;transform:translate(16cqw,-2cqw)}}
+.glab .sg.ppuff .pptin{position:absolute;left:16.4cqw;top:53.6cqw;width:5cqw;display:flex;flex-wrap:wrap-reverse;gap:.15cqw;justify-content:center;z-index:2}
+.glab .sg.ppuff .pptin i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#C98A0C);display:block;animation:pg-coin .3s ease-out}
+@keyframes pg-coin{from{transform:translateY(-2cqw);opacity:0}}
+
+/* ---- Computer Village: phone cases on the pegboard hooks, the nylon bag ---- */
+.glab .sg.pvill .pvhooks{position:absolute;left:50%;top:21.6cqw;translate:-50% 0;display:flex;gap:3.4cqw;z-index:2}
+.glab .sg.pvill .pvc{position:relative;width:9.6cqw;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 0;animation:pg-swing 3s ease-in-out calc(var(--k) * -.7s) infinite alternate}
+@keyframes pg-swing{from{transform:rotate(-2.4deg)}to{transform:rotate(2.4deg)}}
+.glab .sg.pvill .pvin{display:block;position:relative;transition:transform .9s ease-in,opacity .7s .2s}
+.glab .sg.pvill .pvin svg{width:100%;display:block;filter:drop-shadow(0 .5cqw .4cqw rgba(30,20,10,.3))}
+.glab .sg.pvill .pvtag{position:absolute;left:50%;bottom:-1.2cqw;translate:-50% 0;padding:.2cqw 1cqw;background:#FFFDF7;border:.25cqw solid #C62828;border-radius:.6cqw;
+  font:800 2.5cqw var(--disp,'Baloo 2'),sans-serif;color:#1E1E24;white-space:nowrap;box-shadow:0 .3cqw 0 rgba(0,0,0,.2)}
+.glab .sg.pvill .pvc.no{animation:pg-shake .3s ease-in-out 2}
+.glab .sg.pvill .pvc.sgsold{animation:none}
+.glab .sg.pvill .pvc.sgsold .pvin{transform:translate(calc((3 - var(--k)) * 9cqw),14cqw) scale(.3);opacity:0}
+.glab .sg.pvill .pvbag{position:absolute;left:80cqw;top:42cqw;width:6cqw;z-index:3;opacity:0}
+.glab .sg.pvill .pvbag svg{width:100%;display:block}
+.glab .sg.pvill .pvbag.give{animation:pg-give 1.3s ease-in-out forwards}
+
+/* ---- Mama Put: the customer with the order bubble, the plate, the coins ---- */
+.glab .sg.pbuka .pbcust{position:absolute;left:66cqw;bottom:6cqw;width:12cqw;z-index:2;transform:translateX(40cqw);opacity:0}
+.glab .sg.pbuka .pbcust.come{transition:transform 1s ease-out,opacity .3s;transform:none;opacity:1}
+.glab .sg.pbuka .pbcust.leave{transition:transform 1.2s ease-in,opacity 1.2s ease-in;transform:translateX(40cqw);opacity:0}
+.glab .sg.pbuka .pbcust.come .pbfig{animation:sg-hop .45s ease-in-out 2}
+.glab .sg.pbuka .pbbub{position:absolute;left:50%;bottom:100%;translate:-50% -.6cqw;width:12cqw;padding:.8cqw;background:#FFFDF7;border-radius:1.6cqw;box-shadow:0 .4cqw 0 rgba(59,46,30,.2);opacity:0;transition:opacity .3s}
+.glab .sg.pbuka .pbbub::after{content:"";position:absolute;left:46%;top:100%;border:1cqw solid transparent;border-top-color:#FFFDF7}
+.glab .sg.pbuka .pbcust.waiting .pbbub,.glab .sg.pbuka .pbcust.glad .pbbub{opacity:1}
+.glab .sg.pbuka .pbbub img{width:100%;aspect-ratio:1;object-fit:contain;display:block;border-radius:1cqw}
+.glab .sg.pbuka .pbwait{display:block;height:.8cqw;margin-top:.6cqw;background:#E3D3AC;border-radius:1cqw;overflow:hidden}
+.glab .sg.pbuka .pbwait i{display:block;height:100%;background:#2FAE9E;transform-origin:0 50%}
+.glab .sg.pbuka .pbcust.sad .pbbub img{filter:grayscale(.8);opacity:.6}
+.glab .sg.pbuka .pbcust.sad .pbfig{animation:sg-no .3s ease-in-out 3 alternate}
+.glab .sg.pbuka .pbserve{position:absolute;left:18cqw;top:44cqw;width:7cqw;opacity:0;z-index:3}
+.glab .sg.pbuka .pbserve svg{width:100%;height:auto;display:block}
+.glab .sg.pbuka .pbserve.fly{animation:pg-serve .9s ease-in-out forwards}
+@keyframes pg-serve{0%{opacity:1;transform:none}100%{opacity:1;transform:translate(48cqw,-1cqw)}}
+.glab .sg.pbuka .pbcoins{position:absolute;left:20cqw;top:50cqw;width:6cqw;display:flex;flex-wrap:wrap-reverse;gap:.15cqw;justify-content:center;z-index:2}
+.glab .sg.pbuka .pbcoins i{width:1.1cqw;height:1.1cqw;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#C98A0C);display:block;animation:pg-coin .3s ease-out}
+
+/* ---- Mile 12 Market: four traders behind their goods, the buyer's bag ---- */
+.glab .sg.pmile .pmrow{position:absolute;left:50%;top:21cqw;translate:-50% 0;display:flex;gap:2.4cqw;z-index:2}
+.glab .sg.pmile .pmt{position:relative;width:15cqw;height:30cqw;padding:0;border:0;background:none;cursor:pointer;opacity:0;transform:translateY(3cqw);transition:transform .5s cubic-bezier(.3,.7,.3,1),opacity .4s}
+.glab .sg.pmile .pmt.up{opacity:1;transform:none}
+.glab .sg.pmile .pmfig{position:absolute;left:50%;bottom:4cqw;translate:-50% 0;width:9cqw}
+.glab .sg.pmile .pmstall{position:absolute;left:0;right:0;bottom:0;height:7cqw;border-radius:.6cqw .6cqw .2cqw .2cqw;display:block;
+  background:radial-gradient(circle at 20% 30%,#D32F2F 0 .9cqw,transparent 1cqw),radial-gradient(circle at 42% 22%,#E53935 0 .9cqw,transparent 1cqw),radial-gradient(circle at 64% 30%,#C62828 0 .9cqw,transparent 1cqw),radial-gradient(circle at 84% 24%,#E8731A 0 .9cqw,transparent 1cqw),
+  linear-gradient(#B8874A 0 45%,#8B5A2B 45% 52%,#6E4622 52%);box-shadow:0 .6cqw .6cqw rgba(40,20,6,.35)}
+.glab .sg.pmile .pmitem{position:absolute;left:50%;top:0;translate:-6% 0;width:7.6cqw;z-index:1;transition:transform .8s ease-in,opacity .6s .2s}
+.glab .sg.pmile .pmitem .sgcard{border-radius:1cqw}
+.glab .sg.pmile .pmt.sold .pmitem{transform:translate(calc((3.4 - var(--k)) * 17cqw),18cqw) scale(.3);opacity:0}
+.glab .sg.pmile .pmt.no{animation:pg-shake .3s ease-in-out 2}
+.glab .sg.pmile .pmbag{position:absolute;left:86cqw;top:44cqw;width:7cqw;z-index:3}
+.glab .sg.pmile .pmbag svg{width:100%;display:block;filter:drop-shadow(0 .4cqw .3cqw rgba(30,20,10,.3))}
+.glab .sg.pmile .pmbag.fill{animation:pg-fill .5s ease-out}
+@keyframes pg-fill{40%{transform:scale(1.18) rotate(-4deg)}}
+
+/* ---- Go-Slow Hawker: the hawker between the lanes, the car at the front, the driver's hand ---- */
+.glab .sg.pslow .sgback .pgedge,.glab .sg.pslow .sgback .pgedge2{transform-origin:50% 100%}
+.glab .sg.pslow.move .sgback .pgedge{animation:pg-creep 1.2s ease-in-out}
+.glab .sg.pslow.move .sgback .pgedge2{animation:pg-creep 1.2s ease-in-out .15s}
+@keyframes pg-creep{50%{transform:translateX(7px)}}
+.glab .sg.pslow .pshawk{position:absolute;left:30cqw;top:24cqw;width:8.4cqw;z-index:2;opacity:0}
+.glab .sg.pslow .pshawk.in{opacity:1;animation:pg-walkl 1.2s ease-out}
+@keyframes pg-walkl{from{transform:translateX(-34cqw);opacity:0}}
+.glab .sg.pslow .pshawk.out{opacity:0;transform:translateX(60cqw);transition:transform 1.4s ease-in,opacity 1.4s ease-in}
+.glab .sg.pslow .pstray{position:absolute;left:-.4cqw;top:-7.4cqw;width:9.2cqw;z-index:1;transition:transform .9s ease-in,opacity .6s .3s}
+.glab .sg.pslow .pshawk.sold .pstray{transform:translate(30cqw,14cqw) scale(.3);opacity:0}
+.glab .sg.pslow .pscar{position:absolute;left:55cqw;top:27cqw;width:40cqw;z-index:3;transform-origin:50% 100%}
+.glab .sg.pslow .pscar>svg{width:100%;display:block;filter:drop-shadow(0 .6cqw .5cqw rgba(0,0,0,.35))}
+.glab .sg.pslow.move .pscar{animation:pg-creep2 1.2s ease-in-out}
+@keyframes pg-creep2{50%{transform:translateX(2cqw)}}
+.glab .sg.pslow .pshand{position:absolute;left:24%;top:16%;width:9cqw;opacity:0;transform:scaleX(-1)}
+.glab .sg.pslow .pshand svg{width:100%;display:block}
+.glab .sg.pslow .pscar.buy .pshand{animation:pg-pay 1.6s ease-in-out forwards}
+@keyframes pg-pay{0%{opacity:0;transform:scaleX(-1) translateX(-2cqw)}20%{opacity:1;transform:scaleX(-1) translateX(4cqw)}70%{opacity:1;transform:scaleX(-1) translateX(4cqw)}100%{opacity:0;transform:scaleX(-1) translateX(-2cqw)}}
+.glab .sg.pslow .pscar.wave .pshand{opacity:1;transform-origin:100% 50%;animation:pg-wave .25s ease-in-out 4 alternate}
+.glab .sg.pslow .pscar.wave .pshand svg rect{opacity:0}
+@keyframes pg-wave{from{transform:scaleX(-1) rotate(-14deg)}to{transform:scaleX(-1) rotate(14deg)}}
+
+/* ---- Carnival Calabar: the band behind its letter banner ---- */
+.glab .sg.pcarn .pcband{position:absolute;left:50%;top:22cqw;translate:-50% 0;display:flex;align-items:flex-end;gap:.4cqw;z-index:2;opacity:0}
+.glab .sg.pcarn .pcband.in{opacity:1;animation:pg-march 1.6s ease-out}
+@keyframes pg-march{from{transform:translateX(-62cqw)}}
+.glab .sg.pcarn .pcband.past{transform:translateX(70cqw);opacity:0;transition:transform 1.6s ease-in,opacity 1.4s ease-in .3s}
+.glab .sg.pcarn .pcband.back{transform:translateX(-70cqw);opacity:0;transition:transform 1.6s ease-in,opacity 1.4s ease-in .3s}
+.glab .sg.pcarn .pcd{width:10.4cqw;transform-origin:50% 100%;animation:pg-step .5s ease-in-out calc(var(--k) * -.17s) infinite alternate}
+.glab .sg.pcarn .pcd:nth-child(3){width:11.4cqw}
+@keyframes pg-step{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-.8cqw) rotate(3deg)}}
+.glab .sg.pcarn .pcband.dance .pcd{animation:pg-jump .28s ease-in-out calc(var(--k) * -.09s) infinite alternate}
+@keyframes pg-jump{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-2cqw) rotate(6deg)}}
+.glab .sg.pcarn .pcband.stop .pcd,.glab .sg.pcarn .pcband.back .pcd{animation:none}
+.glab .sg.pcarn .pcban{position:absolute;left:50%;top:-12cqw;translate:-50% 0;width:15cqw;height:10cqw;display:grid;place-items:center;z-index:1;
+  background:linear-gradient(#FFFDF7,#F4EBD0);border:.5cqw solid #C62828;border-radius:.4cqw;box-shadow:0 .5cqw .6cqw rgba(0,0,0,.25)}
+.glab .sg.pcarn .pcban::before,.glab .sg.pcarn .pcban::after{content:"";position:absolute;top:100%;width:.5cqw;height:5cqw;background:#6B4226}
+.glab .sg.pcarn .pcban::before{left:1.4cqw}.glab .sg.pcarn .pcban::after{right:1.4cqw}
+.glab .sg.pcarn .pcban b{font:800 7cqw/1 var(--disp,'Baloo 2'),sans-serif;color:#1F3A78}
+.glab .sg.pcarn .pcrow span{background:rgba(255,253,247,.7);border:.25cqw dashed #C62828;color:#1F3A78}
+.glab .sg.pcarn .pcrow span.now{border-style:solid;border-color:#E8A317}
+.glab .sg.pcarn .pcrow span.on{background:#F2C230;border:.2cqw solid #C62828}
+.glab .sg.pcarn .pcrow span.miss{background:rgba(40,40,60,.15);border-style:dotted}
+
+/* ---- Viewing Centre: the TV on the shelf and the chalkboard at the door ---- */
+.glab .sg.pview .pvtv{position:absolute;left:68.6cqw;top:9.8cqw;width:20cqw;height:11.8cqw;padding:.7cqw;z-index:2;border-radius:.8cqw;background:linear-gradient(#2A2A30,#141418);box-shadow:0 .6cqw .6cqw rgba(0,0,0,.4)}
+.glab .sg.pview .pvscreen{position:relative;display:block;width:100%;height:100%;overflow:hidden;border-radius:.4cqw;background:#0E1418}
+.glab .sg.pview .pvsnow{position:absolute;inset:-30%;display:block;opacity:0;
+  background:repeating-linear-gradient(0deg,#9AA0A6 0 .2cqw,#2A2E32 .2cqw .5cqw,#D0D4D8 .5cqw .6cqw,#4A4E52 .6cqw 1cqw),repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 .3cqw,transparent .3cqw .9cqw)}
+.glab .sg.pview .pvtv.snow .pvsnow{opacity:1;animation:pg-snow .16s steps(3) infinite}
+@keyframes pg-snow{33%{transform:translate(.6cqw,-.4cqw)}66%{transform:translate(-.5cqw,.5cqw)}}
+.glab .sg.pview .pvpitch{position:absolute;inset:0;display:block;opacity:0;transition:opacity .4s;
+  background:radial-gradient(circle at 50% 50%,transparent 1.6cqw,#F4F1EA 1.6cqw 1.8cqw,transparent 1.8cqw),linear-gradient(90deg,transparent calc(50% - .1cqw),#F4F1EA calc(50% - .1cqw) calc(50% + .1cqw),transparent calc(50% + .1cqw)),repeating-linear-gradient(90deg,#2E8B3A 0 2cqw,#277A32 2cqw 4cqw)}
+.glab .sg.pview .pvtv.on .pvpitch{opacity:1}
+.glab .sg.pview .pvball{position:absolute;left:20%;top:55%;width:1cqw;height:1cqw;border-radius:50%;background:#fff;display:block}
+.glab .sg.pview .pvtv.on .pvball{animation:pg-ball 2.4s ease-in-out infinite alternate}
+@keyframes pg-ball{30%{transform:translate(5cqw,-3cqw)}60%{transform:translate(9cqw,1cqw)}100%{transform:translate(13cqw,-2cqw)}}
+.glab .sg.pview .pvgoal{position:absolute;left:50%;top:100%;translate:-50% 0;opacity:0;pointer-events:none;white-space:nowrap;font:800 4.4cqw var(--disp,'Baloo 2'),sans-serif;color:#F2C230;text-shadow:0 .3cqw 0 #6A4A08}
+.glab .sg.pview .pvtv.goal .pvgoal{animation:pg-pop 2.4s ease-out forwards}
+.glab .sg.pview .pvboard{position:absolute;left:22cqw;top:19cqw;width:30cqw;height:17cqw;z-index:2;display:flex;flex-direction:column;align-items:center;opacity:0;
+  background:linear-gradient(160deg,#2E4A3A,#1E3428);border:.8cqw solid #7A4E2A;border-radius:.4cqw;box-shadow:0 .8cqw 1cqw rgba(30,20,10,.35)}
+.glab .sg.pview .pvboard::before,.glab .sg.pview .pvboard::after{content:"";position:absolute;top:100%;width:.8cqw;height:8cqw;background:#6B4226;z-index:-1}
+.glab .sg.pview .pvboard::before{left:3cqw;transform:rotate(8deg)}.glab .sg.pview .pvboard::after{right:3cqw;transform:rotate(-8deg)}
+.glab .sg.pview .pvboard.up{opacity:1;animation:sg-up .5s ease-out both}
+.glab .sg.pview .pvtop{font:800 1.8cqw var(--disp,'Baloo 2'),sans-serif;color:#F2C230;letter-spacing:.3cqw;padding-top:.4cqw;border-bottom:.2cqw solid rgba(244,241,234,.5)}
+.glab .sg.pview .pvw{flex:1;display:grid;place-items:center;font:800 6.4cqw var(--disp,'Baloo 2'),sans-serif;color:#F4F1EA;letter-spacing:.2cqw;text-shadow:0 0 .3cqw rgba(255,255,255,.4)}
+.glab .sg.pview .pvw.l7,.glab .sg.pview .pvw.l8{font-size:5cqw}
+.glab .sg.pview .pvw.l9,.glab .sg.pview .pvw.l10,.glab .sg.pview .pvw.l11,.glab .sg.pview .pvw.l12{font-size:3.8cqw}
+.glab .sg.pview.jump .sgw{animation:sg-hop .4s ease-in-out 3}
