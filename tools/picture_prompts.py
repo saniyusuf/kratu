@@ -81,8 +81,8 @@ C = {
             elder_m='a white babban riga and a red-and-white turban', elder_f='an atamfa wrapper and a large mayafi veil',
             soup='a bowl of Hausa taushe soup, thick orange pumpkin and groundnut soup with spinach and pieces of meat'),
  'yo': dict(people='Yoruba', region='south-western Nigeria', mum='a traditional Yoruba iro and buba in aso-oke fabric with a tall matching gele head-tie',
-            dad='a traditional Yoruba buba and sokoto with a soft folded fila cap (abeti-aja) tilted to one side', boy='a small Yoruba buba and sokoto with a fila cap', girl='a small iro and buba with a gele, hair in shuku braids',
-            elder_m='a flowing agbada over buba and sokoto with a fila cap', elder_f='an iro and buba with a gele and coral beads',
+            dad='a traditional Yoruba buba and sokoto with a soft tall fila gobi cap of woven aso-oke cloth, its top folded over and drooping to one side of the head', boy='a small Yoruba buba and sokoto with a soft tall fila gobi cap of woven aso-oke cloth, its top folded over and drooping to one side of the head', girl='a small iro and buba with a gele, hair in shuku braids',
+            elder_m='a flowing agbada over buba and sokoto with a soft abeti-aja fila cap whose two side flaps fold up like a dog\'s ears', elder_f='an iro and buba with a gele and coral beads',
             soup='a bowl of Yoruba efo riro, rich green spinach stew with peppers, pieces of meat and fish'),
  'ig': dict(people='Igbo', region='south-eastern Nigeria', mum='a george wrapper with a lace blouse, a tall head-tie and coral beads',
             dad='a patterned isiagu top with black trousers and a red okpu cap', boy='a small isiagu top and shorts', girl='a bright wrapper dress, hair in threaded isi owu style',
@@ -117,6 +117,9 @@ def lang(code):
      'wrapper': f'a folded colourful wrapper cloth of the kind {pp} women wear, laid neatly on a plain surface' if code != 'sw' else 'a folded colourful kanga cloth, the East African women\'s wrapper, laid neatly on a plain surface',
      'miya': f'close-up of {c["soup"]}, only the bowl on a plain wooden table',
     }
+    if code == 'yo':   # Sani (10 Nov): Yoruba boys in a real fila, and one boy may carry Yoruba tribal marks
+        d['friend'] = d['friend'].replace(', standing side by side', ', the boy on the left has three thin short vertical Yoruba tribal marks (pele) on each cheek, standing side by side')
+        d['teacher'] = d['teacher'].replace('beside a blackboard', 'beside a clean blackboard with nothing written on it')
     if code == 'sw':
         d.update({'soldier': 'one Kenya Defence Forces soldier in camouflage uniform with a Kenyan flag patch and beret, standing at ease, detailed uniform',
                   'policeman': 'one Kenya Police officer in a dark blue uniform, cap and badge, standing beside a road, detailed uniform',
