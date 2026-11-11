@@ -105,7 +105,7 @@ pack = {
  'code': 'pcm', 'name': 'Naijá (Nigerian Pidgin)', 'bird': B, 'sr': 'en-NG',
  'carrier': [' my name na ', ' my name be ', ' my name is ', ' na me be '], 'carrierStop': ['o', 'oh'], 'carrierEnd': [],
  'fold': True, 'namesBank': False, 'muteFilms': True, 'kids': {'m': 'Tobi', 'f': 'Amaka'},
- 'tts': {'provider': 'plotweaver', 'lang': 'pcm', 'voice': 'adaeze', 'lufs': -17.7},
+ 'tts': {'provider': 'plotweaver', 'lang': 'pcm', 'voice': 'yemi', 'lufs': -17.7},
  'status': 'draft', 'ui': ui,
 }
 json.dump(pack, open(d + '/lang.json', 'w'), ensure_ascii=False, indent=1)

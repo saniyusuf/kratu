@@ -24,7 +24,7 @@
  "tts": {
   "provider": "plotweaver",
   "lang": "pcm",
-  "voice": "adaeze",
+  "voice": "yemi",
   "lufs": -17.7
  },
  "status": "draft",
