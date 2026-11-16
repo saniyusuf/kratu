@@ -192,6 +192,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       this.note.set('');
       this.bus.micReady().then(() => { if (this.stream === s) this.startRec(s); });
       const go = () => { live?.play().catch(() => undefined); begin(); };
+      if (live) live.addEventListener('loadedmetadata', () => console.log('[kratu] camera', live.videoWidth + 'x' + live.videoHeight, 'box', Math.round(live.getBoundingClientRect().width) + 'x' + Math.round(live.getBoundingClientRect().height)), { once: true });
       if (live && live.readyState >= 2) go(); else { live?.addEventListener('loadedmetadata', go, { once: true }); setTimeout(go, 1200); }
     } catch (err: any) { clearTimeout(guard); this.note.set('Camera blocked (' + (err?.name || 'error') + ') — showing a photo instead'); begin(); }
   }

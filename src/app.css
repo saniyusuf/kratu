@@ -848,3 +848,8 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
   #app .s.facecap > .facestage{grid-area:stage;min-height:0}
   #app .s.facecap > .facestage .startwrap{transform:scale(1.35);transform-origin:center}
 }
+
+/* The live camera is drawn at the size of its box, the whole frame, never at the camera's own pixel size (Sani
+   2026-11-16: on the 7-inch tablet the 640-pixel picture overflowed the smaller box and showed only an eye). contain,
+   so what the child sees is exactly what is captured; follow() maps the face box for contain too. */
+.facecap .cam video.feed{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
