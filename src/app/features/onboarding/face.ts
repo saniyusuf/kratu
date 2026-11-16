@@ -247,7 +247,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       if (!r?.ok) return; this.lastMs = r.ms || this.lastMs; this.setFaces(r.faces);
       this.follow(r.faces === 1 ? r.boxVideo : null, live);
       if (r.faces === 1) {
-        if (r.emb) { this.faceVecs.push(r.emb); if ((r.score || 0) > this.bestSc) { this.bestStill = stillFrame(live); this.bestSc = r.score || 0; } }
+        if (r.emb) { this.faceVecs.push(r.emb); if ((r.score || 0) > this.bestSc) { this.bestStill = stillFrame(live); this.bestSc = r.score || 0; } this.tryEarly(); }
         else if (r.quality && !r.quality.ok) { this.aloneText.set('🎯 ' + this.hintFor(r.quality.reasons)); this.aloneSoft.set(true); }
         if (r.quality) this.qualityWatch(r.quality);
       }
@@ -278,6 +278,20 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.sizeOK.set(size >= 17 && size <= 58);
     this.nudge.set(cx < 38 ? 'right' : cx > 62 ? 'left'
       : cy < 35 ? 'down' : cy > 61 ? 'up' : '');
+  }
+  /**
+   * A child the tablet already knows goes in as soon as the face alone is a clear match, after a few frames, instead of
+   * waiting out the ten-second ring (Sani 2026-11-16: speed is of the essence). Only a strong, unambiguous face match
+   * ends early; anything less, and every new child, still gets the full ring so their name can be recorded.
+   */
+  private earlyAt = 0;
+  private tryEarly(): void {
+    const K = this.identity.api; if (!K || this.ended || this.capEnded || this.paused() || this.faceVecs.length < 2) return;
+    const now = Date.now(); if (now - this.earlyAt < 250) return; this.earlyAt = now;
+    try {
+      const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec: null, nameKey: null });
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong')) { console.log('[kratu] early sign-in', m.person.name || m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3)); this.endRec(); }
+    } catch { /* the full ring still decides */ }
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
   private hintFor(reasons: string[]): string { const r = reasons || []; if (r.includes('small')) return t('Matso kusa') + ' · come closer'; if (r.includes('blurry')) return t('Tsaya cak') + ' · hold still'; if (r.includes('dark') || r.includes('bright')) return t('Nemi haske') + ' · find better light'; return t('Duba kyamara') + ' · look at the camera'; }
@@ -321,7 +335,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private runRing(): void {
     this.capEnded = false; this.ended = false; this.paused.set(null); this.speaking = false; this.lastWarn = {}; this.cnt = { many: 0, none: 0, one: 0 }; this.badSince = 0; this.badKind = null; this.pict.set(null); this.glow.set(true); this.disarm();
     if (!this.stream) this.recLive = true;   // photo fallback (no camera) → no recorder to wait for
-    this.bus.micReady().then(() => this.startSR()); this.startFaceMon();
+    this.bus.micReady().then(() => this.startSR()); this.identity.api?.store.load().catch(() => { /* matched at the end instead */ }); this.startFaceMon();
     let t0 = Date.now(), last = t0, last0 = t0, active = 0;
     this.speechCb = (t, fin) => { const nm = extractName(t); if (nm) { if (this.nameAt < 0 && this.recT0) this.nameAt = Math.max(0, Date.now() - this.recT0 - 900); if (this.stopT) clearTimeout(this.stopT); this.stopT = setTimeout(() => this.endRec(), fin ? 500 : 1500); } };
     this.iv = setInterval(() => {
@@ -354,6 +368,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     if (K && this.identity.ready()) {
       await K.store.load();
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec, nameKey: key });
+      console.log('[kratu] sign-in', m.decision, (m.reasons || []).join('; '), 'frames', this.faceVecs.length, 'heard', JSON.stringify(this.transcript), 'own clip', !!own?.url);
       if (m.decision === 'accept' && m.person) {
         // a clear recognition keeps the record's recent face prints up to date (Sani 2026-11-16); refresh() itself refuses
         // anything short of a confident, face-only match, and never touches the prints from enrolment

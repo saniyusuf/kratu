@@ -823,3 +823,28 @@ body > .spothand.float,body > .misalihand.float{position:fixed;left:0;top:0;z-in
 body > .spothand.float{font-size:calc(44px * var(--z,1));animation:handbob .8s ease-in-out infinite;filter:drop-shadow(0 3px 0 rgba(0,0,0,.25))}
 body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform .6s cubic-bezier(.3,.8,.3,1);will-change:transform;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25))}
 @media (prefers-reduced-motion:reduce){body > .misalihand.float{transition:none}}
+
+/* 7-inch tablets (Sani 2026-11-16): the capture dialog lives outside the zoomed frame, so it is sized here by the real
+   screen. The camera is as wide as the height allows (4:3 picture, plus the title above and the prompt below), so the
+   whole dialog always fits without scrolling and nothing is cut off at the bottom. */
+.capmodal{padding:max(8px,min(18px,2dvh))}
+.capmodal-inner{max-height:calc(100dvh - 16px);width:min(800px,96vw)}
+.capmodal-inner .camwrap{width:min(640px,88vw,calc((100dvh - 230px) * 4 / 3 + 24px))}
+@media (max-height:700px){
+  .capmodal-inner{padding:12px 20px 12px;gap:4px;border-radius:24px}
+  .capmodal-title{font-size:clamp(18px,3.4dvh,26px);margin-bottom:2px}
+  .capmodal-inner .camwrap{width:min(640px,88vw,calc((100dvh - 170px) * 4 / 3 + 24px));padding:8px 8px 6px}
+  .capmodal-inner .capmic{margin-top:2px}
+  .capmodal-inner .heard,.capmodal-inner .capdone{font-size:20px}
+}
+
+/* 7-inch tablets in landscape (Sani 2026-11-16): stacked, the example film and Laila left the face screen tall and
+   narrow, so the fit shrank everything into the middle third. On a short landscape screen they sit side by side under
+   the heading, and the fit can grow them to fill the width. */
+@media (orientation:landscape) and (max-height:700px){
+  #app .s.facecap{display:grid;grid-template-columns:auto auto;grid-template-areas:"pr pr" "ex stage";justify-content:center;align-items:center;column-gap:56px;row-gap:6px}
+  #app .s.facecap > .pr{grid-area:pr}
+  #app .s.facecap > .examples{grid-area:ex;margin:0}
+  #app .s.facecap > .facestage{grid-area:stage;min-height:0}
+  #app .s.facecap > .facestage .startwrap{transform:scale(1.35);transform-origin:center}
+}

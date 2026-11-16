@@ -76,12 +76,17 @@ export class App implements OnInit {
     this.router.events.subscribe((e) => { if (e instanceof NavigationStart) document.querySelectorAll('body > .float').forEach((h) => h.remove()); });
     const app = matchMedia('(display-mode: fullscreen), (display-mode: standalone)');
     if (!ZoomService.small()) document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
-    else document.addEventListener('click', (e) => {
-      if ((e as PointerEvent).pointerType !== 'touch' || app.matches || document.fullscreenElement || !document.fullscreenEnabled) return;
-      document.documentElement.requestFullscreen({ navigationUI: 'hide' })
-        .then(() => (screen.orientation as any)?.lock?.('landscape'))
-        .catch(() => undefined);
-    }, { capture: true });
+    else {
+      // pointerup, not click: a click's pointerType is not reliable on every Android Chrome, and the 7-inch tablet of
+      // 16 Nov stayed in the browser with its bars (1006×427) the whole session
+      const full = (e: PointerEvent) => {
+        if ((e.pointerType && e.pointerType !== 'touch') || app.matches || document.fullscreenElement || !document.fullscreenEnabled) return;
+        document.documentElement.requestFullscreen({ navigationUI: 'hide' })
+          .then(() => { console.log('[kratu] full screen', innerWidth + 'x' + innerHeight); return (screen.orientation as any)?.lock?.('landscape'); })
+          .catch((err) => console.warn('[kratu] full screen refused', String(err)));
+      };
+      document.addEventListener('pointerup', full, { capture: true });
+    }
     // a fresh load has no user gesture yet, so the first line of the first screen is refused by the browser: the first touch says it
     document.addEventListener('pointerdown', () => { if (this.bus.blocked()) setTimeout(() => this.bus.replayBlocked(), 0); }, { capture: true });
     // a long press on a tablet must not open a menu, select text or start a drag; the app has nothing to copy or save
