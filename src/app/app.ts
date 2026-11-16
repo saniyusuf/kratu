@@ -75,17 +75,22 @@ export class App implements OnInit {
     // the pointing hands live at body level (Spotter, the example's hand): a screen change takes any left behind with it
     this.router.events.subscribe((e) => { if (e instanceof NavigationStart) document.querySelectorAll('body > .float').forEach((h) => h.remove()); });
     const app = matchMedia('(display-mode: fullscreen), (display-mode: standalone)');
+    console.log('[kratu] screen', 'small', ZoomService.small(), 'coarse', matchMedia('(pointer: coarse)').matches, 'anycoarse', matchMedia('(any-pointer: coarse)').matches, 'fsEnabled', document.fullscreenEnabled, 'app', app.matches);
     if (!ZoomService.small()) document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
-    else {
+    {
       // pointerup, not click: a click's pointerType is not reliable on every Android Chrome, and the 7-inch tablet of
       // 16 Nov stayed in the browser with its bars (1006×427) the whole session
-      const full = (e: PointerEvent) => {
-        if ((e.pointerType && e.pointerType !== 'touch') || app.matches || document.fullscreenElement || !document.fullscreenEnabled) return;
+      let fsLogged = false;
+      const full = (e: Event) => {
+        // any touch, on any size of screen: in a browser tab Chrome's bars take a third of a 7-inch tablet's height
+        if (!fsLogged) { fsLogged = true; console.log('[kratu] first touch', e.type, (e as PointerEvent).pointerType, 'app', app.matches, 'fs', !!document.fullscreenElement); }
+        if (app.matches || document.fullscreenElement || (!ZoomService.small() && (e as PointerEvent).pointerType !== 'touch')) return;
+        if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) { console.warn('[kratu] full screen not available'); return; }
         document.documentElement.requestFullscreen({ navigationUI: 'hide' })
           .then(() => { console.log('[kratu] full screen', innerWidth + 'x' + innerHeight); return (screen.orientation as any)?.lock?.('landscape'); })
           .catch((err) => console.warn('[kratu] full screen refused', String(err)));
       };
-      document.addEventListener('pointerup', full, { capture: true });
+      for (const ev of ['pointerup', 'touchend', 'click']) document.addEventListener(ev, full, { capture: true });
     }
     // a fresh load has no user gesture yet, so the first line of the first screen is refused by the browser: the first touch says it
     document.addEventListener('pointerdown', () => { if (this.bus.blocked()) setTimeout(() => this.bus.replayBlocked(), 0); }, { capture: true });

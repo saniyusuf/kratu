@@ -82,14 +82,19 @@ export class ZoomService {
    */
   private static readonly GROW = 1.6;
   private static readonly HEAD = 0.86;
+  private static readonly CORNER = 1.3;
   /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
-  static small(): boolean { return matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) <= 640; }
+  static small(): boolean { return (matchMedia('(pointer: coarse)').matches || matchMedia('(any-pointer: coarse)').matches || navigator.maxTouchPoints > 0) && Math.min(screen.width, screen.height) <= 640; }
   fit(force = true): void {
     const root = document.documentElement.style, prev = this.z();
     const base = Math.min(innerWidth / 960, innerHeight / 600);
     const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
     // nothing may ever be cut off or need scrolling: the floor is only there to stop a runaway measurement
     const floor = base * 0.6, cap = base * ZoomService.GROW;
+    // the door, the ear and the gear are the same size on every screen of a device (Sani 2026-11-16: on the 7-inch tablet
+    // they were big on the home page and small in the balloon game, because a full-screen game never grows): they take
+    // this fixed scale, whatever the screen's own zoom
+    root.setProperty('--zc', (ZoomService.small() ? base * ZoomService.CORNER : base).toFixed(3));
     let z = force ? base : prev; set(z);
     // grow: the content's size against the screen's, a few passes, because sizes given in frame units (cqw/cqh) stay
     // put on screen while everything given in pixels grows with the zoom
