@@ -856,3 +856,9 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
 
 /* corners: one size per device (see ZoomService --zc); the frame's own zoom is undone and the corner scale applied */
 #app .frame .backdoor,#app .frame .helpdome{zoom:calc(var(--zc,var(--z,1)) / var(--z,1))}
+
+/* 7-inch tablets (Sani 2026-11-16): fewer, bigger balloons that fill the sky. Sized by the frame's height (cqh), so they
+   grow with the screen; six lanes instead of eight (fashe.ts) leave them room. */
+@media (orientation:landscape) and (max-height:700px){
+  #app .s.fashe .bub{width:clamp(84px,17cqh,150px);font-size:clamp(36px,8cqh,66px)}
+}

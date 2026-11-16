@@ -15,7 +15,8 @@ import { ALL, LETTER_COLOR } from '../../shared/lesson/letters';
 import { t, tx } from '../../core/lang/t';
 
 const NOPE = 'assets/audio/sfx/nope.ogg';
-const SKY = 8;
+/** Balloons in the sky at once: six on a phone or 7-inch tablet so each can be bigger (Sani 2026-11-16), eight elsewhere. */
+const SKY = ZoomService.small() ? 6 : 8;
 /**
  * The clock is the test (Sani 2026-10-07). A round is about five seconds — she names the letter just
  * popped, the child finds the next one and taps it — so twenty-six of them is roughly 130s of work and
