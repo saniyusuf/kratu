@@ -13,6 +13,7 @@
 //   node scripts/catalogue.mjs --check   fail if a key was changed or removed since the last commit, or content has no key
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { lineName } from './line-names.mjs';
 
 const CHECK = process.argv.includes('--check');
 const read = (f) => JSON.parse(readFileSync(f, 'utf8'));
@@ -43,7 +44,7 @@ const want = [];   // { key, type, src }
 for (const w of W.words) { const n = numberOf(w.key); want.push(n !== null ? { key: 'number_' + n, type: 'number', src: w.key } : { key: 'word_' + slug(w.key), type: 'word', src: w.key }); }
 for (const g of W.groups) want.push({ key: 'group_' + (GROUP[g] || slug(g)), type: 'group', src: g });
 for (const c of 'abcdefghijklmnopqrstuvwxyz') want.push({ key: 'letter_' + c, type: 'letter', src: c.toUpperCase() });
-for (const r of lines) { if (/^app_en_[A-Z]$/.test(r.key)) continue; want.push({ key: 'line_' + slug(r.key.replace(/^(s_|app_)/, '')), type: 'line', src: r.key }); }
+for (const r of lines) { if (/^app_en_[A-Z]$/.test(r.key)) continue; want.push({ key: 'line_' + (lineName(r.key) || slug(r.key.replace(/^(s_|app_)/, ''))), type: 'line', src: r.key }); }
 for (const [src, k] of Object.entries(GAME)) want.push({ key: 'game_' + k, type: 'game', src });
 for (const [src, k] of Object.entries(LESSON)) want.push({ key: 'lesson_' + k, type: 'lesson', src });
 for (const [l, units] of Object.entries(UNIT)) for (const [src, k] of Object.entries(units)) want.push({ key: `unit_${LESSON[l]}_${k}`, type: 'unit', src: l + '/' + src });
@@ -101,6 +102,13 @@ for (const [k, v] of Object.entries(keys)) {
       for (const c of LANGS) { const own = `langs/${c}/public/assets/pictures-${c}/${f.key}.webp`; if (has(own)) { const fk = `pic_${k}${form}_${c}`; files[fk] = `assets/pictures-${c}/${f.key}.webp`; it.files.push(fk); } }
       if (i === 0) for (const lang of ['ha', 'en', ...LANGS]) { const src = typeof f[lang + '_clip'] === 'object' ? 'word_' + f[lang + '_clip'].of : 'word_' + f.key; if (has(audioPath(lang, src))) { const fk = `audio_${k}_${lang}`; files[fk] = audioPath(lang, src).replace(/^(public|langs\/\w+\/public)\//, ''); it.files.push(fk); } }
     });
+  } else if (v.type === 'game') {
+    // the game's picture on the shelf: pic_game_balloons shared, pic_game_balloons_yo a language's own, a second one _2
+    it.files = [];
+    for (const [q, suf] of [['', ''], ['_2', '-2']]) {
+      if (has(`public/assets/games/${v.src}${suf}.webp`)) { const fk = `pic_${k}${q}`; files[fk] = `assets/games/${v.src}${suf}.webp`; it.files.push(fk); }
+      for (const c of LANGS) if (has(`langs/${c}/public/assets/games/${v.src}${suf}.webp`)) { const fk = `pic_${k}${q}_${c}`; files[fk] = `assets/games/${v.src}${suf}.webp`; it.files.push(fk); }
+    }
   } else if (v.type === 'letter') {
     it.files = []; if (has(audioPath('en', 'app_en_' + v.src))) { files[`audio_${k}_en`] = `assets/audio/en/app_en_${v.src}.ogg`; it.files.push(`audio_${k}_en`); }
   } else if (v.type === 'line') {

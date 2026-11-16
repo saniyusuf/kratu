@@ -1852,99 +1852,99 @@
    "type": "letter",
    "src": "Z"
   },
-  "line_sx_w_a": {
+  "line_example_child_says_letter_a": {
    "type": "line",
    "src": "sx_w_A"
   },
-  "line_sx_w_c": {
+  "line_example_child_says_letter_c": {
    "type": "line",
    "src": "sx_w_C"
   },
-  "line_sx_w_e": {
+  "line_example_child_says_letter_e": {
    "type": "line",
    "src": "sx_w_E"
   },
-  "line_sx_w_g": {
+  "line_example_child_says_letter_g": {
    "type": "line",
    "src": "sx_w_G"
   },
-  "line_sx_w_n": {
+  "line_example_child_says_letter_n": {
    "type": "line",
    "src": "sx_w_N"
   },
-  "line_sx_w_o": {
+  "line_example_child_says_letter_o": {
    "type": "line",
    "src": "sx_w_O"
   },
-  "line_sx_w_t": {
+  "line_example_child_says_letter_t": {
    "type": "line",
    "src": "sx_w_T"
   },
-  "line_sx_w_apple": {
+  "line_example_child_says_apple": {
    "type": "line",
    "src": "sx_w_apple"
   },
-  "line_sx_w_car": {
+  "line_example_child_says_car": {
    "type": "line",
    "src": "sx_w_car"
   },
-  "line_sx_w_cat": {
+  "line_example_child_says_cat": {
    "type": "line",
    "src": "sx_w_cat"
   },
-  "line_sx_w_chair": {
+  "line_example_child_says_chair": {
    "type": "line",
    "src": "sx_w_chair"
   },
-  "line_sx_w_eat": {
+  "line_example_child_says_eat": {
    "type": "line",
    "src": "sx_w_eat"
   },
-  "line_sx_w_eye": {
+  "line_example_child_says_eye": {
    "type": "line",
    "src": "sx_w_eye"
   },
-  "line_sx_w_five": {
+  "line_example_child_says_five": {
    "type": "line",
    "src": "sx_w_five"
   },
-  "line_sx_w_goat": {
+  "line_example_child_says_goat": {
    "type": "line",
    "src": "sx_w_goat"
   },
-  "line_sx_w_kaftan": {
+  "line_example_child_says_kaftan": {
    "type": "line",
    "src": "sx_w_kaftan"
   },
-  "line_sx_w_mother": {
+  "line_example_child_says_mother": {
    "type": "line",
    "src": "sx_w_mother"
   },
-  "line_sx_w_one": {
+  "line_example_child_says_one": {
    "type": "line",
    "src": "sx_w_one"
   },
-  "line_sx_w_pencil": {
+  "line_example_child_says_pencil": {
    "type": "line",
    "src": "sx_w_pencil"
   },
-  "line_sx_w_sun": {
+  "line_example_child_says_sun": {
    "type": "line",
    "src": "sx_w_sun"
   },
-  "line_act_desc_letters": {
+  "line_activity_letters_description": {
    "type": "line",
    "src": "app_act_desc_letters"
   },
-  "line_act_desc_quiz": {
+  "line_activity_find_description": {
    "type": "line",
    "src": "app_act_desc_quiz"
   },
-  "line_act_desc_spell": {
+  "line_activity_spelling_description": {
    "type": "line",
    "src": "app_act_desc_spell"
   },
-  "line_act_pick": {
+  "line_activity_pick": {
    "type": "line",
    "src": "app_act_pick"
   },
@@ -1956,67 +1956,67 @@
    "type": "line",
    "src": "app_book_more"
   },
-  "line_book_or": {
+  "line_book_or_press_lesson": {
    "type": "line",
    "src": "app_book_or"
   },
-  "line_locked": {
+  "line_lesson_locked": {
    "type": "line",
    "src": "app_locked"
   },
-  "line_board_intro": {
+  "line_letters_board_intro": {
    "type": "line",
    "src": "app_board_intro"
   },
-  "line_cat_desc_animals": {
+  "line_group_animals_description": {
    "type": "line",
    "src": "app_cat_desc_animals"
   },
-  "line_cat_desc_body": {
+  "line_group_body_description": {
    "type": "line",
    "src": "app_cat_desc_body"
   },
-  "line_cat_desc_food": {
+  "line_group_food_description": {
    "type": "line",
    "src": "app_cat_desc_food"
   },
-  "line_cat_desc_home": {
+  "line_group_home_description": {
    "type": "line",
    "src": "app_cat_desc_home"
   },
-  "line_cat_desc_nature": {
+  "line_group_nature_description": {
    "type": "line",
    "src": "app_cat_desc_nature"
   },
-  "line_cat_desc_vehicles": {
+  "line_group_vehicles_description": {
    "type": "line",
    "src": "app_cat_desc_vehicles"
   },
-  "line_cat_start_animals": {
+  "line_group_animals_start": {
    "type": "line",
    "src": "app_cat_start_animals"
   },
-  "line_cat_start_body": {
+  "line_group_body_start": {
    "type": "line",
    "src": "app_cat_start_body"
   },
-  "line_cat_start_food": {
+  "line_group_food_start": {
    "type": "line",
    "src": "app_cat_start_food"
   },
-  "line_cat_start_home": {
+  "line_group_home_start": {
    "type": "line",
    "src": "app_cat_start_home"
   },
-  "line_cat_start_nature": {
+  "line_group_nature_start": {
    "type": "line",
    "src": "app_cat_start_nature"
   },
-  "line_cat_start_numbers": {
+  "line_group_numbers_start": {
    "type": "line",
    "src": "app_cat_start_numbers"
   },
-  "line_cat_start_vehicles": {
+  "line_group_vehicles_start": {
    "type": "line",
    "src": "app_cat_start_vehicles"
   },
@@ -2024,15 +2024,15 @@
    "type": "line",
    "src": "app_kudos"
   },
-  "line_press_allo": {
+  "line_press_black_slate": {
    "type": "line",
    "src": "app_press_allo"
   },
-  "line_quiz_tap": {
+  "line_find_tap_picture": {
    "type": "line",
    "src": "app_quiz_tap"
   },
-  "line_quiz_wrong": {
+  "line_find_wrong": {
    "type": "line",
    "src": "app_quiz_wrong"
   },
@@ -2048,7 +2048,7 @@
    "type": "line",
    "src": "app_read_word"
   },
-  "line_remind": {
+  "line_listen_this_is": {
    "type": "line",
    "src": "app_remind"
   },
@@ -2056,55 +2056,55 @@
    "type": "line",
    "src": "app_retry"
   },
-  "line_scatter_intro": {
+  "line_mix_up_intro": {
    "type": "line",
    "src": "app_scatter_intro"
   },
-  "line_spell_intro": {
+  "line_spelling_two_ways": {
    "type": "line",
    "src": "app_spell_intro"
   },
-  "line_spell_ord_1": {
+  "line_spelling_first_letter": {
    "type": "line",
    "src": "app_spell_ord_1"
   },
-  "line_spell_ord_2": {
+  "line_spelling_second_letter": {
    "type": "line",
    "src": "app_spell_ord_2"
   },
-  "line_spell_ord_3": {
+  "line_spelling_third_letter": {
    "type": "line",
    "src": "app_spell_ord_3"
   },
-  "line_spell_ord_4": {
+  "line_spelling_fourth_letter": {
    "type": "line",
    "src": "app_spell_ord_4"
   },
-  "line_spell_ord_5": {
+  "line_spelling_fifth_letter": {
    "type": "line",
    "src": "app_spell_ord_5"
   },
-  "line_spell_ord_6": {
+  "line_spelling_sixth_letter": {
    "type": "line",
    "src": "app_spell_ord_6"
   },
-  "line_spell_ord_7": {
+  "line_spelling_seventh_letter": {
    "type": "line",
    "src": "app_spell_ord_7"
   },
-  "line_spell_ord_8": {
+  "line_spelling_eighth_letter": {
    "type": "line",
    "src": "app_spell_ord_8"
   },
-  "line_spell_ord_9": {
+  "line_spelling_ninth_letter": {
    "type": "line",
    "src": "app_spell_ord_9"
   },
-  "line_spell_way_speak": {
+  "line_spelling_way_speak": {
    "type": "line",
    "src": "app_spell_way_speak"
   },
-  "line_spell_way_tap": {
+  "line_spelling_way_tap": {
    "type": "line",
    "src": "app_spell_way_tap"
   },
@@ -2112,43 +2112,43 @@
    "type": "line",
    "src": "app_stage_done"
   },
-  "line_w_menu_intro": {
+  "line_lessons_menu_intro": {
    "type": "line",
    "src": "app_w_menu_intro"
   },
-  "line_w_spell_go": {
+  "line_spelling_go": {
    "type": "line",
    "src": "app_w_spell_go"
   },
-  "line_w_spell_test": {
+  "line_spelling_test": {
    "type": "line",
    "src": "app_w_spell_test"
   },
-  "line_w_tap_white": {
+  "line_press_laila_to_start": {
    "type": "line",
    "src": "app_w_tap_white"
   },
-  "line_wannan": {
+  "line_this_is": {
    "type": "line",
    "src": "app_wannan"
   },
-  "line_yn_hint_no": {
+  "line_if_not": {
    "type": "line",
    "src": "app_yn_hint_no"
   },
-  "line_z_speak": {
+  "line_speak_press_laila": {
    "type": "line",
    "src": "app_z_speak"
   },
-  "line_s0": {
+  "line_gender_pick": {
    "type": "line",
    "src": "s0"
   },
-  "line_abc_say": {
+  "line_letters_say_letter": {
    "type": "line",
    "src": "s_abc_say"
   },
-  "line_act_desc_things": {
+  "line_activity_words_description": {
    "type": "line",
    "src": "s_act_desc_things"
   },
@@ -2156,123 +2156,123 @@
    "type": "line",
    "src": "s_all_done"
   },
-  "line_alone2": {
+  "line_sit_alone": {
    "type": "line",
    "src": "s_alone2"
   },
-  "line_back": {
+  "line_welcome_back": {
    "type": "line",
    "src": "s_back"
   },
-  "line_cat_desc_actions": {
+  "line_group_actions_description": {
    "type": "line",
    "src": "s_cat_desc_actions"
   },
-  "line_cat_desc_clothing": {
+  "line_group_clothing_description": {
    "type": "line",
    "src": "s_cat_desc_clothing"
   },
-  "line_cat_desc_people": {
+  "line_group_people_description": {
    "type": "line",
    "src": "s_cat_desc_people"
   },
-  "line_cat_desc_school": {
+  "line_group_school_description": {
    "type": "line",
    "src": "s_cat_desc_school"
   },
-  "line_cat_start_actions": {
+  "line_group_actions_start": {
    "type": "line",
    "src": "s_cat_start_actions"
   },
-  "line_cat_start_clothing": {
+  "line_group_clothing_start": {
    "type": "line",
    "src": "s_cat_start_clothing"
   },
-  "line_cat_start_people": {
+  "line_group_people_start": {
    "type": "line",
    "src": "s_cat_start_people"
   },
-  "line_cat_start_school": {
+  "line_group_school_start": {
    "type": "line",
    "src": "s_cat_start_school"
   },
-  "line_closer": {
+  "line_come_closer": {
    "type": "line",
    "src": "s_closer"
   },
-  "line_ear": {
+  "line_ear_hint": {
    "type": "line",
    "src": "s_ear"
   },
-  "line_go": {
+  "line_press_laila_to_begin": {
    "type": "line",
    "src": "s_go"
   },
-  "line_k_intro2": {
+  "line_reading_lesson_intro": {
    "type": "line",
    "src": "s_k_intro2"
   },
-  "line_k_lesson": {
+  "line_reading_lesson": {
    "type": "line",
    "src": "s_k_lesson"
   },
-  "line_k_test": {
+  "line_reading_test": {
    "type": "line",
    "src": "s_k_test"
   },
-  "line_kd_k3": {
+  "line_reading_3_letters_description": {
    "type": "line",
    "src": "s_kd_k3"
   },
-  "line_kd_k45": {
+  "line_reading_4_5_letters_description": {
    "type": "line",
    "src": "s_kd_k45"
   },
-  "line_kd_klong": {
+  "line_reading_long_words_description": {
    "type": "line",
    "src": "s_kd_klong"
   },
-  "line_kd_knum": {
+  "line_reading_numbers_description": {
    "type": "line",
    "src": "s_kd_knum"
   },
-  "line_l_check": {
+  "line_letters_check": {
    "type": "line",
    "src": "s_l_check"
   },
-  "line_l_final1": {
+  "line_letters_final_1": {
    "type": "line",
    "src": "s_l_final1"
   },
-  "line_l_final2": {
+  "line_letters_final_2": {
    "type": "line",
    "src": "s_l_final2"
   },
-  "line_l_look": {
+  "line_letters_look": {
    "type": "line",
    "src": "s_l_look"
   },
-  "line_l_new2": {
+  "line_letters_new_2": {
    "type": "line",
    "src": "s_l_new2"
   },
-  "line_l_new4": {
+  "line_letters_new_4": {
    "type": "line",
    "src": "s_l_new4"
   },
-  "line_l_recall": {
+  "line_letters_recall": {
    "type": "line",
    "src": "s_l_recall"
   },
-  "line_laila2": {
+  "line_meet_laila": {
    "type": "line",
    "src": "s_laila2"
   },
-  "line_leave": {
+  "line_session_end": {
    "type": "line",
    "src": "s_leave"
   },
-  "line_light": {
+  "line_find_brighter_spot": {
    "type": "line",
    "src": "s_light"
   },
@@ -2280,171 +2280,171 @@
    "type": "line",
    "src": "s_loading"
   },
-  "line_look": {
+  "line_look_at_camera": {
    "type": "line",
    "src": "s_look"
   },
-  "line_n_big": {
+  "line_numbers_big": {
    "type": "line",
    "src": "s_n_big"
   },
-  "line_n_focus5": {
+  "line_numbers_focus_5": {
    "type": "line",
    "src": "s_n_focus5"
   },
-  "line_n_hundreds": {
+  "line_numbers_hundreds": {
    "type": "line",
    "src": "s_n_hundreds"
   },
-  "line_n_intro": {
+  "line_numbers_intro": {
    "type": "line",
    "src": "s_n_intro"
   },
-  "line_n_palms": {
+  "line_numbers_palms": {
    "type": "line",
    "src": "s_n_palms"
   },
-  "line_n_sym2": {
+  "line_numbers_symbols_11_20": {
    "type": "line",
    "src": "s_n_sym2"
   },
-  "line_n_symbols": {
+  "line_numbers_symbols": {
    "type": "line",
    "src": "s_n_symbols"
   },
-  "line_n_tens": {
+  "line_numbers_tens": {
    "type": "line",
    "src": "s_n_tens"
   },
-  "line_o_again2": {
+  "line_words_again_2": {
    "type": "line",
    "src": "s_o_again2"
   },
-  "line_o_allright": {
+  "line_words_all_right": {
    "type": "line",
    "src": "s_o_allright"
   },
-  "line_o_focus": {
+  "line_words_focus": {
    "type": "line",
    "src": "s_o_focus"
   },
-  "line_o_go": {
+  "line_words_go": {
    "type": "line",
    "src": "s_o_go"
   },
-  "line_o_inen": {
+  "line_words_in_english": {
    "type": "line",
    "src": "s_o_inen"
   },
-  "line_o_look": {
+  "line_words_look": {
    "type": "line",
    "src": "s_o_look"
   },
-  "line_o_miss": {
+  "line_words_miss": {
    "type": "line",
    "src": "s_o_miss"
   },
-  "line_o_new3": {
+  "line_words_new_3": {
    "type": "line",
    "src": "s_o_new3"
   },
-  "line_o_next": {
+  "line_words_next": {
    "type": "line",
    "src": "s_o_next"
   },
-  "line_o_retake": {
+  "line_words_retake": {
    "type": "line",
    "src": "s_o_retake"
   },
-  "line_o_right": {
+  "line_words_right": {
    "type": "line",
    "src": "s_o_right"
   },
-  "line_o_say": {
+  "line_words_say": {
    "type": "line",
    "src": "s_o_say"
   },
-  "line_o_test2": {
+  "line_words_test_2": {
    "type": "line",
    "src": "s_o_test2"
   },
-  "line_o_three": {
+  "line_words_hard_one": {
    "type": "line",
    "src": "s_o_three"
   },
-  "line_o_turn": {
+  "line_words_turn": {
    "type": "line",
    "src": "s_o_turn"
   },
-  "line_o_wrong": {
+  "line_words_wrong": {
    "type": "line",
    "src": "s_o_wrong"
   },
-  "line_p1": {
+  "line_name_video_intro": {
    "type": "line",
    "src": "s_p1"
   },
-  "line_p2": {
+  "line_name_video_example": {
    "type": "line",
    "src": "s_p2"
   },
-  "line_p3": {
+  "line_name_video_your_turn": {
    "type": "line",
    "src": "s_p3"
   },
-  "line_perm": {
+  "line_permission_ask": {
    "type": "line",
    "src": "s_perm"
   },
-  "line_perm_no": {
+  "line_permission_refused": {
    "type": "line",
    "src": "s_perm_no"
   },
-  "line_q_again": {
+  "line_find_again": {
    "type": "line",
    "src": "s_q_again"
   },
-  "line_qd_q4": {
+  "line_find_four_pictures_description": {
    "type": "line",
    "src": "s_qd_q4"
   },
-  "line_qd_qnum": {
+  "line_find_numbers_description": {
    "type": "line",
    "src": "s_qd_qnum"
   },
-  "line_qn_tap": {
+  "line_find_numbers_tap": {
    "type": "line",
    "src": "s_qn_tap"
   },
-  "line_r_intro2": {
+  "line_spelling_lesson_intro": {
    "type": "line",
    "src": "s_r_intro2"
   },
-  "line_r_turn": {
+  "line_spelling_your_turn": {
    "type": "line",
    "src": "s_r_turn"
   },
-  "line_r_wow": {
+  "line_spelling_well_done": {
    "type": "line",
    "src": "s_r_wow"
   },
-  "line_rd_r3": {
+  "line_spelling_3_letters_description": {
    "type": "line",
    "src": "s_rd_r3"
   },
-  "line_rd_r4": {
+  "line_spelling_4_letters_description": {
    "type": "line",
    "src": "s_rd_r4"
   },
-  "line_rd_r5": {
+  "line_spelling_5_letters_description": {
    "type": "line",
    "src": "s_rd_r5"
   },
-  "line_rd_rlong": {
+  "line_spelling_long_words_description": {
    "type": "line",
    "src": "s_rd_rlong"
   },
-  "line_rd_rnum": {
+  "line_spelling_numbers_description": {
    "type": "line",
    "src": "s_rd_rnum"
   },
@@ -2464,7 +2464,7 @@
    "type": "line",
    "src": "s_retry_door"
   },
-  "line_sannu": {
+  "line_hello": {
    "type": "line",
    "src": "s_sannu"
   },
@@ -2472,51 +2472,51 @@
    "type": "line",
    "src": "s_say_it"
   },
-  "line_sp_is_1": {
+  "line_spelling_first_letter_is": {
    "type": "line",
    "src": "s_sp_is_1"
   },
-  "line_sp_is_2": {
+  "line_spelling_second_letter_is": {
    "type": "line",
    "src": "s_sp_is_2"
   },
-  "line_sp_is_3": {
+  "line_spelling_third_letter_is": {
    "type": "line",
    "src": "s_sp_is_3"
   },
-  "line_sp_is_4": {
+  "line_spelling_fourth_letter_is": {
    "type": "line",
    "src": "s_sp_is_4"
   },
-  "line_sp_is_5": {
+  "line_spelling_fifth_letter_is": {
    "type": "line",
    "src": "s_sp_is_5"
   },
-  "line_sp_is_6": {
+  "line_spelling_sixth_letter_is": {
    "type": "line",
    "src": "s_sp_is_6"
   },
-  "line_sp_is_7": {
+  "line_spelling_seventh_letter_is": {
    "type": "line",
    "src": "s_sp_is_7"
   },
-  "line_sp_is_8": {
+  "line_spelling_eighth_letter_is": {
    "type": "line",
    "src": "s_sp_is_8"
   },
-  "line_sp_is_9": {
+  "line_spelling_ninth_letter_is": {
    "type": "line",
    "src": "s_sp_is_9"
   },
-  "line_sp_press": {
+  "line_spelling_tap_it": {
    "type": "line",
    "src": "s_sp_press"
   },
-  "line_sp_spelt": {
+  "line_spelling_written_like_this": {
    "type": "line",
    "src": "s_sp_spelt"
   },
-  "line_still": {
+  "line_hold_still": {
    "type": "line",
    "src": "s_still"
   },
@@ -2524,271 +2524,271 @@
    "type": "line",
    "src": "s_welcome"
   },
-  "line_sx_intro": {
+  "line_example_intro": {
    "type": "line",
    "src": "sx_intro"
   },
-  "line_sx_k_letters": {
+  "line_example_reading_letters": {
    "type": "line",
    "src": "sx_k_letters"
   },
-  "line_sx_laila": {
+  "line_example_laila_says": {
    "type": "line",
    "src": "sx_laila"
   },
-  "line_sx_now": {
+  "line_example_your_turn": {
    "type": "line",
    "src": "sx_now"
   },
-  "line_w_name": {
+  "line_welcome_my_name": {
    "type": "line",
    "src": "s_w_name"
   },
-  "line_w_together": {
+  "line_welcome_together": {
    "type": "line",
    "src": "s_w_together"
   },
-  "line_w_have": {
+  "line_welcome_lessons": {
    "type": "line",
    "src": "s_w_have"
   },
-  "line_w_l1": {
+  "line_welcome_learn_alphabet": {
    "type": "line",
    "src": "s_w_l1"
   },
-  "line_w_l2": {
+  "line_welcome_learn_read_write": {
    "type": "line",
    "src": "s_w_l2"
   },
-  "line_w_l3": {
+  "line_welcome_learn_count": {
    "type": "line",
    "src": "s_w_l3"
   },
-  "line_w_l4": {
+  "line_welcome_learn_names": {
    "type": "line",
    "src": "s_w_l4"
   },
-  "line_w_more": {
+  "line_welcome_more": {
    "type": "line",
    "src": "s_w_more"
   },
-  "line_w_talk": {
+  "line_welcome_talk": {
    "type": "line",
    "src": "s_w_talk"
   },
-  "line_b_glad": {
+  "line_welcome_back_glad": {
    "type": "line",
    "src": "s_b_glad"
   },
-  "line_b_cont": {
+  "line_welcome_back_continue": {
    "type": "line",
    "src": "s_b_cont"
   },
-  "line_sx_do_say": {
+  "line_example_how_to_say": {
    "type": "line",
    "src": "sx_do_say"
   },
-  "line_sx_do_read": {
+  "line_example_how_to_read": {
    "type": "line",
    "src": "sx_do_read"
   },
-  "line_sx_do_spell": {
+  "line_example_how_to_spell": {
    "type": "line",
    "src": "sx_do_spell"
   },
-  "line_sx_do_find": {
+  "line_example_how_to_find": {
    "type": "line",
    "src": "sx_do_find"
   },
-  "line_sx_do_findnum": {
+  "line_example_how_to_find_numbers": {
    "type": "line",
    "src": "sx_do_findnum"
   },
-  "line_q_start": {
+  "line_find_start": {
    "type": "line",
    "src": "s_q_start"
   },
-  "line_qn_start": {
+  "line_find_numbers_start": {
    "type": "line",
    "src": "s_qn_start"
   },
-  "line_sx_r_plan": {
+  "line_example_spelling_plan": {
    "type": "line",
    "src": "sx_r_plan"
   },
-  "line_sx_r_w1": {
+  "line_example_spelling_way_1": {
    "type": "line",
    "src": "sx_r_w1"
   },
-  "line_sx_r_w2": {
+  "line_example_spelling_way_2": {
    "type": "line",
    "src": "sx_r_w2"
   },
-  "line_sx_r_v1": {
+  "line_example_spelling_voice_1": {
    "type": "line",
    "src": "sx_r_v1"
   },
-  "line_sx_r_v2": {
+  "line_example_spelling_voice_2": {
    "type": "line",
    "src": "sx_r_v2"
   },
-  "line_sx_r_kb": {
+  "line_example_spelling_board": {
    "type": "line",
    "src": "sx_r_kb"
   },
-  "line_pop_intro": {
+  "line_balloons_intro": {
    "type": "line",
    "src": "s_pop_intro"
   },
-  "line_pop_done": {
+  "line_balloons_done": {
    "type": "line",
    "src": "s_pop_done"
   },
-  "line_pop_task": {
+  "line_balloons_task": {
    "type": "line",
    "src": "s_pop_task"
   },
-  "line_pop_first": {
+  "line_balloons_first": {
    "type": "line",
    "src": "s_pop_first"
   },
-  "line_pop_next": {
+  "line_balloons_next": {
    "type": "line",
    "src": "s_pop_next"
   },
-  "line_eg_watch": {
+  "line_example_watch_again": {
    "type": "line",
    "src": "s_eg_watch"
   },
-  "line_eg_ok": {
+  "line_example_not_right": {
    "type": "line",
    "src": "s_eg_ok"
   },
-  "line_pop_timeup": {
+  "line_balloons_time_up": {
    "type": "line",
    "src": "s_pop_timeup"
   },
-  "line_gate_calm": {
+  "line_balloons_gate_calm": {
    "type": "line",
    "src": "s_gate_calm"
   },
-  "line_gate_play": {
+  "line_balloons_gate_play": {
    "type": "line",
    "src": "s_gate_play"
   },
-  "line_wb_home": {
+  "line_press_book_home": {
    "type": "line",
    "src": "s_wb_home"
   },
-  "line_gate_first": {
+  "line_balloons_gate_first": {
    "type": "line",
    "src": "s_gate_first"
   },
-  "line_gate_yes": {
+  "line_balloons_gate_yes": {
    "type": "line",
    "src": "s_gate_yes"
   },
-  "line_gate_no": {
+  "line_balloons_gate_no": {
    "type": "line",
    "src": "s_gate_no"
   },
-  "line_g_fish_how": {
+  "line_game_fishing_how": {
    "type": "line",
    "src": "s_g_fish_how"
   },
-  "line_g_drum_how": {
+  "line_game_talking_drum_how": {
    "type": "line",
    "src": "s_g_drum_how"
   },
-  "line_g_market_how": {
+  "line_game_market_rush_how": {
    "type": "line",
    "src": "s_g_market_how"
   },
-  "line_g_canoes_how": {
+  "line_game_canoes_how": {
    "type": "line",
    "src": "s_g_canoes_how"
   },
-  "line_g_pots_how": {
+  "line_game_clay_pots_how": {
    "type": "line",
    "src": "s_g_pots_how"
   },
-  "line_g_house_how": {
+  "line_game_build_the_house_how": {
    "type": "line",
    "src": "s_g_house_how"
   },
-  "line_g_learn": {
+  "line_game_learn_first": {
    "type": "line",
    "src": "s_g_learn"
   },
-  "line_g_go": {
+  "line_game_continue": {
    "type": "line",
    "src": "s_g_go"
   },
-  "line_g_durbar_how": {
+  "line_game_durbar_how": {
    "type": "line",
    "src": "s_g_durbar_how"
   },
-  "line_g_durbar_eg1": {
+  "line_game_durbar_example": {
    "type": "line",
    "src": "s_g_durbar_eg1"
   },
-  "line_g_durbar_ready": {
+  "line_game_durbar_ready": {
    "type": "line",
    "src": "s_g_durbar_ready"
   },
-  "line_g_dillali_how": {
+  "line_game_auctioneer_how": {
    "type": "line",
    "src": "s_g_dillali_how"
   },
-  "line_g_shayi_how": {
+  "line_game_tea_seller_how": {
    "type": "line",
    "src": "s_g_shayi_how"
   },
-  "line_g_gyada_how": {
+  "line_game_groundnut_pyramids_how": {
    "type": "line",
    "src": "s_g_gyada_how"
   },
-  "line_g_shanu_how": {
+  "line_game_animal_market_how": {
    "type": "line",
    "src": "s_g_shanu_how"
   },
-  "line_g_garke_how": {
+  "line_game_counting_herd_how": {
    "type": "line",
    "src": "s_g_garke_how"
   },
-  "line_g_garke_eg1": {
+  "line_game_counting_herd_example": {
    "type": "line",
    "src": "s_g_garke_eg1"
   },
-  "line_g_suya_how": {
+  "line_game_suya_seller_how": {
    "type": "line",
    "src": "s_g_suya_how"
   },
-  "line_g_allo_how": {
+  "line_game_writing_board_how": {
    "type": "line",
    "src": "s_g_allo_how"
   },
-  "line_g_jirgi_how": {
+  "line_game_ferry_how": {
    "type": "line",
    "src": "s_g_jirgi_how"
   },
-  "line_g_marubuci_how": {
+  "line_game_letter_writer_how": {
    "type": "line",
    "src": "s_g_marubuci_how"
   },
-  "line_g_ruwa_how": {
+  "line_game_rain_on_the_farm_how": {
    "type": "line",
    "src": "s_g_ruwa_how"
   },
-  "line_g_rini_how": {
+  "line_game_dye_pits_how": {
    "type": "line",
    "src": "s_g_rini_how"
   },
-  "line_l_game": {
+  "line_letters_game": {
    "type": "line",
    "src": "s_l_game"
   },
-  "line_pop_again": {
+  "line_balloons_again": {
    "type": "line",
    "src": "s_pop_again"
   },
@@ -2796,199 +2796,199 @@
    "type": "line",
    "src": "s_game_open"
   },
-  "line_z_got_3_50": {
+  "line_gold_three_stars_50": {
    "type": "line",
    "src": "s_z_got_3_50"
   },
-  "line_z_got_3_100": {
+  "line_gold_three_stars_100": {
    "type": "line",
    "src": "s_z_got_3_100"
   },
-  "line_z_got_3_150": {
+  "line_gold_three_stars_150": {
    "type": "line",
    "src": "s_z_got_3_150"
   },
-  "line_z_got_3_200": {
+  "line_gold_three_stars_200": {
    "type": "line",
    "src": "s_z_got_3_200"
   },
-  "line_z_got_4_50": {
+  "line_gold_four_stars_50": {
    "type": "line",
    "src": "s_z_got_4_50"
   },
-  "line_z_got_4_100": {
+  "line_gold_four_stars_100": {
    "type": "line",
    "src": "s_z_got_4_100"
   },
-  "line_z_got_4_150": {
+  "line_gold_four_stars_150": {
    "type": "line",
    "src": "s_z_got_4_150"
   },
-  "line_z_got_4_200": {
+  "line_gold_four_stars_200": {
    "type": "line",
    "src": "s_z_got_4_200"
   },
-  "line_z_now_jarumi": {
+  "line_gold_title_jarumi": {
    "type": "line",
    "src": "s_z_now_jarumi"
   },
-  "line_z_now_malami": {
+  "line_gold_title_malami": {
    "type": "line",
    "src": "s_z_now_malami"
   },
-  "line_z_now_dansarki": {
+  "line_gold_title_dan_sarki": {
    "type": "line",
    "src": "s_z_now_dansarki"
   },
-  "line_z_now_magaji": {
+  "line_gold_title_magaji": {
    "type": "line",
    "src": "s_z_now_magaji"
   },
-  "line_z_now_sarki": {
+  "line_gold_title_sarki": {
    "type": "line",
    "src": "s_z_now_sarki"
   },
-  "line_z_effort": {
+  "line_gold_new_level": {
    "type": "line",
    "src": "s_z_effort"
   },
-  "line_z_bag1": {
+  "line_gold_bag_1_full": {
    "type": "line",
    "src": "s_z_bag1"
   },
-  "line_z_bag2": {
+  "line_gold_bag_2_full": {
    "type": "line",
    "src": "s_z_bag2"
   },
-  "line_z_bag3": {
+  "line_gold_bag_3_full": {
    "type": "line",
    "src": "s_z_bag3"
   },
-  "line_z_bag4": {
+  "line_gold_bag_4_full": {
    "type": "line",
    "src": "s_z_bag4"
   },
-  "line_z_bag5": {
+  "line_gold_bag_5_full": {
    "type": "line",
    "src": "s_z_bag5"
   },
-  "line_z_gold_1000": {
+  "line_gold_reached_1000": {
    "type": "line",
    "src": "s_z_gold_1000"
   },
-  "line_z_gold_2000": {
+  "line_gold_reached_2000": {
    "type": "line",
    "src": "s_z_gold_2000"
   },
-  "line_z_gold_4000": {
+  "line_gold_reached_4000": {
    "type": "line",
    "src": "s_z_gold_4000"
   },
-  "line_z_gold_6000": {
+  "line_gold_reached_6000": {
    "type": "line",
    "src": "s_z_gold_6000"
   },
-  "line_z_gold_10000": {
+  "line_gold_reached_10000": {
    "type": "line",
    "src": "s_z_gold_10000"
   },
-  "line_z_first": {
+  "line_gold_first_level": {
    "type": "line",
    "src": "s_z_first"
   },
-  "line_z_keep_first": {
+  "line_gold_keep_trying": {
    "type": "line",
    "src": "s_z_keep_first"
   },
-  "line_z_keep": {
+  "line_gold_keep_going": {
    "type": "line",
    "src": "s_z_keep"
   },
-  "line_z_top": {
+  "line_gold_top_level": {
    "type": "line",
    "src": "s_z_top"
   },
-  "line_z_top_keep": {
+  "line_gold_keep_learning": {
    "type": "line",
    "src": "s_z_top_keep"
   },
-  "line_gd_hawan": {
+  "line_game_durbar_description": {
    "type": "line",
    "src": "gd_hawan"
   },
-  "line_gd_fashe": {
+  "line_game_balloons_description": {
    "type": "line",
    "src": "gd_fashe"
   },
-  "line_gd_hanzarin": {
+  "line_game_market_rush_description": {
    "type": "line",
    "src": "gd_hanzarin"
   },
-  "line_gd_kifi": {
+  "line_game_fishing_description": {
    "type": "line",
    "src": "gd_kifi"
   },
-  "line_gd_kalangu": {
+  "line_game_talking_drum_description": {
    "type": "line",
    "src": "gd_kalangu"
   },
-  "line_gd_shayi": {
+  "line_game_tea_seller_description": {
    "type": "line",
    "src": "gd_shayi"
   },
-  "line_gd_dillali": {
+  "line_game_auctioneer_description": {
    "type": "line",
    "src": "gd_dillali"
   },
-  "line_gd_dalar": {
+  "line_game_groundnut_pyramids_description": {
    "type": "line",
    "src": "gd_dalar"
   },
-  "line_gd_suya": {
+  "line_game_suya_seller_description": {
    "type": "line",
    "src": "gd_suya"
   },
-  "line_gd_allo": {
+  "line_game_writing_board_description": {
    "type": "line",
    "src": "gd_allo"
   },
-  "line_gd_jirgi": {
+  "line_game_ferry_description": {
    "type": "line",
    "src": "gd_jirgi"
   },
-  "line_gd_kwale": {
+  "line_game_canoes_description": {
    "type": "line",
    "src": "gd_kwale"
   },
-  "line_gd_ruwa": {
+  "line_game_rain_on_the_farm_description": {
    "type": "line",
    "src": "gd_ruwa"
   },
-  "line_gd_tukwane": {
+  "line_game_clay_pots_description": {
    "type": "line",
    "src": "gd_tukwane"
   },
-  "line_gd_bulo": {
+  "line_game_build_the_house_description": {
    "type": "line",
    "src": "gd_bulo"
   },
-  "line_gd_marubuci": {
+  "line_game_letter_writer_description": {
    "type": "line",
    "src": "gd_marubuci"
   },
-  "line_gd_karofi": {
+  "line_game_dye_pits_description": {
    "type": "line",
    "src": "gd_karofi"
   },
-  "line_gd_shanu": {
+  "line_game_animal_market_description": {
    "type": "line",
    "src": "gd_shanu"
   },
-  "line_gd_garke": {
+  "line_game_counting_herd_description": {
    "type": "line",
    "src": "gd_garke"
   },
-  "line_g_stars_how": {
+  "line_game_stars_how": {
    "type": "line",
    "src": "s_g_stars_how"
   },
