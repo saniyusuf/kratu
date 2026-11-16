@@ -354,7 +354,12 @@ export class FaceScreen implements OnInit, OnDestroy {
     if (K && this.identity.ready()) {
       await K.store.load();
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec, nameKey: key });
-      if (m.decision === 'accept' && m.person) { this.welcome(m.person, true, own?.url); return; }
+      if (m.decision === 'accept' && m.person) {
+        // a clear recognition keeps the record's recent face prints up to date (Sani 2026-11-16); refresh() itself refuses
+        // anything short of a confident, face-only match, and never touches the prints from enrolment
+        K.store.refresh(m.person.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
+        this.welcome(m.person, true, own?.url); return;
+      }
       if (heardName && this.faceVecs.length) {
         // held, not written: a child who walks away, presses the door or tries again leaves nothing behind. It is saved
         // in enter(), the moment the session actually opens (Sani 2026-09-17).
