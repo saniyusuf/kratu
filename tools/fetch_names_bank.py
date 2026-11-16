@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Build the expanded NAMEBANK: every name in northern_names.py spoken by the Hausa TTS voice,
+"""Build the expanded NAMEBANK: every name in nigerian_names.py (northern names, Yoruba, Igbo, other Nigerian and English
+names) spoken by the Hausa TTS voice,
 re-encoded to 24k mono Opus (same format as the clips already in the app). Resumable."""
 import urllib.request, urllib.parse, base64, json, sys, time, re, subprocess, pathlib, random
 R = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(R / "tools"))
-from northern_names import build
+from nigerian_names import build   # includes northern_names (Sani 2026-11-16: a wide name match)
 
 OUT = R / "public" / "names_bank_expanded.json"   # the app reads it from public/ (the repo root is the app since 22 Sep)
 bank = json.loads(OUT.read_text()) if OUT.exists() else {}   # the app's bank already holds every approved clip (the old build's NAMEBANK was merged in)
