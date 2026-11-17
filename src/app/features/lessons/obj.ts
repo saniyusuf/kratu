@@ -25,7 +25,7 @@ const STAGES = [
   imports: [Door, Ear, LailaButton, AlloButton, ResultsGrid],
   host: { class: 's lesson word obj', '[class.lambobi]': "mode === 'numbers'", '[class.hearing]': 'rec() || armed()', '[class.presenting]': 'presenting()' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>
 <div class="objrow" [class.many]="rowItems().length > 5">@for (it of rowItems(); track it.k) {<span class="oslot active" [class.on]="onItem() === it.k" [class.done]="marks()[it.k] === 'done'" [class.miss]="marks()[it.k] === 'miss'" [attr.data-item]="it.k"></span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>

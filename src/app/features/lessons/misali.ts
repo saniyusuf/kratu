@@ -26,7 +26,7 @@ const EG_TRIES = 3;
   imports: [Door, Ear, LailaButton, AbcKeyboard],
   host: { class: 's lesson misali', '[class.movie]': 'movie()', '[class.hearing]': 'hearing()', '[class.read]': "kind === 'karatu'", '[class.karatu]': "kind === 'karatu'", '[class.spell]': "kind === 'rubutu'", '[class.word]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.obj]': "kind === 'abubuwa' || kind === 'lambobi'", '[class.quiz]': "kind === 'nemo' || kind === 'nemonum'", '[class.abc]': "kind === 'haruffa'" },
   template: `
-<app-door (pressed)="leave()" /><div class="moviepill"><i></i>{{ t('Misali') }}</div><app-ear (pressed)="restart()" /><div class="eyebrow">{{ tx(title) }}</div>
+<app-door (pressed)="leave()" /><div class="moviepill"><i></i>{{ t('Misali') }}</div><app-ear (pressed)="restart()" /><div class="eyebrow">{{ (tx(title)).split(' · ')[0] }}</div>
 @if (kind === 'haruffa') {<div class="abcshow" [class.off]="!bigLetter()"><span class="abcbig" style="--c:var(--red)">{{ bigLetter() }}</span><span class="abcex">example</span></div>}
 @if (kind === 'nemo' || kind === 'nemonum') {
 <div class="qlesson"><div #qgrid class="qgrid" [class.n4]="kind === 'nemo'" [class.n6]="kind === 'nemonum'">

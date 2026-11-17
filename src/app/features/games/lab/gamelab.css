@@ -1427,3 +1427,6 @@
 /* no glow disc behind her in the games either: the yellow halo looked wrong on the night scenes (Sani 2026-11-17) */
 .glab .x-laila .lglow,.glab .glaila .lglow{display:none!important}
 .glab .micx .x-laila .lm,.glab .glaila .lsvg{filter:none!important}
+/* contrast (Sani 2026-11-17): the drum's word plate a shade deeper so the white word reads */
+.glab .plate .pb{background:#2E7D32!important;box-shadow:0 .5cqw 0 #1E5A23!important}
+.glab .plate.miss .pb{background:#C2501F!important;box-shadow:0 .5cqw 0 #8E3814!important}

@@ -870,3 +870,16 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
 #app .s .ynpair .yn.yes:not(.cue):not(.armed):not(.speak) .lm{animation:lbreathe 3.2s ease-in-out infinite;filter:drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 14px rgba(255,201,60,.8))}
 @keyframes lbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
 @media (prefers-reduced-motion:reduce){#app .s .ynpair .yn.yes .lm{animation:none}}
+
+/* Contrast (Sani approved 2026-11-17, report "Kratu Contrast Check"): text on a bright fill gets the same colour one
+   shade deeper; the bright colours stay for pictures, balloons and decoration. */
+#app .s.home .htile[style*="var(--red)"]{background:#C62834}
+#app .s.home .htile[style*="var(--blue)"]{background:#1676A8}
+#app .s.home .htile[style*="var(--orange)"]{background:#C2501F}
+#app .s.home .htile[style*="var(--green)"]{background:#2E7D32}
+#app .s.home .htile[style*="var(--teal)"]{background:#1B7A6E}
+#app .go{background:#1B7A6E}
+#app .s .eyebrow{color:#6E44A3}
+#app .s .starthint small,#app .s .lesson-hint small{color:#5F5137}
+/* the A-Z check board: the letters one shade deeper so they read on the light tiles */
+#app .s .aslot,#app .s .gboard b{color:color-mix(in srgb,var(--c) 62%,#000)}

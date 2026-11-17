@@ -25,7 +25,7 @@ type Slot = { L: string; st: '' | 'on' | 'done' };
   imports: [Door, Ear, TopicMenu, ResultsGrid, LailaButton],
   host: { class: 's lesson read karatu', '[class.hearing]': 'rec() || armed()' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="splesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!picSrc() && !resultsOn()"><span class="kimg objpic">@if (picSrc()) {<img #pic alt="" [src]="picSrc()" (error)="retryPic($event)">}</span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>

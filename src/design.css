@@ -1,6 +1,6 @@
 
 :root{
-  --paper:#F4E7C9;--paper2:#FBF3DE;--ink:#3B2E1E;--muted:#7A6A4C;
+  --paper:#F4E7C9;--paper2:#FBF3DE;--ink:#3B2E1E;--muted:#5F5137;
   --red:#E63946;--blue:#1FA1D8;--yellow:#FBC02D;--teal:#2FAE9E;--purple:#8A5FBF;--orange:#EE7043;--green:#4CAF50;--pink:#FF7B9C;
   --disp:"Baloo 2",ui-rounded,system-ui,sans-serif;--body:"Nunito",system-ui,sans-serif;}
 *{box-sizing:border-box}

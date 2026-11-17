@@ -95,7 +95,7 @@ const SHOWN = ['A', 'B', 'C', 'D'];
   </svg>
   }
 </div>
-<div class="eyebrow">{{ tx('Mu gani · haruffa') }}</div>
+<div class="eyebrow">{{ (tx('Mu gani · haruffa')).split(' · ')[0] }}</div>
 @if (tries) {<div class="gtries" aria-hidden="true">@for (i of [1, 2]; track i) {<i [class.on]="i <= tries"></i>}</div>}
 
 @if (phase() === 'invite') {

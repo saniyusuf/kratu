@@ -19,7 +19,7 @@ const QUIZ_CATS = [{ key: 'q4', ha: 'Hotuna huɗu', ico: 'q4', c: 'var(--blue)',
   imports: [Door, Ear, TopicMenu, ResultsGrid],
   host: { class: 's lesson quiz' },
   template: `
-<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
+<app-door (pressed)="door()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div class="splanding" [hidden]="inLesson()"><app-topic-menu [cats]="cats" [few]="true" goClass="q-go" [picked]="cat()" [cue]="cue()" [nohand]="nohand()" (choose)="choose($event)" (go)="go()" /></div>
 <div class="qlesson" [hidden]="!inLesson()">
   <div #show class="objshow" [class.off]="!resultsOn()" [hidden]="!resultsOn()"><span class="kimg objpic"></span><app-results [on]="resultsOn()" [items]="resultItems()" [miss]="resultMiss()" [saying]="saying()" /></div>

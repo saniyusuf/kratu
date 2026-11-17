@@ -40,7 +40,7 @@ const BETWEEN: Record<number, string> = { 12: 'j-durbar', 20: 'j-durbar' };
   imports: [Door, Ear, LailaButton],
   host: { class: 's lesson learn', '[class.hearing]': 'rec() || armed()' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ tx(eye()) }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="ear()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div class="abcshow" [class.off]="!big()"><span class="abcbig" [style.--c]="bigColor()">{{ big() }}</span></div>
 <div #slots class="abcslots">@for (L of all; track L) {<span class="aslot" [attr.data-l]="L" [style.--c]="color($index)" [class.active]="active()[$index]" [class.on]="st()[$index] === 'on'" [class.done]="st()[$index] === 'done'" [class.bad]="st()[$index] === 'bad'">{{ st()[$index] === 'done' ? L : '' }}</span>}</div>
 <div class="fb" [class]="'fb ' + fbCls()">{{ tx(fbText()) }}</div>

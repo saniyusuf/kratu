@@ -55,7 +55,7 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
   imports: [Door, Ear, LailaButton],
   host: { class: 's lesson fashe' },
   template: `
-<app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ tx(eye()) }}</div>
+<app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div class="poptime" [class.low]="low()" [class.off]="!ticking()">
   <span class="ptbar nofit"><i [style.width.%]="pct()"></i></span><b>{{ clock() }}</b>
   @if (bump()) {<span class="ptbump" [class.minus]="bump()!.startsWith('−')">{{ bump() }}</span>}
