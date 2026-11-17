@@ -813,9 +813,9 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
           if (li >= w.length) { box.busy = true; kb.classList.add('locked'); run.good(site); react(run.scr, 'cheer'); if (LES) { rightW++; lesNext(900); return; } run.right--; wi = (wi + 1) % W.length; run.later(900, word); }
           else if (run.auto && !kbtn) autoGo(); else box.cue();
         }
-        /* a press (or her own listening) turns auto listening on; typing a key turns it off, and a key may be typed while
+        /* spelling takes the keyboard or the voice, so Laila never listens by herself here: every listen is a press (Sani 2026-11-17); typing a key turns it off, and a key may be typed while
            she listens: what she hears for a letter already typed past is dropped (stamp) */
-        box.listen(function () { var w = letters(W[wi]); run.auto = true; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, function (r) {
+        box.listen(function () { var w = letters(W[wi]); run.auto = false; stamp = wi + ':' + li; return { multi: true, word: spoken(W[wi]), target: w[li] }; }, function (r) {
           if ((stamp && stamp !== wi + ':' + li) || box.busy) return;   // (the ?tester buttons answer without a listen, so no stamp)
           stamp = ''; var got = r.value || [];
           if (!got.length) { if (run.auto && ++quiet < 2) { box.busy = false; box.go(); return; } quiet = 0; run.auto = false; box.cue(); return; }   // nothing heard: once more, then wait for a press
