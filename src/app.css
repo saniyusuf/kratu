@@ -49,11 +49,6 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #loader .ld-retry{background:#2FAE9E;color:#fff;box-shadow:0 3px 0 #1E8A7C}#loader .ld-retry:active{transform:translateY(2px);box-shadow:0 1px 0 #1E8A7C}
 #loader .ld-skip{background:transparent;color:#8a7a5c;text-decoration:underline;font-size:14px;padding:6px}
 #loader.failed .ld-retry{display:inline-block}#loader.failed .ld-skip:not([hidden]){display:inline-block}
-#rotate{display:none;position:fixed;inset:0;z-index:300;background:#FBF3DE;align-items:center;justify-content:center;flex-direction:column;gap:18px;font-family:var(--disp,sans-serif);color:#3B2E1E;text-align:center;padding:24px}
-#rotate svg{width:120px;height:120px;fill:none;stroke:#3B2E1E;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:rot 2.2s ease-in-out infinite}
-@keyframes rot{0%,20%{transform:rotate(0)}55%,80%{transform:rotate(-90deg)}100%{transform:rotate(-90deg)}}
-#rotate b{font-size:28px}#rotate small{font:600 16px var(--body,sans-serif);color:#8a7a5c}
-@media (orientation:portrait){#rotate{display:flex}}
 #admingear{position:fixed;left:6px;bottom:6px;width:calc(66px * var(--zc,var(--z,1)));height:calc(66px * var(--zc,var(--z,1)));border:0;border-radius:0 100% 0 18px;background:#2FAE9E;cursor:pointer;z-index:70;padding:0;display:none;-webkit-user-select:none;user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 #admingear:active{background:#26907F}
 #admingear.show{display:block}

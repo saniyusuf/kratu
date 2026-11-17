@@ -18,7 +18,7 @@ const FRESH_WAIT = 90000;
 /** No answer about a new version within this (offline, slow): carry on with the copy we have. */
 const FRESH_ASK = 6000;
 
-/** The shell: the zoomed frame every screen lives in, the loader in front of it until everything is ready, the settings gear, the subtitles strip, the rotate overlay. */
+/** The shell: the zoomed frame every screen lives in, the loader in front of it until everything is ready, the settings gear, the subtitles strip. Landscape only: the installed app is locked to landscape and there is no turn-the-tablet screen (Sani 2026-11-17). */
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, LoaderScreen, Settings, Subs],
@@ -26,7 +26,7 @@ const FRESH_ASK = 6000;
 <span class="svgdefs" [innerHTML]="defs"></span>
 @if (!loaded()) {<app-loader />}
 <div id="app"><div class="block active"><div class="frame"><router-outlet /></div></div></div>
-<div id="rotate"><svg viewBox="0 0 64 64"><rect x="14" y="6" width="36" height="52" rx="6"/><circle cx="32" cy="51" r="2"/><path d="M22 12h20"/></svg><b>{{ t('Juya allon') }} · Turn the tablet sideways</b><small>Kratu works in landscape only</small></div>
+
 <app-settings /><app-subs />`,
   styles: [`:host{display:contents} .svgdefs{position:absolute;width:0;height:0;overflow:hidden}`],
 })
