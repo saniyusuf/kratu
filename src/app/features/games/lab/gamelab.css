@@ -1400,7 +1400,7 @@
 /* Laila, one size, one place and one breath in every game (Sani 2026-11-17): bottom centre at 3cqw, 128 px like the
    lessons, a slow breath and a soft glow with a white rim that reads on the night tea stall and the bright durbar alike */
 .glab .micx .lm{width:128px!important;height:128px!important}
-.glab .micx .x-laila:not(.cue):not(.armed):not(.speak) .lm{animation:g-lbreathe 3.2s ease-in-out infinite;filter:drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 14px rgba(255,201,60,.8))}
+.glab .micx .x-laila:not(.cue):not(.armed):not(.speak):not(.rec) .lm{animation:g-lbreathe 3.2s ease-in-out infinite}
 @keyframes g-lbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
 @media (prefers-reduced-motion:reduce){.glab .micx .lm{animation:none}}
 
@@ -1412,15 +1412,18 @@
 .glab .gsay .glaila .lsvg{width:128px!important;height:128px!important}
 .glab .gsay .glaila:not(.cue):not(.talking) .lsvg{animation:g-lbreathe 3.2s ease-in-out infinite}
 
-/* "Press Laila to start" is never missed (Sani 2026-11-17): wherever Laila waits to be pressed (the start of a game, the
-   how-to Laila, a round waiting for a press) she always glows, and a pointing hand under her swells and shrinks with a
-   glow of its own */
-.glab .glaila:not(.talking) .lsvg,.glab .micx .x-laila.cue:not(.rec) .lm{filter:drop-shadow(0 0 3px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,201,60,1)) drop-shadow(0 0 34px rgba(255,201,60,.7))!important}
+/* "Press Laila to start" (Sani 2026-11-17, second pass): no coloured glow, it fought the night scenes. Laila herself moves
+   while she waits to be pressed (a hop and a squash), and a pointing hand sits at her side, clear of her label, swelling
+   and shrinking. Nothing moves while she talks or listens. */
+.glab .glaila:not(.talking) .lsvg,.glab .micx .x-laila.cue:not(.rec) .lm{animation:g-presshop 1.15s ease-in-out infinite!important;transform-origin:50% 90%}
 .glab .glaila{position:relative}
-.glab .glaila:not(.talking)::after{content:"👆🏾";position:absolute;left:50%;top:calc(100% - 6px);font-size:46px;line-height:1;transform:translateX(-50%);pointer-events:none;
-  filter:drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,201,60,.95));animation:g-presshand 1.1s ease-in-out infinite;z-index:3}
-.glab .micx .x-laila.cue:not(.rec) .lhand{display:block!important;visibility:visible!important;font-size:46px;top:118px!important;filter:drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,201,60,.95));animation:g-presshand 1.1s ease-in-out infinite}
+.glab .glaila:not(.talking)::after{content:"👆🏾";position:absolute;left:calc(50% + 46px);top:62%;font-size:42px;line-height:1;pointer-events:none;animation:g-presshand 1.15s ease-in-out infinite;z-index:3}
+.glab .micx .x-laila .lhand{position:absolute!important;left:calc(50% + 46px)!important;top:78px!important;transform:none;font-size:42px;margin:0!important;z-index:3}
+.glab .micx .x-laila.cue:not(.rec) .lhand{display:block!important;visibility:visible!important;animation:g-presshand 1.15s ease-in-out infinite}
 .glab .gi-hand{display:none}
-@keyframes g-presshand{0%,100%{transform:translateX(-50%) scale(.88)}50%{transform:translateX(-50%) scale(1.12)}}
-@media (prefers-reduced-motion:reduce){.glab .glaila::after,.glab .micx .x-laila .lhand{animation:none}}
-/* while she talks or listens there is no glow or hand: only while she waits to be pressed (Sani 2026-11-17) */
+@keyframes g-presshop{0%,100%{transform:translateY(0) scale(1,1)}40%{transform:translateY(-7px) scale(.97,1.04)}60%{transform:translateY(0) scale(1.05,.95)}}
+@keyframes g-presshand{0%,100%{transform:scale(.88) rotate(-8deg)}50%{transform:scale(1.12) rotate(-8deg)}}
+@media (prefers-reduced-motion:reduce){.glab .glaila .lsvg,.glab .micx .x-laila .lm,.glab .glaila::after,.glab .micx .x-laila .lhand{animation:none!important}}
+/* no glow disc behind her in the games either: the yellow halo looked wrong on the night scenes (Sani 2026-11-17) */
+.glab .x-laila .lglow,.glab .glaila .lglow{display:none!important}
+.glab .micx .x-laila .lm,.glab .glaila .lsvg{filter:none!important}

@@ -68,7 +68,11 @@ export function moreGames(c: any): Record<string, any> {
   }
   /** open the microphone by itself once Laila is quiet (her last line is run.said), or cue her for a press */
   function autoGo(run, box, early = 0) {
-    if (!run.auto || !box.go) { box.cue(); return; }
+    if (!run.auto || !box.go) {
+      // the first press of a game: she says so ("press Laila"), once (Sani 2026-11-17: nobody was told to press her)
+      if (!run.toldGo && K.go) { run.toldGo = true; Promise.resolve(run.said).then(() => { if (!run.dead && !run.listening) say(K.go, run); }); }
+      box.cue(); return;
+    }
     box.busy = true;
     // early: the microphone is already open when the round appears (Sani 2026-11-17: a fast child answers the moment the
     // picture shows), so it starts now, quietly, and only shows Laila listening once the round is on screen
