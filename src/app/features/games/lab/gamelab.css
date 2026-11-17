@@ -1403,3 +1403,11 @@
 .glab .micx .x-laila:not(.cue):not(.armed):not(.speak) .lm{animation:g-lbreathe 3.2s ease-in-out infinite;filter:drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 14px rgba(255,201,60,.8))}
 @keyframes g-lbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
 @media (prefers-reduced-motion:reduce){.glab .micx .lm{animation:none}}
+
+/* Laila before the game too (Sani 2026-11-17): the "how to play" Laila stands exactly where she will stand in the
+   game, bottom centre at 128 px, in every game including the tea stall; the pointing hand sits over her feet instead of
+   pushing her up when it appears */
+.glab .micx .x-laila .lhand{position:absolute;left:50%;top:112px;transform:translateX(-50%);margin:0!important;z-index:3}
+.glab .scr>.gsay{position:absolute!important;left:50%!important;right:auto!important;top:auto!important;bottom:calc(3cqw + 25px)!important;transform:translateX(-50%);margin:0!important;padding:0!important;max-width:none;z-index:6}
+.glab .gsay .glaila .lsvg{width:128px!important;height:128px!important}
+.glab .gsay .glaila:not(.cue) .lsvg{animation:g-lbreathe 3.2s ease-in-out infinite}

@@ -53,7 +53,7 @@ export function moreGames(c: any): Record<string, any> {
      picture waits for a press; every press or listen after that turns her own listening on, so the next round opens
      the microphone by itself once her last word has finished. Nothing heard: she listens once more, then waits for a
      press again. `scene` is the drawn background, whose people cheer a right answer and frown at a wrong one. */
-  function autoRound(run, box, target, among, onRight, onMiss) {
+  function autoRound(run, box, target, among, onRight, onMiss, early = 0) {
     let quiet = 0;
     box.listen(() => { run.auto = true; return { target, among, match: (raw) => io.match(raw, target, among) }; }, (r) => {
       if (r.value === null && !r.raw) {
@@ -64,12 +64,15 @@ export function moreGames(c: any): Record<string, any> {
       if (r.value === target) { box.yay(); react(run, 'cheer'); onRight(); return; }
       run.bad(); box.nope(); react(run, 'sad'); onMiss();
     }, () => target);
-    autoGo(run, box);
+    autoGo(run, box, early);
   }
   /** open the microphone by itself once Laila is quiet (her last line is run.said), or cue her for a press */
-  function autoGo(run, box) {
+  function autoGo(run, box, early = 0) {
     if (!run.auto || !box.go) { box.cue(); return; }
     box.busy = true;
+    // early: the microphone is already open when the round appears (Sani 2026-11-17: a fast child answers the moment the
+    // picture shows), so it starts now, quietly, and only shows Laila listening once the round is on screen
+    if (early) { Promise.resolve(run.said).then(() => { if (!run.dead && !run.listening) { box.busy = false; box.go(early); } }); return; }
     Promise.resolve(run.said).then(() => later(run, 450, () => { if (!run.dead && !run.listening) { box.busy = false; box.go(); } }));
   }
   /** a line that the next auto listen waits for */
@@ -307,19 +310,25 @@ export function moreGames(c: any): Record<string, any> {
         function next() {
           const w = ORDER[r], who = shuffle([0, 1, 2, 3].filter((k) => k !== last))[0], c = CUSTOMERS[who]; last = who;
           let left = WAIT, over = false;
+          const EARLY = run.auto ? 900 : 0;
+          const draw = () => {
           st.classList.remove('sad', 'glad'); card.className = 'tcard'; card.innerHTML = photo(w); void card.offsetWidth; card.classList.add('in');
           sv.className = 'tserve'; sv.innerHTML = '';
           // the bubble shows the order drawn, as it will be served
           bub.className = 'tbub'; bub.innerHTML = SK_('served', served)(w); bub.style.left = c.x + 'cqw'; bub.style.bottom = c.head + 'cqw'; void bub.offsetWidth; bub.classList.add('on');
           bar.className = 'twait on'; fill.style.transform = 'scaleX(1)';
-          const end = () => { over = true; bar.classList.remove('on'); bub.classList.remove('on'); };
-          const miss = () => { end(); cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); };
           // the wait runs down only while nobody is speaking and nothing is being judged
           (function tick() { if (over || run.dead) return;
             if (!run.listening && !box.busy) { left -= 100; fill.style.transform = 'scaleX(' + Math.max(0, left / WAIT).toFixed(3) + ')'; bar.classList.toggle('low', left < WAIT * .34); }
             if (left <= 0) { box.busy = true; miss(); return; }
             later(run, 100, tick); })();
-          speakRound(run, box, w, MENU, () => {
+          };
+          const end = () => { over = true; bar.classList.remove('on'); bub.classList.remove('on'); };
+          const miss = () => { end(); cupTap(false); st.classList.add('sad'); card.classList.add('drop'); step(1900); };
+          if (EARLY) later(run, EARLY, draw); else draw();
+          // after the first press she listens by herself for every next order (Sani 2026-11-17), the microphone open a
+          // moment before the picture appears
+          autoRound(run, box, w, MENU, () => {
             end(); got++; run.good(card); say(K.en[w], run); cupTap(true); st.classList.add('glad');
             // the picture becomes the thing as it is served
             card.classList.add('turn'); sv.innerHTML = SK_('served', served)(w);
@@ -335,7 +344,7 @@ export function moreGames(c: any): Record<string, any> {
             later(run, 3800, () => { helper.classList.add('walk', 'back'); helper.style.transform = ''; });
             later(run, 5450, () => helper.classList.remove('walk', 'back'));
             step(4000);
-          }, () => miss());
+          }, () => miss(), EARLY);
         }
         function step(ms) { later(run, ms, () => { r++; if (r >= ORDER.length) done({ right: got, finished: true, part: got / 7 }); else next(); }); }
         next();
@@ -350,12 +359,12 @@ export function moreGames(c: any): Record<string, any> {
          drives off empty and the next one comes (Sani 2026-10-22). */
       play(run, done) {
         const N = shuffle([2, 3, 4, 5, 6, 7, 8, 9, 10]).slice(0, 4).concat(shuffle([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]).slice(0, 4)); let r = 0, got = 0, reached = 0, busy = false;
-        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><div class="lorryw">' + SK_('gyLorry', gyLorry)() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
+        const top = h('<div class="gtop"><div class="lorryw">' + SK_('gyLorry', gyLorry)() + '</div><span class="tally"><b>0</b> / 8 🚚</span></div>');
         const row = h('<div class="stacks2"></div>');
         run.scr.appendChild(top); run.scr.appendChild(row);
         run.clock(150, () => done({ right: got, part: got / 8, reached }));
         const sayN = () => say(K.en['n' + N[r]], run);
-        run.remind = sayN; top.querySelector('.hearn').onclick = sayN;
+        run.remind = sayN;   // the ear in the corner says it again; no sound button of its own (Sani 2026-11-17)
         const lw = top.querySelector('.lorryw');
         function newLorry() {   // an empty lorry pulls in from the left
           lw.classList.remove('away', 'zoom', 'slow'); lw.classList.add('reset'); lw.querySelector('.load').innerHTML = ''; void lw.offsetWidth;
@@ -412,13 +421,13 @@ export function moreGames(c: any): Record<string, any> {
       play(run, done) {
         const TENS = [20, 30, 40, 50, 60, 70, 80, 90], HUN = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
         const P = shuffle(TENS).slice(0, 3).concat(shuffle(HUN).slice(0, 5)); let r = 0, got = 0, hundreds = 0, busy = false, v = 0;
-        const top = h('<div class="gtop"><button type="button" class="hearn">🔊</button><span class="tally"><span class="coin s">Z</span> <b>0</b> / 8</span></div>');
+        const top = h('<div class="gtop"><span class="tally"><span class="coin s">Z</span> <b>0</b> / 8</span></div>');
         const yard = h('<div class="yard"><div class="pen4"></div></div>');   // livestock only in the yard (r5: the egrets went)
         const pen = yard.querySelector('.pen4');
         run.scr.appendChild(yard); run.scr.appendChild(top);
         run.clock(150, () => done({ right: got, part: got / 8, hundreds }));
         const sayP = () => say(K.en['n' + P[r]], run);
-        run.remind = sayP; top.querySelector('.hearn').onclick = sayP;
+        run.remind = sayP;   // the ear in the corner says it again; no sound button of its own (Sani 2026-11-17)
         function next() {
           busy = false; yard.classList.remove('sad');
           const p = P[r], pool = p >= 100 ? HUN : TENS, opts = shuffle([p].concat(shuffle(pool.filter((x) => x !== p)).slice(0, 3)));

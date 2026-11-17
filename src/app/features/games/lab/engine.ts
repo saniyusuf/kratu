@@ -237,7 +237,11 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
       };
     };
     /** open the microphone without a press, as if Laila had been pressed (the Durbar listens on its own, Sani 2026-10-23) */
-    box.go = function () { if (btn.onclick) btn.onclick(); };
+    box.go = function (quietMs) {
+      if (!btn.onclick) return; btn.onclick();
+      // opened early, before the round is on screen: listening already, but Laila only shows it once the round appears
+      if (quietMs && run.listening) { btn.classList.remove('rec'); box.classList.remove('rec'); run.later(quietMs, function () { if (run.listening) { btn.classList.add('rec'); box.classList.add('rec'); } }); }
+    };
     box.cue = function (on) { box.busy = false; btn.classList.toggle('cue', on !== false); };   // ready for an answer
     box.yay = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('yay'); setTimeout(function () { btn.classList.remove('yay'); }, 800); };
     box.nope = function () { btn.classList.remove('yay', 'nope'); void btn.offsetWidth; btn.classList.add('nope'); setTimeout(function () { btn.classList.remove('nope'); }, 800); };
