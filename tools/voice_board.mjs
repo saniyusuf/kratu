@@ -15,12 +15,12 @@ const N = 30, SHOW = ['s_w_name', 's_gate_first', 'app_cat_start_animals', 's_o_
 const LANGS = {
   ha: { rows: 'content/lines.json', dir: 'public/assets/audio/ha', live: (r) => r.status === 'live' && r.lang === 'ha',
         sources: [{ id: 'google', label: 'Google Hausa (the app today)', file: true }, { id: 'pw-amina', label: 'PlotWeaver Amina', pw: 'amina' }, { id: 'sp-zainab', label: 'Spitch Zainab', sp: 'zainab' }] },
-  yo: { rows: 'content/langs/yo/lines.json', git: 'HEAD:langs/yo/public/assets/audio/yo', dir: 'langs/yo/public/assets/audio/yo',
+  yo: { rows: 'content/langs/yo/lines.json', git: 'b22e1fd:langs/yo/public/assets/audio/yo', dir: 'langs/yo/public/assets/audio/yo',
         sources: [{ id: 'sp-funmi', label: 'Spitch Funmi (the Yoruba demo until today)', git: true }, { id: 'pw-morenike', label: 'PlotWeaver Morenike (now in the build)', file: true }] },
   ig: { rows: 'content/langs/ig/lines.json', dir: 'langs/ig/public/assets/audio/ig',
         sources: [{ id: 'sp-amara', label: 'Spitch Amara (the Igbo demo, kept)', file: true }, { id: 'pw-adaeze', label: 'PlotWeaver Adaeze', pw: 'adaeze' }] },
-  pcm: { rows: 'content/langs/pcm/lines.json', dir: 'langs/pcm/public/assets/audio/pcm',
-        sources: [{ id: 'pw-adaeze', label: 'PlotWeaver Adaeze (now in the build)', file: true }, { id: 'pw-yemi', label: 'PlotWeaver Yemi (a man)', pw: 'yemi' }] },
+  pcm: { rows: 'content/langs/pcm/lines.json', git: '3f350ba:langs/pcm/public/assets/audio/pcm', dir: 'langs/pcm/public/assets/audio/pcm',
+        sources: [{ id: 'pw-adaeze', label: 'PlotWeaver Adaeze (the first Pidgin voice)', git: true }, { id: 'pw-yemi', label: 'PlotWeaver Yemi (now in the build)', file: true }] },
 };
 
 const fold = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -36,8 +36,10 @@ async function fetchTo(url, init, dest, ext) {
 const pw = (text, lang, voice, dest) => fetchTo('https://api.plotweaver.app/v1/speech', { method: 'POST', headers: { 'X-API-Key': pwKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: lang, voice_id: voice }) }, dest, 'wav');
 const sp = (text, lang, voice, dest) => fetchTo('https://api.spitch.app/v1/speech', { method: 'POST', headers: { Authorization: 'Bearer ' + spKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ language: lang, voice, text, format: 'mp3' }) }, dest, 'mp3');
 
-const board = {};
+const ONLY = process.env.ONLY ? process.env.ONLY.split(',') : null;
+const board = existsSync(join(OUT, 'board.json')) ? JSON.parse(readFileSync(join(OUT, 'board.json'), 'utf8')) : {};
 for (const [code, L] of Object.entries(LANGS)) {
+  if (ONLY && !ONLY.includes(code)) continue;
   const rows = JSON.parse(readFileSync(L.rows, 'utf8')).filter(L.live || ((r) => r.status === 'draft' || r.status === 'live'));
   const all = rows.flatMap((r) => typeof r.text === 'string' ? [{ key: r.key, k: r.key, t: r.text, en: r.en }] : r.text.m ? [{ key: r.key, k: r.key + '_m', t: r.text.m, en: r.en }] : [{ key: r.key, k: r.key, t: r.text.any, en: r.en }]);
   const pool = all.filter((p) => p.t.length > 25 && p.t.length < 160), step = Math.max(1, Math.floor(pool.length / N));
