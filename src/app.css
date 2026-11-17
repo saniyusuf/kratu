@@ -862,3 +862,17 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
 @media (orientation:landscape) and (max-height:700px){
   #app .s.fashe .bub{width:clamp(84px,17cqh,150px);font-size:clamp(36px,8cqh,66px)}
 }
+
+/* Laila, one size and one place on every lesson screen (Sani 2026-11-17): the pair row is a three-column grid, so Laila
+   sits in the exact centre and the slate, the A-Z badge or the second choice sits beside her on the right, instead of
+   the pair being centred together and pushing her left. Same size as in the games (128). */
+#app .s .ynpair{display:grid!important;grid-template-columns:1fr auto 1fr;align-items:end;column-gap:44px}
+#app .s .ynpair>*{grid-row:1;grid-column:3;justify-self:start}
+#app .s .ynpair>app-laila-btn,#app .s .ynpair>.yn.yes{grid-column:2;justify-self:center}
+#app .s .ynpair>[hidden]{display:none}
+#app .s .ynpair app-laila-btn .lm,#app .s .ynpair .yn.yes .lm{width:128px!important;height:128px!important}
+/* her life everywhere: a slow breath and a soft glow with a white rim, so she reads on a dark scene as well as on paper;
+   the wing keeps its wave. A cue, her voice or the microphone keep their own faster pulse. */
+#app .s .ynpair .yn.yes:not(.cue):not(.armed):not(.speak) .lm{animation:lbreathe 3.2s ease-in-out infinite;filter:drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 14px rgba(255,201,60,.8))}
+@keyframes lbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@media (prefers-reduced-motion:reduce){#app .s .ynpair .yn.yes .lm{animation:none}}
