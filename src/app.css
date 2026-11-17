@@ -878,3 +878,11 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
 #app .s .starthint small,#app .s .lesson-hint small{color:#5F5137}
 /* the A-Z check board: the letters one shade deeper so they read on the light tiles */
 #app .s .aslot,#app .s .gboard b{color:color-mix(in srgb,var(--c) 62%,#000)}
+
+/* Always landscape (Sani 2026-11-17): held upright in a browser tab, where nothing can lock the screen, the whole app is
+   drawn turned a quarter so the child sees the landscape screen full size and turns the tablet. The body is turned, so
+   everything fixed to the screen (the corners, the camera dialog, the hands) turns with it. */
+@media (orientation:portrait){
+  html{overflow:hidden}
+  body{position:absolute!important;top:0;left:0;width:100vh!important;width:100dvh!important;height:100vw!important;transform-origin:0 0;transform:rotate(90deg) translateY(-100%);overflow:hidden}
+}

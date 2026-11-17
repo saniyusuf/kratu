@@ -36,7 +36,7 @@ export class ZoomService {
   z(): number { return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z')) || 1; }
   /** Layout-unit rectangle for an element inside the zoomed frame. */
   rect(el: Element): DOMRect {
-    const r = el.getBoundingClientRect(), z = this.z();
+    const q = ZoomService.rect(el), r = new DOMRect(q.left, q.top, q.width, q.height), z = this.z();   // in the app's own landscape frame
     if (z === 1 || !el.closest('#app .frame')) return r;
     return new DOMRect(r.x / z, r.y / z, r.width / z, r.height / z);
   }
@@ -84,10 +84,28 @@ export class ZoomService {
   private static readonly HEAD = 0.86;
   private static readonly CORNER = 1.3;
   /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
+  /** Held upright: the app is drawn turned a quarter (Sani 2026-11-17: always landscape, never a portrait layout). */
+  static upright(): boolean { return innerHeight > innerWidth; }
+  /** An element's box in the app's own landscape frame: when the app is drawn turned, the screen box is turned back. */
+  static rect(el: Element): { top: number; bottom: number; left: number; right: number; width: number; height: number } { return el.getBoundingClientRect(); }
+  /**
+   * Turned upright (see upright()), every measurement in the app must be in the landscape frame the app is drawn in, not
+   * the screen's: the pointing hands, the games' flying pieces and the fit all compare boxes. So getBoundingClientRect is
+   * turned back once, here, for the whole app.
+   */
+  static turnMeasurements(): void {
+    const orig = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = function (this: Element): DOMRect {
+      const r = orig.call(this); if (!ZoomService.upright()) return r;
+      const V = innerWidth; return new DOMRect(r.top, V - r.right, r.height, r.width);
+    };
+  }
   static small(): boolean { return (matchMedia('(pointer: coarse)').matches || matchMedia('(any-pointer: coarse)').matches || navigator.maxTouchPoints > 0) && Math.min(screen.width, screen.height) <= 640; }
   fit(force = true): void {
     const root = document.documentElement.style, prev = this.z();
-    const base = Math.min(innerWidth / 960, innerHeight / 600);
+    // held upright, the whole app is drawn turned a quarter (app.css), so the landscape screen's width is the window's height
+    const [W, H] = ZoomService.upright() ? [innerHeight, innerWidth] : [innerWidth, innerHeight];
+    const base = Math.min(W / 960, H / 600);
     const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
     // nothing may ever be cut off or need scrolling: the floor is only there to stop a runaway measurement
     const floor = base * 0.6, cap = base * ZoomService.GROW;
@@ -113,17 +131,17 @@ export class ZoomService {
     if (!force && Math.abs(z - prev) / prev < 0.03) set(prev);
   }
   /** The in-flow content of the active screen, as one screen-pixel box (null when there is none to fit). */
-  private box(): { s: DOMRect; top: number; bot: number; left: number; right: number } | null {
+  private box(): { s: { top: number; bottom: number; left: number; right: number; width: number; height: number }; top: number; bot: number; left: number; right: number } | null {
     const s = document.querySelector('#app .block.active .s');
     if (!s) return null;
     let top = Infinity, bot = -Infinity, left = Infinity, right = -Infinity;
     const inFlow = (el: HTMLElement): boolean => { if (el.hidden) return false; const cs = getComputedStyle(el); return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'absolute' && cs.position !== 'fixed'; };
-    const sr = s.getBoundingClientRect();
+    const sr = ZoomService.rect(s);
     // sideways only what is really drawn (pictures, buttons, the innermost boxes): a row or grid stretched across the
     // screen says nothing about how wide its content is
     const drawn = (el: Element) => !el.firstElementChild || /^(BUTTON|IMG|SVG|VIDEO|CANVAS)$/i.test(el.tagName);
     const add = (el: Element) => {
-      const r = el.getBoundingClientRect(); if (r.height <= 0) return;
+      const r = ZoomService.rect(el); if (r.height <= 0) return;
       top = Math.min(top, r.top); bot = Math.max(bot, r.bottom);
       if (r.width > 0 && r.width < sr.width * 0.88 && drawn(el)) { left = Math.min(left, r.left); right = Math.max(right, r.right); }
     };
