@@ -1410,16 +1410,17 @@
 .glab .micx .x-laila .lhand{position:absolute;left:50%;top:112px;transform:translateX(-50%);margin:0!important;z-index:3}
 .glab .scr>.gsay{position:absolute!important;left:50%!important;right:auto!important;top:auto!important;bottom:calc(3cqw + 25px)!important;transform:translateX(-50%);margin:0!important;padding:0!important;max-width:none;z-index:6}
 .glab .gsay .glaila .lsvg{width:128px!important;height:128px!important}
-.glab .gsay .glaila:not(.cue) .lsvg{animation:g-lbreathe 3.2s ease-in-out infinite}
+.glab .gsay .glaila:not(.cue):not(.talking) .lsvg{animation:g-lbreathe 3.2s ease-in-out infinite}
 
 /* "Press Laila to start" is never missed (Sani 2026-11-17): wherever Laila waits to be pressed (the start of a game, the
    how-to Laila, a round waiting for a press) she always glows, and a pointing hand under her swells and shrinks with a
    glow of its own */
-.glab .glaila .lsvg,.glab .micx .x-laila.cue .lm{filter:drop-shadow(0 0 3px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,201,60,1)) drop-shadow(0 0 34px rgba(255,201,60,.7))!important}
+.glab .glaila:not(.talking) .lsvg,.glab .micx .x-laila.cue:not(.rec) .lm{filter:drop-shadow(0 0 3px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,201,60,1)) drop-shadow(0 0 34px rgba(255,201,60,.7))!important}
 .glab .glaila{position:relative}
-.glab .glaila::after{content:"👆🏾";position:absolute;left:50%;top:calc(100% - 6px);font-size:46px;line-height:1;transform:translateX(-50%);pointer-events:none;
+.glab .glaila:not(.talking)::after{content:"👆🏾";position:absolute;left:50%;top:calc(100% - 6px);font-size:46px;line-height:1;transform:translateX(-50%);pointer-events:none;
   filter:drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,201,60,.95));animation:g-presshand 1.1s ease-in-out infinite;z-index:3}
-.glab .micx .x-laila.cue .lhand{display:block!important;visibility:visible!important;font-size:46px;top:118px!important;filter:drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,201,60,.95));animation:g-presshand 1.1s ease-in-out infinite}
+.glab .micx .x-laila.cue:not(.rec) .lhand{display:block!important;visibility:visible!important;font-size:46px;top:118px!important;filter:drop-shadow(0 0 6px rgba(255,255,255,.95)) drop-shadow(0 0 14px rgba(255,201,60,.95));animation:g-presshand 1.1s ease-in-out infinite}
 .glab .gi-hand{display:none}
 @keyframes g-presshand{0%,100%{transform:translateX(-50%) scale(.88)}50%{transform:translateX(-50%) scale(1.12)}}
-@media (prefers-reduced-motion:reduce){.glab .glaila::after,.glab .micx .x-laila.cue .lhand{animation:none}}
+@media (prefers-reduced-motion:reduce){.glab .glaila::after,.glab .micx .x-laila .lhand{animation:none}}
+/* while she talks or listens there is no glow or hand: only while she waits to be pressed (Sani 2026-11-17) */
