@@ -2,7 +2,8 @@
 //   npm run voice            every missing or changed line       --dry-run   list only
 //   npm run voice -- --only s_back        one line (both voices)  --force     re-record even if unchanged
 // Provider: KRATU_TTS in .env (google = the Translate voice used for every clip so far; add others in synth()).
-// Every clip is normalised to −18.5 dB mean and encoded opus 24 kHz mono. The key, if any, is read from .env and never printed.
+// Every clip is levelled to −14 LUFS (peaks under −1 dBFS) and encoded opus 24 kHz mono. The key, if any, is read from .env and never printed.
+import { encode } from './encode.mjs';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -11,7 +12,7 @@ import { join } from 'node:path';
 import { voiceLang } from './lang-voice.mjs';
 if (process.argv.includes('--lang') && !process.argv.includes('--word')) { const a = process.argv.slice(2); process.exit(await voiceLang(a[a.indexOf('--lang') + 1], a) ? 1 : 0); }   // a demo language: its own lines and words
 const env = existsSync('.env') ? Object.fromEntries(readFileSync('.env', 'utf8').split('\n').filter((l) => l.includes('=') && !l.startsWith('#')).map((l) => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()])) : {};
-const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google', TARGET_DB = -18.5;
+const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google';
 const args = process.argv.slice(2), only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
 /**
@@ -31,11 +32,8 @@ async function record(text, lang, dest) {
   const files = []; for (const [i, c] of chunks(text).entries()) { const f = join(tmp, 'p' + i + '.mp3'); writeFileSync(f, await synth(c, lang)); files.push(f); }
   writeFileSync(join(tmp, 'list.txt'), files.map((f) => `file '${f}'\n`).join(''));
   const raw = join(tmp, 'raw.wav'); execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'), '-ac', '1', '-ar', '24000', '-c:a', 'pcm_f32le', raw]);
-  // volumedetect reports on stderr; execFileSync hands back stdout only, so the mean was never found and every clip got 0 dB
-  const det = spawnSync('ffmpeg', ['-hide_banner', '-i', raw, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' }).stderr || '', m = /mean_volume:\s*(-?[\d.]+) dB/.exec(det);
-  if (!m) throw new Error('no loudness reading');
-  const gain = (TARGET_DB - parseFloat(m[1])).toFixed(2);
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', raw, '-af', 'volume=' + gain + 'dB', '-c:a', 'libopus', '-b:a', '24k', '-ac', '1', dest]);
+  // every clip at one level, −14 LUFS with peaks under −1 dBFS (Sani 2026-11-17), the same as scripts/encode.mjs
+  encode(raw, dest);
   rmSync(tmp, { recursive: true, force: true });
 }
 if (args.includes('--word')) { const text = args[args.indexOf('--text') + 1], lang = args[args.indexOf('--lang') + 1], dest = args[args.indexOf('--dest') + 1]; await record(text, lang, dest); console.log('made  ' + dest); process.exit(0); }

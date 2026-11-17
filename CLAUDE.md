@@ -48,7 +48,8 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
 - Never two "Madalla" in a row. Written Hausa prompts are never shown to children; subtitles are English, off by default.
 - No photos of a child are ever stored: vectors and the child's own "sunana" clip only. Two faces in frame = never recognise.
 - Permission screen first, skipped when already granted. No device gate: the layout scales to any viewport; landscape only.
-- New clips: −18.5 dB mean, opus 24 kHz mono (the voice script does this). Name protocol: the words after "sunana".
+- Every clip: −14 LUFS as heard, peaks under −1 dBFS, opus 24 kHz mono (Sani 17 Nov: one highest level for all, the tablet
+  turns it down). `scripts/encode.mjs` does it for new clips; `tools/level_all.py` re-levels existing ones. Name protocol: the words after "sunana".
 - Settings gear bottom-left, teal; code 064662118 gates only the students list. Diagnostics only with `?debug`.
 - English on screen says "click Laila", never "click the head of Laila" (Sani 16 Sep).
 - Don't invent lines, screens or panels: the design's final markup and script for a screen are the whole truth (stray CSS in

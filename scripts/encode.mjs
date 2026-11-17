@@ -1,4 +1,5 @@
-// Every clip the app ships is made the same way: −18.5 dB mean, opus 24 kHz mono (Sani's rule for new clips).
+// Every clip the app ships is made the same way: −14 LUFS as heard, peaks under −1 dBFS, opus 24 kHz mono (Sani 2026-11-17:
+// every sound at the same highest level, the tablet's own volume turns it down; was −18.5 dB mean).
 import { execFileSync, spawnSync } from 'node:child_process';
 export const TARGET_DB = -18.5;
 /**
@@ -8,6 +9,7 @@ export const TARGET_DB = -18.5;
  *          median −17.7 LUFS, and a voice with more pauses sounds quieter at the same mean level. Peaks are held at −1 dBFS.
  */
 export function encode(src, dest, opt = {}) {
+  if (opt.lufs === undefined) opt = { ...opt, lufs: -14 };
   const raw = dest + '.raw.wav';
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-ac', '1', '-ar', '24000'].concat(opt.tempo && opt.tempo !== 1 ? ['-af', 'atempo=' + opt.tempo] : []).concat([raw]));
   if (opt.lufs) {
