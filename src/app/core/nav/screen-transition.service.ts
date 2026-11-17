@@ -52,6 +52,9 @@ export class ScreenTransition {
     const from = this.router.url, a = depth(from), b = depth(to);
     if ((isBoard(from) && isGame(to)) || (isGame(from) && isBoard(to))) { this.kind = 'fade'; this.armed = true; return; }
     const grow = (/^\/home/.test(from) && isBoard(to)) || (isBoard(from) && /^\/home/.test(to));
+    // a phone or 7-inch tablet (Sani 2026-11-16: back from the games to home was slow): copying a games screen and growing
+    // a circle over it drops frames on a cheap tablet, so anything to or from the board or a game is a quick fade there
+    if (ZoomService.small() && (grow || isBoard(from) || isBoard(to) || isGame(from) || isGame(to))) { this.kind = 'fade'; this.armed = true; return; }
     if (!grow && (a < 0 || b < 0 || a === b)) { this.armed = false; return; }   // the loader's blank stop, and same-level moves, do not move
     // a lesson on either side means the child is travelling; the opening run is only ever a new page
     this.kind = grow ? 'grow' : Math.max(a, b) >= 6 ? 'slide' : 'paper';
