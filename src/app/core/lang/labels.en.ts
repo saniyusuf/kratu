@@ -142,7 +142,7 @@ export const LABELS_EN: Record<string, Label> = {
  "Na gama": {"en":"I'm done","kind":"screen"},
  "Namiji": {"en":"Boy","kind":"screen"},
  "Nemi haske": {"en":"Find some light","kind":"screen"},
- "Nemo hoto": {"en":"Find the picture","kind":"screen"},
+ "Nemo hoto": {"en":"Find picture","kind":"screen"},
  "rubutu": {"en":"writing","kind":"screen"},
  "Rubutu": {"en":"Writing","kind":"screen"},
  "Rufe": {"en":"Close","kind":"screen"},
