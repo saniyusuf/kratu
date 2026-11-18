@@ -88,6 +88,7 @@ export class ProgressService {
     const done = this.read()[lesson] || []; return done.filter((u) => UNITS[lesson].includes(u)).length / UNITS[lesson].length;
   }
   open(lesson: LessonId): boolean {
+    if (this.session.guest()) return true;   // a guest has every lesson open
     const o = this.override(); if (o) return o[ORDER.indexOf(lesson)] !== null;
     return this.share(lesson) > 0 || OPENS[lesson]((l) => this.share(l));
   }

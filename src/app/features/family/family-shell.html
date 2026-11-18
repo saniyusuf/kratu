@@ -1,0 +1,174 @@
+@switch (fam.screen()) {
+
+<!-- 1 · Kratu opens from a link: nothing to install first -->
+@case ('welcome') {
+<section class="fs wc" [class.up]="upright()">
+  <div class="sun"></div>
+  <div class="wc-l bob"><app-laila [size]="lailaBig()" /></div>
+  <div class="wc-side">
+    <div class="mk"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
+    <p class="tag">Your child learns English through Hausa, with Laila.</p>
+    <div class="chips"><span>Free to start</span><span>Works offline</span><span>Ages 6 to 10</span></div>
+    <button class="btn big" (click)="fam.start()">▶ Start</button>
+    <p class="note">Opens straight from the link · nothing to install first</p>
+  </div>
+</section>
+}
+
+<!-- 2 · the microphone, the friendly way -->
+@case ('mic') {
+<section class="fs mic" [class.up]="upright()">
+  <div class="mic-left">
+    <button class="mic-l" [class.busy]="micBusy()" aria-label="Tap Laila to allow the microphone" (click)="askMic()">
+      <i class="w1"></i><i class="w2"></i><i class="w3"></i>
+      <app-laila [size]="lailaBig() * 0.78" />
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span>
+      <span class="hand">👆🏾</span>
+    </button>
+    <button class="btn" (click)="askMic()">Tap Laila to allow</button>
+    <small class="sub">Then tap “Allow” when the phone asks · Danna kan Laila</small>
+  </div>
+  <div class="mic-right">
+    <div class="kick">PERMISSION · IZINI</div>
+    <h1>Let Laila hear your child</h1>
+    <p class="ha">Ana buƙatar izinin makirufo</p>
+    <div class="reasons">
+      <div class="r"><span class="ri" style="background:#FDE3D6">🗣️</span><span><b>Your child says words out loud</b><small>Laila listens and helps them say it right</small></span></div>
+      <div class="r"><span class="ri" style="background:#E5DDF5">📴</span><span><b>Works without internet</b><small>Listening happens on the phone itself</small></span></div>
+    </div>
+    @if (micMsg()) {<p class="warn">{{ micMsg() }} <button class="link" (click)="fam.afterMic()">Carry on</button></p>}
+  </div>
+</section>
+}
+
+<!-- 4 · parent setup: the PIN -->
+@case ('setup') {
+<section class="fs setup" [class.up]="upright()">
+  <div class="sheet">
+    <div>
+      <h1>Welcome. Let's set up Kratu for your children.</h1>
+      <div class="lb">Make a parent PIN</div>
+      <div class="pins">@for (i of [0,1,2,3]; track i) {<span class="pin" [class.on]="pin().length > i">{{ pin().length > i ? '•' : '' }}</span>}</div>
+      <p class="hint">Only you open the parent area with it.</p>
+      @if (pinMsg()) {<p class="warn">{{ pinMsg() }}</p>}
+      <button class="btn" [disabled]="pin().length !== 4" (click)="savePin()">Next</button>
+    </div>
+    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" (click)="key(k)">{{ k }}</button>}</div>
+  </div>
+  <div class="lai"><app-laila [size]="lailaSmall()" /></div>
+</section>
+}
+
+<!-- 5 · add a child: one screen, the profile card builds as it is answered -->
+@case ('add') {
+<section class="fs add" [class.up]="upright()">
+  @if (fam.profiles().length) {<button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>}
+  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="hearAgain()"></button>
+  <div class="card">
+    <div class="cav" [class.got]="pick()" [style.background]="pick() ? animal(pick()!).c : null">{{ pick() ? animal(pick()!).e : '?' }}</div>
+    <div class="cname" [class.ph]="!name().trim()">{{ name().trim() || 'Name' }}</div>
+    @if (g()) {<div class="ctag">{{ g() === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>}
+  </div>
+  <div class="parts">
+    <div class="part p1" [class.now]="part() === 1"><div class="plb"><b [class.done]="!!g()">1</b>Boy or girl</div>
+      <div class="gg">
+        <button class="gc" [class.on]="g() === 'f'" (click)="setG('f')"><img alt="" src="assets/gender-girl.webp"><span>Girl<small>Mace</small></span></button>
+        <button class="gc" [class.on]="g() === 'm'" (click)="setG('m')"><img alt="" src="assets/gender-boy.webp"><span>Boy<small>Namiji</small></span></button>
+      </div></div>
+    <div class="part p2" [class.now]="part() === 2" [class.later]="part() < 2"><div class="plb"><b [class.done]="!!name().trim() && part() > 2">2</b>First name</div>
+      <input class="field" type="text" autocomplete="off" enterkeyhint="done" maxlength="24" [placeholder]="g() === 'f' ? 'Her first name' : g() === 'm' ? 'His first name' : 'First name'" [value]="name()" (input)="setName($any($event.target).value)" [disabled]="!g()">
+      <small class="hint">Needed · it is written under the animal</small></div>
+    <div class="part p3" [class.now]="part() === 3" [class.later]="part() < 3"><div class="plb"><b [class.done]="!!pick()">3</b>Choose your animal</div>
+      <div class="grid">@for (a of ANIMALS; track a.k) {
+        <button class="av" [class.on]="pick() === a.k" [class.taken]="taken().includes(a.k)" [style.background]="a.c" [attr.aria-label]="a.k" (click)="choose(a.k)">{{ a.e }}</button>
+      }</div></div>
+  </div>
+  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
+</section>
+}
+
+<!-- 6 · the finished profile -->
+@case ('yours') {
+<section class="fs yours" [class.up]="upright()">
+  <button class="door" aria-label="Back" [innerHTML]="door" (click)="backToWizard()"></button>
+  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="hearAgain()"></button>
+  @if (fam.current(); as c) {
+  <div class="pcard pop">
+    <div class="pav glowing" [style.background]="animal(c.animal).c">{{ animal(c.animal).e }}</div>
+    <div class="pnm">{{ c.name }}</div>
+    <div class="ctag">{{ c.g === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>
+  </div>
+  }
+  <button class="btn go" (click)="saveProfile()">▶ Ci gaba</button>
+  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
+</section>
+}
+
+<!-- 9 · home: the children's profiles, Netflix style -->
+@case ('profiles') {
+<section class="fs nf" [class.up]="upright()">
+  <div class="mk sm"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
+  <h1>Who's learning today?</h1>
+  <div class="cards">
+    @for (p of fam.profiles(); track p.id) {
+      <button class="nc" (click)="fam.choose(p)"><span class="nav" [style.background]="animal(p.animal).c">{{ animal(p.animal).e }}</span><b>{{ p.name }}</b></button>
+    }
+    <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
+    <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
+  </div>
+  <button class="manage" (click)="fam.askPin('parent')">✎ Manage profiles</button>
+  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
+</section>
+}
+
+<!-- 10 · welcome back -->
+@case ('back') {
+<section class="fs back" [class.up]="upright()" (click)="fam.backGo()">
+  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="$event.stopPropagation(); hearAgain()"></button>
+  @if (fam.current(); as c) {
+  <div class="pcard pop">
+    <div class="pav glowing" [style.background]="animal(c.animal).c">{{ animal(c.animal).e }}</div>
+    <div class="pnm">{{ c.name }}</div>
+  </div>
+  }
+  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
+</section>
+}
+
+<!-- the parent's PIN, before the parent area -->
+@case ('pin') {
+<section class="fs setup" [class.up]="upright()">
+  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>
+  <div class="sheet">
+    <div>
+      <h1>Parent area</h1>
+      <div class="lb">Type your parent PIN</div>
+      <div class="pins">@for (i of [0,1,2,3]; track i) {<span class="pin" [class.on]="pin().length > i">{{ pin().length > i ? '•' : '' }}</span>}</div>
+      @if (pinMsg()) {<p class="warn">{{ pinMsg() }}</p>}
+    </div>
+    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" (click)="key(k)">{{ k }}</button>}</div>
+  </div>
+</section>
+}
+
+<!-- 11 · parent area -->
+@case ('parent') {
+<section class="fs parent" [class.up]="upright()">
+  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>
+  <div class="sheet wide">
+    <div class="col">
+      <h1>Your children</h1>
+      @for (p of fam.profiles(); track p.id) {
+        <div class="kid"><span class="kav" [style.background]="animal(p.animal).c">{{ animal(p.animal).e }}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}</small></span><button class="link" (click)="removeKid(p)">Remove</button></div>
+      } @empty {<p class="hint">No children yet.</p>}
+      <button class="btn ghost" (click)="fam.startAdd()">+ Add a child</button>
+    </div>
+    <div class="col">
+      <h1>On this phone</h1>
+      <div class="row"><span><b>Microphone</b><small>So Laila can hear</small></span><button class="link" (click)="fam.show('mic')">Ask again</button></div>
+      <p class="hint">Saving online, the family plan and a new phone getting the children back come with the parent account (not built yet).</p>
+    </div>
+  </div>
+</section>
+}
+}

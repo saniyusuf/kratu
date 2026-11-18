@@ -56,7 +56,7 @@ export class CourseService {
     return Math.min(i, this.steps.length - 1);
   }
   private key(): string { return 'kratu_course_' + (this.session.personId() || 'guest'); }
-  private writable(): boolean { return !this.session.simulated() && !this.session.demo(); }
+  private writable(): boolean { return !this.session.simulated() && !this.session.demo() && !this.session.guest(); }
   private place(): Place | null {
     if (!this.writable()) return this.loose;
     try { const raw = localStorage.getItem(this.key()); return raw ? (JSON.parse(raw) as Place) : null; } catch { return null; }

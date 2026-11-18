@@ -17,6 +17,8 @@ export class SessionService {
   readonly simulated = signal<{ name: string; g: Gender; personId?: string | null } | null>(null);
   /** After a real login: true = a child already enrolled, false = enrolled today. */
   readonly known = signal<boolean | null>(null);
+  /** Family build: a guest (Sani 2026-11-18): everything open, nothing saved, gone when the session ends. */
+  readonly guest = signal(false);
   /**
    * Set when a child is sent to Haruffa by the gate, or by the clock running out in the placement game:
    * the lesson hands them back to the game instead of to the home grid, so the thing they were promised
@@ -110,5 +112,5 @@ export class SessionService {
   }
 
   /** Home door: the session ends. */
-  end(): void { this.name.set(null); this.personId.set(null); this.category.set(null); this.simulated.set(null); this.demo.set(null); this.known.set(null); this.greet.set(null); this.resetSamples(); this.hintsReset(); }
+  end(): void { this.name.set(null); this.personId.set(null); this.category.set(null); this.simulated.set(null); this.demo.set(null); this.guest.set(false); this.known.set(null); this.greet.set(null); this.resetSamples(); this.hintsReset(); }
 }

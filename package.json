@@ -34,7 +34,9 @@
     "lint:pcm": "node scripts/lint.mjs --lang pcm && node scripts/catalogue.mjs --check",
     "voice:pcm": "node scripts/voice.mjs --lang pcm",
     "start:pcm": "npm run content:pcm && ng serve --configuration pcm --port 4204",
-    "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm"
+    "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm",
+    "start:family": "npm run content && ng serve --configuration family --port 4250",
+    "build:family": "npm run content && npm run lint:content && ng build --configuration production,family"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

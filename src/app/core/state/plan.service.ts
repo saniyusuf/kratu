@@ -41,7 +41,7 @@ export class PlanService {
 
   private key(): string { const id = this.session.personId(); return 'kratu_plan_' + (id || 'guest'); }
   /** A sample session from the settings must never write over a real child's placement. */
-  private writable(): boolean { return !this.session.simulated() && !this.session.demo(); }
+  private writable(): boolean { return !this.session.simulated() && !this.session.demo() && !this.session.guest(); }
 
   placement(): Placement | null {
     this.rev();

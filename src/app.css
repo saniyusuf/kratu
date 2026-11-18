@@ -886,3 +886,9 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
   html{overflow:hidden}
   body{position:absolute!important;top:0;left:0;width:100vh!important;width:100dvh!important;height:100vw!important;transform-origin:0 0;transform:rotate(90deg) translateY(-100%);overflow:hidden}
 }
+
+/* family build: its own screens follow the phone both ways round, so the quarter turn is off while they show */
+@media (orientation:portrait){
+  html.fam-on body{position:static!important;width:auto!important;height:auto!important;transform:none!important}
+}
+html.fam-on #admingear{display:none!important}

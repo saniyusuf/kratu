@@ -85,7 +85,7 @@ export class ZoomService {
   private static readonly CORNER = 1.3;
   /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
   /** Held upright: the app is drawn turned a quarter (Sani 2026-11-17: always landscape, never a portrait layout). */
-  static upright(): boolean { return innerHeight > innerWidth; }
+  static upright(): boolean { return innerHeight > innerWidth && !document.documentElement.classList.contains('fam-on'); }   // the family screens are drawn upright
   /** An element's box in the app's own landscape frame: when the app is drawn turned, the screen box is turned back. */
   static rect(el: Element): { top: number; bottom: number; left: number; right: number; width: number; height: number } { return el.getBoundingClientRect(); }
   /**

@@ -6,6 +6,8 @@ import { SessionService } from '../../core/state/session.service';
 import { ALLO_SVG } from '../../shared/allo';
 import { Laila } from '../../shared/laila/laila';
 import { t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
+import { FamilyService } from '../../core/family/family.service';
 
 /**
  * The door on the chooser: "the session will end". Laila = done (another child can use the tablet), the black slate =
@@ -24,14 +26,17 @@ export class Leave {
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);
+  private readonly fam = inject(FamilyService);
   readonly slate = inject(DomSanitizer).bypassSecurityTrustHtml(ALLO_SVG);
   readonly open = signal(false);
   show(): void { this.bus.stopAll(); this.open.set(true); this.bus.play('s_leave'); }
   hide(): void { this.bus.stopAll(); this.open.set(false); }
   backdrop(e: Event): void { if ((e.target as HTMLElement).id === 'leave') this.hide(); }
   end(reset: boolean): void {
-    this.bus.stopAll(); this.open.set(false); this.session.end();
-    if (reset) { try { sessionStorage.clear(); } catch { /* ignore */ } }
+    this.bus.stopAll(); this.open.set(false);
+    const guest = this.session.guest(); this.session.end();
+    if (reset || guest) { try { sessionStorage.clear(); } catch { /* ignore */ } }   // a guest leaves nothing behind
+    if (FAMILY) { this.fam.toProfiles(); return; }   // the family build goes back to the children's profiles
     this.router.navigate(['/gender']);
   }
 }

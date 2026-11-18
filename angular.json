@@ -226,6 +226,33 @@
                   "input": "langs/hapw/public"
                 }
               ]
+            },
+            "family": {
+              "outputPath": "dist/kratu-family",
+              "index": {"input": "src/index.family.html", "output": "index.html"},
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/edition.ts",
+                  "with": "src/app/core/edition.family.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "kratu-id.js",
+                    "kratu-id.worker.js",
+                    "models/**",
+                    "names_bank_expanded.json",
+                    "manifest.webmanifest"
+                  ]
+                },
+                {
+                  "glob": "**/*",
+                  "input": "family/public"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -265,6 +292,9 @@
             },
             "hapw": {
               "buildTarget": "kratu:build:development,hapw"
+            },
+            "family": {
+              "buildTarget": "kratu:build:development,family"
             }
           },
           "defaultConfiguration": "development",

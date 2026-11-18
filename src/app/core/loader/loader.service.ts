@@ -4,6 +4,7 @@ import { WordsService } from '../clips/words.service';
 import { IdentityService } from '../identity/identity.service';
 import { SpeechService } from '../speech/speech.service';
 import { LANG } from '../lang/lang';
+import { FAMILY } from '../edition';
 import { t } from '../lang/t';
 
 export interface Piece { id: 'speech' | 'face' | 'names' | 'pictures'; ha: string; en: string; heavy: boolean; dl?: () => Promise<'skip' | void>; prep?: () => Promise<void>; }
@@ -53,7 +54,7 @@ export class LoaderService {
       dl: async () => { if (!this.identity.present()) return 'skip'; await this.fetchFaceModels(); return undefined; },
       prep: async () => { this.prog('face', t('ana tadawa') + ' · starting'); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', t('a shirye') + ' · ready · ' + (this.identity.model() || '')); } },
     { id: 'names', ha: 'Sunaye', en: 'names', heavy: false,
-      dl: async () => { await this.clips.load(); await this.words.load(); if (!LANG.namesBank) return 'skip';   // the bank is Hausa TTS: another language's build says the name in the child's own voice
+      dl: async () => { await this.clips.load(); await this.words.load(); if (!LANG.namesBank || FAMILY) return 'skip';   // the family build types names, never matches them   // the bank is Hausa TTS: another language's build says the name in the child's own voice
         const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
     { id: 'pictures', ha: 'Hotuna', en: 'pictures', heavy: false,
       dl: () => this.fetchMedia(),
@@ -62,7 +63,7 @@ export class LoaderService {
 
   constructor() { this.speech.filesProvider = () => this.fetchSpeechFiles(); }
 
-  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.map((p) => ({ id: p.id, label: t(p.ha) + ' · ' + p.en, text: '', state: 'wait' }))); this.round(); return this.done; }
+  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.filter((p) => !(FAMILY && p.id === 'face')).map((p) => ({ id: p.id, label: t(p.ha) + ' · ' + p.en, text: '', state: 'wait' }))); this.round(); return this.done; }
   retry(): void { this.round(); }
   skip(): void { this.finish(); }
 

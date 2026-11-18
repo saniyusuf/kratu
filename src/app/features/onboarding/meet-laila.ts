@@ -8,6 +8,7 @@ import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Laila } from '../../shared/laila/laila';
 import { t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
 
 /** Screen 2 · Meet Laila. She introduces herself; she is pressable while she talks, a press cuts her off and goes on. */
 @Component({
@@ -47,5 +48,7 @@ export class MeetLailaScreen implements OnInit, OnDestroy {
     if (ok) { await hintOnce('ear', this.bus, this.session, this.spotter, this.hostEl.nativeElement); if (my !== this.seq) return; }
     this.talking.set(false); this.cue.set(true);
   }
-  go(): void { this.seq++; this.spotter.unspot(); this.bus.stopAll(); this.router.navigate(['/face']); }
+  go(): void { this.seq++; this.spotter.unspot(); this.bus.stopAll();
+    if (FAMILY) { this.session.known.set(false); this.router.navigate(['/welcome']); return; }   // no face in the family build
+    this.router.navigate(['/face']); }
 }
