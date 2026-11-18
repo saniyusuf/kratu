@@ -7,7 +7,7 @@ import { SessionService } from '../../core/state/session.service';
 import { Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { HOMEGRID_HTML } from '../../features/home/homegrid';
-import { t } from '../../core/lang/t';
+import { sub, t } from '../../core/lang/t';
 
 /** One line of the welcome: what she says, what lights up, and how she stands while she says it. */
 interface Beat {
@@ -95,10 +95,11 @@ const BACK: Beat[] = [
 
 <div class="pr" style="font-size:clamp(22px,3vw,30px)">{{ t('Sunana Laila') }}</div>
 <div class="starthint" [class.show]="cue()">{{ session.g() === 'f' ? t('Ki danna kan Laila mu fara') : t('Ka danna kan Laila mu fara') }}<br><small>{{ t('click Laila to start') }}</small></div>
-<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}</button>`,
+<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}@if (sub('Ci gaba'); as h) {<span class="hsub">{{ h }}</span>}</button>`,
 })
 export class WelcomeScreen implements OnInit, OnDestroy {
   readonly t = t;
+  readonly sub = sub;
   readonly session = inject(SessionService);
   private readonly bus = inject(AudioBus);
   private readonly router = inject(Router);

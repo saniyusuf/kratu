@@ -10,7 +10,7 @@ import { Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { DOOR_SVG } from '../../shared/svg';
 import { LANG } from '../../core/lang/lang';
-import { t } from '../../core/lang/t';
+import { bi, t } from '../../core/lang/t';
 
 type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 /** How long the capture will wait for the child to be alone again before it gives up and offers a fresh try. */
@@ -43,7 +43,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
 <app-ear (pressed)="intro()" />
 <div class="pr">{{ session.g() === 'f' ? t('Bari mu ga wa kike') : t('Bari mu ga wa kake') }}<span class="sm">{{ session.g() === 'f' ? t('Bidiyo kina faɗin sunanki') : t('Bidiyo kana faɗin sunanka') }} · a video of you saying your name</span></div>
 <div class="examples" [hidden]="capturing()">
-  <div class="exlabel">{{ t('Misali') }} · the example</div>
+  <div class="exlabel">{{ bi('Misali', 'the example') }}</div>
   <div class="gtoggle"><button [class.on]="exG() === 'm'" (click)="exG.set('m')">{{ t('Namiji') }}</button><button [class.on]="exG() === 'f'" (click)="exG.set('f')">{{ t('Mace') }}</button></div>
   <div class="exrow">
     @for (g of ['m','f']; track g) {
@@ -61,7 +61,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
 </div>
 @if (capturing()) {
 <div #modal class="capmodal"><div class="capmodal-inner facecap" [attr.data-gender]="session.g()">
-  <div class="capmodal-title">{{ t('Bari mu ga wa kake') }} · let’s see who you are</div>
+  <div class="capmodal-title">{{ bi('Bari mu ga wa kake', 'let’s see who you are') }}</div>
   <div class="camview">
     <div class="camwrap" [class.armed]="armed()" [class.paused]="!!paused()" [class.glow]="glow()" [class.done]="!!still()" [style.--p]="progress() + '%'">
       <div class="cam"><i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
@@ -77,12 +77,12 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
         <button type="button" class="gatepick gatedoor" [class.lit]="gateFocus() === 'door'" [class.dim]="gateFocus() === 'laila'" [attr.aria-label]="t('Koma farko')" (click)="startOver($event)"><span style="display:contents" [innerHTML]="door"></span><span class="start-hand" [hidden]="gateFocus() !== 'door'">👆🏾</span><div class="hint">{{ t('Koma farko') }}<small>click the door to start again</small></div></button></div>
     </div>
     <span class="cam-hand" [style.display]="glow() ? 'block' : 'none'">👆🏾</span>
-    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? t('Ki ce') : t('Ka ce') }}: {{ t('“Sunana…”') }} · say your name</div>
+    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? t('Ki ce') : t('Ka ce') }}: {{ bi('“Sunana…”', 'say your name') }}</div>
     <div class="heard" [hidden]="!heardText()" [class.interim]="interim()">{{ heardText() }}</div>
     <div class="camnote" [hidden]="!note()">{{ note() }}</div>
     <div class="capdone" [hidden]="!doneText()"><span class="donetext">{{ doneText() }}</span></div>
     <div class="capmiss" [hidden]="!missText()">{{ missText() }}</div>
-    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ {{ t('Sake gwada') }} · try again</button>
+    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ {{ bi('Sake gwada', 'try again') }}</button>
   </div>
 
   <canvas #confetti class="confetti" [hidden]="!confettiOn()"></canvas>
@@ -100,6 +100,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private readonly confettiRef = viewChild<ElementRef<HTMLCanvasElement>>('confetti');
 
   readonly t = t;
+  readonly bi = bi;
   readonly exG = signal<'m' | 'f'>('m');
   readonly door = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_SVG);
   readonly talking = signal<'' | 'm' | 'f'>('');

@@ -5,7 +5,7 @@ import { IdentityService } from '../identity/identity.service';
 import { SpeechService } from '../speech/speech.service';
 import { LANG } from '../lang/lang';
 import { FAMILY } from '../edition';
-import { t } from '../lang/t';
+import { bi, t } from '../lang/t';
 
 export interface Piece { id: 'speech' | 'face' | 'names' | 'pictures'; ha: string; en: string; heavy: boolean; dl?: () => Promise<'skip' | void>; prep?: () => Promise<void>; }
 type St = 'wait' | 'busy' | 'ok' | 'skip' | 'fail';
@@ -63,7 +63,7 @@ export class LoaderService {
 
   constructor() { this.speech.filesProvider = () => this.fetchSpeechFiles(); }
 
-  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.filter((p) => !(FAMILY && p.id === 'face')).map((p) => ({ id: p.id, label: t(p.ha) + ' · ' + p.en, text: '', state: 'wait' }))); this.round(); return this.done; }
+  run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.filter((p) => !(FAMILY && p.id === 'face')).map((p) => ({ id: p.id, label: bi(p.ha, p.en), text: '', state: 'wait' }))); this.round(); return this.done; }
   retry(): void { this.round(); }
   skip(): void { this.finish(); }
 

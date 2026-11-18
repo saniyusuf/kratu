@@ -14,3 +14,6 @@ button, [role="button"], a, .htile, .catcard, .abckey, .pcard, .yn { -webkit-tap
 img, svg, video { -webkit-user-drag: none; user-drag: none; pointer-events: inherit; }
 html, body, #app { touch-action: manipulation; overscroll-behavior: none; }
 input, select, textarea { user-select: text; -webkit-user-select: text; }
+
+/* Family app: the Hausa, small, under a child's main button whose label is written in English (t.ts sub()). */
+.hsub { display: block; font-size: .72em; font-weight: 600; opacity: .75; line-height: 1.1; margin-top: .15em; text-transform: none; letter-spacing: 0; }

@@ -33,6 +33,22 @@ for (const r of lines) {
 }
 // --- code → catalogue: literals that look like clip keys must exist
 for (const l of lits) { if (/^(s|app|sx)_[a-z0-9_]+$/i.test(l) && !l.endsWith('_') && !rows.has(l) && !rows.has(l.replace(/_(m|f)$/, ''))) errors.push(`code says '${l}' but the catalogue has no such line`); }
+// --- written labels: every text a screen asks for through t() / tx() / bi() / sub() is in the dictionary (content/labels.json)
+{
+  const LBL = JSON.parse(readFileSync('content/labels.json', 'utf8')).labels, have = new Map(LBL.map((l) => [l.ha, l]));
+  const KINDS = ['button', 'screen', 'play', 'game'], ENGLISH = /^(click|tap|so Laila|a teleprompter|Start a sample session|Aisha$|Musa$)/i;
+  const asked = new Set(JSON.parse(readFileSync('content/langs/ui-keys.json', 'utf8')).keys);
+  const scan = (d) => { for (const f of readdirSync(d)) { const p = join(d, f); if (statSync(p).isDirectory()) { if (!p.endsWith('core/lang')) scan(p); continue; } if (!p.endsWith('.ts') || p.endsWith('.spec.ts')) continue;
+    const src = readFileSync(p, 'utf8'); for (const m of src.matchAll(/\b(?:t|tx|bi|sub)\('((?:[^'\\]|\\.)*)'[,)]/g)) asked.add(m[1].replace(/\\'/g, "'")); for (const m of src.matchAll(/\b(?:t|tx|bi|sub)\("([^"]*)"[,)]/g)) asked.add(m[1]); } };
+  scan('src/app'); scan('apps/family/src');
+  for (const k of asked) if (!ENGLISH.test(k) && !have.has(k)) errors.push(`label "${k}": a screen shows it but content/labels.json has no entry (add its English)`);
+  const seen = new Set();
+  for (const l of LBL) {
+    if (seen.has(l.ha)) errors.push(`label "${l.ha}": listed twice in content/labels.json`); seen.add(l.ha);
+    if (!KINDS.includes(l.kind)) errors.push(`label "${l.ha}": kind must be one of ${KINDS.join(', ')}`);
+    if (l.kind !== 'game' && !l.en && l.ha.trim() !== 'ne') errors.push(`label "${l.ha}": no English`);
+  }
+}
 // --- words
 const byKey = new Map(W.words.map((w) => [w.key, w])); const pics = new Map(), ens = new Map();
 for (const w of W.words) {

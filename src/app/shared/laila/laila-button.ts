@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, input, output } from '@angular/core';
 import { Laila } from './laila';
-import { t } from '../../core/lang/t';
+import { sub, t } from '../../core/lang/t';
 
 /**
  * The Laila press button every lesson uses: glow, hear-rings, her head, the beak the letters fly from, the listening
@@ -14,10 +14,11 @@ import { t } from '../../core/lang/t';
     '[class.cue]': 'cue()', '[class.armed]': 'armed()', '[class.rec]': 'rec()', '[class.speak]': 'speak()', '[class.prep]': 'prep()', '[class.yay]': 'yay()', '[class.nope]': 'nope()',
     '[style.--amp]': 'amp()', '(click)': 'pressed.emit()',
   },
-  template: `<span class="lglow"></span><span class="hearrings"></span><app-laila [size]="size()" /><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="lhand">{{ nope() ? '👋🏾' : '👆🏾' }}</span><small>{{ t(label()) }}</small>`,
+  template: `<span class="lglow"></span><span class="hearrings"></span><app-laila [size]="size()" /><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="lhand">{{ nope() ? '👋🏾' : '👆🏾' }}</span><small>{{ t(label()) }}@if (sub(label()); as h) {<span class="hsub">{{ h }}</span>}</small>`,
 })
 export class LailaButton {
   readonly t = t;
+  readonly sub = sub;
   readonly label = input('Faɗa');
   readonly size = input(112);
   readonly cue = input(false); readonly armed = input(false); readonly rec = input(false); readonly speak = input(false); readonly prep = input(false);

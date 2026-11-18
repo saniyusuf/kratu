@@ -21,7 +21,7 @@ import { argunguScene, argunguWater, fisherman as argFisher, basket, fish4 } fro
 import { liveAC, closeAC } from './audioctx';
 import { BAG, U_DEFS } from './unlock-art';
 import { playUnlock } from './unlock';
-import { t } from '../../../core/lang/t';
+import { sub, t } from '../../../core/lang/t';
 
 export interface GameIO {
   K: any;                          // pictures, words, letters and line keys (see GameLabScreen)
@@ -215,7 +215,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
        with the child's voice, the REC tag, a hop when right and a head-shake when wrong */
     var box = h('<div class="mic micx"><span class="yn yes abc-start x-laila cue" role="button" aria-label="Laila"><span class="lglow"></span><span class="hearrings"></span>' +
       '<span class="lmw"><span class="lm">' + K.laila + '</span></span><span class="beak"></span><span class="hearbubble" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>' +
-      '<span class="lhand">👆🏾</span><small>' + t('Faɗa') + '</small></span></div>');
+      '<span class="lhand">👆🏾</span><small>' + t('Faɗa') + (sub('Faɗa') ? '<span class="hsub">' + sub('Faɗa') + '</span>' : '') + '</small></span></div>');
     var btn = box.querySelector('.x-laila'), raf = 0;
     function level() { if (run.dead) { raf = 0; return; } btn.style.setProperty('--amp', String(io.amp ? io.amp() : 0)); btn.classList.toggle('prep', !!(io.preparing && io.preparing())); raf = requestAnimationFrame(level); }
     box.listen = function (opts, heard, right) {

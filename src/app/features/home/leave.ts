@@ -5,7 +5,7 @@ import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
 import { ALLO_SVG } from '../../shared/allo';
 import { Laila } from '../../shared/laila/laila';
-import { t } from '../../core/lang/t';
+import { bi, t } from '../../core/lang/t';
 import { FAMILY } from '../../core/edition';
 import { FamilyService } from '../../core/family/family.service';
 
@@ -17,12 +17,13 @@ import { FamilyService } from '../../core/family/family.service';
   selector: 'app-leave',
   imports: [Laila],
   host: { id: 'leave', '[hidden]': '!open()', '(click)': 'backdrop($event)' },
-  template: `<div class="lbox"><div class="ltitle">{{ t('Ƙare zaman?') }} · End the session?</div><div class="lpair">
-  <button class="yn yes lv-laila" [attr.aria-label]="t('Na gama')" (click)="end(false)"><span class="lm" style="width:112px;height:112px"><app-laila [size]="112" /></span><small>{{ t('Na gama') }} · done</small></button>
-  <button class="yn no board lv-slate" [attr.aria-label]="t('Sake farawa')" (click)="end(true)"><span [innerHTML]="slate"></span><small>{{ t('Sake farawa') }} · reset</small></button></div></div>`,
+  template: `<div class="lbox"><div class="ltitle">{{ bi('Ƙare zaman?', 'End the session?') }}</div><div class="lpair">
+  <button class="yn yes lv-laila" [attr.aria-label]="t('Na gama')" (click)="end(false)"><span class="lm" style="width:112px;height:112px"><app-laila [size]="112" /></span><small>{{ bi('Na gama', 'done') }}</small></button>
+  <button class="yn no board lv-slate" [attr.aria-label]="t('Sake farawa')" (click)="end(true)"><span [innerHTML]="slate"></span><small>{{ bi('Sake farawa', 'reset') }}</small></button></div></div>`,
 })
 export class Leave {
   readonly t = t;
+  readonly bi = bi;
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);

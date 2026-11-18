@@ -7,7 +7,7 @@ import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { SessionService } from '../../core/state/session.service';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { Laila } from '../../shared/laila/laila';
-import { t } from '../../core/lang/t';
+import { sub, t } from '../../core/lang/t';
 import { FAMILY } from '../../core/edition';
 
 /** Screen 2 · Meet Laila. She introduces herself; she is pressable while she talks, a press cuts her off and goes on. */
@@ -25,10 +25,11 @@ import { FAMILY } from '../../core/edition';
 </button>
 <div class="pr" style="font-size:clamp(22px,3vw,30px)">{{ t('Sunana Laila') }}</div>
 <div class="starthint">{{ t('Danna kan Laila mu fara') }}<br><small>{{ t('click Laila to start') }}</small></div>
-<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}</button>`,
+<button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}@if (sub('Ci gaba'); as h) {<span class="hsub">{{ h }}</span>}</button>`,
 })
 export class MeetLailaScreen implements OnInit, OnDestroy {
   readonly t = t;
+  readonly sub = sub;
   private readonly session = inject(SessionService);
   private readonly hostEl = inject(ElementRef) as ElementRef<HTMLElement>;
   private readonly spotter = new Spotter(this.hostEl.nativeElement, inject(ZoomService));
