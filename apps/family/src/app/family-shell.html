@@ -47,11 +47,14 @@
   <div class="sheet">
     <div>
       <h1>Welcome. Let's set up Kratu for your children.</h1>
-      <div class="lb">Make a parent PIN</div>
+      <div class="lb">{{ firstPin() ? 'Type the same PIN again' : 'Make a parent PIN' }}</div>
       <div class="pins">@for (i of [0,1,2,3]; track i) {<span class="pin" [class.on]="pin().length > i">{{ pin().length > i ? '•' : '' }}</span>}</div>
-      <p class="hint">Only you open the parent area with it.</p>
+      <p class="hint">{{ firstPin() ? 'So we know it is right. Step 2 of 2.' : 'Only you open the parent area with it. Step 1 of 2.' }}</p>
       @if (pinMsg()) {<p class="warn">{{ pinMsg() }}</p>}
-      <button class="btn" [disabled]="pin().length !== 4" (click)="savePin()">Next</button>
+      <div class="pinrow">
+        @if (firstPin()) {<button class="btn ghost" (click)="firstPin.set(''); pin.set('')">Back</button>}
+        <button class="btn" [disabled]="pin().length !== 4" (click)="savePin()">{{ firstPin() ? 'Save PIN' : 'Next' }}</button>
+      </div>
     </div>
     <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" (click)="key(k)">{{ k }}</button>}</div>
   </div>

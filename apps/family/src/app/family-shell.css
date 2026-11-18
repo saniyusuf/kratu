@@ -160,3 +160,4 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 .kn small,.row small{font-size:max(12px, calc(1.8 * var(--u)))}
 .kid .link,.row .link{font-size:max(13px, calc(2 * var(--u)))}
 .sheet.wide{max-width:min(94vw, calc(130 * var(--u)))}
+.pinrow{display:flex;gap:calc(2 * var(--u));flex-wrap:wrap;justify-content:center}

@@ -52,6 +52,8 @@ export class FamilyShell implements OnDestroy {
   // ---- PIN boxes (setup and the parent area)
   readonly pin = signal('');
   readonly pinMsg = signal('');
+  /** Setup asks for the PIN twice (Sani 2026-11-18): the first one is held here until the second matches. */
+  readonly firstPin = signal('');
   readonly KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'];
 
   readonly micBusy = signal(false);
@@ -63,7 +65,7 @@ export class FamilyShell implements OnDestroy {
     effect(() => {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
-      this.pin.set(''); this.pinMsg.set(''); this.micMsg.set('');
+      this.pin.set(''); this.pinMsg.set(''); this.micMsg.set(''); this.firstPin.set('');
       if (s === 'add') { this.g.set(null); this.name.set(''); this.pick.set(null); }
       if (s === 'back') this.sayBack();
     });
@@ -96,6 +98,10 @@ export class FamilyShell implements OnDestroy {
   }
   async savePin(): Promise<void> {
     if (this.pin().length !== 4) { this.pinMsg.set('Four numbers, please.'); return; }
+    if (!this.firstPin()) { this.firstPin.set(this.pin()); this.pin.set(''); return; }   // now type it again
+    if (this.pin() !== this.firstPin()) {
+      this.firstPin.set(''); this.pin.set(''); this.pinMsg.set('The two PINs were not the same. Please make your PIN again.'); return;
+    }
     await this.fam.setPin(this.pin()); this.fam.afterSetup();
   }
   private async checkPin(): Promise<void> {
