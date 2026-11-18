@@ -8,6 +8,11 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
 
 ## Commands
 - `npm start` — regenerate content, then `ng serve` (port 4200). `npm run build` — content + lint + production build.
+- Two apps, one Nx workspace (Sani 18 Nov): `kratu` (the school app, `src/`) and `family` (parents' phones, `apps/family/`).
+  The family app holds only its own screens and entry; everything else is imported from `src/app` through `@kratu/app/*`.
+  `src/app/core/edition.ts` (FAMILY=false) is swapped for `apps/family/src/edition.ts` in the family build. Both are
+  angular.json projects too, so `ng serve family` works; `npx nx run-many -t build` builds both. Family serves on 4250.
+  `npm run start:family` / `npm run build:family`.
 - `npm run content` — `content/` → `public/assets/clips.json` + `words.json`. Never edit those two by hand.
 - `npm run lint:content` — code ↔ catalogue ↔ files must agree (exit 1 on errors). Run it after any content change.
 - `npm run voice` — record lines whose clip is missing or whose text changed (`--dry-run`, `--only key`, `--force`).

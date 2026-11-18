@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "family",
+  "projectType": "application",
+  "sourceRoot": "apps/family/src",
+  "implicitDependencies": ["kratu"],
+  "targets": {
+    "build": {
+      "command": "ng build family",
+      "options": { "cwd": "{workspaceRoot}" },
+      "configurations": { "development": { "command": "ng build family --configuration development" } },
+      "outputs": ["{workspaceRoot}/dist/family"],
+      "cache": true
+    },
+    "serve": { "command": "ng serve family", "options": { "cwd": "{workspaceRoot}" }, "continuous": true }
+  }
+}

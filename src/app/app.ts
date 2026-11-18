@@ -14,7 +14,6 @@ import { LAILA_DEFS } from './shared/svg';
 import { t } from './core/lang/t';
 import { FAMILY } from './core/edition';
 import { FamilyService } from './core/family/family.service';
-import { FamilyShell } from './features/family/family-shell';
 
 /** A new version exists: wait this long at most for it to download before carrying on with the copy we have. */
 const FRESH_WAIT = 90000;
@@ -24,14 +23,13 @@ const FRESH_ASK = 6000;
 /** The shell: the zoomed frame every screen lives in, the loader in front of it until everything is ready, the settings gear, the subtitles strip. Landscape only: the installed app is locked to landscape and there is no turn-the-tablet screen (Sani 2026-11-17). */
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoaderScreen, Settings, Subs, FamilyShell],
+  imports: [RouterOutlet, LoaderScreen, Settings, Subs],
   template: `
 <span class="svgdefs" [innerHTML]="defs"></span>
 @if (!loaded()) {<app-loader />}
 <div id="app"><div class="block active"><div class="frame"><router-outlet /></div></div></div>
 
-<app-settings /><app-subs />
-@if (family) {<app-family-shell />}`,
+<app-settings /><app-subs />`,
   styles: [`:host{display:contents} .svgdefs{position:absolute;width:0;height:0;overflow:hidden}`],
 })
 export class App implements OnInit {
@@ -44,7 +42,6 @@ export class App implements OnInit {
   private readonly router = inject(Router);
   readonly defs = inject(DomSanitizer).bypassSecurityTrustHtml(LAILA_DEFS);
   readonly loaded = signal(false);
-  readonly family = FAMILY;
   private readonly fam = inject(FamilyService);
   private readonly sw = inject(SwUpdate);
 

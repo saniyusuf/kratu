@@ -81,3 +81,4 @@ tools/.genvid/
 # PlotWeaver dev key, local only
 tools/.env.plotweaver
 .tablet/
+.nx/

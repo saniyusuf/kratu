@@ -4,7 +4,7 @@
   "cli": {
     "packageManager": "npm"
   },
-  "newProjectRoot": "projects",
+  "newProjectRoot": "apps",
   "projects": {
     "kratu": {
       "projectType": "application",
@@ -226,33 +226,6 @@
                   "input": "langs/hapw/public"
                 }
               ]
-            },
-            "family": {
-              "outputPath": "dist/kratu-family",
-              "index": {"input": "src/index.family.html", "output": "index.html"},
-              "fileReplacements": [
-                {
-                  "replace": "src/app/core/edition.ts",
-                  "with": "src/app/core/edition.family.ts"
-                }
-              ],
-              "assets": [
-                {
-                  "glob": "**/*",
-                  "input": "public",
-                  "ignore": [
-                    "kratu-id.js",
-                    "kratu-id.worker.js",
-                    "models/**",
-                    "names_bank_expanded.json",
-                    "manifest.webmanifest"
-                  ]
-                },
-                {
-                  "glob": "**/*",
-                  "input": "family/public"
-                }
-              ]
             }
           },
           "defaultConfiguration": "production"
@@ -292,9 +265,6 @@
             },
             "hapw": {
               "buildTarget": "kratu:build:development,hapw"
-            },
-            "family": {
-              "buildTarget": "kratu:build:development,family"
             }
           },
           "defaultConfiguration": "development",
@@ -303,6 +273,118 @@
               "Cross-Origin-Opener-Policy": "same-origin",
               "Cross-Origin-Embedder-Policy": "require-corp"
             }
+          }
+        }
+      }
+    },
+    "family": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:resolver": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "apps/family",
+      "sourceRoot": "apps/family/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "apps/family/src/main.ts",
+            "tsConfig": "apps/family/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public",
+                "ignore": [
+                  "kratu-id.js",
+                  "kratu-id.worker.js",
+                  "models/**",
+                  "names_bank_expanded.json",
+                  "manifest.webmanifest"
+                ]
+              },
+              {
+                "glob": "**/*",
+                "input": "apps/family/public"
+              }
+            ],
+            "styles": [
+              "src/fonts.scss",
+              "src/design.css",
+              "src/app.css",
+              "src/styles.scss"
+            ],
+            "serviceWorker": "ngsw-config.json",
+            "index": "apps/family/src/index.html",
+            "outputPath": "dist/family",
+            "fileReplacements": [
+              {
+                "replace": "src/app/core/edition.ts",
+                "with": "apps/family/src/edition.ts"
+              }
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "4MB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "family:build:production"
+            },
+            "development": {
+              "buildTarget": "family:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "headers": {
+              "Cross-Origin-Opener-Policy": "same-origin",
+              "Cross-Origin-Embedder-Policy": "require-corp"
+            },
+            "port": 4250
           }
         }
       }

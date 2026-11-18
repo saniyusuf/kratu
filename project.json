@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/nx/schemas/project-schema.json",
+  "name": "kratu",
+  "projectType": "application",
+  "sourceRoot": "src",
+  "targets": {
+    "build": {
+      "command": "ng build kratu",
+      "options": { "cwd": "{workspaceRoot}" },
+      "configurations": { "development": { "command": "ng build kratu --configuration development" } },
+      "outputs": ["{workspaceRoot}/dist/kratu"],
+      "cache": true
+    },
+    "serve": { "command": "ng serve kratu", "options": { "cwd": "{workspaceRoot}" }, "continuous": true }
+  }
+}

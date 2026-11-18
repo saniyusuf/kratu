@@ -35,8 +35,8 @@
     "voice:pcm": "node scripts/voice.mjs --lang pcm",
     "start:pcm": "npm run content:pcm && ng serve --configuration pcm --port 4204",
     "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm",
-    "start:family": "npm run content && ng serve --configuration family --port 4250",
-    "build:family": "npm run content && npm run lint:content && ng build --configuration production,family"
+    "start:family": "npm run content && ng serve family",
+    "build:family": "npm run content && npm run lint:content && ng build family"
   },
   "private": true,
   "packageManager": "npm@10.9.8",
@@ -55,6 +55,7 @@
     "@angular/build": "^22.1.5",
     "@angular/cli": "^22.1.5",
     "@angular/compiler-cli": "^22.1.0",
+    "nx": "^24.0.6",
     "prettier": "^3.8.1",
     "sharp": "^0.35.4",
     "typescript": "~6.0.2"

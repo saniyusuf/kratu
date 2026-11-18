@@ -1,12 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, OnDestroy, computed, effect, inject, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { AudioBus } from '../../core/audio/audio-bus.service';
-import { WordsService } from '../../core/clips/words.service';
-import { ANIMALS, FamilyService, Profile, animal } from '../../core/family/family.service';
-import { Gender, SessionService } from '../../core/state/session.service';
-import { Laila } from '../../shared/laila/laila';
-import { DOOR_SVG, EAR_SVG } from '../../shared/svg';
+import { AudioBus } from '@kratu/app/core/audio/audio-bus.service';
+import { WordsService } from '@kratu/app/core/clips/words.service';
+import { ANIMALS, FamilyService, Profile, animal } from '@kratu/app/core/family/family.service';
+import { Gender, SessionService } from '@kratu/app/core/state/session.service';
+import { Laila } from '@kratu/app/shared/laila/laila';
+import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
 
 /**
  * The family build's own screens (Sani 2026-11-18), from the design page: Kratu opening from a link, the microphone
