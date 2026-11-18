@@ -49,7 +49,8 @@ export function bi(ha: string, en: string): string {
   return english(ha) !== undefined ? t(ha) : t(ha) + ' · ' + en;
 }
 
-/** The small Hausa line under a child's main button, shown only when the button itself is in English (family app). */
+/** The small line in the child's language under a main button, shown only when the button itself is in English (family app). */
 export function sub(ha: string): string {
-  return EN_LABELS?.map[ha]?.kind === 'button' && english(ha) !== undefined ? ha : '';
+  if (EN_LABELS?.map[ha]?.kind !== 'button' || english(ha) === undefined) return '';
+  return LANG.ui[ha] ?? ha;   // the child's own language: Hausa, or a demo build's translation
 }

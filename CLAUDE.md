@@ -15,9 +15,9 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   `npm run start:family` / `npm run build:family`.
 - `npm run content` — `content/` → `public/assets/clips.json` + `words.json`. Never edit those two by hand.
 - Written labels (Sani 18 Nov): `content/labels.json` is the one dictionary, Hausa and English, of every label a screen
-  writes (`t('Ci gaba')`, `tx()`, `bi(ha, en)`, `sub()`). The school app shows the Hausa; the family app shows the English
-  (`EN_LABELS` in `apps/family/src/edition.ts`, `inGame` switches the in-game instructions), game names stay Hausa, and a
-  child's main buttons (kind `button`) carry the Hausa small underneath. Add a new label there, never only in a screen:
+  writes (`t('Ci gaba')`, `tx()`, `bi(ha, en)`, `sub()`). Every version shows the English (Sani 18 Nov: `EN_LABELS` in
+  `src/app/core/edition.ts` and `apps/family/src/edition.ts`; `inGame` switches the in-game instructions); game names stay
+  in the child's language, and a child's main buttons (kind `button`) carry the child's language small underneath. Add a new label there, never only in a screen:
   the lint fails on a label it cannot find. `npm run content` writes `src/app/core/lang/labels.en.ts`.
 - `npm run lint:content` — code ↔ catalogue ↔ files must agree (exit 1 on errors). Run it after any content change.
 - `npm run voice` — record lines whose clip is missing or whose text changed (`--dry-run`, `--only key`, `--force`).
