@@ -52,7 +52,7 @@ export class LoaderService {
       prep: () => this.prepSpeech() },
     { id: 'face', ha: 'Fuska', en: 'face', heavy: true,
       dl: async () => { if (!this.identity.present()) return 'skip'; await this.fetchFaceModels(); return undefined; },
-      prep: async () => { this.prog('face', t('ana tadawa') + ' · starting'); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', t('a shirye') + ' · ready · ' + (this.identity.model() || '')); } },
+      prep: async () => { this.prog('face', bi('ana tadawa', 'starting')); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', bi('a shirye', 'ready') + ' · ' + (this.identity.model() || '')); } },
     { id: 'names', ha: 'Sunaye', en: 'names', heavy: false,
       dl: async () => { await this.clips.load(); await this.words.load(); if (!LANG.namesBank || FAMILY) return 'skip';   // the family build types names, never matches them   // the bank is Hausa TTS: another language's build says the name in the child's own voice
         const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
@@ -72,7 +72,7 @@ export class LoaderService {
     const small = this.pieces.filter((p) => !p.heavy && !this.dlDone(p)), heavy = this.pieces.filter((p) => p.heavy && !this.dlDone(p)), preps: Promise<void>[] = [];
     await Promise.all(small.map((p) => this.runDl(p).then(() => { preps.push(this.runPrep(p)); }, () => undefined)));
     if (this.showFail(small)) return;
-    for (const p of heavy) { let tries = 0; for (;;) { tries++; try { await this.runDl(p); preps.push(this.runPrep(p)); break; } catch { if (tries >= 3) break; this.prog(p.id, t('sake gwadawa') + ' · retrying'); await new Promise((r) => setTimeout(r, 3000)); } } }
+    for (const p of heavy) { let tries = 0; for (;;) { tries++; try { await this.runDl(p); preps.push(this.runPrep(p)); break; } catch { if (tries >= 3) break; this.prog(p.id, bi('sake gwadawa', 'retrying')); await new Promise((r) => setTimeout(r, 3000)); } } }
     if (this.showFail(heavy)) return;
     this.paint();
     const timer = setTimeout(() => this.finish(), this.PREP_MAX);
@@ -171,11 +171,11 @@ export class LoaderService {
     const files: Record<string, ArrayBuffer> = {}; man.files.forEach((f: any) => { files[f.path] = bufs['vosk-model/' + (gz ? f.gz : f.path)]; }); return files;
   }
   private async prepSpeech(): Promise<void> {
-    const t0 = Date.now(); const tick = setInterval(() => this.prog('speech', (this.speechFiles ? t('ana tadawa') + ' · starting · ' : t('ana buɗewa') + ' · unpacking · ') + Math.round((Date.now() - t0) / 1000) + ' s'), 1000);
+    const t0 = Date.now(); const tick = setInterval(() => this.prog('speech', (this.speechFiles ? bi('ana tadawa', 'starting') + ' · ' : bi('ana buɗewa', 'unpacking') + ' · ') + Math.round((Date.now() - t0) / 1000) + ' s'), 1000);
     let kicked = false, lastWhy = '';
     try {
       await new Promise<void>((res, rej) => { const start = Date.now(); const w = () => { if (this.speech.ready()) { res(); return; } const st = this.speech.state(); if (st === 'failed') { lastWhy = this.speech.error(); if (kicked) { rej(new Error(lastWhy || 'failed')); return; } kicked = true; this.speech.retry(this.speechFiles); this.speechFiles = null; } else if (st === 'idle') { this.speech.loadModel(this.speechFiles); this.speechFiles = null; } if (Date.now() - start > 600000) { rej(new Error('timeout')); return; } setTimeout(w, 250); }; w(); });
-      this.prog('speech', t('a shirye') + ' · ready');
+      this.prog('speech', bi('a shirye', 'ready'));
     } finally { clearInterval(tick); }
   }
   /**
@@ -218,7 +218,7 @@ export class LoaderService {
         got += f.size; show();
       }
     }));
-    this.prog('pictures', t('a shirye') + ' · ready');
+    this.prog('pictures', bi('a shirye', 'ready'));
   }
   /** Resolves true once the service worker controls this page, false if it does not take over. */
   private swDriving(): Promise<boolean> {
