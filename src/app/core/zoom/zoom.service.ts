@@ -85,7 +85,9 @@ export class ZoomService {
   private static readonly CORNER = 1.3;
   /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
   /** Held upright: the app is drawn turned a quarter (Sani 2026-11-17: always landscape, never a portrait layout). */
-  static upright(): boolean { return innerHeight > innerWidth && !document.documentElement.classList.contains('fam-on'); }   // the family screens are drawn upright
+  static upright(): boolean { return innerHeight > innerWidth && !ZoomService.free(); }
+  /** The family build draws its own screens and every lesson upright too (Sani 2026-11-18): only its games stay landscape. */
+  static free(): boolean { const c = document.documentElement.classList; return c.contains('fam-on') || c.contains('fam-up'); }
   /** An element's box in the app's own landscape frame: when the app is drawn turned, the screen box is turned back. */
   static rect(el: Element): { top: number; bottom: number; left: number; right: number; width: number; height: number } { return el.getBoundingClientRect(); }
   /**
@@ -105,10 +107,12 @@ export class ZoomService {
     const root = document.documentElement.style, prev = this.z();
     // held upright, the whole app is drawn turned a quarter (app.css), so the landscape screen's width is the window's height
     const [W, H] = ZoomService.upright() ? [innerHeight, innerWidth] : [innerWidth, innerHeight];
-    const base = Math.min(W / 960, H / 600);
+    // drawn upright (the family build's lessons), the page is a 600×960 one: the same screens, stacked taller
+    const base = H > W ? Math.min(W / 600, H / 960) : Math.min(W / 960, H / 600);
     const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
     // nothing may ever be cut off or need scrolling: the floor is only there to stop a runaway measurement
-    const floor = base * 0.6, cap = base * ZoomService.GROW;
+    // upright the page is narrow and tall, so a screen may grow further to fill the height (the width still caps it)
+    const floor = base * 0.6, cap = base * (H > W ? 2.4 : ZoomService.GROW);
     // the door, the ear and the gear are the same size on every screen of a device (Sani 2026-11-16: on the 7-inch tablet
     // they were big on the home page and small in the balloon game, because a full-screen game never grows): they take
     // this fixed scale, whatever the screen's own zoom

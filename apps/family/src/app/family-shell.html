@@ -124,19 +124,6 @@
 </section>
 }
 
-<!-- 10 · welcome back -->
-@case ('back') {
-<section class="fs back" [class.up]="upright()" (click)="fam.backGo()">
-  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="$event.stopPropagation(); hearAgain()"></button>
-  @if (fam.current(); as c) {
-  <div class="pcard pop">
-    <div class="pav glowing" [style.background]="animal(c.animal).c">{{ animal(c.animal).e }}</div>
-    <div class="pnm">{{ c.name }}</div>
-  </div>
-  }
-  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
-</section>
-}
 
 <!-- the parent's PIN, before the parent area -->
 @case ('pin') {

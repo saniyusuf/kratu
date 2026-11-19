@@ -8,10 +8,13 @@ import { Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { HOMEGRID_HTML } from '../../features/home/homegrid';
 import { sub, t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
 
 /** One line of the welcome: what she says, what lights up, and how she stands while she says it. */
 interface Beat {
   key: string;
+  /** play the key as it is: s_back's boy and girl forms are the door hint, its unisex form is "Barka da dawowa!" */
+  plain?: boolean;
   /** which chooser tiles zoom, by their data-act name */
   hot?: string[];
   /** her pose: wave · open · l · r · u · both · mic · self */
@@ -57,6 +60,9 @@ const BACK: Beat[] = [
   { key: 's_b_cont', pose: 'open' },
   { key: 's_go',     pose: 'self', cue: true },
 ];
+/** The family build has no face screen to greet them (Sani 2026-11-18): a child who picks their card comes straight here,
+ *  so Laila says "Barka da dawowa!" herself first, under the ribbon. */
+const BACK_FAMILY: Beat[] = [{ key: 's_back', plain: true, pose: 'both', ribbon: true }, ...BACK];
 
 /**
  * Screen 4 · Barka da zuwa. Straight after the face screen has greeted them by name: a new child hears what this place
@@ -163,7 +169,7 @@ export class WelcomeScreen implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.script = this.session.known() ? BACK : INTRO;
+    this.script = this.session.known() ? (FAMILY ? BACK_FAMILY : BACK) : INTRO;
     afterPaint().then(() => this.run());
   }
   ngOnDestroy(): void { this.bus.stopAll(); }
@@ -174,7 +180,7 @@ export class WelcomeScreen implements OnInit, OnDestroy {
     this.talking.set(true);
     for (let i = 0; i < this.script.length; i++) {
       this.beat.set(i);
-      const ok = await this.bus.play(this.bus.gk(this.script[i].key));
+      const b = this.script[i], ok = await this.bus.play(b.plain ? b.key : this.bus.gk(b.key));
       if (my !== this.seq) return;          // she was pressed, or the ear started it again
       if (!ok) break;                        // autoplay refused: leave the cue on screen
     }

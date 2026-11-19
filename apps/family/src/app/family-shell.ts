@@ -11,7 +11,8 @@ import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
 /**
  * The family build's own screens (Sani 2026-11-18), from the design page: Kratu opening from a link, the microphone
  * the friendly way, the parent's PIN, the add-a-child wizard whose profile card fills in as it is answered, the
- * finished profile, the children's profiles Netflix style (with Guest), welcome back and the parent area.
+ * finished profile, the children's profiles Netflix style (with Guest) and the parent area. A picked card goes straight
+ * to the app's own welcome back.
  * Unlike the lessons they follow the phone: upright and sideways each have their own layout. Written words lead with
  * English for the parent; Laila's spoken lines stay Hausa. Lines the design page still waits on (f_pick, f_yours,
  * f_who, f_mic) are not guessed: Laila is silent there until Sani writes them.
@@ -67,7 +68,6 @@ export class FamilyShell implements OnDestroy {
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.pin.set(''); this.pinMsg.set(''); this.micMsg.set(''); this.firstPin.set('');
       if (s === 'add') { this.g.set(null); this.name.set(''); this.pick.set(null); }
-      if (s === 'back') this.sayBack();
     });
   }
   ngOnDestroy(): void { if (this.timer) clearTimeout(this.timer); }
@@ -132,16 +132,7 @@ export class FamilyShell implements OnDestroy {
     if (d) { this.g.set(d.g); this.name.set(d.name); this.pick.set(null); }
   }
 
-  // ---- welcome back: "Barka da dawowa!" (s_back), then home
-  private async sayBack(): Promise<void> {
-    const p = this.fam.current();
-    const ok = await this.bus.play(this.bus.gk('s_back'));
-    if (this.fam.screen() !== 'back' || this.fam.current() !== p) return;
-    this.timer = setTimeout(() => { if (this.fam.screen() === 'back') this.fam.backGo(); }, ok ? 400 : 1600);
-  }
   hearAgain(): void {
-    const s = this.fam.screen();
-    if (s === 'back') { this.bus.play(this.bus.gk('s_back')); return; }
     const k = this.pick() || this.fam.current()?.animal; if (!k) return;
     const w = this.words.find(k); if (w?.ha_clip) this.bus.playRaw(w.ha_clip);
   }

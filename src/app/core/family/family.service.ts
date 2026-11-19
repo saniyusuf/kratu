@@ -21,7 +21,7 @@ export const ANIMALS: { k: string; e: string; c: string }[] = [
 export const animal = (k: string) => ANIMALS.find((a) => a.k === k) ?? ANIMALS[0];
 
 /** The family build's own screens, drawn over the app (both ways round, unlike the landscape lessons). */
-export type FamScreen = 'welcome' | 'mic' | 'setup' | 'add' | 'yours' | 'profiles' | 'back' | 'pin' | 'parent' | null;
+export type FamScreen = 'welcome' | 'mic' | 'setup' | 'add' | 'yours' | 'profiles' | 'pin' | 'parent' | null;
 
 const K_PROFILES = 'kratu_fam_profiles', K_PIN = 'kratu_fam_pin', K_STARTED = 'kratu_fam_started';
 
@@ -33,7 +33,7 @@ export class FamilyService {
 
   readonly screen = signal<FamScreen>(null);
   readonly profiles = signal<Profile[]>(this.read());
-  /** The profile being shown on "this is your animal" or "welcome back". */
+  /** The profile being shown on "this is your animal". */
   readonly current = signal<Profile | null>(null);
   /** Where the PIN box leads once the right PIN is in. */
   pinNext: FamScreen = 'parent';
@@ -100,8 +100,8 @@ export class FamilyService {
   toProfiles(): void { this.bus.stopAll(); this.session.end(); this.session.guest.set(false); this.show('profiles'); this.router.navigateByUrl('/blank', { skipLocationChange: true }); }
   askPin(next: FamScreen): void { this.pinNext = next; this.show('pin'); }
 
-  /** A child picked their card: Laila welcomes them back, then the app as it is. */
-  choose(p: Profile): void { this.signIn(p); this.current.set(p); this.show('back'); }
+  /** A child picked their card: straight to Laila's welcome back (Sani 2026-11-18: no name card in between), then home. */
+  choose(p: Profile): void { this.signIn(p); this.current.set(p); this.backGo(); }
   /** After "this is your animal": Meet Laila, then the first-day welcome, then home. */
   firstGo(): void {
     const p = this.current(); if (!p) return;
