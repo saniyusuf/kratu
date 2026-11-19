@@ -13,12 +13,10 @@ import { voiceLang, plotweaver } from './lang-voice.mjs';
 if (process.argv.includes('--lang') && !process.argv.includes('--word')) { const a = process.argv.slice(2); process.exit(await voiceLang(a[a.indexOf('--lang') + 1], a) ? 1 : 0); }   // a demo language: its own lines and words
 const env = existsSync('.env') ? Object.fromEntries(readFileSync('.env', 'utf8').split('\n').filter((l) => l.includes('=') && !l.startsWith('#')).map((l) => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()])) : {};
 const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google';
-// Who reads the English word names (word_<key>.ogg in audio/en) and letters (app_en_<L>.ogg): PlotWeaver's Bisola, a Nigerian English voice (Sani 19 Nov),
+// Who reads the English word names (word_<key>.ogg in audio/en): PlotWeaver's Bisola, a Nigerian English voice (Sani 19 Nov),
 // or google to go back to the Translate voice. KRATU_EN_WORDS=provider:voice in .env or the environment overrides it.
+// Word names only: the English letters (app_en_A…Z) stay in Google's voice (Sani 19 Nov).
 const EN_WORDS = (env.KRATU_EN_WORDS || process.env.KRATU_EN_WORDS || 'plotweaver:bisola').split(':');
-// The English letters (app_en_A…Z) in the same voice, each sent the way Bisola says it most clearly (19 Nov test of "B", "B."
-// and "bee" by STORM ASR and Whisper, ~/Documents/kratu-storm15-test/letters2): the letter alone, with a full stop, or its name.
-const EN_LETTER_SAY = { A: 'A', B: 'B.', C: 'C.', D: 'D.', E: 'E', F: 'F.', G: 'G.', H: 'H', I: 'eye', J: 'J.', K: 'kay', L: 'el', M: 'M.', N: 'N.', O: 'oh', P: 'P.', Q: 'Q', R: 'R.', S: 'S', T: 'tee', U: 'U', V: 'V.', W: 'double you', X: 'X.', Y: 'Y.', Z: 'zed' };
 const args = process.argv.slice(2), only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
 /**
@@ -51,6 +49,6 @@ for (const r of lines) {
 }
 console.log(plan.length ? plan.map((p) => `${p.key}  ← “${p.text}”`).join('\n') : 'nothing to record'); if (dry || !plan.length) process.exit(0);
 let made = 0, failed = 0;
-for (const p of plan) { try { mkdirSync(`public/assets/audio/${p.r.lang}`, { recursive: true }); const L = /^app_en_([A-Z])$/.exec(p.key); if (L && EN_WORDS[0] === 'plotweaver') await plotweaver(EN_LETTER_SAY[L[1]], 'en', EN_WORDS[1] || 'bisola', p.dest, { trim: true }); else await record(p.text, p.r.lang, p.dest); if (typeof p.r.text === 'string') p.r.recorded = H(p.text); else { p.r.recorded = typeof p.r.recorded === 'object' && p.r.recorded ? p.r.recorded : {}; p.r.recorded[p.g] = H(p.text); } made++; console.log('made  ' + p.dest); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
+for (const p of plan) { try { mkdirSync(`public/assets/audio/${p.r.lang}`, { recursive: true }); await record(p.text, p.r.lang, p.dest); if (typeof p.r.text === 'string') p.r.recorded = H(p.text); else { p.r.recorded = typeof p.r.recorded === 'object' && p.r.recorded ? p.r.recorded : {}; p.r.recorded[p.g] = H(p.text); } made++; console.log('made  ' + p.dest); } catch (e) { failed++; console.log('FAIL  ' + p.key + ' ' + (e.message || e)); } }
 writeFileSync('content/lines.json', JSON.stringify(lines, null, 1) + '\n');
 console.log(`voice: ${made} made, ${failed} failed, ${plan.length - made - failed} skipped`); process.exit(failed ? 1 : 0);
