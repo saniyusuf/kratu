@@ -1,6 +1,7 @@
 // Adds or refreshes an example word: the picture (any image → webp 512 px) and the two name clips.
 //   npm run words -- --add goat --group animals --ha akuya --en Goat --picture takes/goat.png
 //   npm run words                 re-make every missing picture or clip for words already in content/words.json
+//   npm run words -- --remake-en  re-make every English name clip in the English-words voice (KRATU_EN_WORDS, see voice.mjs)
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import sharp from 'sharp';
 import { execFileSync } from 'node:child_process';
@@ -10,6 +11,6 @@ if (opt('add')) { const key = opt('add'); if (W.words.some((w) => w.key === key)
 let made = 0;
 for (const w of W.words) {
   if (typeof w.picture === 'string' && !existsSync('public/assets/' + w.picture) && w.source && existsSync(w.source)) { await sharp(w.source).resize(512, 512, { fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toFile('public/assets/' + w.picture); made++; console.log('picture ' + w.picture); }
-  for (const [side, lang, text] of [['ha', 'ha', w.ha], ['en', 'en', w.en]]) { if (w[side + '_clip'] !== true) continue; const dest = `public/assets/audio/${lang}/word_${w.key}.ogg`; if (existsSync(dest) || !text) continue; execFileSync('node', ['scripts/voice.mjs', '--word', w.key, '--lang', lang, '--text', text, '--dest', dest], { stdio: 'inherit' }); made++; }
+  for (const [side, lang, text] of [['ha', 'ha', w.ha], ['en', 'en', w.en]]) { if (w[side + '_clip'] !== true) continue; const dest = `public/assets/audio/${lang}/word_${w.key}.ogg`; if ((existsSync(dest) && !(lang === 'en' && args.includes('--remake-en'))) || !text) continue; execFileSync('node', ['scripts/voice.mjs', '--word', w.key, '--lang', lang, '--text', text, '--dest', dest], { stdio: 'inherit' }); made++; }
 }
 writeFileSync('content/words.json', JSON.stringify(W, null, 1) + '\n'); console.log('words: ' + made + ' files made');

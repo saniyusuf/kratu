@@ -34,7 +34,7 @@ async function spitch(text, lang, voice, dest, enc = {}, speed) {
 /** PlotWeaver (paid, Nigerian voices, servers in the US): the key is PLOTWEAVER_API_KEY in tools/.env.plotweaver, read here
  *  and never printed. Only Laila's catalogue lines and word names go to it: never a child's own recording or name. */
 const pwKey = () => { const f = 'tools/.env.plotweaver', m = existsSync(f) ? /^PLOTWEAVER_API_KEY=(.+)$/m.exec(readFileSync(f, 'utf8')) : null; if (!m) throw new Error('no PLOTWEAVER_API_KEY in ' + f); return m[1].trim(); };
-async function plotweaver(text, lang, voice, dest, enc = {}, model) {
+export async function plotweaver(text, lang, voice, dest, enc = {}, model) {
   for (let i = 0; ; i++) {
     const r = await fetch('https://api.plotweaver.app/v1/speech', { method: 'POST', headers: { 'X-API-Key': pwKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: lang, voice_id: voice, normalize: true, ...(model ? { model } : {}) }) });
     if (r.ok) { const tmp = join(tmpdir(), 'kratu-pw-' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.wav'); writeFileSync(tmp, Buffer.from(await r.arrayBuffer())); encode(tmp, dest, enc); rmSync(tmp, { force: true }); return; }
