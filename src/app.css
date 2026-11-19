@@ -894,18 +894,38 @@ body > .misalihand.float{font-size:calc(42px * var(--z,1));transition:transform 
 }
 html.fam-on #admingear{display:none!important}
 
-/* Family build upright (Sani 2026-11-18: everything but the games follows the phone): the same screens on a 600-wide page,
-   their rows folded so they fill a phone held upright instead of sitting small in the middle */
+/* Family build upright (Sani 2026-11-18: everything but the games follows the phone; 2026-11-19: accurate phone sizes, bold,
+   accessible text that scales). The page is 400 wide (ZoomService.UP_W), so a phone draws it near 1:1 and the sizes
+   below are close to what the child sees: labels 17px and up, bold, buttons 48px and up to the touch. */
 @media (orientation:portrait){
-  html.fam-up #app .frame>.s{width:100%;height:100%}   /* the 16:10 screen box becomes the whole upright page */
-  html.fam-up #app .s.home .homegrid{grid-template-columns:repeat(3,100px)}
-  html.fam-up #app .frame>.s.lesson{justify-content:center}
-  html.fam-up #app .s.wasanni .wprev{zoom:.84}   /* the 660-wide game preview fits the 600-wide page */
-  html.fam-up #app .s.lesson .catmenu{grid-template-columns:repeat(3,1fr);width:min(440px,96%)}
-  html.fam-up #app .s.lesson .catmenu.few{grid-template-columns:repeat(2,minmax(110px,170px))}
-  html.fam-up #app .s.lesson .homegrid:not(.s.home .homegrid){grid-template-columns:repeat(2,1fr)}
-  html.fam-up #app .s.lesson .alpha{grid-template-columns:repeat(4,1fr);width:min(420px,94%)}
-  html.fam-up #app .s.lesson .abcslots{grid-template-columns:repeat(7,1fr);width:min(420px,94%)}
-  html.fam-up #app .s.lesson.spell .abcgrid{grid-template-columns:repeat(7,1fr);width:min(560px,98%)}
-  html.fam-up #app .s.lesson .abcgrid{grid-template-columns:repeat(7,1fr)}
+  html.fam-up #app .frame>.s{width:100%;height:100%;padding:56px 14px 64px;gap:18px}   /* the whole upright page; clear of the corners */
+  html.fam-up #app .frame>.s.lesson{justify-content:space-evenly}
+  html.fam-up #app .s .eyebrow{font-size:17px;letter-spacing:.08em}
+  /* home: the book, then the six lessons as two rows of three, big enough to read */
+  html.fam-up #app .s.home .homegrid{grid-template-columns:repeat(3,112px);gap:12px}
+  html.fam-up #app .s.home .hlab{font-size:17px;line-height:1.1}
+  /* lesson menus: three across (the ten topics), two across (reading, writing) */
+  html.fam-up #app .s.lesson .catmenu{grid-template-columns:repeat(3,1fr);gap:16px 12px;width:100%;padding-top:0}
+  html.fam-up #app .s.lesson .catmenu.few{grid-template-columns:repeat(2,minmax(130px,170px))}
+  html.fam-up #app .s.lesson .homegrid:not(.s.home .homegrid){grid-template-columns:repeat(2,minmax(140px,170px));width:auto;gap:14px}
+  html.fam-up #app .s .nm{font-size:17px;line-height:1.1;font-weight:800}
+  /* letters, the A-Z boards and keyboards: fewer per row, bigger keys */
+  html.fam-up #app .s.lesson .alpha{grid-template-columns:repeat(4,1fr);width:100%}
+  html.fam-up #app .s.lesson .abcslots{grid-template-columns:repeat(7,1fr);width:100%}
+  html.fam-up #app .s.lesson .abcgrid,html.fam-up #app .s.lesson.spell .abcgrid{grid-template-columns:repeat(7,1fr);width:100%;--abk-h:48px}
+  html.fam-up #app .s.lesson .abckey{height:48px;font-size:22px}
+  /* the child's own language under a main button, and the English hint under Laila: readable and bold */
+  html.fam-up #app .s .hsub{font-size:16.5px;font-weight:700;opacity:.85}
+  html.fam-up #app .s.lesson .lbtn .lhint{font-size:18px}
+  html.fam-up #app .s .moviepill{font-size:17px}
+  html.fam-up #loader .ld-step,html.fam-up #loader .ld-steps{font-size:16px}
+  html.fam-up #app .s .starthint,html.fam-up #app .s .lesson-hint{font-size:18px;font-weight:800}
+  html.fam-up #app .s .starthint small,html.fam-up #app .s .lesson-hint small{font-size:16px;font-weight:700}
+  /* the games board: the preview fits the page, the cards and arrows are big enough to read and press */
+  html.fam-up #app .s.wasanni .wprev{zoom:.56}
+  html.fam-up #app .s.wasanni .wband b{font-size:30px}
+  html.fam-up #app .s.wasanni .wstrip{height:auto}
+  html.fam-up #app .s.wasanni .wcard{width:150px;height:96px}
+  html.fam-up #app .s.wasanni .wcard b{font-size:17px}
+  html.fam-up #app .s.wasanni .warr{width:52px;height:52px;flex:none}
 }

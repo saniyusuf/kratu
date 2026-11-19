@@ -81,6 +81,9 @@ export class ZoomService {
    * had (Sani 2026-10-23).
    */
   private static readonly GROW = 1.6;
+  /** The upright page (Sani 2026-11-19: phone sizes, accessible): 400 wide, so a 390-px phone draws it at about 1:1. */
+  private static readonly UP_W = 400;
+  private static readonly UP_H = 760;
   private static readonly HEAD = 0.86;
   private static readonly CORNER = 1.3;
   /** A phone or a 7-inch tablet: a touch screen whose short side is at most 640 CSS pixels (a 10-inch tablet has ~800). */
@@ -107,12 +110,12 @@ export class ZoomService {
     const root = document.documentElement.style, prev = this.z();
     // held upright, the whole app is drawn turned a quarter (app.css), so the landscape screen's width is the window's height
     const [W, H] = ZoomService.upright() ? [innerHeight, innerWidth] : [innerWidth, innerHeight];
-    // drawn upright (the family build's lessons), the page is a 600×960 one: the same screens, stacked taller
-    const base = H > W ? Math.min(W / 600, H / 960) : Math.min(W / 960, H / 600);
+    // drawn upright (the family build's lessons), the page is a phone-shaped one: the same screens, stacked taller
+    const base = H > W ? Math.min(W / ZoomService.UP_W, H / ZoomService.UP_H) : Math.min(W / 960, H / 600);
     const set = (v: number) => { root.setProperty('--z', v.toFixed(3)); void document.body.offsetHeight; };
     // nothing may ever be cut off or need scrolling: the floor is only there to stop a runaway measurement
     // upright the page is narrow and tall, so a screen may grow further to fill the height (the width still caps it)
-    const floor = base * 0.6, cap = base * (H > W ? 2.4 : ZoomService.GROW);
+    const floor = base * 0.6, cap = base * (H > W ? 1.5 : ZoomService.GROW);
     // the door, the ear and the gear are the same size on every screen of a device (Sani 2026-11-16: on the 7-inch tablet
     // they were big on the home page and small in the balloon game, because a full-screen game never grows): they take
     // this fixed scale, whatever the screen's own zoom
