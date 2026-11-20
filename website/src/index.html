@@ -1,0 +1,1196 @@
+<title>Kratu website redesign</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Kratu teaches Nigerian children aged 6 to 10 to read English from the language they already speak. Hausa works today; Yorùbá, Igbo and Naijá Pidgin are in testing. Offline, voice-first, on low-cost tablets.">
+<meta property="og:title" content="Kratu: learn to read English from the language you already speak">
+<meta property="og:description" content="Hausa works today; Yorùbá, Igbo and Naijá Pidgin are in testing. Offline on any Android tablet.">
+<meta property="og:image" content="https://www.kratu.ng/assets/og-main.jpg">
+<meta property="og:url" content="https://www.kratu.ng/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F7EDD6">
+<link rel="icon" href="a/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="a/fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>/* Baloo 2 and Nunito (SIL Open Font Licence), served with the page */
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:600 800;font-display:swap;src:url(a/fonts/baloo2-vietnamese.woff2) format("woff2");unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB}
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:600 800;font-display:swap;src:url(a/fonts/baloo2-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:600 800;font-display:swap;src:url(a/fonts/baloo2-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:400 800;font-display:swap;src:url(a/fonts/nunito-vietnamese.woff2) format("woff2");unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:400 800;font-display:swap;src:url(a/fonts/nunito-latin-ext.woff2) format("woff2");unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:400 800;font-display:swap;src:url(a/fonts/nunito-latin.woff2) format("woff2");unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+</style>
+<style>
+/* Fallback faces sized to match Baloo 2 and Nunito, so nothing moves when the web fonts arrive (layout shift). */
+@font-face{font-family:"Baloo Fallback";src:local("Arial"),local("Liberation Sans"),local("Helvetica");size-adjust:94.7%;ascent-override:114%;descent-override:55%;line-gap-override:0%}
+@font-face{font-family:"Nunito Fallback";src:local("Arial"),local("Liberation Sans"),local("Helvetica");size-adjust:100.3%;ascent-override:101%;descent-override:35%;line-gap-override:0%}
+/* Layout: one long page; the four languages are the spine, each with its own colour, and every section shows them side by side.
+   Kratu's own system: Baloo 2 + Nunito, warm paper, ink brown, Laila orange. Light only, by Sani's rule. */
+:root{
+  color-scheme:light;
+  --paper:#F7EDD6; --paper2:#FCF6E8; --card:#FFFDF7; --ink:#33261A; --muted:#6E5C40; --line:#E3D2AE;
+  --laila:#EC9B3C; --red:#D62839;
+  --ha:#277A4C; --yo:#7B4FB8; --ig:#B84E1D; --pcm:#1670A3;
+  --haL:#E3F3E9; --yoL:#EFE7F9; --igL:#FBE9DF; --pcmL:#E1F0F9;
+  --disp:"Baloo 2","Baloo Fallback",ui-rounded,"Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito","Nunito Fallback",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gut:max(16px,env(safe-area-inset-left,0px));
+  --meas:62ch;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--disp);font-weight:800;line-height:1.04;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pcm);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(56px,8vw,112px)}
+/* sections off screen are not laid out or painted until they come near, so the first screen paints sooner */
+section:not(.hero):not(.offline){content-visibility:auto;contain-intrinsic-size:auto 900px}
+html.cvoff section{content-visibility:visible!important}
+.eyebrow{font-weight:800;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+h2{font-size:clamp(32px,5vw,58px);margin-bottom:18px}
+.lead{font-size:clamp(17px,1.9vw,20px);color:var(--muted);max-width:var(--meas)}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--disp);font-weight:800;padding:13px 28px;border-radius:999px;font-size:17px;border:0;cursor:pointer}
+.btn-p{background:var(--red);color:#fff;box-shadow:0 4px 0 #A81F2D}
+.btn-s{background:var(--card);border:2.5px solid var(--ink);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.c-ha{--c:var(--ha);--cl:var(--haL)} .c-yo{--c:var(--yo);--cl:var(--yoL)} .c-ig{--c:var(--ig);--cl:var(--igL)} .c-pcm{--c:var(--pcm);--cl:var(--pcmL)}
+
+/* review bar: sample only */
+.rv{background:#fff;border-bottom:2px solid var(--line);font-size:14px;line-height:1.5}
+.rv .wrap{padding-block:10px;display:flex;gap:6px 16px;flex-wrap:wrap;align-items:baseline}
+.rv b{font-family:var(--disp)}
+
+/* nav */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1.5px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--disp);font-weight:800;font-size:28px;letter-spacing:-.01em}
+.brand svg{width:44px;height:44px}
+.brand span i{font-style:normal}
+.brand span i:nth-child(1){color:var(--red)} .brand span i:nth-child(2){color:var(--ig)} .brand span i:nth-child(3){color:#E5A91A}
+.brand span i:nth-child(4){color:var(--ha)} .brand span i:nth-child(5){color:var(--pcm)}
+.navl{display:flex;gap:18px;margin-left:auto;font-weight:700;font-size:14.5px;color:var(--muted)}
+.navl a{text-decoration:none} .navl a:hover{color:var(--ink)}
+.nav .btn{padding:8px 18px;font-size:15px}
+@media (max-width:1120px){.navl{display:none}.nav .btn{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:clamp(40px,6vw,80px) clamp(48px,7vw,96px);position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(28px,5vw,64px);align-items:center}
+.hero h1{font-size:clamp(42px,6.6vw,86px);letter-spacing:-.015em}
+.hero h1 .sw{display:inline-block;color:var(--c,var(--ha));transition:color .4s}
+.hero .lead{margin-top:20px;color:var(--ink);opacity:.8}
+.heroact{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+@media (max-width:600px){.heroact{flex-direction:column;gap:12px}.heroact .btn{width:100%;justify-content:center;padding-block:15px;font-size:18px}}
+.greets{position:absolute;inset:0;pointer-events:none;z-index:0}
+.greets span:before{content:attr(data-t)}
+.greets span{position:absolute;font-family:var(--disp);font-weight:800;opacity:.13;white-space:nowrap;animation:float 14s ease-in-out infinite}
+@media (max-width:860px){.greets{display:none}}
+@keyframes float{50%{transform:translateY(-14px) rotate(-2deg)}}
+.hero .wrap>*{position:relative;z-index:1;min-width:0}
+
+.stage{background:#2A1F15;border-radius:34px;padding:14px;box-shadow:0 26px 60px -24px rgba(51,38,26,.55)}
+.screen{background:var(--cl,var(--haL));border-radius:22px;padding:22px 22px 18px;transition:background .45s;display:grid;gap:14px;min-height:380px;align-content:space-between}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:2px solid transparent;background:rgba(255,255,255,.6);border-radius:999px;padding:5px 13px;font-family:var(--disp);font-weight:800;font-size:15px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.tab i{width:11px;height:11px;border-radius:50%;background:var(--c)}
+.tab[aria-selected="true"]{background:#fff;border-color:var(--c);color:var(--c)}
+.birdrow{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.bird{width:clamp(110px,14vw,150px);height:clamp(110px,14vw,150px);cursor:pointer;border:0;background:none;padding:0;position:relative}
+.bird svg{width:100%;height:100%;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.bird.talk svg{animation:talk .35s ease-in-out infinite alternate}
+@keyframes talk{to{transform:scale(1.05) rotate(-2deg)}}
+.bird::after{content:"";position:absolute;inset:6%;border-radius:50%;box-shadow:0 0 0 0 var(--c);animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--c) 45%,transparent)}100%{box-shadow:0 0 0 22px transparent}}
+.bub{background:#fff;border-radius:20px;padding:14px 16px;position:relative;box-shadow:0 3px 0 var(--line)}
+.bub::before{content:"";position:absolute;left:-10px;top:30px;border:10px solid transparent;border-right-color:#fff;border-left:0}
+.bub .who{font-family:var(--disp);font-weight:800;color:var(--c);font-size:15px}
+.bub q{display:block;quotes:none;font-weight:800;font-size:clamp(16px,1.7vw,19px);line-height:1.4;margin-top:2px}
+.bub small{display:block;color:var(--muted);font-size:14px;margin-top:6px;line-height:1.45}
+.screenfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px;font-weight:700;color:var(--muted)}
+.pill{font-family:var(--disp);font-weight:800;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 12px;white-space:nowrap}
+.pill.ready{background:var(--ha);color:#fff}
+.pill.test{background:#FFF1C9;color:#76510C;box-shadow:inset 0 0 0 2px #EDCB74}
+@media (max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+@media (min-width:861px) and (max-height:700px){.hero{padding-block:28px 44px}.hero h1{font-size:clamp(36px,4.8vw,58px)}.hero .lead{margin-top:12px;font-size:16.5px}}
+
+/* the bridge */
+.bridge{background:var(--ink);color:var(--paper2)}
+.bridge .eyebrow,.bridge .lead{color:#D9C7A3}
+.words{display:flex;gap:8px;margin:28px 0 22px;flex-wrap:wrap}
+.wbtn{display:flex;align-items:center;gap:10px;background:#45362A;border:2px solid #5B4938;border-radius:16px;padding:6px 14px 6px 6px;cursor:pointer;color:var(--paper2);font-family:var(--disp);font-weight:800;font-size:17px}
+.wbtn img{width:42px;height:42px;border-radius:10px;object-fit:cover}
+.wbtn[aria-pressed="true"]{background:var(--paper2);color:var(--ink);border-color:var(--paper2)}
+.bridgegrid{display:grid;grid-template-columns:1fr auto 1.1fr;gap:18px;align-items:center}
+.homes{display:grid;gap:10px}
+.home{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#40322A;border-radius:16px;padding:10px 14px;border-left:6px solid var(--c);cursor:pointer;text-align:left;border-top:0;border-right:0;border-bottom:0;color:var(--paper2)}
+.home .lang{font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#CDBB97}
+.home b{display:block;font-family:var(--disp);font-size:26px;line-height:1.1}
+.play{width:38px;height:38px;border-radius:50%;background:var(--c);display:grid;place-items:center;flex:none}
+.play svg{width:14px;height:14px;fill:#fff;margin-left:2px}
+.on .play svg{animation:pulse .6s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.3)}}
+.arrow{font-family:var(--disp);font-size:44px;color:var(--laila);line-height:1;text-align:center}
+.eng{background:var(--paper2);color:var(--ink);border-radius:26px;padding:20px;display:grid;gap:12px;justify-items:center;text-align:center;cursor:pointer;border:0}
+.eng img{width:min(220px,100%);aspect-ratio:1;object-fit:cover;border-radius:18px}
+.eng .lang{font-size:12.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.eng b{font-family:var(--disp);font-size:clamp(40px,5vw,60px);line-height:1}
+.bridgenote{margin-top:22px;font-size:15px;color:#CDBB97;max-width:var(--meas)}
+@media (max-width:820px){.bridgegrid{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+
+/* reasons */
+.reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border-top:2.5px solid var(--ink)}
+.reason{padding:24px 24px 26px 0;border-bottom:1.5px solid var(--line)}
+.reason:nth-child(3n+2),.reason:nth-child(3n){padding-left:24px;border-left:1.5px solid var(--line)}
+.reason h3{font-size:24px;margin-bottom:8px}
+.reason p{color:var(--muted);font-size:16px}
+@media (max-width:820px){.reasons{grid-template-columns:1fr}.reason:nth-child(n){padding-left:0;border-left:0}}
+
+/* lesson steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+.step{background:var(--card);border-radius:22px;padding:22px;border:2px solid var(--line)}
+.step .k{font-family:var(--disp);font-weight:800;font-size:44px;line-height:1;color:var(--laila)}
+.step h3{font-size:22px;margin:8px 0 6px}
+.step p{font-size:15.5px;color:var(--muted)}
+.mods{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.mods span{background:var(--paper2);border:2px solid var(--line);border-radius:999px;padding:5px 14px;font-weight:800;font-size:15px}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* retry chorus */
+.chorus{background:var(--paper2)}
+.chorusgrid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,64px);align-items:center}
+.lines{display:grid;gap:10px}
+.line{display:flex;gap:12px;align-items:center;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:10px 14px;cursor:pointer;text-align:left;width:100%}
+.line:hover,.line.on{border-color:var(--c)}
+.line q{quotes:none;font-weight:800;font-size:17px;display:block}
+.line small{display:block;color:var(--muted);font-size:13.5px}
+.line .tag{margin-left:auto;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+@media (max-width:820px){.chorusgrid{grid-template-columns:1fr}}
+
+/* games */
+.gtabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:30px}
+.gtab{border:2.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 18px;font-family:var(--disp);font-weight:800;font-size:17px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.gtab i{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.gtab[aria-selected="true"]{background:var(--c);border-color:var(--c);color:#fff}
+.gtab[aria-selected="true"] i{background:#fff}
+.gpanel{margin-top:22px}
+.gintro{font-size:16.5px;color:var(--muted);max-width:var(--meas);margin-bottom:18px}
+.ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ggrid.three{grid-template-columns:repeat(3,1fr)}
+.ggrid figure{margin:0;background:var(--card);border-radius:18px;padding:8px;border:2px solid var(--line)}
+.ggrid img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;max-width:100%}
+.ggrid figcaption{font-family:var(--disp);font-weight:800;font-size:16.5px;padding:8px 4px 2px;line-height:1.2}
+.ggrid figcaption small{display:block;font-family:var(--body);font-weight:600;font-size:13.5px;color:var(--muted);margin-top:2px}
+.pcmgames{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pcmgames div{background:var(--cl);border-radius:18px;padding:16px;border:2px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.pcmgames b{font-family:var(--disp);font-size:20px;display:block;line-height:1.15}
+.pcmgames small{color:var(--muted);font-size:14px}
+@media (max-width:900px){.ggrid,.ggrid.three,.pcmgames{grid-template-columns:1fr 1fr}}
+
+/* status board */
+.board{margin-top:34px;overflow-x:auto}
+.board table{width:100%;border-collapse:collapse;min-width:720px;font-size:15.5px}
+.board th{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 14px 10px;font-weight:800}
+.board td{padding:14px;border-top:1.5px solid var(--line);vertical-align:top}
+.board td:first-child{font-family:var(--disp);font-weight:800;font-size:22px;border-left:6px solid var(--c);white-space:nowrap}
+.board tr td:nth-child(2){font-weight:800}
+
+/* offline */
+.offline{background:var(--ink);color:var(--paper2)}
+.offline .eyebrow,.offline .lead{color:#D9C7A3}
+.offtop{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,5vw,56px);align-items:center}
+.offph{margin:0;border-radius:28px;overflow:hidden;aspect-ratio:1;background:#3a2c1f;box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
+.offph img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:900px){.offtop{grid-template-columns:1fr}}
+.login{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;counter-reset:s}
+.login div{background:#40322A;border-radius:20px;padding:20px}
+.login div::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--laila);color:var(--ink);font-family:var(--disp);font-weight:800;margin-bottom:12px}
+.login h3{font-size:21px;margin-bottom:6px}
+.login p{font-size:15px;color:#D9C7A3}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.facts div{border:2px solid #5B4938;border-radius:20px;padding:18px 20px}
+.facts b{font-family:var(--disp);font-size:30px;display:block;line-height:1.1;color:var(--laila)}
+.facts span{font-size:15px;color:#D9C7A3}
+@media (max-width:900px){.login{grid-template-columns:1fr 1fr}.facts{grid-template-columns:1fr}}
+@media (max-width:480px){.login{grid-template-columns:1fr}}
+
+/* who */
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.who figure{margin:0}
+.kph{display:block;position:relative;aspect-ratio:1/1;border-radius:22px;overflow:hidden;background:linear-gradient(100deg,#EFE3C8 30%,#F8F0DE 50%,#EFE3C8 70%) 0 0/250% 100%;animation:shim 1.4s linear infinite}
+.kph:has(img.in){animation:none;background:var(--paper2)}
+.kph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+.kph img.in{opacity:1}
+@keyframes shim{to{background-position:-250% 0}}
+@media (max-width:820px){.who .kph{max-width:420px}}
+.who b{display:block;font-family:var(--disp);font-size:21px;margin:12px 0 4px;line-height:1.2}
+.who small{font-size:15px;color:var(--muted);display:block}
+@media (max-width:820px){.who{grid-template-columns:1fr}}
+
+/* pilot */
+.pilot{background:var(--ha);color:#fff}
+.pilot .eyebrow{color:#E3F3E9}
+.pilot .lead{color:#E3F3E9}
+.pilotgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,60px);margin-top:30px;align-items:start}
+.pilotlist{display:grid;gap:12px}
+.pilotlist div{background:rgba(0,0,0,.14);border-radius:18px;padding:16px 18px}
+.pilotlist b{font-family:var(--disp);font-size:20px;display:block}
+.pilotlist span{font-size:15px;color:#fff}
+.need{background:#fff;color:var(--ink);border-radius:24px;padding:24px}
+.need .big{font-family:var(--disp);font-weight:800;font-size:clamp(48px,6vw,72px);line-height:1;color:var(--ha)}
+.need ul{margin:14px 0 18px;padding-left:20px;color:var(--muted)}
+@media (max-width:820px){.pilotgrid{grid-template-columns:1fr}}
+
+/* roadmap */
+.road{padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.road li{list-style:none;background:var(--card);border:2px solid var(--line);border-radius:22px;padding:22px}
+.road li b{font-family:var(--disp);font-size:21px;display:block;line-height:1.2;margin-bottom:6px}
+.road li small{font-size:15px;color:var(--muted);display:block}
+.road li .when{font-size:12.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9A5714;margin-bottom:8px;display:block}
+@media (max-width:900px){.road{grid-template-columns:1fr}}
+
+
+/* what comes next: product verticals */
+.next{background:var(--paper2)}
+.vert{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+@media (max-width:980px){.vert{grid-template-columns:1fr}}
+.vc{background:var(--card);border:2px solid var(--line);border-radius:26px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;min-width:0}
+.vstage{position:relative;height:310px;background:var(--cl);display:grid;place-items:center;overflow:hidden}
+.vx{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.vx h3{font-family:var(--disp);font-size:24px;line-height:1.15}
+.vx p{color:var(--muted);font-size:15.5px}
+.soon{align-self:flex-start;background:var(--c);color:#fff;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:999px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:6px}.chips span{border:2px solid var(--line);border-radius:999px;padding:2px 11px;font-weight:700;font-size:13px}
+.ph{width:132px;height:236px;background:#2A1F15;border-radius:24px;padding:7px;box-shadow:0 18px 34px -16px rgba(51,38,26,.55);position:relative;z-index:2;animation:bob 6s ease-in-out infinite}
+.phs{background:#fff;border-radius:18px;height:100%;padding:12px 9px;display:flex;flex-direction:column;gap:8px;overflow:hidden;position:relative}
+.phs small{font-weight:800;font-size:10.5px;text-align:center;color:var(--ink)}
+.ani{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ani span{display:grid;justify-items:center;gap:2px;font-size:9.5px;font-weight:800;background:var(--cl);border-radius:10px;padding:5px 2px}
+.ani img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #fff}
+.ani span:nth-child(2){animation:pick 6s ease-in-out infinite}
+.ani .add{display:grid;place-items:center;font-size:22px;color:var(--c);border:2px dashed var(--c);background:none}
+.nlw{position:absolute;left:50%;bottom:6px;width:46px;height:46px;transform:translateX(-50%)}.nlw svg{width:100%;height:100%}
+.web{position:absolute;right:-26px;bottom:26px;width:200px;height:134px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:20px 10px 10px;transform:rotate(-4deg);box-shadow:0 12px 26px -16px rgba(51,38,26,.45)}
+.web>i{position:absolute;top:7px;width:7px;height:7px;border-radius:50%;background:var(--line)}.web>i:nth-child(1){left:9px}.web>i:nth-child(2){left:20px}.web>i:nth-child(3){left:31px}
+.webs{display:grid;gap:8px}.webs b{font-family:var(--disp);font-size:14px}
+.bar{height:9px;border-radius:9px;background:var(--cl);overflow:hidden}.bar em{display:block;height:100%;width:70%;background:var(--c);border-radius:9px;animation:grow 5s ease-in-out infinite}.bar.s em{width:45%;animation-delay:1.2s}
+.vc.c-ha .ph{transform:translateX(-46px)}
+.rev{align-items:stretch}
+.rtop{display:flex;align-items:center;gap:6px}.rbar{flex:1;height:7px;background:var(--cl);border-radius:7px;overflow:hidden}.rbar em{display:block;height:100%;width:60%;background:var(--c);animation:grow 5s ease-in-out infinite}
+.streak{font-size:9px;font-weight:800;color:#C2410C;background:#FFEDD5;border-radius:999px;padding:1px 6px}
+.rimg{width:62px;height:62px;object-fit:cover;border-radius:14px;align-self:center}
+.ropt{display:grid;gap:5px}.ropt span{border:2px solid var(--line);border-radius:10px;font-weight:800;font-size:11px;text-align:center;padding:4px}
+.ropt .ok{animation:okglow 5s ease-in-out infinite}
+.flag{position:absolute;inset:auto 0 16px;display:flex;justify-content:center;gap:6px;z-index:3}
+.flag span{background:var(--c);color:#fff;font-weight:800;font-size:12px;padding:3px 10px;border-radius:999px;box-shadow:0 4px 10px -4px rgba(0,0,0,.3)}
+.vc.c-yo .vstage{padding-bottom:40px}
+.lap{width:250px;height:168px;background:#2A1F15;border-radius:14px 14px 4px 4px;padding:8px;position:relative;box-shadow:0 22px 30px -18px rgba(51,38,26,.6);animation:bob 7s ease-in-out infinite}
+.lap:after{content:"";position:absolute;left:-18px;right:-18px;bottom:-10px;height:10px;background:#4A3A2B;border-radius:0 0 12px 12px}
+.laps{background:#fff;border-radius:8px;height:100%;padding:9px 10px;display:grid;grid-template-rows:auto 1fr auto;gap:6px}
+.lh{display:flex;justify-content:space-between;align-items:baseline}.lh b{font-size:11px}.lh small{font-size:9px;color:var(--muted)}
+.cols{display:flex;align-items:flex-end;gap:6px;height:100%}.cols i{flex:1;height:var(--h);background:var(--c);border-radius:4px 4px 0 0;transform-origin:bottom;animation:rise 6s ease-in-out infinite}
+.cols i:nth-child(2){animation-delay:.2s}.cols i:nth-child(3){animation-delay:.4s}.cols i:nth-child(4){animation-delay:.6s}.cols i:nth-child(5){animation-delay:.8s}.cols i:nth-child(6){animation-delay:1s}
+.rows{display:grid;gap:3px}.rows span{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:6px;font-size:8.5px}.rows em{display:block;height:6px;width:var(--w);background:var(--cl);border:1px solid var(--c);border-radius:6px}
+.later{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+@media (max-width:860px){.later{grid-template-columns:1fr}}
+.later div{border:2px dashed var(--line);border-radius:20px;padding:18px 20px}
+.later b{font-family:var(--disp);font-size:19px;display:block;line-height:1.2;margin-bottom:4px}.later small{font-size:14.5px;color:var(--muted);display:block}
+.later .when{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9A5714;display:block;margin-bottom:6px}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+@keyframes grow{0%{width:20%}60%,100%{width:85%}}
+@keyframes pick{0%,40%,100%{box-shadow:none}50%,80%{box-shadow:0 0 0 3px var(--c)}}
+@keyframes okglow{0%,45%,100%{border-color:var(--line);background:#fff}55%,85%{border-color:var(--c);background:var(--cl)}}
+@keyframes rise{0%{transform:scaleY(.3)}35%,100%{transform:scaleY(1)}}
+
+.tv{display:grid;grid-template-columns:54px 1fr;gap:8px;align-items:center;background:var(--cl);border-radius:8px;padding:6px}
+.tv .pl{height:38px;border-radius:6px;background:var(--c);position:relative}.tv .pl:after{content:"";position:absolute;left:50%;top:50%;transform:translate(-35%,-50%);border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.tvt b{display:block;font-size:9.5px;line-height:1.25}.tvt small{font-size:8.5px;color:var(--muted)}
+.laps.tr .rows em{background:var(--c);border:0}.laps.tr .rows em.go{animation:grow2 5s ease-in-out infinite}
+@keyframes grow2{0%{width:15%}60%,100%{width:45%}}
+.btnrow{display:flex;flex-wrap:wrap;gap:12px 14px;margin-top:22px}
+.ctdeck{margin-top:18px}
+/* founder */
+.founder .wrap{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(24px,5vw,64px);align-items:center}
+.founder img{border-radius:28px;width:100%;aspect-ratio:1;object-fit:cover;max-width:100%}
+.creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.creds span{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:5px 14px;font-weight:700;font-size:14.5px}
+@media (max-width:760px){.founder .wrap{grid-template-columns:1fr}.founder img{max-width:280px}}
+
+/* contact */
+.ask{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:32px}
+.ask div{background:var(--card);border-radius:20px;padding:20px;border:2px solid var(--line)}
+.ask b{font-family:var(--disp);font-size:20px;display:block}
+.ask small{font-size:15px;color:var(--muted)}
+.ask .hl{border-color:var(--laila);background:#FFF4E2}
+@media (max-width:820px){.ask{grid-template-columns:1fr}}
+footer{padding-block:28px;border-top:1.5px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px 24px;flex-wrap:wrap}
+.fbrand{display:flex;flex-direction:column;gap:2px}.fbrand b{font-family:var(--disp);font-size:22px;color:var(--ink)}
+.flinks{display:flex;flex-wrap:wrap;gap:10px}
+.flinks a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:2px solid var(--line);border-radius:999px;background:var(--paper2);color:var(--ink);font-weight:700;text-decoration:none}
+.flinks a:hover{border-color:var(--ink)}.flinks svg{width:16px;height:16px;flex:none}
+footer .fcopy{flex-basis:100%;font-size:13px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* play: listen and find */
+.game{background:var(--paper2)}
+.gwrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(24px,5vw,56px);align-items:start}
+.gbox{background:#2A1F15;border-radius:30px;padding:12px;box-shadow:0 26px 60px -24px rgba(51,38,26,.5)}
+.gscr{background:var(--cl);border-radius:20px;padding:16px;display:grid;gap:14px;transition:background .4s}
+.gtop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.gdots{display:flex;gap:6px}
+.gdots i{width:12px;height:12px;border-radius:50%;background:rgba(51,38,26,.15)}
+.gdots i.done{background:var(--c)}
+.gask{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:10px 12px}
+.gask .gb{width:60px;height:60px}
+.gask .gb svg{width:100%;height:100%}
+.gask q{quotes:none;font-weight:800;font-size:17px;display:block;line-height:1.3}
+.gask small{color:var(--muted);font-size:13.5px}
+.ear{width:46px;height:46px;border-radius:50%;border:0;background:var(--c);color:#fff;cursor:pointer;display:grid;place-items:center}
+.ear svg{width:22px;height:22px;fill:#fff}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{position:relative;border:0;background:none;border-radius:14px;padding:0;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .2s,box-shadow .2s}
+.opt img{width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#fff;border-radius:14px;display:block;max-width:100%}
+.opt:hover{transform:translateY(-2px)}
+.opt.right{outline:4px solid var(--ha);outline-offset:-4px;box-shadow:0 0 0 6px color-mix(in srgb,var(--ha) 30%,transparent),0 0 28px color-mix(in srgb,var(--ha) 60%,transparent)}
+.opt.wrong{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.opt .lbl{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);font-family:var(--disp);font-weight:800;font-size:18px;color:#fff;background:var(--ha);border-radius:999px;padding:2px 14px;line-height:1.4}
+.opt .lbl:empty{display:none}
+.gload{display:grid;justify-items:center;align-content:center;gap:12px;text-align:center;min-height:340px;padding:20px}
+.gload b{font-family:var(--disp);font-size:22px}
+.gload small{color:var(--muted);font-size:14px}
+.gbar{width:min(260px,80%);height:10px;border-radius:99px;background:rgba(0,0,0,.08);overflow:hidden}
+.gbar i{display:block;height:100%;width:0;background:var(--c,var(--ha));border-radius:99px;transition:width .2s}
+.gspin{width:46px;height:46px;border-radius:50%;border:5px solid rgba(0,0,0,.08);border-top-color:var(--c,var(--ha));animation:gsp 0.9s linear infinite}
+@keyframes gsp{to{transform:rotate(360deg)}}
+.gend{display:grid;justify-items:center;gap:10px;text-align:center;padding:30px 10px}
+.gend b{font-family:var(--disp);font-size:34px}
+.gend p{color:var(--muted)}
+.gside .gtabs{margin-top:22px}
+.gside ol{margin:22px 0 0;padding-left:20px;color:var(--muted);display:grid;gap:6px}
+@media (max-width:860px){.gwrap{grid-template-columns:1fr}}
+
+[hidden]{display:none!important}
+/* hero scenes */
+.scene{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/7;background:#fff}
+.scene img{width:100%;height:100%;object-fit:cover;display:block;max-width:100%;transition:opacity .4s}
+.scene .cap{position:absolute;left:10px;bottom:8px;background:rgba(255,253,247,.94);border-radius:999px;padding:2px 12px;font-family:var(--disp);font-weight:800;font-size:13.5px}
+.scene.chips{aspect-ratio:auto}
+.scene.chips .chipset{position:relative}
+.scene .chipset{position:absolute;inset:0;display:flex;flex-wrap:wrap;gap:6px;align-content:center;justify-content:center;padding:12px;background:var(--pcmL)}
+.scene .chipset span{background:#fff;border:2px solid color-mix(in srgb,var(--pcm) 35%,transparent);border-radius:999px;padding:2px 10px;font-family:var(--disp);font-weight:800;font-size:13.5px}
+
+/* contact form (sample: does not send) */
+.ctgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:32px;align-items:start}
+.ctgrid .ask{margin-top:0;grid-template-columns:1fr 1fr}
+.form{background:var(--card);border:2.5px solid var(--ink);border-radius:24px;padding:22px;display:grid;gap:8px;box-shadow:0 6px 0 var(--ink)}
+.form h3{font-size:26px;margin-bottom:4px}
+.form label{font-weight:800;font-size:14px;margin-top:6px}
+.form input,.form select,.form textarea{font:inherit;font-size:16px;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;color:var(--ink);width:100%}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--pcm)}
+.form .note{font-size:14px;color:var(--muted);min-height:1.4em}
+@media (max-width:900px){.ctgrid,.ctgrid .ask{grid-template-columns:1fr}}
+/* culture: each language's own people, shared things */
+.culture{background:var(--paper2)}
+.cupick{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 22px}
+.cupick button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:8px 18px;font-family:var(--disp);font-weight:800;font-size:16px;cursor:pointer}
+.cupick button[aria-pressed="true"]{background:var(--ink);color:var(--paper2);border-color:var(--ink)}
+.cugrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.cucard{position:relative;display:flex;flex-direction:column;background:var(--card);border:2.5px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;text-align:left;padding:0;transition:border-color .2s,transform .2s}
+.cucard:hover{border-color:var(--c)}
+.cucard.on{border-color:var(--c);box-shadow:0 0 0 4px var(--cl)}
+.cucard .ph{aspect-ratio:1/1;background:var(--cl);display:grid;place-items:center;overflow:hidden}
+.cucard .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.cucard.on .ph img{transform:scale(1.04)}
+.cucard .ph .none{font-family:var(--disp);font-weight:800;font-size:clamp(30px,4vw,46px);color:var(--c);padding:16px;text-align:center;line-height:1.05}
+.cucard .ph .none small{display:block;font-family:var(--body);font-size:14px;font-weight:700;color:var(--muted);margin-top:10px;line-height:1.35}
+.cucard .tx{padding:14px 16px 16px;display:flex;align-items:center;gap:12px}
+.cucard .tx .lang{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.cucard .tx b{display:block;font-family:var(--disp);font-size:24px;line-height:1.1}
+.cucard .tx small{display:block;color:var(--muted);font-size:14.5px}
+.cucard .tx .play{margin-left:auto}
+.cucard.silent .tx .play{display:none}
+.cunote{margin-top:14px;color:var(--muted);font-size:15px;max-width:var(--meas)}
+.shared{margin-top:44px;display:grid;grid-template-columns:minmax(220px,1fr) 2.4fr;gap:28px;align-items:center;border-top:2.5px solid var(--ink);padding-top:28px}
+.shared h3{font-size:28px;margin-bottom:8px}
+.shared p{color:var(--muted);font-size:16px}
+.shrow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.shrow figure{margin:0;background:var(--card);border:2px solid var(--line);border-radius:18px;overflow:hidden}
+.shrow img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.shrow figcaption{font-family:var(--disp);font-weight:800;text-align:center;padding:6px 4px 8px;font-size:16px}
+.shrow figcaption i{display:flex;justify-content:center;gap:4px;margin-top:4px}
+.shrow figcaption i span{width:9px;height:9px;border-radius:50%}
+@media (max-width:900px){.cugrid{grid-template-columns:1fr 1fr}.shared{grid-template-columns:1fr}}
+@media (max-width:560px){.shrow{grid-template-columns:repeat(3,1fr)}.cucard .tx b{font-size:20px}.cucard .ph .none{padding:10px;font-size:28px}.cucard .ph .none small{font-size:12px;margin-top:6px}}
+
+/* learn: hear, say, judged, play, offline */
+.learn{background:var(--ink);color:var(--paper2)}
+.learn .eyebrow{color:#C9B48E}
+.learn .lead{color:#DCCBA8}
+.lgrid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(24px,4vw,56px);margin-top:36px;align-items:start}
+.lsteps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lsteps button{width:100%;display:grid;grid-template-columns:46px 1fr;gap:4px 14px;text-align:left;background:transparent;border:2px solid #4A3A2B;border-radius:18px;padding:14px 16px;cursor:pointer;color:var(--paper2);transition:background .25s,border-color .25s}
+.lsteps .n{grid-row:span 2;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:22px;background:#45362A;color:var(--laila)}
+.lsteps b{font-family:var(--disp);font-size:22px;line-height:1.15}
+.lsteps small{font-size:15px;color:#CDBB97;line-height:1.45}
+.lsteps button[aria-selected="true"]{background:#45362A;border-color:var(--laila)}
+.lsteps button[aria-selected="true"] .n{background:var(--laila);color:var(--ink)}
+.ltab{background:#1E160E;border-radius:34px;padding:14px;box-shadow:0 30px 60px -30px #000;position:sticky;top:90px}
+.lscr{background:var(--paper2);color:var(--ink);border-radius:22px;min-height:440px;padding:22px;display:grid;align-content:center;justify-items:center;gap:16px;text-align:center;position:relative;overflow:hidden}
+.lscr .cap{font-size:15.5px;color:var(--muted);max-width:42ch}
+.lscr h3{font-size:26px}
+.lpane[hidden]{display:none!important}
+.lpane{display:grid;justify-items:center;gap:16px;animation:lin .35s ease}
+@keyframes lin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lpic{width:170px;height:170px;border-radius:24px;object-fit:cover;border:4px solid #fff;box-shadow:0 10px 24px -12px rgba(0,0,0,.4);transition:box-shadow .3s}
+.lpic.right{box-shadow:0 0 0 6px var(--ha),0 0 36px 8px rgba(46,139,87,.55)}
+.lpic.miss{animation:shake .45s}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.lbub{background:#fff;border-radius:18px;padding:12px 18px;box-shadow:0 3px 0 var(--line);font-family:var(--disp);font-weight:800;font-size:22px}
+.lbub small{display:block;font-family:var(--body);font-weight:700;font-size:14px;color:var(--muted)}
+.lbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.lbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:10px 18px;font-family:var(--disp);font-weight:800;font-size:16px;cursor:pointer;background:var(--c,var(--laila));color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.lbtn svg{width:14px;height:14px;fill:currentColor}
+.mic{width:130px;height:130px;border-radius:50%;background:var(--red);display:grid;place-items:center;position:relative}
+.mic svg{width:54px;height:54px;fill:#fff}
+.mic::before,.mic::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid var(--red);animation:ring 1.8s ease-out infinite}
+.mic::after{animation-delay:.9s}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.7);opacity:0}}
+.wave{display:flex;gap:5px;align-items:center;height:46px}
+.wave i{width:7px;border-radius:4px;background:var(--ink);animation:wv 1s ease-in-out infinite}
+.wave i:nth-child(2n){animation-delay:.15s}.wave i:nth-child(3n){animation-delay:.3s}.wave i:nth-child(4n){animation-delay:.45s}
+@keyframes wv{0%,100%{height:8px}50%{height:42px}}
+.said{font-family:var(--disp);font-weight:800;font-size:30px}
+.said small{display:block;font-family:var(--body);font-size:14px;font-weight:700;color:var(--muted)}
+.lgame{width:100%;max-width:420px;border-radius:18px;overflow:hidden;position:relative}
+.lgame img{width:100%;display:block}
+.lgame .gp{position:absolute;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,253,247,.94);border-radius:14px;padding:8px 12px;font-family:var(--disp);font-weight:800;font-size:15px}
+.gpdots{display:flex;gap:5px}
+.gpdots i{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.gpdots i.d{background:var(--laila)}
+.off{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:420px}
+.off div{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;text-align:left;font-size:14.5px;color:var(--muted)}
+.off b{display:block;font-family:var(--disp);font-size:18px;color:var(--ink)}
+.nowifi{width:84px;height:84px;border-radius:50%;background:var(--haL);display:grid;place-items:center}
+.nowifi svg{width:46px;height:46px}
+.lnote{margin-top:14px;font-size:13.5px;color:#BCA983;text-align:center}
+@media (max-width:900px){.lgrid{grid-template-columns:1fr}.ltab{position:static}.lscr{min-height:400px}}
+@media (prefers-reduced-motion:reduce){.mic::before,.mic::after,.wave i,.lpane{animation:none}}
+
+/* versions: main, or one language at the centre */
+.ctbot{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.note.ok{color:#1d7a3a}.note.bad{color:#b3261e}
+.navdeck{display:inline-flex;align-items:center;gap:7px;margin-left:22px;padding:7px 15px;border:2px solid var(--ink);border-radius:999px;font-weight:800;font-size:14.5px;text-decoration:none;color:var(--ink);white-space:nowrap;transition:background .15s,color .15s}
+.navdeck svg{width:15px;height:15px}.navdeck:hover{background:var(--ink);color:#fff}.navdeck .ds{display:none}
+.navdeck+.btn{margin-left:10px!important}
+@media (max-width:1120px){.navdeck{margin-left:auto}}
+.navl a{white-space:nowrap}
+@media (max-width:380px){.nav .btn{display:none}}
+@media (max-width:440px){.nav .wrap{gap:8px}.nav .btn{padding:8px 12px;font-size:14px;white-space:nowrap}.navdeck{padding:6px 11px;font-size:14px}.navdeck .dl{display:none}.navdeck .ds{display:inline}}
+.vsw{display:flex;gap:6px;flex-wrap:wrap;width:100%;margin-top:4px}
+.vsw button{border:2px solid var(--line);background:var(--paper2);border-radius:999px;padding:4px 14px;font-family:var(--disp);font-weight:800;font-size:14px;cursor:pointer}
+.vsw button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hgreet{font-family:var(--disp);font-weight:800;font-size:clamp(28px,3.4vw,40px);color:var(--vc);line-height:1;margin-bottom:12px}
+
+body[data-v] .hero h1 b{color:var(--vc)}
+body[data-v="ha"]{--vc:var(--ha);--vl:var(--haL)} body[data-v="yo"]{--vc:var(--yo);--vl:var(--yoL)} body[data-v="ig"]{--vc:var(--ig);--vl:var(--igL)} body[data-v="pcm"]{--vc:var(--pcm);--vl:var(--pcmL)}
+.homeband{padding:0}
+.homeband figure{margin:0;position:relative;border-radius:28px;overflow:hidden;box-shadow:0 24px 50px -30px rgba(0,0,0,.5)}
+.homeband img{width:100%;display:block;aspect-ratio:1006/601;object-fit:cover;max-height:560px}
+.homeband figcaption{position:absolute;left:0;right:0;bottom:0;padding:60px clamp(18px,3vw,36px) clamp(18px,3vw,30px);background:linear-gradient(transparent,rgba(30,20,10,.82));color:#fff}
+.homeband figcaption b{display:block;font-family:var(--disp);font-size:clamp(24px,3vw,38px);line-height:1.1}
+.homeband figcaption span{display:block;max-width:60ch;font-size:clamp(15px,1.6vw,18px);opacity:.92;margin-top:6px}
+.board tr.me td{background:var(--cl)}
+.home.me{box-shadow:0 0 0 3px var(--c)}
+@media (max-width:600px){.homeband figcaption{position:static;background:var(--ink);padding:16px}}
+
+/* game tiles: still first, Hausa loops load only in view; tap opens a large view */
+.gt{display:flex;flex-direction:column;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:0;overflow:hidden;cursor:pointer;position:relative;transition:transform .2s,border-color .2s,box-shadow .2s}
+.gt:hover{transform:translateY(-3px);border-color:var(--c);box-shadow:0 14px 26px -18px rgba(0,0,0,.45)}
+.gtm{display:block;position:relative;aspect-ratio:1006/601;overflow:hidden;background:var(--cl)}
+.gtm img,.gtm video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.gtm video{opacity:0;transition:opacity .5s}
+.gtm video.on{opacity:1}
+.gt:not([data-loop]) .gtm img{animation:drift 22s ease-in-out infinite alternate;transform-origin:50% 60%}
+.gt.off .gtm img{animation-play-state:paused}
+@keyframes drift{from{transform:scale(1.02) translateX(-1%)}to{transform:scale(1.1) translateX(1.5%)}}
+.gtx{display:block;padding:10px 12px 12px}
+.gtx b{display:block;font-family:var(--disp);font-size:17px;line-height:1.2}
+.gtx small{display:block;font-size:13.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.gtz{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:rgba(255,253,247,.92);display:grid;place-items:center;color:var(--ink);opacity:.85}
+.gtz svg{width:16px;height:16px}
+.glb{border:0;padding:0;background:transparent;max-width:min(1100px,calc(100vw - 32px));width:100%}
+.glb::backdrop{background:rgba(30,20,10,.72)}
+.glbin{background:var(--card);border-radius:24px;overflow:hidden;box-shadow:0 30px 70px -30px #000}
+.glbm{position:relative;aspect-ratio:1006/601;background:#222}
+.glbm img,.glbm video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.glbx{padding:16px 20px 20px;display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.glbx h3{font-size:clamp(24px,3vw,32px)}
+.glbx p{color:var(--muted);margin-top:4px;max-width:60ch}
+.glbx .pill{margin-top:6px;display:inline-block}
+.glbclose{position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,253,247,.95);cursor:pointer;display:grid;place-items:center;font-size:24px;line-height:1;font-family:var(--disp);font-weight:800;z-index:2}
+@media (prefers-reduced-motion:reduce){.gt .gtm img{animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="b3" cx="38%" cy="30%" r="80%"><stop offset="0%" stop-color="#F6B45A"/><stop offset="55%" stop-color="#EC9B3C"/><stop offset="100%" stop-color="#D07E22"/></radialGradient>
+  <radialGradient id="be3" cx="45%" cy="38%" r="70%"><stop offset="0%" stop-color="#FCE3B4"/><stop offset="100%" stop-color="#F4C578"/></radialGradient>
+  <linearGradient id="w3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E58C2E"/><stop offset="100%" stop-color="#C6741F"/></linearGradient>
+  <linearGradient id="c3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EF5A4C"/><stop offset="100%" stop-color="#CE3A2C"/></linearGradient>
+  <radialGradient id="e3" cx="40%" cy="35%" r="70%"><stop offset="0%" stop-color="#4a4033"/><stop offset="100%" stop-color="#23201a"/></radialGradient>
+</defs></svg>
+
+
+<div class="rv" role="note"><div class="wrap">
+  <b>Redesign sample for Sani, not live.</b>
+  <span>The whole site rebuilt around one idea: learn to read English from the language you already speak. Hausa works today; Yorùbá, Igbo and Naijá Pidgin are in testing. Every clip on this page is the app's own recording.</span>
+  <div class="vsw" role="group" aria-label="Page version"><b style="align-self:center;margin-right:4px">Version:</b><button type="button" aria-pressed="true" data-v="">Main landing page</button><button type="button" aria-pressed="false" data-v="ha">Hausa</button><button type="button" aria-pressed="false" data-v="yo">Yorùbá</button><button type="button" aria-pressed="false" data-v="ig">Igbo</button><button type="button" aria-pressed="false" data-v="pcm">Pidgin</button></div>
+</div></div>
+
+<nav class="nav" aria-label="Main"><div class="wrap">
+  <a class="brand" href="#top" aria-label="Kratu"><svg class="laila-v" viewBox="0 0 240 240" aria-hidden="true">
+  <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/><ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+  <path class="wing-l" d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+  <path class="wing wing-r" d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+  <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+  <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+  <circle cx="86" cy="152" r="11" fill="#F4A7B1" opacity=".85"/><circle cx="154" cy="152" r="11" fill="#F4A7B1" opacity=".85"/>
+  <g class="eye"><circle cx="102" cy="131" r="15" fill="#fff"/><circle cx="104" cy="133" r="8" fill="url(#e3)"/><circle cx="107" cy="129" r="3" fill="#fff"/></g>
+  <g class="eye"><circle cx="138" cy="131" r="15" fill="#fff"/><circle cx="136" cy="133" r="8" fill="url(#e3)"/><circle cx="139" cy="129" r="3" fill="#fff"/></g>
+  <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+</svg><span><i>K</i><i>r</i><i>a</i><i>t</i><i>u</i></span></a>
+  <div class="navl">
+    <a href="#languages">Languages</a><a href="#try">Try now</a><a href="#learn">How they learn</a><a href="#games">Games</a><a href="#offline">Offline AI</a><a href="#pilot">The pilot</a><a href="#contact">Contact</a>
+  </div>
+  <a class="navdeck" href="https://www.kratu.ng/assets/Kratu-Deck.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1h7l3 3v11H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5.5 8h5M5.5 11h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="dl">Pitch deck</span><span class="ds">Deck</span></a>
+  <a class="btn btn-p" href="#contact">Partner with us</a>
+</div></nav>
+
+<main id="top">
+<header class="hero">
+  <div class="greets" aria-hidden="true">
+    <span style="left:56%;top:22%;font-size:46px;color:var(--ha)" data-t="Sannu"></span>
+    <span style="left:38%;top:4%;font-size:34px;color:var(--yo);animation-delay:-3s" data-t="Ẹ káàbọ̀"></span>
+    <span style="left:84%;top:10%;font-size:40px;color:var(--ig);animation-delay:-6s" data-t="Nnọọ"></span>
+    <span style="left:2%;top:88%;font-size:36px;color:var(--pcm);animation-delay:-9s" data-t="How far"></span>
+    <span style="left:50%;top:90%;font-size:30px;color:var(--yo);animation-delay:-5s" data-t="Báwo ni"></span>
+    <span style="left:80%;top:86%;font-size:38px;color:var(--ig);animation-delay:-2s" data-t="Kedu"></span>
+  </div>
+  <div class="wrap">
+    <div>
+      <div class="hgreet" id="hGreet" hidden></div><div class="eyebrow" id="hEye">AI that teaches with the internet off</div>
+      <h1 id="hH1">Learn to read English from the language you already speak<span aria-hidden="true">.</span></h1>
+      <p class="lead" id="hLead">Kratu is a talking learning app for children aged six to ten. A guide speaks to the child in <b class="sw" id="heroLang">Hausa</b> and teaches English letters, words, numbers, spelling and reading. Nothing to read, no password, and no signal needed once it is installed.</p>
+      <div class="heroact">
+        <a class="btn btn-p" href="#languages" id="hBtn">Hear the four guides</a>
+        <a class="btn btn-s" href="#try">Try it now</a>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="screen c-ha" id="screen">
+        <div class="tabs" role="tablist" aria-label="Choose a language">
+          <button class="tab c-ha" role="tab" aria-selected="true" data-l="ha"><i></i>Hausa</button>
+          <button class="tab c-yo" role="tab" aria-selected="false" data-l="yo"><i></i>Yorùbá</button>
+          <button class="tab c-ig" role="tab" aria-selected="false" data-l="ig"><i></i>Igbo</button>
+          <button class="tab c-pcm" role="tab" aria-selected="false" data-l="pcm"><i></i>Naijá</button>
+        </div>
+        <div class="birdrow">
+          <button class="bird" id="bird" type="button" aria-label="Hear the guide"><svg class="laila-v" viewBox="0 0 240 240" aria-label="Laila">
+  <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/><ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+  <path class="wing-l" d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+  <path class="wing wing-r" d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+  <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+  <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+  <circle cx="86" cy="152" r="11" fill="#F4A7B1" opacity=".85"/><circle cx="154" cy="152" r="11" fill="#F4A7B1" opacity=".85"/>
+  <g class="eye"><circle cx="102" cy="131" r="15" fill="#fff"/><circle cx="104" cy="133" r="8" fill="url(#e3)"/><circle cx="107" cy="129" r="3" fill="#fff"/></g>
+  <g class="eye"><circle cx="138" cy="131" r="15" fill="#fff"/><circle cx="136" cy="133" r="8" fill="url(#e3)"/><circle cx="139" cy="129" r="3" fill="#fff"/></g>
+  <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+</svg></button>
+          <div class="bub" aria-live="polite">
+            <div class="who" id="who">Laila</div>
+            <q id="say">Sunana Laila. Ni ce abokiyar koyonka.</q>
+            <small id="en">My name is Laila. I am your learning friend.</small>
+          </div>
+        </div>
+        <div class="screenfoot"><span>Tap the bird to hear her</span><span class="pill ready" id="state">Works today</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="bridge" id="languages"><div class="wrap">
+  <div class="eyebrow">One English, four ways in</div>
+  <h2>Every word starts at home</h2>
+  <p class="lead">The guide names the thing in the word the child already knows, then in English. The child says the English back and the tablet listens. Pick a word, then tap any language.</p>
+  <div class="words" role="group" aria-label="Pick a word">
+    <button class="wbtn" aria-pressed="true" data-w="goat"><img loading="lazy" src="a/find-goat-img.webp" alt="">goat</button>
+    <button class="wbtn" aria-pressed="false" data-w="cat"><img loading="lazy" src="a/find-cat-img.webp" alt="">cat</button>
+    <button class="wbtn" aria-pressed="false" data-w="book"><img loading="lazy" src="a/find-book-img.webp" alt="">book</button>
+  </div>
+  <div class="bridgegrid">
+    <div class="homes" id="homes"></div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <button class="eng" id="eng" type="button"><span class="lang">Nigerian English</span><img loading="lazy" id="engImg" src="a/find-goat-img.webp" alt=""><b id="engWord">goat</b><span class="play" style="--c:var(--red)"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span></button>
+  </div>
+  <p class="bridgenote">In Pidgin many everyday words are already the English ones, which gives a Pidgin-speaking child a head start.</p>
+</div></section>
+
+<section class="game" id="try"><div class="wrap gwrap">
+  <div class="gside">
+    <div class="eyebrow">Try it now</div>
+    <h2>Listen and find, in your language</h2>
+    <p class="lead">This is one of Kratu's real lessons. The guide names a thing in her language. Tap the right picture. Pick a language and try five rounds.</p>
+    <div class="gtabs" role="tablist" aria-label="Game language">
+      <button class="gtab c-ha" role="tab" aria-selected="true" data-pl="ha"><i></i>Hausa</button>
+      <button class="gtab c-yo" role="tab" aria-selected="false" data-pl="yo"><i></i>Yorùbá</button>
+      <button class="gtab c-ig" role="tab" aria-selected="false" data-pl="ig"><i></i>Igbo</button>
+      <button class="gtab c-pcm" role="tab" aria-selected="false" data-pl="pcm"><i></i>Naijá</button>
+    </div>
+    <ol><li>Tap the ear to hear the word again.</li><li>A wrong tap gets "no, try again" in the guide's voice. Nothing goes red.</li><li>A right tap shows the English word.</li></ol>
+  </div>
+  <div class="gbox"><div class="gscr c-ha" id="gscr">
+    <div class="gtop"><span class="pill ready" id="gstate">Hausa · Laila</span><span class="gdots" id="gdots"><i></i><i></i><i></i><i></i><i></i></span></div>
+    <div class="gload" id="gload" hidden><div class="gspin" aria-hidden="true"></div><b id="gloadT">Getting ready…</b><div class="gbar"><i id="gbarI"></i></div><small id="gloadN"></small></div>
+    <div id="gplay">
+      <div class="gask"><span class="gb"><svg class="laila-v" viewBox="0 0 240 240" aria-label="Laila">
+  <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/><ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+  <path class="wing-l" d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+  <path class="wing wing-r" d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+  <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+  <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+  <circle cx="86" cy="152" r="11" fill="#F4A7B1" opacity=".85"/><circle cx="154" cy="152" r="11" fill="#F4A7B1" opacity=".85"/>
+  <g class="eye"><circle cx="102" cy="131" r="15" fill="#fff"/><circle cx="104" cy="133" r="8" fill="url(#e3)"/><circle cx="107" cy="129" r="3" fill="#fff"/></g>
+  <g class="eye"><circle cx="138" cy="131" r="15" fill="#fff"/><circle cx="136" cy="133" r="8" fill="url(#e3)"/><circle cx="139" cy="129" r="3" fill="#fff"/></g>
+  <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+</svg></span><span><q id="gq">Tap the ear to start</q><small id="gqs">The guide will say a word</small></span><button class="ear" id="gear" type="button" aria-label="Hear the word"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg></button></div>
+      <div class="opts" id="gopts" style="margin-top:14px"></div>
+    </div>
+    <div class="gend" id="gend" hidden><b id="gendT">Well done!</b><p>Five words found. Try another language.</p><button class="btn btn-p" id="gagain" type="button">Play again</button></div>
+  </div></div>
+</div></section>
+<section class="learn" id="learn"><div class="wrap">
+  <div class="eyebrow">How a child learns</div>
+  <h2>Hear it, say it, be heard, win it</h2>
+  <p class="lead">A Kratu lesson is a conversation, not a page to read. The child speaks back, the tablet listens and decides, and the practice comes as games. All of it with the internet off.</p>
+  <div class="lgrid">
+    <ol class="lsteps" role="tablist" aria-label="How a child learns" aria-orientation="vertical">
+      <li role="presentation"><button type="button" role="tab" aria-selected="true" data-s="0"><span class="n">1</span><b>Hear it at home first</b><small>The guide names the thing in the child's own language, then in English.</small></button></li>
+      <li role="presentation"><button type="button" role="tab" aria-selected="false" data-s="1"><span class="n">2</span><b>Say it back out loud</b><small>The child answers with their voice. No typing, no reading needed.</small></button></li>
+      <li role="presentation"><button type="button" role="tab" aria-selected="false" data-s="2"><span class="n">3</span><b>Heard and judged on the spot</b><small>Speech recognition on the tablet decides if it was right. A miss gets "try again" in their language, never a red cross.</small></button></li>
+      <li role="presentation"><button type="button" role="tab" aria-selected="false" data-s="3"><span class="n">4</span><b>Win it in a game</b><small>Practice comes as games set in places they know. Three in four right passes, and a lesson always sits between two games.</small></button></li>
+      <li role="presentation"><button type="button" role="tab" aria-selected="false" data-s="4"><span class="n">5</span><b>All of it offline</b><small>The voice, the listening, the judging and the login all run inside the tablet.</small></button></li>
+    </ol>
+    <div>
+      <div class="ltab"><div class="lscr" id="lscr">
+        <div class="lpane" data-s="0">
+          <img loading="lazy" class="lpic" src="a/find-goat-img.webp" alt="A goat">
+          <div class="lbub">akuya <span aria-hidden="true">→</span> goat<small>Laila, in Hausa, then English</small></div>
+          <button class="lbtn c-ha" type="button" id="lhear" style="--c:var(--ha)"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>Hear Laila say it</button>
+        </div>
+        <div class="lpane" data-s="1" hidden>
+          <div class="mic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v7a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V22h2v-3.1A7 7 0 0 0 19 12h-2z"/></svg></div>
+          <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="said">"goat"<small>The child says it. The microphone opens only after the guide stops talking.</small></div>
+        </div>
+        <div class="lpane" data-s="2" hidden>
+          <img loading="lazy" class="lpic" id="ljpic" src="a/find-goat-img.webp" alt="A goat">
+          <h3 id="ljt">What happens next?</h3>
+          <div class="lbtns">
+            <button class="lbtn" type="button" id="lright" style="--c:var(--ha)"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>The child got it</button>
+            <button class="lbtn" type="button" id="lmiss" style="--c:var(--laila)"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>The child missed</button>
+          </div>
+          <p class="cap" id="ljc">Right: the picture glows and Laila praises. Missed: a little shake and "try again". After three misses she says it herself, and the word comes back first next time.</p>
+        </div>
+        <div class="lpane" data-s="3" hidden>
+          <div class="lgame"><img loading="lazy" src="a/g-ha-karofi.webp" alt="Karofi game: dye pits in Kano"><div class="gp"><span>Karofi · spell on the dye cloths</span><span class="gpdots" aria-label="3 of 4 done"><i class="d"></i><i class="d"></i><i class="d"></i><i></i></span></div></div>
+          <p class="cap">19 Hausa games are built: letters at the durbar, spelling at the Kano dye pits, reading on the river. Yorùbá, Igbo and Pidgin games of their own are in testing.</p>
+        </div>
+        <div class="lpane" data-s="4" hidden>
+          <div class="nowifi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#2E8B57" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="19" r="1.2" fill="#2E8B57"/><path d="M3 3l18 18" stroke="#D62839"/></svg></div>
+          <h3>No signal? Nothing changes</h3>
+          <div class="off">
+            <div><b>The guide's voice</b>Every line is recorded and kept on the tablet.</div>
+            <div><b>Listening</b>Speech recognition runs on the tablet itself.</div>
+            <div><b>Judging</b>The answer is checked on the tablet, against the words on screen.</div>
+            <div><b>Login</b>Face and voice turned into numbers, never photos, never sent.</div>
+          </div>
+          <a class="lbtn" href="#offline" style="--c:var(--ink);text-decoration:none">More on the offline AI</a>
+        </div>
+      </div></div>
+      <p class="lnote">Shown in Hausa, which works today. The real app listens with the microphone; this page only plays the guide's real sounds.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="eyebrow">Why it works</div>
+  <h2>Built for a shared tablet, a child who cannot read yet, and no signal</h2>
+  <div class="reasons">
+    <div class="reason"><h3>Their language first</h3><p>The language a child thinks in explains the language school is taught in. A question in their language, an answer in Nigerian English, every time.</p></div>
+    <div class="reason"><h3>Nothing to read</h3><p>Every instruction is spoken aloud. A child who has never been to school can use it alone, from the very first screen.</p></div>
+    <div class="reason"><h3>It actually listens</h3><p>The child answers out loud and the tablet judges it on the device, with the answer narrowed to the words on the screen.</p></div>
+    <div class="reason"><h3>No password, no typing</h3><p>Logging in is looking at the guide and saying your name. The face is kept as a pattern of numbers, never a photo, and never leaves the tablet.</p></div>
+    <div class="reason"><h3>Zero bytes to run</h3><p>Install it once from any connection and it never needs another. The AI models live on the tablet.</p></div>
+    <div class="reason"><h3>A miss comes back</h3><p>Nothing goes red and nothing is failed. A word the child missed returns at the front of the next set of five, until they get it.</p></div>
+  </div>
+
+  <div class="mods" aria-label="The six lessons"><span>Letters A–Z</span><span>Words in ten topics</span><span>Spelling</span><span>Numbers to 1000</span><span>Listen and find</span><span>Reading</span></div>
+</div></section>
+
+<section class="chorus"><div class="wrap chorusgrid">
+  <div>
+    <div class="eyebrow">A miss is not a mark</div>
+    <h2>"No, try again." In four languages, and never a red cross</h2>
+    <p class="lead">Three wrong answers and the guide says it herself. After five she fills it in and moves on, so no child is ever stuck. What was missed comes back first in the next set.</p>
+  </div>
+  <div class="lines" id="retry">
+    <button class="line c-ha" data-src="a/fx-retry.ogg"><span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span><span><q>A'a, sake gwadawa.</q><small>Laila · Hausa</small></span><span class="tag">Hausa</span></button>
+    <button class="line c-yo" data-src="a/yo-app_retry.ogg"><span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span><span><q>Rárá, tún gbìyànjú.</q><small>Fúnkẹ́ · Yorùbá</small></span><span class="tag">Yorùbá</span></button>
+    <button class="line c-ig" data-src="a/ig-app_retry.ogg"><span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span><span><q>Mba, nwaa ọzọ.</q><small>Chioma · Igbo</small></span><span class="tag">Igbo</span></button>
+    <button class="line c-pcm" data-src="a/pcm-app_retry.ogg"><span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span><span><q>No, try again.</q><small>Ese · Naijá Pidgin</small></span><span class="tag">Naijá</span></button>
+  </div>
+</div></section>
+
+<section id="games"><div class="wrap">
+  <div class="eyebrow">Games from the child's own world</div>
+  <h2>Each language gets its own games</h2>
+  <p class="lead">Between lessons the child practises in a game set in a place they know: a durbar in the North, a regatta in Lagos, the lorry park at Upper Iweka. Same English, their own streets.</p>
+  <div class="gtabs" role="tablist" aria-label="Games by language">
+    <button class="gtab c-ha" role="tab" aria-selected="true" data-g="ha"><i></i>Hausa</button>
+    <button class="gtab c-yo" role="tab" aria-selected="false" data-g="yo"><i></i>Yorùbá</button>
+    <button class="gtab c-ig" role="tab" aria-selected="false" data-g="ig"><i></i>Igbo</button>
+    <button class="gtab c-pcm" role="tab" aria-selected="false" data-g="pcm"><i></i>Naijá</button>
+  </div>
+  <div class="gpanel c-ha" data-p="ha"><p class="gintro">19 games, all playable, set across the North. The scenes move as they do in the app. Tap one to see it large.</p><div class="ggrid">
+    <button class="gt" type="button" data-lang="ha" data-desc="The Sallah riders are coming! Say each letter as its horseman rides past." data-loop="a/loop-ha-sallah"><span class="gtm"><img src="a/loop-ha-sallah.webp" alt="Hawan Sallah game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Hawan Sallah</b><small>Say each letter at the durbar</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ha" data-desc="Spell the word by dyeing each letter cloth in the Kano dye pits." data-loop="a/loop-ha-karofi"><span class="gtm"><img src="a/loop-ha-karofi.webp" alt="Karofi game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Karofi</b><small>Spell on the Kano dye cloths</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ha" data-desc="Read the word on the canoe to paddle across the river." data-loop="a/loop-ha-kwale"><span class="gtm"><img src="a/loop-ha-kwale.webp" alt="Kwale-kwale game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Kwale-kwale</b><small>Read the word to cross the river</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ha" data-desc="Spell the word with the letter pots." data-loop="a/loop-ha-tukwane"><span class="gtm"><img src="a/loop-ha-tukwane.webp" alt="Tukwane game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Tukwane</b><small>Spell with the clay pots</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+  </div></div>
+  <div class="gpanel c-yo" data-p="yo" hidden><p class="gintro">19 games of its own, in testing. Tap one to see it large.</p><div class="ggrid">
+    <button class="gt" type="button" data-lang="yo" data-desc="The calabash carver cuts a letter into each calabash. Say the letter to put it on the rack." data-loop="a/loop-yo-calabash"><span class="gtm"><img src="a/loop-yo-calabash.webp" alt="Igbá Ọ̀yọ́ game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Igbá Ọ̀yọ́</b><small>Say each letter with the calabash carver</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="yo" data-desc="Tie each letter into the cloth, then dye it in indigo." data-loop="a/loop-yo-adire"><span class="gtm"><img src="a/loop-yo-adire.webp" alt="Àdìrẹ game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Àdìrẹ</b><small>Spell in tie and dye</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="yo" data-desc="Pick the regatta boat with the word for the picture." data-loop="a/loop-yo-regatta"><span class="gtm"><img src="a/loop-yo-regatta.webp" alt="Regatta game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Regatta</b><small>Read the word on the boats</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="yo" data-desc="Catch the aṣọ òkè with the right price as it rides past." data-loop="a/loop-yo-asooke"><span class="gtm"><img src="a/loop-yo-asooke.webp" alt="Aṣọ Òkè game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Aṣọ Òkè</b><small>Find the right price</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+  </div></div>
+  <div class="gpanel c-ig" data-p="ig" hidden><p class="gintro">19 games of its own, in testing. Tap one to see it large.</p><div class="ggrid">
+    <button class="gt" type="button" data-lang="ig" data-desc="Moonlight play: say the letter each child holds up." data-loop="a/loop-ig-moonlight"><span class="gtm"><img src="a/loop-ig-moonlight.webp" alt="Egwu Ọnwa game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Egwu Ọnwa</b><small>Say each letter at moonlight play</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ig" data-desc="Weave each letter into the Akwete cloth." data-loop="a/loop-ig-akwete"><span class="gtm"><img src="a/loop-ig-akwete.webp" alt="Akwete game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Akwete</b><small>Weave the word on the loom</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ig" data-desc="Pick the lorry at Upper Iweka with the word for the picture." data-loop="a/loop-ig-lorries"><span class="gtm"><img src="a/loop-ig-lorries.webp" alt="Upper Iweka game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Upper Iweka lorries</b><small>Read the word on the lorries</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="ig" data-desc="Find the box of Aba shoes with the right price." data-loop="a/loop-ig-shoes"><span class="gtm"><img src="a/loop-ig-shoes.webp" alt="Aba shoe shelf game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Aba shoe shelf</b><small>Find the right price</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+  </div></div>
+  <div class="gpanel c-pcm" data-p="pcm" hidden><p class="gintro">8 games of its own so far, in testing. Tap one to see it large. Also built: Puff-Puff, Mile 12 Market, Go-Slow Hawker and Viewing Centre.</p><div class="ggrid">
+    <button class="gt" type="button" data-lang="pcm" data-desc="The light is off on the street. Say each letter of the word and one more room lights up." data-loop="a/loop-pcm-nepa"><span class="gtm"><img src="a/loop-pcm-nepa.webp" alt="Up NEPA! game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Up NEPA!</b><small>Say each letter and a room lights up</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="pcm" data-desc="Phone cases hang on the stall with their prices. Tap the price Ese says." data-loop="a/loop-pcm-village"><span class="gtm"><img src="a/loop-pcm-village.webp" alt="Computer Village game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Computer Village</b><small>Find the right price</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="pcm" data-desc="A carnival band dances up under a letter banner. Say the letter and they dance past." data-loop="a/loop-pcm-carnival"><span class="gtm"><img src="a/loop-pcm-carnival.webp" alt="Carnival Calabar game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Carnival Calabar</b><small>Say each letter as the band dances</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+    <button class="gt" type="button" data-lang="pcm" data-desc="Say what the customer wants and Mama dishes it." data-loop="a/loop-pcm-mamaput"><span class="gtm"><img src="a/loop-pcm-mamaput.webp" alt="Mama Put game scene" loading="lazy" decoding="async" width="720" height="430"></span><span class="gtx"><b>Mama Put</b><small>Serve what the customer asks for</small></span><span class="gtz" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span></button>
+  </div></div>
+</div></section>
+
+<section class="chorus" style="background:var(--paper2)"><div class="wrap">
+  <div class="eyebrow">Where each language stands</div>
+  <h2>Hausa works today. Three more are in testing</h2>
+  <div class="board" tabindex="0" role="region" aria-label="Where each language stands"><table>
+    <thead><tr><th>Language</th><th>Guide</th><th>What is built</th><th>What is next</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr class="c-ha"><td>Hausa</td><td>Laila</td><td>Six lessons end to end, 19 games, face and voice login</td><td>First pilot: Potiskum, Yobe State</td><td><span class="pill ready">Works today</span></td></tr>
+      <tr class="c-yo"><td>Yorùbá</td><td>Fúnkẹ́</td><td>Guide voice, words, 19 games of its own</td><td>Native speakers will check every line</td><td><span class="pill test">In testing</span></td></tr>
+      <tr class="c-ig"><td>Igbo</td><td>Chioma</td><td>Guide voice, words, 19 games of its own</td><td>Native speakers will check every line</td><td><span class="pill test">In testing</span></td></tr>
+      <tr class="c-pcm"><td>Naijá Pidgin</td><td>Ese</td><td>Guide voice, words, 8 games of its own</td><td>The rest of the games, then a native-speaker check</td><td><span class="pill test">In testing</span></td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section class="offline" id="offline"><div class="wrap">
+  <div class="offtop"><div>
+  <div class="eyebrow">Offline by design</div>
+  <h2>Serious AI on a cheap tablet, with no internet</h2>
+  <p class="lead">Everything a child sees, hears and says is handled by models running inside the tablet. Install it once, then never again, including the way children log in.</p>
+  </div><figure class="offph"><img loading="lazy" src="a/kids-tablet-560.webp" srcset="a/kids-tablet-560.webp 560w, a/kids-tablet-1024.webp 1024w" sizes="(max-width:900px) calc(100vw - 32px), 520px" width="1024" height="1024" alt="Four children laughing together around one Kratu tablet at a classroom desk" decoding="async"></figure></div>
+  <div class="login">
+    <div><h3>Girl or boy</h3><p>One tap. In Hausa it decides every word the guide uses from then on.</p></div>
+    <div><h3>Look at the guide</h3><p>The camera finds one face and turns it into numbers. The picture is never written down.</p></div>
+    <div><h3>Say your name</h3><p>The voice becomes numbers too. Face and voice have to agree before anyone is let in.</p></div>
+    <div><h3>Straight back to work</h3><p>Greeted by name and returned to the lesson they stopped at.</p></div>
+  </div>
+  <div class="facts">
+    <div><b>0 bytes</b><span>of data needed after install</span></div>
+    <div><b>No photos</b><span>of any child are ever stored</span></div>
+    <div><b>1 tablet</b><span>shared by several children, each with their own record</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="eyebrow">Who it is for</div>
+  <h2>For the child who has a language, but not this one</h2>
+  <p class="lead">Every child Kratu is built for already speaks fluently, argues, jokes and bargains in the language of their home. What they do not have is the language every exam, form and job in the country is written in. They are not slow learners. They are being taught in a language nobody has taught them.</p>
+  <div class="who">
+    <figure><span class="kph"><img loading="lazy" src="a/kid-ha-boy-480.webp" srcset="a/kid-ha-boy-480.webp 480w, a/kid-ha-boy-960.webp 960w" sizes="(max-width:820px) calc(100vw - 32px), 380px" width="480" height="480" alt="A boy" data-kid="boy" decoding="async" onload="this.classList.add('in')"></span><b>The child who has never been in a classroom</b><small>They cannot be handed a worksheet, and they have never heard an instruction in English spoken slowly.</small></figure>
+    <figure><span class="kph"><img loading="lazy" src="a/kid-ha-friend-480.webp" srcset="a/kid-ha-friend-480.webp 480w, a/kid-ha-friend-960.webp 960w" sizes="(max-width:820px) calc(100vw - 32px), 380px" width="480" height="480" alt="Two friends" data-kid="friend" decoding="async" onload="this.classList.add('in')"></span><b>The child who goes, and is still behind</b><small>Enrolled and present, but every lesson arrives in English before the English does.</small></figure>
+    <figure><span class="kph"><img loading="lazy" src="a/kid-ha-girl-480.webp" srcset="a/kid-ha-girl-480.webp 480w, a/kid-ha-girl-960.webp 960w" sizes="(max-width:820px) calc(100vw - 32px), 380px" width="480" height="480" alt="A smiling girl" data-kid="girl" decoding="async" onload="this.classList.add('in')"></span><b>The child who talks all day and freezes in English</b><small>Their own language is their whole life: home, market, friends, prayers. Kratu starts there.</small></figure>
+  </div>
+</div></section>
+
+<section class="pilot" id="pilot"><div class="wrap">
+  <div class="eyebrow">The pilot</div>
+  <h2>First pilot funded. Next: Yorùbá, Igbo and Pidgin</h2>
+  <p class="lead" id="pLead">The first pilot runs in Hausa, where the app is ready. A pilot is our proof of work: about one school term, with every child measured from the first day to the last.</p>
+  <div class="pilotgrid">
+    <div class="pilotlist">
+      <div><b>Potiskum, Yobe State</b><span>Yobe's largest city, on the Kano–Maiduguri road. Roughly two in three children in the state are out of school.</span></div>
+      <div><b>Learning gain, per child</b><span>Letters, words and numbers mastered from day one to endline, worked out from what each child actually said.</span></div>
+      <div><b>Who came, and who stopped</b><span>Age, gender, in or out of school, and which children stopped coming.</span></div>
+    </div>
+    <div class="need">
+      <div class="big">₦10M</div>
+      <p>raised for the first pilot, in Potiskum.</p>
+      <ul><li>About one school term</li><li>Every child measured, first day to last</li><li>An independent evaluator</li><li>Next: Yorùbá, Igbo and Pidgin pilots</li></ul>
+      <div class="btnrow">
+      <a class="btn btn-p" href="#contact" id="pBtn">Back the next pilots</a>
+      <a class="btn btn-s" href="https://www.kratu.ng/assets/Kratu-Deck.pdf" target="_blank" rel="noopener">Read the pitch deck (PDF)</a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="next" id="next"><div class="wrap">
+  <div class="eyebrow">What comes next</div>
+  <h2>One engine, three new products</h2>
+  <p class="lead">The lessons, the guides and the voices built for centres also work on a phone and in a browser. These are the next products, all coming soon.</p>
+  <div class="vert">
+    <article class="vc c-ha">
+      <div class="vstage" aria-hidden="true">
+        <div class="ph"><div class="phs fam">
+          <small>Who is playing?</small>
+          <div class="ani"><span><img src="a/w-goat.webp" alt="" loading="lazy">Amina</span><span><img src="a/w-cat.webp" alt="" loading="lazy">Musa</span><span><img src="a/w-chicken.webp" alt="" loading="lazy">Zainab</span><span class="add">+</span></div>
+          <div class="nlw"><svg class="nl" viewBox="0 0 240 240" aria-hidden="true">
+  <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/><ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+  <path class="wing-l" d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+  <path class="wing wing-r" d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+  <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+  <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+  <circle cx="86" cy="152" r="11" fill="#F4A7B1" opacity=".85"/><circle cx="154" cy="152" r="11" fill="#F4A7B1" opacity=".85"/>
+  <g class="eye"><circle cx="102" cy="131" r="15" fill="#fff"/><circle cx="104" cy="133" r="8" fill="url(#e3)"/><circle cx="107" cy="129" r="3" fill="#fff"/></g>
+  <g class="eye"><circle cx="138" cy="131" r="15" fill="#fff"/><circle cx="136" cy="133" r="8" fill="url(#e3)"/><circle cx="139" cy="129" r="3" fill="#fff"/></g>
+  <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+</svg></div>
+        </div></div>
+        <div class="web"><i></i><i></i><i></i><div class="webs"><b>Kratu at home</b><span class="bar"><em></em></span><span class="bar s"><em></em></span></div></div>
+      </div>
+      <div class="vx"><span class="soon">Coming soon</span><h3>Kratu Family</h3><p>The same lessons on the family phone, tablet or laptop. No face login: each child picks their own animal, and a parent PIN keeps the settings safe. For the child who wants to keep going at home.</p>
+      <div class="chips"><span>Phone</span><span>Tablet</span><span>Web</span></div></div>
+    </article>
+    <article class="vc c-yo">
+      <div class="vstage" aria-hidden="true">
+        <div class="ph"><div class="phs rev">
+          <div class="rtop"><span class="rbar"><em></em></span><span class="streak">5 days</span></div>
+          <small>What is this in Yorùbá?</small>
+          <img class="rimg" src="a/w-goat.webp" alt="" loading="lazy">
+          <div class="ropt"><span>ológbò</span><span class="ok">ewúrẹ́</span><span>ìwé</span></div>
+        </div></div>
+        <div class="flag"><span class="c-ha">Hausa</span><span class="c-yo">Yorùbá</span><span class="c-ig">Igbo</span></div>
+      </div>
+      <div class="vx"><span class="soon">Coming soon</span><h3>Kratu Roots</h3><p>For families whose children grow up speaking English and are losing the language of home. Short daily lessons teach Hausa, Yorùbá or Igbo with the same native voices, a daily streak and games, so a child can talk to their grandparents.</p>
+      <div class="chips"><span>Phone</span><span>Tablet</span><span>Web</span></div></div>
+    </article>
+    <article class="vc c-ig">
+      <div class="vstage" aria-hidden="true">
+        <div class="lap"><div class="laps tr">
+          <div class="lh"><b>Teaching reading, the Kratu way</b><small>Module 3 of 8</small></div>
+          <div class="tv"><span class="pl"></span><span class="tvt"><b>Letter sounds in the child's language</b><small>12 min · with a real class</small></span></div>
+          <div class="rows"><span><b>Module 1</b><em style="--w:100%"></em></span><span><b>Module 2</b><em style="--w:100%"></em></span><span><b>Module 3</b><em class="go" style="--w:45%"></em></span></div>
+        </div></div>
+      </div>
+      <div class="vx"><span class="soon">Coming soon</span><h3>Kratu for teachers</h3><p>Short courses that teach teachers how to teach reading through a child's own language: letter sounds, blending, keeping a mixed class moving, and using Kratu in the room. Video lessons from real classes, in their language, with a certificate at the end.</p>
+      <div class="chips"><span>Phone</span><span>Web</span></div></div>
+    </article>
+  </div>
+  <div class="later">
+    <div><span class="when">In testing now</span><b>Yorùbá, Igbo and Pidgin</b><small>Native speakers will check every line before a child hears it. Fulfulde, Kanuri and Swahili will follow: a new language is a content layer, not a rebuild.</small></div>
+    <div><span class="when">Later</span><b>A learning companion</b><small>For a child who already has the English, the same voice teaches maths, science and comprehension.</small></div>
+    <div><span class="when">Later</span><b>Speech data, with consent</b><small>Native-speaker labelling and consent-based licensing of speech data in Nigerian languages.</small></div>
+  </div>
+</div></section>
+
+<section class="founder" style="background:var(--paper2)"><div class="wrap">
+  <img loading="lazy" src="a/founder.webp" alt="Sani Yusuf">
+  <div>
+    <div class="eyebrow">Who built it</div>
+    <h2>In an ideal world, Kratu would not need to exist</h2>
+    <p class="lead">A child should learn English at school. But the schools are not good enough, and the teachers are rarely better than the pupils: in Kaduna, two in three failed a Primary 4 exam. Until the schools can do their job, Kratu does this part of it.</p>
+    <div class="creds"><span>Sani Yusuf, founder</span><span>Former Microsoft MVP</span><span>Former Google Developer Expert</span><span>Three books</span><span>LinkedIn Learning and DataCamp courses</span><span>Trained teams on six continents</span></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="eyebrow">Partner with us</div>
+  <h2>What we are looking for</h2>
+  <p class="lead">The app is built and self-funded. What it needs now is the things one person cannot make: a room, the tablets, the introductions, native speakers, and someone independent to measure whether it worked.</p>
+  <p class="ctdeck"><a class="btn btn-s" href="https://www.kratu.ng/assets/Kratu-Deck.pdf" target="_blank" rel="noopener">Read the pitch deck (PDF)</a></p>
+  <div class="ctgrid"><div class="ask">
+    <div><b>Funders</b><small>The next pilots, in Yorùbá, Igbo and Pidgin, or part of one.</small></div>
+    <div class="hl"><b>Native speakers</b><small>Hausa, Yorùbá, Igbo and Pidgin speakers to record and check lines. The voice a child hears should be a person, not a model.</small></div>
+    <div><b>Device partners</b><small>Entry-level Android tablets of any size, a controller and cases. New or refurbished.</small></div>
+    <div><b>Introductions</b><small>State basic-education boards, schools, community and faith leaders.</small></div>
+    <div><b>Evaluators</b><small>Independent measurement: a baseline, an endline, and a published result either way.</small></div>
+    <div><b>NGOs and state partners</b><small>If you already run centres, Kratu can go into them rather than beside them.</small></div>
+  </div><form class="form" id="ctform" novalidate>
+    <h3>Get in touch</h3>
+    <input type="hidden" name="access_key" value="46bc261a-e10d-4d43-96e4-a5774a2befc8"><input type="hidden" name="subject" value="Kratu enquiry from the site"><input type="hidden" name="from_name" value="Kratu site">
+    <input type="checkbox" name="botcheck" class="ctbot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this empty">
+    <label for="ctname">Your name</label><input id="ctname" name="name" type="text" autocomplete="name" required>
+    <label for="ctmail">Email</label><input id="ctmail" name="email" type="email" autocomplete="email" required>
+    <label for="ctorg">Organisation (optional)</label><input id="ctorg" name="organisation" type="text" autocomplete="organization">
+    <label for="cthow">How you'd like to help</label>
+    <select id="cthow" name="interest"><option>Funding a pilot, or part of one</option><option>Tablets or devices</option><option>An introduction</option><option>Independent evaluation</option><option>Recording or checking lines in my language</option><option>Running Kratu in centres we already have</option><option>Something else</option></select>
+    <label for="ctmsg">Message</label><textarea id="ctmsg" name="message" rows="4" required></textarea>
+    <button class="btn btn-p ctsend" type="submit" style="justify-self:start;margin-top:8px">Send</button>
+    <p class="note" id="ctnote" role="status" aria-live="polite"></p>
+  </form></div>
+</div></section>
+</main>
+<footer><div class="wrap">
+  <div class="fbrand"><b>Kratu</b><span>Learn English from the language you already speak</span></div>
+  <nav class="flinks" aria-label="Footer">
+    <a href="https://www.kratu.ng/assets/Kratu-Deck.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Pitch deck</a>
+    <a href="#contact"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>Contact</a>
+    <a href="https://www.linkedin.com/in/saniyusuf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z"/></svg>LinkedIn</a>
+    <a href="https://x.com/saniyusuf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.5 3h3.2l-7 8 8.2 10h-6.4l-5-6.1L4.8 21H1.6l7.5-8.6L1.2 3h6.6l4.5 5.6zm-1.1 16.2h1.8L6.7 4.7H4.8z"/></svg>X</a>
+  </nav>
+  <span class="fcopy">© 2026 Kratu · www.kratu.ng</span>
+</div></footer>
+
+<dialog class="glb" id="glb" aria-label="Game"><div class="glbin"><div class="glbm" id="glbm"><button class="glbclose" type="button" id="glbclose" aria-label="Close">×</button></div><div class="glbx"><div><h3 id="glbt"></h3><p id="glbd"></p></div><span class="pill" id="glbs"></span></div></div></dialog>
+<script>
+/* Sections off screen skip layout until needed (fast first paint). Before any jump to a section, lay them all out so the
+   jump lands exactly where it should. */
+(()=>{const all=()=>document.documentElement.classList.add('cvoff');
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1);const t=id&&document.getElementById(id);if(!t)return;
+ e.preventDefault();all();requestAnimationFrame(()=>{t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});history.replaceState(null,'','#'+id)})},true);
+if(location.hash.length>1){const t=document.getElementById(location.hash.slice(1));if(t){all();requestAnimationFrame(()=>t.scrollIntoView())}}})();
+(()=>{
+const A=new Audio();let cur=null;
+function stop(){A.pause();if(cur)cur.classList.remove('on','talk');cur=null}
+A.addEventListener('ended',stop);
+function play(el,src){if(!src){stop();return}if(cur===el){stop();return}stop();cur=el;el.classList.add('on');if(el.id==='bird')el.classList.add('talk');A.src=src;A.currentTime=0;A.play().catch(stop)}
+
+const L={
+ ha:{name:'Hausa',bird:'Laila',say:'Sunana Laila. Ni ce abokiyar koyonka.',en:'My name is Laila. I am your learning friend.',a:'a/laila-0.ogg',st:'Works today',cls:'ready'},
+ yo:{name:'Yorùbá',bird:'Fúnkẹ́',say:'Orúkọ mi ni Fúnkẹ́. Èmi ni ọ̀rẹ́ ẹ̀kọ́ rẹ.',en:"My name is Fúnkẹ́. I'm your learning friend.",a:'a/yo-s_laila2.ogg',st:'In testing',cls:'test'},
+ ig:{name:'Igbo',bird:'Chioma',say:"Aha m bụ Chioma. Abụ m enyi gị n'ọmụmụ ihe.",en:"My name is Chioma. I'm your learning friend.",a:'a/ig-s_laila2.ogg',st:'In testing',cls:'test'},
+ pcm:{name:'Naijá Pidgin',bird:'Ese',say:'My name na Ese. I be your padi, we go help you learn. Press me make we start.',en:"My name is Ese. I'm your friend, we'll help you learn. Press me and let's start.",a:'a/pcm-ese-intro.ogg',st:'In testing',cls:'test'}
+};
+const order=['ha','yo','ig','pcm'];let cl='ha',auto=true;
+const scr=document.getElementById('screen'),bird=document.getElementById('bird');
+function setLang(l){cl=l;const d=L[l];scr.className='screen c-'+l;
+ document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.l===l));
+ who.textContent=d.bird;say.textContent=d.say;en.textContent=d.en;
+ const s=document.getElementById('state');s.textContent=d.st;s.className='pill '+d.cls;
+ const h=document.getElementById('heroLang');if(h){h.textContent=d.name;h.parentElement.className='lead c-'+l;}}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{auto=false;stop();setLang(t.dataset.l);play(bird,L[t.dataset.l].a)}));
+bird.addEventListener('click',()=>{auto=false;play(bird,L[cl].a)});
+window.KSET=l=>{auto=!l;stop();setLang(l||'ha');drawWord()};
+window.KHERO=l=>{auto=false;stop();setLang(l)};
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){let i=0;setInterval(()=>{if(!auto||cur)return;i=(i+1)%4;setLang(order[i])},3600)}
+
+const W={goat:{ha:['akuya','a/find-goat-aHa.ogg'],yo:['ewúrẹ́','a/yo-word_goat.ogg'],ig:['ewu','a/ig-word_goat.ogg'],pcm:['goat','a/pcm-word_goat.ogg'],en:'a/find-goat-aEn.ogg'},
+ cat:{ha:['kyanwa','a/find-cat-aHa.ogg'],yo:['ológbò','a/yo-word_cat.ogg'],ig:['nwamba','a/ig-word_cat.ogg'],pcm:['cat','a/pcm-word_cat.ogg'],en:'a/find-cat-aEn.ogg'},
+ book:{ha:['littafi','a/find-book-aHa.ogg'],yo:['ìwé','a/yo-word_book.ogg'],ig:['akwụkwọ','a/ig-word_book.ogg'],pcm:['book','a/pcm-word_book.ogg'],en:'a/find-book-aEn.ogg'}};
+let cw='goat';const homes=document.getElementById('homes');
+function drawWord(){homes.innerHTML='';const KV=document.body.dataset.v;(KV?[KV].concat(order.filter(x=>x!==KV)):order).forEach(l=>{const b=document.createElement('button');b.className='home c-'+l+(l===KV?' me':'');b.type='button';
+ b.innerHTML='<span class="play"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg></span><span><span class="lang">'+L[l].name+'</span><b></b></span>';
+ b.querySelector('b').textContent=W[cw][l][0];b.addEventListener('click',()=>play(b,W[cw][l][1]));homes.appendChild(b)});
+ document.getElementById('engWord').textContent=cw;document.getElementById('engImg').src='a/find-'+cw+'-img.webp';}
+document.querySelectorAll('.wbtn').forEach(b=>b.addEventListener('click',()=>{stop();cw=b.dataset.w;document.querySelectorAll('.wbtn').forEach(x=>x.setAttribute('aria-pressed',x===b));drawWord()}));
+const eng=document.getElementById('eng');eng.addEventListener('click',()=>play(eng,W[cw].en));drawWord();
+
+document.querySelectorAll('#retry .line').forEach(b=>b.addEventListener('click',()=>play(b,b.dataset.src)));
+document.querySelectorAll('.gtab[data-g]').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.gtab[data-g]').forEach(x=>x.setAttribute('aria-selected',x===t));
+ document.querySelectorAll('.gpanel').forEach(p=>p.hidden=p.dataset.p!==t.dataset.g)}));
+})();
+
+(()=>{const A=new Audio();const AC={};const say=(src,cb)=>{A.onended=cb||null;A.src=AC[src]||src;A.currentTime=0;A.play().catch(()=>{cb&&cb()})};
+const IMG={};['goat','cat','book','camel','calabash','broom','cap','millet','chicken','cow'].forEach(k=>IMG[k]='a/w-'+k+'.webp');
+const EN={goat:'a/find-goat-aEn.ogg',cat:'a/find-cat-aEn.ogg',book:'a/find-book-aEn.ogg'};
+const P={
+ ha:{n:'Hausa',g:'Laila',retry:'a/fx-retry.ogg',kudos:['a/fx-kudos.ogg','a/ph-4.ogg'],w:{goat:['akuya','a/find-goat-aHa.ogg'],cat:['kyanwa','a/find-cat-aHa.ogg'],book:['littafi','a/find-book-aHa.ogg'],camel:['raƙumi','a/find-camel-aHa.ogg'],calabash:['ƙwarya','a/find-calabash-aHa.ogg'],broom:['tsintsiya','a/find-broom-aHa.ogg'],cap:['hula','a/find-cap-aHa.ogg'],millet:['gero','a/find-millet-aHa.ogg']}},
+ yo:{n:'Yorùbá',g:'Fúnkẹ́',retry:'a/yo-app_retry.ogg',kudos:['a/yo-app_kudos.ogg'],w:{goat:['ewúrẹ́','a/yo-word_goat.ogg'],cat:['ológbò','a/yo-word_cat.ogg'],book:['ìwé','a/yo-word_book.ogg'],chicken:['adìyẹ','a/yo-word_chicken.ogg'],cow:['màálù','a/yo-word_cow.ogg']}},
+ ig:{n:'Igbo',g:'Chioma',retry:'a/ig-app_retry.ogg',kudos:['a/ig-app_kudos.ogg'],w:{goat:['ewu','a/ig-word_goat.ogg'],cat:['nwamba','a/ig-word_cat.ogg'],book:['akwụkwọ','a/ig-word_book.ogg'],chicken:['ọkụkọ','a/ig-word_chicken.ogg'],cow:['ehi','a/ig-word_cow.ogg']}},
+ pcm:{n:'Naijá Pidgin',g:'Ese',retry:'a/pcm-app_retry.ogg',kudos:['a/pcm-app_kudos.ogg'],w:{goat:['goat','a/pcm-word_goat.ogg'],cat:['cat','a/pcm-word_cat.ogg'],book:['book','a/pcm-word_book.ogg']}}};
+const sh=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+let L='ha',queue=[],round=0,target=null,busy=false,lastK=-1,started=false;
+const $=id=>document.getElementById(id),scr=$('gscr');
+function start(){const keys=Object.keys(P[L].w);queue=sh(keys);while(queue.length<5)queue=queue.concat(sh(keys)).slice(0,5);
+ for(let i=1;i<queue.length;i++)if(queue[i]===queue[i-1])queue.push(queue.splice(i,1)[0]);
+ queue=queue.slice(0,5);round=0;$('gend').hidden=true;$('gplay').hidden=false;dots();next()}
+function dots(){[...$('gdots').children].forEach((d,i)=>d.className=i<round?'done':'')}
+function next(){if(round>=5){$('gplay').hidden=true;$('gend').hidden=false;$('gendT').textContent='Well done!';return}
+ target=queue[round];const pool=sh(Object.keys(IMG).filter(k=>k!==target)).slice(0,3);const opts=sh(pool.concat(target));
+ const box=$('gopts');box.innerHTML='';opts.forEach(k=>{const b=document.createElement('button');b.type='button';b.className='opt';b.dataset.k=k;
+  b.innerHTML='<img alt="" src="'+IMG[k]+'"><span class="lbl"></span>';b.setAttribute('aria-label','Picture '+(opts.indexOf(k)+1));b.addEventListener('click',()=>pick(b));box.appendChild(b)});
+ $('gq').textContent=P[L].w[target][0];$('gqs').textContent=P[L].g+' says it in '+P[L].n+'. Find it.';busy=false;
+ if(started)say(P[L].w[target][1])}
+function pick(b){if(busy)return;if(!started){started=true}
+ if(b.dataset.k===target){busy=true;b.classList.add('right');b.querySelector('.lbl').textContent=target;round++;dots();
+  const ks=P[L].kudos;let src;
+  if(EN[target]&&(lastK===0||ks.length===1&&round%2===0)){src=EN[target];lastK=1}else{lastK=0;src=ks[(round)%ks.length]}
+  say(src,()=>setTimeout(next,350))}
+ else{b.classList.remove('wrong');void b.offsetWidth;b.classList.add('wrong');say(P[L].retry)}}
+$('gear').addEventListener('click',()=>{started=true;say(P[L].w[target][1])});
+$('gagain').addEventListener('click',()=>{started=true;start()});
+/* Every language's sample (all ten pictures, its guide's clips, the English clips) is fetched and decoded before it
+   is shown. Audio is kept as in-memory blobs so a tap plays at once. Hausa first, the rest in the background once the
+   page is idle; a language that is not fully in yet shows a loading screen instead of half a game. */
+const pend={},done={};
+function get(src){if(pend[src])return pend[src];
+ pend[src]=/\.(webp|png|jpe?g)$/.test(src)
+  ?new Promise(r=>{const i=new Image();i.onload=i.onerror=()=>(i.decode?i.decode().catch(()=>{}):Promise.resolve()).then(r);i.src=src})
+  :fetch(src).then(r=>r.ok?r.blob():null).then(b=>{if(b)AC[src]=URL.createObjectURL(b)}).catch(()=>{});
+ return pend[src].then(()=>{done[src]=1})}
+function need(l){const s=new Set(Object.values(IMG));const d=P[l];Object.values(d.w).forEach(w=>s.add(w[1]));s.add(d.retry);d.kudos.forEach(k=>s.add(k));
+ Object.keys(d.w).forEach(k=>{if(EN[k])s.add(EN[k])});return [...s]}
+const ready={};
+function prep(l){if(ready[l])return ready[l];const list=need(l);
+ ready[l]=Promise.all(list.map(s=>get(s).then(()=>{if(L===l)bar(l,list)})));ready[l].then(()=>ready[l].ok=true);return ready[l]}
+function bar(l,list){const n=list.filter(s=>done[s]).length;$('gbarI').style.width=(100*n/list.length)+'%';$('gloadN').textContent=n+' of '+list.length+' pictures and sounds'}
+function show(l){const st=$('gstate');st.textContent=P[l].n+' · '+P[l].g;st.className='pill '+(l==='ha'?'ready':'test');
+ const r=prep(l);if(r.ok){$('gload').hidden=true;start();return}
+ $('gplay').hidden=true;$('gend').hidden=true;$('gload').hidden=false;$('gloadT').textContent='Getting '+P[l].g+' ready…';bar(l,need(l));
+ r.then(()=>{if(L!==l)return;$('gload').hidden=true;start()})}
+document.querySelectorAll('[data-pl]').forEach(t=>t.addEventListener('click',()=>{L=t.dataset.pl;A.pause();
+ document.querySelectorAll('[data-pl]').forEach(x=>x.setAttribute('aria-selected',x===t));scr.className='gscr c-'+L;show(L)}));
+/* The game's pictures and sounds are fetched only once the page has loaded or the game nears the screen, so they never slow the first paint. */
+let shown=false;const first=()=>{if(!shown){shown=true;show(L)}};
+if('IntersectionObserver' in window){const io=new IntersectionObserver(e=>{if(e.some(x=>x.isIntersecting)){io.disconnect();first()}},{rootMargin:'600px 0px'});io.observe(scr)}
+const warmAll=()=>{first();let chain=prep('ha');['yo','ig','pcm'].forEach(l=>{chain=chain.then(()=>prep(l))})};
+const idle=f=>window.requestIdleCallback?requestIdleCallback(f,{timeout:2000}):setTimeout(f,300);
+if(document.readyState==='complete')idle(warmAll);else addEventListener('load',()=>idle(warmAll),{once:true});
+
+
+
+/* Same delivery as the live site: Web3Forms (the access key is a public form key, made to sit in the page). */
+{const f=$('ctform'),note=$('ctnote'),btn=f.querySelector('.ctsend');const msg=(t,k)=>{note.textContent=t;note.className='note'+(k?' '+k:'')};
+ f.addEventListener('submit',async e=>{e.preventDefault();if(f.botcheck&&f.botcheck.checked)return;if(!f.checkValidity()){f.reportValidity();return}
+  btn.disabled=true;msg('Sending…');const data=Object.fromEntries(new FormData(f).entries());
+  try{const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+   const j=await r.json().catch(()=>({}));if(r.ok&&j.success){f.reset();msg('Thank you. Your message is on its way.','ok')}else{msg(j.message||'That did not send. Please try again in a moment.','bad');btn.disabled=false}}
+  catch(err){msg('This preview cannot send mail: the page has to be on kratu.ng for the form to post. Everything you typed is still here.','bad');btn.disabled=false}})}
+})();
+
+(()=>{const A=new Audio();let cur=null;
+const stopAll=()=>{document.querySelectorAll('audio').forEach(a=>a.pause())};
+function chain(list,el){A.pause();if(cur)cur.classList.remove('on');cur=el||null;if(el)el.classList.add('on');let i=0;
+ const go=()=>{if(i>=list.length){if(cur)cur.classList.remove('on');cur=null;return}A.src=list[i++];A.currentTime=0;A.play().catch(()=>{if(cur)cur.classList.remove('on');cur=null})};
+ A.onended=()=>setTimeout(go,250);go()}
+/* learn */
+const tabs=[...document.querySelectorAll('.lsteps button')],panes=[...document.querySelectorAll('.lpane')];let st=0,autoL=true;
+function show(i){st=i;tabs.forEach((t,j)=>t.setAttribute('aria-selected',j===i));panes.forEach((p,j)=>p.hidden=j!==i)}
+tabs.forEach((t,i)=>t.addEventListener('click',()=>{autoL=false;A.pause();show(i)}));
+const lsec=document.getElementById('learn');let seen=false;
+new IntersectionObserver(e=>{seen=e[0].isIntersecting},{threshold:.35}).observe(lsec);
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(()=>{if(autoL&&seen&&!cur)show((st+1)%5)},5200);
+const lh=document.getElementById('lhear');lh.addEventListener('click',()=>{autoL=false;chain(['a/find-goat-aHa.ogg','a/find-goat-aEn.ogg'],lh)});
+const pic=document.getElementById('ljpic'),jt=document.getElementById('ljt');
+document.getElementById('lright').addEventListener('click',e=>{autoL=false;pic.classList.remove('miss');pic.classList.add('right');jt.textContent='Right! Laila praises them';chain(['a/fx-kudos.ogg','a/find-goat-aEn.ogg'],e.currentTarget)});
+document.getElementById('lmiss').addEventListener('click',e=>{autoL=false;pic.classList.remove('right','miss');void pic.offsetWidth;pic.classList.add('miss');jt.textContent='A\'a, sake gwadawa. Try again';chain(['a/fx-retry.ogg'],e.currentTarget)});
+})();
+
+(()=>{
+const V={
+ ha:{g:'Sannu',eye:'Kratu for Hausa-speaking children',h1:'Learn to read English from <b>Hausa</b>, the language of home.',
+  lead:'Laila speaks to the child in Hausa, from the first greeting to the last word of praise, and teaches English letters, words, numbers, spelling and reading. Built and tested first in the North, from Kano to Potiskum. Nothing to read, no password, and no signal needed once it is installed.',
+  btn:'Hear Laila',img:'a/g-ha-sallah.webp',alt:'Hawan Sallah game: a horseman at the emir\'s palace',
+  t:'Hawan Sallah, at the emir\'s palace',s:'Practice happens in places a child from the North knows: the durbar, the dye pits of Kano, canoes on the river. 19 Hausa games, all playable today.',
+  pl:'The first pilot runs in Hausa, where the app is ready. A pilot is our proof of work: about one school term, with every child measured from the first day to the last.',pb:'Back the next pilots'},
+ yo:{g:'Ẹ káàbọ̀',eye:'Kratu for Yorùbá-speaking children',h1:'Learn to read English from <b>Yorùbá</b>, the language of home.',
+  lead:'Fúnkẹ́ speaks to the child in Yorùbá and teaches English letters, words, numbers, spelling and reading. A child in Ibadan, Abeokuta or Lagos starts from the words they already use at home. Nothing to read, no password, and no signal needed once it is installed.',
+  btn:'Hear Fúnkẹ́',img:'a/g-yo-regatta.webp',alt:'Regatta game: boats on the lagoon',
+  t:'Regatta on the lagoon',s:'Practice happens in places a Yorùbá child knows: the calabash carver of Ọ̀yọ́, the regatta on the lagoon, aṣọ òkè on the line. 19 Yorùbá games of their own, in testing.',
+  pl:'The first pilot runs in Hausa, where the app is ready. Yorùbá is in testing now: a Yorùbá pilot comes next, and we are looking for native speakers to check every line Fúnkẹ́ says.',pb:'Bring Kratu to a Yorùbá community'},
+ ig:{g:'Nnọọ',eye:'Kratu for Igbo-speaking children',h1:'Learn to read English from <b>Igbo</b>, the language of home.',
+  lead:'Chioma speaks to the child in Igbo and teaches English letters, words, numbers, spelling and reading. A child in Enugu, Onitsha or Aba starts from the words they already use at home. Nothing to read, no password, and no signal needed once it is installed.',
+  btn:'Hear Chioma',img:'a/g-ig-moonlight.webp',alt:'Egwu Ọnwa game: children playing under the moon',
+  t:'Egwu ọnwa, moonlight play',s:'Practice happens in places an Igbo child knows: moonlight play in the compound, the lorries at Upper Iweka, the shoe shelves of Aba. 19 Igbo games of their own, in testing.',
+  pl:'The first pilot runs in Hausa, where the app is ready. Igbo is in testing now: an Igbo pilot comes next, and we are looking for native speakers to check every line Chioma says.',pb:'Bring Kratu to an Igbo community'},
+ pcm:{g:'How far',eye:'Kratu for Pidgin-speaking children',h1:'Learn to read English from <b>Naijá Pidgin</b>, the language of the street.'}};
+const GR={pcm:['How far'],ha:['Sannu'],yo:['Ẹ káàbọ̀','Báwo ni'],ig:['Nnọọ','Kedu']};
+const $=id=>document.getElementById(id);
+const KS={"ha-boy": ["a/kid-ha-boy-480.webp 480w, a/kid-ha-boy-960.webp 960w", "a/kid-ha-boy-480.webp"], "ha-girl": ["a/kid-ha-girl-480.webp 480w, a/kid-ha-girl-960.webp 960w", "a/kid-ha-girl-480.webp"], "ha-friend": ["a/kid-ha-friend-480.webp 480w, a/kid-ha-friend-960.webp 960w", "a/kid-ha-friend-480.webp"], "yo-boy": ["a/kid-yo-boy-480.webp 480w", "a/kid-yo-boy-480.webp"], "yo-girl": ["a/kid-yo-girl-480.webp 480w, a/kid-yo-girl-960.webp 960w", "a/kid-yo-girl-480.webp"], "yo-friend": ["a/kid-yo-friend-480.webp 480w", "a/kid-yo-friend-480.webp"], "ig-boy": ["a/kid-ig-boy-480.webp 480w, a/kid-ig-boy-960.webp 960w", "a/kid-ig-boy-480.webp"], "ig-girl": ["a/kid-ig-girl-480.webp 480w, a/kid-ig-girl-960.webp 960w", "a/kid-ig-girl-480.webp"], "ig-friend": ["a/kid-ig-friend-480.webp 480w, a/kid-ig-friend-960.webp 960w", "a/kid-ig-friend-480.webp"], "pcm-boy": ["a/kid-pcm-boy-480.webp 480w, a/kid-pcm-boy-960.webp 960w", "a/kid-pcm-boy-480.webp"], "pcm-girl": ["a/kid-pcm-girl-480.webp 480w, a/kid-pcm-girl-960.webp 960w", "a/kid-pcm-girl-480.webp"], "pcm-friend": ["a/kid-pcm-friend-480.webp 480w, a/kid-pcm-friend-960.webp 960w", "a/kid-pcm-friend-480.webp"]};
+function kids(kl){document.querySelectorAll('img[data-kid]').forEach(i=>{const [s,src]=KS[kl+'-'+i.dataset.kid];if(i.getAttribute('src')===src)return;const pre=new Image();pre.sizes=i.sizes;pre.srcset=s;pre.src=src;const go=()=>{i.srcset=s;i.src=src};(pre.decode?pre.decode():Promise.resolve()).then(go,go)})}
+window.KKIDS=l=>kids((l==='yo'||l==='ig'||l==='pcm')?l:'ha');
+function apply(v){const d=V[v];
+ if(v)document.body.dataset.v=v;else delete document.body.dataset.v;
+ document.querySelectorAll('.vsw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===(v||'')));
+ const ORD=v?[v].concat(['ha','yo','ig','pcm'].filter(x=>x!==v)):['ha','yo','ig','pcm'];
+ const sortIn=(sel,attr)=>{const els=[...document.querySelectorAll(sel)];if(!els.length)return;const par=els[0].parentElement;
+  ORD.forEach(l=>{const e=els.find(x=>(attr?x.dataset[attr]:[...x.classList].find(c=>c.startsWith('c-')).slice(2))===l);if(e)par.appendChild(e)})};
+ sortIn('.hero .tab','l');sortIn('.gtab[data-pl]','pl');sortIn('.gtab[data-g]','g');sortIn('.board tbody tr');sortIn('#retry .line');
+ const kl=(v==='yo'||v==='ig'||v==='pcm')?v:'ha';
+ kids(kl);
+ window.KSET&&window.KSET(v);
+ const gl=document.querySelector('.gtab[data-pl="'+(v||'ha')+'"]');gl&&gl.click();
+ const gg=document.querySelector('.gtab[data-g="'+(v||'ha')+'"]');gg&&gg.click();
+ document.querySelectorAll('.board tbody tr').forEach(r=>r.classList.toggle('me',!!v&&r.classList.contains('c-'+v)));
+ try{const u=new URL(location.href);if(v)u.searchParams.set('lang',v);else u.searchParams.delete('lang');u.hash='';history.replaceState(null,'',u.pathname+u.search)}catch(e){}}
+document.querySelectorAll('.vsw button').forEach(b=>b.addEventListener('click',()=>{apply(b.dataset.v);scrollTo({top:0})}));
+/* Picking a language anywhere (hero, Listen and find, games) moves every language-specific part of the page to it:
+   the other sections' tabs, the children's pictures and the status row. Only a real tap does this; the hero's own
+   slow rotation does not. Nothing is reordered and nothing else speaks. */
+function syncTo(l,from){
+ if(from!=='hero'){const t=document.querySelector('.hero .tab[data-l="'+l+'"]');if(t&&t.getAttribute('aria-selected')!=='true')window.KHERO&&window.KHERO(l)}
+ if(from!=='play'){const t=document.querySelector('.gtab[data-pl="'+l+'"]');if(t&&t.getAttribute('aria-selected')!=='true')t.click()}
+ if(from!=='games'){const t=document.querySelector('.gtab[data-g="'+l+'"]');if(t&&t.getAttribute('aria-selected')!=='true')t.click()}
+ window.KKIDS&&window.KKIDS(l);
+ document.querySelectorAll('.board tbody tr').forEach(r=>r.classList.toggle('me',r.classList.contains('c-'+l)));}
+[['.hero .tab','l','hero'],['.gtab[data-pl]','pl','play'],['.gtab[data-g]','g','games']].forEach(([sel,k,from])=>
+ document.querySelectorAll(sel).forEach(t=>t.addEventListener('click',e=>{if(e.isTrusted)syncTo(t.dataset[k],from)})));
+let q=null;try{q=new URLSearchParams(location.search).get('lang')}catch(e){}
+const m=location.hash.match(/^#for-(ha|yo|ig|pcm)$/);const pick=(q&&V[q])?q:(m?m[1]:null);if(pick)apply(pick);
+})();
+
+(()=>{
+const lite=matchMedia('(prefers-reduced-motion: reduce)').matches||(navigator.connection&&navigator.connection.saveData);
+const tiles=[...document.querySelectorAll('.gt')];
+function addVideo(box,base,cls){const v=document.createElement('video');v.muted=true;v.loop=true;v.playsInline=true;v.setAttribute('muted','');v.setAttribute('playsinline','');v.preload='none';v.setAttribute('aria-hidden','true');
+ v.innerHTML='<source src="'+base+'.webm" type="video/webm"><source src="'+base+'.mp4" type="video/mp4">';
+ v.addEventListener('playing',()=>v.classList.add('on'),{once:true});box.appendChild(v);return v}
+const io=new IntersectionObserver(es=>es.forEach(e=>{const t=e.target;const vis=e.isIntersecting&&!t.closest('[hidden]');
+ t.classList.toggle('off',!vis);
+ if(!t.dataset.loop||lite)return;
+ let v=t.querySelector('video');
+ if(vis){if(!v)v=addVideo(t.querySelector('.gtm'),t.dataset.loop);v.play().catch(()=>{})}else if(v)v.pause()}),{rootMargin:'120px 0px',threshold:.15});
+tiles.forEach(t=>{t.classList.add('off');io.observe(t)});
+/* background loader: once the page itself has loaded and the browser is idle, fetch the game clips one at a time
+   (and the other languages' stills), so they are usually ready before the visitor scrolls. Skipped on data saver / 2G. */
+function warm(){if(lite)return;const c=navigator.connection;if(c&&/(^|-)2g/.test(c.effectiveType||''))return;
+ tiles.forEach(t=>{const i=t.querySelector('img');if(i.loading==='lazy'){i.loading='eager';i.src=i.src}});
+ const q=tiles.filter(t=>t.dataset.loop);
+ const next=()=>{const t=q.shift();if(!t)return;let v=t.querySelector('video');if(v&&v.readyState>=4)return next();
+  if(!v)v=addVideo(t.querySelector('.gtm'),t.dataset.loop);v.preload='auto';let done=false;const go=()=>{if(!done){done=true;next()}};
+  v.addEventListener('canplaythrough',go,{once:true});v.addEventListener('error',go,{once:true});setTimeout(go,8000);v.load()};
+ next()}
+const kick=()=>{const ric=window.requestIdleCallback;ric?ric(warm,{timeout:3000}):setTimeout(warm,1500)};
+/* (background loading of the game loops removed: each loop now loads only when its tile is on screen) */
+const dlg=document.getElementById('glb'),box=document.getElementById('glbm');
+const ST={ha:['Hausa · works today','ready'],yo:['Yorùbá · in testing','test'],ig:['Igbo · in testing','test'],pcm:['Naijá Pidgin · in testing','test']};
+function open(t){box.querySelectorAll('img,video').forEach(e=>e.remove());
+ const im=document.createElement('img');im.src=t.querySelector('img').src;im.alt=t.querySelector('img').alt;box.appendChild(im);
+ if(t.dataset.loop&&!lite){const v=addVideo(box,t.dataset.loop);v.preload='auto';v.play().catch(()=>{})}
+ document.getElementById('glbt').textContent=t.querySelector('b').textContent;
+ document.getElementById('glbd').textContent=t.dataset.desc;
+ const s=document.getElementById('glbs');s.textContent=ST[t.dataset.lang][0];s.className='pill '+ST[t.dataset.lang][1];
+ tiles.forEach(x=>{const v=x.querySelector('video');v&&v.pause()});
+ if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
+function close(){box.querySelectorAll('video').forEach(v=>v.pause());dlg.close?dlg.close():dlg.removeAttribute('open')}
+tiles.forEach(t=>t.addEventListener('click',()=>open(t)));
+document.getElementById('glbclose').addEventListener('click',close);
+dlg.addEventListener('click',e=>{if(e.target===dlg)close()});
+dlg.addEventListener('close',()=>{box.querySelectorAll('video').forEach(v=>v.pause());tiles.forEach(t=>{if(!t.classList.contains('off')){const v=t.querySelector('video');v&&v.play().catch(()=>{})}})});
+document.querySelectorAll('.gtab[data-g]').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>tiles.forEach(t=>{io.unobserve(t);io.observe(t)}),50)));
+})();
+</script>

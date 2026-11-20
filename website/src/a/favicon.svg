@@ -1,0 +1,11 @@
+<svg class="laila-v" viewBox="0 0 240 240" aria-label="Laila">
+  <ellipse cx="120" cy="150" rx="74" ry="66" fill="url(#b3)"/><ellipse cx="120" cy="166" rx="48" ry="44" fill="url(#be3)"/>
+  <path class="wing-l" d="M58 158 q-30 8 -30 32 q0 12 12 11 q20 -2 30 -24 z" fill="url(#w3)"/>
+  <path class="wing wing-r" d="M182 150 q40 -12 44 -38 q3 -18 -16 -15 q-28 5 -40 33 z" fill="url(#w3)"/>
+  <g fill="url(#c3)"><circle cx="104" cy="70" r="13"/><circle cx="122" cy="62" r="15"/><circle cx="140" cy="70" r="13"/></g>
+  <path d="M78 96 q42 -22 84 0 l-3 15 q-39 -18 -78 0 z" fill="#2E9C57"/>
+  <circle cx="86" cy="152" r="11" fill="#F4A7B1" opacity=".85"/><circle cx="154" cy="152" r="11" fill="#F4A7B1" opacity=".85"/>
+  <g class="eye"><circle cx="102" cy="131" r="15" fill="#fff"/><circle cx="104" cy="133" r="8" fill="url(#e3)"/><circle cx="107" cy="129" r="3" fill="#fff"/></g>
+  <g class="eye"><circle cx="138" cy="131" r="15" fill="#fff"/><circle cx="136" cy="133" r="8" fill="url(#e3)"/><circle cx="139" cy="129" r="3" fill="#fff"/></g>
+  <path d="M110 158 q10 4 20 0 q-2 13 -10 15 q-8 -2 -10 -15 z" fill="#B23A28"/>
+</svg>
