@@ -6,4 +6,6 @@ cd "$(dirname "$0")"
 rm -rf dist
 python3 prod.py src dist
 cp -n ../site/assets/* dist/assets/ 2>/dev/null || true
+# newer files here win over the old site (the current pitch deck)
+cp -f assets/* dist/assets/
 echo "built dist/  ->  firebase deploy --only hosting:kratu-site --project kratu-app"
