@@ -38,6 +38,8 @@ const ORDER: { id: string; line: string; en: string }[] = [
 ];
 /** Cards an arrow press moves the strip by, and a card's width plus the gap after it (design px). */
 const STEP = 3, CARD = 194;
+/** One dial card's height plus its gap (design px; app.css, upright family phones). */
+const DIAL = 76;
 
 interface Game { id: string; name: string; line: string; en: string; pic: string; q?: Record<string, string>; }
 
@@ -73,6 +75,12 @@ interface Game { id: string; name: string; line: string; en: string; pic: string
   </div>
   <button class="warr" aria-label="Gaba" [disabled]="at() >= last()" (click)="slide(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
 </div>
+<!-- upright family phones (Sani 2026-11-21): a dial instead of the strip; the card in the middle is the picked game -->
+<div class="wdial nofit fitbox" (scroll)="dialScroll()">
+  <div class="wdpad"></div>
+  @for (g of games; track g.id; let i = $index) {<button class="wditem" [class.on]="g.id === sel().id" [attr.aria-label]="g.name" (click)="dialTo(i)"><img [src]="g.pic" alt=""><b>{{ g.name }}</b></button>}
+  <div class="wdpad"></div>
+</div>
 <div class="lrow"><span class="wlaila" [class.talk]="talking()"><app-laila [size]="120" /></span></div>
 <button class="wbook" aria-label="Littafi" (click)="home()"><span class="wbookic" [innerHTML]="bookSvg"></span></button>`,
 })
@@ -102,9 +110,10 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     const v = this.hostEl.nativeElement.querySelector<HTMLElement>('.wview');
     if (v) { this.fits.set(Math.max(1, Math.floor((v.offsetWidth + 14) / CARD))); this.swipe(v); }
+    this.dialShape();
     afterPaint().then(() => this.arrive());
   }
-  ngOnDestroy(): void { this.dead = true; this.asks++; clearTimeout(this.talkTimer); this.spotter.unspot(); this.bus.stopAll(); this.off.forEach((f) => f()); }
+  ngOnDestroy(): void { cancelAnimationFrame(this.dialRaf); clearTimeout(this.dialStop); this.dead = true; this.asks++; clearTimeout(this.talkTimer); this.spotter.unspot(); this.bus.stopAll(); this.off.forEach((f) => f()); }
 
   /** Arrival, and the ear: "we are going to play a little game" (no games line is recorded yet), then the picked
    *  game's description; the first time only, the hand shows the book in the corner, with "to go home, press the book"
@@ -135,6 +144,30 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
     this.spotter.unspot(); this.sel.set(g);
     const mine = ++this.asks; this.describe(mine);
   }
+  // ---- the dial (upright family phones): scroll snaps a card to the middle line, which picks it
+  private dialRaf = 0; private dialStop = 0;
+  private dialEl(): HTMLElement | null { return this.hostEl.nativeElement.querySelector<HTMLElement>('.wdial'); }
+  /** Each card leans back and fades with its distance from the middle, like a dial; it settles on the middle card. */
+  dialScroll(): void {
+    if (!this.dialRaf) this.dialRaf = requestAnimationFrame(() => { this.dialRaf = 0; this.dialShape(); });
+    clearTimeout(this.dialStop);
+    this.dialStop = window.setTimeout(() => {
+      const d = this.dialEl(); if (!d) return;
+      const g = this.games[Math.max(0, Math.min(this.games.length - 1, Math.round(d.scrollTop / DIAL)))];
+      if (g && g.id !== this.sel().id) this.pick(g);
+    }, 140);
+  }
+  private dialShape(): void {
+    const d = this.dialEl(); if (!d) return;
+    const mid = d.scrollTop + d.clientHeight / 2;
+    d.querySelectorAll<HTMLElement>('.wditem').forEach((el) => {
+      const off = (el.offsetTop + el.offsetHeight / 2 - mid) / DIAL, a = Math.min(Math.abs(off), 3);
+      el.style.transform = `perspective(600px) rotateX(${(-off * 18).toFixed(1)}deg) scale(${(1 - a * 0.08).toFixed(3)})`;
+      el.style.opacity = (1 - a * 0.28).toFixed(2);
+    });
+  }
+  /** A tap on a card turns the dial to it (and so picks it). */
+  dialTo(i: number): void { this.dialEl()?.scrollTo({ top: i * DIAL, behavior: 'smooth' }); if (this.games[i].id !== this.sel().id) this.pick(this.games[i]); }
   /** An arrow moves the strip three cards. */
   slide(d: number): void { this.at.set(Math.max(0, Math.min(this.last(), this.at() + d * STEP))); }
   /** The play button, or the preview itself: the picked game in free play, the way the settings list opens it. */
