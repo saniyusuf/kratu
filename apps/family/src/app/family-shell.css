@@ -254,3 +254,10 @@ input,.field{min-height:48px;box-sizing:border-box}
 .thanks .pav{box-shadow:0 0 0 4px #F2C46A,0 10px 24px rgba(240,138,62,.25)}
 .thanks .pav,.yours .pav{border:0}
 .fs .thanks .pcard,.fs .yours .pcard,.thanks .pcard,.yours .pcard{background:none!important;border:0!important;box-shadow:none!important;outline:0!important;padding:0!important;min-width:0!important}
+
+/* Sani 21 Nov: no white card or white rings on the child's screens */
+.pick .card{background:none!important;box-shadow:none!important;border:0!important;padding:0!important;min-width:0!important}
+.pick .cav.got{border:0;box-shadow:0 0 0 4px #F2C46A,0 10px 24px rgba(240,138,62,.25)}
+.pick .cav.gimg{border:0;box-shadow:0 0 0 4px #F2C46A}
+.av{border:0}
+.thanks .ctag,.yours .ctag{background:none;padding:0}
