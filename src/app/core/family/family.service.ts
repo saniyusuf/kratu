@@ -40,13 +40,23 @@ export class FamilyService {
   /** Set by the shell when the loader has finished: screens after the microphone wait for it. */
   private loaded!: Promise<void>;
   private wasAdding = false;
+  /**
+   * Try one step (Sani 2026-11-21: every step of the family app, played and heard on its own). `?step=<id>` opens that
+   * real screen with sample children; nothing is saved on the phone (no profile, no PIN), so a parent's real profiles
+   * are left exactly as they were. The steps page lists the ids.
+   */
+  readonly trying = new URLSearchParams(location.search).get('step');
+  static readonly SAMPLES: Profile[] = [
+    { id: 'try_musa', name: 'Musa', g: 'm', animal: 'lion', at: 0 },
+    { id: 'try_aisha', name: 'Aisha', g: 'f', animal: 'rabbit', at: 0 },
+  ];
 
   // ---- storage: this phone only for now; the parent account and its sync come with the server (design page, box 6)
   private read(): Profile[] { try { return JSON.parse(localStorage.getItem(K_PROFILES) || '[]'); } catch { return []; } }
-  private write(list: Profile[]): void { this.profiles.set(list); try { localStorage.setItem(K_PROFILES, JSON.stringify(list)); } catch { /* private mode */ } }
+  private write(list: Profile[]): void { this.profiles.set(list); if (this.trying) return; try { localStorage.setItem(K_PROFILES, JSON.stringify(list)); } catch { /* private mode */ } }
   hasPin(): boolean { try { return !!localStorage.getItem(K_PIN); } catch { return false; } }
-  async setPin(pin: string): Promise<void> { try { localStorage.setItem(K_PIN, await this.hash(pin)); } catch { /* private mode */ } }
-  async checkPin(pin: string): Promise<boolean> { try { return localStorage.getItem(K_PIN) === await this.hash(pin); } catch { return false; } }
+  async setPin(pin: string): Promise<void> { if (this.trying) return; try { localStorage.setItem(K_PIN, await this.hash(pin)); } catch { /* private mode */ } }
+  async checkPin(pin: string): Promise<boolean> { if (this.trying) return pin.length === 4; try { return localStorage.getItem(K_PIN) === await this.hash(pin); } catch { return false; } }
   private async hash(pin: string): Promise<string> {
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kratu-family:' + pin));
     return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join('');
@@ -77,11 +87,34 @@ export class FamilyService {
    */
   async begin(loaded: Promise<void>): Promise<void> {
     this.loaded = loaded;
+    if (this.trying) { this.tryStep(this.trying); return; }
     let started = false; try { started = localStorage.getItem(K_STARTED) === '1'; } catch { /* ignore */ }
     if (!started && !this.profiles().length) { this.show('welcome'); return; }
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
     this.afterSetup();
+  }
+  /** `?step=` (see `trying`): straight to one real screen, with the sample children and nothing saved. */
+  private async tryStep(step: string): Promise<void> {
+    this.profiles.set(FamilyService.SAMPLES);
+    const kid = step.endsWith('_f') ? FamilyService.SAMPLES[1] : FamilyService.SAMPLES[0];
+    const id = step.replace(/_[mf]$/, '');
+    if (id === 'welcome') { this.show('welcome'); return; }
+    if (id === 'mic') { this.show('mic'); return; }
+    await this.loaded;
+    switch (id) {
+      case 'pin': this.show('setup'); return;
+      case 'add': this.profiles.set([]); this.startAdd(); return;
+      case 'yours': this.current.set(kid); this.show('yours'); return;
+      case 'profiles': this.toProfiles(); return;
+      case 'parent': this.askPin('parent'); return;
+      case 'guest': this.guest(); return;
+      case 'back': this.choose(kid); return;
+      case 'laila': this.current.set(kid); this.firstGo(); return;
+      case 'first': this.signIn(kid); this.session.known.set(false); this.show(null); this.router.navigate(['/welcome']); return;
+      case 'home': this.signIn(kid); this.session.known.set(true); this.show(null); this.router.navigate(['/home']); return;
+      default: this.toProfiles();
+    }
   }
   /** Welcome page: Start. */
   start(): void { try { localStorage.setItem(K_STARTED, '1'); } catch { /* ignore */ } this.micThen(); }
