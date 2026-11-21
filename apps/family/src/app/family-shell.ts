@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, HostListener, OnDestroy, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, computed, effect, inject, signal, untracked } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioBus } from '@kratu/app/core/audio/audio-bus.service';
 import { WordsService } from '@kratu/app/core/clips/words.service';
@@ -32,6 +32,7 @@ export class FamilyShell implements OnDestroy {
   private readonly words = inject(WordsService);
   private readonly session = inject(SessionService);
   private readonly san = inject(DomSanitizer);
+  private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
   readonly ear = this.san.bypassSecurityTrustHtml(EAR_SVG);
   readonly ANIMALS = ANIMALS;
@@ -48,12 +49,13 @@ export class FamilyShell implements OnDestroy {
   // ---- enrol a child (the parent): boy or girl, then the name. Nothing is saved until Save.
   readonly g = signal<Gender | null>(null);
   readonly name = signal('');
-  readonly part = computed(() => (!this.g() ? 1 : 2));
   // ---- the child's first visit: their animal
   readonly pick = signal<string | null>(null);
   readonly taken = computed(() => this.fam.taken().filter((k) => k !== this.fam.current()?.animal));
 
   // ---- the parent's sign-in (email, phone, a code typed twice) and the code before Manage profiles
+  /** Sign-in is two screens (Sani 2026-11-21): the parent's details, then the code on its own. */
+  readonly signStep = signal<1 | 2>(1);
   readonly email = signal('');
   readonly phone = signal('');
   readonly code = signal('');
@@ -75,7 +77,7 @@ export class FamilyShell implements OnDestroy {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.micMsg.set(''); this.code.set(''); this.code2.set(''); this.codeMsg.set(''); this.busy.set(false);
-      if (s === 'signin') { this.email.set(''); this.phone.set(''); }
+      if (s === 'signin') { this.email.set(''); this.phone.set(''); this.signStep.set(1); }
       if (s === 'add') { this.g.set(null); this.name.set(''); }
       if (s === 'pick') this.pick.set(null);
       untracked(() => this.opening(s));
@@ -118,6 +120,7 @@ export class FamilyShell implements OnDestroy {
   }
 
   // ---- the parent's code
+  toCode(): void { if (this.emailOk() && this.phoneOk()) { this.code.set(''); this.code2.set(''); this.codeMsg.set(''); this.signStep.set(2); } }
   async signUp(): Promise<void> {
     if (!this.formOk() || this.busy()) return;
     if (this.code() !== this.code2()) { this.code.set(''); this.code2.set(''); this.codeMsg.set('The two codes were not the same. Please make your code again.'); return; }
@@ -132,7 +135,8 @@ export class FamilyShell implements OnDestroy {
   }
 
   // ---- enrol
-  setG(g: Gender): void { this.g.set(g); }
+  /** Choosing boy or girl folds that part away and puts the cursor in the name. */
+  setG(g: Gender): void { this.g.set(g); setTimeout(() => this.host.nativeElement.querySelector<HTMLInputElement>('.add .p2 input')?.focus(), 60); }
   setName(v: string): void { this.name.set(v.replace(/\s+/g, ' ').slice(0, 24)); }
   enrol(): void {
     if (!this.g() || !this.name().trim()) return;

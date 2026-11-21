@@ -32,18 +32,27 @@
 </section>
 }
 
-<!-- 3 · the parent signs up (Sani 2026-11-21, for now): email, phone and a 6-digit code typed twice. Later the code is sent. -->
+<!-- 3 · the parent signs up (Sani 2026-11-21, for now): their details, then, on its own screen, a 6-digit code typed
+     twice. Later the code will be sent to them instead. -->
 @case ('signin') {
 <section class="fs setup signin" [class.up]="upright()">
   <div class="sheet one">
+  @if (signStep() === 1) {
     <h1>Parent sign-in</h1>
     <label class="fl">Email<input class="field" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" [value]="email()" (input)="email.set($any($event.target).value)"></label>
-    <label class="fl">Phone number<input class="field" type="tel" inputmode="tel" autocomplete="tel" placeholder="0803 123 4567" [value]="phone()" (input)="phone.set($any($event.target).value)"></label>
-    <label class="fl">Make a 6-number parent code<input class="field code" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••" [value]="code()" (input)="code.set(digits($any($event.target).value))"></label>
-    <label class="fl">Type the code again<input class="field code" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••" [value]="code2()" (input)="code2.set(digits($any($event.target).value))" (keyup.enter)="signUp()"></label>
-    <p class="hint">Only you open “Manage profiles” with this code.</p>
+    <label class="fl">Phone number<input class="field" type="tel" inputmode="tel" autocomplete="tel" placeholder="0803 123 4567" [value]="phone()" (input)="phone.set($any($event.target).value)" (keyup.enter)="toCode()"></label>
+    <button class="btn" [disabled]="!emailOk() || !phoneOk()" (click)="toCode()">Continue</button>
+  } @else {
+    <h1>Make a parent code</h1>
+    <label class="fl">6 numbers only you know<input class="field code" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••" [value]="code()" (input)="code.set(digits($any($event.target).value)); codeMsg.set('')"></label>
+    <label class="fl">Type the code again<input class="field code" type="password" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••" [value]="code2()" (input)="code2.set(digits($any($event.target).value)); codeMsg.set('')" (keyup.enter)="signUp()"></label>
+    <p class="hint">You open “Manage profiles” with this code.</p>
     @if (codeMsg()) {<p class="warn">{{ codeMsg() }}</p>}
-    <button class="btn" [disabled]="!formOk() || busy()" (click)="signUp()">Continue</button>
+    <div class="pinrow">
+      <button class="btn ghost" (click)="signStep.set(1)">Back</button>
+      <button class="btn" [disabled]="!formOk() || busy()" (click)="signUp()">Save</button>
+    </div>
+  }
   </div>
 </section>
 }
@@ -55,38 +64,43 @@
   <h1 class="kick2">{{ fam.profiles().length ? 'Enrol another child' : 'Enrol your first child' }}</h1>
   <div class="card preview">
     <span class="pv">Preview</span>
-    <div class="cav">?</div>
+    <div class="cav gimg">@if (g()) {<img alt="" [src]="g() === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'">}</div>
     <div class="cname" [class.ph]="!name().trim()">{{ name().trim() || 'Name' }}</div>
     <div class="ctag" [class.ph]="!g()">{{ g() === 'f' ? 'Girl · Mace' : g() === 'm' ? 'Boy · Namiji' : 'Boy or girl' }}</div>
     <small class="cnote">Your child chooses the animal</small>
   </div>
   <div class="parts">
-    <div class="part p1" [class.now]="part() === 1"><div class="plb"><b [class.done]="!!g()">1</b>Boy or girl</div>
+    @if (!g()) {
+    <div class="part p1 now"><div class="plb"><b>1</b>Boy or girl</div>
       <div class="gg">
-        <button class="gc" [class.on]="g() === 'f'" (click)="setG('f')"><img alt="" src="assets/gender-girl.webp"><span>Girl<small>Mace</small></span></button>
-        <button class="gc" [class.on]="g() === 'm'" (click)="setG('m')"><img alt="" src="assets/gender-boy.webp"><span>Boy<small>Namiji</small></span></button>
+        <button class="gc" (click)="setG('f')"><img alt="" src="assets/gender-girl.webp"><span>Girl<small>Mace</small></span></button>
+        <button class="gc" (click)="setG('m')"><img alt="" src="assets/gender-boy.webp"><span>Boy<small>Namiji</small></span></button>
       </div></div>
-    <div class="part p2" [class.now]="part() === 2" [class.later]="part() < 2"><div class="plb"><b [class.done]="!!name().trim()">2</b>First name</div>
-      <input class="field" type="text" autocomplete="off" enterkeyhint="done" maxlength="24" [placeholder]="g() === 'f' ? 'Her first name' : g() === 'm' ? 'His first name' : 'First name'" [value]="name()" (input)="setName($any($event.target).value)" (keyup.enter)="enrol()" [disabled]="!g()"></div>
+    } @else {
+    <!-- chosen: folded to one line that still shows the choice; the name has the focus (Sani 2026-11-21) -->
+    <button class="part p1 folded" (click)="g.set(null)"><b class="done">1</b><img alt="" [src]="g() === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"><span>{{ g() === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</span><small>Change</small></button>
+    <div class="part p2 now"><div class="plb"><b [class.done]="!!name().trim()">2</b>{{ g() === 'f' ? 'Her' : 'His' }} first name</div>
+      <input #nameIn class="field" type="text" autocomplete="off" enterkeyhint="done" maxlength="24" [placeholder]="g() === 'f' ? 'Her first name' : 'His first name'" [value]="name()" (input)="setName($any($event.target).value)" (keyup.enter)="enrol()"></div>
+    }
   </div>
   <button class="btn go" [disabled]="!g() || !name().trim()" (click)="enrol()">Save</button>
 </section>
 }
 
-<!-- 5 · thank the parent; the child takes it from here -->
+<!-- 5 · "Musa is ready now" (Sani 2026-11-21): the boy or girl picture until the child chooses an animal; Continue
+     dances and glows and goes to the children's home -->
 @case ('thanks') {
 <section class="fs yours thanks" [class.up]="upright()">
   @if (fam.current(); as c) {
   <div class="pcard pop">
-    <div class="pav q">?</div>
+    <div class="pav gimg"><img alt="" [src]="c.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'"></div>
     <div class="pnm">{{ c.name }}</div>
     <div class="ctag">{{ c.g === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>
   </div>
-  <h1>Thank you! {{ c.name }} is ready.</h1>
-  <p class="note">Now give the phone to {{ c.name }}. {{ c.g === 'f' ? 'She taps her' : 'He taps his' }} card and chooses an animal.
-    Remember: “Manage profiles” is for parents only. It asks for your parent code.</p>
+  <h1>{{ c.name }} is ready now</h1>
   }
-  <button class="btn go" (click)="fam.toProfiles()">▶ Continue</button>
+  <button class="btn go big glowbtn dance" (click)="fam.toProfiles()">▶ Continue</button>
+  @if (fam.current(); as c) {<p class="note">Then you can pass the phone to {{ c.name }}.</p>}
 </section>
 }
 
@@ -97,7 +111,7 @@
   <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="hearAgain()"></button>
   @if (fam.current(); as c) {
   <div class="card">
-    <div class="cav" [class.got]="pick()" [style.background]="pick() ? animal(pick()!).c : null">{{ pick() ? animal(pick()!).e : '?' }}</div>
+    <div class="cav" [class.got]="pick()" [class.gimg]="!pick()" [style.background]="pick() ? animal(pick()!).c : null">@if (pick()) {{{ animal(pick()!).e }}} @else {<img alt="" [src]="c.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'">}</div>
     <div class="cname">{{ c.name }}</div>
   </div>
   }
@@ -131,7 +145,7 @@
   <h1>Who's learning today?</h1>
   <div class="cards">
     @for (p of fam.profiles(); track p.id) {
-      <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.q]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">{{ p.animal ? animal(p.animal).e : '?' }}</span><b>{{ p.name }}</b></button>
+      <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<img alt="" [src]="p.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'">}</span><b>{{ p.name }}</b></button>
     }
     <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
     <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
@@ -163,7 +177,7 @@
     <div class="col">
       <h1>Your children</h1>
       @for (p of fam.profiles(); track p.id) {
-        <div class="kid"><span class="kav" [style.background]="p.animal ? animal(p.animal).c : null">{{ p.animal ? animal(p.animal).e : '?' }}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span><button class="link" (click)="removeKid(p)">Remove</button></div>
+        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<img alt="" [src]="p.g === 'f' ? 'assets/gender-girl.webp' : 'assets/gender-boy.webp'">}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span><button class="link" (click)="removeKid(p)">Remove</button></div>
       } @empty {<p class="hint">No children yet.</p>}
       <button class="btn ghost" (click)="fam.startAdd()">+ Add a child</button>
     </div>

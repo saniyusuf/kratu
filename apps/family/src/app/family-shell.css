@@ -223,3 +223,15 @@ input,.field{min-height:48px;box-sizing:border-box}
 .signin .sheet.one{gap:calc(1.8 * var(--u))}
 .signin{overflow-y:auto;align-items:flex-start}
 .signin .sheet.one{margin:auto 0}
+/* Sani 2026-11-21, second round: boy/girl pictures as placeholders, the folded choice, the dancing Continue */
+.gimg{background:#FBF6EA;overflow:hidden}
+.gimg img{width:78%;height:78%;object-fit:contain;display:block;margin:auto}
+.cav.gimg,.pav.gimg,.nav.gimg,.kav.gimg{display:flex;align-items:center;justify-content:center}
+.part.folded{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;cursor:pointer;text-align:left;border:2px solid #9ED9CF;background:#E6F5EF}
+.part.folded b{width:28px;height:28px;border-radius:50%;background:#2FAE9E;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+.part.folded img{width:38px;height:38px;object-fit:contain}
+.part.folded span{flex:1;font-weight:800;font-size:max(17px, calc(3.4 * var(--u)))}
+.part.folded small{font-weight:800;color:#1E8073;text-decoration:underline;font-size:16px}
+.btn.dance{animation:fglow 1.6s ease-in-out infinite,fdance 1.2s ease-in-out infinite}
+@keyframes fdance{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(-3deg)}75%{transform:translateY(-4px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.btn.dance,.glowbtn{animation:none}}
