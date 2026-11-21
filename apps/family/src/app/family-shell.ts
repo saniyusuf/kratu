@@ -8,6 +8,7 @@ import { snapName } from '@kratu/app/core/identity/name-clip';
 import { Gender, SessionService } from '@kratu/app/core/state/session.service';
 import { Laila } from '@kratu/app/shared/laila/laila';
 import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
+import { BOY_SVG, GIRL_SVG } from './kids';
 
 /**
  * The family build's own screens. The flow (Sani 2026-11-21, from his notes on the steps page): Kratu opening from a
@@ -35,6 +36,9 @@ export class FamilyShell implements OnDestroy {
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
   readonly ear = this.san.bypassSecurityTrustHtml(EAR_SVG);
+  private readonly kids = { m: this.san.bypassSecurityTrustHtml(BOY_SVG), f: this.san.bypassSecurityTrustHtml(GIRL_SVG) };
+  /** The app's own Hausa boy or girl (kids.ts), never a stock emoji (Sani 2026-11-21). */
+  kid(g: Gender | null | undefined) { return this.kids[g === 'f' ? 'f' : 'm']; }
   readonly ANIMALS = ANIMALS;
   readonly animal = animal;
 

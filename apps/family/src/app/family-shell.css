@@ -244,3 +244,13 @@ input,.field{min-height:48px;box-sizing:border-box}
 .pav .gem{font-size:max(70px, calc(16 * var(--u)))}
 .nav .gem,.kav .gem{font-size:.9em}
 .gc .gem,.part.folded .gem{font-size:34px;width:40px;text-align:center}
+/* the drawn Hausa boy and girl; no white card on "is ready now" and on their card (Sani 2026-11-21) */
+.gem{display:inline-block;width:1em;height:1em;line-height:0}
+.gem ::ng-deep svg{width:100%;height:100%;display:block}
+.cav .gem,.pav .gem,.nav .gem,.kav .gem{width:100%;height:100%}
+.gimg{background:#FDEBC8}
+.gc .gem,.part.folded .gem{width:40px;height:40px;font-size:40px}
+.pcard{background:none;box-shadow:none;padding:0}
+.thanks .pav{box-shadow:0 0 0 4px #F2C46A,0 10px 24px rgba(240,138,62,.25)}
+.thanks .pav,.yours .pav{border:0}
+.fs .thanks .pcard,.fs .yours .pcard,.thanks .pcard,.yours .pcard{background:none!important;border:0!important;box-shadow:none!important;outline:0!important;padding:0!important;min-width:0!important}

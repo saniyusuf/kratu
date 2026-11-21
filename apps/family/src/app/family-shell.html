@@ -62,7 +62,7 @@
   <h1 class="kick2">{{ fam.profiles().length ? 'Enrol another child' : 'Enrol your first child' }}</h1>
   <div class="card preview">
     <span class="pv">Preview</span>
-    <div class="cav gimg">@if (g()) {<span class="gem">{{ g() === 'f' ? '👧🏾' : '👦🏾' }}</span>}</div>
+    <div class="cav gimg">@if (g()) {<span class="gem" [innerHTML]="kid(g())"></span>}</div>
     <div class="cname" [class.ph]="!name().trim()">{{ name().trim() || 'Name' }}</div>
     <div class="ctag" [class.ph]="!g()">{{ g() === 'f' ? 'Girl · Mace' : g() === 'm' ? 'Boy · Namiji' : 'Boy or girl' }}</div>
     <small class="cnote">Your child chooses the animal</small>
@@ -71,12 +71,12 @@
     @if (!g()) {
     <div class="part p1 now"><div class="plb"><b>1</b>Boy or girl</div>
       <div class="gg">
-        <button class="gc" (click)="setG('f')"><span class="gem">👧🏾</span><span>Girl<small>Mace</small></span></button>
-        <button class="gc" (click)="setG('m')"><span class="gem">👦🏾</span><span>Boy<small>Namiji</small></span></button>
+        <button class="gc" (click)="setG('f')"><span class="gem" [innerHTML]="kid('f')"></span><span>Girl<small>Mace</small></span></button>
+        <button class="gc" (click)="setG('m')"><span class="gem" [innerHTML]="kid('m')"></span><span>Boy<small>Namiji</small></span></button>
       </div></div>
     } @else {
     <!-- chosen: folded to one line that still shows the choice; the name has the focus (Sani 2026-11-21) -->
-    <button class="part p1 folded" (click)="g.set(null)"><b class="done">1</b><span class="gem">{{ g() === 'f' ? '👧🏾' : '👦🏾' }}</span><span>{{ g() === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</span><small>Change</small></button>
+    <button class="part p1 folded" (click)="g.set(null)"><b class="done">1</b><span class="gem" [innerHTML]="kid(g())"></span><span>{{ g() === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</span><small>Change</small></button>
     <div class="part p2 now"><div class="plb"><b [class.done]="!!name().trim()">2</b>{{ g() === 'f' ? 'Her' : 'His' }} first name</div>
       <input #nameIn class="field" type="text" autocomplete="off" enterkeyhint="done" maxlength="24" [placeholder]="g() === 'f' ? 'Her first name' : 'His first name'" [value]="name()" (input)="setName($any($event.target).value)" (keyup.enter)="enrol()"></div>
     }
@@ -91,7 +91,7 @@
 <section class="fs yours thanks" [class.up]="upright()">
   @if (fam.current(); as c) {
   <div class="pcard pop">
-    <div class="pav gimg"><span class="gem">{{ c.g === 'f' ? '👧🏾' : '👦🏾' }}</span></div>
+    <div class="pav gimg"><span class="gem" [innerHTML]="kid(c.g)"></span></div>
     <div class="pnm">{{ c.name }}</div>
     <div class="ctag">{{ c.g === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>
   </div>
@@ -109,7 +109,7 @@
   <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="hearAgain()"></button>
   @if (fam.current(); as c) {
   <div class="card">
-    <div class="cav" [class.got]="pick()" [class.gimg]="!pick()" [style.background]="pick() ? animal(pick()!).c : null">@if (pick()) {{{ animal(pick()!).e }}} @else {<span class="gem">{{ c.g === 'f' ? '👧🏾' : '👦🏾' }}</span>}</div>
+    <div class="cav" [class.got]="pick()" [class.gimg]="!pick()" [style.background]="pick() ? animal(pick()!).c : null">@if (pick()) {{{ animal(pick()!).e }}} @else {<span class="gem" [innerHTML]="kid(c.g)"></span>}</div>
     <div class="cname">{{ c.name }}</div>
   </div>
   }
@@ -143,7 +143,7 @@
   <h1>Who's learning today?</h1>
   <div class="cards">
     @for (p of fam.profiles(); track p.id) {
-      <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem">{{ p.g === 'f' ? '👧🏾' : '👦🏾' }}</span>}</span><b>{{ p.name }}</b></button>
+      <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><b>{{ p.name }}</b></button>
     }
     <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
     <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
@@ -177,7 +177,7 @@
     <div class="col">
       <h1>Your children</h1>
       @for (p of fam.profiles(); track p.id) {
-        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem">{{ p.g === 'f' ? '👧🏾' : '👦🏾' }}</span>}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span><button class="link" (click)="removeKid(p)">Remove</button></div>
+        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span><button class="link" (click)="removeKid(p)">Remove</button></div>
       } @empty {<p class="hint">No children yet.</p>}
       <button class="btn ghost" (click)="fam.startAdd()">+ Add a child</button>
     </div>
