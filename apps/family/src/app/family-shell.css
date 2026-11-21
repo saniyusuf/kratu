@@ -171,3 +171,55 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 input,.field{min-height:48px;box-sizing:border-box}
 .keypad button{min-height:52px}
 .note{font-weight:700}
+
+/* ---- Sani 2026-11-21: the reworked flow ---- */
+/* the glowing Start / Allow with the app's pointing hand */
+.gowrap{position:relative;display:inline-block}
+.glowbtn{animation:fglow 1.6s ease-in-out infinite}
+@keyframes fglow{0%,100%{box-shadow:0 5px 0 #C76A27,0 0 0 0 rgba(240,138,62,.55)}50%{box-shadow:0 5px 0 #C76A27,0 0 0 14px rgba(240,138,62,0)}}
+.phand{position:absolute;right:-18px;bottom:-30px;font-size:max(36px, calc(9 * var(--u)));line-height:1;pointer-events:none;animation:fhand .9s ease-in-out infinite;transform-origin:50% 0}
+.wc .tag{font-family:var(--disp,'Baloo 2',sans-serif);font-weight:800;font-size:max(22px, calc(6 * var(--u)));line-height:1.15;margin:0 0 calc(2 * var(--u))}
+
+/* the microphone itself, big, with rings */
+.mic-big{position:relative;border:0;cursor:pointer;width:max(150px, calc(36 * var(--u)));height:max(150px, calc(36 * var(--u)));border-radius:50%;
+  background:var(--orange,#F08A3E);box-shadow:0 8px 0 #C76A27;display:flex;align-items:center;justify-content:center;padding:0}
+.mic-big svg{width:52%;height:52%}
+.mic-big i{position:absolute;inset:-6%;border-radius:50%;border:3px solid rgba(240,138,62,.55);animation:fring 2.4s ease-out infinite;pointer-events:none}
+.mic-big .w2{animation-delay:.8s}.mic-big .w3{animation-delay:1.6s}
+.mic-big .hand{position:absolute;right:-10%;bottom:-12%;font-size:max(40px, calc(10 * var(--u)));line-height:1;animation:fhand .9s ease-in-out infinite}
+.mic-big.busy{opacity:.6}.mic-big.busy i{animation:none;opacity:0}
+.mic .note{font-size:max(17px, calc(3.4 * var(--u)));font-weight:700;color:#6B5D45;margin:0;max-width:40ch}
+
+/* sign-in and the parent's code */
+.sheet.one{display:flex;flex-direction:column;gap:calc(2.4 * var(--u));align-items:stretch;width:min(100%, 460px);text-align:left}
+.signin .sheet.one .btn{align-self:flex-start}
+.signin.up .sheet.one .btn{align-self:stretch}
+.seg{display:flex;gap:8px;background:#FBF6EA;border-radius:16px;padding:5px;border:2px solid #E2D4B4}
+.seg button{flex:1;min-height:48px;border:0;border-radius:12px;background:none;font-weight:800;font-size:max(17px, calc(3.2 * var(--u)));cursor:pointer}
+.seg button.on{background:#fff;box-shadow:0 2px 0 #E2D4B4;color:#1E8073}
+.field.code{letter-spacing:.5em;font-size:max(24px, calc(6 * var(--u)));text-align:center;font-weight:800}
+.btn.wide{width:100%;font-size:max(17px, calc(3.6 * var(--u)))}
+.test{margin:0;font-size:max(16px, calc(2.8 * var(--u)));font-weight:800;color:#9A5B00;background:#FDEBC8;border-radius:12px;padding:8px 12px}
+
+/* enrol: the card is a preview while the parent fills it in */
+.kick2{font-size:max(22px, calc(5.6 * var(--u)));text-align:center}
+.add .card.preview{position:relative;border:2.5px dashed #E2C98F;box-shadow:none;background:rgba(255,255,255,.75)}
+.card.preview .pv{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#FDEBC8;color:#9A5B00;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:2px 12px}
+.ctag.ph{opacity:.5}
+.cnote{font-weight:700;color:#6B5D45;font-size:max(15px, calc(2.6 * var(--u)))}
+.add .btn.go{align-self:center}
+.add{overflow-y:auto}
+
+/* thanks */
+.thanks h1{text-align:center}
+.thanks .note{text-align:center;max-width:42ch;font-weight:700;color:#6B5D45;font-size:max(17px, calc(3.2 * var(--u)));margin:0}
+.pav.q,.nav.q{background:#EFE5CC;color:#B59A62;font-family:var(--disp,'Baloo 2',sans-serif);font-weight:800}
+
+/* the child's animal */
+.pick .grid.big{display:grid;grid-template-columns:repeat(5,1fr);gap:calc(1.8 * var(--u));width:min(100%, 560px)}
+.pick.up .grid.big{grid-template-columns:repeat(4,1fr)}
+.pick .grid.big .av{aspect-ratio:1;min-height:64px;font-size:max(34px, calc(8 * var(--u)))}
+.fl{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:max(16px, calc(3 * var(--u)))}
+.signin .sheet.one{gap:calc(1.8 * var(--u))}
+.signin{overflow-y:auto;align-items:flex-start}
+.signin .sheet.one{margin:auto 0}

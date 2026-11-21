@@ -6,6 +6,11 @@ import { SessionService, Gender } from '../state/session.service';
 /** A child's profile on this phone (Sani 2026-11-18): an animal and a typed first name, never a face or a voice. */
 export interface Profile { id: string; name: string; g: Gender; animal: string; at: number; }
 
+/** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
+ *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
+ *  email or phone instead. Only the code's hash is kept. */
+export interface Account { email: string; phone: string; code: string; at: number; }
+
 /**
  * The animals a child can choose (the design page of 17 Nov, with Sani's keeps): each is already a word in the lessons
  * with a Hausa clip, so Laila can say a child's animal with no new recording. No birds (they could be taken for Laila),
@@ -21,9 +26,9 @@ export const ANIMALS: { k: string; e: string; c: string }[] = [
 export const animal = (k: string) => ANIMALS.find((a) => a.k === k) ?? ANIMALS[0];
 
 /** The family build's own screens, drawn over the app (both ways round, unlike the landscape lessons). */
-export type FamScreen = 'welcome' | 'mic' | 'setup' | 'add' | 'yours' | 'profiles' | 'pin' | 'parent' | null;
+export type FamScreen = 'welcome' | 'mic' | 'signin' | 'add' | 'thanks' | 'profiles' | 'pick' | 'yours' | 'code' | 'parent' | null;
 
-const K_PROFILES = 'kratu_fam_profiles', K_PIN = 'kratu_fam_pin', K_STARTED = 'kratu_fam_started';
+const K_PROFILES = 'kratu_fam_profiles', K_ACCOUNT = 'kratu_fam_account', K_STARTED = 'kratu_fam_started';
 
 @Injectable({ providedIn: 'root' })
 export class FamilyService {
@@ -35,8 +40,8 @@ export class FamilyService {
   readonly profiles = signal<Profile[]>(this.read());
   /** The profile being shown on "this is your animal". */
   readonly current = signal<Profile | null>(null);
-  /** Where the PIN box leads once the right PIN is in. */
-  pinNext: FamScreen = 'parent';
+  /** The parent's account on this phone, once signed in. */
+  readonly account = signal<Account | null>(this.readAccount());
   /** Set by the shell when the loader has finished: screens after the microphone wait for it. */
   private loaded!: Promise<void>;
   private wasAdding = false;
@@ -54,17 +59,29 @@ export class FamilyService {
   // ---- storage: this phone only for now; the parent account and its sync come with the server (design page, box 6)
   private read(): Profile[] { try { return JSON.parse(localStorage.getItem(K_PROFILES) || '[]'); } catch { return []; } }
   private write(list: Profile[]): void { this.profiles.set(list); if (this.trying) return; try { localStorage.setItem(K_PROFILES, JSON.stringify(list)); } catch { /* private mode */ } }
-  hasPin(): boolean { try { return !!localStorage.getItem(K_PIN); } catch { return false; } }
-  async setPin(pin: string): Promise<void> { if (this.trying) return; try { localStorage.setItem(K_PIN, await this.hash(pin)); } catch { /* private mode */ } }
-  async checkPin(pin: string): Promise<boolean> { if (this.trying) return pin.length === 4; try { return localStorage.getItem(K_PIN) === await this.hash(pin); } catch { return false; } }
-  private async hash(pin: string): Promise<string> {
-    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kratu-family:' + pin));
+  private readAccount(): Account | null { try { return JSON.parse(localStorage.getItem(K_ACCOUNT) || 'null'); } catch { return null; } }
+  private saveAccount(a: Account): void { this.account.set(a); if (this.trying) return; try { localStorage.setItem(K_ACCOUNT, JSON.stringify(a)); } catch { /* private mode */ } }
+
+  async setAccount(email: string, phone: string, code: string): Promise<void> {
+    this.saveAccount({ email: email.trim(), phone: phone.trim(), code: await this.hash(code), at: Date.now() });
+  }
+  async checkCode(code: string): Promise<boolean> {
+    if (this.trying) return /^\d{6}$/.test(code);
+    const a = this.account(); return !!a && a.code === await this.hash(code);
+  }
+  private async hash(code: string): Promise<string> {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kratu-family:' + code));
     return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join('');
   }
-  taken(): string[] { return this.profiles().map((p) => p.animal); }
-  add(name: string, g: Gender, a: string): Profile {
-    const p: Profile = { id: 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: name.trim(), g, animal: a, at: Date.now() };
+  taken(): string[] { return this.profiles().map((p) => p.animal).filter(Boolean); }
+  /** The parent enrols a child with a name and boy or girl; the child chooses the animal on their first visit. */
+  add(name: string, g: Gender): Profile {
+    const p: Profile = { id: 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: name.trim(), g, animal: '', at: Date.now() };
     this.write([...this.profiles(), p]); return p;
+  }
+  setAnimal(id: string, a: string): Profile | null {
+    const list = this.profiles().map((p) => (p.id === id ? { ...p, animal: a } : p));
+    this.write(list); return list.find((p) => p.id === id) ?? null;
   }
   remove(id: string): void {
     this.write(this.profiles().filter((p) => p.id !== id));
@@ -92,26 +109,29 @@ export class FamilyService {
     if (!started && !this.profiles().length) { this.show('welcome'); return; }
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
+    if (!this.account()) { this.show('signin'); return; }
     this.afterSetup();
   }
   /** `?step=` (see `trying`): straight to one real screen, with the sample children and nothing saved. */
   private async tryStep(step: string): Promise<void> {
     this.profiles.set(FamilyService.SAMPLES);
     const kid = step.endsWith('_f') ? FamilyService.SAMPLES[1] : FamilyService.SAMPLES[0];
+    this.account.set({ phone: '0803 000 0000', email: 'parent@example.com', code: '', at: 0 });
     const id = step.replace(/_[mf]$/, '');
     if (id === 'welcome') { this.show('welcome'); return; }
     if (id === 'mic') { this.show('mic'); return; }
     await this.loaded;
     switch (id) {
-      case 'pin': this.show('setup'); return;
+      case 'signin': this.account.set(null); this.show('signin'); return;
       case 'add': this.profiles.set([]); this.startAdd(); return;
+      case 'thanks': this.current.set(kid); this.show('thanks'); return;
+      case 'pick': this.profiles.set(FamilyService.SAMPLES.map((p) => ({ ...p, animal: '' }))); this.choose({ ...kid, animal: '' }); return;
       case 'yours': this.current.set(kid); this.show('yours'); return;
       case 'profiles': this.toProfiles(); return;
-      case 'parent': this.askPin('parent'); return;
+      case 'parent': this.manage(); return;
       case 'guest': this.guest(); return;
       case 'back': this.choose(kid); return;
-      case 'laila': this.current.set(kid); this.firstGo(); return;
-      case 'first': this.signIn(kid); this.session.known.set(false); this.show(null); this.router.navigate(['/welcome']); return;
+      case 'laila': case 'first': this.current.set(kid); this.firstGo(); return;
       case 'home': this.signIn(kid); this.session.known.set(true); this.show(null); this.router.navigate(['/home']); return;
       default: this.toProfiles();
     }
@@ -123,22 +143,31 @@ export class FamilyService {
   async afterMic(): Promise<void> {
     this.show(null);   // the loader shows through while it is still working
     await this.loaded;
-    if (!this.hasPin()) { this.show('setup'); return; }
+    if (!this.account()) { this.show('signin'); return; }
     this.afterSetup();
   }
   afterSetup(): void { if (!this.profiles().length) this.startAdd(); else this.toProfiles(); }
   startAdd(): void { this.wasAdding = true; this.show('add'); }
-  /** The wizard's last press: the profile is saved and shown big. */
-  added(p: Profile): void { this.current.set(p); this.show('yours'); }
+  /** The parent's last press on "enrol a child": saved, and thanked (the child picks the animal later). */
+  added(p: Profile): void { this.current.set(p); this.show('thanks'); }
   toProfiles(): void { this.bus.stopAll(); this.session.end(); this.session.guest.set(false); this.show('profiles'); this.router.navigateByUrl('/blank', { skipLocationChange: true }); }
-  askPin(next: FamScreen): void { this.pinNext = next; this.show('pin'); }
+  /** Manage profiles: the parent's code first (Sani 2026-11-21). */
+  manage(): void { this.show('code'); }
 
-  /** A child picked their card: straight to Laila's welcome back (Sani 2026-11-18: no name card in between), then home. */
-  choose(p: Profile): void { this.signIn(p); this.current.set(p); this.backGo(); }
-  /** After "this is your animal": Meet Laila, then the first-day welcome, then home. */
+  /**
+   * A child picked their card. The first time (no animal yet) they choose their own animal and Laila welcomes them by
+   * name; every time after, straight to Laila's welcome back (Sani 2026-11-18: no name card in between), then home.
+   */
+  choose(p: Profile): void {
+    this.signIn(p); this.current.set(p);
+    if (!p.animal) { this.show('pick'); return; }
+    this.backGo();
+  }
+  /** After the welcome by name: Laila's first-day welcome, one screen (Sani 2026-11-21: Meet Laila and the first
+   *  welcome merged), then home. */
   firstGo(): void {
     const p = this.current(); if (!p) return;
-    this.signIn(p); this.session.known.set(false); this.show(null); this.router.navigate(['/laila']);
+    this.signIn(p); this.session.known.set(false); this.show(null); this.router.navigate(['/welcome']);
   }
   /** After "welcome back": the welcome-back beats of the app's own welcome screen, then home. */
   backGo(): void { this.session.known.set(true); this.show(null); this.router.navigate(['/welcome']); }

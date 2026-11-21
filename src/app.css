@@ -902,8 +902,8 @@ html.fam-on #admingear{display:none!important}
   html.fam-up #app .frame>.s.lesson{justify-content:space-evenly}
   html.fam-up #app .s .eyebrow{font-size:17px;letter-spacing:.08em}
   /* home: the book, then the six lessons as two rows of three, big enough to read */
-  html.fam-up #app .s.home .homegrid{grid-template-columns:repeat(3,112px);gap:12px}
-  html.fam-up #app .s.home .hlab{font-size:17px;line-height:1.1}
+  html.fam-up #app .s.home .homegrid{grid-template-columns:repeat(3,118px);gap:9px}
+  html.fam-up #app .s.home .hlab{font-size:17px;line-height:1.1;white-space:nowrap}
   /* lesson menus: three across (the ten topics), two across (reading, writing) */
   html.fam-up #app .s.lesson .catmenu{grid-template-columns:repeat(3,1fr);gap:16px 12px;width:100%;padding-top:0}
   html.fam-up #app .s.lesson .catmenu.few{grid-template-columns:repeat(2,minmax(130px,170px))}

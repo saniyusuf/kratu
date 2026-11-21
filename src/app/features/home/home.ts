@@ -18,6 +18,7 @@ import { ScreenTransition } from '../../core/nav/screen-transition.service';
 import { CourseService } from '../../core/state/course.service';
 import { GAMES_CORNER_SVG } from './games-corner';
 import { sub, t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
 
 const ROUTE: Record<string, string> = { letters: 'haruffa/koyo', things: 'abubuwa', spell: 'rubutu', numbers: 'lambobi', quiz: 'nemo', read: 'karatu' };
 const LESSON: Record<string, LessonId> = { letters: 'haruffa', things: 'abubuwa', quiz: 'nemo', numbers: 'lambobi', read: 'karatu', spell: 'rubutu' };
@@ -95,6 +96,8 @@ export class HomeScreen implements OnInit, OnDestroy {
   }
   /** Whether the child has reached this tile's first lesson in the course (the simulator's step, or their own place). */
   private reached(act: string): boolean {
+    // family build (Sani 2026-11-21): the letters are always open, and a guest has every tile open, as in the lessons
+    if (FAMILY && (act === 'letters' || this.session.guest())) return true;
     const f = FIRST[act], at = this.course.now(); if (!f || at == null) return false;
     const first = this.course.steps.find((s) => f(s)); return !!first && at >= first.n;
   }
