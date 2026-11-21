@@ -235,3 +235,12 @@ input,.field{min-height:48px;box-sizing:border-box}
 .btn.dance{animation:fglow 1.6s ease-in-out infinite,fdance 1.2s ease-in-out infinite}
 @keyframes fdance{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(-3deg)}75%{transform:translateY(-4px) rotate(3deg)}}
 @media (prefers-reduced-motion:reduce){.btn.dance,.glowbtn{animation:none}}
+/* keypad code entry and the boy/girl emoji (Sani 2026-11-21) */
+.signin .sheet.one{align-items:center;text-align:center}
+.signin .sheet.one .fl{align-self:stretch;text-align:left}
+.signin .pins{gap:8px}
+.signin .pin{width:40px;height:50px}
+.gem{font-size:max(40px, calc(10 * var(--u)));line-height:1}
+.pav .gem{font-size:max(70px, calc(16 * var(--u)))}
+.nav .gem,.kav .gem{font-size:.9em}
+.gc .gem,.part.folded .gem{font-size:34px;width:40px;text-align:center}

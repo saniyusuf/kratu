@@ -55,17 +55,18 @@ export class FamilyShell implements OnDestroy {
 
   // ---- the parent's sign-in (email, phone, a code typed twice) and the code before Manage profiles
   /** Sign-in is two screens (Sani 2026-11-21): the parent's details, then the code on its own. */
-  readonly signStep = signal<1 | 2>(1);
+  readonly signStep = signal<1 | 2 | 3>(1);
+  readonly SIX = [0, 1, 2, 3, 4, 5];
+  readonly KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'];
+  /** The first typing of the new code, held until the second matches. */
+  private first = '';
   readonly email = signal('');
   readonly phone = signal('');
   readonly code = signal('');
-  readonly code2 = signal('');
   readonly busy = signal(false);
   readonly codeMsg = signal('');
   readonly emailOk = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email().trim()));
   readonly phoneOk = computed(() => this.phone().replace(/\D/g, '').length >= 10);
-  readonly formOk = computed(() => this.emailOk() && this.phoneOk() && this.code().length === 6 && this.code2().length === 6);
-  digits(v: string): string { return v.replace(/\D/g, '').slice(0, 6); }
 
   readonly micBusy = signal(false);
   readonly micMsg = signal('');
@@ -76,7 +77,7 @@ export class FamilyShell implements OnDestroy {
     effect(() => {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
-      this.micMsg.set(''); this.code.set(''); this.code2.set(''); this.codeMsg.set(''); this.busy.set(false);
+      this.micMsg.set(''); this.code.set(''); this.codeMsg.set(''); this.busy.set(false);
       if (s === 'signin') { this.email.set(''); this.phone.set(''); this.signStep.set(1); }
       if (s === 'add') { this.g.set(null); this.name.set(''); }
       if (s === 'pick') this.pick.set(null);
@@ -119,11 +120,23 @@ export class FamilyShell implements OnDestroy {
     }
   }
 
-  // ---- the parent's code
-  toCode(): void { if (this.emailOk() && this.phoneOk()) { this.code.set(''); this.code2.set(''); this.codeMsg.set(''); this.signStep.set(2); } }
+  // ---- the parent's code, on a keypad (Sani 2026-11-21)
+  toCode(): void { if (this.emailOk() && this.phoneOk()) this.startAgain(); }
+  /** Back to "make a parent code", everything typed so far forgotten. */
+  startAgain(): void { this.first = ''; this.code.set(''); this.codeMsg.set(''); this.signStep.set(2); }
+  key(k: string): void {
+    if (!k || this.busy()) return;
+    if (k === '⌫') { this.code.update((c) => c.slice(0, -1)); return; }
+    if (this.code().length >= 6) return;
+    this.code.update((c) => c + k); this.codeMsg.set('');
+    if (this.code().length < 6) return;
+    if (this.fam.screen() === 'code') { this.openParent(); return; }
+    // the code is complete: the first time it moves on to "type it again", the second time it must match
+    if (this.signStep() === 2) { this.first = this.code(); setTimeout(() => { this.code.set(''); this.signStep.set(3); }, 250); return; }
+    this.signUp();
+  }
   async signUp(): Promise<void> {
-    if (!this.formOk() || this.busy()) return;
-    if (this.code() !== this.code2()) { this.code.set(''); this.code2.set(''); this.codeMsg.set('The two codes were not the same. Please make your code again.'); return; }
+    if (this.code() !== this.first) { this.code.set(''); this.codeMsg.set('The two codes were not the same. Press “Start again” and make your code again.'); return; }
     this.busy.set(true); await this.fam.setAccount(this.email(), this.phone(), this.code()); this.busy.set(false);
     this.fam.afterSetup();
   }
