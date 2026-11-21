@@ -13,10 +13,10 @@ import { voiceLang, plotweaver } from './lang-voice.mjs';
 if (process.argv.includes('--lang') && !process.argv.includes('--word')) { const a = process.argv.slice(2); process.exit(await voiceLang(a[a.indexOf('--lang') + 1], a) ? 1 : 0); }   // a demo language: its own lines and words
 const env = existsSync('.env') ? Object.fromEntries(readFileSync('.env', 'utf8').split('\n').filter((l) => l.includes('=') && !l.startsWith('#')).map((l) => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()])) : {};
 const PROVIDER = env.KRATU_TTS || process.env.KRATU_TTS || 'google';
-// Who reads the English word names (word_<key>.ogg in audio/en): PlotWeaver's Bisola, a Nigerian English voice (Sani 19 Nov),
-// or google to go back to the Translate voice. KRATU_EN_WORDS=provider:voice in .env or the environment overrides it.
-// Word names only: the English letters (app_en_A…Z) stay in Google's voice (Sani 19 Nov).
-const EN_WORDS = (env.KRATU_EN_WORDS || process.env.KRATU_EN_WORDS || 'plotweaver:bisola').split(':');
+// Who reads the English word names (word_<key>.ogg in audio/en): always PlotWeaver, Bisola by default, a Nigerian English
+// voice (Sani 19 Nov). The Google words were dropped (Sani 21 Nov); KRATU_EN_WORDS=voice in .env or the environment picks
+// another PlotWeaver voice. Word names only: the English letters (app_en_A…Z) stay in Google's voice (Sani 19 Nov).
+const EN_WORDS_VOICE = (env.KRATU_EN_WORDS || process.env.KRATU_EN_WORDS || 'bisola').replace(/^plotweaver:/, '');
 const args = process.argv.slice(2), only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null, dry = args.includes('--dry-run'), force = args.includes('--force');
 const H = (t) => createHash('sha1').update(t).digest('hex').slice(0, 10);
 /**
@@ -40,7 +40,7 @@ async function record(text, lang, dest) {
   encode(raw, dest);
   rmSync(tmp, { recursive: true, force: true });
 }
-if (args.includes('--word')) { const text = args[args.indexOf('--text') + 1], lang = args[args.indexOf('--lang') + 1], dest = args[args.indexOf('--dest') + 1]; if (lang === 'en' && EN_WORDS[0] === 'plotweaver') await plotweaver(text, 'en', EN_WORDS[1] || 'bisola', dest, { trim: true }); else await record(text, lang, dest); console.log('made  ' + dest); process.exit(0); }
+if (args.includes('--word')) { const text = args[args.indexOf('--text') + 1], lang = args[args.indexOf('--lang') + 1], dest = args[args.indexOf('--dest') + 1]; if (lang === 'en') await plotweaver(text, 'en', EN_WORDS_VOICE, dest, { trim: true }); else await record(text, lang, dest); console.log('made  ' + dest); process.exit(0); }
 const lines = JSON.parse(readFileSync('content/lines.json', 'utf8')); const plan = [];
 for (const r of lines) {
   if (r.status !== 'live' || r.voice !== 'laila') continue; if (only && r.key !== only) continue;
