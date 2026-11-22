@@ -362,3 +362,4 @@ input,.field{min-height:48px;box-sizing:border-box}
 .kid .kn{flex:1 1 calc(100% - 60px);min-width:0;gap:2px}
 .kid .link{margin-left:auto}
 .kid .link + .link{margin-left:0}
+.consent .note,.consent .clist{text-align:left}
