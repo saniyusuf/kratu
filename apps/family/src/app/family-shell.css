@@ -333,3 +333,28 @@ input,.field{min-height:48px;box-sizing:border-box}
   .signin .sheet.one .fl{display:grid;grid-template-columns:8.2em 1fr;align-items:center;gap:12px;white-space:nowrap}
   .signin .sheet.one .fl .field{min-width:0}
 }
+
+/* 4b · consent before the first face print (Sani 2026-11-22) */
+.consent .sheet.one{width:min(94vw, 680px);gap:14px;padding:22px 26px;max-height:calc(100% - 16px);overflow:auto}
+.consent .cbig{font-size:44px;line-height:1;text-align:center}
+.consent h1{text-align:center;font-size:clamp(22px, 4.2vmin, 34px)}
+.consent .note{font-size:16px;color:#6B5D45}
+.clist{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:.45em;font-size:16px;line-height:1.35;color:#4E4230}
+.cbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.consent .btn{display:inline-flex;align-items:center;justify-content:center;font-size:19px;padding:8px 30px;min-width:10em}
+.consent.up .cbtns{flex-direction:column;align-items:stretch}
+@media (orientation: landscape) and (max-height: 460px){ .consent .cbig{display:none} .consent .sheet.one{gap:8px;padding:12px 20px} .clist,.consent .note{font-size:14px} }
+
+/* 4c / 9a / 9b · the face step: one round camera, a ring that fills while one face is in it (fam-face.ts) */
+.fs.face{flex-direction:column;gap:calc(2.4 * var(--u));padding-top:calc(5 * var(--u));padding-bottom:calc(4 * var(--u))}
+.fs.face .mk.sm{line-height:1}
+.fs.face h1{text-align:center}
+.frow{display:flex;gap:calc(2 * var(--u));flex-wrap:wrap;justify-content:center}
+.manage.cam{margin-bottom:calc(-1 * var(--u))}
+/* sideways phone: the heading beside nothing, so everything shrinks to fit the short height */
+@media (orientation: landscape) and (max-height: 460px){
+  .fs.face{gap:8px;padding-top:10px;padding-bottom:8px}
+  .fs.face h1{font-size:20px}
+  .fs.face .mk.sm{display:none}
+  .fs.face .btn{min-height:40px;padding:4px 22px;font-size:16px}
+}

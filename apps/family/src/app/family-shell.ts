@@ -10,6 +10,7 @@ import { Gender, SessionService } from '@kratu/app/core/state/session.service';
 import { Laila } from '@kratu/app/shared/laila/laila';
 import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
 import { BOY_SVG, GIRL_SVG } from './kids';
+import { FamFace, FaceEnd } from './fam-face';
 
 /**
  * The family build's own screens. The flow (Sani 2026-11-21, from his notes on the steps page): Kratu opening from a
@@ -23,7 +24,7 @@ import { BOY_SVG, GIRL_SVG } from './kids';
  */
 @Component({
   selector: 'app-family-shell',
-  imports: [Laila, DatePipe],
+  imports: [Laila, DatePipe, FamFace],
   host: { '[class.on]': '!!fam.screen()', '[attr.data-s]': 'fam.screen()' },
   templateUrl: './family-shell.html',
   styleUrl: './family-shell.css',
@@ -208,5 +209,14 @@ export class FamilyShell implements OnDestroy {
   /** The settings gear left the child's upright screens (Sani 2026-11-22): the parents open the settings from here. */
   openSettings(): void { this.fam.show(null); setTimeout(() => document.getElementById('admingear')?.click(), 60); }
 
+  addFace(p: Profile): void { this.fam.current.set(p); this.fam.toFace('parent'); }
+  /** The face step's end: enrolled, recognised, or the cards. */
+  faceEnded(e: FaceEnd): void {
+    const S = this.fam.screen();
+    if (S === 'face') { this.fam.afterFace(e.kind === 'enrolled'); return; }
+    if (e.kind === 'match') { this.fam.recognised(e.id); return; }
+    if (S === 'check' && e.kind === 'unsure') { this.fam.toCards(); return; }
+    this.fam.toCards();
+  }
   removeKid(p: Profile): void { if (confirm('Remove ' + p.name + ' and their progress from this phone?')) this.fam.remove(p.id); }
 }
