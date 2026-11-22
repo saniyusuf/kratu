@@ -81,32 +81,81 @@ function nms(boxes, thr) {
   return keep;
 }
 function iou(a, b) { const x1 = Math.max(a.x1, b.x1), y1 = Math.max(a.y1, b.y1), x2 = Math.min(a.x2, b.x2), y2 = Math.min(a.y2, b.y2); const i = Math.max(0, x2 - x1) * Math.max(0, y2 - y1); const ua = (a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1) - i; return ua > 0 ? i / ua : 0; }
-async function detect(bitmap, thr) {
-  if (KIND.det === 'yunet') return detectYunet(bitmap, Math.max(thr, KIND.detThr));
-  const s = DET / Math.max(bitmap.width, bitmap.height), w = Math.round(bitmap.width * s), h = Math.round(bitmap.height * s);
-  detCtx.fillStyle = '#000'; detCtx.fillRect(0, 0, DET, DET); detCtx.drawImage(bitmap, 0, 0, w, h);
+/* The camera picture may come in turned (Sani 20 Nov: the tablet's orientation): an installed app is locked landscape,
+   so a tablet held upright sends the face lying on its side, and the detector only finds faces that stand up. The frame
+   is drawn turned by ROT before detection; every point is turned back, so the box and the keypoints are always in the
+   camera's own pixels (the alignment straightens any turn by itself), while the quality gate reads the upright copy. */
+const ROTS = [0, 90, 270, 180];
+let ROT_PREF = 0;
+async function detectAt(bitmap, thr, rot) {
+  if (KIND.det === 'yunet') return detectYunet(bitmap, thr, rot);
+  const BW = bitmap.width, BH = bitmap.height, SIDE = rot === 90 || rot === 270;
+  const UW = SIDE ? BH : BW, UH = SIDE ? BW : BH;                 // the upright picture's size
+  const s = DET / Math.max(UW, UH), w = BW * s, h = BH * s, TX = UW * s / 2, TY = UH * s / 2;
+  const A = rot * Math.PI / 180, C = Math.cos(A), S = Math.sin(A);
+  detCtx.setTransform(1, 0, 0, 1, 0, 0); detCtx.fillStyle = '#000'; detCtx.fillRect(0, 0, DET, DET);
+  detCtx.setTransform(C, S, -S, C, TX, TY); detCtx.drawImage(bitmap, -w / 2, -h / 2, w, h); detCtx.setTransform(1, 0, 0, 1, 0, 0);
   const out = await runDet(toCHW(detCtx.getImageData(0, 0, DET, DET), 127.5, 128));
+  /* detector pixel → camera pixel: undo the turn about the centre, then the scale */
+  const back = (x, y) => { const DX = x - TX, DY = y - TY; return [(C * DX + S * DY + w / 2) / s, (-S * DX + C * DY + h / 2) / s]; };
   const names = det.outputNames, strides = [8, 16, 32], boxes = [];
   for (let si = 0; si < 3; si++) {
     const st = strides[si], sc = out[names[si]].data, bb = out[names[3 + si]].data, kp = out[names[6 + si]].data, fw = DET / st;
     for (let i = 0; i < sc.length; i++) {
       if (sc[i] < thr) continue;
       const cell = i >> 1, cx = (cell % fw) * st, cy = Math.floor(cell / fw) * st;
-      const b = { score: sc[i], x1: (cx - bb[i * 4] * st) / s, y1: (cy - bb[i * 4 + 1] * st) / s, x2: (cx + bb[i * 4 + 2] * st) / s, y2: (cy + bb[i * 4 + 3] * st) / s, kps: [] };
+      const b = { score: sc[i], x1: (cx - bb[i * 4] * st) / s, y1: (cy - bb[i * 4 + 1] * st) / s, x2: (cx + bb[i * 4 + 2] * st) / s, y2: (cy + bb[i * 4 + 3] * st) / s, kps: [], rot };
       for (let j = 0; j < 5; j++) b.kps.push([(cx + kp[i * 10 + j * 2] * st) / s, (cy + kp[i * 10 + j * 2 + 1] * st) / s]);
       boxes.push(b);
     }
   }
-  return nms(boxes, 0.4);
+  const kept = nms(boxes, 0.4);
+  if (rot) for (const b of kept) {
+    /* b.up keeps the upright reading for the quality gate; the box and keypoints go back to camera pixels */
+    b.up = { x1: b.x1, y1: b.y1, x2: b.x2, y2: b.y2, kps: b.kps };
+    const P = [back(b.x1 * s, b.y1 * s), back(b.x2 * s, b.y1 * s), back(b.x1 * s, b.y2 * s), back(b.x2 * s, b.y2 * s)];
+    b.x1 = Math.min(...P.map((q) => q[0])); b.x2 = Math.max(...P.map((q) => q[0])); b.y1 = Math.min(...P.map((q) => q[1])); b.y2 = Math.max(...P.map((q) => q[1]));
+    b.kps = b.kps.map((q) => back(q[0] * s, q[1] * s));
+  }
+  return kept;
+}
+/* Which turn is right: SCRFD still "finds" a face in a picture lying on its side or upside down, with a lower score,
+   and upside down even with a straight pose, so the first hit is not trusted. The turn that worked last time goes first
+   and is kept when its best face is a straight-on pose with a sure score; otherwise all four turns are tried on the same
+   frame and the one whose best face is straight-on with the highest score wins. Measured on the example faces: the right
+   turn scored 0.74 to 0.87, a wrong turn with a straight pose 0.57 to 0.69. The detector costs a few milliseconds a run,
+   next to the recogniser's hundreds. */
+const SURE = 0.75;
+function signedRoll(f) { const k = (f.up || f).kps; return Math.atan2(k[1][1] - k[0][1], k[1][0] - k[0][0]) * 180 / Math.PI; }
+function topFace(faces) { return faces.reduce((m, f) => (!m || f.score > m.score ? f : m), null); }
+function straight(faces) { const T = topFace(faces); return !!T && poseReasons(T).length === 0; }
+async function detect(bitmap, thr) {
+  if (KIND.det === 'yunet') thr = Math.max(thr, KIND.detThr);
+  const FACES = await detectAt(bitmap, thr, ROT_PREF);
+  if (straight(FACES) && topFace(FACES).score >= SURE) return FACES;
+  let best = straight(FACES) ? { rot: ROT_PREF, faces: FACES, score: topFace(FACES).score } : null;
+  for (const R of ROTS) {
+    if (R === ROT_PREF) continue;
+    const F = await detectAt(bitmap, thr, R);
+    if (straight(F) && (!best || topFace(F).score > best.score)) best = { rot: R, faces: F, score: topFace(F).score };
+  }
+  if (best) { ROT_PREF = best.rot; return best.faces; }
+  return FACES;   // no straight face at any turn: what the usual turn saw, and the quality gate says why
 }
 
 /* YuNet 2023mar, decoded as OpenCV's FaceDetectorYN does: BGR 0..255 in, per stride (8/16/32) a class score, an
    objectness, a box (centre offsets in cells, log width/height) and 5 keypoints (offsets in cells); score = √(cls·obj).
    Keypoints come in the same order as SCRFD's (the eye on the picture's left first), so the alignment is shared. */
-async function detectYunet(bitmap, thr) {
+async function detectYunet(bitmap, thr, rot) {
   if (!yCanvas) { yCanvas = new OffscreenCanvas(YUNET, YUNET); yCtx = yCanvas.getContext('2d', { willReadFrequently: true }); }
-  const s = YUNET / Math.max(bitmap.width, bitmap.height), w = Math.round(bitmap.width * s), h = Math.round(bitmap.height * s);
-  yCtx.fillStyle = '#000'; yCtx.fillRect(0, 0, YUNET, YUNET); yCtx.drawImage(bitmap, 0, 0, w, h);
+  /* the same turn as detectAt() (Sani 20 Nov): drawn turned by `rot`, every point turned back to camera pixels */
+  const BW = bitmap.width, BH = bitmap.height, SIDE = rot === 90 || rot === 270;
+  const UW = SIDE ? BH : BW, UH = SIDE ? BW : BH;
+  const s = YUNET / Math.max(UW, UH), w = BW * s, h = BH * s, TX = UW * s / 2, TY = UH * s / 2;
+  const A = rot * Math.PI / 180, C = Math.cos(A), S = Math.sin(A);
+  yCtx.setTransform(1, 0, 0, 1, 0, 0); yCtx.fillStyle = '#000'; yCtx.fillRect(0, 0, YUNET, YUNET);
+  yCtx.setTransform(C, S, -S, C, TX, TY); yCtx.drawImage(bitmap, -w / 2, -h / 2, w, h); yCtx.setTransform(1, 0, 0, 1, 0, 0);
+  const back = (x, y) => { const DX = x - TX, DY = y - TY; return [(C * DX + S * DY + w / 2) / s, (-S * DX + C * DY + h / 2) / s]; };
   const d = yCtx.getImageData(0, 0, YUNET, YUNET).data, n = YUNET * YUNET, x = new Float32Array(3 * n);
   for (let i = 0; i < n; i++) { x[i] = d[i * 4 + 2]; x[n + i] = d[i * 4 + 1]; x[2 * n + i] = d[i * 4]; }   // B, G, R
   const out = await det.run({ [det.inputNames[0]]: new ort.Tensor('float32', x, [1, 3, YUNET, YUNET]) });
@@ -117,12 +166,20 @@ async function detectYunet(bitmap, thr) {
       const score = Math.sqrt(clip(cls[i]) * clip(obj[i])); if (score < thr) continue;
       const c = i % cols, r = Math.floor(i / cols);
       const cx = (c + bb[i * 4]) * st, cy = (r + bb[i * 4 + 1]) * st, bw = Math.exp(bb[i * 4 + 2]) * st, bh = Math.exp(bb[i * 4 + 3]) * st;
-      const b = { score, x1: (cx - bw / 2) / s, y1: (cy - bh / 2) / s, x2: (cx + bw / 2) / s, y2: (cy + bh / 2) / s, kps: [] };
-      for (let j = 0; j < 5; j++) b.kps.push([(kp[i * 10 + j * 2] + c) * st / s, (kp[i * 10 + j * 2 + 1] + r) * st / s]);
+      // in detector pixels first (the upright reading); turned back below
+      const b = { score, x1: (cx - bw / 2), y1: (cy - bh / 2), x2: (cx + bw / 2), y2: (cy + bh / 2), kps: [] };
+      for (let j = 0; j < 5; j++) b.kps.push([(kp[i * 10 + j * 2] + c) * st, (kp[i * 10 + j * 2 + 1] + r) * st]);
       boxes.push(b);
     }
   }
-  return nms(boxes, 0.3);
+  const kept = nms(boxes, 0.3);
+  for (const b of kept) {
+    if (rot) b.up = { x1: b.x1 / s, y1: b.y1 / s, x2: b.x2 / s, y2: b.y2 / s, kps: b.kps.map((q) => [q[0] / s, q[1] / s]) };
+    const P = [back(b.x1, b.y1), back(b.x2, b.y1), back(b.x1, b.y2), back(b.x2, b.y2)];
+    b.x1 = Math.min(...P.map((q) => q[0])); b.x2 = Math.max(...P.map((q) => q[0])); b.y1 = Math.min(...P.map((q) => q[1])); b.y2 = Math.max(...P.map((q) => q[1]));
+    b.kps = b.kps.map((q) => back(q[0], q[1]));
+  }
+  return kept;
 }
 
 /* ---------- alignment (least-squares similarity: x' = a x − b y + tx ; y' = b x + a y + ty) ---------- */
@@ -148,15 +205,22 @@ function align(bitmap, kps) {
 }
 
 /* ---------- quality gate ---------- */
+/* the pose from the five points of the upright reading: turned (yaw), tilted (roll), pitched */
+function poseReasons(face, q) {
+  const k = (face.up || face).kps, le = k[0], re = k[1], no = k[2], ml = k[3], mr = k[4], out = [];
+  const eyeDx = re[0] - le[0] || 1, yaw = (no[0] - le[0]) / eyeDx;                    // 0.5 = frontal
+  if (yaw < 0.28 || yaw > 0.72) out.push('turned');
+  const roll = Math.abs(Math.atan2(re[1] - le[1], eyeDx) * 180 / Math.PI); if (roll > 18) out.push('tilted');
+  const eyeY = (le[1] + re[1]) / 2, mouthY = (ml[1] + mr[1]) / 2, pitch = (no[1] - eyeY) / ((mouthY - eyeY) || 1);
+  if (pitch < 0.22 || pitch > 0.85) out.push('pitched');
+  if (q) { q.yaw = yaw; q.roll = roll; q.pitch = pitch; }
+  return out;
+}
 function quality(face, img, minFace, blurMin) {
-  const w = face.x2 - face.x1, h = face.y2 - face.y1, k = face.kps, le = k[0], re = k[1], no = k[2], ml = k[3], mr = k[4];
+  const U = face.up || face, w = U.x2 - U.x1, h = U.y2 - U.y1;
   const q = { size: Math.round(Math.max(w, h)), reasons: [] };
   if (q.size < minFace) q.reasons.push('small');
-  const eyeDx = re[0] - le[0] || 1; q.yaw = (no[0] - le[0]) / eyeDx;                 // 0.5 = frontal
-  if (q.yaw < 0.28 || q.yaw > 0.72) q.reasons.push('turned');
-  q.roll = Math.abs(Math.atan2(re[1] - le[1], eyeDx) * 180 / Math.PI); if (q.roll > 18) q.reasons.push('tilted');
-  const eyeY = (le[1] + re[1]) / 2, mouthY = (ml[1] + mr[1]) / 2; q.pitch = (no[1] - eyeY) / ((mouthY - eyeY) || 1);
-  if (q.pitch < 0.22 || q.pitch > 0.85) q.reasons.push('pitched');
+  q.reasons.push(...poseReasons(face, q));
   // sharpness + exposure on the aligned gray crop
   const d = img.data, g = new Float32Array(112 * 112); let mean = 0;
   for (let i = 0; i < g.length; i++) { g[i] = 0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]; mean += g[i]; }
@@ -222,7 +286,7 @@ self.onmessage = async (ev) => {
       const res = { id, ok: true, faces: faces.length, ms: 0, emb: null, quality: null, box: null, kps: null, score: 0 };
       if (faces.length === 1) {
         const f = faces[0], img = align(bm, f.kps), q = quality(f, img, o.minFace || 70, o.blurMin || 25);
-        res.quality = q; res.box = { x: f.x1, y: f.y1, width: f.x2 - f.x1, height: f.y2 - f.y1 }; res.kps = f.kps; res.score = f.score;
+        res.quality = q; res.box = { x: f.x1, y: f.y1, width: f.x2 - f.x1, height: f.y2 - f.y1 }; res.kps = f.kps; res.score = f.score; res.rot = f.rot || 0;
         if (q.ok) res.emb = await embedFace(img);
       } else if (faces.length > 1) { res.box = faces.map(f => ({ x: f.x1, y: f.y1, width: f.x2 - f.x1, height: f.y2 - f.y1 })); }
       bm.close(); res.ms = Math.round(performance.now() - t0);

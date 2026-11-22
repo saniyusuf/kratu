@@ -74,7 +74,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
       <div class="cam"><i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
         <video #live class="feed live" autoplay [muted]="true" [volume]="0" playsinline [hidden]="!liveOn() || !!still()"></video>
         <div class="pict" [hidden]="!pict()"><div class="pict-big">{{ pictA() }}</div><div class="pict-arrow">→</div><div class="pict-big ok">{{ pictB() }}</div></div>
-        <div class="faceguide" [class.ok]="faceOK() && !paused() && !nudge() && sizeOK()" [class.busy]="!!paused()" [hidden]="!liveOn() || !!still()" aria-hidden="true"></div>
+        <div class="faceguide" [class.ok]="faceOK() && !paused() && sizeOK()" [class.busy]="!!paused()" [class.follow]="!!track()" [style.left.%]="track() ? track()!.l + track()!.w / 2 : null" [style.top.%]="track() ? track()!.t + track()!.h / 2 : null" [style.width.%]="track()?.w ?? null" [style.height.%]="track()?.h ?? null" [hidden]="!liveOn() || !!still()" aria-hidden="true"></div>
         @if (nudge(); as n) {<div [class]="'facenudge ' + n" [hidden]="!liveOn() || !!still()" aria-hidden="true">{{ HAND[n] }}</div>}
         <div class="alone" [hidden]="!aloneText()" [class.soft]="aloneSoft()">{{ aloneText() }}</div>
         <img class="feed" alt="" [src]="still() || 'assets/gender-girl.webp'" [hidden]="liveOn() && !still()"><div class="ov"></div></div>
@@ -252,7 +252,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private startFaceMon(): void {
     const live = this.liveRef()?.nativeElement; const K = this.identity.api;
     if (!live || !K || !this.identity.ready() || !this.liveOn()) { this.faceOK.set(true); return; }
-    this.faceVecs = [];
+    this.faceVecs = []; this.earlyMatch = null; this.faceT0 = Date.now();
     K.watch(live, (r) => {
       if (!r?.ok) return; this.lastMs = r.ms || this.lastMs; this.setFaces(r.faces);
       this.follow(r.faces === 1 ? r.boxVideo : null, live);
@@ -265,29 +265,30 @@ export class FaceScreen implements OnInit, OnDestroy {
   }
   /**
    * Put the guide over the face. The engine reports the face in the camera's own pixels; the picture is drawn mirrored
-   * and may be cropped to fill its box, so both are undone here. The oval is drawn generously around the face, and when
-   * the child is off to one side or too far away the arrow says which way to move (Sani 2026-09-17).
+   * and may be letterboxed in its box, so both are undone here. The whole picture counts (Sani 20 Nov): the ring follows
+   * the face wherever it is and goes green there; the hand only shows when the face is running off the edge of the picture.
+   * Sizes are the box's own layout size, never its on-screen rectangle: held upright the whole app is drawn turned a
+   * quarter, and the rectangle's width and height would come back swapped.
    */
   private follow(b: { x: number; y: number; width: number; height: number } | null | undefined, v: HTMLVideoElement): void {
     if (!b || !v.videoWidth || !v.videoHeight) { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); return; }
-    const box = v.getBoundingClientRect(); if (!box.width) return;
-    const fit = getComputedStyle(v).objectFit;
-    const sx = box.width / v.videoWidth, sy = box.height / v.videoHeight;
-    const s = fit === 'contain' ? Math.min(sx, sy) : fit === 'fill' ? 0 : Math.max(sx, sy);   // cover is the default here
-    const dw = s ? v.videoWidth * s : box.width, dh = s ? v.videoHeight * s : box.height;
-    const ox = (box.width - dw) / 2, oy = (box.height - dh) / 2, k = dw / v.videoWidth, k2 = dh / v.videoHeight;
-    const w = b.width * k, h = b.height * k2;
-    const left = ox + (v.videoWidth - b.x - b.width) * k, top = oy + b.y * k2;   // mirrored picture: the box flips
-    const padX = w * 0.42, padY = h * 0.34;
-    const pct = (n: number, of: number) => (n / of) * 100;
-    this.track.set({ l: pct(left - padX, box.width), t: pct(top - padY, box.height), w: pct(w + padX * 2, box.width), h: pct(h + padY * 2, box.height) });
-    // The target is the ring drawn in the middle; a child sits a little below its centre, hence 48. The hand points the
-    // way the face must travel ON SCREEN, which is what a child watching the picture follows (Sani 2026-09-17: not
-    // inverted). Too far or too close is left to the spoken hint and its picture.
-    const cx = pct(left + w / 2, box.width), cy = pct(top + h / 2, box.height), size = pct(w, box.width);
-    this.sizeOK.set(size >= 17 && size <= 58);
-    this.nudge.set(cx < 38 ? 'right' : cx > 62 ? 'left'
-      : cy < 35 ? 'down' : cy > 61 ? 'up' : '');
+    const BW = v.clientWidth, BH = v.clientHeight; if (!BW || !BH) return;
+    const FIT = getComputedStyle(v).objectFit;
+    const SX = BW / v.videoWidth, SY = BH / v.videoHeight;
+    const SC = FIT === 'contain' ? Math.min(SX, SY) : FIT === 'fill' ? 0 : Math.max(SX, SY);
+    const DW = SC ? v.videoWidth * SC : BW, DH = SC ? v.videoHeight * SC : BH;
+    const OX = (BW - DW) / 2, OY = (BH - DH) / 2, KX = DW / v.videoWidth, KY = DH / v.videoHeight;
+    const W = b.width * KX, H = b.height * KY;
+    const LEFT = OX + (v.videoWidth - b.x - b.width) * KX, TOP = OY + b.y * KY;   // mirrored picture: the box flips
+    const PAD_X = W * 0.42, PAD_Y = H * 0.34;
+    const PCT = (n: number, of: number) => (n / of) * 100;
+    this.track.set({ l: PCT(LEFT - PAD_X, BW), t: PCT(TOP - PAD_Y, BH), w: PCT(W + PAD_X * 2, BW), h: PCT(H + PAD_Y * 2, BH) });
+    // a sensible size, as a share of the camera picture itself (the detector's own floor is 70 of 640 pixels)
+    const SIZE = b.width / v.videoWidth;
+    this.sizeOK.set(SIZE >= 0.11 && SIZE <= 0.75);
+    // the hand points the way the face must travel ON SCREEN, and only when part of the face is outside the picture
+    const EDGE = 0.02, FL = LEFT - OX, FR = FL + W, FT = TOP - OY, FB = FT + H;
+    this.nudge.set(FL < DW * EDGE ? 'right' : FR > DW * (1 - EDGE) ? 'left' : FT < DH * EDGE ? 'down' : FB > DH * (1 - EDGE) ? 'up' : '');
   }
   /**
    * A child the tablet already knows goes in as soon as the face alone is a clear match, after a few frames, instead of
@@ -295,13 +296,16 @@ export class FaceScreen implements OnInit, OnDestroy {
    * ends early; anything less, and every new child, still gets the full ring so their name can be recorded.
    */
   private earlyAt = 0;
+  /** The clear face match that ended the ring early, so the welcome need not wait for the voice (Sani 20 Nov: fast). */
+  private earlyMatch: MatchResult | null = null;
+  private faceT0 = 0;
   private tryEarly(): void {
     const K = this.identity.api; if (!K || this.ended || this.capEnded || this.paused() || this.faceVecs.length < 2) return;
     const now = Date.now(); if (now - this.earlyAt < 250) return; this.earlyAt = now;
     try {
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec: null, nameKey: null });
       const FAR_APART = !FAMILY || ((m as any).faceGap ?? 0) >= ((K as any).cfg?.gapWide ?? 0.25);   // the family build: face and voice together unless one face is far ahead (Sani 2026-11-22)
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && FAR_APART) { console.log('[kratu] early sign-in', m.person.name || m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3)); this.endRec(); }
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && FAR_APART) { console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
     } catch { /* the full ring still decides */ }
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
@@ -360,6 +364,8 @@ export class FaceScreen implements OnInit, OnDestroy {
   private endRec(): void {
     if (this.ended) return; this.ended = true; this.capEnded = true; this.stopAllCapture();
     if (this.lastManyAt && Date.now() - this.lastManyAt < 2500) { this.crowdAbort(true); return; }
+    const EARLY = this.earlyMatch; this.earlyMatch = null;
+    if (EARLY?.person) { this.welcomeBack(EARLY); return; }
     setTimeout(() => this.finishName(), 700);
   }
   private crowdAbort(force = false): void {
@@ -369,6 +375,21 @@ export class FaceScreen implements OnInit, OnDestroy {
   }
 
   // ---- who is it ----
+  /**
+   * The face alone was a clear, unambiguous match: the child is greeted at once. The voice is not worked out (it could
+   * only add to a face that is already strong), so there is no wait for the recording to be read. The recording is
+   * waited for only when the record has no name sound of its own to greet them with.
+   */
+  private async welcomeBack(m: MatchResult): Promise<void> {
+    const P = m.person!; const K = this.identity.api;
+    K?.store.refresh(P.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
+    const BANK = (window as any).KRATU_BANK as Record<string, string> | null;
+    const HAS_NAME_SOUND = !!(P.key && BANK?.[P.key]) || !!P.clip;
+    let ownUrl: string | undefined;
+    if (!HAS_NAME_SOUND && P.name) { await new Promise((r) => setTimeout(r, 700)); ownUrl = (await (this.nameClipP || Promise.resolve(null)))?.url; }
+    console.log('[kratu] sign-in accept (early) frames', this.faceVecs.length, 'in', Date.now() - this.faceT0, 'ms');
+    this.welcome(P, true, ownUrl);
+  }
   private async finishName(): Promise<void> {
     const raw = extractName(this.transcript); const bank = (window as any).KRATU_BANK as Record<string, string> | null;
     const key = raw && raw.indexOf(' ') < 0 ? snapName(raw, bank) : null; const heardName = key ? key.charAt(0).toUpperCase() + key.slice(1) : raw;
