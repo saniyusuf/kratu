@@ -280,3 +280,32 @@ input,.field{min-height:48px;box-sizing:border-box}
   .nf .manage{padding:2px 8px}
 }
 .nf,.nf.up{padding-bottom:calc(6 * var(--u))}   /* no Laila under the profiles any more (Sani 2026-11-22) */
+
+/* The back door is the app's own (Sani 2026-11-22): sideways the dark corner with the door and its arrow, upright the
+   small dark pill, the same as on home and the lessons */
+.door{position:fixed;left:6px;top:6px;width:84px;height:84px;background:#1F1F1F;border-radius:18px 0 100% 0;z-index:5;box-shadow:none}
+.door ::ng-deep svg{position:absolute;left:12px;top:8px;width:30px;height:38px}
+.door::after{content:"";position:absolute;left:44px;top:15px;width:24px;height:20px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 22'%3E%3Cpath d='M24 11 H5 M12 3 L4 11 L12 19' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35))}
+.door:active{transform:scale(.96)}
+.fs.up .door{left:12px;top:calc(12px + env(safe-area-inset-top,0px));width:66px;height:44px;border-radius:22px;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.fs.up .door ::ng-deep svg{left:9px;top:5px;width:24px;height:30px}
+.fs.up .door::after{left:36px;top:12px;width:20px;height:18px}
+
+/* Enrol held sideways or on a computer (Sani 2026-11-22: redesign): the title on top, then the preview card beside the
+   questions, Save under the questions, all in one centred block */
+.add:not(.up){display:grid;grid-template-columns:auto minmax(300px,440px);grid-template-areas:"title title" "card parts" "card save";
+  justify-content:center;align-content:center;column-gap:calc(5 * var(--u));row-gap:calc(2.5 * var(--u));padding:calc(6 * var(--u)) calc(6 * var(--u))}
+.add:not(.up) .kick2{grid-area:title;text-align:center;margin:0 0 calc(1 * var(--u))}
+.add:not(.up) .card.preview{grid-area:card;align-self:center;min-width:max(200px, calc(30 * var(--u)))}
+.add:not(.up) .parts{grid-area:parts;align-self:end;width:100%}
+.add:not(.up) .btn.go{grid-area:save;align-self:start;justify-self:stretch}
+.add:not(.up) .gg{display:grid;grid-template-columns:1fr 1fr;gap:calc(1.6 * var(--u))}
+.part.folded{display:flex;align-items:center;gap:calc(1.6 * var(--u));width:100%;text-align:left}
+.part.folded>span:not(.gem){flex:1;white-space:nowrap;font-weight:800}
+.part.folded .gem{width:40px;height:40px;flex:none}
+.add .btn.go{justify-content:center;text-align:center}
+/* and the ear, the app's own too: the yellow corner sideways, the small yellow circle upright */
+.ear{position:fixed;right:6px;top:6px;left:auto;width:84px;height:84px;background:#FBC02D;border-radius:0 18px 0 100%;z-index:5}
+.ear ::ng-deep svg{position:absolute;right:12px;top:10px;width:34px;height:40px}
+.fs.up .ear{right:12px;top:calc(12px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.fs.up .ear ::ng-deep svg{right:9px;top:7px;width:26px;height:30px}
