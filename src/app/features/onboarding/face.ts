@@ -11,6 +11,8 @@ import { Laila } from '../../shared/laila/laila';
 import { DOOR_SVG } from '../../shared/svg';
 import { LANG } from '../../core/lang/lang';
 import { bi, t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
+import { FamilyService } from '../../core/family/family.service';
 
 type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 /** How long the capture will wait for the child to be alone again before it gives up and offers a fresh try. */
@@ -28,6 +30,11 @@ const SR_START_WAIT = 2500;
  * own recording, kept with their record on the tablet, is what carries their name.
  */
 const NAME_ONLINE = false;
+/** The family build (Sani 2026-11-22): a voice print only from real speech, at least 0.4 s above a quiet room. */
+function spoke(pcm: Float32Array): boolean {
+  let loud = 0; for (let i = 0; i + 320 <= pcm.length; i += 320) { let e = 0; for (let j = i; j < i + 320; j++) e += pcm[j] * pcm[j]; if (Math.sqrt(e / 320) > 0.015) loud++; }
+  return loud >= 20;
+}
 const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /**
@@ -93,6 +100,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private readonly bus = inject(AudioBus);
   private readonly identity = inject(IdentityService);
   private readonly router = inject(Router);
+  private readonly fam = inject(FamilyService);
   private readonly liveRef = viewChild<ElementRef<HTMLVideoElement>>('live');
   private readonly exRefs = viewChild<ElementRef<HTMLVideoElement>>('ex');
   private readonly modalRef = viewChild<ElementRef<HTMLElement>>('modal');
@@ -292,7 +300,8 @@ export class FaceScreen implements OnInit, OnDestroy {
     const now = Date.now(); if (now - this.earlyAt < 250) return; this.earlyAt = now;
     try {
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec: null, nameKey: null });
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong')) { console.log('[kratu] early sign-in', m.person.name || m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3)); this.endRec(); }
+      const FAR_APART = !FAMILY || ((m as any).faceGap ?? 0) >= ((K as any).cfg?.gapWide ?? 0.25);   // the family build: face and voice together unless one face is far ahead (Sani 2026-11-22)
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && FAR_APART) { console.log('[kratu] early sign-in', m.person.name || m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3)); this.endRec(); }
     } catch { /* the full ring still decides */ }
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
@@ -366,7 +375,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.heardText.set(this.transcript ? '“' + this.transcript + '”' : ''); this.interim.set(false);
     const K = this.identity.api; const own = await (this.nameClipP || Promise.resolve(null));
     let voiceVec: Float32Array | null = null;
-    try { if (K && this.recBlob) { const pcm = await K.pcmFromBlob(this.recBlob); voiceVec = pcm.length > 8000 ? await K.voiceEmbed(pcm) : null; } } catch { voiceVec = null; }
+    try { if (K && this.recBlob) { const pcm = await K.pcmFromBlob(this.recBlob); voiceVec = pcm.length > 8000 && (!FAMILY || spoke(pcm)) ? await K.voiceEmbed(pcm) : null; } } catch { voiceVec = null; }
     if (K && this.identity.ready()) {
       await K.store.load();
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec, nameKey: key });
@@ -384,6 +393,7 @@ export class FaceScreen implements OnInit, OnDestroy {
         this.doneText.set(t('Madalla! Sannu, ') + heardName + t('! Barka da zuwa!')); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own?.url); this.confetti(); this.enter(); return;
       }
+      if (FAMILY && !heardName && this.faceVecs.length && !voiceVec) { this.missText.set('🤔 ' + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true); return; }   // family sign-up needs the voice as well as the face (Sani 2026-11-22)
       if (!heardName && own?.url && this.faceVecs.length) {
         // No words came back (an iPad, whose recogniser is Siri and has no Hausa; Chrome with no internet) but the child was
         // seen and their own "Sunana …" was recorded: they are enrolled anyway. An unknown name is never a blocker (Sani
@@ -414,7 +424,9 @@ export class FaceScreen implements OnInit, OnDestroy {
     const p = this.pending; this.pending = null;
     const go = async () => {
       if (p) { try { const rec = await this.identity.api!.store.upsert(p); this.session.personId.set(rec.id); } catch { /* the session still opens; nothing is kept */ } }
-      this.bus.stopAll(); this.teardown(); this.dropModal(); this.router.navigate(['/welcome']);
+      this.bus.stopAll(); this.teardown(); this.dropModal();
+      if (FAMILY) { this.fam.faceDone(this.session.personId(), !!p); return; }   // the family build: a new child picks an animal first
+      this.router.navigate(['/welcome']);
     };
     setTimeout(go, p ? 900 : 300);
   }
@@ -442,7 +454,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private retryRun = 0;
   private showGate(mode: 'retry'): void { this.gate.set(mode); this.gateHint.set((this.session.g() === 'f' ? t('Ki danna kan Laila') : t('Ka danna kan Laila')) + ' · ' + t('sake gwadawa')); }
   /** The door under Laila on the gate: back to the very start, the session reset (Sani 14 Sep 2026). */
-  startOver(e: Event): void { e.stopPropagation(); this.retryRun++; this.pending = null; this.bus.stopAll(); this.teardown(); this.dropModal(); this.session.end(); try { sessionStorage.clear(); } catch { /* ignore */ } this.router.navigate(['/gender']); }
+  startOver(e: Event): void { e.stopPropagation(); this.retryRun++; this.pending = null; this.bus.stopAll(); this.teardown(); this.dropModal(); this.session.end(); if (FAMILY) { this.router.navigate(['/gender']); return; } try { sessionStorage.clear(); } catch { /* ignore */ } this.router.navigate(['/gender']); }
   /** The only gate left is the try-again one: a child who was recognised never sees it. */
   gatePress(): void { this.retryRun++; this.gateFocus.set(null); this.bus.stopAll(); this.again(); setTimeout(() => this.start(), 250); }
   again(): void { this.pending = null; this.stopAllCapture(); this.stopConfetti(); this.reset(); this.capturing.set(false); }

@@ -10,7 +10,8 @@ import { Gender, SessionService } from '@kratu/app/core/state/session.service';
 import { Laila } from '@kratu/app/shared/laila/laila';
 import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
 import { BOY_SVG, GIRL_SVG } from './kids';
-import { FamFace, FaceEnd } from './fam-face';
+import { LoaderService } from '@kratu/app/core/loader/loader.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 /**
  * The family build's own screens. The flow (Sani 2026-11-21, from his notes on the steps page): Kratu opening from a
@@ -24,8 +25,8 @@ import { FamFace, FaceEnd } from './fam-face';
  */
 @Component({
   selector: 'app-family-shell',
-  imports: [Laila, DatePipe, FamFace],
-  host: { '[class.on]': '!!fam.screen()', '[attr.data-s]': 'fam.screen()' },
+  imports: [Laila, DatePipe],
+  host: { '[class.on]': '!!fam.screen()', '[class.chip]': '!fam.screen() && chipOn()', '[attr.data-s]': 'fam.screen()' },
   templateUrl: './family-shell.html',
   styleUrl: './family-shell.css',
 })
@@ -35,6 +36,13 @@ export class FamilyShell implements OnDestroy {
   private readonly words = inject(WordsService);
   private readonly clips = inject(ClipsService);
   private readonly session = inject(SessionService);
+  readonly loader = inject(LoaderService);
+  /** The route under the shell: the "Choose from the list" chip shows on the school's boy-or-girl and face screens. */
+  private readonly route = signal(location.pathname);
+  readonly chipOn = computed(() => /^\/(gender|face)\b/.test(this.route()));
+  readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
+  readonly faceText = computed(() => { const P = this.loader.faceProg(); if (P.state === 'fail') return 'The camera could not be downloaded. Check the connection and try again.';
+    return (P.total ? Math.round(P.got / 1048576) + ' of ' + Math.round(P.total / 1048576) + ' MB' : 'Starting') + ' · once only, then it stays on this phone'; });
   private readonly san = inject(DomSanitizer);
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
@@ -53,9 +61,6 @@ export class FamilyShell implements OnDestroy {
   readonly lailaSmall = computed(() => Math.round(Math.min(this.vw(), this.vh()) * (this.upright() ? 0.2 : 0.17)));
   @HostListener('window:resize') resized(): void { this.vw.set(innerWidth); this.vh.set(innerHeight); }
 
-  // ---- enrol a child (the parent): boy or girl, then the name. Nothing is saved until Save.
-  readonly g = signal<Gender | null>(null);
-  readonly name = signal('');
   // ---- the child's first visit: their animal
   readonly pick = signal<string | null>(null);
   readonly taken = computed(() => this.fam.taken().filter((k) => k !== this.fam.current()?.animal));
@@ -83,13 +88,13 @@ export class FamilyShell implements OnDestroy {
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
+    inject(Router).events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
     // each screen's opening: what Laila says there (only lines that exist), and a clean slate for the forms
     effect(() => {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.micMsg.set(''); this.code.set(''); this.codeMsg.set(''); this.busy.set(false);
       if (s === 'signin') { this.fullName.set(''); this.email.set(''); this.phone.set(''); this.signStep.set(1); }
-      if (s === 'add') { this.g.set(null); this.name.set(''); }
       if (s === 'pick') this.pick.set(null);
       untracked(() => this.opening(s));
     });
@@ -112,7 +117,8 @@ export class FamilyShell implements OnDestroy {
     const bank = (window as any).KRATU_BANK as Record<string, string> | null;
     const key = c.name && c.name.indexOf(' ') < 0 ? snapName(c.name, bank) : null;
     if (!(await this.bus.play('s_sannu'))) return;
-    if (key && bank && !(await this.bus.playRaw(bank[key], { ha: c.name, en: c.name }))) return;
+    if (key && bank) { if (!(await this.bus.playRaw(bank[key], { ha: c.name, en: c.name }))) return; }
+    else { const CLIP = this.fam.clipOf(c.id); if (CLIP && !(await this.bus.playRaw(CLIP))) return; }   // no bank name: the child's own "Sunana …" clip, cut to the name
     await this.bus.play('s_welcome');
   }
 
@@ -159,15 +165,6 @@ export class FamilyShell implements OnDestroy {
     this.code.set(''); this.codeMsg.set('That code is not right. Try again.');
   }
 
-  // ---- enrol
-  /** Choosing boy or girl folds that part away and puts the cursor in the name. */
-  setG(g: Gender): void { this.g.set(g); setTimeout(() => this.host.nativeElement.querySelector<HTMLInputElement>('.add .p2 input')?.focus(), 60); }
-  setName(v: string): void { this.name.set(v.replace(/\s+/g, ' ').slice(0, 24)); }
-  enrol(): void {
-    if (!this.g() || !this.name().trim()) return;
-    this.fam.added(this.fam.add(this.name().trim(), this.g()!));
-  }
-
   // ---- the child's animal
   choose(k: string): void {
     const c = this.fam.current();
@@ -209,14 +206,8 @@ export class FamilyShell implements OnDestroy {
   /** The settings gear left the child's upright screens (Sani 2026-11-22): the parents open the settings from here. */
   openSettings(): void { this.fam.show(null); setTimeout(() => document.getElementById('admingear')?.click(), 60); }
 
-  addFace(p: Profile): void { this.fam.current.set(p); this.fam.toFace('parent'); }
-  /** The face step's end: enrolled, recognised, or the cards. */
-  faceEnded(e: FaceEnd): void {
-    const S = this.fam.screen();
-    if (S === 'face') { this.fam.afterFace(e.kind === 'enrolled'); return; }
-    if (e.kind === 'match') { this.fam.recognised(e.id); return; }
-    if (S === 'check' && e.kind === 'unsure') { this.fam.toCards(); return; }
-    this.fam.toCards();
-  }
+
+  /** The child's own "Sunana …" clip says their name (the profile may have no written one). */
+  hear(p: Profile): void { const C = this.fam.clipOf(p.id); this.bus.stopAll(); if (C) this.bus.playRaw(C); }
   removeKid(p: Profile): void { if (confirm('Remove ' + p.name + ' and their progress from this phone?')) this.fam.remove(p.id); }
 }

@@ -5,16 +5,13 @@ import { SessionService, Gender } from '../state/session.service';
 import { IdentityService } from '../identity/identity.service';
 import { LoaderService } from '../loader/loader.service';
 
-/** A child's profile on this phone (Sani 2026-11-18): an animal and a typed first name. Since 22 Nov the child can also
- *  sign in by face: `face` says their face prints are in the identity store under this same id (never a photo). */
-export interface Profile { id: string; name: string; g: Gender; animal: string; at: number; face?: boolean; }
-
 /**
- * How a child signs in (Sani 2026-11-22). 'A': the phone opens the camera and recognises the child; the cards are only
- * the fallback (unsure, camera refused, a child with no face prints). 'B': the cards first, and the face only confirms
- * the card the child tapped. One switch.
+ * A child's profile on this phone. Since 22 Nov (Sani: "we don't need enrolment manually, this is based on face now")
+ * children sign themselves up as in the school app: boy or girl, then the face screen, face and "Sunana …" together.
+ * The profile's id IS the identity record's id (face and voice prints, the child's own name clip; never a photo).
+ * `name` is empty unless the parent types one in Manage profiles: the child's own clip says their name.
  */
-export const FACE_FLOW: 'A' | 'B' = 'A';
+export interface Profile { id: string; name: string; g: Gender; animal: string; at: number; }
 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
@@ -40,7 +37,7 @@ export const ANIMALS: { k: string; e: string; c: string }[] = [
 export const animal = (k: string) => ANIMALS.find((a) => a.k === k) ?? ANIMALS[0];
 
 /** The family build's own screens, drawn over the app (both ways round, unlike the landscape lessons). */
-export type FamScreen = 'welcome' | 'mic' | 'signin' | 'add' | 'consent' | 'face' | 'thanks' | 'profiles' | 'who' | 'check' | 'pick' | 'yours' | 'code' | 'parent' | null;
+export type FamScreen = 'welcome' | 'mic' | 'signin' | 'consent' | 'getready' | 'profiles' | 'pick' | 'yours' | 'code' | 'parent' | null;
 
 const K_PROFILES = 'kratu_fam_profiles', K_ACCOUNT = 'kratu_fam_account', K_STARTED = 'kratu_fam_started';
 
@@ -60,12 +57,6 @@ export class FamilyService {
   readonly account = signal<Account | null>(this.readAccount());
   /** Set by the shell when the loader has finished: screens after the microphone wait for it. */
   private loaded!: Promise<void>;
-  private wasAdding = false;
-  /** Where the face step goes back to: the thank-you after enrolling, or the parent area ("Add face"). */
-  faceBack: 'thanks' | 'parent' = 'thanks';
-  /** Set when the camera could not decide (or was refused): the cards show instead of the camera until the next open. */
-  private cardsNow = false;
-  readonly FACE_FLOW = FACE_FLOW;
   /**
    * Try one step (Sani 2026-11-21: every step of the family app, played and heard on its own). `?step=<id>` opens that
    * real screen with sample children; nothing is saved on the phone (no profile, no PIN), so a parent's real profiles
@@ -95,11 +86,14 @@ export class FamilyService {
     return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join('');
   }
   taken(): string[] { return this.profiles().map((p) => p.animal).filter(Boolean); }
-  /** The parent enrols a child with a name and boy or girl; the child chooses the animal on their first visit. */
-  add(name: string, g: Gender): Profile {
-    const p: Profile = { id: 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name: name.trim(), g, animal: '', at: Date.now() };
-    this.write([...this.profiles(), p]); return p;
+  /** Manage profiles: the parent may type a child's name (optional; the child's own clip says it anyway). */
+  rename(id: string, name: string): void {
+    const NAME = name.replace(/\s+/g, ' ').trim().slice(0, 24);
+    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: NAME } : p)));
+    if (NAME) this.identity.api?.store.upsert({ id, name: NAME }).catch(() => undefined);
   }
+  /** The child's own "Sunana …" name clip, from their identity record. */
+  clipOf(id: string): string | null { return this.identity.people().find((x) => x.id === id)?.clip || null; }
   setAnimal(id: string, a: string): Profile | null {
     const list = this.profiles().map((p) => (p.id === id ? { ...p, animal: a } : p));
     this.write(list); return list.find((p) => p.id === id) ?? null;
@@ -111,7 +105,6 @@ export class FamilyService {
     try { for (const k of Object.keys(localStorage)) if (k.endsWith('_' + id) || k.includes('_' + id + '_')) localStorage.removeItem(k); } catch { /* ignore */ }
   }
 
-  setFace(id: string): void { this.write(this.profiles().map((p) => (p.id === id ? { ...p, face: true } : p))); }
   /** The microphone up front; the camera is asked for only at the face step, after the parent's consent. */
   async micGranted(): Promise<boolean> {
     let ok = false;
@@ -147,11 +140,9 @@ export class FamilyService {
     await this.loaded;
     switch (id) {
       case 'signin': this.account.set(null); this.show('signin'); return;
-      case 'add': this.profiles.set([]); this.startAdd(); return;
-      case 'thanks': this.current.set(kid); this.show('thanks'); return;
-      case 'consent': this.current.set(kid); this.account.set({ ...this.account()!, faceOk: undefined }); this.show('consent'); return;
-      case 'face': this.current.set(kid); this.show('face'); return;
-      case 'who': this.show('who'); return;
+      case 'consent': this.account.set({ ...this.account()!, faceOk: undefined }); this.show('consent'); return;
+      case 'getready': this.show('getready'); return;
+      case 'gender': this.show(null); this.router.navigate(['/gender']); return;
       case 'pick': this.profiles.set(FamilyService.SAMPLES.map((p) => ({ ...p, animal: '' }))); this.choose({ ...kid, animal: '' }); return;
       case 'yours': this.current.set(kid); this.show('yours'); return;
       case 'profiles': this.toProfiles(); return;
@@ -179,38 +170,48 @@ export class FamilyService {
     if (!this.account()) { this.show('signin'); return; }
     this.afterSetup();
   }
-  afterSetup(): void { if (!this.profiles().length) this.startAdd(); else this.toProfiles(); }
-  startAdd(): void { this.wasAdding = true; this.show('add'); }
-  /** The parent's last press on "enrol a child": saved, then the child's face (after the consent, the first time),
-   *  then thanked (the child picks the animal later). */
-  added(p: Profile): void { this.current.set(p); this.toFace('thanks'); }
-  /** The face step for the current child: consent first if the parent has not agreed yet. */
-  toFace(back: 'thanks' | 'parent'): void { this.faceBack = back; this.show(this.account()?.faceOk ? 'face' : 'consent'); }
+  /** After the microphone: the parent's consent once, then the camera (the school app's own sign-in). */
+  afterSetup(): void { if (!this.account()?.faceOk) { this.show('consent'); return; } this.toCamera(); }
+  /** Face and voice (Sani 2026-11-22, Nigeria's data law): the parent agrees once, before any child is seen. */
   consent(yes: boolean): void {
     const A = this.account();
-    if (!yes || !A) { this.afterFace(); return; }
-    this.saveAccount({ ...A, faceOk: Date.now() }); this.loader.loadFace(); this.show('face');
+    if (!yes || !A) { this.toProfiles(); return; }
+    this.saveAccount({ ...A, faceOk: Date.now() }); this.loader.loadFace(); this.toCamera();
   }
-  /** The face step is over (saved, skipped, or no camera): on to where it was opened from. */
-  afterFace(enrolled = false): void {
-    const C = this.current();
-    if (enrolled && C) { this.setFace(C.id); this.current.set({ ...C, face: true }); }
-    if (this.faceBack === 'parent') this.show('parent'); else this.show('thanks');
+  /**
+   * The school app's own sign-in (Sani 2026-11-22): boy or girl, then the face screen with its example film and
+   * "Sunana …". A known child is signed in; a face no one knows, with a voice, becomes a new child (held until they press
+   * Laila, exactly as in the school). The face models must be in first: their progress shows if they are not.
+   */
+  async toCamera(): Promise<void> {
+    if (!this.account()?.faceOk) { this.show('consent'); return; }
+    this.bus.stopAll(); this.session.end(); this.session.guest.set(false);
+    if (!this.identity.ready()) { this.show('getready'); if (!(await this.loader.loadFace())) return; if (this.screen() !== 'getready') return; }
+    this.show(null); this.router.navigate(['/gender']);
   }
-  /** Children who can sign in by face. */
-  private faces(): boolean { return !!this.account()?.faceOk && this.profiles().some((p) => p.face); }
+  /** The cards: the fallback (camera refused, no consent, or the child asked for the list). */
   toProfiles(): void {
     this.bus.stopAll(); this.session.end(); this.session.guest.set(false);
-    this.show(FACE_FLOW === 'A' && this.faces() && !this.cardsNow && !this.trying ? 'who' : 'profiles');
-    this.router.navigateByUrl('/blank', { skipLocationChange: true });
+    this.show('profiles'); this.router.navigateByUrl('/blank', { skipLocationChange: true });
   }
-  /** The cards, now (the camera could not decide, was refused, or the child asked for the list). */
-  toCards(): void { this.cardsNow = true; this.show('profiles'); }
-  /** Back to the camera from the cards. */
-  toCamera(): void { this.cardsNow = false; this.show('who'); }
-  /** Option A: the camera recognised this child. */
-  recognised(id: string): void { const P = this.profiles().find((x) => x.id === id); if (P) this.go(P); else this.toCards(); }
-  canFace(): boolean { return this.faces(); }
+  /**
+   * The face screen has decided (face.ts enter()): a new child's record has just been written, or a known child was
+   * recognised. A new child gets a profile under the same id and chooses their animal; a known one goes on to Laila's
+   * welcome back, as in the school app.
+   */
+  faceDone(id: string | null, isNew: boolean): void {
+    if (!id) { this.toProfiles(); return; }
+    let p = this.profiles().find((x) => x.id === id);
+    if (!p) {
+      const PERSON = this.identity.people().find((x) => x.id === id);
+      p = { id, name: PERSON?.name || '', g: PERSON?.gender || this.session.g() || 'm', animal: '', at: Date.now() };
+      this.write([...this.profiles(), p]);
+    }
+    this.signIn(p); this.current.set(p);
+    this.router.navigateByUrl('/blank', { skipLocationChange: true });
+    if (!p.animal) { this.show('pick'); return; }
+    this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
+  }
   /** Manage profiles: the parent's code first (Sani 2026-11-21). */
   manage(): void { this.show('code'); }
 
@@ -219,12 +220,6 @@ export class FamilyService {
    * name; every time after, straight to Laila's welcome back (Sani 2026-11-18: no name card in between), then home.
    */
   choose(p: Profile): void {
-    if (FACE_FLOW === 'B' && p.face && this.account()?.faceOk) { this.current.set(p); this.show('check'); return; }   // option B: the face confirms the card
-    this.go(p);
-  }
-  /** Signed in (by face, by the card, or by the card confirmed by the face). */
-  go(p: Profile): void {
-    this.cardsNow = false;
     this.signIn(p); this.current.set(p);
     if (!p.animal) { this.show('pick'); return; }
     this.backGo();
@@ -250,6 +245,5 @@ export class FamilyService {
   show(s: FamScreen): void {
     this.bus.stopAll(); this.screen.set(s);
     document.documentElement.classList.toggle('fam-on', !!s);
-    if (s !== 'add') this.wasAdding = false;
   }
 }

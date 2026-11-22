@@ -15,7 +15,11 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   Face sign-in in the family build (Sani 22 Nov): YuNet + SFace int8 + CAM++ fp16 (all commercially licensed), named with
   their thresholds in `apps/family/public/models/manifest.json` (`kinds`, `cfg`); the school keeps `public/models/manifest.json`
   (SCRFD + R50, non-commercial InsightFace). The models download only after Register (`LoaderService.loadFace()`).
-  `FACE_FLOW` in family.service.ts: 'A' camera first, cards as fallback; 'B' cards first, face confirms.
+  Children sign themselves up as in the school app (Sani 22 Nov: no manual enrolment): after Register and the parent's
+  one-time consent, the school's gender → face screens (FAMILY: gender goes straight to /face); a new child needs face AND
+  a spoken "Sunana …" (silence is refused), `face.ts enter()` hands over to `FamilyService.faceDone()` (animal, then
+  Laila). The profile id is the identity record's id; names are optional (parent types them in Manage profiles).
+  "Choose from the list" (the cards) floats over /gender and /face.
   `npm run start:family` / `npm run build:family`.
 - `npm run content` — `content/` → `public/assets/clips.json` + `words.json`. Never edit those two by hand.
 - Written labels (Sani 18 Nov): `content/labels.json` is the one dictionary, Hausa and English, of every label a screen

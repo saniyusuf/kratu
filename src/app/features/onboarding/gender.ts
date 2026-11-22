@@ -7,6 +7,7 @@ import { Ear } from '../../shared/chrome/chrome';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
 
 /** Screen 0 · Gender, always first: two photos, Laila greets and the ear repeats. */
 @Component({
@@ -51,6 +52,6 @@ export class GenderScreen implements OnInit, OnDestroy {
     await hintOnce('ear', this.bus, this.session, this.spotter, this.hostEl.nativeElement);
     this.touring.set(false); this.spot.set('');
   }
-  pick(g: Gender): void { this.bus.stopAll(); this.clear(); this.spotter.unspot(); this.touring.set(false); this.spot.set(''); this.session.setGender(g); this.router.navigate(['/laila']); }
+  pick(g: Gender): void { this.bus.stopAll(); this.clear(); this.spotter.unspot(); this.touring.set(false); this.spot.set(''); this.session.setGender(g); this.router.navigate([FAMILY ? '/face' : '/laila']); }   // the family build meets Laila after the animal (welcome), so the face comes straight after
   private clear(): void { this.timers.forEach((t) => clearTimeout(t)); this.timers = []; }
 }

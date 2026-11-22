@@ -58,46 +58,16 @@
 </section>
 }
 
-<!-- 4 · the parent enrols a child: name and boy or girl only; the card above is a preview, the child picks the animal -->
-@case ('add') {
-<section class="fs add" [class.up]="upright()">
-  @if (fam.profiles().length) {<button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>}
-  <h1 class="kick2">{{ fam.profiles().length ? 'Enrol another child' : 'Enrol your first child' }}</h1>
-  <div class="card preview">
-    <span class="pv">Preview</span>
-    <div class="cav gimg">@if (g()) {<span class="gem" [innerHTML]="kid(g())"></span>}</div>
-    <div class="cname" [class.ph]="!name().trim()">{{ name().trim() || 'Name' }}</div>
-    <div class="ctag" [class.ph]="!g()">{{ g() === 'f' ? 'Girl · Mace' : g() === 'm' ? 'Boy · Namiji' : 'Boy or girl' }}</div>
-    <small class="cnote">Your child chooses the animal</small>
-  </div>
-  <div class="parts">
-    @if (!g()) {
-    <div class="part p1 now"><div class="plb"><b>1</b>Boy or girl</div>
-      <div class="gg">
-        <button class="gc" (click)="setG('f')"><span class="gem" [innerHTML]="kid('f')"></span><span>Girl<small>Mace</small></span></button>
-        <button class="gc" (click)="setG('m')"><span class="gem" [innerHTML]="kid('m')"></span><span>Boy<small>Namiji</small></span></button>
-      </div></div>
-    } @else {
-    <!-- chosen: folded to one line that still shows the choice; the name has the focus (Sani 2026-11-21) -->
-    <button class="part p1 folded" (click)="g.set(null)"><b class="done">1</b><span class="gem" [innerHTML]="kid(g())"></span><span>{{ g() === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</span><small>Change</small></button>
-    <div class="part p2 now"><div class="plb"><b [class.done]="!!name().trim()">2</b>{{ g() === 'f' ? 'Her' : 'His' }} first name</div>
-      <input #nameIn class="field" type="text" autocomplete="off" enterkeyhint="done" maxlength="24" [placeholder]="g() === 'f' ? 'Her first name' : 'His first name'" [value]="name()" (input)="setName($any($event.target).value)" (keyup.enter)="enrol()"></div>
-    }
-  </div>
-  <button class="btn go" [disabled]="!g() || !name().trim()" (click)="enrol()">Save</button>
-</section>
-}
-
-<!-- 4b · before the first face print (Sani 2026-11-22, Nigeria's data law): the parent agrees, or not now -->
+<!-- 4b · once, before any child is seen (Sani 2026-11-22, Nigeria's data law): the parent agrees, or not now -->
 @case ('consent') {
 <section class="fs setup consent" [class.up]="upright()">
   <div class="sheet one">
     <div class="cbig" aria-hidden="true">🙂</div>
-    <h1>Sign in with a look</h1>
-    <p class="note">Kratu can learn {{ fam.current()?.name || 'your child' }}’s face, so each child signs in by looking at the phone instead of tapping a card.</p>
+    <h1>Children sign in with face and voice</h1>
+    <p class="note">Each child signs up on their own: they tap boy or girl, look at the phone and say “Sunana …” (“my name is …”). After that Kratu knows them when they look and speak, with no card to tap.</p>
     <ul class="clist">
-      <li>Kratu keeps a face print (a list of numbers made from the camera picture) and a short recording of your child saying their name. The picture itself is never kept.</li>
-      <li>It stays on this phone. You can remove a child, and their face print, any time in Manage profiles.</li>
+      <li>Kratu keeps a face print and a voice print (lists of numbers made from the camera and the microphone) and a short recording of your child saying their name. The picture itself is never kept.</li>
+      <li>It stays on this phone. You can remove a child, and their prints, any time in Manage profiles.</li>
     </ul>
     <div class="cbtns"><button class="btn go glowbtn" (click)="fam.consent(true)">I agree</button>
     <button class="btn ghost" (click)="fam.consent(false)">Not now</button></div>
@@ -105,34 +75,16 @@
 </section>
 }
 
-<!-- 4c · the parent holds the phone up to the child just enrolled: their face (and "Sunana …") -->
-@case ('face') {
-<section class="fs face enrolface" [class.up]="upright()">
-  @if (fam.current(); as c) {
-  <h1>Now {{ c.name }}’s face</h1>
-  <fam-face #ff mode="enrol" [profile]="c" [dry]="!!fam.trying" (ended)="faceEnded($event)" />
-  <div class="frow">
-    @if (!ff.running()) {<button class="btn go glowbtn" [disabled]="!ff.engineReady()" (click)="ff.start()">📷 Start</button>}
-    <button class="btn ghost" (click)="ff.cancel()">Later</button>
+<!-- 4c · the face models are still coming (they start right after Register): their progress, then the camera -->
+@case ('getready') {
+<section class="fs setup getready" [class.up]="upright()">
+  <div class="sheet one">
+    <h1>Getting the camera ready</h1>
+    <div class="gbar"><i [style.width]="facePct() + '%'"></i></div>
+    <p class="hint">{{ faceText() }}</p>
+    @if (loader.faceProg().state === 'fail') {<button class="btn" (click)="fam.toCamera()">↺ Try again</button>}
+    <button class="btn ghost" (click)="fam.toProfiles()">Choose from the list</button>
   </div>
-  }
-</section>
-}
-
-<!-- 5 · "Musa is ready now" (Sani 2026-11-21): the boy or girl picture until the child chooses an animal; Continue
-     dances and glows and goes to the children's home -->
-@case ('thanks') {
-<section class="fs yours thanks" [class.up]="upright()">
-  @if (fam.current(); as c) {
-  <div class="pcard pop">
-    <div class="pav gimg"><span class="gem" [innerHTML]="kid(c.g)"></span></div>
-    <div class="pnm">{{ c.name }}</div>
-    <div class="ctag">{{ c.g === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>
-  </div>
-  <h1>{{ c.name }} is ready now</h1>
-  }
-  <button class="btn go big glowbtn dance" (click)="fam.toProfiles()">▶ Continue</button>
-  @if (fam.current(); as c) {<p class="note">Then you can pass the phone to {{ c.name }}.</p>}
 </section>
 }
 
@@ -176,43 +128,18 @@
   <h1>Who's learning today?</h1>
   <div class="cards">
     @for (p of fam.profiles(); track p.id) {
-      <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><b>{{ p.name }}</b></button>
+      <div class="ncw"><button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><b>{{ p.name || (p.g === 'f' ? 'Girl' : 'Boy') }}</b></button>
+      @if (fam.clipOf(p.id)) {<button class="say" [attr.aria-label]="'Hear the name'" (click)="hear(p)">🔊</button>}</div>
     }
   </div>
   <div class="cards extra">
     <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
-    <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
+    <button class="nc addc" (click)="fam.toCamera()"><span class="nav">📷</span><b>Camera</b></button>
   </div>
-  @if (fam.FACE_FLOW === 'A' && fam.canFace()) {<button class="manage cam" (click)="fam.toCamera()">📷 Sign in with a look</button>}
   <button class="manage" (click)="fam.manage()">✎ Manage profiles</button>
 </section>
 }
 
-
-<!-- 9a · option A (Sani 2026-11-22): the child looks at the phone and is recognised; the cards are the fallback -->
-@case ('who') {
-<section class="fs face who" [class.up]="upright()">
-  <div class="mk sm"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
-  <h1>Who's learning today?</h1>
-  <fam-face #fw mode="who" [auto]="true" (ended)="faceEnded($event)" />
-  <div class="frow">
-    @if (!fw.running() && fw.tried()) {<button class="btn go" (click)="fw.start()">📷 Try again</button>}
-    <button class="btn ghost" (click)="fw.cancel()">Choose from the list</button>
-  </div>
-</section>
-}
-
-<!-- 9b · option B: the child tapped a card; the face confirms it -->
-@case ('check') {
-<section class="fs face who" [class.up]="upright()">
-  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toCards()"></button>
-  @if (fam.current(); as c) {
-  <h1>Is it you, {{ c.name }}?</h1>
-  <fam-face #fc mode="check" [profile]="c" [auto]="true" (ended)="faceEnded($event)" />
-  <div class="frow">@if (!fc.running() && fc.tried()) {<button class="btn go" (click)="fc.start()">📷 Try again</button>}</div>
-  }
-</section>
-}
 
 <!-- Manage profiles: the parent's code first (Sani 2026-11-21) -->
 @case ('code') {
@@ -236,10 +163,13 @@
   <div class="sheet wide">
     <div class="col">
       <h1>Your children</h1>
+      <p class="hint">Type a name if you like; the child’s own recording says it anyway.</p>
       @for (p of fam.profiles(); track p.id) {
-        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><span class="kn"><b>{{ p.name }}</b><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · added {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }} · {{ p.face ? 'signs in with a look' : 'no face print' }}</small></span>@if (!p.face) {<button class="link" (click)="addFace(p)">Add face</button>}<button class="link" (click)="removeKid(p)">Remove</button></div>
+        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span>
+          <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span>
+          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">🔊 Name</button>}<button class="link" (click)="removeKid(p)">Remove</button></div>
       } @empty {<p class="hint">No children yet.</p>}
-      <button class="btn ghost" (click)="fam.startAdd()">+ Add a child</button>
+      <p class="hint">A new child signs up on their own: they look at the phone and say their name.</p>
     </div>
     <div class="col">
       <h1>On this phone</h1>
@@ -252,3 +182,6 @@
 </section>
 }
 }
+
+<!-- on the school's boy-or-girl and face screens: the cards are one tap away (camera refused, or the child would rather) -->
+@if (!fam.screen() && chipOn()) {<button class="fchip" (click)="fam.toProfiles()">Choose from the list</button>}
