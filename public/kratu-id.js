@@ -112,7 +112,12 @@
 
   /* ---- matching: cosine, per-person max over exemplars, mean of top-K frames, margin over runner-up, name + voice fusion ---- */
   function cos(a, b) { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; }
-  function setScore(q, set) { if (!q.length || !set || !set.length) return 0; const per = q.map(v => Math.max(...set.map(e => cos(v, e)))).sort((a, b) => b - a); const k = Math.min(cfg.topK, per.length); return per.slice(0, k).reduce((s, x) => s + x, 0) / k; }
+  /* The family build (cfg.frameAgg 'median', 22 Nov): the middle frame, not the best few. The best few keep climbing the
+     longer a stranger stays in view (each frame gets twelve chances against a child's prints), so a stranger was let in
+     after a few seconds; the median stays where the face really is. The school keeps its top-K mean. */
+  function setScore(q, set) { if (!q.length || !set || !set.length) return 0; const per = q.map(v => Math.max(...set.map(e => cos(v, e)))).sort((a, b) => b - a);
+    if (cfg.frameAgg === 'median') return per[Math.floor((per.length - 1) / 2)];
+    const k = Math.min(cfg.topK, per.length); return per.slice(0, k).reduce((s, x) => s + x, 0) / k; }
   K.match = function (q) {
     const faceVecs = q.faceVecs || [], voiceVec = q.voiceVec || null, nameKey = q.nameKey || null, out = { person: null, decision: 'reject', face: 0, second: 0, margin: 0, voice: null, name: false, fused: 0, n: faceVecs.length, scores: [], reasons: [] };
     if (!people.length) { out.reasons.push('nobody enrolled'); return out; }

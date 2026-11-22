@@ -10,6 +10,8 @@ import { CourseService } from '../../core/state/course.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { LEVEL_AT, TITLES, levelOf } from '../../core/state/zinari';
 import { bi, t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
+import { FamilyService } from '../../core/family/family.service';
 
 type Stage = 'who' | 'confirm' | 'code' | 'students' | 'games' | 'course';
 const CODE = '064662118';
@@ -99,6 +101,7 @@ export class Settings {
   private readonly speech = inject(SpeechService);
   private readonly loader = inject(LoaderService);
   private readonly router = inject(Router);
+  private readonly fam = inject(FamilyService);
   readonly ico = ICO;
   readonly games = GAME_LIST;
   readonly course = inject(CourseService);
@@ -125,7 +128,9 @@ export class Settings {
   });
   permsOK(): boolean { return !!this.session.perms()?.mic; }
 
-  open(): void { this.bus.stopAll(); this.stage.set('who'); this.pending.set(null); this.isOpen.set(true); if (this.session.debug) { this.refreshStatus(); this.fillDevices(); } }
+  /** The family build (Sani 2026-11-22: no Parent button on the children's screens): the gear is the parents' way in.
+   *  It asks for the parent's code and opens Manage profiles; that page's "Settings: Open" comes back here for real. */
+  open(): void { if (FAMILY && !FamilyService.settingsNext) { this.fam.manage(); return; } FamilyService.settingsNext = false; this.bus.stopAll(); this.stage.set('who'); this.pending.set(null); this.isOpen.set(true); if (this.session.debug) { this.refreshStatus(); this.fillDevices(); } }
   close(): void { this.isOpen.set(false); }
   backdrop(e: Event): void { if ((e.target as HTMLElement).id === 'admin') this.close(); }
   toPerm(): void { this.close(); this.router.navigate(['/perm']); }

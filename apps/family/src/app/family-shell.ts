@@ -33,9 +33,12 @@ export class FamilyShell implements OnDestroy {
   private readonly clips = inject(ClipsService);
   private readonly session = inject(SessionService);
   readonly loader = inject(LoaderService);
+  private readonly router = inject(Router);
   /** The route under the shell: the "Choose from the list" chip shows on the school's boy-or-girl and face screens. */
   private readonly route = signal(location.pathname);
   readonly chipOn = computed(() => /^\/(gender|face)\b/.test(this.route()));
+  /** The back door on the boy-or-girl and face screens (Sani 2026-11-22: only a way back, no Guest or Parent there). */
+  back(): void { if (/^\/face/.test(this.route())) { this.router.navigate(['/gender']); return; } this.fam.show('welcome'); }
   readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
   readonly faceText = computed(() => { const P = this.loader.faceProg(); if (P.state === 'fail') return 'The camera could not be downloaded. Check the connection and try again.';
     return (P.total ? Math.round(P.got / 1048576) + ' of ' + Math.round(P.total / 1048576) + ' MB' : 'Starting') + ' · once only, then it stays on this phone'; });
@@ -83,7 +86,7 @@ export class FamilyShell implements OnDestroy {
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    inject(Router).events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
+    this.router.events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
     // each screen's opening: what Laila says there (only lines that exist), and a clean slate for the forms
     effect(() => {
       const s = this.fam.screen();
@@ -165,7 +168,7 @@ export class FamilyShell implements OnDestroy {
 
   // ---- parent area
   /** The settings gear left the child's upright screens (Sani 2026-11-22): the parents open the settings from here. */
-  openSettings(): void { this.fam.show(null); setTimeout(() => document.getElementById('admingear')?.click(), 60); }
+  openSettings(): void { FamilyService.settingsNext = true; this.fam.show(null); setTimeout(() => document.getElementById('admingear')?.click(), 60); }
 
 
   /** The child's own "Sunana …" clip says their name (the profile may have no written one). */

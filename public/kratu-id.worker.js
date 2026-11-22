@@ -132,7 +132,9 @@ function straight(faces) { const T = topFace(faces); return !!T && poseReasons(T
 async function detect(bitmap, thr) {
   if (KIND.det === 'yunet') thr = Math.max(thr, KIND.detThr);
   const FACES = await detectAt(bitmap, thr, ROT_PREF);
-  if (straight(FACES) && topFace(FACES).score >= SURE) return FACES;
+  /* YuNet's scores sit on another scale: a straight face at the usual turn is kept as it is, and the other turns are only
+     tried when there is none (a wrong turn gives a garbled crop whose print looks like everyone's, 22 Nov) */
+  if (straight(FACES) && (KIND.det === 'yunet' || topFace(FACES).score >= SURE)) return FACES;
   let best = straight(FACES) ? { rot: ROT_PREF, faces: FACES, score: topFace(FACES).score } : null;
   for (const R of ROTS) {
     if (R === ROT_PREF) continue;

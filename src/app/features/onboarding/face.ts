@@ -18,7 +18,8 @@ type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 /** How long the capture will wait for the child to be alone again before it gives up and offers a fresh try. */
 const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
-const MAXMS = 10000, HARDMS = 20000;
+/** The family build (Sani 2026-11-22): the whole step at most 10 seconds for young children. */
+const MAXMS = FAMILY ? 8000 : 10000, HARDMS = FAMILY ? 10000 : 20000;
 /** The online recogniser may help but never holds a child up: not listening within this, the ring starts without it. */
 const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
@@ -30,10 +31,10 @@ const SR_START_WAIT = 2500;
  * own recording, kept with their record on the tablet, is what carries their name.
  */
 const NAME_ONLINE = false;
-/** The family build (Sani 2026-11-22): a voice print only from real speech, at least 0.4 s above a quiet room. */
+/** The family build (Sani 2026-11-22): a voice print only from real speech, at least 0.3 s above a quiet room. */
 function spoke(pcm: Float32Array): boolean {
   let loud = 0; for (let i = 0; i + 320 <= pcm.length; i += 320) { let e = 0; for (let j = i; j < i + 320; j++) e += pcm[j] * pcm[j]; if (Math.sqrt(e / 320) > 0.015) loud++; }
-  return loud >= 20;
+  return loud >= 15;   // 0.3 s: a child may say just their name ("Musa"), not "Sunana Musa"
 }
 /** The family build shows no emoji (Sani 2026-11-22): the hint's leading picture is dropped there. */
 const E = (s: string): string => (FAMILY ? '' : s);
@@ -73,7 +74,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
   <div class="capmodal-title">{{ bi('Bari mu ga wa kake', 'let’s see who you are') }}</div>
   <div class="camview">
     <div class="camwrap" [class.armed]="armed()" [class.paused]="!!paused()" [class.glow]="glow()" [class.done]="!!still()" [style.--p]="progress() + '%'">
-      <div class="cam"><i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
+      <div class="cam" [class.matched]="!!matchFx()">@if (matchFx(); as f) {<span class="matchfx" [style.left.%]="f.l" [style.top.%]="f.t" [style.width.%]="f.w" [style.height.%]="f.h"><i></i><i></i><i></i></span>}<i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
         <video #live class="feed live" autoplay [muted]="true" [volume]="0" playsinline [hidden]="!liveOn() || !!still()"></video>
         <div class="pict" [hidden]="!pict()"><div class="pict-big">{{ pictA() }}</div><div class="pict-arrow">→</div><div class="pict-big ok">{{ pictB() }}</div></div>
         <div class="faceguide" [class.ok]="faceOK() && !paused() && sizeOK()" [class.busy]="!!paused()" [class.follow]="!!track()" [style.left.%]="track() ? track()!.l + track()!.w / 2 : null" [style.top.%]="track() ? track()!.t + track()!.h / 2 : null" [style.width.%]="track()?.w ?? null" [style.height.%]="track()?.h ?? null" [hidden]="!liveOn() || !!still()" aria-hidden="true"></div>
@@ -150,7 +151,13 @@ export class FaceScreen implements OnInit, OnDestroy {
     // the capture dialog is the old app's body-level overlay: it sits outside the zoomed frame, sized in viewport units
     effect(() => { const m = this.modalRef()?.nativeElement; if (m && m.parentElement !== document.body) document.body.appendChild(m); document.body.classList.toggle('capmodal-open', this.capturing()); });
   }
-  ngOnInit(): void { afterPaint().then(() => this.intro()); }
+  /**
+   * The family build (Sani 2026-11-22: "searching and enrolling" at once, quick for young children): once any child is
+   * enrolled, the camera opens straight away, no intro and no press, and a known face goes in before a word is said.
+   * The very first child still gets the intro (the example film) to learn what to do.
+   */
+  ngOnInit(): void { afterPaint().then(async () => { if (FAMILY && (await this.anyone())) { this.start(); return; } this.intro(); }); }
+  private async anyone(): Promise<boolean> { try { const K = this.identity.api; if (!K || !this.identity.ready()) return false; await K.store.load(); return K.store.all().length > 0; } catch { return false; } }
   ngOnDestroy(): void { this.pending = null; this.teardown(); this.dropModal(); }
   /** The dialog lives at body level (moved there by the effect); Angular's own removal misses it, so it is removed here. */
   private dropModal(): void { document.querySelectorAll('.capmodal').forEach((m) => m.remove()); document.body.classList.remove('capmodal-open'); }
@@ -191,6 +198,7 @@ export class FaceScreen implements OnInit, OnDestroy {
 
   /** Press Laila: the camera opens, the ring starts, the child says "Sunana …". */
   async start(): Promise<void> {
+    if (FAMILY && this.capturing()) return;   // the camera opens by itself in the family build: a press of Laila at the same moment must not open it twice
     this.bus.stopAll(); this.cue.set(false); this.reset(); this.capturing.set(true);
     await afterPaint();
     const md = navigator.mediaDevices;
@@ -288,7 +296,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     const LEFT = OX + (v.videoWidth - b.x - b.width) * KX, TOP = OY + b.y * KY;   // mirrored picture: the box flips
     const PAD_X = W * 0.42, PAD_Y = H * 0.34;
     const PCT = (n: number, of: number) => (n / of) * 100;
-    this.track.set({ l: PCT(LEFT - PAD_X, BW), t: PCT(TOP - PAD_Y, BH), w: PCT(W + PAD_X * 2, BW), h: PCT(H + PAD_Y * 2, BH) });
+    this.track.set({ l: PCT(LEFT - PAD_X, BW), t: PCT(TOP - PAD_Y, BH), w: PCT(W + PAD_X * 2, BW), h: PCT(H + PAD_Y * 2, BH) }); this.lastTrack = this.track();
     // a sensible size, as a share of the camera picture itself (the detector's own floor is 70 of 640 pixels)
     const SIZE = b.width / v.videoWidth;
     this.sizeOK.set(SIZE >= 0.11 && SIZE <= 0.75);
@@ -310,8 +318,10 @@ export class FaceScreen implements OnInit, OnDestroy {
     const now = Date.now(); if (now - this.earlyAt < 250) return; this.earlyAt = now;
     try {
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec: null, nameKey: null });
-      const FAR_APART = !FAMILY || ((m as any).faceGap ?? 0) >= ((K as any).cfg?.gapWide ?? 0.25);   // the family build: face and voice together unless one face is far ahead (Sani 2026-11-22)
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && FAR_APART) { console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
+      // the family build signs in on the face alone only when it is very sure (Sani 2026-11-22: before the name if found;
+      // a stranger scored 0.56 in a test, so the bar here is higher than the ring's own accept, and needs a few frames)
+      const SURE = !FAMILY || (m.face >= ((K as any).cfg?.earlyAccept ?? 0) && this.faceVecs.length >= 4);
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE) { console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
     } catch { /* the full ring still decides */ }
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
@@ -362,7 +372,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.iv = setInterval(() => {
       const now = Date.now(); if (this.faceOK() && this.armed()) active += now - last; last = now;
       this.progress.set(Math.min(100, active / MAXMS * 100)); const sec = Math.floor(active / 1000); this.capTime.set('00:' + (sec < 10 ? '0' : '') + sec);
-      if (this.paused() || this.speaking) t0 += now - last0; last0 = now;
+      if ((this.paused() || this.speaking) && !FAMILY) t0 += now - last0; last0 = now;   // the family build: 10 seconds in all, pauses included (Sani 2026-11-22)
       if (active >= MAXMS || now - t0 >= HARDMS) this.endRec();
     }, 100);
   }
@@ -440,6 +450,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.missText.set(E('🤔 ') + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
   private async welcome(p: Person, back: boolean, ownUrl?: string): Promise<void> {
+    if (FAMILY && back) { this.matched(p); return; }
     this.doneText.set(t('Sannu') + (p.name ? ', ' + p.name : '') + '! ' + (back ? t('Barka da dawowa!') : t('Barka da zuwa!'))); this.still.set(this.bestStill);
     await this.greet(p, back, ownUrl); if (!back) this.confetti(); this.enter();
   }
@@ -447,6 +458,17 @@ export class FaceScreen implements OnInit, OnDestroy {
    * Known, so nothing more is asked here: the record is written (this is the moment the child actually starts) and the
    * welcome screen takes over. A new child keeps the confetti for a beat so the Madalla lands (Sani 2026-09-18).
    */
+  /**
+   * The family build (Sani 2026-11-22): a known child is in. No frame, no border: only a small light animation where the
+   * face was, then straight on to Laila's welcome back (she greets them there).
+   */
+  readonly matchFx = signal<{ l: number; t: number; w: number; h: number } | null>(null);
+  private lastTrack: { l: number; t: number; w: number; h: number } | null = null;
+  private matched(p: Person): void {
+    this.session.name.set(p.name); this.session.personId.set(p.id); this.session.known.set(true); this.session.simulated.set(null);
+    this.matchFx.set(this.lastTrack || { l: 30, t: 20, w: 40, h: 55 });
+    this.enter();
+  }
   private enter(): void {
     const p = this.pending; this.pending = null;
     const go = async () => {
@@ -455,7 +477,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       if (FAMILY) { this.fam.faceDone(this.session.personId(), !!p); return; }   // the family build: a new child picks an animal first
       this.router.navigate(['/welcome']);
     };
-    setTimeout(go, p ? 900 : 300);
+    setTimeout(go, p ? 900 : this.matchFx() ? 650 : 300);
   }
   /** "Sannu, <name>! Barka da dawowa / zuwa" — the name in Laila's voice from the bank, else in the child's own voice. */
   private async greet(p: Person, back: boolean, ownUrl?: string): Promise<void> {

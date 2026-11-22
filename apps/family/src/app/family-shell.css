@@ -375,3 +375,6 @@ input,.field{min-height:48px;box-sizing:border-box}
 .nc.guest .nav{overflow:hidden}
 .say{padding:4px}
 .say svg{width:100%;height:100%;display:block}
+/* the back door over the school's boy-or-girl and face screens (upper left, above the capture dialog) */
+.fdoor{position:fixed;z-index:6000;left:calc(10px + env(safe-area-inset-left, 0px));top:calc(10px + env(safe-area-inset-top, 0px));width:58px;height:58px;border:0;background:none;padding:0;cursor:pointer}
+.fdoor ::ng-deep svg{width:100%;height:100%;display:block}

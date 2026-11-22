@@ -129,5 +129,5 @@
 }
 }
 
-<!-- on the school's boy-or-girl and face screens (Sani 2026-11-22): Guest, one tap, for a quick go; the parent's corner -->
-@if (!fam.screen() && chipOn()) {<div class="fchips"><button class="fchip go" (click)="fam.guest()">Guest</button><button class="fchip" (click)="fam.manage()">Parent</button></div>}
+<!-- on the school's boy-or-girl and face screens (Sani 2026-11-22): only the way back, upper left as everywhere -->
+@if (!fam.screen() && chipOn()) {<button class="fdoor" aria-label="Back" [innerHTML]="door" (click)="back()"></button>}

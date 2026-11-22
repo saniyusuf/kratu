@@ -8,11 +8,13 @@
  },
  "cfg": {
   "modelVer": "v4-yunet-sface_int8-campplus_fp16",
-  "faceAccept": 0.45,
-  "faceMaybe": 0.38,
+  "faceAccept": 0.68,
+  "faceMaybe": 0.5,
   "margin": 0.07,
   "gapClose": 0.066,
-  "gapWide": 0.21
+  "gapWide": 0.21,
+  "earlyAccept": 0.7,
+  "frameAgg": "median"
  },
  "det": {
   "path": "models/family/yunet_2023mar.onnx",
@@ -34,5 +36,5 @@
   "size": 14239897,
   "gzsize": 3652793
  },
- "cfg_note": "SFace scores sit on another scale than the school's R50 (impostors around 0.08, not 0): faceAccept 0.45 / margin 0.07 from a sweep on LFW (2 to 150 enrolled: no wrong child, no outsider let in up to 5 children, 97% signed in, 3% sent to the cards); faceMaybe 0.38 only counts with the voice; the voice-weight gaps scaled by the genuine-impostor spread (0.555 vs 0.668). Voice thresholds unchanged."
+ "cfg_note": "SFace (int8) sits on another scale than the school's R50. Frames are scored by their MEDIAN (frameAgg 'median'), not the best 3, which kept climbing while a stranger stayed in view. In the app's own pipeline some look-alike strangers still reach 0.56-0.63 against a child's prints (22 Nov test), so: on the face alone only at 0.70 and up (earlyAccept, at least 4 frames) or 0.68 at the end of the capture (faceAccept); from 0.50 (faceMaybe) only when the child's voice agrees (voiceAccept 0.55); margin 0.07; voice-weight gaps 0.066/0.21."
 }

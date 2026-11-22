@@ -30,6 +30,8 @@ const K_PROFILES = 'kratu_fam_profiles', K_ACCOUNT = 'kratu_fam_account', K_STAR
 
 @Injectable({ providedIn: 'root' })
 export class FamilyService {
+  /** Set by the parent area's "Settings: Open": the next press of the gear opens the real settings, not the parent code. */
+  static settingsNext = false;
   private readonly router = inject(Router);
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
