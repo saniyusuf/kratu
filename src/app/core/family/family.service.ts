@@ -107,9 +107,9 @@ export class FamilyService {
     if (this.trying) { this.tryStep(this.trying); return; }
     let started = false; try { started = localStorage.getItem(K_STARTED) === '1'; } catch { /* ignore */ }
     if (!started && !this.profiles().length) { this.show('welcome'); return; }
+    if (!this.account()) { this.show('signin'); return; }   // Register comes straight after Start (Sani 2026-11-22)
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
-    if (!this.account()) { this.show('signin'); return; }
     this.afterSetup();
   }
   /** `?step=` (see `trying`): straight to one real screen, with the sample children and nothing saved. */
@@ -137,7 +137,13 @@ export class FamilyService {
     }
   }
   /** Welcome page: Start. */
-  start(): void { try { localStorage.setItem(K_STARTED, '1'); } catch { /* ignore */ } this.micThen(); }
+  start(): void {
+    try { localStorage.setItem(K_STARTED, '1'); } catch { /* ignore */ }
+    if (!this.account()) { this.show('signin'); return; }   // Start -> Register, the parent's sign-up (Sani 2026-11-22)
+    this.micThen();
+  }
+  /** The parent has registered: then the microphone, the loader and the first child. */
+  registered(): void { this.micThen(); }
   private async micThen(): Promise<void> { if (await this.micGranted()) this.afterMic(); else this.show('mic'); }
   /** The microphone screen is done (allowed or not: refused means the touch versions of speaking). */
   async afterMic(): Promise<void> {

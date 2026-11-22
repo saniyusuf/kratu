@@ -39,7 +39,8 @@
 <section class="fs setup signin" [class.up]="upright()">
   <div class="sheet one">
   @if (signStep() === 1) {
-    <h1>Parent sign-in</h1>
+    <h1>Register</h1>
+    <p class="hint">Parent sign-up</p>
     <label class="fl">Email<input class="field" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" [value]="email()" (input)="email.set($any($event.target).value)"></label>
     <label class="fl">Phone number<input class="field" type="tel" inputmode="tel" autocomplete="tel" placeholder="0803 123 4567" [value]="phone()" (input)="phone.set($any($event.target).value)" (keyup.enter)="toCode()"></label>
     <button class="btn" [disabled]="!emailOk() || !phoneOk()" (click)="toCode()">Continue</button>

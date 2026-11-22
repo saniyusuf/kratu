@@ -322,3 +322,6 @@ input,.field{min-height:48px;box-sizing:border-box}
 
 /* Enrol sideways: Save centred under the questions (Sani 22 Nov) */
 .add:not(.up) .btn.go{justify-self:center}
+
+/* Register: Continue centred, like Save (Sani 22 Nov) */
+.signin .sheet > .btn{display:block;margin-left:auto;margin-right:auto}

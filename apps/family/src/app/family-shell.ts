@@ -146,7 +146,7 @@ export class FamilyShell implements OnDestroy {
   async signUp(): Promise<void> {
     if (this.code() !== this.first) { this.code.set(''); this.codeMsg.set('The two codes were not the same. Press “Start again” and make your code again.'); return; }
     this.busy.set(true); await this.fam.setAccount(this.email(), this.phone(), this.code()); this.busy.set(false);
-    this.fam.afterSetup();
+    this.fam.registered();
   }
   async openParent(): Promise<void> {
     if (this.code().length !== 6 || this.busy()) return;
