@@ -11,7 +11,7 @@ import { LoaderService } from '../loader/loader.service';
  * The profile's id IS the identity record's id (face and voice prints, the child's own name clip; never a photo).
  * `name` is empty unless the parent types one in Manage profiles: the child's own clip says their name.
  */
-export interface Profile { id: string; name: string; g: Gender; animal: string; at: number; }
+export interface Profile { id: string; name: string; g: Gender; at: number; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
@@ -22,22 +22,9 @@ export interface Account { name?: string; email: string; phone: string; code: st
    *  face print is made). Unset: never asked or not yet agreed. */
   faceOk?: number; }
 
-/**
- * The animals a child can choose (the design page of 17 Nov, with Sani's keeps): each is already a word in the lessons
- * with a Hausa clip, so Laila can say a child's animal with no new recording. No birds (they could be taken for Laila),
- * no owls, monkeys, donkeys, chameleons, dogs, pigs, hyenas or pests.
- */
-export const ANIMALS: { k: string; e: string; c: string }[] = [
-  { k: 'lion', e: '🦁', c: '#FFE3A3' }, { k: 'elephant', e: '🐘', c: '#DCE7F5' }, { k: 'giraffe', e: '🦒', c: '#FCE6C4' },
-  { k: 'camel', e: '🐪', c: '#F5E0C8' }, { k: 'horse', e: '🐴', c: '#EAD9C8' }, { k: 'cow', e: '🐮', c: '#E6F2DF' },
-  { k: 'ram', e: '🐏', c: '#EFEAE0' }, { k: 'goat', e: '🐐', c: '#E9EFD9' }, { k: 'rabbit', e: '🐰', c: '#F8DDE6' },
-  { k: 'tortoise', e: '🐢', c: '#D9F0E2' }, { k: 'fish', e: '🐟', c: '#D6ECF7' }, { k: 'butterfly', e: '🦋', c: '#E5DDF5' },
-  { k: 'frog', e: '🐸', c: '#DDF2D2' },
-];
-export const animal = (k: string) => ANIMALS.find((a) => a.k === k) ?? ANIMALS[0];
 
 /** The family build's own screens, drawn over the app (both ways round, unlike the landscape lessons). */
-export type FamScreen = 'welcome' | 'mic' | 'signin' | 'consent' | 'getready' | 'profiles' | 'pick' | 'yours' | 'code' | 'parent' | null;
+export type FamScreen = 'welcome' | 'mic' | 'signin' | 'consent' | 'getready' | 'code' | 'parent' | null;
 
 const K_PROFILES = 'kratu_fam_profiles', K_ACCOUNT = 'kratu_fam_account', K_STARTED = 'kratu_fam_started';
 
@@ -51,7 +38,7 @@ export class FamilyService {
 
   readonly screen = signal<FamScreen>(null);
   readonly profiles = signal<Profile[]>(this.read());
-  /** The profile being shown on "this is your animal". */
+  /** The child signing in now. */
   readonly current = signal<Profile | null>(null);
   /** The parent's account on this phone, once signed in. */
   readonly account = signal<Account | null>(this.readAccount());
@@ -64,8 +51,8 @@ export class FamilyService {
    */
   readonly trying = new URLSearchParams(location.search).get('step');
   static readonly SAMPLES: Profile[] = [
-    { id: 'try_musa', name: 'Musa', g: 'm', animal: 'lion', at: 0 },
-    { id: 'try_aisha', name: 'Aisha', g: 'f', animal: 'rabbit', at: 0 },
+    { id: 'try_musa', name: 'Musa', g: 'm', at: 0 },
+    { id: 'try_aisha', name: 'Aisha', g: 'f', at: 0 },
   ];
 
   // ---- storage: this phone only for now; the parent account and its sync come with the server (design page, box 6)
@@ -85,7 +72,6 @@ export class FamilyService {
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kratu-family:' + code));
     return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join('');
   }
-  taken(): string[] { return this.profiles().map((p) => p.animal).filter(Boolean); }
   /** Manage profiles: the parent may type a child's name (optional; the child's own clip says it anyway). */
   rename(id: string, name: string): void {
     const NAME = name.replace(/\s+/g, ' ').trim().slice(0, 24);
@@ -94,10 +80,6 @@ export class FamilyService {
   }
   /** The child's own "Sunana …" name clip, from their identity record. */
   clipOf(id: string): string | null { return this.identity.people().find((x) => x.id === id)?.clip || null; }
-  setAnimal(id: string, a: string): Profile | null {
-    const list = this.profiles().map((p) => (p.id === id ? { ...p, animal: a } : p));
-    this.write(list); return list.find((p) => p.id === id) ?? null;
-  }
   remove(id: string): void {
     this.write(this.profiles().filter((p) => p.id !== id));
     this.identity.api?.store.remove(id).catch(() => undefined);   // their face prints and name clip go too
@@ -143,15 +125,11 @@ export class FamilyService {
       case 'consent': this.account.set({ ...this.account()!, faceOk: undefined }); this.show('consent'); return;
       case 'getready': this.show('getready'); return;
       case 'gender': this.show(null); this.router.navigate(['/gender']); return;
-      case 'pick': this.profiles.set(FamilyService.SAMPLES.map((p) => ({ ...p, animal: '' }))); this.choose({ ...kid, animal: '' }); return;
-      case 'yours': this.current.set(kid); this.show('yours'); return;
-      case 'profiles': this.toProfiles(); return;
       case 'parent': this.manage(); return;
       case 'guest': this.guest(); return;
-      case 'back': this.choose(kid); return;
       case 'laila': case 'first': this.current.set(kid); this.firstGo(); return;
       case 'home': this.signIn(kid); this.session.known.set(true); this.show(null); this.router.navigate(['/home']); return;
-      default: this.toProfiles();
+      default: this.toCamera();
     }
   }
   /** Welcome page: Start. */
@@ -175,7 +153,7 @@ export class FamilyService {
   /** Face and voice (Sani 2026-11-22, Nigeria's data law): the parent agrees once, before any child is seen. */
   consent(yes: boolean): void {
     const A = this.account();
-    if (!yes || !A) { this.toProfiles(); return; }
+    if (!yes || !A) { this.guest(); return; }   // no face and voice: the children can only play as guests until the parent agrees (asked again next time)
     this.saveAccount({ ...A, faceOk: Date.now() }); this.loader.loadFace(); this.toCamera();
   }
   /**
@@ -189,41 +167,29 @@ export class FamilyService {
     if (!this.identity.ready()) { this.show('getready'); if (!(await this.loader.loadFace())) return; if (this.screen() !== 'getready') return; }
     this.show(null); this.router.navigate(['/gender']);
   }
-  /** The cards: the fallback (camera refused, no consent, or the child asked for the list). */
-  toProfiles(): void {
-    this.bus.stopAll(); this.session.end(); this.session.guest.set(false);
-    this.show('profiles'); this.router.navigateByUrl('/blank', { skipLocationChange: true });
-  }
+  /** Camera or microphone refused (Sani 2026-11-22: no cards, face and voice are the only way in): the app's own
+   *  permission screen asks again, and goes on to boy-or-girl once allowed. */
+  toPerm(): void { this.bus.stopAll(); this.show(null); this.router.navigate(['/perm']); }
   /**
    * The face screen has decided (face.ts enter()): a new child's record has just been written, or a known child was
-   * recognised. A new child gets a profile under the same id and chooses their animal; a known one goes on to Laila's
+   * recognised. A new child gets a profile under the same id and meets Laila; a known one goes on to Laila's
    * welcome back, as in the school app.
    */
   faceDone(id: string | null, isNew: boolean): void {
-    if (!id) { this.toProfiles(); return; }
+    if (!id) { this.toCamera(); return; }
     let p = this.profiles().find((x) => x.id === id);
     if (!p) {
       const PERSON = this.identity.people().find((x) => x.id === id);
-      p = { id, name: PERSON?.name || '', g: PERSON?.gender || this.session.g() || 'm', animal: '', at: Date.now() };
+      p = { id, name: PERSON?.name || '', g: PERSON?.gender || this.session.g() || 'm', at: Date.now() };
       this.write([...this.profiles(), p]);
     }
     this.signIn(p); this.current.set(p);
-    this.router.navigateByUrl('/blank', { skipLocationChange: true });
-    if (!p.animal) { this.show('pick'); return; }
+    // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
   }
   /** Manage profiles: the parent's code first (Sani 2026-11-21). */
   manage(): void { this.show('code'); }
 
-  /**
-   * A child picked their card. The first time (no animal yet) they choose their own animal and Laila welcomes them by
-   * name; every time after, straight to Laila's welcome back (Sani 2026-11-18: no name card in between), then home.
-   */
-  choose(p: Profile): void {
-    this.signIn(p); this.current.set(p);
-    if (!p.animal) { this.show('pick'); return; }
-    this.backGo();
-  }
   /** After the welcome by name: Laila's first-day welcome, one screen (Sani 2026-11-21: Meet Laila and the first
    *  welcome merged), then home. */
   firstGo(): void {

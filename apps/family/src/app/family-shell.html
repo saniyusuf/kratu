@@ -9,7 +9,7 @@
   <div class="wc-side">
     <div class="mk"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
     <p class="tag">Learn English with Laila</p>
-    <div class="gowrap"><button class="btn big glowbtn" (click)="fam.start()">▶ Start</button><span class="phand" aria-hidden="true">👆🏾</span></div>
+    <div class="gowrap"><button class="btn big glowbtn" (click)="fam.start()">Start</button><span class="phand" aria-hidden="true" [innerHTML]="hand"></span></div>
   </div>
 </section>
 }
@@ -21,7 +21,7 @@
     <button class="mic-big" [class.busy]="micBusy()" aria-label="Allow the microphone" (click)="askMic()">
       <i class="w1"></i><i class="w2"></i><i class="w3"></i>
       <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg>
-      <span class="hand" aria-hidden="true">👆🏾</span>
+      <span class="hand" aria-hidden="true" [innerHTML]="hand"></span>
     </button>
     <button class="btn glowbtn" (click)="askMic()">Allow the microphone</button>
   </div>
@@ -51,8 +51,8 @@
     <p class="hint">{{ signStep() === 2 ? '6 numbers only you know. You open “Manage profiles” with it.' : 'So we know it is right.' }}</p>
     <div class="pins">@for (i of SIX; track i) {<span class="pin" [class.on]="code().length > i">{{ code().length > i ? '•' : '' }}</span>}</div>
     @if (codeMsg()) {<p class="warn">{{ codeMsg() }}</p>}
-    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">{{ k }}</button>}</div>
-    <button class="btn ghost" (click)="startAgain()">↺ Start again</button>
+    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">@if (k === '⌫') {<span class="bk" [innerHTML]="backspace"></span>} @else {{{ k }}}</button>}</div>
+    <button class="btn ghost" (click)="startAgain()">Start again</button>
   }
   </div>
 </section>
@@ -62,12 +62,11 @@
 @case ('consent') {
 <section class="fs setup consent" [class.up]="upright()">
   <div class="sheet one">
-    <div class="cbig" aria-hidden="true">🙂</div>
     <h1>Children sign in with face and voice</h1>
-    <p class="note">Each child signs up on their own: they tap boy or girl, look at the phone and say “Sunana …” (“my name is …”). After that Kratu knows them when they look and speak, with no card to tap.</p>
+    <p class="note">Each child looks at the phone and says “Sunana …” (“my name is …”). Kratu then knows them.</p>
     <ul class="clist">
-      <li>Kratu keeps a face print and a voice print (lists of numbers made from the camera and the microphone) and a short recording of your child saying their name. The picture itself is never kept.</li>
-      <li>It stays on this phone. You can remove a child, and their prints, any time in Manage profiles.</li>
+      <li>Kratu keeps a face print, a voice print and the child saying their name. Never a photo.</li>
+      <li>It stays on this phone. You can remove a child any time.</li>
     </ul>
     <div class="cbtns"><button class="btn go glowbtn" (click)="fam.consent(true)">I agree</button>
     <button class="btn ghost" (click)="fam.consent(false)">Not now</button></div>
@@ -82,75 +81,22 @@
     <h1>Getting the camera ready</h1>
     <div class="gbar"><i [style.width]="facePct() + '%'"></i></div>
     <p class="hint">{{ faceText() }}</p>
-    @if (loader.faceProg().state === 'fail') {<button class="btn" (click)="fam.toCamera()">↺ Try again</button>}
-    <button class="btn ghost" (click)="fam.toProfiles()">Choose from the list</button>
+    @if (loader.faceProg().state === 'fail') {<button class="btn" (click)="fam.toCamera()">Try again</button>}
+    <button class="btn ghost" (click)="fam.guest()">Guest</button>
   </div>
 </section>
 }
-
-<!-- 6 · the child's first visit: they choose their own animal -->
-@case ('pick') {
-<section class="fs add pick" [class.up]="upright()">
-  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>
-  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="hearAgain()"></button>
-  @if (fam.current(); as c) {
-  <div class="card">
-    <div class="cav" [class.got]="pick()" [class.gimg]="!pick()" [style.background]="pick() ? animal(pick()!).c : null">@if (pick()) {{{ animal(pick()!).e }}} @else {<span class="gem" [innerHTML]="kid(c.g)"></span>}</div>
-    <div class="cname">{{ c.name }}</div>
-  </div>
-  }
-  <div class="grid big">@for (a of ANIMALS; track a.k) {
-    <button class="av" [class.on]="pick() === a.k" [class.taken]="taken().includes(a.k)" [style.background]="a.c" [attr.aria-label]="a.k" (click)="choose(a.k)">{{ a.e }}</button>
-  }</div>
-</section>
-}
-
-<!-- 7 · their card, and Laila welcomes them by name -->
-@case ('yours') {
-<section class="fs yours" [class.up]="upright()">
-  <button class="door" aria-label="Back" [innerHTML]="door" (click)="backToPick()"></button>
-  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="greet()"></button>
-  @if (fam.current(); as c) {
-  <div class="pcard pop">
-    <div class="pav glowing" [style.background]="animal(c.animal).c">{{ animal(c.animal).e }}</div>
-    <div class="pnm">{{ c.name }}</div>
-    <div class="ctag">{{ c.g === 'f' ? 'Girl · Mace' : 'Boy · Namiji' }}</div>
-  </div>
-  }
-  <button class="btn go" (click)="saveAnimal()">▶ Ci gaba</button>
-</section>
-}
-
-<!-- 9 · home: the children's profiles, Netflix style -->
-@case ('profiles') {
-<section class="fs nf" [class.up]="upright()">
-  <div class="mk sm"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
-  <h1>Who's learning today?</h1>
-  <div class="cards">
-    @for (p of fam.profiles(); track p.id) {
-      <div class="ncw"><button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><b>{{ p.name || (p.g === 'f' ? 'Girl' : 'Boy') }}</b></button>
-      @if (fam.clipOf(p.id)) {<button class="say" [attr.aria-label]="'Hear the name'" (click)="hear(p)">🔊</button>}</div>
-    }
-  </div>
-  <div class="cards extra">
-    <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
-    <button class="nc addc" (click)="fam.toCamera()"><span class="nav">📷</span><b>Camera</b></button>
-  </div>
-  <button class="manage" (click)="fam.manage()">✎ Manage profiles</button>
-</section>
-}
-
 
 <!-- Manage profiles: the parent's code first (Sani 2026-11-21) -->
 @case ('code') {
 <section class="fs setup signin" [class.up]="upright()">
-  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>
+  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toCamera()"></button>
   <div class="sheet one">
     <h1>Parent area</h1>
     <p class="hint">Type your 6-number parent code</p>
     <div class="pins">@for (i of SIX; track i) {<span class="pin" [class.on]="code().length > i">{{ code().length > i ? '•' : '' }}</span>}</div>
     @if (codeMsg()) {<p class="warn">{{ codeMsg() }}</p>}
-    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">{{ k }}</button>}</div>
+    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">@if (k === '⌫') {<span class="bk" [innerHTML]="backspace"></span>} @else {{{ k }}}</button>}</div>
 
   </div>
 </section>
@@ -159,17 +105,17 @@
 <!-- 11 · parent area -->
 @case ('parent') {
 <section class="fs parent" [class.up]="upright()">
-  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toProfiles()"></button>
+  <button class="door" aria-label="Back" [innerHTML]="door" (click)="fam.toCamera()"></button>
   <div class="sheet wide">
     <div class="col">
       <h1>Your children</h1>
-      <p class="hint">Type a name if you like; the child’s own recording says it anyway.</p>
+      <p class="hint">Typing a name is optional.</p>
       @for (p of fam.profiles(); track p.id) {
-        <div class="kid"><span class="kav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span>
-          <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}{{ p.animal ? '' : ' · animal not chosen yet' }}</small></span>
-          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">🔊 Name</button>}<button class="link" (click)="removeKid(p)">Remove</button></div>
+        <div class="kid"><span class="kav gimg"><span class="gem" [innerHTML]="kid(p.g)"></span></span>
+          <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}</small></span>
+          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}<button class="link" (click)="removeKid(p)">Remove</button></div>
       } @empty {<p class="hint">No children yet.</p>}
-      <p class="hint">A new child signs up on their own: they look at the phone and say their name.</p>
+      <p class="hint">A new child signs up by looking at the phone.</p>
     </div>
     <div class="col">
       <h1>On this phone</h1>
@@ -183,5 +129,5 @@
 }
 }
 
-<!-- on the school's boy-or-girl and face screens: the cards are one tap away (camera refused, or the child would rather) -->
-@if (!fam.screen() && chipOn()) {<button class="fchip" (click)="fam.toProfiles()">Choose from the list</button>}
+<!-- on the school's boy-or-girl and face screens (Sani 2026-11-22): Guest, one tap, for a quick go; the parent's corner -->
+@if (!fam.screen() && chipOn()) {<div class="fchips"><button class="fchip go" (click)="fam.guest()">Guest</button><button class="fchip" (click)="fam.manage()">Parent</button></div>}

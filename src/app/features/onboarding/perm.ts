@@ -4,6 +4,7 @@ import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
 import { Laila } from '../../shared/laila/laila';
 import { bi, EN_ON, t } from '../../core/lang/t';
+import { FAMILY } from '../../core/edition';
 
 /** Screen 00 · Izini. Camera and microphone permission, the tap that starts everything. */
 @Component({
@@ -18,12 +19,13 @@ import { bi, EN_ON, t } from '../../core/lang/t';
     <button class="permgo" [class.busy]="busy()" [attr.aria-label]="t('Danna kan Laila') + ' · ' + t('Tap Laila')" (click)="ask()"><app-laila [size]="170" /><span class="phand">👆🏾</span><div class="plabel">{{ bi('Danna kan Laila', t('Tap Laila')) }}</div></button>
     <span class="pchip mic" [class.ok]="mic() === 'ok'" [class.no]="mic() === 'no'"><i class="ptile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></i><b>{{ bi('Makirufo', 'Microphone') }}</b><small>{{ bi('Domin Laila ta ji', t('so Laila can hear')) }}</small></span>
   </div>
-  <div class="pnote"><b>{{ t('A danna kan Laila, sannan a danna “Allow”.') }}</b><span>{{ t('Tap Laila') }}, then tap “Allow” when the device asks. No photo or recording is kept, and nothing is sent anywhere.</span></div>
+  <div class="pnote"><b>{{ t('A danna kan Laila, sannan a danna “Allow”.') }}</b><span>{{ t('Tap Laila') }}, then tap “Allow” when the device asks. @if (FAMILY) {No photo is kept: only face and voice prints and the child saying their name, on this phone.} @else {No photo or recording is kept, and nothing is sent anywhere.}</span></div>
   <div class="pstatus" aria-live="polite">{{ status() }}</div>
 </div>`,
 })
 export class PermScreen {
   readonly t = t;
+  readonly FAMILY = FAMILY;
   readonly bi = bi;
   readonly enOn = EN_ON;
   private readonly bus = inject(AudioBus);

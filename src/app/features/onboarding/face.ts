@@ -35,6 +35,8 @@ function spoke(pcm: Float32Array): boolean {
   let loud = 0; for (let i = 0; i + 320 <= pcm.length; i += 320) { let e = 0; for (let j = i; j < i + 320; j++) e += pcm[j] * pcm[j]; if (Math.sqrt(e / 320) > 0.015) loud++; }
   return loud >= 20;
 }
+/** The family build shows no emoji (Sani 2026-11-22): the hint's leading picture is dropped there. */
+const E = (s: string): string => (FAMILY ? '' : s);
 const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /**
@@ -89,7 +91,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
     <div class="camnote" [hidden]="!note()">{{ note() }}</div>
     <div class="capdone" [hidden]="!doneText()"><span class="donetext">{{ doneText() }}</span></div>
     <div class="capmiss" [hidden]="!missText()">{{ missText() }}</div>
-    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">↺ {{ bi('Sake gwada', 'try again') }}</button>
+    <button class="again" type="button" [hidden]="!againOn()" (click)="again()">{{ E('↺ ') }}{{ bi('Sake gwada', 'try again') }}</button>
   </div>
 
   <canvas #confetti class="confetti" [hidden]="!confettiOn()"></canvas>
@@ -108,6 +110,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   private readonly confettiRef = viewChild<ElementRef<HTMLCanvasElement>>('confetti');
 
   readonly t = t;
+  readonly E = E;
   readonly bi = bi;
   readonly exG = signal<'m' | 'f'>('m');
   readonly door = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_SVG);
@@ -191,21 +194,24 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.bus.stopAll(); this.cue.set(false); this.reset(); this.capturing.set(true);
     await afterPaint();
     const md = navigator.mediaDevices;
-    if (!md?.getUserMedia) { this.note.set('No camera in this viewer — showing a photo instead'); this.runRing(); return; }
+    if (!md?.getUserMedia) { if (FAMILY) { this.leaveForPerm(); return; } this.note.set('No camera in this viewer — showing a photo instead'); this.runRing(); return; }
     let started = false; const begin = () => { if (started) return; started = true; this.runRing(); };
-    const guard = setTimeout(() => { if (!started) { this.note.set('Waiting for camera permission… showing a photo for now'); begin(); } }, 2500);
+    const guard = setTimeout(() => { if (!started && !FAMILY) { this.note.set('Waiting for camera permission… showing a photo for now'); begin(); } }, 2500);
     try {
       const s = await md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 640 } }, audio: true });
       clearTimeout(guard); this.stream = s; const live = this.liveRef()?.nativeElement;
       if (live) { live.srcObject = s; live.muted = true; live.volume = 0; this.liveOn.set(true); }
+      if (live && FAMILY) { const AR = () => { const C = live.closest('.cam') as HTMLElement | null; if (C && live.videoWidth) C.style.setProperty('--ar', String(live.videoWidth / live.videoHeight)); }; live.addEventListener('loadedmetadata', AR); live.addEventListener('resize', AR); }   // the family camera box takes the picture's own shape, and follows a turn of the phone
       this.note.set('');
       this.bus.micReady().then(() => { if (this.stream === s) this.startRec(s); });
       const go = () => { live?.play().catch(() => undefined); begin(); };
       if (live) live.addEventListener('loadedmetadata', () => console.log('[kratu] camera', live.videoWidth + 'x' + live.videoHeight, 'box', Math.round(live.getBoundingClientRect().width) + 'x' + Math.round(live.getBoundingClientRect().height)), { once: true });
       if (live && live.readyState >= 2) go(); else { live?.addEventListener('loadedmetadata', go, { once: true }); setTimeout(go, 1200); }
-    } catch (err: any) { clearTimeout(guard); this.note.set('Camera blocked (' + (err?.name || 'error') + ') — showing a photo instead'); begin(); }
+    } catch (err: any) { clearTimeout(guard); if (FAMILY) { console.warn('[kratu] camera refused', err?.name, err?.message); this.leaveForPerm(); return; } this.note.set('Camera blocked (' + (err?.name || 'error') + ') — showing a photo instead'); begin(); }
   }
 
+  /** The family build (Sani 2026-11-22): no photo fallback and no cards; the permission screen asks again. */
+  private leaveForPerm(): void { this.capturing.set(false); this.teardown(); this.dropModal(); this.fam.toPerm(); }
   private reset(): void {
     this.faceVecs = []; this.recBlob = null; this.bestSc = 0; this.bestStill = null; this.transcript = ''; this.still.set(null);
     this.heardText.set(''); this.note.set(''); this.doneText.set(''); this.missText.set(''); this.againOn.set(false); this.gate.set(null); this.confettiOn.set(false);
@@ -258,7 +264,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       this.follow(r.faces === 1 ? r.boxVideo : null, live);
       if (r.faces === 1) {
         if (r.emb) { this.faceVecs.push(r.emb); if ((r.score || 0) > this.bestSc) { this.bestStill = stillFrame(live); this.bestSc = r.score || 0; } this.tryEarly(); }
-        else if (r.quality && !r.quality.ok) { this.aloneText.set('🎯 ' + this.hintFor(r.quality.reasons)); this.aloneSoft.set(true); }
+        else if (r.quality && !r.quality.ok) { this.aloneText.set(E('🎯 ') + this.hintFor(r.quality.reasons)); this.aloneSoft.set(true); }
         if (r.quality) this.qualityWatch(r.quality);
       }
     });
@@ -322,7 +328,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     }
     else if (n === 0) { this.cnt.none++; this.cnt.many = 0; this.cnt.one = 0; if (this.cnt.none >= 4) this.pauseCapture('noface', 's_look_'); }
     else { this.cnt.one++; this.cnt.many = 0; this.cnt.none = 0; this.crowdSince = 0; const need = this.paused() === 'alone' ? 5 : 2; const p = this.paused(); if (this.cnt.one >= need && p && !['small', 'blurry', 'dark', 'turned'].includes(p)) this.resumeCapture(); }
-    if (n === 1) { this.aloneText.set(''); } else { this.aloneSoft.set(n === 0); this.aloneText.set(many ? '👥 ' + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame' : '🙈 ' + t('Duba kyamara') + ' · look at the camera'); }
+    if (n === 1) { this.aloneText.set(''); } else { this.aloneSoft.set(n === 0); this.aloneText.set(many ? E('👥 ') + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame' : E('🙈 ') + t('Duba kyamara') + ' · look at the camera'); }
   }
   private discardCapture(): void { this.faceVecs = []; this.transcript = ''; this.bestSc = 0; this.bestStill = null; }
   private showPict(kind: string): void { const pr = PICT[kind] || PICT['noface']; this.pictA.set(pr[0]); this.pictB.set(pr[1]); this.pict.set(kind); }
@@ -370,7 +376,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   }
   private crowdAbort(force = false): void {
     if (this.ended && !force) return; this.crowdSince = 0; this.ended = true; this.capEnded = true; this.stopAllCapture(); this.discardCapture();
-    this.missText.set('👥 ' + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame'); this.aloneText.set(''); this.lastManyAt = 0;
+    this.missText.set(E('👥 ') + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame'); this.aloneText.set(''); this.lastManyAt = 0;
     this.bus.play(this.bus.gk('s_alone2')).then(() => this.showGate('retry'));
   }
 
@@ -414,7 +420,7 @@ export class FaceScreen implements OnInit, OnDestroy {
         this.doneText.set(t('Madalla! Sannu, ') + heardName + t('! Barka da zuwa!')); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own?.url); this.confetti(); this.enter(); return;
       }
-      if (FAMILY && !heardName && this.faceVecs.length && !voiceVec) { this.missText.set('🤔 ' + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true); return; }   // family sign-up needs the voice as well as the face (Sani 2026-11-22)
+      if (FAMILY && !heardName && this.faceVecs.length && !voiceVec) { this.missText.set(E('🤔 ') + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true); return; }   // family sign-up needs the voice as well as the face (Sani 2026-11-22)
       if (!heardName && own?.url && this.faceVecs.length) {
         // No words came back (an iPad, whose recogniser is Siri and has no Hausa; Chrome with no internet) but the child was
         // seen and their own "Sunana …" was recorded: they are enrolled anyway. An unknown name is never a blocker (Sani
@@ -424,14 +430,14 @@ export class FaceScreen implements OnInit, OnDestroy {
         this.doneText.set(t('Madalla! Barka da zuwa!')); this.still.set(this.bestStill);
         await this.greet({ id: 'new', ...this.pending } as Person, false, own.url); this.confetti(); this.enter(); return;
       }
-      if (heardName) { this.missText.set('🙈 ' + (this.session.g() === 'f' ? t('Ba na ganin ki sosai') : t('Ba na ganin ka sosai'))); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
+      if (heardName) { this.missText.set(E('🙈 ') + (this.session.g() === 'f' ? t('Ba na ganin ki sosai') : t('Ba na ganin ka sosai'))); this.retryTalk('s_retry_face'); this.againOn.set(true); return; }
     } else if (heardName || own?.url) {
       // no face engine on this device: the child's own recording (or a name) opens the session, nothing is stored in the
       // identity store. With the online recogniser gone (Sani 2026-11-09) there is never a written name here, so the
       // recording alone must be enough, and Laila says just "Barka da zuwa".
       this.welcome({ id: 'tmp', name: heardName || '', key: key || undefined, faceVecs: [], voiceVec: null, clip: own?.url } as Person, false, own?.url); return;
     }
-    this.missText.set('🤔 ' + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true);
+    this.missText.set(E('🤔 ') + (this.session.g() === 'f' ? t('Ban ji sunan ki sosai ba') : t('Ban ji sunan ka sosai ba'))); this.retryTalk('s_retry_name'); this.againOn.set(true);
   }
   private async welcome(p: Person, back: boolean, ownUrl?: string): Promise<void> {
     this.doneText.set(t('Sannu') + (p.name ? ', ' + p.name : '') + '! ' + (back ? t('Barka da dawowa!') : t('Barka da zuwa!'))); this.still.set(this.bestStill);

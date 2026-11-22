@@ -37,7 +37,7 @@ export class Leave {
     this.bus.stopAll(); this.open.set(false);
     const guest = this.session.guest(); this.session.end();
     if (reset || guest) { try { sessionStorage.clear(); } catch { /* ignore */ } }   // a guest leaves nothing behind
-    if (FAMILY) { this.fam.toProfiles(); return; }   // the family build goes back to the children's profiles
+    if (FAMILY) { this.fam.toCamera(); return; }   // the family build goes back to the sign-in camera (Sani 2026-11-22: no cards)
     this.router.navigate(['/gender']);
   }
 }

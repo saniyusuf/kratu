@@ -110,7 +110,7 @@ export class WelcomeScreen implements OnInit, OnDestroy {
   readonly FAMILY = FAMILY;
   private readonly injector = inject(Injector);
   /** Family build (Sani 2026-11-22): the door goes back to "Who's learning today?" */
-  back(): void { this.injector.get(FamilyService).toProfiles(); }
+  back(): void { this.injector.get(FamilyService).toCamera(); }
   readonly sub = sub;
   readonly session = inject(SessionService);
   private readonly bus = inject(AudioBus);

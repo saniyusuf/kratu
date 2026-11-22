@@ -3,22 +3,19 @@ import { Component, ElementRef, HostListener, OnDestroy, computed, effect, injec
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioBus } from '@kratu/app/core/audio/audio-bus.service';
 import { ClipsService } from '@kratu/app/core/clips/clips.service';
-import { WordsService } from '@kratu/app/core/clips/words.service';
-import { ANIMALS, FamilyService, Profile, animal } from '@kratu/app/core/family/family.service';
-import { snapName } from '@kratu/app/core/identity/name-clip';
+import { FamilyService, Profile } from '@kratu/app/core/family/family.service';
 import { Gender, SessionService } from '@kratu/app/core/state/session.service';
 import { Laila } from '@kratu/app/shared/laila/laila';
-import { DOOR_SVG, EAR_SVG } from '@kratu/app/shared/svg';
+import { BACKSPACE_SVG, CAMERA_SVG, DOOR_SVG, EAR_SVG, HAND_SVG } from '@kratu/app/shared/svg';
 import { BOY_SVG, GIRL_SVG } from './kids';
 import { LoaderService } from '@kratu/app/core/loader/loader.service';
 import { NavigationEnd, Router } from '@angular/router';
 
 /**
- * The family build's own screens. The flow (Sani 2026-11-21, from his notes on the steps page): Kratu opening from a
- * link ("learn English with Laila"), the microphone, the parent registering (full name, email, phone and a 6-digit code they set, typed twice; later the code will be sent), the
- * parent enrolling a child (name and boy or girl, the card above a preview), a thank-you, then the children's profiles.
- * A child's first tap on their card: they choose their own animal, Laila welcomes them by name, then her first-day
- * welcome. Every tap after: straight to the welcome back. Manage profiles asks for the parent's code.
+ * The family build's own screens: Kratu opening from a link, the microphone, the parent registering (full name, email,
+ * phone and a 6-digit code typed twice), the parent's consent to face and voice, then the cards (the fallback) and the
+ * parent area. Children sign themselves up with face and voice on the school's own boy-or-girl and face screens
+ * (Sani 2026-11-22: no manual enrolment, no animal step, no emoji). Manage profiles asks for the parent's code.
  * Unlike the lessons they follow the phone: upright and sideways each have their own layout. Written words lead with
  * English for the parent; Laila's spoken lines stay Hausa. f_start is a Claude draft of Sani's English wording (22 Nov);
  * f_mic, still unwritten, is not guessed: Laila is silent there until he writes it.
@@ -33,7 +30,6 @@ import { NavigationEnd, Router } from '@angular/router';
 export class FamilyShell implements OnDestroy {
   readonly fam = inject(FamilyService);
   private readonly bus = inject(AudioBus);
-  private readonly words = inject(WordsService);
   private readonly clips = inject(ClipsService);
   private readonly session = inject(SessionService);
   readonly loader = inject(LoaderService);
@@ -46,12 +42,14 @@ export class FamilyShell implements OnDestroy {
   private readonly san = inject(DomSanitizer);
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
+  /** The app's own drawn hand, camera and delete key (Sani 2026-11-22: no emoji in the family screens). */
+  readonly hand = this.san.bypassSecurityTrustHtml(HAND_SVG);
+  readonly camera = this.san.bypassSecurityTrustHtml(CAMERA_SVG);
+  readonly backspace = this.san.bypassSecurityTrustHtml(BACKSPACE_SVG);
   readonly ear = this.san.bypassSecurityTrustHtml(EAR_SVG);
   private readonly kids = { m: this.san.bypassSecurityTrustHtml(BOY_SVG), f: this.san.bypassSecurityTrustHtml(GIRL_SVG) };
   /** The app's own Hausa boy or girl (kids.ts), never a stock emoji (Sani 2026-11-21). */
   kid(g: Gender | null | undefined) { return this.kids[g === 'f' ? 'f' : 'm']; }
-  readonly ANIMALS = ANIMALS;
-  readonly animal = animal;
 
   // sizes follow the phone, whichever way round it is
   readonly vw = signal(innerWidth);
@@ -61,9 +59,6 @@ export class FamilyShell implements OnDestroy {
   readonly lailaSmall = computed(() => Math.round(Math.min(this.vw(), this.vh()) * (this.upright() ? 0.2 : 0.17)));
   @HostListener('window:resize') resized(): void { this.vw.set(innerWidth); this.vh.set(innerHeight); }
 
-  // ---- the child's first visit: their animal
-  readonly pick = signal<string | null>(null);
-  readonly taken = computed(() => this.fam.taken().filter((k) => k !== this.fam.current()?.animal));
 
   // ---- the parent's sign-in (email, phone, a code typed twice) and the code before Manage profiles
   /** Sign-in is two screens (Sani 2026-11-21): the parent's details, then the code on its own. */
@@ -95,7 +90,6 @@ export class FamilyShell implements OnDestroy {
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.micMsg.set(''); this.code.set(''); this.codeMsg.set(''); this.busy.set(false);
       if (s === 'signin') { this.fullName.set(''); this.email.set(''); this.phone.set(''); this.signStep.set(1); }
-      if (s === 'pick') this.pick.set(null);
       untracked(() => this.opening(s));
     });
   }
@@ -107,19 +101,6 @@ export class FamilyShell implements OnDestroy {
   private opening(s: string | null): void {
     if (s === 'welcome') this.arriveStart();
     else if (s === 'mic') this.bus.play('f_mic');
-    else if (s === 'yours') this.timer = setTimeout(() => this.greet(), 450);
-  }
-
-  /** "Sannu, Musa! Barka da zuwa!" (Sani 2026-11-21): the name in Laila's voice only when the names bank has it exactly
-   *  (snapName: one name must never be heard and another said); otherwise "Sannu! Barka da zuwa!" with no name. */
-  async greet(): Promise<void> {
-    const c = this.fam.current(); if (!c) return;
-    const bank = (window as any).KRATU_BANK as Record<string, string> | null;
-    const key = c.name && c.name.indexOf(' ') < 0 ? snapName(c.name, bank) : null;
-    if (!(await this.bus.play('s_sannu'))) return;
-    if (key && bank) { if (!(await this.bus.playRaw(bank[key], { ha: c.name, en: c.name }))) return; }
-    else { const CLIP = this.fam.clipOf(c.id); if (CLIP && !(await this.bus.playRaw(CLIP))) return; }   // no bank name: the child's own "Sunana …" clip, cut to the name
-    await this.bus.play('s_welcome');
   }
 
   // ---- welcome and microphone
@@ -165,22 +146,6 @@ export class FamilyShell implements OnDestroy {
     this.code.set(''); this.codeMsg.set('That code is not right. Try again.');
   }
 
-  // ---- the child's animal
-  choose(k: string): void {
-    const c = this.fam.current();
-    if (!c || this.taken().includes(k)) return;
-    this.pick.set(k);
-    const w = this.words.find(k); if (w?.ha_clip) this.bus.playRaw(w.ha_clip);   // Laila says the animal's name, the clip the animals lesson uses
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = setTimeout(() => { this.fam.current.set({ ...c, animal: k }); this.fam.show('yours'); }, 1100);
-  }
-  /** "Ci gaba": only now is the animal kept, then Laila's first-day welcome. */
-  saveAnimal(): void {
-    const c = this.fam.current(); if (!c) return;
-    const p = this.fam.setAnimal(c.id, c.animal) ?? c; this.fam.current.set(p); this.fam.firstGo();
-  }
-  backToPick(): void { const c = this.fam.current(); if (c) this.fam.current.set({ ...c, animal: '' }); this.fam.show('pick'); }
-
   /** The welcome screen's line, on its ear. */
   sayStart(): void { this.bus.stopAll(); this.bus.play('f_start'); }
   /**
@@ -196,10 +161,6 @@ export class FamilyShell implements OnDestroy {
     await PAUSE(400);
     while (STILL_HERE() && this.bus.speaking() && Date.now() - T0 < 30000) await PAUSE(200);
     if (STILL_HERE()) this.bus.play('f_start');
-  }
-  hearAgain(): void {
-    const k = this.pick(); if (!k) return;
-    const w = this.words.find(k); if (w?.ha_clip) this.bus.playRaw(w.ha_clip);
   }
 
   // ---- parent area

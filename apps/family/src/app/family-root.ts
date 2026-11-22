@@ -22,6 +22,7 @@ export class FamilyRoot {
   static readonly GAMES = /^\/(wasanni\/[^/?#]+|fashe|nemo|haruffa\/gwada)(?:[/?#]|$)/;
   constructor() {
     const set = (url: string) => document.documentElement.classList.toggle('fam-up', !FamilyRoot.GAMES.test(url));
+    document.documentElement.classList.add('fam-build');   // the family build's own look on shared screens (app.css), e.g. no emoji, the camera's border
     const router = inject(Router);
     set(location.pathname);
     // before the new screen is drawn (ResolveEnd), so its fit is measured the right way round

@@ -77,6 +77,7 @@ export class Spotter {
     else if (where === 'below') { h.textContent = '👆🏾'; y = r.bottom - 30 * z; }
     else if (where === 'right') { h.textContent = '👈🏾'; x = r.right + 6 * z; y = r.top + r.height / 2 - 22 * z; }
     else { h.textContent = '👉🏾'; x = r.left - 52 * z; y = r.top + r.height / 2 - 22 * z; }
+    h.classList.add('dir-' + (where === 'above' ? 'down' : where === 'below' ? 'up' : where === 'right' ? 'left' : 'right'));   // the family build draws its own hand and turns it by this
     h.style.left = x + 'px'; h.style.top = y + 'px'; document.body.appendChild(h); this.hand = h;
   }
 }
