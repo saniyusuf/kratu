@@ -9,7 +9,8 @@ export interface Profile { id: string; name: string; g: Gender; animal: string; 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
  *  email or phone instead. Only the code's hash is kept. */
-export interface Account { email: string; phone: string; code: string; at: number; }
+/** The parent's account, on this phone only. `name` came on 22 Nov (Sani: full name first), so older saved accounts have none. */
+export interface Account { name?: string; email: string; phone: string; code: string; at: number; }
 
 /**
  * The animals a child can choose (the design page of 17 Nov, with Sani's keeps): each is already a word in the lessons
@@ -62,8 +63,8 @@ export class FamilyService {
   private readAccount(): Account | null { try { return JSON.parse(localStorage.getItem(K_ACCOUNT) || 'null'); } catch { return null; } }
   private saveAccount(a: Account): void { this.account.set(a); if (this.trying) return; try { localStorage.setItem(K_ACCOUNT, JSON.stringify(a)); } catch { /* private mode */ } }
 
-  async setAccount(email: string, phone: string, code: string): Promise<void> {
-    this.saveAccount({ email: email.trim(), phone: phone.trim(), code: await this.hash(code), at: Date.now() });
+  async setAccount(name: string, email: string, phone: string, code: string): Promise<void> {
+    this.saveAccount({ name: name.trim().replace(/\s+/g, ' '), email: email.trim(), phone: phone.trim(), code: await this.hash(code), at: Date.now() });
   }
   async checkCode(code: string): Promise<boolean> {
     if (this.trying) return /^\d{6}$/.test(code);
@@ -116,7 +117,7 @@ export class FamilyService {
   private async tryStep(step: string): Promise<void> {
     this.profiles.set(FamilyService.SAMPLES);
     const kid = step.endsWith('_f') ? FamilyService.SAMPLES[1] : FamilyService.SAMPLES[0];
-    this.account.set({ phone: '0803 000 0000', email: 'parent@example.com', code: '', at: 0 });
+    this.account.set({ name: 'Parent Example', phone: '0803 000 0000', email: 'parent@example.com', code: '', at: 0 });
     const id = step.replace(/_[mf]$/, '');
     if (id === 'welcome') { this.show('welcome'); return; }
     if (id === 'mic') { this.show('mic'); return; }

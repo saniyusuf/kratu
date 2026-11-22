@@ -325,3 +325,11 @@ input,.field{min-height:48px;box-sizing:border-box}
 
 /* Register: Continue centred, like Save (Sani 22 Nov) */
 .signin .sheet > .btn{display:block;margin-left:auto;margin-right:auto}
+
+/* Register on a short sideways screen (a phone held sideways, 22 Nov): each label beside its field, so the full name,
+   email, phone and Continue fit with no scroll; text and touch targets keep their sizes */
+@media (max-height: 460px) and (orientation: landscape) {
+  .signin .sheet.one{gap:10px;padding-top:14px;padding-bottom:14px}
+  .signin .sheet.one .fl{display:grid;grid-template-columns:8.2em 1fr;align-items:center;gap:12px;white-space:nowrap}
+  .signin .sheet.one .fl .field{min-width:0}
+}

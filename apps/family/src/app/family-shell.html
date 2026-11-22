@@ -41,9 +41,10 @@
   @if (signStep() === 1) {
     <h1>Register</h1>
     <p class="hint">Parent sign-up</p>
+    <label class="fl">Full name<input class="field" type="text" autocomplete="name" autocapitalize="words" placeholder="Amina Bello" [value]="fullName()" (input)="fullName.set($any($event.target).value)"></label>
     <label class="fl">Email<input class="field" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" [value]="email()" (input)="email.set($any($event.target).value)"></label>
     <label class="fl">Phone number<input class="field" type="tel" inputmode="tel" autocomplete="tel" placeholder="0803 123 4567" [value]="phone()" (input)="phone.set($any($event.target).value)" (keyup.enter)="toCode()"></label>
-    <button class="btn" [disabled]="!emailOk() || !phoneOk()" (click)="toCode()">Continue</button>
+    <button class="btn" [disabled]="!nameOk() || !emailOk() || !phoneOk()" (click)="toCode()">Continue</button>
   } @else {
     <!-- the code on a keypad (Sani 2026-11-21): make it, then type it again on its own screen; "Start again" on both -->
     <h1>{{ signStep() === 2 ? 'Make a parent code' : 'Type the code again' }}</h1>

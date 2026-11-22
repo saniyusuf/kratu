@@ -13,7 +13,7 @@ import { BOY_SVG, GIRL_SVG } from './kids';
 
 /**
  * The family build's own screens. The flow (Sani 2026-11-21, from his notes on the steps page): Kratu opening from a
- * link ("learn English with Laila"), the microphone, the parent signing in (email, phone and a 6-digit code they set, typed twice; later the code will be sent), the
+ * link ("learn English with Laila"), the microphone, the parent registering (full name, email, phone and a 6-digit code they set, typed twice; later the code will be sent), the
  * parent enrolling a child (name and boy or girl, the card above a preview), a thank-you, then the children's profiles.
  * A child's first tap on their card: they choose their own animal, Laila welcomes them by name, then her first-day
  * welcome. Every tap after: straight to the welcome back. Manage profiles asks for the parent's code.
@@ -66,11 +66,14 @@ export class FamilyShell implements OnDestroy {
   readonly KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'];
   /** The first typing of the new code, held until the second matches. */
   private first = '';
+  readonly fullName = signal('');
   readonly email = signal('');
   readonly phone = signal('');
   readonly code = signal('');
   readonly busy = signal(false);
   readonly codeMsg = signal('');
+  /** A full name: at least two words (Sani 2026-11-22: "name too, full name"). */
+  readonly nameOk = computed(() => this.fullName().trim().split(/\s+/).filter(Boolean).length >= 2);
   readonly emailOk = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email().trim()));
   readonly phoneOk = computed(() => this.phone().replace(/\D/g, '').length >= 10);
 
@@ -84,7 +87,7 @@ export class FamilyShell implements OnDestroy {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.micMsg.set(''); this.code.set(''); this.codeMsg.set(''); this.busy.set(false);
-      if (s === 'signin') { this.email.set(''); this.phone.set(''); this.signStep.set(1); }
+      if (s === 'signin') { this.fullName.set(''); this.email.set(''); this.phone.set(''); this.signStep.set(1); }
       if (s === 'add') { this.g.set(null); this.name.set(''); }
       if (s === 'pick') this.pick.set(null);
       untracked(() => this.opening(s));
@@ -129,7 +132,7 @@ export class FamilyShell implements OnDestroy {
   }
 
   // ---- the parent's code, on a keypad (Sani 2026-11-21)
-  toCode(): void { if (this.emailOk() && this.phoneOk()) this.startAgain(); }
+  toCode(): void { if (this.nameOk() && this.emailOk() && this.phoneOk()) this.startAgain(); }
   /** Back to "make a parent code", everything typed so far forgotten. */
   startAgain(): void { this.first = ''; this.code.set(''); this.codeMsg.set(''); this.signStep.set(2); }
   key(k: string): void {
@@ -145,7 +148,7 @@ export class FamilyShell implements OnDestroy {
   }
   async signUp(): Promise<void> {
     if (this.code() !== this.first) { this.code.set(''); this.codeMsg.set('The two codes were not the same. Press “Start again” and make your code again.'); return; }
-    this.busy.set(true); await this.fam.setAccount(this.email(), this.phone(), this.code()); this.busy.set(false);
+    this.busy.set(true); await this.fam.setAccount(this.fullName(), this.email(), this.phone(), this.code()); this.busy.set(false);
     this.fam.registered();
   }
   async openParent(): Promise<void> {
