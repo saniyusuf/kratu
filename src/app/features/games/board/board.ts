@@ -81,7 +81,7 @@ interface Game { id: string; name: string; line: string; en: string; pic: string
   @for (g of games; track g.id; let i = $index) {<button class="wditem" [class.on]="g.id === sel().id" [attr.aria-label]="g.name" (click)="dialTo(i)"><img [src]="g.pic" alt=""><b>{{ g.name }}</b></button>}
   <div class="wdpad"></div>
 </div>
-<div class="lrow"><span class="wlaila" [class.talk]="talking()"><app-laila [size]="120" /></span></div>
+<div class="lrow"><button class="wlaila" [class.talk]="talking()" aria-label="Laila" (click)="play()"><app-laila [size]="120" /></button></div>
 <button class="wbook" aria-label="Littafi" (click)="home()"><span class="wbookic" [innerHTML]="bookSvg"></span></button>`,
 })
 export class GamesBoard implements AfterViewInit, OnDestroy {

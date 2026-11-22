@@ -34,7 +34,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 
 /* 1 · welcome */
 .wc .sun{position:absolute;width:calc(120 * var(--u));height:calc(120 * var(--u));border-radius:50%;left:calc(-30 * var(--u));top:calc(-40 * var(--u));background:radial-gradient(circle,rgba(255,206,120,.45),transparent 62%);pointer-events:none}
-.wc-l{position:relative;line-height:0}
+.wc-l{position:relative;line-height:0;border:0;background:none;padding:0;cursor:pointer}
 .wc-side{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:calc(2.6 * var(--u));max-width:60ch}
 .wc.up .wc-side{align-items:center;text-align:center}
 .wc.up .sun{left:calc(-10 * var(--u));top:calc(-60 * var(--u))}
@@ -279,3 +279,4 @@ input,.field{min-height:48px;box-sizing:border-box}
   .nf .cards.extra .nc b{font-size:15px}
   .nf .manage{padding:2px 8px}
 }
+.nf,.nf.up{padding-bottom:calc(6 * var(--u))}   /* no Laila under the profiles any more (Sani 2026-11-22) */

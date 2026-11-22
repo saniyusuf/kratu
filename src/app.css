@@ -766,7 +766,7 @@ html[lang=ig] #app .s.fashe .stage{background:linear-gradient(180deg,#C08868,#A9
 #app .s.wasanni .wcard b{position:absolute;left:0;right:0;bottom:0;padding:14px 8px 5px;font:800 15px/1.1 var(--disp,'Baloo 2'),sans-serif;color:#fff;background:linear-gradient(transparent,rgba(20,14,6,.8))}
 #app .s.wasanni .wcard.on{transform:translateY(-6px);box-shadow:0 0 0 4px #FFD24D,0 8px 16px rgba(255,190,60,.55)}
 #app .s.wasanni .wdial{display:none}
-#app .s.wasanni .wlaila{display:inline-block;line-height:0}
+#app .s.wasanni .wlaila{display:inline-block;line-height:0;border:0;background:none;padding:0;cursor:pointer}
 #app .s.wasanni .wlaila.talk .lm{display:inline-block;animation:wtalk .5s ease-in-out infinite alternate;filter:drop-shadow(0 0 18px rgba(255,201,60,.95))}
 @keyframes wtalk{to{transform:scale(1.05)}}
 #app .s.wasanni>.wbook{position:absolute;right:0;bottom:0;width:84px;height:84px;border:0;padding:0;border-radius:100% 0 18px 0;background:#8E5BB5;cursor:pointer;z-index:10;-webkit-tap-highlight-color:transparent}

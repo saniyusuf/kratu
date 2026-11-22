@@ -4,7 +4,7 @@
 @case ('welcome') {
 <section class="fs wc" [class.up]="upright()">
   <div class="sun"></div>
-  <div class="wc-l bob"><app-laila [size]="lailaBig()" /></div>
+  <button class="wc-l bob" aria-label="Start" (click)="fam.start()"><app-laila [size]="lailaBig()" /></button>
   <div class="wc-side">
     <div class="mk"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
     <p class="tag">Learn English with Laila</p>
@@ -132,7 +132,6 @@
   </div>
   }
   <button class="btn go" (click)="saveAnimal()">▶ Ci gaba</button>
-  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
 </section>
 }
 
@@ -151,7 +150,6 @@
     <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
   </div>
   <button class="manage" (click)="fam.manage()">✎ Manage profiles</button>
-  <div class="lai glow"><app-laila [size]="lailaSmall()" /></div>
 </section>
 }
 
