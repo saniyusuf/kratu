@@ -309,3 +309,13 @@ input,.field{min-height:48px;box-sizing:border-box}
 .ear ::ng-deep svg{position:absolute;right:12px;top:10px;width:34px;height:40px}
 .fs.up .ear{right:12px;top:calc(12px + env(safe-area-inset-top,0px));width:44px;height:44px;border-radius:50%;box-shadow:0 3px 8px rgba(0,0,0,.2)}
 .fs.up .ear ::ng-deep svg{right:9px;top:7px;width:26px;height:30px}
+/* Sani 2026-11-22: the questions start level with the top of the preview; Save is a normal button, bottom right,
+   level with the bottom of the preview */
+.add:not(.up){grid-template-rows:auto auto 1fr;align-items:start}
+.add:not(.up) .card.preview{align-self:stretch}
+.add:not(.up) .parts{align-self:start}
+.add:not(.up) .btn.go{align-self:end;justify-self:end;width:auto;min-width:160px;padding-left:calc(6 * var(--u));padding-right:calc(6 * var(--u))}
+.add:not(.up){grid-template-rows:auto auto auto;align-content:center}
+.add:not(.up) .card.preview{align-self:start}
+.add:not(.up) .btn.go{align-self:start}
+.add:not(.up) .btn.go{font-size:20px;padding:10px 34px;min-height:48px;min-width:140px;margin-top:0}
