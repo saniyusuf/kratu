@@ -1,0 +1,38 @@
+{
+ "note": "The family build's face set (Sani 2026-11-22): YuNet 2023mar (MIT) + SFace 2021dec (Apache 2.0), both OpenCV Zoo, and CAM++ (Apache 2.0, 3D-Speaker) in half precision. The school build keeps public/models/manifest.json.",
+ "kinds": {
+  "det": "yunet",
+  "rec": "sface",
+  "recName": "sface_2021dec_int8",
+  "detThr": 0.6
+ },
+ "cfg": {
+  "modelVer": "v4-yunet-sface_int8-campplus_fp16",
+  "faceAccept": 0.45,
+  "faceMaybe": 0.38,
+  "margin": 0.07,
+  "gapClose": 0.066,
+  "gapWide": 0.21
+ },
+ "det": {
+  "path": "models/family/yunet_2023mar.onnx",
+  "size": 232589
+ },
+ "spk": {
+  "path": "models/family/campplus_sv_voxceleb_fp16.onnx.gz",
+  "size": 15323270,
+  "gzsize": 13173210,
+  "note": "3dspeaker_speech_campplus_sv_en_voxceleb_16k in fp16: embeddings within cos 0.99995 of fp32 on 60 clips"
+ },
+ "rec": {
+  "path": "models/family/sface_2021dec_int8.onnx.gz",
+  "size": 9896933,
+  "gzsize": 7081795
+ },
+ "wasm": {
+  "path": "models/ort/ort-wasm-simd-threaded.wasm.gz",
+  "size": 14239897,
+  "gzsize": 3652793
+ },
+ "cfg_note": "SFace scores sit on another scale than the school's R50 (impostors around 0.08, not 0): faceAccept 0.45 / margin 0.07 from a sweep on LFW (2 to 150 enrolled: no wrong child, no outsider let in up to 5 children, 97% signed in, 3% sent to the cards); faceMaybe 0.38 only counts with the voice; the voice-weight gaps scaled by the genuine-impostor spread (0.555 vs 0.668). Voice thresholds unchanged."
+}

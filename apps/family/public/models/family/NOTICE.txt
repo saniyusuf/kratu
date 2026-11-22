@@ -1,0 +1,6 @@
+Face and voice models of the Kratu family build (all allow commercial use):
+- yunet_2023mar.onnx: YuNet face detector, OpenCV Zoo, MIT licence (LICENSE-yunet.txt).
+- sface_2021dec_int8.onnx.gz: SFace face recogniser, OpenCV Zoo, Apache 2.0 (LICENSE-sface.txt). Its training data
+  (per the SFace paper: CASIA-WebFace, VGGFace2, MS1M) is not documented by the model's publishers.
+- campplus_sv_voxceleb_fp16.onnx.gz: CAM++ speaker model, 3D-Speaker (Alibaba DAMO), Apache 2.0, converted to half
+  precision; trained on VoxCeleb.

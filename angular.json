@@ -320,13 +320,7 @@
               {
                 "glob": "**/*",
                 "input": "public",
-                "ignore": [
-                  "kratu-id.js",
-                  "kratu-id.worker.js",
-                  "models/**",
-                  "names_bank_expanded.json",
-                  "manifest.webmanifest"
-                ]
+                "ignore": ["models/insightface/**", "models/speaker/**", "models/manifest.json", "names_bank_expanded.json", "manifest.webmanifest"]
               },
               {
                 "glob": "**/*",
