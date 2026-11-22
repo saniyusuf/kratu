@@ -182,5 +182,8 @@ export class FamilyShell implements OnDestroy {
   }
 
   // ---- parent area
+  /** The settings gear left the child's upright screens (Sani 2026-11-22): the parents open the settings from here. */
+  openSettings(): void { this.fam.show(null); setTimeout(() => document.getElementById('admingear')?.click(), 60); }
+
   removeKid(p: Profile): void { if (confirm('Remove ' + p.name + ' and their progress from this phone?')) this.fam.remove(p.id); }
 }

@@ -183,6 +183,7 @@
     </div>
     <div class="col">
       <h1>On this phone</h1>
+      <div class="row"><span><b>Settings</b><small>The app's settings</small></span><button class="link" (click)="openSettings()">Open</button></div>
       <div class="row"><span><b>Microphone</b><small>So Laila can hear</small></span><button class="link" (click)="fam.show('mic')">Ask again</button></div>
       <div class="row"><span><b>Signed in with</b><small>{{ fam.account()?.phone || '' }}{{ fam.account()?.phone && fam.account()?.email ? ' · ' : '' }}{{ fam.account()?.email || '' }}</small></span></div>
       <p class="hint">Saving online, the family plan and a new phone getting the children back are not built yet.</p>

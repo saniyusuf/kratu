@@ -944,3 +944,20 @@ html.fam-on #admingear{display:none!important}
   html.fam-up #app .s.wasanni .wditem b{font:800 19px/1.1 var(--disp,'Baloo 2'),sans-serif;color:var(--ink,#2B2118)}
   html.fam-up #app .s.wasanni .wditem.on{box-shadow:0 0 0 4px #FFD24D,0 6px 14px rgba(255,190,60,.5)}
 }
+
+/* Family build upright (Sani 2026-11-22, option A): small floating buttons instead of the four big corners. The door is a
+   dark pill with its arrow (top left), the ear a yellow circle (top right), the games a purple circle (bottom right); the
+   settings gear leaves the child's screens and lives in the parents' Manage profiles. Games and landscape keep the corners. */
+@media (orientation:portrait){
+  html.fam-up #app .block.active .s>.backdoor{width:66px;height:44px;border-radius:22px;left:12px;top:calc(12px + env(safe-area-inset-top,0px));box-shadow:0 3px 8px rgba(0,0,0,.2)}
+  html.fam-up #app .block.active .s>.backdoor .doorsvg{left:9px;top:5px;width:24px;height:30px}
+  html.fam-up #app .block.active .s>.backdoor::after{left:36px;top:12px;width:20px;height:18px}
+  html.fam-up #app .block.active .s>.helpdome{width:44px;height:44px;border-radius:50%;right:12px;top:calc(12px + env(safe-area-inset-top,0px));padding:0;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+  html.fam-up #app .block.active .s>.helpdome .earsvg{width:26px;height:30px}
+  html.fam-up #app .block.active .s>.helpdome::after{border-radius:50%}
+  html.fam-up #admingear{display:none!important}
+  html.fam-up #app .block.active .s.home>.gcorner{width:52px;height:52px;border-radius:50%;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 3px 8px rgba(0,0,0,.22)}
+  html.fam-up #app .block.active .s.home>.gcorner svg{width:74px;height:74px;right:-10px;bottom:-12px}
+  html.fam-up #app .block.active .s.wasanni>.wbook{width:52px;height:52px;border-radius:50%;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 3px 8px rgba(0,0,0,.22)}
+  html.fam-up #app .block.active .s.wasanni>.wbook .wbookic{right:50%;bottom:50%;transform:translate(50%,50%);width:26px;height:34px}
+}
