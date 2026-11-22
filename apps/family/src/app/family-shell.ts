@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, OnDestroy, computed, effect, inject, signal, untracked } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AudioBus } from '@kratu/app/core/audio/audio-bus.service';
+import { ClipsService } from '@kratu/app/core/clips/clips.service';
 import { WordsService } from '@kratu/app/core/clips/words.service';
 import { ANIMALS, FamilyService, Profile, animal } from '@kratu/app/core/family/family.service';
 import { snapName } from '@kratu/app/core/identity/name-clip';
@@ -17,8 +18,8 @@ import { BOY_SVG, GIRL_SVG } from './kids';
  * A child's first tap on their card: they choose their own animal, Laila welcomes them by name, then her first-day
  * welcome. Every tap after: straight to the welcome back. Manage profiles asks for the parent's code.
  * Unlike the lessons they follow the phone: upright and sideways each have their own layout. Written words lead with
- * English for the parent; Laila's spoken lines stay Hausa. Lines Sani has still to write (f_start, f_mic) are not
- * guessed: Laila is silent there until he does.
+ * English for the parent; Laila's spoken lines stay Hausa. f_start is a Claude draft of Sani's English wording (22 Nov);
+ * f_mic, still unwritten, is not guessed: Laila is silent there until he writes it.
  */
 @Component({
   selector: 'app-family-shell',
@@ -31,6 +32,7 @@ export class FamilyShell implements OnDestroy {
   readonly fam = inject(FamilyService);
   private readonly bus = inject(AudioBus);
   private readonly words = inject(WordsService);
+  private readonly clips = inject(ClipsService);
   private readonly session = inject(SessionService);
   private readonly san = inject(DomSanitizer);
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
@@ -90,9 +92,11 @@ export class FamilyShell implements OnDestroy {
   }
   ngOnDestroy(): void { if (this.timer) clearTimeout(this.timer); }
 
-  /** Lines Sani has still to write (f_start, f_mic) simply stay silent: AudioBus plays nothing for a key with no clip. */
+  /** f_start: "Barka da zuwa! Danna nan don mu fara." (Sani 2026-11-22: "Welcome, click here to begin"; a Claude draft
+   *  for him to hear) while the hand points at Start. f_mic, still unwritten, stays silent: AudioBus plays nothing for a
+   *  key with no clip. */
   private opening(s: string | null): void {
-    if (s === 'welcome') this.bus.play('f_start');
+    if (s === 'welcome') this.arriveStart();
     else if (s === 'mic') this.bus.play('f_mic');
     else if (s === 'yours') this.timer = setTimeout(() => this.greet(), 450);
   }
@@ -176,6 +180,22 @@ export class FamilyShell implements OnDestroy {
   }
   backToPick(): void { const c = this.fam.current(); if (c) this.fam.current.set({ ...c, animal: '' }); this.fam.show('pick'); }
 
+  /** The welcome screen's line, on its ear. */
+  sayStart(): void { this.bus.stopAll(); this.bus.play('f_start'); }
+  /**
+   * On arriving: the loader underneath says its own line (s_loading) as soon as the clips are in, and one sound at a time
+   * means whichever starts last wins. So wait for the clips, give the loader a moment to start its line, let it finish,
+   * then say f_start (found 22 Nov: said at once, f_start was cut off by s_loading on every fresh open).
+   */
+  private async arriveStart(): Promise<void> {
+    const STILL_HERE = () => this.fam.screen() === 'welcome';
+    const PAUSE = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const T0 = Date.now();
+    while (STILL_HERE() && !this.clips.ready() && Date.now() - T0 < 20000) await PAUSE(200);
+    await PAUSE(400);
+    while (STILL_HERE() && this.bus.speaking() && Date.now() - T0 < 30000) await PAUSE(200);
+    if (STILL_HERE()) this.bus.play('f_start');
+  }
   hearAgain(): void {
     const k = this.pick(); if (!k) return;
     const w = this.words.find(k); if (w?.ha_clip) this.bus.playRaw(w.ha_clip);

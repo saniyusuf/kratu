@@ -9,7 +9,7 @@ if (LANG_ARG > 0) process.exit(lintLang(process.argv[LANG_ARG + 1]) ? 1 : 0);   
 const lines = JSON.parse(readFileSync('content/lines.json', 'utf8')), W = JSON.parse(readFileSync('content/words.json', 'utf8'));
 const errors = [], warns = [];
 // --- the code: every quoted literal, so dynamic keys ('s_qd_' + key) are matched by their prefix
-const lits = new Set(); const walk = (d) => { for (const f of readdirSync(d)) { const p = join(d, f); if (statSync(p).isDirectory()) walk(p); else if (p.endsWith('.ts') && !p.endsWith('.spec.ts')) for (const m of readFileSync(p, 'utf8').matchAll(/'([A-Za-z0-9_]+)'/g)) lits.add(m[1]); } }; walk('src/app');
+const lits = new Set(); const walk = (d) => { for (const f of readdirSync(d)) { const p = join(d, f); if (statSync(p).isDirectory()) walk(p); else if (p.endsWith('.ts') && !p.endsWith('.spec.ts')) for (const m of readFileSync(p, 'utf8').matchAll(/'([A-Za-z0-9_]+)'/g)) lits.add(m[1]); } }; walk('src/app'); if (existsSync('apps')) walk('apps');   // the family app's own screens (apps/family) say lines too
 const rows = new Map(lines.map((r) => [r.key, r]));
 const strip = (k) => k.replace(/^(s_|app_|sx_)/, '');
 const used = (key) => { for (const l of lits) { if (l === key) return true; if (l.endsWith('_') && l.length >= 4 && (key.startsWith(l) || strip(key).startsWith(l) || key === l.slice(0, -1))) return true; } return false; };

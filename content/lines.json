@@ -5707,5 +5707,20 @@
    "m": "30bf6e1eb3",
    "f": "f44d2307f8"
   }
+ },
+ {
+  "key": "f_start",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "any",
+  "text": "Barka da zuwa! Danna nan don mu fara.",
+  "en": "Welcome! Press here to begin.",
+  "screens": [
+   "Barka da zuwa · welcome"
+  ],
+  "said_when": "Family app, the first welcome screen (Kratu, Learn English with Laila, Start): on arriving, while the hand points at Start; and again on the ear.",
+  "status": "live",
+  "review": "unreviewed: Claude draft 2026-11-22 of Sani's English wording (\"Welcome, click here to begin\"), for Sani to hear and correct",
+  "recorded": "eb0dcece8d"
  }
 ]

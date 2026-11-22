@@ -4,6 +4,7 @@
 @case ('welcome') {
 <section class="fs wc" [class.up]="upright()">
   <div class="sun"></div>
+  <button class="ear" aria-label="Hear it again" [innerHTML]="ear" (click)="sayStart()"></button>
   <button class="wc-l bob" aria-label="Start" (click)="fam.start()"><app-laila [size]="lailaBig()" /></button>
   <div class="wc-side">
     <div class="mk"><span class="k">K</span><span class="r">r</span><span class="a">a</span><span class="t">t</span><span class="u">u</span></div>
