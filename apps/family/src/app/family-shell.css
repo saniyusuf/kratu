@@ -319,3 +319,6 @@ input,.field{min-height:48px;box-sizing:border-box}
 .add:not(.up) .card.preview{align-self:start}
 .add:not(.up) .btn.go{align-self:start}
 .add:not(.up) .btn.go{font-size:20px;padding:10px 34px;min-height:48px;min-width:140px;margin-top:0}
+
+/* Enrol sideways: Save centred under the questions (Sani 22 Nov) */
+.add:not(.up) .btn.go{justify-self:center}
