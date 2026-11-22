@@ -12,6 +12,10 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   The family app holds only its own screens and entry; everything else is imported from `src/app` through `@kratu/app/*`.
   `src/app/core/edition.ts` (FAMILY=false) is swapped for `apps/family/src/edition.ts` in the family build. Both are
   angular.json projects too, so `ng serve family` works; `npx nx run-many -t build` builds both. Family serves on 4250.
+  Face sign-in in the family build (Sani 22 Nov): YuNet + SFace int8 + CAM++ fp16 (all commercially licensed), named with
+  their thresholds in `apps/family/public/models/manifest.json` (`kinds`, `cfg`); the school keeps `public/models/manifest.json`
+  (SCRFD + R50, non-commercial InsightFace). The models download only after Register (`LoaderService.loadFace()`).
+  `FACE_FLOW` in family.service.ts: 'A' camera first, cards as fallback; 'B' cards first, face confirms.
   `npm run start:family` / `npm run build:family`.
 - `npm run content` — `content/` → `public/assets/clips.json` + `words.json`. Never edit those two by hand.
 - Written labels (Sani 18 Nov): `content/labels.json` is the one dictionary, Hausa and English, of every label a screen
