@@ -3,7 +3,7 @@
 :host{display:none}
 :host{--u:min(1vmin,12px)}
 :host(.on){display:block;font-size:max(16px, calc(1.9 * var(--u)));position:fixed;inset:0;z-index:300;overflow:hidden;
-  background:#F7F0DF radial-gradient(circle,rgba(160,130,70,.16) 1.2px,transparent 1.6px) 0 0/22px 22px;
+  background:#F4E7C9 radial-gradient(circle,rgba(150,120,70,.1) 1.6px,transparent 1.6px) 0 0/20px 20px;   /* the app's own page (Sani 2026-11-22: one background everywhere) */
   font-family:var(--body,Nunito,sans-serif);color:var(--ink,#2B2118);-webkit-user-select:none;user-select:none}
 .fs{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:calc(5 * var(--u));padding:calc(4 * var(--u)) calc(6 * var(--u));box-sizing:border-box}
 .fs.up{flex-direction:column;gap:calc(3.5 * var(--u));padding:calc(6 * var(--u)) calc(5 * var(--u))}
@@ -261,3 +261,21 @@ input,.field{min-height:48px;box-sizing:border-box}
 .pick .cav.gimg{border:0;box-shadow:0 0 0 4px #F2C46A}
 .av{border:0}
 .thanks .ctag,.yours .ctag{background:none;padding:0}
+
+/* Who's learning (Sani 2026-11-22): the children are the big cards; Guest and Add are small and quiet underneath */
+.nf .cards:not(.extra) .nc .nav{border:0;width:max(112px, calc(22 * var(--u)));height:max(112px, calc(22 * var(--u)));font-size:max(62px, calc(15 * var(--u)))}
+.nf .cards:not(.extra) .nc b{font-size:max(20px, calc(4.6 * var(--u)))}
+.nf .cards.extra{gap:calc(5 * var(--u))}
+.nf .cards.extra .nc .nav{width:max(56px, calc(13 * var(--u)));height:max(56px, calc(13 * var(--u)));font-size:max(28px, calc(7 * var(--u)));box-shadow:none}
+.nf .cards.extra .nc b{font-size:max(16px, calc(3.2 * var(--u)))}
+.nc.guest .nav{background:#F1E9D6;border:3px dashed #D9C89F}
+.nc.guest b{color:#7A6A4C}
+@media (max-height:500px){   /* a phone held sideways: everything clear of Laila */
+  .nf{gap:8px;padding-top:8px}
+  .nf .mk.sm{display:none}
+  .nf .cards:not(.extra) .nc .nav{width:84px;height:84px;font-size:46px}
+  .nf .cards:not(.extra) .nc b{font-size:18px}
+  .nf .cards.extra .nc .nav{width:44px;height:44px;font-size:22px}
+  .nf .cards.extra .nc b{font-size:15px}
+  .nf .manage{padding:2px 8px}
+}

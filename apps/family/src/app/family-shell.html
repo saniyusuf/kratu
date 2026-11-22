@@ -145,6 +145,8 @@
     @for (p of fam.profiles(); track p.id) {
       <button class="nc" (click)="fam.choose(p)"><span class="nav" [class.gimg]="!p.animal" [style.background]="p.animal ? animal(p.animal).c : null">@if (p.animal) {{{ animal(p.animal).e }}} @else {<span class="gem" [innerHTML]="kid(p.g)"></span>}</span><b>{{ p.name }}</b></button>
     }
+  </div>
+  <div class="cards extra">
     <button class="nc guest" (click)="fam.guest()"><span class="nav">👋</span><b>Guest</b></button>
     <button class="nc addc" (click)="fam.startAdd()"><span class="nav">+</span><b>Add</b></button>
   </div>
