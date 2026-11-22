@@ -56,7 +56,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
 <div class="facestage">
   <button class="startwrap" [class.cue]="cue()" [hidden]="capturing()" [attr.aria-label]="t('Danna Laila don farawa')" (click)="start()">
     <span class="startring"></span><app-laila [size]="110" cls="start-lm" /><span class="start-hand">👆🏾</span>
-    <span class="starthint">{{ t('Danna kan Laila don farawa') }}<br><small>{{ t('click Laila to start') }}</small></span>
+    <span class="starthint">{{ t('Danna kan Laila don farawa') }}</span>
   </button>
 </div>
 @if (capturing()) {

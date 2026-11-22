@@ -961,3 +961,9 @@ html.fam-on #admingear{display:none!important}
   html.fam-up #app .block.active .s.wasanni>.wbook{width:52px;height:52px;border-radius:50%;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 3px 8px rgba(0,0,0,.22)}
   html.fam-up #app .block.active .s.wasanni>.wbook .wbookic{right:50%;bottom:50%;transform:translate(50%,50%);width:26px;height:34px}
 }
+
+/* Family build (Sani 2026-11-22): the first-day welcome's Ci gaba dances and glows to catch the eye, like "ready now" */
+html.fam-up #app .s.welcome .go{animation:famgo 1.6s ease-in-out infinite,famdance 1.2s ease-in-out infinite}
+@keyframes famgo{0%,100%{box-shadow:0 0 0 0 rgba(27,122,110,.55)}50%{box-shadow:0 0 0 14px rgba(27,122,110,0),0 0 22px rgba(255,201,60,.8)}}
+@keyframes famdance{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(-3deg)}75%{transform:translateY(-4px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){html.fam-up #app .s.welcome .go{animation:none}}

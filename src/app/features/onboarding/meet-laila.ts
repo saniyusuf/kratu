@@ -24,7 +24,7 @@ import { FAMILY } from '../../core/edition';
   @if (cue()) {<span class="meet-hand">👆🏾</span>}
 </button>
 <div class="pr" style="font-size:clamp(22px,3vw,30px)">{{ t('Sunana Laila') }}</div>
-<div class="starthint">{{ t('Danna kan Laila mu fara') }}<br><small>{{ t('click Laila to start') }}</small></div>
+<div class="starthint">{{ t('Danna kan Laila mu fara') }}</div>
 <button class="go" [class.cue]="cue()" (click)="go()"><span class="tri"></span> {{ t('Ci gaba') }}@if (sub('Ci gaba'); as h) {<span class="hsub">{{ h }}</span>}</button>`,
 })
 export class MeetLailaScreen implements OnInit, OnDestroy {
