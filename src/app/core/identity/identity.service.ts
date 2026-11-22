@@ -17,7 +17,7 @@ export interface FrameResult { ok: boolean; faces: number; emb?: Float32Array; s
 
 interface KratuIDApi {
   isReady: boolean; ep: string | null; version?: string; recName?: string;
-  init(o?: { blobs?: Record<string, ArrayBuffer | ArrayBuffer[]> }): Promise<{ ep: string; version: string; rec?: string }>;
+  init(o?: { blobs?: Record<string, ArrayBuffer | ArrayBuffer[]>; kinds?: Record<string, unknown>; cfg?: Record<string, unknown> }): Promise<{ ep: string; version: string; rec?: string }>;
   watch(video: HTMLVideoElement, cb: (r: FrameResult) => void): void; unwatch(): void;
   voiceEmbed(pcm: Float32Array): Promise<Float32Array | null>; pcmFromBlob(blob: Blob): Promise<Float32Array>;
   match(q: { faceVecs?: Float32Array[]; voiceVec?: Float32Array | null; nameKey?: string | null }): MatchResult;
@@ -38,10 +38,12 @@ export class IdentityService {
   get api(): KratuIDApi | undefined { return window.KratuID; }
   present(): boolean { return !!window.KratuID; }
 
-  async init(blobs?: Record<string, ArrayBuffer | ArrayBuffer[]>): Promise<void> {
+  /** `kinds` and `cfg` come from models/manifest.json: the family build names its own models (YuNet + SFace) and their
+   *  thresholds there; the school manifest has neither, so the school engine runs exactly as before. */
+  async init(blobs?: Record<string, ArrayBuffer | ArrayBuffer[]>, kinds?: Record<string, unknown>, cfg?: Record<string, unknown>): Promise<void> {
     const k = window.KratuID;
     if (!k) throw new Error('no identity engine on this page');
-    const r = await k.init(blobs ? { blobs } : {});
+    const r = await k.init({ ...(blobs ? { blobs } : {}), ...(kinds ? { kinds } : {}), ...(cfg ? { cfg } : {}) });
     await k.store.load();
     this.ready.set(true); this.ep.set(r.ep); this.model.set(k.recName ?? r.rec ?? (r.version || '').split('+')[1] ?? null);
   }

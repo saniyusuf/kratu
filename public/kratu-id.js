@@ -10,7 +10,10 @@
   function call(type, payload, transfer) { return new Promise((res, rej) => { const id = ++seq; pend.set(id, { res, rej }); W.postMessage(Object.assign({ id, type }, payload || {}), transfer || []); }); }
 
   const K = { cfg, isReady: false, ep: null, ready: null, version: cfg.modelVer };
-  K.init = function (o) { if (K.ready) return K.ready; o = o || {}; const opts = { webgpu: cfg.webgpu }; const transfer = []; if (o.blobs) { opts.blobs = o.blobs; Object.keys(o.blobs).forEach(n => { const b = o.blobs[n];
+  K.init = function (o) { if (K.ready) return K.ready; o = o || {}; const opts = { webgpu: cfg.webgpu }; const transfer = [];
+    /* the model set and its thresholds come from the page (models/manifest.json: `kinds` and `cfg`), so the family build can run
+       YuNet + SFace with SFace's own score scale while the school build keeps today's (Sani 2026-11-22) */
+    if (o.kinds) opts.kinds = o.kinds; if (o.cfg) Object.assign(cfg, o.cfg); K.version = cfg.modelVer; if (o.blobs) { opts.blobs = o.blobs; Object.keys(o.blobs).forEach(n => { const b = o.blobs[n];
       if (Array.isArray(b)) b.forEach(x => { if (x && x.byteLength) transfer.push(x); });   /* the recogniser arrives in parts: the worker joins them, so the 174 MB copy never happens on the main thread (Sani 2026-09-19) */
       else if (b && b.byteLength) transfer.push(b); }); }
     K.ready = call('init', { opts }, transfer).then(r => { K.isReady = true; K.ep = r.ep; K.version = r.version; K.recName = r.rec || (r.version || '').split('+')[1] || ''; return r; }).catch(e => { K.ready = null; throw e; }); return K.ready; };   // a failed init may be retried; model bytes handed in by the page are transferred, not copied

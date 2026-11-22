@@ -1,5 +1,7 @@
 /* Kratu identity engine v2 — worker side.
-   SCRFD-500m face detection (5 keypoints) → quality gate → 5-point similarity alignment (112×112) → ArcFace MobileFaceNet (w600k) 512-d
+   SCRFD-500m face detection (5 keypoints) → quality gate → 5-point similarity alignment (112×112) → ArcFace R50 (w600k) 512-d
+   or, when the page says so (the family build, Sani 2026-11-22, commercially licensed models): YuNet → the same alignment
+   → SFace 128-d. The model set is the page's choice (models/manifest.json `kinds`), never hard-coded here.
    Voice: kaldi-style 80-bin log-mel fbank → 3D-Speaker CAM++ 512-d.  All on-device via ONNX Runtime Web (WebGPU when available, else WASM). */
 import * as ort from './models/ort/ort.wasm.min.mjs';
 ort.env.wasm.wasmPaths = new URL('./models/ort/', import.meta.url).href;
@@ -23,6 +25,10 @@ const REC_NAME = 'w600k_r50';
 const DET = 320;                                   // detector input (square letterbox)
 const ARC = [[38.2946, 51.6963], [73.5318, 51.5014], [56.0252, 71.7366], [41.5493, 92.3655], [70.7299, 92.2041]];
 let det = null, rec = null, spk = null, ep = 'wasm';
+/* which detector and recogniser the bytes are: 'scrfd' + 'arcface' (the school app, the default) or 'yunet' + 'sface' */
+const KIND = { det: 'scrfd', rec: 'arcface', recName: REC_NAME, detThr: 0.5 };
+const YUNET = 640;                                 // YuNet 2023mar has a fixed 640×640 input (square letterbox)
+let yCanvas = null, yCtx = null;
 const detCanvas = new OffscreenCanvas(DET, DET), detCtx = detCanvas.getContext('2d', { willReadFrequently: true });
 const alnCanvas = new OffscreenCanvas(112, 112), alnCtx = alnCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -32,6 +38,7 @@ async function create(path, eps) {
 }
 async function init(opts) {
   const eps = ['wasm'];
+  if (opts && opts.kinds) { Object.assign(KIND, opts.kinds); }
   /* the page may hand the recogniser over in parts: join here, on the worker's thread, never on the UI's */
   if (opts && opts.blobs && Array.isArray(opts.blobs.recParts) && opts.blobs.recParts.length) {
     const ps = opts.blobs.recParts; let n = 0; ps.forEach((b) => { n += b.byteLength; });
@@ -42,8 +49,8 @@ async function init(opts) {
   if (opts && opts.blobs && opts.blobs.det && opts.blobs.rec && opts.blobs.spk) {
     if (opts.blobs.wasm) ort.env.wasm.wasmBinary = opts.blobs.wasm;   /* the runtime's own wasm too: the page inflated it from the .gz, ORT builds from these bytes and fetches nothing */   /* Kratu: model bytes already downloaded (and cached) by the page — no fetch here, nothing to unpack, sessions are built straight from memory */
     det = await create(new Uint8Array(opts.blobs.det), eps); rec = await create(new Uint8Array(opts.blobs.rec), eps); spk = await create(new Uint8Array(opts.blobs.spk), ['wasm']);
-    ep = eps[0]; await runDet(new Float32Array(3 * DET * DET)); await rec.run({ 'input.1': new ort.Tensor('float32', new Float32Array(3 * 112 * 112), [1, 3, 112, 112]) });
-    return { ep, rec: REC_NAME, version: 'scrfd500m+' + REC_NAME + '+campplus' };
+    ep = eps[0]; await warm();
+    return { ep, rec: KIND.recName, version: versionName() };
   }
   /* no blobs handed in (a direct worker test): fetch the parts and join them here */
   const parts = await Promise.all(M.recParts.map((u) => fetch(u).then((r) => r.arrayBuffer())));
@@ -51,10 +58,14 @@ async function init(opts) {
   const recBytes = new Uint8Array(n); let o = 0; parts.forEach((b) => { recBytes.set(new Uint8Array(b), o); o += b.byteLength; });
   det = await create(M.det, eps); rec = await create(recBytes, eps); spk = await create(M.spk, ['wasm']);
   ep = eps[0];
-  // warm-up
-  await runDet(new Float32Array(3 * DET * DET));
-  await rec.run({ 'input.1': new ort.Tensor('float32', new Float32Array(3 * 112 * 112), [1, 3, 112, 112]) });
-  return { ep, rec: REC_NAME, version: 'scrfd500m+' + REC_NAME + '+campplus' };
+  await warm();
+  return { ep, rec: KIND.recName, version: versionName() };
+}
+function versionName() { return (KIND.det === 'yunet' ? 'yunet' : 'scrfd500m') + '+' + KIND.recName + '+campplus'; }
+async function warm() {
+  if (KIND.det === 'yunet') await det.run({ [det.inputNames[0]]: new ort.Tensor('float32', new Float32Array(3 * YUNET * YUNET), [1, 3, YUNET, YUNET]) });
+  else await runDet(new Float32Array(3 * DET * DET));
+  await rec.run({ [rec.inputNames[0]]: new ort.Tensor('float32', new Float32Array(3 * 112 * 112), [1, 3, 112, 112]) });
 }
 async function runDet(chw) { return det.run({ 'input.1': new ort.Tensor('float32', chw, [1, 3, DET, DET]) }); }
 
@@ -71,6 +82,7 @@ function nms(boxes, thr) {
 }
 function iou(a, b) { const x1 = Math.max(a.x1, b.x1), y1 = Math.max(a.y1, b.y1), x2 = Math.min(a.x2, b.x2), y2 = Math.min(a.y2, b.y2); const i = Math.max(0, x2 - x1) * Math.max(0, y2 - y1); const ua = (a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1) - i; return ua > 0 ? i / ua : 0; }
 async function detect(bitmap, thr) {
+  if (KIND.det === 'yunet') return detectYunet(bitmap, Math.max(thr, KIND.detThr));
   const s = DET / Math.max(bitmap.width, bitmap.height), w = Math.round(bitmap.width * s), h = Math.round(bitmap.height * s);
   detCtx.fillStyle = '#000'; detCtx.fillRect(0, 0, DET, DET); detCtx.drawImage(bitmap, 0, 0, w, h);
   const out = await runDet(toCHW(detCtx.getImageData(0, 0, DET, DET), 127.5, 128));
@@ -86,6 +98,31 @@ async function detect(bitmap, thr) {
     }
   }
   return nms(boxes, 0.4);
+}
+
+/* YuNet 2023mar, decoded as OpenCV's FaceDetectorYN does: BGR 0..255 in, per stride (8/16/32) a class score, an
+   objectness, a box (centre offsets in cells, log width/height) and 5 keypoints (offsets in cells); score = √(cls·obj).
+   Keypoints come in the same order as SCRFD's (the eye on the picture's left first), so the alignment is shared. */
+async function detectYunet(bitmap, thr) {
+  if (!yCanvas) { yCanvas = new OffscreenCanvas(YUNET, YUNET); yCtx = yCanvas.getContext('2d', { willReadFrequently: true }); }
+  const s = YUNET / Math.max(bitmap.width, bitmap.height), w = Math.round(bitmap.width * s), h = Math.round(bitmap.height * s);
+  yCtx.fillStyle = '#000'; yCtx.fillRect(0, 0, YUNET, YUNET); yCtx.drawImage(bitmap, 0, 0, w, h);
+  const d = yCtx.getImageData(0, 0, YUNET, YUNET).data, n = YUNET * YUNET, x = new Float32Array(3 * n);
+  for (let i = 0; i < n; i++) { x[i] = d[i * 4 + 2]; x[n + i] = d[i * 4 + 1]; x[2 * n + i] = d[i * 4]; }   // B, G, R
+  const out = await det.run({ [det.inputNames[0]]: new ort.Tensor('float32', x, [1, 3, YUNET, YUNET]) });
+  const boxes = [], clip = (v) => Math.min(1, Math.max(0, v));
+  for (const st of [8, 16, 32]) {
+    const cls = out['cls_' + st].data, obj = out['obj_' + st].data, bb = out['bbox_' + st].data, kp = out['kps_' + st].data, cols = YUNET / st;
+    for (let i = 0; i < cls.length; i++) {
+      const score = Math.sqrt(clip(cls[i]) * clip(obj[i])); if (score < thr) continue;
+      const c = i % cols, r = Math.floor(i / cols);
+      const cx = (c + bb[i * 4]) * st, cy = (r + bb[i * 4 + 1]) * st, bw = Math.exp(bb[i * 4 + 2]) * st, bh = Math.exp(bb[i * 4 + 3]) * st;
+      const b = { score, x1: (cx - bw / 2) / s, y1: (cy - bh / 2) / s, x2: (cx + bw / 2) / s, y2: (cy + bh / 2) / s, kps: [] };
+      for (let j = 0; j < 5; j++) b.kps.push([(kp[i * 10 + j * 2] + c) * st / s, (kp[i * 10 + j * 2 + 1] + r) * st / s]);
+      boxes.push(b);
+    }
+  }
+  return nms(boxes, 0.3);
 }
 
 /* ---------- alignment (least-squares similarity: x' = a x − b y + tx ; y' = b x + a y + ty) ---------- */
@@ -133,7 +170,9 @@ function quality(face, img, minFace, blurMin) {
 /* ---------- face embedding ---------- */
 function l2(v) { let s = 0; for (let i = 0; i < v.length; i++) s += v[i] * v[i]; s = Math.sqrt(s) || 1; const o = new Float32Array(v.length); for (let i = 0; i < v.length; i++) o[i] = v[i] / s; return o; }
 async function embedFace(img) {
-  const out = await rec.run({ 'input.1': new ort.Tensor('float32', toCHW(img, 127.5, 127.5), [1, 3, 112, 112]) });
+  /* ArcFace: RGB, (x − 127.5) / 127.5. SFace: RGB 0..255 as it is (OpenCV's FaceRecognizerSF: blobFromImage(…, swapRB)) */
+  const x = KIND.rec === 'sface' ? toCHW(img, 0, 1) : toCHW(img, 127.5, 127.5);
+  const out = await rec.run({ [rec.inputNames[0]]: new ort.Tensor('float32', x, [1, 3, 112, 112]) });
   return l2(out[rec.outputNames[0]].data);
 }
 

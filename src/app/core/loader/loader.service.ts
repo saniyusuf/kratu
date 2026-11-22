@@ -25,7 +25,7 @@ export class LoaderService {
   private readonly CACHE = 'kratu-models-1';
   private dl: Record<string, St> = {}; private prep: Record<string, St> = {}; private bytes: Record<string, { got: number; total: number }> = {};
   private errs: Record<string, string> = {}; private ptext: Record<string, string> = {}; private fails = 0; private samples: [number, number][] = [];
-  private speechFiles: Record<string, ArrayBuffer> | null = null; private faceBlobs: { blobs: Record<string, ArrayBuffer | ArrayBuffer[]> } | null = null;
+  private speechFiles: Record<string, ArrayBuffer> | null = null; private faceBlobs: { blobs: Record<string, ArrayBuffer | ArrayBuffer[]>; kinds?: Record<string, unknown>; cfg?: Record<string, unknown> } | null = null;
   private resolveDone!: () => void;
   readonly done = new Promise<void>((r) => { this.resolveDone = r; });
   readonly times: Record<string, number> = {};
@@ -52,7 +52,7 @@ export class LoaderService {
       prep: () => this.prepSpeech() },
     { id: 'face', ha: 'Fuska', en: 'face', heavy: true,
       dl: async () => { if (!this.identity.present()) return 'skip'; await this.fetchFaceModels(); return undefined; },
-      prep: async () => { this.prog('face', bi('ana tadawa', 'starting')); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs); this.prog('face', bi('a shirye', 'ready') + ' · ' + (this.identity.model() || '')); } },
+      prep: async () => { this.prog('face', bi('ana tadawa', 'starting')); const o = this.faceBlobs; this.faceBlobs = null; await this.identity.init(o?.blobs, o?.kinds, o?.cfg); this.prog('face', bi('a shirye', 'ready') + ' · ' + (this.identity.model() || '')); } },
     { id: 'names', ha: 'Sunaye', en: 'names', heavy: false,
       dl: async () => { await this.clips.load(); await this.words.load(); if (!LANG.namesBank || FAMILY) return 'skip';   // the family build types names, never matches them   // the bank is Hausa TTS: another language's build says the name in the child's own voice
         const r = await fetch('names_bank_expanded.json'); if (r.status === 404) return 'skip'; if (!r.ok) throw new Error('names ' + r.status); (window as any).KRATU_BANK = await r.json(); return undefined; } },
@@ -243,19 +243,48 @@ export class LoaderService {
       for (const r of await c.keys()) if (r.url.indexOf('/models/ort/') >= 0 && r.url !== want) await c.delete(r);
     } catch { /* no Cache Storage, or it would not open: there is nothing to sweep */ }
   }
-  private async fetchFaceModels(): Promise<void> {
-    const man = await this.getJSON('models/manifest.json');
-    const wasmUrl = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads; shipped gzipped (13.6 → 3.5 MB), inflated here, handed to the worker as bytes
-    await this.sweepRuntimes(wasmUrl);
-    if (!man?.rec) { await this.cachedFetch(wasmUrl, () => undefined, true); return; }
-    const R = man.rec;   // one recogniser everywhere: w600k_r50, in three parts (Sani 2026-09-19)
-    const recParts: { path: string; size: number }[] = R.parts ? R.parts : [{ path: R.path, size: R.size }];
-    const W = man.wasm || {}; const plan = [{ key: 'wasm', url: wasmUrl, size: W.gzsize || 0, raw: W.size || 0, keep: true }, { key: 'det', url: man.det.path, size: man.det.size, raw: man.det.size, keep: true }, { key: 'spk', url: man.spk.path, size: man.spk.size, raw: man.spk.size, keep: true }].concat(recParts.map((pt, i) => ({ key: 'rec' + i, url: pt.path, size: pt.size, raw: pt.size, keep: true })));
-    const total = plan.reduce((a, x) => a + x.size, 0); let got = 0; const bufs: Record<string, ArrayBuffer> = {};
-    const show = () => { this.bytes['face'] = { got, total }; this.prog('face', Math.round(got / 1048576) + ' / ' + Math.round(total / 1048576) + ' MB'); this.paint(); };
-    for (const x of plan) { let last = 0; const buf = await this.cachedFetch(x.url, (g) => { got += g - last; last = g; show(); }, x.key === 'wasm', x.raw); got += x.size - last; show(); if (x.keep) bufs[x.key] = buf; }
+  private async fetchFaceModels(onp?: (got: number, total: number) => void): Promise<void> {
+    const MAN = await this.getJSON('models/manifest.json');
+    const WASM_URL = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads; shipped gzipped (13.6 → 3.5 MB), inflated here, handed to the worker as bytes
+    await this.sweepRuntimes(WASM_URL);
+    if (!MAN?.rec) { await this.cachedFetch(WASM_URL, () => undefined, true); return; }
+    const R = MAN.rec;   // one recogniser everywhere: w600k_r50, in three parts (Sani 2026-09-19)
+    const REC_PARTS: { path: string; size: number; gzsize?: number }[] = R.parts ? R.parts : [{ path: R.path, size: R.size, gzsize: R.gzsize }];
+    // a model whose path ends in .gz is shipped gzipped: its gzsize is the download, its size the inflated bytes (the family build)
+    const ONE = (key: string, m: { path: string; size: number; gzsize?: number }) => { const GZ = /\.gz$/.test(m.path); return { key, url: m.path, size: GZ ? (m.gzsize || 0) : m.size, raw: m.size, gz: GZ }; };
+    const W_MAN = MAN.wasm || {};
+    const PLAN = [{ key: 'wasm', url: WASM_URL, size: W_MAN.gzsize || 0, raw: W_MAN.size || 0, gz: true }, ONE('det', MAN.det), ONE('spk', MAN.spk)].concat(REC_PARTS.map((pt, i) => ONE('rec' + i, pt)));
+    const TOTAL = PLAN.reduce((a, x) => a + x.size, 0); let got = 0; const BUFS: Record<string, ArrayBuffer> = {};
+    const SHOW = () => { this.bytes['face'] = { got, total: TOTAL }; this.prog('face', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); onp?.(got, TOTAL); };
+    for (const x of PLAN) { let last = 0; const BUF = await this.cachedFetch(x.url, (g) => { got += g - last; last = g; SHOW(); }, x.gz, x.raw); got += x.size - last; SHOW(); BUFS[x.key] = BUF; }
     // the parts go over as they are: the worker joins them on its own thread, so the UI never does a 174 MB copy
-    const parts = recParts.map((_, i) => bufs['rec' + i]);
-    this.faceBlobs = { blobs: { wasm: bufs['wasm'], det: bufs['det'], recParts: parts, spk: bufs['spk'] } };
+    const PARTS = REC_PARTS.map((_, i) => BUFS['rec' + i]);
+    this.faceBlobs = { blobs: { wasm: BUFS['wasm'], det: BUFS['det'], recParts: PARTS, spk: BUFS['spk'] }, kinds: MAN.kinds, cfg: MAN.cfg };
+  }
+
+
+  /**
+   * The family build (Sani 2026-11-22): the face models are not part of the first visit. They come after the parent has
+   * registered, with their own progress, and stay in Cache Storage; every later launch finds them there. The engine
+   * script is put on the page here, so a family that never registers never loads it. Safe to call more than once.
+   */
+  readonly faceProg = signal<{ got: number; total: number; state: 'idle' | 'busy' | 'ready' | 'fail' }>({ got: 0, total: 0, state: 'idle' });
+  private faceRun: Promise<boolean> | null = null;
+  loadFace(): Promise<boolean> {
+    if (this.faceRun) return this.faceRun;
+    this.faceProg.set({ got: 0, total: 0, state: 'busy' });
+    this.faceRun = (async () => {
+      try {
+        await this.engineScript();
+        await this.fetchFaceModels((got, total) => this.faceProg.set({ got, total, state: 'busy' }));
+        const O = this.faceBlobs; this.faceBlobs = null; await this.identity.init(O?.blobs, O?.kinds, O?.cfg);
+        this.faceProg.update((p) => ({ ...p, state: 'ready' })); return true;
+      } catch (e: any) { console.warn('Kratu face:', e?.message || e); this.faceProg.update((p) => ({ ...p, state: 'fail' })); this.faceRun = null; return false; }
+    })();
+    return this.faceRun;
+  }
+  private engineScript(): Promise<void> {
+    if (this.identity.present()) return Promise.resolve();
+    return new Promise((res, rej) => { const S = document.createElement('script'); S.src = 'kratu-id.js'; S.onload = () => res(); S.onerror = () => rej(new Error('kratu-id.js')); document.head.appendChild(S); });
   }
 }
