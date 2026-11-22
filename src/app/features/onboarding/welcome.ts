@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
-import { Ear } from '../../shared/chrome/chrome';
+import { Door, Ear } from '../../shared/chrome/chrome';
+import { FamilyService } from '../../core/family/family.service';
 import { Laila } from '../../shared/laila/laila';
 import { HOMEGRID_HTML } from '../../features/home/homegrid';
 import { sub, t } from '../../core/lang/t';
@@ -71,9 +72,10 @@ const BACK_FAMILY: Beat[] = [{ key: 's_back', plain: true, pose: 'both', ribbon:
  */
 @Component({
   selector: 'app-welcome',
-  imports: [Ear, Laila],
+  imports: [Door, Ear, Laila],
   host: { class: 's welcome', '[attr.data-gender]': 'session.g()' },
   template: `
+@if (FAMILY) { <app-door (pressed)="back()" /> }
 <app-ear (pressed)="run()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
 
@@ -105,6 +107,10 @@ const BACK_FAMILY: Beat[] = [{ key: 's_back', plain: true, pose: 'both', ribbon:
 })
 export class WelcomeScreen implements OnInit, OnDestroy {
   readonly t = t;
+  readonly FAMILY = FAMILY;
+  private readonly injector = inject(Injector);
+  /** Family build (Sani 2026-11-22): the door goes back to "Who's learning today?" */
+  back(): void { this.injector.get(FamilyService).toProfiles(); }
   readonly sub = sub;
   readonly session = inject(SessionService);
   private readonly bus = inject(AudioBus);

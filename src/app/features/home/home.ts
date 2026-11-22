@@ -125,13 +125,22 @@ export class HomeScreen implements OnInit, OnDestroy {
       // the ear may have asked again meanwhile, or a tap cut her off; a browser that refused the sound keeps the hand on the book
       if (!ok || mine !== this.asks) return false;
     }
+    // then the games (Sani 2026-11-22: book, then games, then lessons): the hand points at the games corner while she
+    // says it; the line is only in builds that have recorded it
+    const gc = this.bus.gk('app_games_corner');
+    if (this.bus.has(gc)) {
+      this.show('games');
+      const ok = await this.bus.play(gc);
+      if (!ok || mine !== this.asks) return false;
+    }
     this.show('tiles');
     const or = this.bus.gk('app_book_or'), ok = await this.bus.play(this.bus.has(or) ? or : 'app_act_pick');
     if (mine === this.asks && !this.bus.blocked()) this.show(null);
     return ok;
   }
-  private show(what: 'book' | 'tiles' | null): void {
-    this.arrival.set(what); this.pointAtBook(what === 'book');
+  private show(what: 'book' | 'games' | 'tiles' | null): void {
+    this.arrival.set(what === 'games' ? null : what); this.pointAtBook(what === 'book');
+    if (what === 'games') this.spotter.spot(this.hostEl.nativeElement.querySelector('.gcorner'), 'left');
     this.gridHost().nativeElement.querySelector('.homegrid')?.classList.toggle('snake', what === 'tiles');
   }
   private pointAtBook(on: boolean): void {

@@ -11063,6 +11063,10 @@
   "name_winifred": {
    "type": "name",
    "src": "winifred"
+  },
+  "line_games_corner": {
+   "type": "line",
+   "src": "app_games_corner"
   }
  }
 }

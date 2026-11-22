@@ -5686,5 +5686,26 @@
    "m": "b854089acf",
    "f": "c8a996701c"
   }
+ },
+ {
+  "key": "app_games_corner",
+  "lang": "ha",
+  "voice": "laila",
+  "gender": "pair",
+  "text": {
+   "m": "Idan kana so ka yi wasa, ka danna nan don ka ga duk wasannin da ake da su.",
+   "f": "Idan kina so ki yi wasa, ki danna nan don ki ga duk wasannin da ake da su."
+  },
+  "en": "If you want to play games, press here to see all the games.",
+  "screens": [
+   "Zaɓi darasi · chooser"
+  ],
+  "said_when": "On home after the book and tiles lines, while the games corner glows and the hand points at it; until the child has opened the games once.",
+  "status": "live",
+  "review": "unreviewed: Claude draft 2026-11-21 of Sani's English wording (21 Nov), for Sani to hear and correct",
+  "recorded": {
+   "m": "30bf6e1eb3",
+   "f": "f44d2307f8"
+  }
  }
 ]
