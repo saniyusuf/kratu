@@ -95,24 +95,39 @@ export class FamilyService {
   /** How a bank key is written: "a'isha" → "A'isha". */
   nameOf(key: string): string { return key.charAt(0).toUpperCase() + key.slice(1); }
   async clipUrl(key: string): Promise<string | null> { const D = await this.names(); return D?.file[key] ? 'names/' + D.file[key] + '.ogg' : null; }
-  /** Strict mode (Sani 2026-11-23, "recogniser only, strict"): the name is set only when two hearings agree —
-   *  the names-bank grammar hears a phrase that is ONE name, and free listening, matched to the bank by a sound key,
-   *  lands on that same name (or a spelling of it). Tested on the 1,958 bank recordings: set for 23% of names, right 91%.
-   *  Otherwise nothing is set and the child's own clip stays their name. Offline; nothing leaves the phone. */
-  async strictName(id: string): Promise<void> {
+  /**
+   * The name step (Sani 2026-11-23, hybrid): try hard for an accurate name, set it only when sure, and never hold the child
+   * up. It runs in the background after the child is in, and gives up after NAME_WAIT_MS.
+   *  1. Offline, both ways: the names-bank grammar hears a phrase that is ONE name, and free listening, matched to the
+   *     bank by a sound key, lands on that same name (or a spelling of it). On the 1,958 bank recordings: 23% set, 91% right.
+   *  2. Online (NAME_ONLINE, off): the place where a hosted recogniser (Google / PlotWeaver, Sani's open question) plugs in,
+   *     asked only when the offline step is not sure and the phone is online. Nothing is sent anywhere while it is off.
+   * Not sure: nothing is set and the child's own clip stays their name. A name a parent typed is never replaced.
+   */
+  async nameStep(id: string): Promise<void> {
+    const KEY = await Promise.race([this.findName(id), new Promise<null>((r) => setTimeout(() => r(null), NAME_WAIT_MS))]);
+    if (!KEY || this.profiles().find((p) => p.id === id)?.name || this.identity.people().find((x) => x.id === id)?.key) return;
+    await this.setBankName(id, KEY);
+  }
+  private async findName(id: string): Promise<string | null> {
     try {
-      const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return;
+      const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return null;
       const CTX = new AudioContext({ sampleRate: 16000 });
       const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close();
-      const HEARD = await this.speech.recognizeClip(PCM, 16000, Object.keys(D.phrases));
-      const ONE = D.phrases[HEARD]; if (!ONE || ONE.length !== 1) return;
-      const KEY = ONE[0], FREE = await this.speech.recognizeClip(PCM, 16000, null);
-      const NEAR = nearestName(FREE, Object.keys(D.file)); if (!NEAR) return;
-      if (NEAR !== KEY && !(D.variants[KEY] || []).includes(NEAR)) return;
-      if (this.profiles().find((p) => p.id === id)?.name) return;   // a parent already typed one: theirs stands
-      await this.setBankName(id, KEY);
-    } catch { /* not sure: the child's own clip, as before */ }
+      const OFFLINE = await this.offlineName(PCM, D);
+      if (OFFLINE) return OFFLINE;
+      if (NAME_ONLINE && navigator.onLine) return await this.onlineName(PCM, Object.keys(D.file));
+      return null;
+    } catch { return null; }
   }
+  private async offlineName(PCM: Float32Array, D: { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> }): Promise<string | null> {
+    const HEARD = await this.speech.recognizeClip(PCM, 16000, Object.keys(D.phrases));
+    const ONE = D.phrases[HEARD]; if (!ONE || ONE.length !== 1) return null;
+    const KEY = ONE[0], NEAR = nearestName(await this.speech.recognizeClip(PCM, 16000, null), Object.keys(D.file));
+    return NEAR && (NEAR === KEY || (D.variants[KEY] || []).includes(NEAR)) ? KEY : null;
+  }
+  /** The online check's socket: returns a names-bank key it is sure of, or null. Not built yet (NAME_ONLINE is false). */
+  private async onlineName(_pcm: Float32Array, _keys: string[]): Promise<string | null> { return null; }
   /** The name is written and its bank clip kept on the phone for Laila's "Sannu, <name>". */
   private async setBankName(id: string, key: string): Promise<void> {
     const URL0 = await this.clipUrl(key); let clip: string | undefined;
@@ -228,9 +243,10 @@ export class FamilyService {
       this.write([...this.profiles(), p]);
     }
     this.signIn(p); this.current.set(p);
-    if (isNew) this.strictName(p.id);   // offline, in the background: set only when two hearings agree
-    // a known child whose name came from the bank: "Sannu, <name>" in Laila's voice first (Sani 2026-11-23)
-    if (!isNew && p.nameClip) { const CLIP = p.nameClip; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
+    if (isNew) this.nameStep(p.id);   // in the background: set only when sure, never holds the child up
+    // a known child with a name: "Sannu, <name>" first, nothing appended (Sani 2026-11-23)
+    const SAY = p.nameClip || this.clipOf(p.id);   // Laila's bank clip, else the child's own recording of their name
+    if (!isNew && SAY) { const CLIP = SAY; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
     // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
   }
@@ -267,6 +283,10 @@ export class FamilyService {
   }
 }
 
+/** The name step (Sani 2026-11-23): an online check plugs in behind this one switch; off, nothing leaves the phone. */
+const NAME_ONLINE = false;
+/** The name step never takes longer than this; the child is already in, it only decides whether a name gets set. */
+const NAME_WAIT_MS = 6000;
 /** A rough Hausa/English sound key (the names test's free.py): letters folded to how they sound, doubles and h after consonants dropped. */
 function soundKey(text: string): string {
   let s = text.toLowerCase().replace(/'/g, '');

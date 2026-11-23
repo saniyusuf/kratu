@@ -17,7 +17,10 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   (SCRFD + R50, non-commercial InsightFace). The models download only after Register (`LoaderService.loadFace()`).
   Children sign themselves up as in the school app (Sani 22 Nov: no manual enrolment): after Register and the parent's
   one-time consent, the school's gender → face screens (FAMILY: gender goes straight to /face); a new child needs face AND
-  a spoken "Sunana …" (silence is refused), `face.ts enter()` hands over to `FamilyService.faceDone()` (straight to
+  a spoken "Sunana …" only when the face is close to another child's (hybrid, Sani 23 Nov: a face no one is near
+  enrols or signs in on the face alone; a record missing a voice print or a name gets it added at a later sign-in, a complete
+  record is never added to; the name is set in the background by `FamilyService.nameStep()` only when sure, 6 s cap, an online
+  check behind `NAME_ONLINE`, off), `face.ts enter()` hands over to `FamilyService.faceDone()` (straight to
   Meet Laila, no animal step). The profile id is the identity record's id; names are optional (Manage profiles).
   No cards: face and voice are the only way in; Guest and Parent buttons float over /gender and /face; a refused camera
   or microphone goes to /perm. No emoji in the family build (`html.fam-build` rules at the end of app.css, HAND_SVG);

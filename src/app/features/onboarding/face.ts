@@ -22,6 +22,9 @@ const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface
 const MAXMS = FAMILY ? 8000 : 10000, HARDMS = FAMILY ? 10000 : 20000;
 /** The family build: when to ask for the name, and how much of s_p3 is played (its first sentence ends at 2.95 s). */
 const ASK_NAME_MS = 4000, ASK_NAME_CLIP_MS = 3150;
+/** Family hybrid (Sani 2026-11-23): a known child whose record lacks a voice print or a name is held this long after
+ *  the face matched (Laila's 3 s "say your name" and about 4 s to answer), then goes in with or without it. */
+const APPEND_WAIT_MS = 7000;
 /** The online recogniser may help but never holds a child up: not listening within this, the ring starts without it. */
 const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
@@ -34,6 +37,10 @@ const SR_START_WAIT = 2500;
  */
 const NAME_ONLINE = false;
 /** The family build (Sani 2026-11-22): a voice print only from real speech, at least 0.3 s above a quiet room. */
+/** Family hybrid (Sani 2026-11-23): a record is complete once it has a voice print and a name (written, from the bank,
+ *  or the child's own recording of it). A complete record is never added to again. */
+function hasName(p: Person): boolean { return !!(p.clip || p.key || p.name); }
+function complete(p: Person): boolean { return !!p.voiceVec && hasName(p); }
 function spoke(pcm: Float32Array): boolean {
   let loud = 0; for (let i = 0; i + 320 <= pcm.length; i += 320) { let e = 0; for (let j = i; j < i + 320; j++) e += pcm[j] * pcm[j]; if (Math.sqrt(e / 320) > 0.015) loud++; }
   return loud >= 15;   // 0.3 s: a child may say just their name ("Musa"), not "Sunana Musa"
@@ -327,6 +334,13 @@ export class FaceScreen implements OnInit, OnDestroy {
       // the family build signs in on the face alone only when it is very sure (Sani 2026-11-22: before the name if found;
       // a stranger scored 0.56 in a test, so the bar here is higher than the ring's own accept, and needs a few frames)
       const SURE = !FAMILY || (m.face >= ((K as any).cfg?.earlyAccept ?? 0) && this.faceVecs.length >= 4);
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE && FAMILY && !complete(m.person)) {
+        // known on the face, but the record has no voice print or no name yet (enrolled on the face alone): hold on for the
+        // voice, ask for the name now, and append what comes (Sani 2026-11-23). Never longer than APPEND_WAIT_MS.
+        if (!this.appendTo) { this.appendTo = m; this.appendBy = now + APPEND_WAIT_MS; console.log('[kratu] known face, record incomplete: listening for the name'); if (!this.askedName) this.askName(); }
+        else if (this.appendTo.person?.id === m.person.id) this.appendTo = m;
+        return;
+      }
       if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE) { console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
     } catch { /* the full ring still decides */ }
   }
@@ -373,7 +387,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.capEnded = false; this.ended = false; this.paused.set(null); this.speaking = false; this.lastWarn = {}; this.cnt = { many: 0, none: 0, one: 0 }; this.badSince = 0; this.badKind = null; this.pict.set(null); this.glow.set(true); this.disarm();
     if (!this.stream) this.recLive = true;   // photo fallback (no camera) → no recorder to wait for
     this.bus.micReady().then(() => this.startSR()); this.identity.api?.store.load().catch(() => { /* matched at the end instead */ }); this.startFaceMon();
-    let t0 = Date.now(), last = t0, last0 = t0, active = 0; this.ringT0 = t0; this.askedName = false;
+    let t0 = Date.now(), last = t0, last0 = t0, active = 0; this.ringT0 = t0; this.askedName = false; this.appendTo = null; this.appendBy = 0;
     this.speechCb = (t, fin) => { const nm = extractName(t); if (nm) { if (this.nameAt < 0 && this.recT0) this.nameAt = Math.max(0, Date.now() - this.recT0 - 900); if (this.stopT) clearTimeout(this.stopT); this.stopT = setTimeout(() => this.endRec(), fin ? 500 : 1500); } };
     this.iv = setInterval(() => {
       const now = Date.now(); if (this.faceOK() && this.armed()) active += now - last; last = now;
@@ -381,6 +395,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       if ((this.paused() || this.speaking) && !FAMILY) t0 += now - last0; last0 = now;   // the family build: 10 seconds in all, pauses included (Sani 2026-11-22)
       if (FAMILY && this.extend) { t0 += this.extend; this.extend = 0; }   // except Laila's own "say your name"
       if (FAMILY && !this.askedName && now - this.ringT0 >= ASK_NAME_MS && !this.capEnded && !this.ended) this.askName();
+      if (FAMILY && this.appendTo && now >= this.appendBy && !this.ended) this.endRec();   // the voice did not come in time: in on the face
       if (active >= MAXMS || now - t0 >= HARDMS) this.endRec();
     }, 100);
   }
@@ -410,6 +425,8 @@ export class FaceScreen implements OnInit, OnDestroy {
     if (this.lastManyAt && Date.now() - this.lastManyAt < 2500) { this.crowdAbort(true); return; }
     const EARLY = this.earlyMatch; this.earlyMatch = null;
     if (EARLY?.person) { this.welcomeBack(EARLY); return; }
+    const APPEND = this.appendTo; this.appendTo = null;
+    if (APPEND?.person) { setTimeout(() => this.appendBack(APPEND), 700); return; }   // the recording needs a moment to close
     setTimeout(() => this.finishName(), 700);
   }
   private crowdAbort(force = false): void {
@@ -434,6 +451,29 @@ export class FaceScreen implements OnInit, OnDestroy {
     console.log('[kratu] sign-in accept (early) frames', this.faceVecs.length, 'in', Date.now() - this.faceT0, 'ms');
     this.welcome(P, true, ownUrl);
   }
+  /** Family hybrid: the face matched a child whose record lacks a voice or a name; whatever this sitting heard is added. */
+  private appendTo: MatchResult | null = null; private appendBy = 0;
+  private async appendBack(m: MatchResult): Promise<void> {
+    const P = m.person!; const K = this.identity.api; const own = await (this.nameClipP || Promise.resolve(null));
+    K?.store.refresh(P.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
+    let voiceVec: Float32Array | null = null;
+    try { if (K && this.recBlob) { const pcm = await K.pcmFromBlob(this.recBlob); voiceVec = pcm.length > 8000 && spoke(pcm) ? await K.voiceEmbed(pcm) : null; } } catch { voiceVec = null; }
+    await this.appendMissing(P, voiceVec, own?.url);
+    this.welcome(P, true);
+  }
+  /**
+   * Only what the record is missing is added, never anything it has (Sani 2026-11-23: "if there is a voice and name,
+   * don't append either, match and just say the name"). A new name sound sets off the name step in the background.
+   */
+  private async appendMissing(P: Person, voiceVec: Float32Array | null, clip?: string): Promise<void> {
+    const K = this.identity.api; if (!K || complete(P) || !voiceVec) return;
+    const ADD: Partial<Person> & { name: string } = { id: P.id, name: '' };
+    if (!P.voiceVec) ADD.voiceVec = voiceVec;
+    const NEEDS_NAME = !hasName(P); if (NEEDS_NAME && clip) ADD.clip = clip;
+    if (!ADD.voiceVec && !ADD.clip) return;
+    try { await K.store.upsert(ADD); console.log('[kratu] appended to', P.id, ADD.voiceVec ? 'voice' : '', ADD.clip ? 'name clip' : ''); } catch { return; }
+    if (ADD.clip) this.fam.nameStep(P.id);
+  }
   private async finishName(): Promise<void> {
     const raw = extractName(this.transcript); const bank = (window as any).KRATU_BANK as Record<string, string> | null;
     const key = raw && raw.indexOf(' ') < 0 ? snapName(raw, bank) : null; const heardName = key ? key.charAt(0).toUpperCase() + key.slice(1) : raw;
@@ -449,7 +489,19 @@ export class FaceScreen implements OnInit, OnDestroy {
         // a clear recognition keeps the record's recent face prints up to date (Sani 2026-11-16); refresh() itself refuses
         // anything short of a confident, face-only match, and never touches the prints from enrolment
         K.store.refresh(m.person.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
+        if (FAMILY) await this.appendMissing(m.person, voiceVec, own?.url);
         this.welcome(m.person, true, own?.url); return;
+      }
+      const CFG = (K as any).cfg || {};
+      const FACE_NEW = FAMILY && this.faceVecs.length >= 4 && (!K.store.all().length || m.face < (CFG.faceMaybe ?? 0.5));
+      if (FACE_NEW && (!heardName || !voiceVec)) {
+        // family hybrid (Sani 2026-11-23): a face no one enrolled is anywhere near is enough on its own. The child is
+        // enrolled on the face (and the voice, if it came in time) and goes in; a missing voice or name is added the next
+        // time they sign in. A face near someone else's still needs the voice, below.
+        console.log('[kratu] new unique face (best', m.face.toFixed(3) + '): enrolled', voiceVec ? 'with voice' : 'on the face alone');
+        this.pending = { name: heardName || '', key: key || undefined, gender: this.session.g(), faceVecs: this.faceVecs.slice(), voiceVec, clip: voiceVec ? own?.url : undefined };
+        this.doneText.set(t('Madalla! Barka da zuwa!')); this.still.set(this.bestStill);
+        await this.greet({ id: 'new', ...this.pending } as Person, false, this.pending.clip); this.confetti(); this.enter(); return;
       }
       if (heardName && this.faceVecs.length) {
         // held, not written: a child who walks away, presses the door or tries again leaves nothing behind. It is saved
