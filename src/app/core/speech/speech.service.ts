@@ -88,6 +88,22 @@ export class SpeechService {
   audioInfo: { device?: string; muted?: boolean; ctx?: string; rate?: number; dsp?: string } = {};
 
   ready(): boolean { return !!this.model; }
+  /**
+   * The family's name guess (Sani 2026-11-23): a recorded clip (16 kHz mono) heard against a closed list of phrases,
+   * offline, with no microphone. Resolves the text heard ('' if nothing). Every result Vosk gives along the way is kept,
+   * since a pause inside the clip can split it.
+   */
+  recognizeClip(pcm: Float32Array, rate: number, phrases: string[]): Promise<string> {
+    if (!this.model) return Promise.resolve('');
+    return new Promise((resolve) => {
+      let REC: any; try { REC = new this.model.KaldiRecognizer(rate, JSON.stringify(phrases.concat(['[unk]']))); } catch { resolve(''); return; }
+      const PARTS: string[] = []; let done = false; let settle: ReturnType<typeof setTimeout> | null = null;
+      const FIN = () => { if (done) return; done = true; try { REC.remove(); } catch { /* ignore */ } resolve(PARTS.join(' ').replace(/\[unk\]/g, '').replace(/\s+/g, ' ').trim()); };
+      REC.on('result', (m: any) => { const T = String(m?.result?.text || '').trim(); if (T) PARTS.push(T); if (settle) clearTimeout(settle); settle = setTimeout(FIN, 350); });
+      try { for (let i = 0; i < pcm.length; i += 4096) REC.acceptWaveformFloat(pcm.subarray(i, i + 4096), rate); REC.acceptWaveformFloat(new Float32Array(rate / 2), rate); REC.retrieveFinalResult(); } catch { FIN(); }
+      setTimeout(FIN, 5000);
+    });
+  }
   error(): string { return this.lastErr; }
   feedErrors(): number { return this.feedErr; }
   present(): boolean { return typeof Vosk !== 'undefined'; }

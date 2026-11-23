@@ -117,7 +117,13 @@
       @for (p of fam.profiles(); track p.id) {
         <div class="kid"><span class="kav gimg"><span class="gem" [innerHTML]="kid(p.g)"></span></span>
           <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}</small></span>
-          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}<button class="link" (click)="removeKid(p)">Remove</button></div>
+          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}<button class="link" (click)="removeKid(p)">Remove</button>
+          <!-- the name (Sani 2026-11-23): the offline guesses from the child's own "Sunana …", the parent confirms one -->
+          @if (!p.nameKey && p.guesses?.length) {<div class="guess"><span class="gq">Is it …?</span>
+            @for (k of p.guesses; track k) {<span class="gopt"><button class="gpick" (click)="fam.confirmName(p.id, k)">{{ fam.nameOf(k) }}</button><button class="gplay" [attr.aria-label]="'Hear ' + fam.nameOf(k)" [innerHTML]="ear" (click)="hearBank(k)"></button></span>}
+            <button class="link" (click)="typeName($event)">Type it</button></div>}
+          @if (p.nameKey) {<small class="gok">Laila says {{ p.name }} in her own voice</small>}
+        </div>
       } @empty {<p class="hint">No children yet.</p>}
       <p class="hint">A new child signs up by looking at the phone.</p>
     </div>

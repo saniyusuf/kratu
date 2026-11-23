@@ -4,6 +4,7 @@ import { AudioBus } from '../audio/audio-bus.service';
 import { SessionService, Gender } from '../state/session.service';
 import { IdentityService } from '../identity/identity.service';
 import { LoaderService } from '../loader/loader.service';
+import { SpeechService } from '../speech/speech.service';
 
 /**
  * A child's profile on this phone. Since 22 Nov (Sani: "we don't need enrolment manually, this is based on face now")
@@ -11,7 +12,11 @@ import { LoaderService } from '../loader/loader.service';
  * The profile's id IS the identity record's id (face and voice prints, the child's own name clip; never a photo).
  * `name` is empty unless the parent types one in Manage profiles: the child's own clip says their name.
  */
-export interface Profile { id: string; name: string; g: Gender; at: number; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
+export interface Profile { id: string; name: string; g: Gender; at: number;
+  /** Up to three names-bank names the offline recogniser heard in the child's own "Sunana …" (Sani 2026-11-23). */
+  guesses?: string[];
+  /** The bank name the parent confirmed, and its clip (Laila says it from then on; the clip is kept on the phone). */
+  nameKey?: string; nameClip?: string; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
@@ -37,6 +42,7 @@ export class FamilyService {
   private readonly session = inject(SessionService);
   private readonly identity = inject(IdentityService);
   private readonly loader = inject(LoaderService);
+  private readonly speech = inject(SpeechService);
 
   readonly screen = signal<FamScreen>(null);
   readonly profiles = signal<Profile[]>(this.read());
@@ -79,6 +85,38 @@ export class FamilyService {
     const NAME = name.replace(/\s+/g, ' ').trim().slice(0, 24);
     this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: NAME } : p)));
     if (NAME) this.identity.api?.store.upsert({ id, name: NAME }).catch(() => undefined);
+  }
+  // ---- the name (Sani 2026-11-23): guessed offline from the child's clip, confirmed by the parent, never sent anywhere
+  private namesData: Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> | null = null;
+  names(): Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> {
+    if (!this.namesData) this.namesData = fetch('names/phrases.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    return this.namesData;
+  }
+  /** How a bank key is written: "a'isha" → "A'isha". */
+  nameOf(key: string): string { return key.charAt(0).toUpperCase() + key.slice(1); }
+  async clipUrl(key: string): Promise<string | null> { const D = await this.names(); return D?.file[key] ? 'names/' + D.file[key] + '.ogg' : null; }
+  /** Three guesses: the best phrase heard, then heard again without it, twice. */
+  async guessName(id: string): Promise<void> {
+    try {
+      const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return;
+      const CTX = new AudioContext({ sampleRate: 16000 });
+      const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close();
+      let pool = Object.keys(D.phrases); const OUT: string[] = [];
+      for (let i = 0; i < 3 && pool.length; i++) {
+        const T = await this.speech.recognizeClip(PCM, 16000, pool); if (!T || !D.phrases[T]) break;
+        for (const k of D.phrases[T]) if (OUT.length < 3 && !OUT.includes(k)) OUT.push(k);
+        pool = pool.filter((x) => x !== T);
+      }
+      if (OUT.length) this.write(this.profiles().map((p) => (p.id === id ? { ...p, guesses: OUT } : p)));
+    } catch { /* no guess: the child's own clip, as before */ }
+  }
+  /** The parent picked one: the name is written and its bank clip kept on the phone for Laila. */
+  async confirmName(id: string, key: string): Promise<void> {
+    const URL0 = await this.clipUrl(key); let clip: string | undefined;
+    try { if (URL0) { const B = await (await fetch(URL0)).blob(); clip = await new Promise<string>((r) => { const F = new FileReader(); F.onload = () => r(String(F.result)); F.readAsDataURL(B); }); } } catch { clip = undefined; }
+    const NAME = this.nameOf(key);
+    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: NAME, nameKey: key, nameClip: clip } : p)));
+    this.identity.api?.store.upsert({ id, name: NAME, key }).catch(() => undefined);
   }
   /** The child's own "Sunana …" name clip, from their identity record. */
   clipOf(id: string): string | null { return this.identity.people().find((x) => x.id === id)?.clip || null; }
@@ -187,6 +225,9 @@ export class FamilyService {
       this.write([...this.profiles(), p]);
     }
     this.signIn(p); this.current.set(p);
+    if (isNew) this.guessName(p.id);   // offline, in the background: the parent sees the guesses in Manage profiles
+    // a known child whose name the parent confirmed: "Sannu, <name>" in Laila's voice first (Sani 2026-11-23)
+    if (!isNew && p.nameClip) { const CLIP = p.nameClip; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
     // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
   }
