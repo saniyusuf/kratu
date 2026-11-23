@@ -11,6 +11,10 @@ import { BOY_SVG, GIRL_SVG } from './kids';
 import { LoaderService } from '@kratu/app/core/loader/loader.service';
 import { NavigationEnd, Router } from '@angular/router';
 
+/** TEMPORARY tester tool (Sani 2026-11-23): "Musa" and "Aisha" buttons on the boy/girl and face screens that skip the
+ *  camera and sign in as the sample children. Set to false (this one line) before release. */
+const TEST_BAR = true;
+
 /**
  * The family build's own screens: Kratu opening from a link, the microphone, the parent registering (full name, email,
  * phone and a 6-digit code typed twice), the parent's consent to face and voice, then the cards (the fallback) and the
@@ -23,7 +27,7 @@ import { NavigationEnd, Router } from '@angular/router';
 @Component({
   selector: 'app-family-shell',
   imports: [Laila, DatePipe],
-  host: { '[class.on]': '!!fam.screen()', '[class.chip]': '!fam.screen() && chipOn()', '[attr.data-s]': 'fam.screen()' },
+  host: { '[class.on]': '!!fam.screen()', '[class.tb]': 'testBar()', '[attr.data-s]': 'fam.screen()' },
   templateUrl: './family-shell.html',
   styleUrl: './family-shell.css',
 })
@@ -33,12 +37,9 @@ export class FamilyShell implements OnDestroy {
   private readonly clips = inject(ClipsService);
   private readonly session = inject(SessionService);
   readonly loader = inject(LoaderService);
-  private readonly router = inject(Router);
-  /** The route under the shell: the "Choose from the list" chip shows on the school's boy-or-girl and face screens. */
+  /** The route under the shell: the tester bar shows on the boy/girl and face screens only. */
   private readonly route = signal(location.pathname);
-  readonly chipOn = computed(() => /^\/(gender|face)\b/.test(this.route()));
-  /** The back door on the boy-or-girl and face screens (Sani 2026-11-22: only a way back, no Guest or Parent there). */
-  back(): void { if (/^\/face/.test(this.route())) { this.router.navigate(['/gender']); return; } this.fam.show('welcome'); }
+  readonly testBar = computed(() => TEST_BAR && !this.fam.screen() && /^\/(gender|face)\b/.test(this.route()));
   readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
   readonly faceText = computed(() => { const P = this.loader.faceProg(); if (P.state === 'fail') return 'The camera could not be downloaded. Check the connection and try again.';
     return (P.total ? Math.round(P.got / 1048576) + ' of ' + Math.round(P.total / 1048576) + ' MB' : 'Starting') + ' · once only, then it stays on this phone'; });
@@ -86,7 +87,7 @@ export class FamilyShell implements OnDestroy {
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    this.router.events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
+    inject(Router).events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
     // each screen's opening: what Laila says there (only lines that exist), and a clean slate for the forms
     effect(() => {
       const s = this.fam.screen();
@@ -113,12 +114,17 @@ export class FamilyShell implements OnDestroy {
     if (!md?.getUserMedia) { this.fam.afterMic(); return; }
     this.micBusy.set(true); this.micMsg.set('');
     try {
-      const s = await md.getUserMedia({ audio: true }); s.getTracks().forEach((t) => t.stop());
-      this.session.savePerms(false);
+      // both at once (Sani 2026-11-23): one call, so the phone asks for the microphone and the camera together or back
+      // to back, and the face screen never asks again
+      const s = await md.getUserMedia({ audio: true, video: { facingMode: 'user' } }); s.getTracks().forEach((t) => t.stop());
+      this.session.savePerms(true);
       this.micBusy.set(false); this.fam.afterMic();
     } catch (e: any) {
+      // which one was refused: the microphone alone tells
+      let mic = false; try { const a = await md.getUserMedia({ audio: true }); a.getTracks().forEach((t) => t.stop()); mic = true; } catch { mic = false; }
       this.micBusy.set(false);
-      this.micMsg.set('The microphone was not allowed. Kratu still works: speaking tasks become tap-the-picture tasks. You can allow it later from Manage profiles.');
+      this.micMsg.set(mic ? 'The camera was not allowed. Children sign in by looking at the phone, so Kratu needs it. Allow the camera in the phone’s settings, then tap again.'
+        : 'The microphone was not allowed. Kratu still works: speaking tasks become tap-the-picture tasks. You can allow it later from Manage profiles.');
     }
   }
 

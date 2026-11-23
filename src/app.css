@@ -1039,3 +1039,12 @@ html.fam-build .capmodal-inner .capmic[hidden],html.fam-build .capmodal-inner .h
 html.fam-build .capmodal-inner .alone{z-index:6}
 /* the match glow: small, centred on the face (not the size of the face) */
 html.fam-build .matchfx{width:min(34vmin, 220px);height:min(34vmin, 220px);transform:translate(-50%,-50%)}
+/* the app's own door over the full-screen camera (Sani 2026-11-23: "the back button should be the type in the main app"):
+   the same black pill and door as every upright family screen, upper left with the safe area */
+html.fam-build .capmodal-inner .backdoor{position:absolute;z-index:30;left:calc(12px + env(safe-area-inset-left,0px));top:calc(12px + env(safe-area-inset-top,0px));width:66px;height:44px;border-radius:22px;background:#1F1F1F;border:none;padding:0;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.3);display:block}
+html.fam-build .capmodal-inner .backdoor .doorsvg{position:absolute;left:9px;top:5px;width:24px;height:30px;display:block;overflow:visible}
+html.fam-build .capmodal-inner .backdoor .doorsvg>svg{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}
+html.fam-build .capmodal-inner .backdoor .doorsvg *{transform-box:fill-box}
+html.fam-build .capmodal-inner .backdoor .dleaf{transform-origin:23.3333% 53.4722%;animation:doorajar2 5.2s ease-in-out infinite}
+html.fam-build .capmodal-inner .backdoor::after{content:"";position:absolute;left:36px;top:12px;width:20px;height:18px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 22'%3E%3Cpath d='M24 11 H5 M12 3 L4 11 L12 19' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35));animation:doorarrow 1.3s ease-in-out infinite}
+html.fam-build .capmodal-inner .backdoor:active{transform:scale(.96)}

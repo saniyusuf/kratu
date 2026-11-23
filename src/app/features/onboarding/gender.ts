@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { afterPaint } from '../../shared/paint';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService, Gender } from '../../core/state/session.service';
-import { Ear } from '../../shared/chrome/chrome';
+import { Door, Ear } from '../../shared/chrome/chrome';
+import { FamilyService } from '../../core/family/family.service';
 import { Spotter, hintOnce } from '../../shared/lesson/helpers';
 import { ZoomService } from '../../core/zoom/zoom.service';
 import { t } from '../../core/lang/t';
@@ -12,9 +13,10 @@ import { FAMILY } from '../../core/edition';
 /** Screen 0 · Gender, always first: two photos, Laila greets and the ear repeats. */
 @Component({
   selector: 'app-gender',
-  imports: [Ear],
+  imports: [Ear, Door],
   host: { class: 's genderred', '[class.touring]': 'touring()' },
   template: `
+@if (FAMILY) { <app-door (pressed)="famBack()" /> }
 <app-ear [spot]="spot() === 'dome'" (pressed)="tour()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
 <div class="hi" style="font-size:clamp(26px,4vw,38px)">{{ t('Sannu!') }}</div>
@@ -26,6 +28,10 @@ import { FAMILY } from '../../core/edition';
 })
 export class GenderScreen implements OnInit, OnDestroy {
   readonly t = t;
+  readonly FAMILY = FAMILY;
+  private readonly fam = inject(FamilyService);
+  /** The family build (Sani 2026-11-23): the app's own door, back to the family's first page. */
+  famBack(): void { this.bus.stopAll(); this.fam.show('welcome'); }
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);

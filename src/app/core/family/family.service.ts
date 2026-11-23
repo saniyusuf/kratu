@@ -92,9 +92,10 @@ export class FamilyService {
   /** The microphone up front; the camera is asked for only at the face step, after the parent's consent. */
   async micGranted(): Promise<boolean> {
     let ok = false;
-    try { if (navigator.permissions?.query) ok = (await navigator.permissions.query({ name: 'microphone' as PermissionName })).state === 'granted'; } catch { /* fall through */ }
+    // the microphone and the camera, both (Sani 2026-11-23: asked together, the camera never again on the face screen)
+    try { if (navigator.permissions?.query) { const Q = (n: string) => navigator.permissions.query({ name: n as PermissionName }).then((r) => r.state === 'granted'); ok = (await Q('microphone')) && (await Q('camera')); } } catch { /* fall through */ }
     if (!ok) try { ok = localStorage.getItem('kratu_perms') === '1'; } catch { /* ignore */ }
-    if (ok) this.session.perms.set({ camera: false, mic: true, at: Date.now() });
+    if (ok) this.session.perms.set({ camera: true, mic: true, at: Date.now() });
     return ok;
   }
 
@@ -200,6 +201,12 @@ export class FamilyService {
   }
   /** After "welcome back": the welcome-back beats of the app's own welcome screen, then home. */
   backGo(): void { this.session.known.set(true); this.show(null); this.router.navigate(['/welcome']); }
+  /** The TEMPORARY tester bar (family-shell TEST_BAR): in as the sample Musa or Aisha, no camera, nothing saved to any
+   *  real child (the sample ids are try_musa / try_aisha), on to Laila's welcome back and home. */
+  testAs(g: Gender): void {
+    const P = g === 'f' ? FamilyService.SAMPLES[1] : FamilyService.SAMPLES[0];
+    this.bus.stopAll(); this.signIn(P); this.current.set(P); this.backGo();
+  }
   /** Guest (Sani 2026-11-18): anyone, everything open, nothing saved, gone when the session ends. */
   guest(): void {
     this.bus.stopAll(); this.session.end(); this.session.guest.set(true); this.session.setGender('m');

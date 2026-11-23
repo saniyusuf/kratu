@@ -6,7 +6,7 @@ import { AudioBus } from '../../core/audio/audio-bus.service';
 import { IdentityService, MatchResult, Person } from '../../core/identity/identity.service';
 import { extractName, nameClip, snapName, stillFrame } from '../../core/identity/name-clip';
 import { SessionService } from '../../core/state/session.service';
-import { Ear } from '../../shared/chrome/chrome';
+import { Door, Ear } from '../../shared/chrome/chrome';
 import { Laila } from '../../shared/laila/laila';
 import { DOOR_SVG } from '../../shared/svg';
 import { LANG } from '../../core/lang/lang';
@@ -20,6 +20,8 @@ const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
 /** The family build (Sani 2026-11-22): the whole step at most 10 seconds for young children. */
 const MAXMS = FAMILY ? 8000 : 10000, HARDMS = FAMILY ? 10000 : 20000;
+/** The family build: when to ask for the name, and how much of s_p3 is played (its first sentence ends at 2.95 s). */
+const ASK_NAME_MS = 4000, ASK_NAME_CLIP_MS = 3150;
 /** The online recogniser may help but never holds a child up: not listening within this, the ring starts without it. */
 const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
@@ -47,9 +49,10 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
  */
 @Component({
   selector: 'app-face',
-  imports: [Ear, Laila],
+  imports: [Ear, Laila, Door],
   host: { class: 's facecap', '[attr.data-gender]': 'session.g()' },   // the design hides the other gender's example through this attribute
   template: `
+@if (FAMILY) { <app-door (pressed)="famBack()" /> }
 <app-ear (pressed)="intro()" />
 <div class="pr">{{ session.g() === 'f' ? t('Bari mu ga wa kike') : t('Bari mu ga wa kake') }}<span class="sm">{{ session.g() === 'f' ? t('Bidiyo kina faɗin sunanki') : t('Bidiyo kana faɗin sunanka') }} · a video of you saying your name</span></div>
 <div class="examples" [hidden]="capturing()">
@@ -70,7 +73,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
   </button>
 </div>
 @if (capturing()) {
-<div #modal class="capmodal"><div class="capmodal-inner facecap" [attr.data-gender]="session.g()">
+<div #modal class="capmodal"><div class="capmodal-inner facecap" [attr.data-gender]="session.g()">@if (FAMILY) { <app-door (pressed)="famBack()" /> }
   <div class="capmodal-title">{{ bi('Bari mu ga wa kake', 'let’s see who you are') }}</div>
   <div class="camview">
     <div class="camwrap" [class.armed]="armed()" [class.paused]="!!paused()" [class.glow]="glow()" [class.done]="!!still()" [style.--p]="progress() + '%'">
@@ -87,7 +90,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
         <button type="button" class="gatepick gatedoor" [class.lit]="gateFocus() === 'door'" [class.dim]="gateFocus() === 'laila'" [attr.aria-label]="t('Koma farko')" (click)="startOver($event)"><span style="display:contents" [innerHTML]="door"></span><span class="start-hand" [hidden]="gateFocus() !== 'door'">👆🏾</span><div class="hint">{{ t('Koma farko') }}<small>click the door to start again</small></div></button></div>
     </div>
     <span class="cam-hand" [style.display]="glow() ? 'block' : 'none'">👆🏾</span>
-    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? t('Ki ce') : t('Ka ce') }}: {{ bi('“Sunana…”', 'say your name') }}</div>
+    <div class="capmic" [hidden]="!armed()">{{ session.g() === 'f' ? t('Ki ce') : t('Ka ce') }}: @if (FAMILY) {{{ t('“Sunana …”') }}} @else {{{ bi('“Sunana…”', 'say your name') }}}</div>
     <div class="heard" [hidden]="!heardText()" [class.interim]="interim()">{{ heardText() }}</div>
     <div class="camnote" [hidden]="!note()">{{ note() }}</div>
     <div class="capdone" [hidden]="!doneText()"><span class="donetext">{{ doneText() }}</span></div>
@@ -111,6 +114,9 @@ export class FaceScreen implements OnInit, OnDestroy {
   private readonly confettiRef = viewChild<ElementRef<HTMLCanvasElement>>('confetti');
 
   readonly t = t;
+  readonly FAMILY = FAMILY;
+  /** The family build's back (Sani 2026-11-23: the app's own door): back to boy or girl, the camera closed. */
+  famBack(): void { this.pending = null; this.bus.stopAll(); this.teardown(); this.dropModal(); this.capturing.set(false); this.router.navigate(['/gender']); }
   readonly E = E;
   readonly bi = bi;
   readonly exG = signal<'m' | 'f'>('m');
@@ -367,15 +373,37 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.capEnded = false; this.ended = false; this.paused.set(null); this.speaking = false; this.lastWarn = {}; this.cnt = { many: 0, none: 0, one: 0 }; this.badSince = 0; this.badKind = null; this.pict.set(null); this.glow.set(true); this.disarm();
     if (!this.stream) this.recLive = true;   // photo fallback (no camera) → no recorder to wait for
     this.bus.micReady().then(() => this.startSR()); this.identity.api?.store.load().catch(() => { /* matched at the end instead */ }); this.startFaceMon();
-    let t0 = Date.now(), last = t0, last0 = t0, active = 0;
+    let t0 = Date.now(), last = t0, last0 = t0, active = 0; this.ringT0 = t0; this.askedName = false;
     this.speechCb = (t, fin) => { const nm = extractName(t); if (nm) { if (this.nameAt < 0 && this.recT0) this.nameAt = Math.max(0, Date.now() - this.recT0 - 900); if (this.stopT) clearTimeout(this.stopT); this.stopT = setTimeout(() => this.endRec(), fin ? 500 : 1500); } };
     this.iv = setInterval(() => {
       const now = Date.now(); if (this.faceOK() && this.armed()) active += now - last; last = now;
       this.progress.set(Math.min(100, active / MAXMS * 100)); const sec = Math.floor(active / 1000); this.capTime.set('00:' + (sec < 10 ? '0' : '') + sec);
       if ((this.paused() || this.speaking) && !FAMILY) t0 += now - last0; last0 = now;   // the family build: 10 seconds in all, pauses included (Sani 2026-11-22)
+      if (FAMILY && this.extend) { t0 += this.extend; this.extend = 0; }   // except Laila's own "say your name"
+      if (FAMILY && !this.askedName && now - this.ringT0 >= ASK_NAME_MS && !this.capEnded && !this.ended) this.askName();
       if (active >= MAXMS || now - t0 >= HARDMS) this.endRec();
     }, 100);
   }
+  /**
+   * The family build (Sani 2026-11-23): nobody signed in on the face alone by about 4 s (not found, or two children too
+   * close), so Laila asks for the name, once: the first sentence of her own s_p3 ("Yanzu kai, ka faɗa mana sunanka." /
+   * "Yanzu ke, ki faɗa mana sunanki."), cut before its "press Laila". The recording pauses while she speaks (she is never
+   * heard with the microphone open), and her line does not count against the 10 s.
+   */
+  private ringT0 = 0; private askedName = false;
+  private async askName(): Promise<void> {
+    this.askedName = true; this.speaking = true; const T = Date.now(); console.log('[kratu] say your name, at', T - this.ringT0, 'ms');
+    try { if (this.rec?.state === 'recording') this.rec.pause(); } catch { /* ignore */ }
+    if (this.recHeld) { this.holdMic(false); this.recHeld = false; }
+    const CUT = setTimeout(() => this.bus.stopAll(), ASK_NAME_CLIP_MS);
+    await this.bus.play(this.bus.gk('s_p3')); clearTimeout(CUT);
+    this.extend += Date.now() - T; this.speaking = false;
+    if (this.capEnded || this.ended) return;
+    await this.bus.micReady();
+    if (this.rec?.state === 'paused') { try { this.rec.resume(); } catch { /* ignore */ } }
+    if (this.rec?.state === 'recording' && !this.recHeld) { this.holdMic(true); this.recHeld = true; }
+  }
+  private extend = 0;
   private stopAllCapture(): void { if (this.iv) clearInterval(this.iv); this.iv = null; if (this.stopT) clearTimeout(this.stopT); this.speechCb = null; this.disarm(); this.pict.set(null); this.paused.set(null); this.glow.set(false); this.stopFaceMon(); this.stopSR(); this.stopCam(); }
   private endRec(): void {
     if (this.ended) return; this.ended = true; this.capEnded = true; this.stopAllCapture();

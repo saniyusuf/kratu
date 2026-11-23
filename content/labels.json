@@ -192,6 +192,7 @@
   { "ha": "“Sunana Aisha”", "en": "“My name is Aisha”", "kind": "screen" },
   { "ha": "“Sunana Musa”", "en": "“My name is Musa”", "kind": "screen" },
   { "ha": "“Sunana…”", "en": "“My name is…”", "kind": "screen" },
+  { "ha": "“Sunana …”", "en": "“Sunana …”", "kind": "screen" },
   { "ha": "An gama!", "en": "Finished!", "kind": "play" },
   { "ha": "Ba komai!", "en": "That's fine!", "kind": "play" },
   { "ha": "Fara!", "en": "Start!", "kind": "play" },

@@ -187,6 +187,7 @@ export const LABELS_EN: Record<string, Label> = {
  "“Sunana Aisha”": {"en":"“My name is Aisha”","kind":"screen"},
  "“Sunana Musa”": {"en":"“My name is Musa”","kind":"screen"},
  "“Sunana…”": {"en":"“My name is…”","kind":"screen"},
+ "“Sunana …”": {"en":"“Sunana …”","kind":"screen"},
  "An gama!": {"en":"Finished!","kind":"play"},
  "Ba komai!": {"en":"That's fine!","kind":"play"},
  "Fara!": {"en":"Start!","kind":"play"},

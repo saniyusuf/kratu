@@ -18,16 +18,17 @@
 @case ('mic') {
 <section class="fs mic" [class.up]="upright()">
   <div class="mic-left">
-    <button class="mic-big" [class.busy]="micBusy()" aria-label="Allow the microphone" (click)="askMic()">
+    <button class="mic-big" [class.busy]="micBusy()" aria-label="Allow the microphone and the camera" (click)="askMic()">
       <i class="w1"></i><i class="w2"></i><i class="w3"></i>
       <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg>
       <span class="hand" aria-hidden="true" [innerHTML]="hand"></span>
     </button>
-    <button class="btn glowbtn" (click)="askMic()">Allow the microphone</button>
+    <button class="btn glowbtn" (click)="askMic()">Allow microphone and camera</button>
   </div>
   <div class="mic-right">
-    <h1>Kratu needs the microphone</h1>
-    <p class="note">So Laila can hear your child say words. Tap the microphone, then tap “Allow” when the phone asks.</p>
+    <span class="camb" aria-hidden="true" [innerHTML]="camera"></span>
+    <h1>Kratu needs the microphone and the camera</h1>
+    <p class="note">Laila hears your child say words, and knows each child by face and voice. Tap the microphone, then tap “Allow” each time the phone asks.</p>
     @if (micMsg()) {<p class="warn">{{ micMsg() }} <button class="link" (click)="fam.afterMic()">Carry on</button></p>}
   </div>
 </section>
@@ -129,5 +130,5 @@
 }
 }
 
-<!-- on the school's boy-or-girl and face screens (Sani 2026-11-22): only the way back, upper left as everywhere -->
-@if (!fam.screen() && chipOn()) {<button class="fdoor" aria-label="Back" [innerHTML]="door" (click)="back()"></button>}
+<!-- TEMPORARY tester bar (TEST_BAR in family-shell.ts): in as the sample children, no camera -->
+@if (testBar()) {<div class="testbar" role="group" aria-label="Tester"><span>Test</span><button (click)="fam.testAs('m')">Musa</button><button (click)="fam.testAs('f')">Aisha</button></div>}
