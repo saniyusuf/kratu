@@ -19,7 +19,7 @@ export class FamilyRoot {
    * drawn turned a quarter when the phone is held upright. The games are the judging games, the balloons, Nemo hoto
    * and the letters gate.
    */
-  static readonly GAMES = /^\/(wasanni\/[^/?#]+|fashe|nemo|haruffa\/gwada)(?:[/?#]|$)/;
+  static readonly GAMES = /^\/(wasanni(?:\/[^/?#]+)?|fashe|nemo|haruffa\/gwada)(?:[/?#]|$)/;   // the board too (Sani 2026-11-23: landscape only)
   constructor() {
     const set = (url: string) => document.documentElement.classList.toggle('fam-up', !FamilyRoot.GAMES.test(url));
     document.documentElement.classList.add('fam-build');   // the family build's own look on shared screens (app.css), e.g. no emoji, the camera's border

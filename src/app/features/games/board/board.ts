@@ -9,6 +9,7 @@ import { Door, Ear } from '../../../shared/chrome/chrome';
 import { Laila } from '../../../shared/laila/laila';
 import { Spotter } from '../../../shared/lesson/helpers';
 import { BOOK_COVER_SVG } from '../../../shared/book/book-svg';
+import { FAMILY } from '../../../core/edition';
 import { GAME_LIST } from '../lab/game-list';
 import { t } from '../../../core/lang/t';
 import { GamePreview } from '../../../shared/game-preview/game-preview';
@@ -59,6 +60,8 @@ interface Game { id: string; name: string; line: string; en: string; pic: string
   template: `
 <app-door (pressed)="home()" />
 <app-ear (pressed)="arrive()" />
+<div class="wbig">
+@if (FAMILY) {<button class="warr wside" aria-label="Baya" [disabled]="idx() <= 0" (click)="stepGame(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>}
 <div class="wprev" role="button" [attr.aria-label]="sel().name" (click)="play()">
   @for (g of [sel()]; track g.id) {
     <div class="wscene"><app-game-preview [gid]="g.id" /></div>
@@ -66,6 +69,9 @@ interface Game { id: string; name: string; line: string; en: string; pic: string
   }
   <button class="wplay" aria-label="Fara wasa" (click)="play(); $event.stopPropagation()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button>
 </div>
+@if (FAMILY) {<button class="warr wside" aria-label="Gaba" [disabled]="idx() >= games.length - 1" (click)="stepGame(1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>}
+</div>
+@if (FAMILY) {<div class="wdots" aria-hidden="true">@for (g of games; track g.id) {<i [class.on]="g.id === sel().id"></i>}</div>}
 <div class="wstrip">
   <button class="warr" aria-label="Baya" [disabled]="at() <= 0" (click)="slide(-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
   <div class="wview fitbox">
@@ -98,6 +104,10 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
     return { ...o, en: t(o.en), name: g?.name || o.id, q: g?.q, pic: 'assets/games/' + o.id + '.webp' };
   });
   readonly sel = signal<Game>(this.games[0]);
+  /** The family build (Sani 2026-11-23, option A): one big game at a time, arrows either side, swipe, dots. */
+  readonly FAMILY = FAMILY;
+  readonly idx = computed(() => this.games.findIndex((g) => g.id === this.sel().id));
+  stepGame(d: number): void { const I = this.idx() + d; if (I < 0 || I >= this.games.length) return; this.spotter.unspot(); this.sel.set(this.games[I]); const MINE = ++this.asks; this.describe(MINE); }
   /** The first card showing at the strip's left edge. */
   readonly at = signal(0);
   /** How many cards fit in the strip's window, measured once it is drawn. */
@@ -111,6 +121,7 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
     const v = this.hostEl.nativeElement.querySelector<HTMLElement>('.wview');
     if (v) { this.fits.set(Math.max(1, Math.floor((v.offsetWidth + 14) / CARD))); this.swipe(v); }
     this.dialShape();
+    if (FAMILY) { const PV = this.hostEl.nativeElement.querySelector<HTMLElement>('.wprev'); if (PV) this.swipeBig(PV); }
     afterPaint().then(() => this.arrive());
   }
   ngOnDestroy(): void { cancelAnimationFrame(this.dialRaf); clearTimeout(this.dialStop); this.dead = true; this.asks++; clearTimeout(this.talkTimer); this.spotter.unspot(); this.bus.stopAll(); this.off.forEach((f) => f()); }
@@ -172,11 +183,22 @@ export class GamesBoard implements AfterViewInit, OnDestroy {
   slide(d: number): void { this.at.set(Math.max(0, Math.min(this.last(), this.at() + d * STEP))); }
   /** The play button, or the preview itself: the picked game in free play, the way the settings list opens it. */
   play(): void {
+    if (this.moved) return;
     const g = this.sel(); this.asks++; this.bus.stopAll(); this.spotter.unspot();
     this.router.navigate(g.id === 'fashe' ? ['/fashe'] : ['/wasanni', g.id], { queryParams: { ...(g.q || {}), from: 'wasanni' } });
   }
   home(): void { this.asks++; this.bus.stopAll(); this.spotter.unspot(); this.router.navigate(['/home']); }
 
+  /** The family's big card: a sideways swipe on it moves to the next or previous game; a swipe is never a press. */
+  private swipeBig(v: HTMLElement): void {
+    let x0: number | null = null;
+    const down = (e: PointerEvent) => { x0 = e.clientX; this.moved = false; };
+    const move = (e: PointerEvent) => { if (x0 != null && Math.abs(e.clientX - x0) > 12) this.moved = true; };
+    const up = (e: PointerEvent) => { if (x0 == null) return; const D = e.clientX - x0; x0 = null; if (this.moved && Math.abs(D) > 40) this.stepGame(D < 0 ? 1 : -1); setTimeout(() => (this.moved = false), 0); };
+    // capture: the live game scene inside the card handles its own pointer events and may stop them on the way up
+    v.addEventListener('pointerdown', down, true); addEventListener('pointermove', move, true); addEventListener('pointerup', up, true); addEventListener('pointercancel', up, true);
+    this.off.push(() => { v.removeEventListener('pointerdown', down, true); removeEventListener('pointermove', move, true); removeEventListener('pointerup', up, true); removeEventListener('pointercancel', up, true); });
+  }
   /** A swipe (finger or mouse) drags the strip and lands on the nearest card; a swipe is never a press. */
   private moved = false;
   private swipe(v: HTMLElement): void {
