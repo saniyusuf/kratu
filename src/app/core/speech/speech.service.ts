@@ -93,10 +93,11 @@ export class SpeechService {
    * offline, with no microphone. Resolves the text heard ('' if nothing). Every result Vosk gives along the way is kept,
    * since a pause inside the clip can split it.
    */
-  recognizeClip(pcm: Float32Array, rate: number, phrases: string[]): Promise<string> {
+  recognizeClip(pcm: Float32Array, rate: number, phrases: string[] | null): Promise<string> {
     if (!this.model) return Promise.resolve('');
     return new Promise((resolve) => {
-      let REC: any; try { REC = new this.model.KaldiRecognizer(rate, JSON.stringify(phrases.concat(['[unk]']))); } catch { resolve(''); return; }
+      // phrases null = free listening, every word the model knows (the second, independent hearing of a name)
+      let REC: any; try { REC = phrases ? new this.model.KaldiRecognizer(rate, JSON.stringify(phrases.concat(['[unk]']))) : new this.model.KaldiRecognizer(rate); } catch { resolve(''); return; }
       const PARTS: string[] = []; let done = false; let settle: ReturnType<typeof setTimeout> | null = null;
       const FIN = () => { if (done) return; done = true; try { REC.remove(); } catch { /* ignore */ } resolve(PARTS.join(' ').replace(/\[unk\]/g, '').replace(/\s+/g, ' ').trim()); };
       REC.on('result', (m: any) => { const T = String(m?.result?.text || '').trim(); if (T) PARTS.push(T); if (settle) clearTimeout(settle); settle = setTimeout(FIN, 350); });

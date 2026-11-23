@@ -188,9 +188,5 @@ export class FamilyShell implements OnDestroy {
 
   /** The child's own "Sunana …" clip says their name (the profile may have no written one). */
   hear(p: Profile): void { const C = this.fam.clipOf(p.id); this.bus.stopAll(); if (C) this.bus.playRaw(C); }
-  /** A guessed name, in Laila's voice (the bank clip, fetched once from the app's own files). */
-  async hearBank(key: string): Promise<void> { const U = await this.fam.clipUrl(key); this.bus.stopAll(); if (U) this.bus.playRaw(U); }
-  /** "Type it": the name field of that child. */
-  typeName(e: Event): void { ((e.target as HTMLElement).closest('.kid')?.querySelector('.kname') as HTMLInputElement | null)?.focus(); }
   removeKid(p: Profile): void { if (confirm('Remove ' + p.name + ' and their progress from this phone?')) this.fam.remove(p.id); }
 }

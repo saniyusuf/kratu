@@ -14,7 +14,6 @@ import { SpeechService } from '../speech/speech.service';
  */
 export interface Profile { id: string; name: string; g: Gender; at: number;
   /** Up to three names-bank names the offline recogniser heard in the child's own "Sunana …" (Sani 2026-11-23). */
-  guesses?: string[];
   /** The bank name the parent confirmed, and its clip (Laila says it from then on; the clip is kept on the phone). */
   nameKey?: string; nameClip?: string; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
 
@@ -83,10 +82,11 @@ export class FamilyService {
   /** Manage profiles: the parent may type a child's name (optional; the child's own clip says it anyway). */
   rename(id: string, name: string): void {
     const NAME = name.replace(/\s+/g, ' ').trim().slice(0, 24);
-    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: NAME } : p)));
+    // a name typed over the bank one: Laila's bank clip no longer fits, so the child's own clip speaks again
+    this.write(this.profiles().map((p) => (p.id === id ? (NAME === p.name ? p : { ...p, name: NAME, nameKey: undefined, nameClip: undefined }) : p)));
     if (NAME) this.identity.api?.store.upsert({ id, name: NAME }).catch(() => undefined);
   }
-  // ---- the name (Sani 2026-11-23): guessed offline from the child's clip, confirmed by the parent, never sent anywhere
+  // ---- the name (Sani 2026-11-23): heard offline from the child's clip, set only in strict mode, never sent anywhere
   private namesData: Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> | null = null;
   names(): Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> {
     if (!this.namesData) this.namesData = fetch('names/phrases.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -95,23 +95,26 @@ export class FamilyService {
   /** How a bank key is written: "a'isha" → "A'isha". */
   nameOf(key: string): string { return key.charAt(0).toUpperCase() + key.slice(1); }
   async clipUrl(key: string): Promise<string | null> { const D = await this.names(); return D?.file[key] ? 'names/' + D.file[key] + '.ogg' : null; }
-  /** Three guesses: the best phrase heard, then heard again without it, twice. */
-  async guessName(id: string): Promise<void> {
+  /** Strict mode (Sani 2026-11-23, "recogniser only, strict"): the name is set only when two hearings agree —
+   *  the names-bank grammar hears a phrase that is ONE name, and free listening, matched to the bank by a sound key,
+   *  lands on that same name (or a spelling of it). Tested on the 1,958 bank recordings: set for 23% of names, right 91%.
+   *  Otherwise nothing is set and the child's own clip stays their name. Offline; nothing leaves the phone. */
+  async strictName(id: string): Promise<void> {
     try {
       const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return;
       const CTX = new AudioContext({ sampleRate: 16000 });
       const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close();
-      let pool = Object.keys(D.phrases); const OUT: string[] = [];
-      for (let i = 0; i < 3 && pool.length; i++) {
-        const T = await this.speech.recognizeClip(PCM, 16000, pool); if (!T || !D.phrases[T]) break;
-        for (const k of D.phrases[T]) if (OUT.length < 3 && !OUT.includes(k)) OUT.push(k);
-        pool = pool.filter((x) => x !== T);
-      }
-      if (OUT.length) this.write(this.profiles().map((p) => (p.id === id ? { ...p, guesses: OUT } : p)));
-    } catch { /* no guess: the child's own clip, as before */ }
+      const HEARD = await this.speech.recognizeClip(PCM, 16000, Object.keys(D.phrases));
+      const ONE = D.phrases[HEARD]; if (!ONE || ONE.length !== 1) return;
+      const KEY = ONE[0], FREE = await this.speech.recognizeClip(PCM, 16000, null);
+      const NEAR = nearestName(FREE, Object.keys(D.file)); if (!NEAR) return;
+      if (NEAR !== KEY && !(D.variants[KEY] || []).includes(NEAR)) return;
+      if (this.profiles().find((p) => p.id === id)?.name) return;   // a parent already typed one: theirs stands
+      await this.setBankName(id, KEY);
+    } catch { /* not sure: the child's own clip, as before */ }
   }
-  /** The parent picked one: the name is written and its bank clip kept on the phone for Laila. */
-  async confirmName(id: string, key: string): Promise<void> {
+  /** The name is written and its bank clip kept on the phone for Laila's "Sannu, <name>". */
+  private async setBankName(id: string, key: string): Promise<void> {
     const URL0 = await this.clipUrl(key); let clip: string | undefined;
     try { if (URL0) { const B = await (await fetch(URL0)).blob(); clip = await new Promise<string>((r) => { const F = new FileReader(); F.onload = () => r(String(F.result)); F.readAsDataURL(B); }); } } catch { clip = undefined; }
     const NAME = this.nameOf(key);
@@ -225,8 +228,8 @@ export class FamilyService {
       this.write([...this.profiles(), p]);
     }
     this.signIn(p); this.current.set(p);
-    if (isNew) this.guessName(p.id);   // offline, in the background: the parent sees the guesses in Manage profiles
-    // a known child whose name the parent confirmed: "Sannu, <name>" in Laila's voice first (Sani 2026-11-23)
+    if (isNew) this.strictName(p.id);   // offline, in the background: set only when two hearings agree
+    // a known child whose name came from the bank: "Sannu, <name>" in Laila's voice first (Sani 2026-11-23)
     if (!isNew && p.nameClip) { const CLIP = p.nameClip; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
     // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
@@ -262,4 +265,27 @@ export class FamilyService {
     this.bus.stopAll(); this.screen.set(s);
     document.documentElement.classList.toggle('fam-on', !!s);
   }
+}
+
+/** A rough Hausa/English sound key (the names test's free.py): letters folded to how they sound, doubles and h after consonants dropped. */
+function soundKey(text: string): string {
+  let s = text.toLowerCase().replace(/'/g, '');
+  const FOLDS: [string, string][] = [['ph', 'f'], ['ck', 'k'], ['q', 'k'], ['c', 'k'], ['x', 'ks'], ['z', 's'], ['ee', 'i'], ['ea', 'i'], ['oo', 'u'], ['ou', 'u'], ['y', 'i'], ['w', 'u'], ['e', 'i'], ['o', 'u'], ['dh', 'd'], ['th', 't'], ['kh', 'k'], ['gh', 'g'], ['sh', 'S'], ['ch', 'S'], ['j', 'J'], ['ts', 'S']];
+  for (const [A, B] of FOLDS) s = s.split(A).join(B);
+  return s.replace(/([bdfgklmnprst])h/g, '$1').replace(/[^a-zSJ]/g, '').replace(/(.)\1+/g, '$1');
+}
+function editDistance(a: string, b: string): number {
+  const D = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = D[0]; D[0] = i;
+    for (let j = 1; j <= b.length; j++) { const T = D[j]; D[j] = Math.min(D[j] + 1, D[j - 1] + 1, prev + (a[i - 1] !== b[j - 1] ? 1 : 0)); prev = T; }
+  }
+  return D[b.length];
+}
+/** The bank name whose sound key is closest to what free listening heard. */
+function nearestName(heard: string, keys: string[]): string | null {
+  const T = soundKey(heard.replace(/\s+/g, '')); if (!T) return null;
+  let best: string | null = null, bestD = Infinity;
+  for (const K of keys) { const SK = soundKey(K), DD = editDistance(T, SK) / Math.max(T.length, SK.length); if (DD < bestD) { bestD = DD; best = K; } }
+  return best;
 }
