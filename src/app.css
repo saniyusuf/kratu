@@ -1016,3 +1016,10 @@ html.fam-build .capmodal-inner .camwrap{margin:0 auto}
 html.fam-build .capmodal-inner .camwrap{width:max-content;max-width:100%;box-sizing:border-box}
 html.fam-build .capmodal-inner .cam{width:min(calc(84vw - 44px), calc(56dvh * var(--ar,.75)))}
 @media (orientation: landscape) and (max-height: 520px){ html.fam-build .capmodal-inner .cam{width:min(calc(70vw - 44px), calc(58dvh * var(--ar,1.33)))} }
+/* the camera takes the room (Sani 2026-11-23: "the camera thing should take more space"): the dialog nearly fills the
+   screen and the picture is as big as the screen allows, at the camera's own shape */
+html.fam-build .capmodal{padding:6px}
+html.fam-build .capmodal-inner{width:min(1100px, calc(100vw - 12px));max-height:calc(100dvh - 12px);padding:10px 10px 8px;gap:4px}
+html.fam-build .capmodal-title{font-size:clamp(18px, 2.6vw, 26px);margin-bottom:0}
+html.fam-build .capmodal-inner .cam{width:min(calc(100vw - 52px), calc((100dvh - 120px) * var(--ar,.75)), 1000px)}
+@media (orientation: landscape) and (max-height: 520px){ html.fam-build .capmodal-inner .cam{width:min(calc(100vw - 52px), calc((100dvh - 84px) * var(--ar,1.33)))} html.fam-build .capmodal-title{display:none} html.fam-build .capmodal-inner .capmic,html.fam-build .capmodal-inner .heard{font-size:15px;margin:0} }
