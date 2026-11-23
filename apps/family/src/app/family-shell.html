@@ -133,5 +133,14 @@
 }
 }
 
-<!-- TEMPORARY tester bar (TEST_BAR in family-shell.ts): in as the sample children, no camera -->
-@if (testBar()) {<div class="testbar" role="group" aria-label="Tester"><span>Test</span><button (click)="fam.testAs('m')">Musa</button><button (click)="fam.testAs('f')">Aisha</button></div>}
+<!-- the settings gear, bottom left like the school app (Sani 2026-11-23), on the boy/girl and face screens -->
+@if (gearOn()) {
+<button class="fgear" aria-label="Settings" [innerHTML]="gear" (click)="gearOpen.set(!gearOpen())"></button>
+@if (gearOpen()) {<div class="fpanel" role="menu" aria-label="Settings">
+  <b>Settings</b>
+  @if (TESTER) {<button role="menuitem" (click)="gearGo('m')">Enter as Musa</button><button role="menuitem" (click)="gearGo('f')">Enter as Aisha</button>}
+  <button role="menuitem" (click)="reload()">Refresh</button>
+  <button role="menuitem" (click)="gearGo('parent')">Parent area</button>
+  @if (TESTER) {<small>Musa and Aisha are for testing</small>}
+</div>}
+}

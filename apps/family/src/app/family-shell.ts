@@ -6,14 +6,15 @@ import { ClipsService } from '@kratu/app/core/clips/clips.service';
 import { FamilyService, Profile } from '@kratu/app/core/family/family.service';
 import { Gender, SessionService } from '@kratu/app/core/state/session.service';
 import { Laila } from '@kratu/app/shared/laila/laila';
-import { BACKSPACE_SVG, CAMERA_SVG, DOOR_SVG, EAR_SVG, HAND_SVG } from '@kratu/app/shared/svg';
+import { BACKSPACE_SVG, CAMERA_SVG, DOOR_SVG, EAR_SVG, GEAR_SVG, HAND_SVG } from '@kratu/app/shared/svg';
 import { BOY_SVG, GIRL_SVG } from './kids';
 import { LoaderService } from '@kratu/app/core/loader/loader.service';
 import { NavigationEnd, Router } from '@angular/router';
 
-/** TEMPORARY tester tool (Sani 2026-11-23): "Musa" and "Aisha" buttons on the boy/girl and face screens that skip the
- *  camera and sign in as the sample children. Set to false (this one line) before release. */
-const TEST_BAR = true;
+/** TEMPORARY tester entries (Sani 2026-11-23) in the settings gear of the boy/girl and face screens: "Enter as Musa" and
+ *  "Enter as Aisha" sign in as the sample children with no camera. Set to false (this one line) before release; the gear
+ *  itself (Refresh, Parent area) stays. */
+const TESTER = true;
 
 /**
  * The family build's own screens: Kratu opening from a link, the microphone, the parent registering (full name, email,
@@ -27,7 +28,7 @@ const TEST_BAR = true;
 @Component({
   selector: 'app-family-shell',
   imports: [Laila, DatePipe],
-  host: { '[class.on]': '!!fam.screen()', '[class.tb]': 'testBar()', '[attr.data-s]': 'fam.screen()' },
+  host: { '[class.on]': '!!fam.screen()', '[class.tb]': 'gearOn()', '[attr.data-s]': 'fam.screen()' },
   templateUrl: './family-shell.html',
   styleUrl: './family-shell.css',
 })
@@ -39,13 +40,20 @@ export class FamilyShell implements OnDestroy {
   readonly loader = inject(LoaderService);
   /** The route under the shell: the tester bar shows on the boy/girl and face screens only. */
   private readonly route = signal(location.pathname);
-  readonly testBar = computed(() => TEST_BAR && !this.fam.screen() && /^\/(gender|face)\b/.test(this.route()));
+  /** The settings gear, bottom left like the school app's, on the boy/girl and face screens (Sani 2026-11-23). */
+  readonly gearOn = computed(() => !this.fam.screen() && /^\/(gender|face)\b/.test(this.route()));
+  readonly TESTER = TESTER;
+  readonly gearOpen = signal(false);
+  /** Refresh: reload the app, back to the start of sign-in, nothing saved or removed. */
+  reload(): void { location.reload(); }
+  gearGo(what: 'm' | 'f' | 'parent'): void { this.gearOpen.set(false); if (what === 'parent') this.fam.manage(); else this.fam.testAs(what); }
   readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
   readonly faceText = computed(() => { const P = this.loader.faceProg(); if (P.state === 'fail') return 'The camera could not be downloaded. Check the connection and try again.';
     return (P.total ? Math.round(P.got / 1048576) + ' of ' + Math.round(P.total / 1048576) + ' MB' : 'Starting') + ' · once only, then it stays on this phone'; });
   private readonly san = inject(DomSanitizer);
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
+  readonly gear = this.san.bypassSecurityTrustHtml(GEAR_SVG);
   /** The app's own drawn hand, camera and delete key (Sani 2026-11-22: no emoji in the family screens). */
   readonly hand = this.san.bypassSecurityTrustHtml(HAND_SVG);
   readonly camera = this.san.bypassSecurityTrustHtml(CAMERA_SVG);
@@ -87,7 +95,8 @@ export class FamilyShell implements OnDestroy {
   private timer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
-    inject(Router).events.subscribe((e) => { if (e instanceof NavigationEnd) this.route.set(e.urlAfterRedirects); });
+    inject(Router).events.subscribe((e) => { if (e instanceof NavigationEnd) { this.route.set(e.urlAfterRedirects); this.gearOpen.set(false); } });
+    effect(() => document.documentElement.classList.toggle('fam-gate', this.gearOn()));
     // each screen's opening: what Laila says there (only lines that exist), and a clean slate for the forms
     effect(() => {
       const s = this.fam.screen();

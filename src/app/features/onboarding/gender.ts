@@ -16,7 +16,7 @@ import { FAMILY } from '../../core/edition';
   imports: [Ear, Door],
   host: { class: 's genderred', '[class.touring]': 'touring()' },
   template: `
-@if (FAMILY) { <app-door (pressed)="famBack()" /> }
+@if (FAMILY) { <app-door (pressed)="famBack()" /><button class="famguest" (click)="famGuest()">Guest</button> }
 <app-ear [spot]="spot() === 'dome'" (pressed)="tour()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
 <div class="hi" style="font-size:clamp(26px,4vw,38px)">{{ t('Sannu!') }}</div>
@@ -32,6 +32,8 @@ export class GenderScreen implements OnInit, OnDestroy {
   private readonly fam = inject(FamilyService);
   /** The family build (Sani 2026-11-23): the app's own door, back to the family's first page. */
   famBack(): void { this.bus.stopAll(); this.fam.show('welcome'); }
+  /** Guest (Sani 2026-11-23: on this screen only): home with everything open, nothing saved. */
+  famGuest(): void { this.bus.stopAll(); this.fam.guest(); }
   private readonly bus = inject(AudioBus);
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);

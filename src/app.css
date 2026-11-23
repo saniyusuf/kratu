@@ -1048,3 +1048,10 @@ html.fam-build .capmodal-inner .backdoor .doorsvg *{transform-box:fill-box}
 html.fam-build .capmodal-inner .backdoor .dleaf{transform-origin:23.3333% 53.4722%;animation:doorajar2 5.2s ease-in-out infinite}
 html.fam-build .capmodal-inner .backdoor::after{content:"";position:absolute;left:36px;top:12px;width:20px;height:18px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 22'%3E%3Cpath d='M24 11 H5 M12 3 L4 11 L12 19' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.35));animation:doorarrow 1.3s ease-in-out infinite}
 html.fam-build .capmodal-inner .backdoor:active{transform:scale(.96)}
+/* the door over the camera (Sani 2026-11-23): the same door, on white so it stands out on the picture */
+html.fam-build .capmodal-inner .backdoor{background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+html.fam-build .capmodal-inner .backdoor::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 22'%3E%3Cpath d='M24 11 H5 M12 3 L4 11 L12 19' fill='none' stroke='%232B2118' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");filter:none}
+/* Guest on the boy/girl screen: small and plain, bottom right */
+html.fam-build .famguest{position:fixed;z-index:60;right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));border:2px solid #E2D4B4;background:#fff;color:#2B2118;font:800 17px var(--disp,'Baloo 2',sans-serif);border-radius:999px;padding:8px 22px;min-height:48px;box-shadow:0 3px 0 #E2D4B4;cursor:pointer}
+/* the boy/girl and face screens carry the family's own settings gear (family-shell): the app's gear stays out of the way */
+html.fam-gate #admingear{display:none!important}
