@@ -74,7 +74,7 @@ const APPLE_TOUCH = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.p
   <div class="capmodal-title">{{ bi('Bari mu ga wa kake', 'let’s see who you are') }}</div>
   <div class="camview">
     <div class="camwrap" [class.armed]="armed()" [class.paused]="!!paused()" [class.glow]="glow()" [class.done]="!!still()" [style.--p]="progress() + '%'">
-      <div class="cam" [class.matched]="!!matchFx()">@if (matchFx(); as f) {<span class="matchfx" [style.left.%]="f.l" [style.top.%]="f.t" [style.width.%]="f.w" [style.height.%]="f.h"><i></i><i></i><i></i></span>}<i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
+      <div class="cam" [class.matched]="!!matchFx()">@if (matchFx(); as f) {<span class="matchfx" [style.left.%]="f.l + f.w / 2" [style.top.%]="f.t + f.h / 2"><i></i><i></i><i></i></span>}<i class="vfc"></i><span class="vfbar"><span class="rec">● REC</span><span class="vftime cap-time">{{ capTime() }}</span></span>
         <video #live class="feed live" autoplay [muted]="true" [volume]="0" playsinline [hidden]="!liveOn() || !!still()"></video>
         <div class="pict" [hidden]="!pict()"><div class="pict-big">{{ pictA() }}</div><div class="pict-arrow">→</div><div class="pict-big ok">{{ pictB() }}</div></div>
         <div class="faceguide" [class.ok]="faceOK() && !paused() && sizeOK()" [class.busy]="!!paused()" [class.follow]="!!track()" [style.left.%]="track() ? track()!.l + track()!.w / 2 : null" [style.top.%]="track() ? track()!.t + track()!.h / 2 : null" [style.width.%]="track()?.w ?? null" [style.height.%]="track()?.h ?? null" [hidden]="!liveOn() || !!still()" aria-hidden="true"></div>

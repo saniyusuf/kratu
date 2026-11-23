@@ -1023,3 +1023,19 @@ html.fam-build .capmodal-inner{width:min(1100px, calc(100vw - 12px));max-height:
 html.fam-build .capmodal-title{font-size:clamp(18px, 2.6vw, 26px);margin-bottom:0}
 html.fam-build .capmodal-inner .cam{width:min(calc(100vw - 52px), calc((100dvh - 120px) * var(--ar,.75)), 1000px)}
 @media (orientation: landscape) and (max-height: 520px){ html.fam-build .capmodal-inner .cam{width:min(calc(100vw - 52px), calc((100dvh - 84px) * var(--ar,1.33)))} html.fam-build .capmodal-title{display:none} html.fam-build .capmodal-inner .capmic,html.fam-build .capmodal-inner .heard{font-size:15px;margin:0} }
+/* the whole screen is the camera (Sani 2026-11-23: "take advantage of the entire screen"): edge to edge, the picture
+   cover-cropped to the screen, the progress border round the screen's edge, the words over the picture at the bottom */
+html.fam-build .capmodal{padding:0;background:#1E1A14}
+html.fam-build .capmodal-inner{position:relative;width:100vw;height:100dvh;max-height:none;max-width:none;border-radius:0;padding:0;background:#1E1A14;overflow:hidden}
+html.fam-build .capmodal-title{display:none}
+html.fam-build .capmodal-inner .camview{position:absolute;inset:0;gap:0;width:auto}
+html.fam-build .capmodal-inner .camwrap{position:absolute;inset:0;width:auto!important;max-width:none;padding:7px;border-radius:0;margin:0}
+html.fam-build .capmodal-inner .camwrap::before{border-radius:0;padding:7px}
+html.fam-build .capmodal-inner .cam,html.fam-build .capmodal-inner .cam{width:100%!important;height:100%;aspect-ratio:auto;border-radius:16px}
+html.fam-build .capmodal-inner .capmic,html.fam-build .capmodal-inner .heard,html.fam-build .capmodal-inner .camnote,html.fam-build .capmodal-inner .capdone,html.fam-build .capmodal-inner .capmiss{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom, 0px));z-index:6;margin:0;max-width:calc(100vw - 40px);text-align:center;background:rgba(251,243,222,.92);color:#2B2118;border-radius:999px;padding:6px 16px;font-size:17px}
+html.fam-build .capmodal-inner .heard{bottom:calc(70px + env(safe-area-inset-bottom, 0px))}
+html.fam-build .capmodal-inner .capmic{color:#1E8073;font-weight:800}
+html.fam-build .capmodal-inner .capmic[hidden],html.fam-build .capmodal-inner .heard[hidden],html.fam-build .capmodal-inner .camnote[hidden],html.fam-build .capmodal-inner .capdone[hidden],html.fam-build .capmodal-inner .capmiss[hidden]{display:none}
+html.fam-build .capmodal-inner .alone{z-index:6}
+/* the match glow: small, centred on the face (not the size of the face) */
+html.fam-build .matchfx{width:min(34vmin, 220px);height:min(34vmin, 220px);transform:translate(-50%,-50%)}
