@@ -14,21 +14,19 @@
 </section>
 }
 
-<!-- 2 · the microphone (Sani 2026-11-21: a microphone, a voice saying the app needs it, the hand on "allow") -->
 @case ('mic') {
-<section class="fs mic" [class.up]="upright()">
-  <div class="mic-left">
-    <button class="mic-big" [class.busy]="micBusy()" aria-label="Allow the microphone and the camera" (click)="askMic()">
-      <i class="w1"></i><i class="w2"></i><i class="w3"></i>
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg>
-      <span class="hand" aria-hidden="true" [innerHTML]="hand"></span>
-    </button>
-    <button class="btn glowbtn" (click)="askMic()">Allow microphone and camera</button>
+<!-- 4 · the microphone and the camera, asked together (Sani 2026-11-23: a new design): Laila between the two, one button -->
+<section class="fs pm" [class.up]="upright()">
+  <div class="pm-art" aria-hidden="true">
+    <span class="pm-tile mic"><span class="pt"><i></i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span><small>Microphone</small></span>
+    <span class="pm-laila"><app-laila [size]="lailaSmall()" /></span>
+    <span class="pm-tile camt"><span class="pt"><i></i><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"><path d="M6 16.5c0-2 1.6-3.5 3.5-3.5h6l3-5h11l3 5h6c2 0 3.5 1.6 3.5 3.5V36c0 2-1.6 3.5-3.5 3.5h-29C7.6 39.5 6 38 6 36Z"/><circle cx="24" cy="25.5" r="7.5"/></svg></span><small>Camera</small></span>
   </div>
-  <div class="mic-right">
-    <span class="camb" aria-hidden="true" [innerHTML]="camera"></span>
-    <h1>Kratu needs the microphone and the camera</h1>
-    <p class="note">Laila hears your child say words, and knows each child by face and voice. Tap the microphone, then tap “Allow” each time the phone asks.</p>
+  <div class="pm-text">
+    <h1>Let Laila hear and see</h1>
+    <p class="note">She listens to your child’s words, and knows each child by their face and voice.</p>
+    <div class="gowrap"><button class="btn big glowbtn" [disabled]="micBusy()" (click)="askMic()">Allow</button><span class="phand" aria-hidden="true" [innerHTML]="hand"></span></div>
+    <p class="hint">Then tap “Allow” each time the phone asks.</p>
     @if (micMsg()) {<p class="warn">{{ micMsg() }} <button class="link" (click)="fam.afterMic()">Carry on</button></p>}
   </div>
 </section>
@@ -59,31 +57,36 @@
 </section>
 }
 
-<!-- 4b · once, before any child is seen (Sani 2026-11-22, Nigeria's data law): the parent agrees, or not now -->
 @case ('consent') {
-<section class="fs setup consent" [class.up]="upright()">
-  <div class="sheet one">
-    <h1>Children sign in with face and voice</h1>
-    <p class="note">Each child looks at the phone and says “Sunana …” (“my name is …”). Kratu then knows them.</p>
-    <ul class="clist">
-      <li>Kratu keeps a face print, a voice print and the child saying their name. Never a photo.</li>
-      <li>It stays on this phone. You can remove a child any time.</li>
+<!-- 6 · once, before any child is seen (Sani 2026-11-22, Nigeria's data law; 2026-11-23: a new design) -->
+<section class="fs cs" [class.up]="upright()">
+  <div class="cs-art" aria-hidden="true">
+    <span class="cs-kid"><span class="gem" [innerHTML]="kid('f')"></span><b></b></span>
+    <span class="cs-kid"><span class="gem" [innerHTML]="kid('m')"></span><b></b></span>
+  </div>
+  <div class="cs-text">
+    <h1>Each child signs in with face and voice</h1>
+    <p class="note">They look at the phone and say “Sunana …”. Laila knows them from then on.</p>
+    <ul class="cs-list">
+      <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><circle cx="9.5" cy="10.5" r=".9" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".9" fill="currentColor"/><path d="M9.5 14.5q2.5 2 5 0"/></svg></span>A face print, never a photo</li>
+      <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span>A voice print, and the child saying their name</li>
+      <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="4.5" rx="1" fill="currentColor"/></svg></span>Kept on this phone. Remove a child any time.</li>
     </ul>
-    <div class="cbtns"><button class="btn go glowbtn" (click)="fam.consent(true)">I agree</button>
-    <button class="btn ghost" (click)="fam.consent(false)">Not now</button></div>
+    <button class="btn big go glowbtn" (click)="fam.consent(true)">I agree</button>
+    <button class="link notnow" (click)="fam.consent(false)">Not now</button>
   </div>
 </section>
 }
 
-<!-- 4c · the face models are still coming (they start right after Register): their progress, then the camera -->
 @case ('getready') {
+<!-- 7 · the face models still coming (they start right after Register): Laila waits with you -->
 <section class="fs setup getready" [class.up]="upright()">
   <div class="sheet one">
+    <app-laila [size]="lailaSmall()" />
     <h1>Getting the camera ready</h1>
     <div class="gbar"><i [style.width]="facePct() + '%'"></i></div>
     <p class="hint">{{ faceText() }}</p>
     @if (loader.faceProg().state === 'fail') {<button class="btn" (click)="fam.toCamera()">Try again</button>}
-    <button class="btn ghost" (click)="fam.guest()">Guest</button>
   </div>
 </section>
 }

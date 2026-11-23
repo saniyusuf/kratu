@@ -383,3 +383,57 @@ input,.field{min-height:48px;box-sizing:border-box}
 .testbar{position:fixed;z-index:6000;left:50%;transform:translateX(-50%);top:calc(10px + env(safe-area-inset-top, 0px));display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.92);border:1.5px dashed #8A7A5C;border-radius:10px;padding:3px 5px;font:700 12px/1 system-ui,sans-serif;color:#6B5D45}
 .testbar span{padding:0 3px;text-transform:uppercase;letter-spacing:.06em;font-size:10px}
 .testbar button{font:700 12px system-ui,sans-serif;border:1px solid #C9B98F;background:#fff;border-radius:7px;padding:5px 9px;cursor:pointer;color:#2B2118}
+
+/* 4 · microphone and camera (Sani 2026-11-23: new design): Laila between a microphone and a camera, one big Allow */
+.fs.pm{gap:calc(6 * var(--u))}
+.fs.pm.up{gap:calc(4 * var(--u))}
+.pm-art{display:flex;align-items:center;gap:calc(3 * var(--u))}
+.pm-tile{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pt{--s:max(76px, calc(19 * var(--u)));position:relative;width:var(--s);height:var(--s);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.14)}
+.pm-tile.mic .pt{background:var(--orange,#F08A3E)}
+.pm-tile.camt .pt{background:#2FAE9E}
+.pt svg{width:46%;height:46%}
+.pt i{position:absolute;inset:-7px;border-radius:50%;border:3px solid rgba(240,138,62,.55);animation:fring 2.4s ease-out infinite;pointer-events:none}
+.pm-tile.camt .pt i{border-color:rgba(47,174,158,.55);animation-delay:1.2s}
+.pm-tile small{font-weight:800;color:#6B5D45;font-size:max(14px, calc(2.6 * var(--u)))}
+.pm-laila{line-height:0;margin-top:calc(-2 * var(--u))}
+.pm-text{display:flex;flex-direction:column;align-items:flex-start;gap:calc(1.8 * var(--u));max-width:44ch}
+.fs.pm.up .pm-text{align-items:center;text-align:center}
+.pm-text .note{font-size:max(17px, calc(3.2 * var(--u)));font-weight:700;color:#6B5D45;margin:0}
+.pm-text .btn.big{min-width:9em}
+.pm-text .hint{margin-top:16px}
+.fs.pm.up .pm-art{gap:calc(2 * var(--u))}
+
+/* 6 · face and voice consent (new design): the drawn boy and girl in camera corners, three short points, one button */
+.fs.cs{gap:calc(6 * var(--u))}
+.fs.cs.up{gap:calc(3 * var(--u))}
+.cs-art{display:flex;gap:calc(2.4 * var(--u))}
+.cs-kid{position:relative;width:max(92px, calc(22 * var(--u)));height:max(92px, calc(22 * var(--u)));border-radius:24px;background:#fff;box-shadow:0 6px 16px rgba(80,60,20,.14);display:flex;align-items:center;justify-content:center}
+.cs-kid .gem{width:72%;height:72%;display:block}
+.cs-kid .gem ::ng-deep svg{width:100%;height:100%;display:block}
+.cs-kid b{position:absolute;inset:7px;border-radius:16px;pointer-events:none;
+  background:linear-gradient(#2FAE9E,#2FAE9E) top left/16px 3px,linear-gradient(#2FAE9E,#2FAE9E) top left/3px 16px,linear-gradient(#2FAE9E,#2FAE9E) top right/16px 3px,linear-gradient(#2FAE9E,#2FAE9E) top right/3px 16px,
+             linear-gradient(#2FAE9E,#2FAE9E) bottom left/16px 3px,linear-gradient(#2FAE9E,#2FAE9E) bottom left/3px 16px,linear-gradient(#2FAE9E,#2FAE9E) bottom right/16px 3px,linear-gradient(#2FAE9E,#2FAE9E) bottom right/3px 16px;background-repeat:no-repeat}
+.cs-text{display:flex;flex-direction:column;align-items:flex-start;gap:calc(1.6 * var(--u));max-width:46ch}
+.fs.cs.up .cs-text{align-items:center;text-align:center}
+.cs-text h1{text-wrap:balance}
+.cs-text .note{font-size:max(16px, calc(3 * var(--u)));font-weight:700;color:#6B5D45;margin:0}
+.cs-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;text-align:left}
+.cs-list li{display:flex;align-items:center;gap:10px;font-weight:700;font-size:max(15px, calc(2.7 * var(--u)));color:#4E4230}
+.ci{flex:none;width:34px;height:34px;border-radius:50%;background:#fff;color:#1E8073;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 0 #E2D4B4}
+.ci svg{width:20px;height:20px}
+.cs-text .btn.big{min-width:9em;margin-top:4px}
+.notnow{font-size:max(15px, calc(2.6 * var(--u)));color:#6B5D45}
+@media (orientation: landscape) and (max-height: 460px){
+  .fs.pm,.fs.cs{gap:24px;padding-top:10px;padding-bottom:10px}
+  .pt{--s:62px}
+  .cs-kid{width:70px;height:70px}
+  .cs-art{flex-direction:column}
+  .cs-text,.pm-text{gap:8px}
+  .cs-text h1,.pm-text h1{font-size:21px}
+  .cs-list li{font-size:14px}
+  .cs-text .btn.big,.pm-text .btn.big{font-size:19px;padding:6px 30px;min-height:44px}
+}
+/* 7 · getting ready: Laila on top */
+.getready .sheet.one{align-items:center}
+.fs.pm.up .pt{--s:68px}
