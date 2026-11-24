@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AudioBus } from '../../core/audio/audio-bus.service';
 import { SessionService } from '../../core/state/session.service';
-import { DOOR_SVG } from '../../shared/svg';
+import { BLACK_DOOR_SVG } from '../../shared/svg';
 import { bi, sub, t } from '../../core/lang/t';
 import { FAMILY } from '../../core/edition';
 import { FamilyService } from '../../core/family/family.service';
@@ -29,7 +29,7 @@ export class Leave {
   private readonly session = inject(SessionService);
   private readonly router = inject(Router);
   private readonly fam = inject(FamilyService);
-  readonly door = inject(DomSanitizer).bypassSecurityTrustHtml(DOOR_SVG);
+  readonly door = inject(DomSanitizer).bypassSecurityTrustHtml(BLACK_DOOR_SVG);
   readonly open = signal(false);
   show(): void { this.bus.stopAll(); this.open.set(true); this.bus.play('s_leave'); }   // the old wording (Laila / the slate) until Sani gives the new line
   hide(): void { this.bus.stopAll(); this.open.set(false); }

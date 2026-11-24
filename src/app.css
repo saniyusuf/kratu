@@ -1121,7 +1121,7 @@ html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 #leave .lvdoor{gap:2px}
 #leave .lvdoor .lvd{display:block;width:70px;height:84px}
 #leave .lvdoor .lvd svg{width:100%;height:100%;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
-#leave .lvdoor .lvarrow{width:46px;height:46px;fill:none;stroke:#1E8073;stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
+#leave .lvdoor .lvarrow{width:46px;height:46px;fill:none;stroke:#111;stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
 #leave .lvx{width:104px}
 #leave .lvx svg{width:84px;height:84px;fill:none;stroke:#D62828;stroke-width:4.2;stroke-linecap:round}
 #leave .lv-done b,#leave .lv-cancel b{font:800 20px var(--disp,'Baloo 2',sans-serif);color:#2B2118;line-height:1.1}
@@ -1129,3 +1129,9 @@ html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 /* a press shrinks the whole choice a little, never adds a background */
 #leave .lv-done:active,#leave .lv-cancel:active{transform:scale(.93)}
 #leave .yn:active{background:none}
+/* (Sani 2026-11-24) door and arrow black, a light loop: the leaf opens a few degrees, the arrow nudges left, ~2.5 s */
+#leave .bdoor .bleaf{transform-box:fill-box;transform-origin:left center;animation:lvleaf 2.5s ease-in-out infinite}
+#leave .lvarrow{animation:lvnudge 2.5s ease-in-out infinite}
+@keyframes lvleaf{0%,55%,100%{transform:scaleX(1)}25%{transform:scaleX(.78)}}
+@keyframes lvnudge{0%,55%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}}
+@media (prefers-reduced-motion: reduce){#leave .bdoor .bleaf,#leave .lvarrow{animation:none}}
