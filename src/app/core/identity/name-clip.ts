@@ -5,7 +5,9 @@ import { LANG } from '../lang/lang';
  * The recording is split into spoken pieces at the pauses, and the last piece is the name: a child says "Sunana … Sani".
  * Normalised, 16 kHz mono WAV as a data URL. This is the only audio ever kept for a child.
  */
-export function nameClip(blob: Blob, startMs: number): Promise<{ url: string; ms: number; startMs: number }> {
+/** `whole` (the family build, Sani 2026-11-24): keep everything said, "Sunana Musa", not only its last piece; the clip is
+ *  only ever read for the name, never played as it, and the name step needs the whole of it. */
+export function nameClip(blob: Blob, startMs: number, whole = false): Promise<{ url: string; ms: number; startMs: number }> {
   return new Promise((res, rej) => {
     const ctx = new AudioContext();
     blob.arrayBuffer().then((ab) => ctx.decodeAudioData(ab)).then((buf) => {
@@ -23,7 +25,7 @@ export function nameClip(blob: Blob, startMs: number): Promise<{ url: string; ms
       if (st >= 0 && nf - st >= MIN) pieces.push([st, nf - 1]);
       if (!pieces.length) { rej(new Error('no speech')); return; }
       // "Sunana Sani": the last piece is the name. One piece only means they said the name on its own.
-      const [a, b] = pieces[pieces.length - 1];
+      const [a, b] = whole ? [pieces[0][0], pieces[pieces.length - 1][1]] : pieces[pieces.length - 1];
       const s0 = Math.max(0, a * F - Math.round(sr * 0.06)), s1 = Math.min(n, (b + 1) * F + Math.round(sr * 0.18));
       if (s1 - s0 < sr * 0.12) { rej(new Error('too short')); return; }
       const seg = ch.subarray(s0, s1); let pk = 0; for (let i = 0; i < seg.length; i++) { const v = Math.abs(seg[i]); if (v > pk) pk = v; }

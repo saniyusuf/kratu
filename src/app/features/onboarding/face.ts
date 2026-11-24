@@ -19,12 +19,13 @@ type Pause = 'alone' | 'noface' | 'small' | 'blurry' | 'dark' | 'turned';
 const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
 /** The family build (Sani 2026-11-22): the whole step at most 10 seconds for young children. */
-const MAXMS = FAMILY ? 8000 : 10000, HARDMS = FAMILY ? 10000 : 20000;
+const MAXMS = FAMILY ? 5000 : 10000, HARDMS = FAMILY ? 5000 : 20000;   // the family build: one capture window of 5 s at most (Sani 2026-11-24)
 /** The family build: when to ask for the name, and how much of s_p3 is played (its first sentence ends at 2.95 s). */
-const ASK_NAME_MS = 4000, ASK_NAME_CLIP_MS = 3150;
-/** Family hybrid (Sani 2026-11-23): a known child whose record lacks a voice print or a name is held this long after
- *  the face matched (Laila's 3 s "say your name" and about 4 s to answer), then goes in with or without it. */
-const APPEND_WAIT_MS = 7000;
+const ASK_NAME_CLIP_MS = 3150;
+/** The family capture (Sani 2026-11-24): the voice is judged once the child has spoken this long and then been quiet this long. */
+const SPOKE_MS = 300, QUIET_MS = 500;
+/** Two faces restart the capture at most this many times before the try-again gate. */
+const CROWD_RESTARTS = 3;
 /** The online recogniser may help but never holds a child up: not listening within this, the ring starts without it. */
 const SR_START_WAIT = 2500;
 /** iPad and iPhone: every browser there is WebKit, whose speech recogniser is Siri. It has no Hausa, and it takes the
@@ -211,7 +212,7 @@ export class FaceScreen implements OnInit, OnDestroy {
 
   /** Press Laila: the camera opens, the ring starts, the child says "Sunana …". */
   async start(): Promise<void> {
-    if (FAMILY && this.capturing()) return;   // the camera opens by itself in the family build: a press of Laila at the same moment must not open it twice
+    if (FAMILY) { if (!this.capturing()) this.famStart(true); return; }   // the camera opens by itself in the family build: a press of Laila at the same moment must not open it twice
     this.bus.stopAll(); this.cue.set(false); this.reset(); this.capturing.set(true);
     await afterPaint();
     const md = navigator.mediaDevices;
@@ -231,6 +232,73 @@ export class FaceScreen implements OnInit, OnDestroy {
     } catch (err: any) { clearTimeout(guard); if (FAMILY) { console.warn('[kratu] camera refused', err?.name, err?.message); this.leaveForPerm(); return; } this.note.set('Camera blocked (' + (err?.name || 'error') + ') — showing a photo instead'); begin(); }
   }
 
+  // ---- the family capture (Sani 2026-11-24): Laila first, then the microphone, then the camera, one window of 5 s ----
+  private famRun = 0; private famT0 = 0; private crowdRestarts = 0;
+  /** The timeline of a sign-in, in seconds from the screen's start (the test reads it; nothing personal in it). */
+  private famLog(what: string): void { if (FAMILY) console.log('[kratu] T ' + ((Date.now() - this.famT0) / 1000).toFixed(2) + ' ' + what); }
+  /**
+   * Everything Laila says comes before the capture ("look at the camera", "say your name"); none of it while the camera
+   * is on. The microphone opens first, once she has been quiet for the bus's guard (her voice is never in the clip), so
+   * the child's very first word is caught; the camera follows; face and voice are captured together from then on.
+   */
+  private async famStart(fresh: boolean): Promise<void> {
+    const RUN = ++this.famRun; if (fresh) { this.famT0 = Date.now(); this.crowdRestarts = 0; }
+    this.bus.stopAll(); this.cue.set(false); this.reset(); this.capturing.set(true);
+    await afterPaint();
+    const md = navigator.mediaDevices; if (!md?.getUserMedia) { this.leaveForPerm(); return; }
+    if (fresh) {
+      if (!(await this.bus.play(this.bus.gk('s_look')))) { if (RUN !== this.famRun) return; }
+      if (RUN !== this.famRun) return;
+      const CUT = setTimeout(() => this.bus.stopAll(), ASK_NAME_CLIP_MS);   // "Yanzu kai, ka faɗa mana sunanka." only
+      await this.bus.play(this.bus.gk('s_p3')); clearTimeout(CUT);
+      if (RUN !== this.famRun) return;
+    }
+    this.famLog('Laila done');
+    await this.bus.micReady();   // her last sound plus the guard: none of her voice is recorded
+    if (RUN !== this.famRun) return;
+    let mic: MediaStream, cam: MediaStream;
+    try { mic = await md.getUserMedia({ audio: true }); } catch (err: any) { console.warn('[kratu] microphone refused', err?.name); this.leaveForPerm(); return; }
+    if (RUN !== this.famRun) { mic.getTracks().forEach((t) => t.stop()); return; }
+    this.stream = mic; this.startRec(mic); this.startVad(mic); this.famLog('mic on');
+    try { cam = await md.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 640 } } }); } catch (err: any) { console.warn('[kratu] camera refused', err?.name); this.leaveForPerm(); return; }
+    if (RUN !== this.famRun) { cam.getTracks().forEach((t) => t.stop()); return; }
+    this.stream = new MediaStream([...mic.getTracks(), ...cam.getTracks()]);
+    const live = this.liveRef()?.nativeElement;
+    if (live) {
+      live.srcObject = cam; live.muted = true; live.volume = 0; this.liveOn.set(true);
+      const AR = () => { const C = live.closest('.cam') as HTMLElement | null; if (C && live.videoWidth) C.style.setProperty('--ar', String(live.videoWidth / live.videoHeight)); }; live.addEventListener('loadedmetadata', AR); live.addEventListener('resize', AR);
+    }
+    let begun = false; const go = () => { if (begun || RUN !== this.famRun) return; begun = true; live?.play().catch(() => undefined); this.famLog('camera on'); this.runRing(); };
+    if (live && live.readyState >= 2) go(); else { live?.addEventListener('loadedmetadata', go, { once: true }); setTimeout(go, 1200); }
+  }
+  /** Two faces: everything gathered is dropped and the capture stops; Laila says why with the camera and microphone off,
+   *  then it starts again fresh (no intro). After CROWD_RESTARTS, the try-again gate. */
+  private async famCrowd(): Promise<void> {
+    if (this.ended || this.capEnded) return;
+    this.ended = true; this.capEnded = true; this.stopAllCapture(); this.discardCapture(); this.famLog('two faces: capture stopped');
+    if (++this.crowdRestarts > CROWD_RESTARTS) { this.crowdAbort(true); return; }
+    const RUN = ++this.famRun;
+    await this.bus.play(this.bus.gk('s_alone2'));
+    if (RUN !== this.famRun) return;
+    this.famStart(false);
+  }
+  // the voice: a simple level gate on the microphone; speech of SPOKE_MS, then QUIET_MS of quiet, and it is judged
+  private vadCtx: AudioContext | null = null; private vadIv: ReturnType<typeof setInterval> | null = null; private spokeDone = false;
+  private startVad(s: MediaStream): void {
+    this.stopVad(); this.spokeDone = false;
+    try {
+      const CTX = new AudioContext(); const SRC = CTX.createMediaStreamSource(s); const AN = CTX.createAnalyser(); AN.fftSize = 1024; SRC.connect(AN); this.vadCtx = CTX;
+      const BUF = new Float32Array(AN.fftSize); let floor = 0.01, spoke = 0, quiet = 0, said = false;
+      this.vadIv = setInterval(() => {
+        AN.getFloatTimeDomainData(BUF); let e = 0; for (let i = 0; i < BUF.length; i++) e += BUF[i] * BUF[i]; const RMS = Math.sqrt(e / BUF.length);
+        const LOUD = RMS > Math.max(0.02, floor * 3);
+        if (!LOUD) floor = floor * 0.95 + RMS * 0.05;
+        if (LOUD) { spoke += 50; quiet = 0; if (!said && spoke >= SPOKE_MS) { said = true; this.famLog('voice heard'); } }
+        else if (said) { quiet += 50; if (quiet >= QUIET_MS && !this.spokeDone) { this.spokeDone = true; this.famLog('voice stopped'); } }
+      }, 50);
+    } catch { /* no level: the 5 s window decides */ }
+  }
+  private stopVad(): void { if (this.vadIv) clearInterval(this.vadIv); this.vadIv = null; try { this.vadCtx?.close(); } catch { /* ignore */ } this.vadCtx = null; }
   /** The family build (Sani 2026-11-22): no photo fallback and no cards; the permission screen asks again. */
   private leaveForPerm(): void { this.capturing.set(false); this.teardown(); this.dropModal(); this.fam.toPerm(); }
   private reset(): void {
@@ -243,7 +311,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     try {
       this.chunks = []; const rec = new MediaRecorder(s); this.rec = rec;
       rec.ondataavailable = (ev) => { if (ev.data?.size) this.chunks.push(ev.data); };
-      rec.onstop = () => { try { const blob = new Blob(this.chunks, { type: rec.mimeType || 'video/webm' }); this.recBlob = blob; this.nameClipP = nameClip(blob, this.nameAt).catch(() => null); } catch { /* ignore */ } };
+      rec.onstop = () => { try { const blob = new Blob(this.chunks, { type: rec.mimeType || 'video/webm' }); this.recBlob = blob; this.nameClipP = nameClip(blob, this.nameAt, FAMILY).catch(() => null); } catch { /* ignore */ } };
       rec.onstart = () => { this.recLive = true; this.recT0 = Date.now(); this.armCheck(); };
       rec.start(250); this.holdMic(true); this.recHeld = true; this.recT0 = Date.now(); this.nameAt = -1; this.nameClipP = null;
     } catch { this.recLive = true; this.armCheck(); }
@@ -334,14 +402,14 @@ export class FaceScreen implements OnInit, OnDestroy {
       // the family build signs in on the face alone only when it is very sure (Sani 2026-11-22: before the name if found;
       // a stranger scored 0.56 in a test, so the bar here is higher than the ring's own accept, and needs a few frames)
       const SURE = !FAMILY || (m.face >= ((K as any).cfg?.earlyAccept ?? 0) && this.faceVecs.length >= 4);
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE && FAMILY && (!complete(m.person) || this.fam.needsClip(m.person.id))) {
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE && FAMILY && (!complete(m.person) || this.fam.needsClip(m.person.id) || !this.fam.hasName(m.person.id))) {
         // known on the face, but the record has no voice print or no name yet (enrolled on the face alone): hold on for the
-        // voice, ask for the name now, and append what comes (Sani 2026-11-23). Never longer than APPEND_WAIT_MS.
-        if (!this.appendTo) { this.appendTo = m; this.appendBy = now + APPEND_WAIT_MS; console.log('[kratu] known face, record incomplete: listening for the name'); if (!this.askedName) this.askName(); }
+        // voice and append what comes (Sani 2026-11-23); since 24 Nov also a child with no name. Never past the 5 s window.
+        if (!this.appendTo) { this.appendTo = m; this.appendBy = this.ringT0 + HARDMS; this.famLog('known face, record incomplete or unnamed: waiting for the voice'); }
         else if (this.appendTo.person?.id === m.person.id) this.appendTo = m;
         return;
       }
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE) { console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE) { this.famLog('decision: unique face, in: ' + (m.person.name || m.person.id)); console.log('[kratu] early sign-in', m.person.id, 'after', this.faceVecs.length, 'frames, face', m.face?.toFixed?.(3), 'in', Date.now() - this.faceT0, 'ms'); this.earlyMatch = m; this.endRec(); }
     } catch { /* the full ring still decides */ }
   }
   private stopFaceMon(): void { this.track.set(null); this.nudge.set(''); this.sizeOK.set(true); try { this.identity.api?.unwatch(); } catch { /* ignore */ } this.aloneText.set(''); }
@@ -357,13 +425,16 @@ export class FaceScreen implements OnInit, OnDestroy {
       this.pauseCapture('alone', 's_alone2');
     }
     else if (n === 0) { this.cnt.none++; this.cnt.many = 0; this.cnt.one = 0; if (this.cnt.none >= 4) this.pauseCapture('noface', 's_look_'); }
-    else { this.cnt.one++; this.cnt.many = 0; this.cnt.none = 0; this.crowdSince = 0; const need = this.paused() === 'alone' ? 5 : 2; const p = this.paused(); if (this.cnt.one >= need && p && !['small', 'blurry', 'dark', 'turned'].includes(p)) this.resumeCapture(); }
+    else { this.cnt.one++; this.cnt.many = 0; this.cnt.none = 0; this.crowdSince = 0; if (FAMILY) this.pict.set(null); const need = this.paused() === 'alone' ? 5 : 2; const p = this.paused(); if (this.cnt.one >= need && p && !['small', 'blurry', 'dark', 'turned'].includes(p)) this.resumeCapture(); }
     if (n === 1) { this.aloneText.set(''); } else { this.aloneSoft.set(n === 0); this.aloneText.set(many ? E('👥 ') + (this.session.g() === 'f' ? t('Ki zauna ke kaɗai') : t('Ka zauna kai kaɗai')) + ' · please be alone in the frame' : E('🙈 ') + t('Duba kyamara') + ' · look at the camera'); }
   }
   private discardCapture(): void { this.faceVecs = []; this.transcript = ''; this.bestSc = 0; this.bestStill = null; }
   private showPict(kind: string): void { const pr = PICT[kind] || PICT['noface']; this.pictA.set(pr[0]); this.pictB.set(pr[1]); this.pict.set(kind); }
   private pauseCapture(kind: Pause, clip?: string): void {
     if (this.capEnded) return;
+    // the family build (Sani 2026-11-24): Laila never speaks while the camera is on. A hint is shown, never said, and the
+    // capture carries on; only two faces stop it (everything dropped), and then she may speak with the camera off.
+    if (FAMILY) { if (kind === 'alone') this.famCrowd(); else this.showPict(kind); return; }
     if (!this.paused()) { this.paused.set(kind); this.stopSR(); if (this.rec?.state === 'recording') { try { this.rec.pause(); } catch { /* ignore */ } } if (this.recHeld) { this.holdMic(false); this.recHeld = false; } this.armed.set(false); this.srLive = false; this.heardText.set('⏸'); this.interim.set(true); }
     else if (this.paused() !== kind) this.paused.set(kind);
     this.showPict(kind);
@@ -385,6 +456,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   // ---- the ring: ten seconds of one face, twenty at most ----
   private runRing(): void {
     this.capEnded = false; this.ended = false; this.paused.set(null); this.speaking = false; this.lastWarn = {}; this.cnt = { many: 0, none: 0, one: 0 }; this.badSince = 0; this.badKind = null; this.pict.set(null); this.glow.set(true); this.disarm();
+    if (FAMILY && this.rec) this.recLive = true;   // the family build: the microphone was already recording before the camera
     if (!this.stream) this.recLive = true;   // photo fallback (no camera) → no recorder to wait for
     this.bus.micReady().then(() => this.startSR()); this.identity.api?.store.load().catch(() => { /* matched at the end instead */ }); this.startFaceMon();
     let t0 = Date.now(), last = t0, last0 = t0, active = 0; this.ringT0 = t0; this.askedName = false; this.appendTo = null; this.appendBy = 0;
@@ -394,32 +466,15 @@ export class FaceScreen implements OnInit, OnDestroy {
       this.progress.set(Math.min(100, active / MAXMS * 100)); const sec = Math.floor(active / 1000); this.capTime.set('00:' + (sec < 10 ? '0' : '') + sec);
       if ((this.paused() || this.speaking) && !FAMILY) t0 += now - last0; last0 = now;   // the family build: 10 seconds in all, pauses included (Sani 2026-11-22)
       if (FAMILY && this.extend) { t0 += this.extend; this.extend = 0; }   // except Laila's own "say your name"
-      if (FAMILY && !this.askedName && now - this.ringT0 >= ASK_NAME_MS && !this.capEnded && !this.ended) this.askName();
+      // the family build: the voice is judged the moment the child stops speaking, once the face has been seen
+      if (FAMILY && this.spokeDone && (this.faceVecs.length >= 4 || this.appendTo) && !this.ended) { this.famLog('voice done, deciding'); this.endRec(); }
       if (FAMILY && this.appendTo && now >= this.appendBy && !this.ended) this.endRec();   // the voice did not come in time: in on the face
       if (active >= MAXMS || now - t0 >= HARDMS) this.endRec();
     }, 100);
   }
-  /**
-   * The family build (Sani 2026-11-23): nobody signed in on the face alone by about 4 s (not found, or two children too
-   * close), so Laila asks for the name, once: the first sentence of her own s_p3 ("Yanzu kai, ka faɗa mana sunanka." /
-   * "Yanzu ke, ki faɗa mana sunanki."), cut before its "press Laila". The recording pauses while she speaks (she is never
-   * heard with the microphone open), and her line does not count against the 10 s.
-   */
   private ringT0 = 0; private askedName = false;
-  private async askName(): Promise<void> {
-    this.askedName = true; this.speaking = true; const T = Date.now(); console.log('[kratu] say your name, at', T - this.ringT0, 'ms');
-    try { if (this.rec?.state === 'recording') this.rec.pause(); } catch { /* ignore */ }
-    if (this.recHeld) { this.holdMic(false); this.recHeld = false; }
-    const CUT = setTimeout(() => this.bus.stopAll(), ASK_NAME_CLIP_MS);
-    await this.bus.play(this.bus.gk('s_p3')); clearTimeout(CUT);
-    this.extend += Date.now() - T; this.speaking = false;
-    if (this.capEnded || this.ended) return;
-    await this.bus.micReady();
-    if (this.rec?.state === 'paused') { try { this.rec.resume(); } catch { /* ignore */ } }
-    if (this.rec?.state === 'recording' && !this.recHeld) { this.holdMic(true); this.recHeld = true; }
-  }
   private extend = 0;
-  private stopAllCapture(): void { if (this.iv) clearInterval(this.iv); this.iv = null; if (this.stopT) clearTimeout(this.stopT); this.speechCb = null; this.disarm(); this.pict.set(null); this.paused.set(null); this.glow.set(false); this.stopFaceMon(); this.stopSR(); this.stopCam(); }
+  private stopAllCapture(): void { this.stopVad(); if (this.iv) clearInterval(this.iv); this.iv = null; if (this.stopT) clearTimeout(this.stopT); this.speechCb = null; this.disarm(); this.pict.set(null); this.paused.set(null); this.glow.set(false); this.stopFaceMon(); this.stopSR(); this.stopCam(); }
   private endRec(): void {
     if (this.ended) return; this.ended = true; this.capEnded = true; this.stopAllCapture();
     if (this.lastManyAt && Date.now() - this.lastManyAt < 2500) { this.crowdAbort(true); return; }
@@ -449,7 +504,7 @@ export class FaceScreen implements OnInit, OnDestroy {
   /** Family hybrid: the face matched a child whose record lacks a voice or a name; whatever this sitting heard is added. */
   private appendTo: MatchResult | null = null; private appendBy = 0;
   private async appendBack(m: MatchResult): Promise<void> {
-    const P = m.person!; const K = this.identity.api; const own = await (this.nameClipP || Promise.resolve(null));
+    this.famLog('decision: known face, voice and name appended where missing'); const P = m.person!; const K = this.identity.api; const own = await (this.nameClipP || Promise.resolve(null));
     K?.store.refresh(P.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
     let voiceVec: Float32Array | null = null;
     try { if (K && this.recBlob) { const pcm = await K.pcmFromBlob(this.recBlob); voiceVec = pcm.length > 8000 && spoke(pcm) ? await K.voiceEmbed(pcm) : null; } } catch { voiceVec = null; }
@@ -462,14 +517,15 @@ export class FaceScreen implements OnInit, OnDestroy {
    */
   private async appendMissing(P: Person, voiceVec: Float32Array | null, clip?: string): Promise<void> {
     // (Sani 2026-11-24) a record whose own clip was too short to read a name from takes the new clip too
-    const SHORT = FAMILY && this.fam.needsClip(P.id);
-    const K = this.identity.api; if (!K || (complete(P) && !SHORT) || !voiceVec) return;
+    // and (Sani 2026-11-24, "if no name exists append") a child with no name stored: this sitting's clip is the one read
+    const SHORT = FAMILY && this.fam.needsClip(P.id), UNNAMED = FAMILY && !this.fam.hasName(P.id);
+    const K = this.identity.api; if (!K || (complete(P) && !SHORT && !UNNAMED) || !voiceVec) return;
     const ADD: Partial<Person> & { name: string } = { id: P.id, name: '' };
     if (!P.voiceVec) ADD.voiceVec = voiceVec;
-    const NEEDS_NAME = !hasName(P) || SHORT; if (NEEDS_NAME && clip) ADD.clip = clip;
+    const NEEDS_NAME = !hasName(P) || SHORT || UNNAMED; if (NEEDS_NAME && clip) ADD.clip = clip;
     if (!ADD.voiceVec && !ADD.clip) return;
     try { await K.store.upsert(ADD); console.log('[kratu] appended to', P.id, ADD.voiceVec ? 'voice' : '', ADD.clip ? 'name clip' : ''); } catch { return; }
-    if (ADD.clip) { if (SHORT) this.fam.clipReplaced(P.id); else this.fam.nameStep(P.id); }
+    if (ADD.clip) { if (SHORT || UNNAMED) this.fam.clipReplaced(P.id); else this.fam.nameStep(P.id); }
   }
   private async finishName(): Promise<void> {
     const raw = extractName(this.transcript); const bank = (window as any).KRATU_BANK as Record<string, string> | null;
@@ -481,6 +537,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     if (K && this.identity.ready()) {
       await K.store.load();
       const m: MatchResult = K.match({ faceVecs: this.faceVecs, voiceVec, nameKey: key });
+      this.famLog('decision: ' + m.decision + (m.person ? ' ' + (m.person.name || m.person.id) + ' (' + (m.reasons || []).join('; ') + ')' : ''));
       console.log('[kratu] sign-in', m.decision, (m.reasons || []).join('; '), 'frames', this.faceVecs.length, 'heard', JSON.stringify(this.transcript), 'own clip', !!own?.url);
       if (m.decision === 'accept' && m.person) {
         // a clear recognition keeps the record's recent face prints up to date (Sani 2026-11-16); refresh() itself refuses

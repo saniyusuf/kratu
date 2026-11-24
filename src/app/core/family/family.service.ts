@@ -198,6 +198,8 @@ export class FamilyService {
   }
   /** The child's own "Sunana …" name clip, from their identity record. */
   clipOf(id: string): string | null { return this.identity.people().find((x) => x.id === id)?.clip || null; }
+  /** A name is stored for this child (typed, or a bank name set): nothing is read for them again. */
+  hasName(id: string): boolean { return this.named(id); }
   /** The record's own clip is too short to read a name from: the face screen asks for the name again (face.ts). */
   needsClip(id: string): boolean { return !!this.profiles().find((p) => p.id === id)?.clipShort; }
   /** A new, longer clip was kept for this child: read it for a name (counts as a try). */
