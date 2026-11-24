@@ -26,21 +26,21 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #app .spothand{z-index:80}
 #loader{position:fixed;inset:0;z-index:250;background:#FBF3DE;background-image:radial-gradient(rgba(150,120,70,.10) 1.6px,transparent 1.6px);background-size:20px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:var(--disp,sans-serif);color:#3B2E1E;text-align:center;padding:24px;transition:opacity .45s}
 #loader.out{opacity:0;pointer-events:none}
-#loader .ld-top{display:flex;align-items:center;gap:14px}#loader .ld-laila{width:clamp(90px,17vh,150px);height:clamp(90px,17vh,150px);transition:transform .3s}
+#loader .ld-top{display:flex;align-items:center;gap:14px}#loader .ld-laila{width:clamp(90px,calc(var(--lvh) * 17),150px);height:clamp(90px,calc(var(--lvh) * 17),150px);transition:transform .3s}
 #loader.st-download .ld-laila .laila-v{animation-duration:2.2s}#loader.st-wake .ld-laila .laila-v{animation-duration:1.1s}#loader.st-ready .ld-laila{animation:ldjump .7s cubic-bezier(.34,1.56,.64,1) 1}
 @keyframes ldjump{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-26px) scale(1.12)}100%{transform:translateY(0) scale(1)}}
-#loader .ld-bubble{position:relative;background:#fff;border-radius:16px;padding:10px 14px;font:700 clamp(14px,2.6vh,18px) var(--disp,sans-serif);color:#3B2E1E;box-shadow:0 4px 14px rgba(80,60,20,.12);max-width:26ch;text-align:left}#loader .ld-bubble::before{content:'';position:absolute;left:-8px;top:50%;width:16px;height:16px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:3px}#loader .ld-bubble small{display:block;font:600 12px var(--body,sans-serif);color:#8a7a5c;margin-top:2px}
+#loader .ld-bubble{position:relative;background:#fff;border-radius:16px;padding:10px 14px;font:700 clamp(14px,calc(var(--lvh) * 2.6),18px) var(--disp,sans-serif);color:#3B2E1E;box-shadow:0 4px 14px rgba(80,60,20,.12);max-width:26ch;text-align:left}#loader .ld-bubble::before{content:'';position:absolute;left:-8px;top:50%;width:16px;height:16px;background:#fff;transform:translateY(-50%) rotate(45deg);border-radius:3px}#loader .ld-bubble small{display:block;font:600 12px var(--body,sans-serif);color:#8a7a5c;margin-top:2px}
 #loader .ld-step{font:800 12px var(--body,sans-serif);letter-spacing:.16em;text-transform:uppercase;color:#2FAE9E}
-#loader .ld-barrow{display:flex;align-items:center;gap:12px}#loader .ld-pct{font:800 clamp(16px,3vh,22px) var(--disp,sans-serif);color:#3B2E1E;min-width:3.2ch;text-align:left;font-variant-numeric:tabular-nums}
+#loader .ld-barrow{display:flex;align-items:center;gap:12px}#loader .ld-pct{font:800 clamp(16px,calc(var(--lvh) * 3),22px) var(--disp,sans-serif);color:#3B2E1E;min-width:3.2ch;text-align:left;font-variant-numeric:tabular-nums}
 #loader .ld-eta{min-height:18px;font:600 13px var(--body,sans-serif);color:#8a7a5c}
-#loader .ld-word{display:flex;gap:.04em;font-weight:900;font-size:clamp(44px,12vh,92px);line-height:1;-webkit-user-select:none;user-select:none}
+#loader .ld-word{display:flex;gap:.04em;font-weight:900;font-size:clamp(44px,calc(var(--lvh) * 12),92px);line-height:1;-webkit-user-select:none;user-select:none}
 #loader .ld-word span{color:#DCD0B4;display:inline-block;transition:color .3s}
 #loader .ld-word span.on{animation:ldpop .55s cubic-bezier(.34,1.56,.64,1)}
 #loader .ld-word .k.on{color:var(--red)}#loader .ld-word .r.on{color:var(--orange)}#loader .ld-word .a.on{color:var(--yellow)}#loader .ld-word .t.on{color:var(--teal)}#loader .ld-word .u.on{color:var(--blue)}
 @keyframes ldpop{0%{transform:scale(.55) rotate(-10deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
 #loader .ld-bar{width:min(400px,64vw);height:14px;border-radius:99px;background:#EADFC3;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
 #loader .ld-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow),var(--teal),var(--blue));transition:width .6s}
-#loader .ld-msg b{display:block;font-size:clamp(20px,4vh,30px);transition:opacity .2s}#loader .ld-msg small{display:block;margin-top:4px;font:600 clamp(13px,2.4vh,16px) var(--body,sans-serif);color:#8a7a5c;max-width:40ch}
+#loader .ld-msg b{display:block;font-size:clamp(20px,calc(var(--lvh) * 4),30px);transition:opacity .2s}#loader .ld-msg small{display:block;margin-top:4px;font:600 clamp(13px,calc(var(--lvh) * 2.4),16px) var(--body,sans-serif);color:#8a7a5c;max-width:40ch}
 #loader .ld-steps{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font:700 12px var(--body,sans-serif);color:#8a7a5c}
 #loader .ld-steps span{padding:4px 11px;border-radius:99px;background:#F1E7CF}#loader .ld-steps span.busy{animation:ldpulse 1.1s ease-in-out infinite}#loader .ld-steps span.done{background:#DDF3EE;color:#1E7F73}#loader .ld-steps span.fail{background:#FBE2E0;color:#B3261E}
 @keyframes ldpulse{0%,100%{opacity:1}50%{opacity:.45}}
@@ -51,11 +51,17 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #loader .ld-bubble{width:min(26ch,58vw);max-width:none;box-sizing:border-box;min-height:calc(2.5em + 18px);display:flex;flex-direction:column;justify-content:center}
 #loader .ld-word{height:1.2em;align-items:center}
 #loader .ld-step{min-height:1.5em}
-#loader .ld-msg{width:min(420px,92vw);height:calc(clamp(20px,4vh,30px)*2.5 + clamp(13px,2.4vh,16px)*2.6 + 4px);display:flex;flex-direction:column;justify-content:flex-start}
+#loader .ld-msg{width:min(420px,92vw);height:calc(clamp(20px,calc(var(--lvh) * 4),30px)*2.5 + clamp(13px,calc(var(--lvh) * 2.4),16px)*2.6 + 4px);display:flex;flex-direction:column;justify-content:flex-start}
 #loader .ld-pct{min-width:4.2ch}
 #loader .ld-resume{min-height:1.4em;transition:opacity .3s}#loader .ld-resume.off,#loader .ld-note.off{opacity:0}
 #loader .ld-note{min-height:3em;transition:opacity .3s}
 #loader .ld-steps{min-height:24px}
+/* the loader's lines are sized by the screen's height; drawn turned (the school app held upright) that is the window's
+   width, so --lvh follows it. A screen too short for every line squeezes them, always by the same amount, whatever
+   they say: no line may hold out for its own text */
+:root{--lvh:1vh}
+@media (orientation:portrait){:root{--lvh:1vw}html.fam-on,html.fam-up{--lvh:1vh}}
+#loader>*{min-height:0}
 #loader .ld-steps span{box-sizing:border-box;width:15em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #loader .ld-note{max-width:52ch;font-family:var(--body,sans-serif);color:#3B2E1E}#loader .ld-note b{display:block;font-weight:800;font-size:14px}#loader .ld-note small{display:block;font-weight:600;font-size:13px;color:#8a7a5c;margin-top:2px}
 #loader .ld-retry,#loader .ld-skip{display:none;border:0;border-radius:14px;padding:12px 22px;font:800 17px var(--body,sans-serif);cursor:pointer}
@@ -1085,7 +1091,7 @@ html.fam-build #app .s.wasanni .wdial,html.fam-build #app .s.wasanni .wside,html
 html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 
 /* (Sani 2026-11-24, the downloads design) "Carrying on where we stopped"; no internet: Laila rests and the bar greys */
-#loader .ld-resume{font:800 clamp(13px,2.4vh,16px) var(--body,sans-serif);color:#3B2E1E}
+#loader .ld-resume{font:800 clamp(13px,calc(var(--lvh) * 2.4),16px) var(--body,sans-serif);color:#3B2E1E}
 #loader.st-wait .ld-bar i{filter:grayscale(.6)}
 #loader.st-wait .ld-laila .laila-v{animation-play-state:paused}
 #loader.st-wait .ld-bubble{animation:ldwait 2.2s ease-in-out infinite}
