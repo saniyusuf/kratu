@@ -1109,4 +1109,4 @@ html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 #loader .ld-laila app-laila,#loader .ld-laila .lm{width:100% !important;height:100% !important}
 #loader .ld-laila .lm svg{width:100%;height:100%}
 /* a narrow screen: under the door (upper left) and the ear (upper right), never over them */
-@media (max-width: 560px){.updpill{top:calc(max(12px, env(safe-area-inset-top, 0px)) + 64px)}}
+@media (max-width: 560px){html.fam-up .updpill{top:calc(max(12px, env(safe-area-inset-top, 0px)) + 64px)}}   /* the family app upright; the school app draws itself turned, its top stays clear */
