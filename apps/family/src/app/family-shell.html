@@ -36,11 +36,11 @@
      twice. Later the code will be sent to them instead. -->
 @case ('signin') {
 <section class="fs setup signin" [class.up]="upright()">
-  <div class="sheet one">
+  <div class="sheet one" [class.bare]="cheer()">
   @if (cheer(); as c) {
     <!-- (Sani 2026-11-24) the success moment after Register and after the code: Laila in a soft burst, no tick -->
     <div class="cheer" role="status">
-      <span class="cheer-art" aria-hidden="true"><i class="ring"></i><i class="ring r2"></i>@for (d of DOTS; track d) {<b [style.--a]="d * 45 + 'deg'"></b>}<app-laila [size]="lailaSmall()" /></span>
+      <span class="cheer-art" aria-hidden="true"><i class="cglow"></i>@for (d of DOTS; track d) {<b [style.--a]="d * 45 + 'deg'"></b>}<app-laila [size]="lailaSmall()" /></span>
       <h1>{{ c.big }}</h1>
       <p class="hint">{{ c.small }}</p>
     </div>
