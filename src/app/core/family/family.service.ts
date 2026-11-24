@@ -10,13 +10,22 @@ import { SpeechService } from '../speech/speech.service';
  * A child's profile on this phone. Since 22 Nov (Sani: "we don't need enrolment manually, this is based on face now")
  * children sign themselves up as in the school app: boy or girl, then the face screen, face and "Sunana …" together.
  * The profile's id IS the identity record's id (face and voice prints, the child's own name clip; never a photo).
- * `name` is empty unless the parent types one in Manage profiles: the child's own clip says their name.
+ * `name` is empty unless the parent types one or the name step sets a bank name; the child's own clip is kept for
+ * voice matching and reading the name, never played as the name (Sani 2026-11-24).
  */
 export interface Profile { id: string; name: string; g: Gender; at: number;
   /** The bank name the name step set, and its clip (Laila says it from then on; the clip is kept on the phone). */
   nameKey?: string; nameClip?: string;
   /** PlotWeaver has answered for this child's clip once; the same clip is not sent again (Sani 2026-11-24). */
-  nameAsked?: boolean; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
+  nameAsked?: boolean;
+  /** (Sani 2026-11-24, "bank, else PlotWeaver once") a written name that is not a bank name, read once by PlotWeaver in
+   *  the Hausa voice nearest Laila's and kept on the phone for good (an Opus data URL). Cleared when the name changes. */
+  nameVoice?: string;
+  /** How many times the name step has read this child's clip (at most NAME_TRIES while no name is set). */
+  nameTries?: number;
+  /** The child's own "Sunana …" clip is too short to read a name from: the next sign-in asks for the name again and
+   *  keeps the new clip. */
+  clipShort?: boolean; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
@@ -88,11 +97,12 @@ export class FamilyService {
     const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('kratu-family:' + code));
     return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join('');
   }
-  /** Manage profiles: the parent may type a child's name (optional; the child's own clip says it anyway). */
+  /** Manage profiles: the parent may type a child's name (optional). Laila says it from the bank when it is a bank
+   *  name, else in PlotWeaver's voice, made once; the child's own recording is never played as the name. */
   rename(id: string, name: string): void {
     const NAME = name.replace(/\s+/g, ' ').trim().slice(0, 24);
     // a name typed over the bank one: Laila's bank clip no longer fits, so the child's own clip speaks again
-    this.write(this.profiles().map((p) => (p.id === id ? (NAME === p.name ? p : { ...p, name: NAME, nameKey: undefined, nameClip: undefined }) : p)));
+    this.write(this.profiles().map((p) => (p.id === id ? (NAME === p.name ? p : { ...p, name: NAME, nameKey: undefined, nameClip: undefined, nameVoice: undefined }) : p)));
     if (NAME) this.identity.api?.store.upsert({ id, name: NAME }).catch(() => undefined);
   }
   // ---- the name (Sani 2026-11-23): heard offline from the child's clip, set only in strict mode, never sent anywhere
@@ -118,7 +128,8 @@ export class FamilyService {
    */
   async nameStep(id: string, later = false): Promise<void> {
     if (this.named(id)) return;
-    if (later && !(NAME_ONLINE && this.nameOnline() && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked && this.clipOf(id))) return;
+    // (Sani 2026-11-24) while a child has no name, a later sign-in reads their clip again, up to NAME_TRIES times in all
+    if (later && !(this.clipOf(id) && (this.profiles().find((p) => p.id === id)?.nameTries ?? 0) < NAME_TRIES)) return;
     if (this.naming.has(id)) return;   // one try at a time per child
     this.naming.add(id);
     try {
@@ -131,10 +142,10 @@ export class FamilyService {
    *  and nothing is sent. Kept on this phone. */
   readonly nameOnline = signal<boolean>((() => { try { return localStorage.getItem(K_NAME_ONLINE) !== '0'; } catch { return true; } })());
   setNameOnline(on: boolean): void { this.nameOnline.set(on); try { localStorage.setItem(K_NAME_ONLINE, on ? '1' : '0'); } catch { /* ignore */ } }
-  /** Clear name (Sani 2026-11-24): the name goes, typed or set; Laila uses the child's own recording again, and a fresh
-   *  name can be worked out at a later sign-in (their clip may be read once more). */
+  /** Clear name (Sani 2026-11-24): the name goes, typed or set; Laila says just "Sannu" again, and a fresh name can be
+   *  worked out at later sign-ins (their clip may be read again, up to NAME_TRIES times). */
   clearName(id: string): void {
-    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: '', nameKey: undefined, nameClip: undefined, nameAsked: undefined } : p)));
+    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: '', nameKey: undefined, nameClip: undefined, nameAsked: undefined, nameVoice: undefined, nameTries: undefined } : p)));
     this.identity.api?.store.upsert({ id, name: '', clearName: true }).catch(() => undefined);
   }
   /** A typed name, or a bank name already set: the child is named, and nothing is asked or sent for them again. */
@@ -144,7 +155,11 @@ export class FamilyService {
       const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return null;
       const CTX = new AudioContext({ sampleRate: 16000 });
       const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close().catch(() => undefined);
-      const ASK = NAME_ONLINE && this.nameOnline() && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked;
+      // (Sani 2026-11-24: his sign-up clip was 0.7 s) a clip under MIN_CLIP_S cannot carry "Sunana …": nothing is sent
+      // and no try is counted; the next sign-in asks for the name again and keeps the new clip
+      if (PCM.length < 16000 * MIN_CLIP_S) { this.write(this.profiles().map((p) => (p.id === id ? { ...p, clipShort: true } : p))); console.log('[kratu] name step: clip too short', (PCM.length / 16000).toFixed(1), 's, asking again next time'); return null; }
+      this.write(this.profiles().map((p) => (p.id === id ? { ...p, clipShort: undefined, nameTries: (p.nameTries ?? 0) + 1 } : p)));
+      const ASK = NAME_ONLINE && this.nameOnline() && navigator.onLine;
       const ONLINE = ASK ? this.onlineText(PCM) : Promise.resolve(null);   // on its way while the phone listens
       const HEARD = heardPhrase(await this.speech.recognizeClip(PCM, 16000, grammarOf(D)));
       const TEXT = await ONLINE;
@@ -183,6 +198,43 @@ export class FamilyService {
   }
   /** The child's own "Sunana …" name clip, from their identity record. */
   clipOf(id: string): string | null { return this.identity.people().find((x) => x.id === id)?.clip || null; }
+  /** The record's own clip is too short to read a name from: the face screen asks for the name again (face.ts). */
+  needsClip(id: string): boolean { return !!this.profiles().find((p) => p.id === id)?.clipShort; }
+  /** A new, longer clip was kept for this child: read it for a name (counts as a try). */
+  clipReplaced(id: string): void { this.write(this.profiles().map((p) => (p.id === id ? { ...p, clipShort: undefined } : p))); this.nameStep(id, true); }
+  /**
+   * The name as Laila says it (Sani 2026-11-24, "bank, else PlotWeaver once"): a bank name in Laila's own recording; any
+   * other written name in PlotWeaver's Hausa voice, asked for once and kept on the phone; no name, nothing. Never the
+   * child's own recording. Answers within `waitMs` or null; a PlotWeaver clip that comes later is still kept for next time.
+   */
+  async nameSound(id: string, waitMs = NAME_SOUND_WAIT_MS): Promise<string | null> {
+    const P = this.profiles().find((p) => p.id === id); if (!P?.name) return null;
+    const WORK = (async (): Promise<string | null> => {
+      const D = await this.names();
+      const KEY = P.nameKey || (D?.file[P.name.toLowerCase()] ? P.name.toLowerCase() : null);
+      if (KEY) return P.nameKey === KEY && P.nameClip ? P.nameClip : await this.clipUrl(KEY);
+      if (P.nameVoice) return P.nameVoice;
+      return this.makeNameVoice(id, P.name);
+    })();
+    return Promise.race([WORK.catch(() => null), new Promise<null>((r) => setTimeout(() => r(null), waitMs))]);
+  }
+  private voicing = new Map<string, Promise<string | null>>();
+  /** PlotWeaver reads the written name once (through our /api/say; only the name is sent); kept with the child. */
+  private makeNameVoice(id: string, name: string): Promise<string | null> {
+    const K = id + '|' + name; const ON = this.voicing.get(K); if (ON) return ON;
+    const P = (async () => {
+      try {
+        const R = await fetch('api/say', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: name }), signal: AbortSignal.timeout(SAY_TIMEOUT_MS) });
+        if (!R.ok) return null;
+        const B = await R.blob(); const URL = await new Promise<string>((ok) => { const F = new FileReader(); F.onload = () => ok(String(F.result)); F.readAsDataURL(B); });
+        // kept only if the name is still the same one
+        this.write(this.profiles().map((p) => (p.id === id && p.name === name ? { ...p, nameVoice: URL } : p)));
+        console.log('[kratu] name voice made once and kept');
+        return URL;
+      } catch { return null; } finally { this.voicing.delete(K); }
+    })();
+    this.voicing.set(K, P); return P;
+  }
   remove(id: string): void {
     this.write(this.profiles().filter((p) => p.id !== id));
     this.identity.api?.store.remove(id).catch(() => undefined);   // their face prints and name clip go too
@@ -313,9 +365,9 @@ export class FamilyService {
     // in the background: set only when sure, never holds the child up; a known child with no name is tried again
     // only if PlotWeaver never answered for their clip (Sani 2026-11-24)
     if (isNew) this.nameStep(p.id); else this.nameStep(p.id, true);
-    // a known child with a name: "Sannu, <name>" first, nothing appended (Sani 2026-11-23)
-    const SAY = p.nameClip || this.clipOf(p.id);   // Laila's bank clip, else the child's own recording of their name
-    if (!isNew && SAY) { const CLIP = SAY; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
+    // a known child: "Sannu", then the name when its sound is ready within NAME_SOUND_WAIT_MS (the bank clip, else
+    // PlotWeaver's, made once); otherwise just "Sannu". Never the child's own recording (Sani 2026-11-24).
+    if (!isNew) { const ID = p.id; this.show(null); this.nameSound(ID).then(async (SRC) => { if ((await this.bus.play('s_sannu')) && SRC) await this.bus.playRaw(SRC); this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
     // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
   }
@@ -356,6 +408,14 @@ const K_NAME_ONLINE = 'kratu_fam_name_online';
 type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> };
 /** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
 const NAME_ONLINE = true;
+/** (Sani 2026-11-24) the name step reads a child's clip at most this many times while no name is set. */
+const NAME_TRIES = 3;
+/** A clip shorter than this cannot hold "Sunana …" (Sani's sign-up clip was 0.7 s). */
+const MIN_CLIP_S = 1;
+/** At the welcome, the name's sound must be ready within this, else Laila says just "Sannu" (Sani 2026-11-24). */
+const NAME_SOUND_WAIT_MS = 5000;
+/** /api/say gives up after this. */
+const SAY_TIMEOUT_MS = 15000;
 /** Getting the camera ready shows only when the face models take longer than this. */
 const GETREADY_AFTER_MS = 1200;
 /** The name step never takes longer than this; the child is already in, it only decides whether a name gets set. */

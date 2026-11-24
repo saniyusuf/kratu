@@ -334,7 +334,7 @@ export class FaceScreen implements OnInit, OnDestroy {
       // the family build signs in on the face alone only when it is very sure (Sani 2026-11-22: before the name if found;
       // a stranger scored 0.56 in a test, so the bar here is higher than the ring's own accept, and needs a few frames)
       const SURE = !FAMILY || (m.face >= ((K as any).cfg?.earlyAccept ?? 0) && this.faceVecs.length >= 4);
-      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE && FAMILY && !complete(m.person)) {
+      if (m.decision === 'accept' && m.person && (m.reasons || []).includes('face strong') && SURE && FAMILY && (!complete(m.person) || this.fam.needsClip(m.person.id))) {
         // known on the face, but the record has no voice print or no name yet (enrolled on the face alone): hold on for the
         // voice, ask for the name now, and append what comes (Sani 2026-11-23). Never longer than APPEND_WAIT_MS.
         if (!this.appendTo) { this.appendTo = m; this.appendBy = now + APPEND_WAIT_MS; console.log('[kratu] known face, record incomplete: listening for the name'); if (!this.askedName) this.askName(); }
@@ -438,18 +438,13 @@ export class FaceScreen implements OnInit, OnDestroy {
   // ---- who is it ----
   /**
    * The face alone was a clear, unambiguous match: the child is greeted at once. The voice is not worked out (it could
-   * only add to a face that is already strong), so there is no wait for the recording to be read. The recording is
-   * waited for only when the record has no name sound of its own to greet them with.
+   * only add to a face that is already strong), so there is no wait for the recording to be read.
    */
   private async welcomeBack(m: MatchResult): Promise<void> {
     const P = m.person!; const K = this.identity.api;
     K?.store.refresh(P.id, this.faceVecs.slice(), m).catch(() => { /* the session still opens */ });
-    const BANK = (window as any).KRATU_BANK as Record<string, string> | null;
-    const HAS_NAME_SOUND = !!(P.key && BANK?.[P.key]) || !!P.clip;
-    let ownUrl: string | undefined;
-    if (!HAS_NAME_SOUND && P.name) { await new Promise((r) => setTimeout(r, 700)); ownUrl = (await (this.nameClipP || Promise.resolve(null)))?.url; }
     console.log('[kratu] sign-in accept (early) frames', this.faceVecs.length, 'in', Date.now() - this.faceT0, 'ms');
-    this.welcome(P, true, ownUrl);
+    this.welcome(P, true);   // the name only from the bank, never the child's own recording (Sani 2026-11-24)
   }
   /** Family hybrid: the face matched a child whose record lacks a voice or a name; whatever this sitting heard is added. */
   private appendTo: MatchResult | null = null; private appendBy = 0;
@@ -466,13 +461,15 @@ export class FaceScreen implements OnInit, OnDestroy {
    * don't append either, match and just say the name"). A new name sound sets off the name step in the background.
    */
   private async appendMissing(P: Person, voiceVec: Float32Array | null, clip?: string): Promise<void> {
-    const K = this.identity.api; if (!K || complete(P) || !voiceVec) return;
+    // (Sani 2026-11-24) a record whose own clip was too short to read a name from takes the new clip too
+    const SHORT = FAMILY && this.fam.needsClip(P.id);
+    const K = this.identity.api; if (!K || (complete(P) && !SHORT) || !voiceVec) return;
     const ADD: Partial<Person> & { name: string } = { id: P.id, name: '' };
     if (!P.voiceVec) ADD.voiceVec = voiceVec;
-    const NEEDS_NAME = !hasName(P); if (NEEDS_NAME && clip) ADD.clip = clip;
+    const NEEDS_NAME = !hasName(P) || SHORT; if (NEEDS_NAME && clip) ADD.clip = clip;
     if (!ADD.voiceVec && !ADD.clip) return;
     try { await K.store.upsert(ADD); console.log('[kratu] appended to', P.id, ADD.voiceVec ? 'voice' : '', ADD.clip ? 'name clip' : ''); } catch { return; }
-    if (ADD.clip) this.fam.nameStep(P.id);
+    if (ADD.clip) { if (SHORT) this.fam.clipReplaced(P.id); else this.fam.nameStep(P.id); }
   }
   private async finishName(): Promise<void> {
     const raw = extractName(this.transcript); const bank = (window as any).KRATU_BANK as Record<string, string> | null;
@@ -559,14 +556,12 @@ export class FaceScreen implements OnInit, OnDestroy {
     };
     setTimeout(go, p ? 900 : this.matchFx() ? 650 : 300);
   }
-  /** "Sannu, <name>! Barka da dawowa / zuwa" — the name in Laila's voice from the bank, else in the child's own voice. */
-  private async greet(p: Person, back: boolean, ownUrl?: string): Promise<void> {
+  /** "Sannu, <name>! Barka da dawowa / zuwa" — the name only in Laila's voice from the bank, else no name. */
+  private async greet(p: Person, back: boolean, _ownUrl?: string): Promise<void> {   // the child's own clip is never played as the name (Sani 2026-11-24)
     this.session.name.set(p.name); this.session.personId.set(p.id); this.session.known.set(back); this.session.simulated.set(null);
     const bank = (window as any).KRATU_BANK as Record<string, string> | null;
-    // A name is said only when it is surely the name alone: a bank recording, or the child's own clip cut where the recogniser
-    // heard the name. With no written name (an iPad, no internet) the clip may still hold "sunana …", so Laila just says
-    // welcome (Sani 2026-09-22).
-    const nameSrc = p.key && bank?.[p.key] ? bank[p.key] : (p.name ? (p.clip || ownUrl || null) : null);
+    // (Sani 2026-11-24) the name only ever in Laila's own bank recording, never the child's own "Sunana …" clip
+    const nameSrc = p.key && bank?.[p.key] ? bank[p.key] : null;
     if (nameSrc) { await this.bus.play('s_sannu'); await this.bus.playRaw(nameSrc); }
     await this.bus.play(back ? 's_back' : 's_welcome');
   }

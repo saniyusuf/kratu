@@ -143,9 +143,11 @@
       @for (p of fam.profiles(); track p.id) {
         <div class="kid"><span class="kav gimg"><span class="gem" [innerHTML]="kid(p.g)"></span></span>
           <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}</small></span>
-          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}@if (p.name) {<button class="link" (click)="fam.clearName(p.id)">Clear name</button>}<button class="link" (click)="removeKid(p)">Remove</button>
-          <!-- the name (Sani 2026-11-23, strict mode): set by the phone only when two hearings agree -->
-          @if (p.nameKey) {<small class="gok">Laila says {{ p.name }} in her own voice</small>}
+          @if (p.name) {<button class="link" [disabled]="hearing() === p.id" (click)="hear(p)">{{ hearing() === p.id ? 'Getting…' : 'Hear name' }}</button><button class="link" (click)="fam.clearName(p.id)">Clear name</button>}<button class="link" (click)="removeKid(p)">Remove</button>
+          <!-- the name (Sani 2026-11-24, "bank, else PlotWeaver once"): whether one is set, and in which voice -->
+          @if (p.nameKey) {<small class="gok">Name set · Laila says {{ p.name }} in her own voice</small>}
+          @else if (p.name) {<small class="gok">Name set · {{ p.name }}, read once by a speech voice</small>}
+          @else {<small>No name yet · Laila says just “Sannu”</small>}
         </div>
       } @empty {<p class="hint">No children yet.</p>}
       <p class="hint">A new child signs up by looking at the phone.</p>

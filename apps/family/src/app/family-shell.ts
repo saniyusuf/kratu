@@ -224,6 +224,8 @@ export class FamilyShell implements OnDestroy {
 
 
   /** The child's own "Sunana …" clip says their name (the profile may have no written one). */
-  hear(p: Profile): void { const C = this.fam.clipOf(p.id); this.bus.stopAll(); if (C) this.bus.playRaw(C); }
+  /** The name as Laila says it at sign-in (bank, else PlotWeaver's, made once); never the child's own recording. */
+  readonly hearing = signal<string | null>(null);
+  async hear(p: Profile): Promise<void> { this.bus.stopAll(); this.hearing.set(p.id); const SRC = await this.fam.nameSound(p.id, 15000); this.hearing.set(null); if (SRC) this.bus.playRaw(SRC); }
   removeKid(p: Profile): void { if (confirm('Remove ' + p.name + ' and their progress from this phone?')) this.fam.remove(p.id); }
 }
