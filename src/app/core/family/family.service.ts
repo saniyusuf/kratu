@@ -119,11 +119,11 @@ export class FamilyService {
    * child is in, only for a child with no stored name, and gives up after NAME_WAIT_MS; nothing holds the child up.
    *  - Online (NAME_ONLINE): the child's "Sunana …" clip, and nothing else, goes to our own /api/name, which holds the
    *    PlotWeaver key (tools/name-proxy.mjs locally; a small server for release). The words that come back are matched
-   *    to the closest bank name by sound. The name is set only when that match is near exact (PlotWeaver sure) AND the
-   *    offline grammar hearing names the same child. On the 1,958 bank recordings: 40% set, 95% right.
+   *    to the closest bank name by sound. The name is set when that match is near exact (PlotWeaver sure); since Sani's
+   *    choice of 24 Nov (22:42) the offline grammar no longer has to agree for a bank name.
    *  - No answer in ONLINE_WAIT_MS, or no network: offline strict only (the grammar hears ONE name and free listening
    *    lands on it too: 23% set, 91% right).
-   * Not sure: no name, the child's own clip stays their name. Once PlotWeaver has answered for a clip it is not sent
+   * Not sure: no name (Laila says just "Sannu"; the child's own clip is never played as the name). Once PlotWeaver has answered for a clip it is not sent
    * again; if it never answered, a later sign-in tries again. A named child's clip is never sent again.
    */
   async nameStep(id: string, later = false): Promise<void> {
@@ -166,7 +166,7 @@ export class FamilyService {
       if (TEXT !== null) {
         this.write(this.profiles().map((p) => (p.id === id ? { ...p, nameAsked: true } : p)));
         const KEY = onlineName(TEXT, HEARD, D);
-        console.log('[kratu] name step: online', KEY ? 'sure, offline agrees' : 'not sure, no name');
+        console.log('[kratu] name step: online', KEY ? 'sure (bank name)' : 'not sure, no name');
         return KEY;
       }
       const KEY = await this.offlineName(PCM, HEARD, D);
@@ -481,7 +481,11 @@ function onlineName(text: string, heard: string, D: NamesData): string | null {
   else if (w.length && soundKey(w[0]).startsWith(SUNANA_KEY.slice(0, 4)) && soundKey(w[0]).length > SUNANA_KEY.length) w = [w[0].slice(6), ...w.slice(1)];
   const { key: KEY, dist: DIST } = nearest(w.join(''), Object.keys(D.file));
   if (!KEY || DIST > ONLINE_SURE) return null;
-  return (D.phrases[heard] || []).some((x) => sameName(KEY, x, D)) ? KEY : null;
+  // (Sani 2026-11-24, 22:42) PlotWeaver alone is enough when its words are a bank name, exactly or nearly (spelling folded),
+  // whatever the offline check heard; a name outside the bank is never set here (it needs both to agree, and only bank
+  // names can be set by the name step). Still only when no name is stored, never over one.
+  if (!(D.phrases[heard] || []).some((x) => sameName(KEY, x, D))) console.log('[kratu] name step: offline heard otherwise; PlotWeaver alone decides (bank name)');
+  return KEY;
 }
 /** The clip as a 16 kHz mono 16-bit WAV, 10 s at most: the one thing the name check sends. */
 function wav16k(pcm: Float32Array): Blob {

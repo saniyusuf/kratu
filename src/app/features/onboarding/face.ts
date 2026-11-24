@@ -20,8 +20,6 @@ const CROWD_GIVE_UP = 25000;
 const PICT: Record<string, [string, string]> = { alone: ['👥', '🧒'], noface: ['🙈', '👀'], small: ['🐜', '🔍'], blurry: ['💨', '✋'], dark: ['🌑', '💡'], turned: ['↩️', '👀'] };
 /** The family build (Sani 2026-11-22): the whole step at most 10 seconds for young children. */
 const MAXMS = FAMILY ? 5000 : 10000, HARDMS = FAMILY ? 5000 : 20000;   // the family build: one capture window of 5 s at most (Sani 2026-11-24)
-/** The family build: when to ask for the name, and how much of s_p3 is played (its first sentence ends at 2.95 s). */
-const ASK_NAME_CLIP_MS = 3150;
 /** The family capture (Sani 2026-11-24): the voice is judged once the child has spoken this long and then been quiet this long. */
 const SPOKE_MS = 300, QUIET_MS = 500;
 /** Two faces restart the capture at most this many times before the try-again gate. */
@@ -170,8 +168,9 @@ export class FaceScreen implements OnInit, OnDestroy {
    * enrolled, the camera opens straight away, no intro and no press, and a known face goes in before a word is said.
    * The very first child still gets the intro (the example film) to learn what to do.
    */
-  ngOnInit(): void { afterPaint().then(async () => { if (FAMILY && (await this.anyone())) { this.start(); return; } this.intro(); }); }
-  private async anyone(): Promise<boolean> { try { const K = this.identity.api; if (!K || !this.identity.ready()) return false; await K.store.load(); return K.store.all().length > 0; } catch { return false; } }
+  // (Sani 2026-11-24, 22:41) the family build enters like the school app: the example, the film, Laila cued; the camera
+  // comes up only when the child presses Laila, never by itself
+  ngOnInit(): void { afterPaint().then(() => this.intro()); }
   ngOnDestroy(): void { this.pending = null; this.teardown(); this.dropModal(); }
   /** The dialog lives at body level (moved there by the effect); Angular's own removal misses it, so it is removed here. */
   private dropModal(): void { document.querySelectorAll('.capmodal').forEach((m) => m.remove()); document.body.classList.remove('capmodal-open'); }
@@ -182,7 +181,8 @@ export class FaceScreen implements OnInit, OnDestroy {
     if (!(await this.bus.play(this.bus.gk('s_p1')))) return;     // 1. we will take a video of you saying your name; e.g. if your name is Musa, say "Sunana Musa" (s_p1, not s_face: that one ends with a second "press Laila")
     if (!(await this.bus.play(this.bus.gk('s_p2')))) return;     // 2. here is the boy Musa / the girl Aisha saying the name
     if ((await this.playFilm(g)) === 'cut') return;
-    if (!(await this.bus.play(this.bus.gk('s_p3')))) return;
+    // the family build (Sani 2026-11-24): no "Yanzu kai, ka faɗa mana sunanka …" (s_p3); Laila is cued with the hand
+    if (!FAMILY && !(await this.bus.play(this.bus.gk('s_p3')))) return;
     this.cue.set(true);
   }
   /** The film of the child's own gender (the other one is hidden by the design's CSS). */
@@ -237,8 +237,8 @@ export class FaceScreen implements OnInit, OnDestroy {
   /** The timeline of a sign-in, in seconds from the screen's start (the test reads it; nothing personal in it). */
   private famLog(what: string): void { if (FAMILY) console.log('[kratu] T ' + ((Date.now() - this.famT0) / 1000).toFixed(2) + ' ' + what); }
   /**
-   * Everything Laila says comes before the capture ("look at the camera", "say your name"); none of it while the camera
-   * is on. The microphone opens first, once she has been quiet for the bus's guard (her voice is never in the clip), so
+   * A press of Laila starts it (Sani 2026-11-24): nothing of Laila plays from here while the camera is on (her example
+   * and the film came before the press). The microphone opens first, once she has been quiet for the bus's guard (her voice is never in the clip), so
    * the child's very first word is caught; the camera follows; face and voice are captured together from then on.
    */
   private async famStart(fresh: boolean): Promise<void> {
@@ -246,14 +246,7 @@ export class FaceScreen implements OnInit, OnDestroy {
     this.bus.stopAll(); this.cue.set(false); this.reset(); this.capturing.set(true);
     await afterPaint();
     const md = navigator.mediaDevices; if (!md?.getUserMedia) { this.leaveForPerm(); return; }
-    if (fresh) {
-      if (!(await this.bus.play(this.bus.gk('s_look')))) { if (RUN !== this.famRun) return; }
-      if (RUN !== this.famRun) return;
-      const CUT = setTimeout(() => this.bus.stopAll(), ASK_NAME_CLIP_MS);   // "Yanzu kai, ka faɗa mana sunanka." only
-      await this.bus.play(this.bus.gk('s_p3')); clearTimeout(CUT);
-      if (RUN !== this.famRun) return;
-    }
-    this.famLog('Laila done');
+    this.famLog('pressed: capture starts');
     await this.bus.micReady();   // her last sound plus the guard: none of her voice is recorded
     if (RUN !== this.famRun) return;
     let mic: MediaStream, cam: MediaStream;
