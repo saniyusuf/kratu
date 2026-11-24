@@ -1129,7 +1129,7 @@ html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 /* a press shrinks the whole choice a little, never adds a background */
 #leave .lv-done:active,#leave .lv-cancel:active{transform:scale(.93)}
 #leave .yn:active{background:none}
-/* (Sani 2026-11-24) door and arrow black, a light loop: the leaf opens a few degrees, the arrow nudges left, ~2.5 s */
+/* (Sani 2026-11-24) the door in its own colours, the arrow black, a light loop: the leaf opens a few degrees, the arrow nudges left, ~2.5 s */
 #leave .bdoor .bleaf{transform-box:fill-box;transform-origin:left center;animation:lvleaf 2.5s ease-in-out infinite}
 #leave .lvarrow{animation:lvnudge 2.5s ease-in-out infinite}
 @keyframes lvleaf{0%,55%,100%{transform:scaleX(1)}25%{transform:scaleX(.78)}}
