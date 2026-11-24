@@ -12,6 +12,11 @@
   <meta name="theme-color" content="#FBF3DE">
   <meta name="mobile-web-app-capable" content="yes">
   <script src="kratu-id.js"></script>
+  <!-- (Sani 2026-11-24, no layout jumps) the app's fonts arrive before the first screen is drawn, so no line changes size when they land -->
+  <link rel="preload" href="assets/fonts/Baloo2-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Baloo2-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Nunito-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Nunito-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body>
   <app-root></app-root>

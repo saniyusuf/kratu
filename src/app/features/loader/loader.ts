@@ -17,12 +17,12 @@ import { bi, EN_ON, t } from '../../core/lang/t';
     @for (on of L.letters(); track $index) {<span [class]="'kratu'[$index] + (on ? ' on' : '')">{{ 'Kratu'[$index] }}</span>}
   </div>
   <div class="ld-step">@if (L.step()) {@if (enOn) {Step {{ L.step() }} of 4} @else {<ng-container>{{ t('Mataki') }}</ng-container> {{ L.step() }} / 4 · Step {{ L.step() }} of 4}}</div>
-  <div class="ld-msg"><b>{{ L.headHa() }}</b><small [hidden]="enOn || !L.headEn()">{{ L.headEn() }}</small></div>
-  @if (L.resumed() && !L.netWait() && !L.finished()) {<div class="ld-resume">{{ resumeLine }}</div>}
+  <div class="ld-msg">@for (h of [L.headHa() + '|' + L.headEn()]; track h) {<b>{{ L.headHa() }}</b><small [hidden]="enOn || !L.headEn()">{{ L.headEn() }}</small>}</div>
+  <div class="ld-resume" [class.off]="!(L.resumed() && !L.netWait() && !L.finished())">{{ resumeLine }}</div>
   <div class="ld-barrow"><div class="ld-bar"><i [style.width.%]="L.pct()"></i></div><span class="ld-pct">{{ L.pct() }}%</span></div>
   <div class="ld-eta">{{ L.eta() }}</div>
-  <div class="ld-steps">@for (c of L.chips(); track c.id) {<span [class]="c.state === 'ok' ? 'done' : c.state">{{ c.label }}@if (c.text) { · {{ c.text }}}</span>}</div>
-  @if (L.noteHa()) {<div class="ld-note"><b>{{ L.noteHa() }}</b><small [hidden]="enOn">{{ L.noteEn() }}</small></div>}
+  <div class="ld-steps">@for (c of L.chips(); track c.id + c.state + c.text) {<span [class]="c.state === 'ok' ? 'done' : c.state">{{ c.label }}@if (c.text) { · {{ c.text }}}</span>}</div>
+  <div class="ld-note" [class.off]="!L.noteHa()"><b>{{ L.noteHa() }}</b><small [hidden]="enOn">{{ L.noteEn() }}</small></div>
   <button class="ld-retry" (click)="L.retry()">{{ bi('Sake gwadawa', 'Try again') }}</button>
   <button class="ld-skip" [hidden]="!L.showSkip()" (click)="L.skip()">{{ bi('Ci gaba haka', 'Continue anyway') }}</button>
 </div>`,

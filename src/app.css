@@ -44,6 +44,19 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 #loader .ld-steps{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font:700 12px var(--body,sans-serif);color:#8a7a5c}
 #loader .ld-steps span{padding:4px 11px;border-radius:99px;background:#F1E7CF}#loader .ld-steps span.busy{animation:ldpulse 1.1s ease-in-out infinite}#loader .ld-steps span.done{background:#DDF3EE;color:#1E7F73}#loader .ld-steps span.fail{background:#FBE2E0;color:#B3261E}
 @keyframes ldpulse{0%,100%{opacity:1}50%{opacity:.45}}
+/* (Sani 2026-11-24, "the layout jumps when things appear") every line of the loader keeps its own fixed slot: Laila's
+   bubble is one width and two lines tall whatever she says, the step line, the message, the resume line and the note
+   keep their room while empty, the word keeps its height while the font arrives, and each step chip is one width, so
+   a chip's growing text or a line that comes and goes never moves anything else. */
+#loader .ld-bubble{width:min(26ch,58vw);max-width:none;box-sizing:border-box;min-height:calc(2.5em + 18px);display:flex;flex-direction:column;justify-content:center}
+#loader .ld-word{height:1.2em;align-items:center}
+#loader .ld-step{min-height:1.5em}
+#loader .ld-msg{width:min(420px,92vw);height:calc(clamp(20px,4vh,30px)*2.5 + clamp(13px,2.4vh,16px)*2.6 + 4px);display:flex;flex-direction:column;justify-content:flex-start}
+#loader .ld-pct{min-width:4.2ch}
+#loader .ld-resume{min-height:1.4em;transition:opacity .3s}#loader .ld-resume.off,#loader .ld-note.off{opacity:0}
+#loader .ld-note{min-height:3em;transition:opacity .3s}
+#loader .ld-steps{min-height:24px}
+#loader .ld-steps span{box-sizing:border-box;width:15em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #loader .ld-note{max-width:52ch;font-family:var(--body,sans-serif);color:#3B2E1E}#loader .ld-note b{display:block;font-weight:800;font-size:14px}#loader .ld-note small{display:block;font-weight:600;font-size:13px;color:#8a7a5c;margin-top:2px}
 #loader .ld-retry,#loader .ld-skip{display:none;border:0;border-radius:14px;padding:12px 22px;font:800 17px var(--body,sans-serif);cursor:pointer}
 #loader .ld-retry{background:#2FAE9E;color:#fff;box-shadow:0 3px 0 #1E8A7C}#loader .ld-retry:active{transform:translateY(2px);box-shadow:0 1px 0 #1E8A7C}
@@ -771,7 +784,7 @@ html[lang=ig] #app .s.fashe .stage{background:linear-gradient(180deg,#C08868,#A9
 #app .s.wasanni .wcard b{position:absolute;left:0;right:0;bottom:0;padding:14px 8px 5px;font:800 15px/1.1 var(--disp,'Baloo 2'),sans-serif;color:#fff;background:linear-gradient(transparent,rgba(20,14,6,.8))}
 #app .s.wasanni .wcard.on{transform:translateY(-6px);box-shadow:0 0 0 4px #FFD24D,0 8px 16px rgba(255,190,60,.55)}
 #app .s.wasanni .wdial{display:none}
-#app .s.wasanni .wlaila{display:inline-block;line-height:0;border:0;background:none;padding:0;cursor:pointer}
+#app .s.wasanni .wlaila{display:inline-block;line-height:0;border:0;background:none;padding:0;cursor:pointer}#app .s.wasanni .wlaila .lm{display:inline-block}   /* (Sani 2026-11-24) the same box talking or not: Laila never jumps when she starts to speak */
 #app .s.wasanni .wlaila.talk .lm{display:inline-block;animation:wtalk .5s ease-in-out infinite alternate;filter:drop-shadow(0 0 18px rgba(255,201,60,.95))}
 @keyframes wtalk{to{transform:scale(1.05)}}
 #app .s.wasanni>.wbook{position:absolute;right:0;bottom:0;width:84px;height:84px;border:0;padding:0;border-radius:100% 0 18px 0;background:#8E5BB5;cursor:pointer;z-index:10;-webkit-tap-highlight-color:transparent}
