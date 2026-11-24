@@ -1110,3 +1110,19 @@ html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
 #loader .ld-laila .lm svg{width:100%;height:100%}
 /* a narrow screen: under the door (upper left) and the ear (upper right), never over them */
 @media (max-width: 560px){html.fam-up .updpill{top:calc(max(12px, env(safe-area-inset-top, 0px)) + 64px)}}   /* the family app upright; the school app draws itself turned, its top stays clear */
+
+/* (Sani 2026-11-24) the leave box: the app's own door with a teal arrow out of it = I'm finished, a big X in a soft red
+   circle = cancel (the one X Sani asked for); English big, the child's language small under it; thumb-sized */
+#leave .lbox{padding:22px 34px 20px}
+#leave .lpair{gap:40px;align-items:flex-start}
+#leave .lv-done,#leave .lv-cancel{gap:6px;min-width:120px}
+#leave .lvdoor,#leave .lvx{display:flex;align-items:center;justify-content:center;height:104px;border-radius:26px;box-shadow:0 6px 16px rgba(80,60,20,.16)}
+#leave .lvdoor{gap:4px;padding:0 16px;background:#fff;border:3px solid #2FAE9E}
+#leave .lvdoor .lvd{display:block;width:54px;height:64px}
+#leave .lvdoor .lvd svg{width:100%;height:100%}
+#leave .lvdoor .lvarrow{width:42px;height:42px;fill:none;stroke:#1E8073;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+#leave .lvx{width:104px;border-radius:50%;background:#FDE3E0;border:3px solid #F2B8B1}
+#leave .lvx svg{width:56px;height:56px;fill:none;stroke:#C0392B;stroke-width:3.6;stroke-linecap:round}
+#leave .lv-done b,#leave .lv-cancel b{font:800 20px var(--disp,'Baloo 2',sans-serif);color:#2B2118;line-height:1.1}
+#leave .lvsub{font:700 15px var(--body,'Nunito',sans-serif);color:#6B5E4E;min-height:1.2em}
+#leave .lv-done:active .lvdoor,#leave .lv-cancel:active .lvx{transform:translateY(2px)}

@@ -197,6 +197,9 @@ export class HomeScreen implements OnInit, OnDestroy {
     this.flow.open(ROUTE[act] || 'home');
   }
   leave(): void { this.leaveBox().show(); }
+  /** (Sani 2026-11-24) is the leave box open? */
+  leaveOpen(): boolean { return this.leaveBox().open(); }
+  closeLeave(): void { this.leaveBox().hide(); }
   /** The games corner opens the games board, which grows out of it (ScreenTransition 'grow'). */
   games(): void { this.bus.stopAll(); this.show(null); this.router.navigate(['/wasanni']); }
 }

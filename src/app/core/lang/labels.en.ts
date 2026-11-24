@@ -139,7 +139,7 @@ export const LABELS_EN: Record<string, Label> = {
  "Mutane": {"en":"People","kind":"screen"},
  "NA FARKO · FIRST": {"en":"FIRST","kind":"screen"},
  "NA GABA · NEXT": {"en":"NEXT","kind":"screen"},
- "Na gama": {"en":"I'm done","kind":"screen"},
+ "Na gama": {"en":"I'm finished","kind":"button"},
  "Namiji": {"en":"Boy","kind":"screen"},
  "Nemi haske": {"en":"Find some light","kind":"screen"},
  "Nemo hoto": {"en":"Find picture","kind":"screen"},
@@ -225,4 +225,5 @@ export const LABELS_EN: Record<string, Label> = {
  "New version ready": {"en":"New version ready","kind":"screen"},
  "Update": {"en":"Update","kind":"screen"},
  "Later": {"en":"Later","kind":"screen"},
+ "Cancel": {"en":"Cancel","kind":"screen"},
 };

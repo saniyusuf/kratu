@@ -144,7 +144,7 @@
   { "ha": "Mutane", "en": "People", "kind": "screen" },
   { "ha": "NA FARKO · FIRST", "en": "FIRST", "kind": "screen" },
   { "ha": "NA GABA · NEXT", "en": "NEXT", "kind": "screen" },
-  { "ha": "Na gama", "en": "I'm done", "kind": "screen" },
+  { "ha": "Na gama", "en": "I'm finished", "kind": "button" },
   { "ha": "Namiji", "en": "Boy", "kind": "screen" },
   { "ha": "Nemi haske", "en": "Find some light", "kind": "screen" },
   { "ha": "Nemo hoto", "en": "Find picture", "kind": "screen" },
@@ -229,6 +229,7 @@
   { "ha": "Getting Laila ready", "en": "Getting Laila ready", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
   { "ha": "New version ready", "en": "New version ready", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
   { "ha": "Update", "en": "Update", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
-  { "ha": "Later", "en": "Later", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" }
+  { "ha": "Later", "en": "Later", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "Cancel", "en": "Cancel", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the leave box)" }
  ]
 }
