@@ -110,7 +110,7 @@ export class FamilyService {
    */
   async nameStep(id: string, later = false): Promise<void> {
     if (this.named(id)) return;
-    if (later && !(NAME_ONLINE && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked && this.clipOf(id))) return;
+    if (later && !(NAME_ONLINE && this.nameOnline() && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked && this.clipOf(id))) return;
     if (this.naming.has(id)) return;   // one try at a time per child
     this.naming.add(id);
     try {
@@ -119,14 +119,24 @@ export class FamilyService {
     } finally { this.naming.delete(id); }
   }
   private naming = new Set<string>();
+  /** The parent's "Read names online" (Sani 2026-11-24, on unless they turn it off): off, the name step is offline only
+   *  and nothing is sent. Kept on this phone. */
+  readonly nameOnline = signal<boolean>((() => { try { return localStorage.getItem(K_NAME_ONLINE) !== '0'; } catch { return true; } })());
+  setNameOnline(on: boolean): void { this.nameOnline.set(on); try { localStorage.setItem(K_NAME_ONLINE, on ? '1' : '0'); } catch { /* ignore */ } }
+  /** Clear name (Sani 2026-11-24): the name goes, typed or set; Laila uses the child's own recording again, and a fresh
+   *  name can be worked out at a later sign-in (their clip may be read once more). */
+  clearName(id: string): void {
+    this.write(this.profiles().map((p) => (p.id === id ? { ...p, name: '', nameKey: undefined, nameClip: undefined, nameAsked: undefined } : p)));
+    this.identity.api?.store.upsert({ id, name: '', clearName: true }).catch(() => undefined);
+  }
   /** A typed name, or a bank name already set: the child is named, and nothing is asked or sent for them again. */
   private named(id: string): boolean { return !!(this.profiles().find((p) => p.id === id)?.name || this.identity.people().find((x) => x.id === id)?.key); }
   private async findName(id: string): Promise<string | null> {
     try {
       const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return null;
       const CTX = new AudioContext({ sampleRate: 16000 });
-      const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close();
-      const ASK = NAME_ONLINE && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked;
+      const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close().catch(() => undefined);
+      const ASK = NAME_ONLINE && this.nameOnline() && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked;
       const ONLINE = ASK ? this.onlineText(PCM) : Promise.resolve(null);   // on its way while the phone listens
       const HEARD = heardPhrase(await this.speech.recognizeClip(PCM, 16000, grammarOf(D)));
       const TEXT = await ONLINE;
@@ -331,6 +341,7 @@ export class FamilyService {
   }
 }
 
+const K_NAME_ONLINE = 'kratu_fam_name_online';
 type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> };
 /** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
 const NAME_ONLINE = true;

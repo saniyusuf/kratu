@@ -71,6 +71,7 @@
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><circle cx="9.5" cy="10.5" r=".9" fill="currentColor"/><circle cx="14.5" cy="10.5" r=".9" fill="currentColor"/><path d="M9.5 14.5q2.5 2 5 0"/></svg></span>A face print, never a photo</li>
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span>A voice print, and the child saying their name</li>
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="4.5" rx="1" fill="currentColor"/></svg></span>Kept on this phone. Remove a child any time.</li>
+      <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.1 9.2 4.4 4.4 0 0 0 7 18Z"/></svg></span>To read their name, their spoken name is sent once to a speech service. Kratu does not store it online.</li>
     </ul>
     <!-- (Sani 2026-11-24, second word) one Continue, and a note that a guest mode exists (no button here) -->
     <div class="cs-choice">
@@ -119,7 +120,7 @@
       @for (p of fam.profiles(); track p.id) {
         <div class="kid"><span class="kav gimg"><span class="gem" [innerHTML]="kid(p.g)"></span></span>
           <span class="kn"><input class="kname" type="text" maxlength="24" autocomplete="off" [placeholder]="(p.g === 'f' ? 'Girl' : 'Boy') + ' · type a name (optional)'" [value]="p.name" (change)="fam.rename(p.id, $any($event.target).value)" (keyup.enter)="$any($event.target).blur()"><small>{{ p.g === 'f' ? 'Girl' : 'Boy' }} · since {{ p.at | date: 'd MMM' }}</small></span>
-          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}<button class="link" (click)="removeKid(p)">Remove</button>
+          @if (fam.clipOf(p.id)) {<button class="link" (click)="hear(p)">Hear name</button>}@if (p.name) {<button class="link" (click)="fam.clearName(p.id)">Clear name</button>}<button class="link" (click)="removeKid(p)">Remove</button>
           <!-- the name (Sani 2026-11-23, strict mode): set by the phone only when two hearings agree -->
           @if (p.nameKey) {<small class="gok">Laila says {{ p.name }} in her own voice</small>}
         </div>
@@ -129,6 +130,7 @@
     <div class="col">
       <h1>On this phone</h1>
       <div class="row"><span><b>Settings</b><small>The app's settings</small></span><button class="link" (click)="openSettings()">Open</button></div>
+      <div class="row"><span><b>Read names online</b><small>{{ fam.nameOnline() ? 'A child’s spoken name is sent once to a speech service to read it' : 'Off: names are read on this phone only' }}</small></span><button class="sw" role="switch" [attr.aria-checked]="fam.nameOnline()" aria-label="Read names online" (click)="fam.setNameOnline(!fam.nameOnline())"><i></i></button></div>
       <div class="row"><span><b>Microphone</b><small>So Laila can hear</small></span><button class="link" (click)="fam.show('mic')">Ask again</button></div>
       <div class="row"><span><b>Signed in with</b><small>{{ fam.account()?.phone || '' }}{{ fam.account()?.phone && fam.account()?.email ? ' · ' : '' }}{{ fam.account()?.email || '' }}</small></span></div>
       <p class="hint">Saving online, the family plan and a new phone getting the children back are not built yet.</p>

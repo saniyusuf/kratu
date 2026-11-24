@@ -148,7 +148,7 @@ export class SpeechService {
     ]);
     try { localStorage.removeItem('kratu_mic'); } catch { /* ignore */ }
   }
-  resetAudio(): void { try { this.stream?.getTracks().forEach((t) => t.stop()); } catch { /* ignore */ } try { this.ctx?.close(); } catch { /* ignore */ } this.stream = null; this.ctx = null; this.proc = null; }
+  resetAudio(): void { try { this.stream?.getTracks().forEach((t) => t.stop()); } catch { /* ignore */ } try { if (this.ctx && this.ctx.state !== 'closed') this.ctx.close().catch(() => undefined); } catch { /* ignore */ } this.stream = null; this.ctx = null; this.proc = null; }
 
   /** Open the mic for one answer. The handle's stop() closes it early (a tap on a key, leaving the screen). */
   hear(o: HearOptions): HearHandle {

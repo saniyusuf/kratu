@@ -451,3 +451,19 @@ input,.field{min-height:48px;box-sizing:border-box}
   .cs-text .btn.big,.pm-text .btn.big{font-size:19px;padding:6px 30px;min-height:44px}
 }
 .fs.pm.up .pt{--s:68px}
+
+/* the parent's "Read names online" switch (Sani 2026-11-24) */
+.sw{flex:none;position:relative;width:52px;height:30px;border:0;border-radius:999px;background:#D9CBA8;cursor:pointer;padding:0;transition:background .2s}
+.sw i{position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.sw[aria-checked=true]{background:#2FAE9E}
+.sw[aria-checked=true] i{transform:translateX(22px)}
+/* parent area (24 Nov, full check): row text wraps instead of being cut off; smaller on a phone held sideways */
+.row > span{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.row small{overflow-wrap:anywhere}
+@media (orientation: landscape) and (max-height: 460px){
+  .parent .kn b,.parent .row b{font-size:16px} .parent .kn small,.parent .row small{font-size:13px}
+  .parent .kid .link,.parent .row .link{font-size:15px} .parent h1{font-size:20px} .parent .hint{font-size:14px}
+  .parent .kname{font-size:16px;padding:6px 10px}
+}
+.sheet.wide > .col{flex:1 1 0;min-width:0}
+@media (orientation: landscape) and (max-height: 460px){ .parent .sheet.wide{max-width:calc(100vw - 196px);width:calc(100vw - 196px);max-height:calc(100vh - 16px);gap:16px;padding:14px 18px} }

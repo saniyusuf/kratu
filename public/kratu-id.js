@@ -92,6 +92,7 @@
         if (!(ex.enrollFaceVecs || []).length) { ex.enrollFaceVecs = spread(got, cfg.enrollKeep); ex.recentFaceVecs = got.filter(v => ex.enrollFaceVecs.indexOf(v) < 0).slice(-cfg.recentKeep); }
         else if (got.length) ex.recentFaceVecs = (ex.recentFaceVecs || []).concat(spread(got, cfg.perSitting)).slice(-cfg.recentKeep);
         if (got.length) ex.faceAt = Date.now();
+        if (rec.clearName) { delete ex.key; delete ex.name; }   /* the family's Clear name (Sani 2026-11-24): the child's own clip stays */
         if (rec.voiceVec) ex.voiceVec = rec.voiceVec; ['key', 'clip', 'name'].forEach(k => { if (rec[k]) ex[k] = rec[k]; }); if (!ex.gender && rec.gender) ex.gender = rec.gender; ex.modelVer = K.version || cfg.modelVer; }
       else { ex = Object.assign({ id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), at: Date.now(), modelVer: K.version || cfg.modelVer }, rec); delete ex.faceVecs;
         ex.enrollFaceVecs = spread(got, cfg.enrollKeep); ex.recentFaceVecs = got.filter(v => ex.enrollFaceVecs.indexOf(v) < 0).slice(-cfg.recentKeep); ex.faceAt = Date.now(); people.push(ex); }

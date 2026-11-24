@@ -416,7 +416,7 @@ export function wasikaSound(run) {
       lp.type = 'lowpass'; lp.frequency.setValueAtTime(700, t); lp.frequency.exponentialRampToValueAtTime(380, t + len);
       g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.16, t + .12); g.gain.setValueAtTime(.16, t + .5); g.gain.exponentialRampToValueAtTime(.0001, t + len);
       o.connect(am).connect(lp).connect(g).connect(a.destination); o.start(t); lfo.start(t); o.stop(t + len + .05); lfo.stop(t + len + .05); },
-    close() { try { ac && ac.close(); } catch (e) { /* closed */ } ac = null; },
+    close() { try { if (ac && ac.state !== 'closed') ac.close().catch(() => undefined); } catch (e) { /* closed */ } ac = null; },
   };
 }
 

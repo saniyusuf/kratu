@@ -840,7 +840,7 @@ export function playGame(frame: HTMLElement, gid: string, io: GameIO, opts: Game
   // letters. Every game opens on its own how-to the first time, and the gate's intro after that.
   start();
   return {
-    stop: function () { gone = true; if (unl) { unl.stop(); unl = null; } if (live) live.stop(); closeMic(); io.hush(); try { ac && ac.close(); } catch (e) { /* closed */ } closeAC(); },
+    stop: function () { gone = true; if (unl) { unl.stop(); unl = null; } if (live) live.stop(); closeMic(); io.hush(); try { if (ac && ac.state !== 'closed') ac.close().catch(function () { /* closed */ }); } catch (e) { /* closed */ } closeAC(); },
     again: function () { if (unl) unl.again(); else if (live && live.remind) live.remind(); },
   };
 }

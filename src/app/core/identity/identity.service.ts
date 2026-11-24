@@ -21,7 +21,7 @@ interface KratuIDApi {
   watch(video: HTMLVideoElement, cb: (r: FrameResult) => void): void; unwatch(): void;
   voiceEmbed(pcm: Float32Array): Promise<Float32Array | null>; pcmFromBlob(blob: Blob): Promise<Float32Array>;
   match(q: { faceVecs?: Float32Array[]; voiceVec?: Float32Array | null; nameKey?: string | null }): MatchResult;
-  store: { load(): Promise<Person[]>; all(): Person[]; upsert(rec: Partial<Person> & { name: string }): Promise<Person>; refresh(id: string, vecs: Float32Array[], match: MatchResult): Promise<boolean>; remove(id: string): Promise<void>; clear(): Promise<void>; };
+  store: { load(): Promise<Person[]>; all(): Person[]; upsert(rec: Partial<Person> & { name: string; clearName?: boolean }): Promise<Person>; refresh(id: string, vecs: Float32Array[], match: MatchResult): Promise<boolean>; remove(id: string): Promise<void>; clear(): Promise<void>; };
 }
 declare global { interface Window { KratuID?: KratuIDApi; } }
 
