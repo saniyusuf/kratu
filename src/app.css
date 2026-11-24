@@ -178,6 +178,12 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
    travelling, so the screens slide and the door slides them back. The screen being left is a still copy. */
 #app .frame > .ghost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100%,calc(100cqh * 1.6));height:min(100%,calc(100cqw / 1.6));z-index:3;pointer-events:none;background:var(--paper);background-image:radial-gradient(rgba(150,120,70,.10) 1.6px,transparent 1.6px);background-size:20px 20px}
 #app .frame > .s.nav-in.nav-slide{animation:navIn var(--nav-ms,320ms) cubic-bezier(.4,0,.2,1) both}
+/* the corners (door, ear, games corner, book) are fixed to the screen's edges; a moving screen carries them along and they
+   would snap to the edge when it stops, so they stay out of the movement: the copy leaves without them and the arriving
+   screen's own fade in where they belong once it has settled (Sani 2026-11-24, no jumps) */
+#app .frame > .ghost > :is(.backdoor,.helpdome,.gcorner,.wbook){display:none}
+#app .frame > .s.nav-in > :is(.backdoor,.helpdome,.gcorner,.wbook){opacity:0}
+#app .frame > .s > :is(.backdoor,.helpdome,.gcorner,.wbook){transition:opacity .18s}
 #app .frame > .ghost.nav-out.nav-slide{animation:navOut var(--nav-ms,320ms) cubic-bezier(.4,0,.2,1) both}
 @keyframes navIn{from{transform:translateX(calc(100% * var(--nav-dir,1)))}to{transform:translateX(0)}}
 @keyframes navOut{from{transform:translate(-50%,-50%)}to{transform:translate(-50%,-50%) translateX(calc(-22% * var(--nav-dir,1)));opacity:.35}}
@@ -678,8 +684,10 @@ html,body{height:100%}body{margin:0;background:var(--bg,#F1E9D6);overflow:hidden
 
 /* Full screen means full screen (Sani 2026-10-23): for the games and the letters gate, the app's 6px paper margin and the frame's rounded
    corners go, so the scene runs to every edge of the tablet with no bright rim. */
-body:has(.s.gamelab) #app,body:has(.s.fashe) #app,body:has(.s.gate) #app{padding:0;background:#1A1424}
-#app .frame:has(>.s.gamelab),#app .frame:has(>.s.fashe),#app .frame:has(>.s.gate){border-radius:0;background:none}
+/* (Sani 2026-11-24, no jumps) only the live screen decides: the still copy of a game sliding away must not keep the
+   full-bleed frame until it is gone, or the whole frame shrinks by its border in front of the child */
+body:has(.s.gamelab:not(.ghost)) #app,body:has(.s.fashe:not(.ghost)) #app,body:has(.s.gate:not(.ghost)) #app{padding:0;background:#1A1424}
+#app .frame:has(>.s.gamelab:not(.ghost)),#app .frame:has(>.s.fashe:not(.ghost)),#app .frame:has(>.s.gate:not(.ghost)){border-radius:0;background:none}
 #app .frame>.s.gamelab{border-radius:0}
 /* the letters gate, the course's first game (Sani 2026-11-07: "not full screen"): its sky and village run to every edge too */
 #app .frame>.s.gate{width:100%;height:100%;border-radius:0}

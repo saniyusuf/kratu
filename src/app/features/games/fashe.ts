@@ -53,7 +53,7 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
 @Component({
   selector: 'app-fashe',
   imports: [Door, Ear, LailaButton],
-  host: { class: 's lesson fashe' },
+  host: { class: 's lesson fashe nofit' },   // nofit (Sani 2026-11-24, no jumps): the balloons' board is a fixed layout, sized once when it opens, never rescaled mid-game
   template: `
 <app-door (pressed)="leave()" /><app-ear (pressed)="again()" /><div class="eyebrow">{{ (tx(eye())).split(' · ')[0] }}</div>
 <div class="poptime" [class.low]="low()" [class.off]="!ticking()">
@@ -77,7 +77,7 @@ const TRANSLATE = typeof CSS !== 'undefined' && !!CSS.supports?.('translate', '1
   styles: [`
 .pline{width:5px;height:56px;border-radius:3px;background:#fff;margin:0 6px;box-shadow:0 0 10px rgba(255,255,255,.7)}
 /* the A–Z strip as a wooden board: empty sockets fill with letter tiles as they pop (Sani 2026-11-02); no tick badge */
-.abcslots{width:min(720px,96%)!important;gap:6px!important;padding:10px 14px;border-radius:14px;background:linear-gradient(180deg,#9A6534,#7A4A22);
+.abcslots{width:min(720px,96%)!important;gap:6px!important;padding:10px 14px;min-height:calc(2 * 40px + 6px + 20px);box-sizing:border-box;border-radius:14px;background:linear-gradient(180deg,#9A6534,#7A4A22);
   box-shadow:inset 0 0 0 3px rgba(255,220,160,.25),0 6px 0 rgba(74,44,18,.35)}
 .aslot{height:40px!important;border:0!important;border-radius:8px!important;background:rgba(40,22,8,.38)!important;box-shadow:inset 0 3px 6px rgba(0,0,0,.35)!important;font-size:26px!important;color:var(--c)!important}
 .aslot.on{background:rgba(255,213,74,.25)!important;box-shadow:inset 0 0 0 3px #FFD54A,0 0 16px rgba(255,213,74,.8)!important}

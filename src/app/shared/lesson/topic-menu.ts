@@ -15,7 +15,7 @@ export interface Topic { key: string; ha: string; ico: string; c: string; min?: 
   host: { style: 'display:contents' },   // the tiles and the Fara press are direct children of .splanding, exactly as in the design
   template: `
 <div class="catmenu" [class.few]="few()" [class.haspick]="!!picked()">@for (c of cats(); track c.key) {<button class="catcard" [class.picked]="picked() === c.key" [attr.data-key]="c.key" [style.--c]="c.c" (click)="choose.emit(c.key)"><span class="em kico" [kicon]="c.ico"></span><span class="nm">{{ t(c.ha) }}</span></button>}</div>
-<div class="yesno ynpair catpick" [hidden]="!picked()" [class.nohand]="nohand()"><button [class]="'yn yes ' + goClass()" [class.cue]="cue()" [attr.aria-label]="t('Fara')" (click)="go.emit()"><span class="lglow"></span><app-laila [size]="112" /><span class="lhand">👆🏾</span><small>{{ t('Fara') }}@if (sub('Fara'); as h) {<span class="hsub">{{ h }}</span>}</small></button></div>`,
+<div class="yesno ynpair catpick" [class.off]="!picked()" [attr.aria-hidden]="picked() ? null : 'true'" [attr.inert]="picked() ? null : ''" [class.nohand]="nohand()"><button [class]="'yn yes ' + goClass()" [class.cue]="cue()" [attr.aria-label]="t('Fara')" (click)="go.emit()"><span class="lglow"></span><app-laila [size]="112" /><span class="lhand">👆🏾</span><small>{{ t('Fara') }}@if (sub('Fara'); as h) {<span class="hsub">{{ h }}</span>}</small></button></div>`,
 })
 export class TopicMenu {
   readonly t = t;

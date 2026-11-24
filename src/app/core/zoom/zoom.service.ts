@@ -28,6 +28,9 @@ export class ZoomService {
           const el = n as HTMLElement;
           if (el.nodeType === 1 && (el.classList?.contains('s') || el.querySelector?.('.s'))) { this.settle(); return; }
         }
+        // (Sani 2026-11-24, no jumps) a lesson that swaps its menu for the lesson itself (writing, reading, find the
+        // picture) is a new screen to the child too: it is sized out of sight, never rescaled in front of them
+        for (const r of records) if (r.type === 'attributes' && r.attributeName === 'hidden' && (r.target as Element).matches?.('#app .frame > .s > .splanding, #app .frame > .s > .splesson')) { this.settle(); return; }
         this.refit();
       });
       this.observer.observe(app, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden', 'style'] });
