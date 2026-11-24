@@ -94,6 +94,26 @@ export async function held(F: FileSpec): Promise<ArrayBuffer | null> {
   try { const HIT = await C.match(keyOf(F)); if (!HIT) return null; const B = await HIT.arrayBuffer(); if (B.byteLength === F.raw) return B; await C.delete(keyOf(F)); } catch { /* ignore */ }
   return null;
 }
+/**
+ * A copy kept before fingerprints (24 Nov): under its bare address, and for the school's models under the unpacked name
+ * (.onnx, before .onnx.gz). The old loader kept them on the same size check; a copy of the right size is moved under its
+ * fingerprint instead of being downloaded again, so the tablets in the field do not fetch everything after this update.
+ */
+async function adoptLegacy(F: FileSpec): Promise<ArrayBuffer | null> {
+  if (!F.sha) return null;
+  const C = await openCache(MODELS_CACHE); if (!C) return null;
+  for (const OLD of [ABS(F.url), ABS(F.url.replace(/\.gz$/, ''))]) {
+    try {
+      const HIT = await C.match(OLD); if (!HIT) continue;
+      const B = await HIT.arrayBuffer();
+      if (B.byteLength !== F.raw) continue;
+      await C.put(keyOf(F), new Response(B.slice(0), { headers: { 'content-type': 'application/octet-stream' } }));
+      await C.delete(OLD);
+      return B;
+    } catch { /* ignore */ }
+  }
+  return null;
+}
 /** Another version of the same file (an earlier fingerprint, or from before fingerprints): used only when offline. */
 async function oldCopy(F: FileSpec): Promise<ArrayBuffer | null> {
   const C = await openCache(MODELS_CACHE); if (!C) return null;
@@ -174,7 +194,7 @@ async function travel(F: FileSpec, onp: (got: number) => void, hooks: NetHooks, 
  * A file that fails its fingerprint is fetched again once from scratch.
  */
 export async function getFile(F: FileSpec, onp: (got: number) => void, hooks: NetHooks = {}): Promise<ArrayBuffer> {
-  const HELD = await held(F); if (HELD) { onp(F.bytes); return HELD; }
+  const HELD = (await held(F)) || (await adoptLegacy(F)); if (HELD) { onp(F.bytes); return HELD; }
   let OLD_BUF: ArrayBuffer | null | undefined;
   const OLD = async () => (OLD_BUF === undefined ? (OLD_BUF = await oldCopy(F)) : OLD_BUF);
   for (let TRY = 0; ; TRY++) {
