@@ -393,12 +393,10 @@ input,.field{min-height:48px;box-sizing:border-box}
 /* the name set from the bank, in the parent area (Sani 2026-11-23) */
 .gok{flex-basis:100%;color:#1E8073;font-weight:700}
 
-/* consent (Sani 2026-11-24): one Continue; under it a short line and a small "Enter as guest" (no records kept) */
+/* consent (Sani 2026-11-24): one Continue; under it a short note that a guest mode exists */
 .cs-choice{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:6px}
 .cs-choice .btn{display:inline-flex;align-items:center;justify-content:center;min-width:10em;font-size:max(19px, calc(3 * var(--u)));padding:10px 28px}
 .cs-or{margin:6px 0 0;font-size:14px;font-weight:700;color:#8A7A5C;text-align:center}
-.cs-guest{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:5px 16px 5px 12px;border:0;border-radius:999px;background:#fff;color:#2B2118;font:800 15px var(--disp,'Baloo 2',sans-serif);box-shadow:0 3px 8px rgba(0,0,0,.18);cursor:pointer}
-.cs-guest svg{width:22px;height:22px;fill:none;stroke:#2FAE9E;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .cs.up .cs-choice{width:min(100%, 320px);margin-inline:auto}
 .cs.up .cs-choice .btn{align-self:stretch}
 

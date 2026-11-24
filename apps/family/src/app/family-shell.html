@@ -72,11 +72,10 @@
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span>A voice print, and the child saying their name</li>
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="4.5" rx="1" fill="currentColor"/></svg></span>Kept on this phone. Remove a child any time.</li>
     </ul>
-    <!-- (Sani 2026-11-24, second word) one Continue; a parent who does not agree can enter as a guest, nothing kept -->
+    <!-- (Sani 2026-11-24, second word) one Continue, and a note that a guest mode exists (no button here) -->
     <div class="cs-choice">
       <button class="btn big go glowbtn" (click)="fam.consent(true)">Continue</button>
-      <p class="cs-or">Rather not? Guest mode keeps no records.</p>
-      <button class="cs-guest" (click)="fam.guest()"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.2c.9-3.9 3.7-6 7.2-6s6.3 2.1 7.2 6"/><path d="M17.6 3.6l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z" fill="currentColor"/></svg>Enter as guest</button>
+      <p class="cs-or">Prefer not to? There’s a guest mode: it stores nothing and keeps no progress.</p>
     </div>
   </div>
 </section>
