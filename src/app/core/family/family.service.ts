@@ -250,7 +250,13 @@ export class FamilyService {
   async toCamera(): Promise<void> {
     if (!this.account()?.faceOk) { this.show('consent'); return; }
     this.bus.stopAll(); this.session.end(); this.session.guest.set(false);
-    if (!this.identity.ready()) { this.show('getready'); if (!(await this.loader.loadFace())) return; if (this.screen() !== 'getready') return; }
+    if (!this.identity.ready()) {
+      // (Sani 2026-11-24) a short wait shows nothing: "Getting the camera ready" only if the models take over GETREADY_AFTER_MS
+      const LOAD = this.loader.loadFace(), FROM = this.screen();
+      const QUICK = await Promise.race([LOAD.then(() => true), new Promise<boolean>((r) => setTimeout(() => r(false), GETREADY_AFTER_MS))]);
+      if (!QUICK) { this.show('getready'); if (!(await LOAD)) return; if (this.screen() !== 'getready') return; }
+      else if (!(await LOAD) || this.screen() !== FROM) return;
+    }
     this.show(null); this.router.navigate(['/gender']);
   }
   /** Camera or microphone refused (Sani 2026-11-22: no cards, face and voice are the only way in): the app's own
@@ -315,6 +321,8 @@ export class FamilyService {
 type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> };
 /** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
 const NAME_ONLINE = true;
+/** Getting the camera ready shows only when the face models take longer than this. */
+const GETREADY_AFTER_MS = 1200;
 /** The name step never takes longer than this; the child is already in, it only decides whether a name gets set. */
 const NAME_WAIT_MS = 7000;
 /** No answer from /api/name by then: the offline strict check decides alone. */

@@ -72,22 +72,24 @@
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3.5M8.5 21h7"/></svg></span>A voice print, and the child saying their name</li>
       <li><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="4.5" rx="1" fill="currentColor"/></svg></span>Kept on this phone. Remove a child any time.</li>
     </ul>
-    <button class="btn big go glowbtn" (click)="fam.consent(true)">I agree</button>
-    <button class="link notnow" (click)="fam.consent(false)">Not now</button>
+    <!-- plain agree and disagree, both always in view (Sani 2026-11-24) -->
+    <div class="cs-choice">
+      <button class="btn big go glowbtn" (click)="fam.consent(true)">I agree</button>
+      <button class="btn big cs-no" (click)="fam.consent(false)">I don't agree</button>
+    </div>
   </div>
 </section>
 }
 
 @case ('getready') {
 <!-- 7 · the face models still coming (they start right after Register): Laila waits with you -->
-<section class="fs setup getready" [class.up]="upright()">
-  <div class="sheet one">
-    <app-laila [size]="lailaSmall()" />
-    <h1>Getting the camera ready</h1>
-    <div class="gbar"><i [style.width]="facePct() + '%'"></i></div>
-    <p class="hint">{{ faceText() }}</p>
-    @if (loader.faceProg().state === 'fail') {<button class="btn" (click)="fam.toCamera()">Try again</button>}
-  </div>
+<!-- (Sani 2026-11-24) no card and no box: Laila and a thin soft line on the screen's own background; shown only if the
+     wait is longer than a moment (FamilyService.toCamera) -->
+<section class="fs getready" [class.up]="upright()">
+  <app-laila [size]="lailaSmall()" />
+  <p class="gtext">Getting the camera ready</p>
+  <div class="gbar" role="progressbar" [attr.aria-valuenow]="facePct()" aria-valuemin="0" aria-valuemax="100"><i [style.width]="facePct() + '%'"></i></div>
+  @if (loader.faceProg().state === 'fail') {<p class="hint">{{ faceText() }}</p><button class="btn" (click)="fam.toCamera()">Try again</button>}
 </section>
 }
 

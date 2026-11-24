@@ -16,7 +16,7 @@ import { FAMILY } from '../../core/edition';
   imports: [Ear, Door],
   host: { class: 's genderred', '[class.touring]': 'touring()' },
   template: `
-@if (FAMILY) { <app-door (pressed)="famBack()" /><button class="famguest" (click)="famGuest()">Guest</button> }
+@if (FAMILY) { <app-door (pressed)="famBack()" /><button class="famguest" (click)="famGuest()"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.2c.9-3.9 3.7-6 7.2-6s6.3 2.1 7.2 6"/><path d="M17.6 3.6l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z" fill="currentColor"/></svg>Enter as guest</button> }
 <app-ear [spot]="spot() === 'dome'" (pressed)="tour()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
 <div class="hi" style="font-size:clamp(26px,4vw,38px)">{{ t('Sannu!') }}</div>
