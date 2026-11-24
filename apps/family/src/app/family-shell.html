@@ -37,7 +37,14 @@
 @case ('signin') {
 <section class="fs setup signin" [class.up]="upright()">
   <div class="sheet one">
-  @if (signStep() === 1) {
+  @if (cheer(); as c) {
+    <!-- (Sani 2026-11-24) the success moment after Register and after the code: Laila in a soft burst, no tick -->
+    <div class="cheer" role="status">
+      <span class="cheer-art" aria-hidden="true"><i class="ring"></i><i class="ring r2"></i>@for (d of DOTS; track d) {<b [style.--a]="d * 45 + 'deg'"></b>}<app-laila [size]="lailaSmall()" /></span>
+      <h1>{{ c.big }}</h1>
+      <p class="hint">{{ c.small }}</p>
+    </div>
+  } @else if (signStep() === 1) {
     <h1>Register</h1>
     <p class="hint">Parent sign-up</p>
     <label class="fl">Full name<input class="field" type="text" autocomplete="name" autocapitalize="words" placeholder="Amina Bello" [value]="fullName()" (input)="fullName.set($any($event.target).value)"></label>
@@ -46,12 +53,27 @@
     <button class="btn" [disabled]="!nameOk() || !emailOk() || !phoneOk()" (click)="toCode()">Continue</button>
   } @else {
     <!-- the code on a keypad (Sani 2026-11-21): make it, then type it again on its own screen; "Start again" on both -->
+    <!-- (Sani 2026-11-24) who is signing up, with a way to change it -->
+    @if (editing()) {
+      <div class="pform">
+        <h1>Your details</h1>
+        <label class="fl">Full name<input class="field" type="text" autocomplete="name" autocapitalize="words" [value]="fullName()" (input)="fullName.set($any($event.target).value)"></label>
+        <label class="fl">Email<input class="field" type="email" inputmode="email" autocomplete="email" [value]="email()" (input)="email.set($any($event.target).value)"></label>
+        <label class="fl">Phone number<input class="field" type="tel" inputmode="tel" autocomplete="tel" [value]="phone()" (input)="phone.set($any($event.target).value)" (keyup.enter)="saveEdit()"></label>
+        <div class="prow"><button class="btn" [disabled]="!nameOk() || !emailOk() || !phoneOk()" (click)="saveEdit()">Save</button><button class="btn ghost" (click)="cancelEdit()">Cancel</button></div>
+      </div>
+    } @else {
+    <div class="cwrap"><div class="cl">
+      <div class="pbadge"><span class="pav" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.8 3.9-6 7.5-6s6.7 2.2 7.5 6"/></svg></span><span class="pn"><b>{{ fullName() }}</b><small>{{ email() }}</small></span><button class="link" (click)="editDetails()">Edit</button></div>
     <h1>{{ signStep() === 2 ? 'Make a parent code' : 'Type the code again' }}</h1>
     <p class="hint">{{ signStep() === 2 ? '6 numbers only you know. You open “Manage profiles” with it.' : 'So we know it is right.' }}</p>
     <div class="pins">@for (i of SIX; track i) {<span class="pin" [class.on]="code().length > i">{{ code().length > i ? '•' : '' }}</span>}</div>
     @if (codeMsg()) {<p class="warn">{{ codeMsg() }}</p>}
-    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">@if (k === '⌫') {<span class="bk" [innerHTML]="backspace"></span>} @else {{{ k }}}</button>}</div>
     <button class="btn ghost" (click)="startAgain()">Start again</button>
+    </div>
+    <div class="keypad">@for (k of KEYS; track $index) {<button [class.empty]="!k" [attr.aria-label]="k === '⌫' ? 'Delete' : k" (click)="key(k)">@if (k === '⌫') {<span class="bk" [innerHTML]="backspace"></span>} @else {{{ k }}}</button>}</div>
+    </div>
+    }
   }
   </div>
 </section>

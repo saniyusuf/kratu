@@ -69,9 +69,17 @@ export class FamilyService {
   private readAccount(): Account | null { try { return JSON.parse(localStorage.getItem(K_ACCOUNT) || 'null'); } catch { return null; } }
   private saveAccount(a: Account): void { this.account.set(a); if (this.trying) return; try { localStorage.setItem(K_ACCOUNT, JSON.stringify(a)); } catch { /* private mode */ } }
 
-  async setAccount(name: string, email: string, phone: string, code: string): Promise<void> {
-    this.saveAccount({ name: name.trim().replace(/\s+/g, ' '), email: email.trim(), phone: phone.trim(), code: await this.hash(code), at: Date.now() });
+  /** (Sani 2026-11-24) the details are kept as soon as Register is done, before the code, so a parent who closes the
+   *  app there comes back to the code screen. `code` stays '' until the code is set: `ready()` tells the two apart. */
+  saveDetails(name: string, email: string, phone: string): void {
+    const A = this.account();
+    this.saveAccount({ ...(A || { code: '', at: Date.now() }), name: name.trim().replace(/\s+/g, ' '), email: email.trim(), phone: phone.trim() });
   }
+  async setAccount(name: string, email: string, phone: string, code: string): Promise<void> {
+    this.saveAccount({ ...(this.account() || {}), name: name.trim().replace(/\s+/g, ' '), email: email.trim(), phone: phone.trim(), code: await this.hash(code), at: Date.now() });
+  }
+  /** Registered and the parent code set: the sign-up is done. */
+  ready(): boolean { return !!this.account()?.code; }
   async checkCode(code: string): Promise<boolean> {
     if (this.trying) return /^\d{6}$/.test(code);
     const a = this.account(); return !!a && a.code === await this.hash(code);
@@ -205,7 +213,9 @@ export class FamilyService {
     this.watchPerms();
     let started = false; try { started = localStorage.getItem(K_STARTED) === '1'; } catch { /* ignore */ }
     if (!started && !this.profiles().length) { this.show('welcome'); return; }
-    if (!this.account()) { this.show('signin'); return; }   // Register comes straight after Start (Sani 2026-11-22)
+    // (Sani 2026-11-24) sign-up not finished (no details yet, or no code): Welcome again, and Start goes on from where
+    // the parent stopped (Register, or the code screen with the details kept)
+    if (!this.ready()) { this.show('welcome'); return; }
     if (this.account()?.faceOk) this.loader.loadFace();   // from Cache Storage after the first time: ready by the time the camera opens
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
@@ -224,13 +234,14 @@ export class FamilyService {
   private async tryStep(step: string): Promise<void> {
     this.profiles.set(FamilyService.SAMPLES);
     const kid = step.endsWith('_f') ? FamilyService.SAMPLES[1] : FamilyService.SAMPLES[0];
-    this.account.set({ name: 'Parent Example', phone: '0803 000 0000', email: 'parent@example.com', code: '', at: 0 });
+    this.account.set({ name: 'Parent Example', phone: '0803 000 0000', email: 'parent@example.com', code: 'sample', at: 0 });
     const id = step.replace(/_[mf]$/, '');
     if (id === 'welcome') { this.show('welcome'); return; }
     if (id === 'mic') { this.show('mic'); return; }
     await this.loaded;
     switch (id) {
       case 'signin': this.account.set(null); this.show('signin'); return;
+      case 'code-make': this.account.set({ ...this.account()!, code: '' }); this.show('signin'); return;
       case 'consent': this.account.set({ ...this.account()!, faceOk: undefined }); this.show('consent'); return;
       case 'getready': this.show('getready'); return;
       case 'gender': this.show(null); this.router.navigate(['/gender']); return;
@@ -244,7 +255,7 @@ export class FamilyService {
   /** Welcome page: Start. */
   start(): void {
     try { localStorage.setItem(K_STARTED, '1'); } catch { /* ignore */ }
-    if (!this.account()) { this.show('signin'); return; }   // Start -> Register, the parent's sign-up (Sani 2026-11-22)
+    if (!this.ready()) { this.show('signin'); return; }   // Start -> Register, the parent's sign-up (Sani 2026-11-22), or its code
     this.micThen();
   }
   /** The parent has registered: then the microphone, the loader and the first child. */
@@ -254,7 +265,7 @@ export class FamilyService {
   async afterMic(): Promise<void> {
     this.show(null);   // the loader shows through while it is still working
     await this.loaded;
-    if (!this.account()) { this.show('signin'); return; }
+    if (!this.ready()) { this.show('signin'); return; }
     this.afterSetup();
   }
   /** After the microphone: the parent's consent once, then the camera (the school app's own sign-in). */

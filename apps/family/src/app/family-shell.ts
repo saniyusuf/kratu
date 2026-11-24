@@ -15,6 +15,8 @@ import { NavigationEnd, Router } from '@angular/router';
  *  "Enter as Aisha" sign in as the sample children with no camera. Set to false (this one line) before release; the gear
  *  itself (Refresh, Parent area) stays. */
 const TESTER = true;
+/** How long the success moment after Register and after the code stays (Sani 2026-11-24: small and light). */
+const CHEER_MS = 1700;
 
 /**
  * The family build's own screens: Kratu opening from a link, the microphone, the parent registering (full name, email,
@@ -102,7 +104,12 @@ export class FamilyShell implements OnDestroy {
       const s = this.fam.screen();
       if (this.timer) { clearTimeout(this.timer); this.timer = null; }
       this.micMsg.set(''); this.code.set(''); this.codeMsg.set(''); this.busy.set(false);
-      if (s === 'signin') { this.fullName.set(''); this.email.set(''); this.phone.set(''); this.signStep.set(1); }
+      if (s === 'signin') {
+        // (Sani 2026-11-24) details already kept (the parent closed the app before the code): straight to the code
+        const A = untracked(() => this.fam.account());
+        this.fullName.set(A?.name || ''); this.email.set(A?.email || ''); this.phone.set(A?.phone || '');
+        this.editing.set(false); this.cheer.set(null); this.signStep.set(A && !A.code ? 2 : 1);
+      }
       untracked(() => this.opening(s));
     });
   }
@@ -139,7 +146,30 @@ export class FamilyShell implements OnDestroy {
   }
 
   // ---- the parent's code, on a keypad (Sani 2026-11-21)
-  toCode(): void { if (this.nameOk() && this.emailOk() && this.phoneOk()) this.startAgain(); }
+  toCode(): void {
+    if (!this.nameOk() || !this.emailOk() || !this.phoneOk()) return;
+    this.fam.saveDetails(this.fullName(), this.email(), this.phone());
+    this.celebrate({ big: 'Welcome, ' + this.firstName() + '!', small: 'You are registered. Now make your parent code.' }, () => this.startAgain());
+  }
+  // ---- (Sani 2026-11-24) a short, light success moment after Register and after the code: Laila in a soft burst
+  readonly cheer = signal<{ big: string; small: string } | null>(null);
+  private celebrate(c: { big: string; small: string }, then: () => void): void {
+    this.cheer.set(c);
+    setTimeout(() => { if (this.cheer() !== c) return; this.cheer.set(null); then(); }, CHEER_MS);
+  }
+  readonly DOTS = [0, 1, 2, 3, 4, 5, 6, 7];
+  readonly firstName = computed(() => this.fullName().trim().split(/\s+/)[0] || '');
+  // ---- (Sani 2026-11-24) the parent's name on the code screen, with Edit: name, email and phone in one small form
+  readonly editing = signal(false);
+  editDetails(): void { this.editing.set(true); }
+  saveEdit(): void {
+    if (!this.nameOk() || !this.emailOk() || !this.phoneOk()) return;
+    this.fam.saveDetails(this.fullName(), this.email(), this.phone()); this.editing.set(false);
+  }
+  cancelEdit(): void {
+    const A = this.fam.account();
+    this.fullName.set(A?.name || ''); this.email.set(A?.email || ''); this.phone.set(A?.phone || ''); this.editing.set(false);
+  }
   /** Back to "make a parent code", everything typed so far forgotten. */
   startAgain(): void { this.first = ''; this.code.set(''); this.codeMsg.set(''); this.signStep.set(2); }
   key(k: string): void {
@@ -155,8 +185,8 @@ export class FamilyShell implements OnDestroy {
   }
   async signUp(): Promise<void> {
     if (this.code() !== this.first) { this.code.set(''); this.codeMsg.set('The two codes were not the same. Press “Start again” and make your code again.'); return; }
-    this.busy.set(true); await this.fam.setAccount(this.fullName(), this.email(), this.phone(), this.code()); this.busy.set(false);
-    this.fam.registered();
+    this.busy.set(true); await this.fam.setAccount(this.fullName(), this.email(), this.phone(), this.code());
+    this.celebrate({ big: 'All set!', small: 'Your parent code is saved.' }, () => { this.busy.set(false); this.fam.registered(); });
   }
   async openParent(): Promise<void> {
     if (this.code().length !== 6 || this.busy()) return;
