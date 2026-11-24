@@ -16,7 +16,7 @@ import { FAMILY } from '../../core/edition';
   imports: [Ear, Door],
   host: { class: 's genderred', '[class.touring]': 'touring()' },
   template: `
-@if (FAMILY) { <app-door (pressed)="famBack()" /><button class="famguest" (click)="famGuest()"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.2c.9-3.9 3.7-6 7.2-6s6.3 2.1 7.2 6"/><path d="M17.6 3.6l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z" fill="currentColor"/></svg>Enter as guest</button> }
+@if (FAMILY) { @if (!fam.ready()) { <app-door (pressed)="famBack()" /> }<button class="famguest" (click)="famGuest()"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20.2c.9-3.9 3.7-6 7.2-6s6.3 2.1 7.2 6"/><path d="M17.6 3.6l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z" fill="currentColor"/></svg>Enter as guest</button> }
 <app-ear [spot]="spot() === 'dome'" (pressed)="tour()" />
 <div class="deco"><b>a</b><b>b</b><b>c</b><b>d</b></div>
 <div class="hi" style="font-size:clamp(26px,4vw,38px)">{{ t('Sannu!') }}</div>
@@ -29,8 +29,9 @@ import { FAMILY } from '../../core/edition';
 export class GenderScreen implements OnInit, OnDestroy {
   readonly t = t;
   readonly FAMILY = FAMILY;
-  private readonly fam = inject(FamilyService);
-  /** The family build (Sani 2026-11-23): the app's own door, back to the family's first page. */
+  readonly fam = inject(FamilyService);
+  /** The family build (Sani 2026-11-23): the app's own door, back to the family's first page. Once a parent has set up
+   *  (Sani 2026-11-24) boy/girl is the landing page: no door, and Back does nothing (stayOnBack). */
   famBack(): void { this.bus.stopAll(); this.fam.show('welcome'); }
   /** Guest (Sani 2026-11-23: on this screen only): home with everything open, nothing saved. */
   famGuest(): void { this.bus.stopAll(); this.fam.guest(); }
