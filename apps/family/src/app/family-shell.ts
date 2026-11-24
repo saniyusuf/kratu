@@ -120,7 +120,8 @@ export class FamilyShell implements OnDestroy {
   async askMic(): Promise<void> {
     if (this.micBusy()) return;
     const md = navigator.mediaDevices;
-    if (!md?.getUserMedia) { this.fam.afterMic(); return; }
+    // (Sani 2026-11-24) nobody goes past this screen until both are allowed: refused, it stays here and says how
+    if (!md?.getUserMedia) { this.micMsg.set('This browser cannot use a microphone and camera. Open Kratu in Chrome or Safari.'); return; }
     this.micBusy.set(true); this.micMsg.set('');
     try {
       // both at once (Sani 2026-11-23): one call, so the phone asks for the microphone and the camera together or back
@@ -132,8 +133,8 @@ export class FamilyShell implements OnDestroy {
       // which one was refused: the microphone alone tells
       let mic = false; try { const a = await md.getUserMedia({ audio: true }); a.getTracks().forEach((t) => t.stop()); mic = true; } catch { mic = false; }
       this.micBusy.set(false);
-      this.micMsg.set(mic ? 'The camera was not allowed. Children sign in by looking at the phone, so Kratu needs it. Allow the camera in the phone’s settings, then tap again.'
-        : 'The microphone was not allowed. Kratu still works: speaking tasks become tap-the-picture tasks. You can allow it later from Manage profiles.');
+      const WHICH = mic ? 'the camera' : 'the microphone and camera';
+      this.micMsg.set(`Kratu needs ${WHICH} before anyone can start. In the browser, tap the icon beside the web address, then Permissions, and allow them (or in the phone’s Settings, for this browser). Then tap Allow again.`);
     }
   }
 

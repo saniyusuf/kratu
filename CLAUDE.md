@@ -25,8 +25,9 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   right); no answer in 5 s or no network: offline strict only. A named child is never asked or sent again; PlotWeaver
   answers once per clip (`Profile.nameAsked`)), `face.ts enter()` hands over to `FamilyService.faceDone()` (straight to
   Meet Laila, no animal step). The profile id is the identity record's id; names are optional (Manage profiles).
-  No cards: face and voice are the only way in; Guest and Parent buttons float over /gender and /face; a refused camera
-  or microphone goes to /perm. No emoji in the family build (`html.fam-build` rules at the end of app.css, HAND_SVG);
+  No cards: face and voice are the only way in; Guest and Parent buttons float over /gender and /face. The microphone
+  AND camera come before anything, guests too (Sani 24 Nov): refused, the permission screen stays with a how-to note;
+  taken away later, any screen goes back to it (`FamilyService.watchPerms()`). No emoji in the family build (`html.fam-build` rules at the end of app.css, HAND_SVG);
   its camera box takes the video's own shape and its border is the progress (no face ring).
   `npm run start:family` / `npm run build:family`.
   Name server: the PlotWeaver key NEVER goes in the app or its bundle. Locally `node tools/name-proxy.mjs` (127.0.0.1:4261;

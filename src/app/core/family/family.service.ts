@@ -176,8 +176,11 @@ export class FamilyService {
   async micGranted(): Promise<boolean> {
     let ok = false;
     // the microphone and the camera, both (Sani 2026-11-23: asked together, the camera never again on the face screen)
-    try { if (navigator.permissions?.query) { const Q = (n: string) => navigator.permissions.query({ name: n as PermissionName }).then((r) => r.state === 'granted'); ok = (await Q('microphone')) && (await Q('camera')); } } catch { /* fall through */ }
-    if (!ok) try { ok = localStorage.getItem('kratu_perms') === '1'; } catch { /* ignore */ }
+    // (Sani 2026-11-24) the browser's own answer decides: a permission taken away later is not hidden by an old note.
+    // The saved note is used only where the browser cannot be asked.
+    let asked = false;
+    try { if (navigator.permissions?.query) { const Q = (n: string) => navigator.permissions.query({ name: n as PermissionName }).then((r) => r.state === 'granted'); ok = (await Q('microphone')) && (await Q('camera')); asked = true; } } catch { /* fall through */ }
+    if (!asked) try { ok = localStorage.getItem('kratu_perms') === '1'; } catch { /* ignore */ }
     if (ok) this.session.perms.set({ camera: true, mic: true, at: Date.now() });
     return ok;
   }
@@ -189,6 +192,7 @@ export class FamilyService {
   async begin(loaded: Promise<void>): Promise<void> {
     this.loaded = loaded;
     if (this.trying) { this.tryStep(this.trying); return; }
+    this.watchPerms();
     let started = false; try { started = localStorage.getItem(K_STARTED) === '1'; } catch { /* ignore */ }
     if (!started && !this.profiles().length) { this.show('welcome'); return; }
     if (!this.account()) { this.show('signin'); return; }   // Register comes straight after Start (Sani 2026-11-22)
@@ -196,6 +200,15 @@ export class FamilyService {
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
     this.afterSetup();
+  }
+  /** (Sani 2026-11-24) the microphone and camera are needed before anything, guests too: if either is taken away while
+   *  the app is open, or while it was in the background, every screen goes back to the permission screen. */
+  private watchPerms(): void {
+    const BACK = async () => { if (this.screen() !== 'mic' && this.screen() !== 'welcome' && this.screen() !== 'signin' && !(await this.micGranted())) this.toPerm(); };
+    try {
+      for (const N of ['microphone', 'camera']) navigator.permissions?.query({ name: N as PermissionName }).then((r) => { r.onchange = () => { if (r.state !== 'granted') BACK(); }; }).catch(() => undefined);
+    } catch { /* no permissions API */ }
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') BACK(); });
   }
   /** `?step=` (see `trying`): straight to one real screen, with the sample children and nothing saved. */
   private async tryStep(step: string): Promise<void> {
@@ -227,7 +240,7 @@ export class FamilyService {
   /** The parent has registered: then the microphone, the loader and the first child. */
   registered(): void { this.loader.loadFace(); this.micThen(); }   // the face models start now, while the parent carries on
   private async micThen(): Promise<void> { if (await this.micGranted()) this.afterMic(); else this.show('mic'); }
-  /** The microphone screen is done (allowed or not: refused means the touch versions of speaking). */
+  /** The permission screen is done: only once both the microphone and the camera are allowed (Sani 2026-11-24). */
   async afterMic(): Promise<void> {
     this.show(null);   // the loader shows through while it is still working
     await this.loaded;
@@ -261,7 +274,7 @@ export class FamilyService {
   }
   /** Camera or microphone refused (Sani 2026-11-22: no cards, face and voice are the only way in): the app's own
    *  permission screen asks again, and goes on to boy-or-girl once allowed. */
-  toPerm(): void { this.bus.stopAll(); this.show(null); this.router.navigate(['/perm']); }
+  toPerm(): void { this.bus.stopAll(); this.session.guest.set(false); this.show('mic'); }   // (Sani 2026-11-24) the one permission screen, 4
   /**
    * The face screen has decided (face.ts enter()): a new child's record has just been written, or a known child was
    * recognised. A new child gets a profile under the same id and meets Laila; a known one goes on to Laila's
