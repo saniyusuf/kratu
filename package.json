@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "content": "node scripts/catalogue.mjs && node scripts/build-content.mjs",
+    "content": "node scripts/catalogue.mjs && node scripts/build-content.mjs && node scripts/models.mjs",
     "lint:content": "node scripts/lint.mjs && node scripts/catalogue.mjs --check",
     "catalogue": "node scripts/catalogue.mjs",
     "voice": "node scripts/voice.mjs",
     "words": "node scripts/words.mjs",
     "start": "npm run content && ng serve",
-    "build": "npm run content && npm run lint:content && ng build",
+    "build": "npm run content && npm run lint:content && node scripts/stamp.mjs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "content:sw": "node scripts/catalogue.mjs && node scripts/build-content.mjs --lang sw",
@@ -37,7 +37,7 @@
     "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm",
     "name-proxy": "node tools/name-proxy.mjs",
     "start:family": "npm run content && ng serve family",
-    "build:family": "npm run content && npm run lint:content && ng build family"
+    "build:family": "npm run content && npm run lint:content && node scripts/stamp.mjs && ng build family"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

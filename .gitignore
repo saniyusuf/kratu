@@ -82,3 +82,9 @@ tools/.genvid/
 tools/.env.plotweaver
 .tablet/
 .nx/
+
+# the school models packed at build (scripts/models.mjs); their source is the .onnx beside them
+/public/models/**/*.onnx.gz
+/public/version.json
+# 1 MB part files of every model (scripts/models.mjs)
+*.parts/

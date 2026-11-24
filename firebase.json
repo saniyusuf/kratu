@@ -59,6 +59,19 @@
         ]
       },
       {
+        "source": "**/models/**/*.onnx.gz",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=604800"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/gzip"
+          }
+        ]
+      },
+      {
         "source": "**/vosk-model/**/*.gz",
         "headers": [
           {
@@ -77,7 +90,7 @@
         ]
       },
       {
-        "source": "/@(kratu-id|kratu-id.worker|vosk|ngsw-worker|safety-worker|worker-basic.min).js",
+        "source": "/@(kratu-id|kratu-id.worker|vosk|ngsw-worker|kratu-sw|safety-worker|worker-basic.min).js",
         "headers": [
           {
             "key": "Cache-Control",

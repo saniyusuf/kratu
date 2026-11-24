@@ -6,6 +6,8 @@ import { SpeechService } from '../speech/speech.service';
 import { LANG } from '../lang/lang';
 import { FAMILY } from '../edition';
 import { bi, t } from '../lang/t';
+import { FileSpec, getFile, partly, wake } from './pieces';
+import { follow, handOver } from './bg-fetch';
 
 export interface Piece { id: 'speech' | 'face' | 'names' | 'pictures'; ha: string; en: string; heavy: boolean; dl?: () => Promise<'skip' | void>; prep?: () => Promise<void>; }
 type St = 'wait' | 'busy' | 'ok' | 'skip' | 'fail';
@@ -32,7 +34,7 @@ export class LoaderService {
 
   readonly finished = signal(false);
   readonly failed = signal(false);
-  readonly stage = signal<'names' | 'download' | 'wake' | 'ready' | 'fail'>('names');
+  readonly stage = signal<'names' | 'download' | 'wait' | 'wake' | 'ready' | 'fail'>('names');
   readonly step = signal(1);
   readonly headHa = signal(t('Ana shirya Kratu…'));
   readonly headEn = signal('Getting ready · after this it works without internet');
@@ -43,6 +45,12 @@ export class LoaderService {
   readonly noteHa = signal('');
   readonly noteEn = signal('');
   readonly showSkip = signal(false);
+  /** (Sani 2026-11-24) no internet: the download waits and carries on by itself when it is back. */
+  readonly netWait = signal(false);
+  /** A half-done download was picked up where it stopped ("Carrying on where we stopped"). */
+  readonly resumed = signal(false);
+  private pctMax = 0;
+  private planned: Promise<void> | null = null;
   readonly chips = signal<{ id: string; label: string; text: string; state: St }[]>([]);
   readonly letters = signal<boolean[]>([false, false, false, false, false]);
 
@@ -64,14 +72,16 @@ export class LoaderService {
   constructor() { this.speech.filesProvider = () => this.fetchSpeechFiles(); }
 
   run(): Promise<void> { this.times['t0'] = Math.round(performance.now()); this.chips.set(this.pieces.filter((p) => !(FAMILY && p.id === 'face')).map((p) => ({ id: p.id, label: bi(p.ha, p.en), text: '', state: 'wait' }))); this.round(); return this.done; }
-  retry(): void { this.round(); }
+  retry(): void { if (this.netWait()) { wake(); return; } this.round(); }
   skip(): void { this.finish(); }
 
   private async round(): Promise<void> {
     this.failed.set(false); this.note('', ''); this.paint();
+    if (!this.planned) this.planned = this.planTotals(); await this.planned;
     const small = this.pieces.filter((p) => !p.heavy && !this.dlDone(p)), heavy = this.pieces.filter((p) => p.heavy && !this.dlDone(p)), preps: Promise<void>[] = [];
     await Promise.all(small.map((p) => this.runDl(p).then(() => { preps.push(this.runPrep(p)); }, () => undefined)));
     if (this.showFail(small)) return;
+    if (heavy.length) await this.handOverHeavy(heavy);
     for (const p of heavy) { let tries = 0; for (;;) { tries++; try { await this.runDl(p); preps.push(this.runPrep(p)); break; } catch { if (tries >= 3) break; this.prog(p.id, bi('sake gwadawa', 'retrying')); await new Promise((r) => setTimeout(r, 3000)); } } }
     if (this.showFail(heavy)) return;
     this.paint();
@@ -104,14 +114,19 @@ export class LoaderService {
   private stageSet(key: 'names' | 'download' | 'wake' | 'ready', n: number, ha: string, en: string, bha: string, ben: string): void { this.stage.set(key); this.step.set(n); this.headHa.set(t(ha)); this.headEn.set(t(en)); this.bubbleHa.set(t(bha)); this.bubbleEn.set(ben); }
   private paint(): void {
     let got = 0, total = 0, frac = 0, n = 0;
-    const letters = this.pieces.map((p) => { const b = this.bytes[p.id]; if (b?.total) { got += Math.min(b.got, b.total); total += b.total; } const f = this.dlDone(p) ? 1 : (b?.total ? Math.min(0.98, b.got / b.total) : 0); n++; frac += f; return this.dlDone(p); });
+    const letters = this.pieces.map((p) => { const b = this.bytes[p.id]; if (b?.total) { got += this.dlDone(p) ? b.total : Math.min(b.got, b.total); total += b.total; } const f = this.dlDone(p) ? 1 : (b?.total ? Math.min(0.98, b.got / b.total) : 0); n++; frac += f; return this.dlDone(p); });
     this.letters.set([...letters, this.finished()]);   // four pieces light K R A T; the U lights when everything is ready — the word was stuck at "Krat" (Sani 2026-09-23)
     this.chips.update((cs) => cs.map((c) => { const d = this.dl[c.id] || 'wait', p = this.prep[c.id] || 'wait'; const done = d === 'ok' || d === 'skip'; return { ...c, state: done ? (p === 'fail' ? 'fail' : 'ok') : (d === 'fail' ? 'fail' : d === 'busy' ? 'busy' : 'wait') }; }));
     const prepsAll = this.pieces.filter((p) => p.prep), prepsDone = prepsAll.filter((p) => this.prep[p.id] === 'ok').length;
     const dlPart = total ? got / total : (n ? frac / n : 0), allDl = this.pieces.every((p) => this.dlDone(p));
-    let pct = Math.round((allDl ? 0.9 : 0.9 * dlPart) * 100 + (prepsAll.length ? 10 * prepsDone / prepsAll.length : 10)); if (this.finished()) pct = 100; this.pct.set(pct);
+    let pct = Math.round((allDl ? 0.9 : 0.9 * dlPart) * 100 + (prepsAll.length ? 10 * prepsDone / prepsAll.length : 10)); if (this.finished()) pct = 100; pct = Math.max(this.pctMax, Math.min(100, pct)); this.pctMax = pct; this.pct.set(pct);
     if (this.failed()) return;
     const small = this.pieces.filter((p) => !p.heavy), heavy = this.pieces.filter((p) => p.heavy);
+    if (this.netWait() && !this.finished()) {
+      // (Sani 2026-11-24) no internet: Laila rests, the bar keeps what is in, and it carries on by itself
+      this.stage.set('wait'); this.headHa.set(t('No internet just now. I’ll carry on by myself when it’s back.')); this.headEn.set('');
+      this.bubbleHa.set(t('Waiting for the internet…')); this.bubbleEn.set(''); this.eta.set(''); this.showSkip.set(true); return;
+    }
     if (this.finished()) { this.stageSet('ready', 0, 'An shirya! · Ready', 'Laila is ready · everything is on this tablet now', 'Mu fara!', 'Let’s start'); this.eta.set(''); }
     else if (!small.every((p) => this.dlDone(p))) { this.stageSet('names', 1, 'Ana ɗaukar sunaye da hotuna…', 'Getting the names and pictures', 'Ina zuwa…', 'Coming…'); }
     else if (!heavy.every((p) => this.dlDone(p))) {
@@ -130,45 +145,62 @@ export class LoaderService {
   }
 
   // ---- downloads: every file through Cache Storage, with a byte count and a stall guard
-  private download(url: string, onp: (got: number, total: number) => void, gunzip = false): Promise<ArrayBuffer> {
-    const ac = typeof AbortController !== 'undefined' ? new AbortController() : null; let last = Date.now();
-    const stall = setInterval(() => { if (Date.now() - last > 30000) { clearInterval(stall); try { ac?.abort(); } catch { /* ignore */ } } }, 1000);
-    return fetch(url, ac ? { signal: ac.signal } : {}).then(async (r) => {
-      if (!r.ok) throw new Error(url + ' ' + r.status);
-      const total = +(r.headers.get('content-length') || 0); let got = 0; const chunks: Uint8Array[] = [];
-      if (!r.body) { const b = await r.arrayBuffer(); clearInterval(stall); return b; }
-      const rd = r.body.getReader();
-      for (;;) { const x = await rd.read(); if (x.done) break; last = Date.now(); got += x.value.length; chunks.push(x.value); onp(got, total); }
-      clearInterval(stall);
-      const raw = this.concat(chunks);
-      // a server may hand a .gz file back already inflated: only inflate what really starts with the gzip magic bytes
-      const isGz = raw.byteLength > 2 && new Uint8Array(raw)[0] === 0x1f && new Uint8Array(raw)[1] === 0x8b;
-      if (gunzip && isGz && typeof DecompressionStream !== 'undefined') {
-        try { const out = await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer(); return out; }
-        catch (e) { console.warn('Kratu loader: inflate failed, using the bytes as they are', url, e); }
-      }
-      return raw;
-    }, (e) => { clearInterval(stall); throw new Error(e?.name === 'AbortError' ? url + ' stalled, no data for 30 s' : (e?.message || String(e))); });
+  // ---- downloads (Sani 2026-11-24): piece by piece, fingerprinted, waiting through a lost connection (pieces.ts)
+  /** What the downloads tell the screen: waiting for the internet, or carrying on a half-done download. */
+  private readonly NET = { waiting: (ON: boolean) => { this.netWait.set(ON); this.paint(); }, resumed: () => this.resumed.set(true) };
+  /**
+   * Every piece's size before anything comes (Sani 2026-11-24, point 7): the bar is then one sum from the start and never
+   * jumps when a piece's size becomes known. Pieces that turn out not to be needed count as done.
+   */
+  private async planTotals(): Promise<void> {
+    try {
+      const [S, M] = await Promise.all([this.speechSpecs(), this.getJSON('assets/media.json')]);
+      if (S) this.bytes['speech'] = { got: 0, total: S.specs.reduce((A, F) => A + F.bytes, 0) };
+      if (M?.total) this.bytes['pictures'] = { got: 0, total: M.total };
+      if (!FAMILY && this.identity.present()) { const F = await this.faceSpecs(); if (F) this.bytes['face'] = { got: 0, total: F.plan.reduce((A, X) => A + X.spec.bytes, 0) }; }
+      for (const F of S?.specs || []) if (await partly(F)) { this.resumed.set(true); break; }
+    } catch { /* the pieces report their own sizes as they go */ }
+    this.paint();
   }
-  private concat(chunks: Uint8Array[]): ArrayBuffer { let n = 0; chunks.forEach((c) => { n += c.length; }); const out = new Uint8Array(n); let o = 0; chunks.forEach((c) => { out.set(c, o); o += c.length; }); return out.buffer; }
-  /** Fetch through Cache Storage. `expect` is the file's true size from its manifest: a short file (a server restart ends a stream cleanly) is never cached and fails the piece, so the retry gets it again. */
-  private async cachedFetch(url: string, onp: (got: number) => void, gunzip = false, expect = 0): Promise<ArrayBuffer> {
-    let c: Cache | null = null; try { if (typeof caches !== 'undefined') c = await caches.open(this.CACHE); } catch { c = null; }
-    if (c) { try { const hit = await c.match(url); if (hit) { const b = await hit.arrayBuffer(); if (!expect || b.byteLength === expect) return b; await c.delete(url); } } catch { /* ignore */ } }
-    const buf = await this.download(url, (g) => onp(g), gunzip);
-    if (expect && buf.byteLength !== expect) throw new Error(url + ' short: ' + buf.byteLength + ' of ' + expect + ' bytes');
-    if (c) { try { await c.put(url, new Response(buf.slice(0), { headers: { 'content-type': 'application/octet-stream' } })); } catch { /* quota */ } }
-    return buf;
+  /**
+   * Android Chrome (Sani 2026-11-24, point 1): the heavy files are handed to the phone, which keeps downloading with the
+   * tab closed. The page follows its progress, then picks the files up; anything the phone did not finish comes in pieces.
+   */
+  private async handOverHeavy(heavy: Piece[]): Promise<void> {
+    const PARTS: { id: string; specs: FileSpec[] }[] = [];
+    for (const P of heavy) {
+      if (P.id === 'speech') { const S = await this.speechSpecs(); if (S) PARTS.push({ id: 'speech', specs: S.specs }); }
+      if (P.id === 'face' && this.identity.present()) { const F = await this.faceSpecs(); if (F) PARTS.push({ id: 'face', specs: F.plan.map((X) => X.spec) }); }
+    }
+    const ALL = PARTS.flatMap((X) => X.specs); if (!ALL.length) return;
+    const JOB = await handOver('kratu-models', ALL, t('Getting Laila ready')); if (!JOB) return;
+    await follow(JOB, (DOWN) => {
+      let LEFT = DOWN;
+      for (const X of PARTS) { const TOT = X.specs.reduce((A, F) => A + F.bytes, 0), G = Math.max(0, Math.min(TOT, LEFT)); LEFT -= G; this.bytes[X.id] = { got: G, total: TOT }; this.prog(X.id, Math.round(G / 1048576) + ' / ' + Math.round(TOT / 1048576) + ' MB'); }
+      this.netWait.set(!navigator.onLine); this.paint();
+    });
+    this.netWait.set(false);
   }
   private async getJSON(url: string): Promise<any | null> { const r = await fetch(url); if (r.status === 404 || !/json/i.test(r.headers.get('content-type') || '')) return null; if (!r.ok) throw new Error(url + ' ' + r.status); return r.json(); }
+  /** The speech model's files, as the loader downloads them (packed, fingerprinted). */
+  private async speechSpecs(): Promise<{ specs: FileSpec[]; paths: string[] } | null> {
+    const MAN = await this.getJSON('vosk-model/manifest.json'); if (!MAN?.files) return null;
+    const GZ = typeof DecompressionStream !== 'undefined' && MAN.files.every((F: any) => F.gz);
+    return {
+      specs: MAN.files.map((F: any) => ({ url: 'vosk-model/' + (GZ ? F.gz : F.path), bytes: GZ ? F.gzsize : F.size, raw: F.size || 0, gz: GZ, sha: GZ ? F.sha256 : undefined, parts: GZ ? F.pieces : undefined })),
+      paths: MAN.files.map((F: any) => F.path),
+    };
+  }
   private async fetchSpeechFiles(): Promise<Record<string, ArrayBuffer> | null> {
-    const man = await this.getJSON('vosk-model/manifest.json'); if (!man?.files) return null;
-    const gz = typeof DecompressionStream !== 'undefined' && man.files.every((f: any) => f.gz);
-    const urls: string[] = man.files.map((f: any) => 'vosk-model/' + (gz ? f.gz : f.path)), sizes: number[] = man.files.map((f: any) => gz ? f.gzsize : f.size);
-    const total = sizes.reduce((a, b) => a + b, 0); let got = 0; const bufs: Record<string, ArrayBuffer> = {};
-    const show = () => { this.bytes['speech'] = { got, total }; this.prog('speech', Math.round(got / 1048576) + ' / ' + Math.round(total / 1048576) + ' MB'); this.paint(); };
-    for (let i = 0; i < urls.length; i++) { let last = 0; const buf = await this.cachedFetch(urls[i], (g) => { got += g - last; last = g; show(); }, gz, man.files[i].size || 0); got += sizes[i] - last; show(); bufs[urls[i]] = buf; }
-    const files: Record<string, ArrayBuffer> = {}; man.files.forEach((f: any) => { files[f.path] = bufs['vosk-model/' + (gz ? f.gz : f.path)]; }); return files;
+    const S = await this.speechSpecs(); if (!S) return null;
+    const TOTAL = S.specs.reduce((A, F) => A + F.bytes, 0); let got = 0; const FILES: Record<string, ArrayBuffer> = {};
+    const SHOW = () => { this.bytes['speech'] = { got, total: TOTAL }; this.prog('speech', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); };
+    for (let I = 0; I < S.specs.length; I++) {
+      const F = S.specs[I]; let last = 0;
+      FILES[S.paths[I]] = await getFile(F, (G) => { got += G - last; last = G; SHOW(); }, this.NET);
+      got += F.bytes - last; SHOW();
+    }
+    return FILES;
   }
   private async prepSpeech(): Promise<void> {
     const t0 = Date.now(); const tick = setInterval(() => this.prog('speech', (this.speechFiles ? bi('ana tadawa', 'starting') + ' · ' : bi('ana buɗewa', 'unpacking') + ' · ') + Math.round((Date.now() - t0) / 1000) + ' s'), 1000);
@@ -240,28 +272,31 @@ export class LoaderService {
     try {
       if (typeof caches === 'undefined') return;
       const c = await caches.open(this.CACHE), want = new URL(keep, document.baseURI).href;
-      for (const r of await c.keys()) if (r.url.indexOf('/models/ort/') >= 0 && r.url !== want) await c.delete(r);
+      for (const r of await c.keys()) if (r.url.indexOf('/models/ort/') >= 0 && r.url.split('?')[0] !== want) await c.delete(r);
     } catch { /* no Cache Storage, or it would not open: there is nothing to sweep */ }
   }
-  private async fetchFaceModels(onp?: (got: number, total: number) => void): Promise<void> {
+  /** The face and voice engine's files, as the loader downloads them (the runtime, then the models). */
+  private async faceSpecs(): Promise<{ MAN: any; plan: { key: string; spec: FileSpec }[]; recCount: number } | null> {
     const MAN = await this.getJSON('models/manifest.json');
-    const WASM_URL = 'models/ort/ort-wasm-simd-threaded.wasm.gz';   // the one runtime the ORT glue loads; shipped gzipped (13.6 → 3.5 MB), inflated here, handed to the worker as bytes
-    await this.sweepRuntimes(WASM_URL);
-    if (!MAN?.rec) { await this.cachedFetch(WASM_URL, () => undefined, true); return; }
-    const R = MAN.rec;   // one recogniser everywhere: w600k_r50, in three parts (Sani 2026-09-19)
-    const REC_PARTS: { path: string; size: number; gzsize?: number }[] = R.parts ? R.parts : [{ path: R.path, size: R.size, gzsize: R.gzsize }];
-    // a model whose path ends in .gz is shipped gzipped: its gzsize is the download, its size the inflated bytes (the family build)
-    const ONE = (key: string, m: { path: string; size: number; gzsize?: number }) => { const GZ = /\.gz$/.test(m.path); return { key, url: m.path, size: GZ ? (m.gzsize || 0) : m.size, raw: m.size, gz: GZ }; };
-    const W_MAN = MAN.wasm || {};
-    const PLAN = [{ key: 'wasm', url: WASM_URL, size: W_MAN.gzsize || 0, raw: W_MAN.size || 0, gz: true }, ONE('det', MAN.det), ONE('spk', MAN.spk)].concat(REC_PARTS.map((pt, i) => ONE('rec' + i, pt)));
-    const TOTAL = PLAN.reduce((a, x) => a + x.size, 0); let got = 0; const BUFS: Record<string, ArrayBuffer> = {};
-    const SHOW = () => { this.bytes['face'] = { got, total: TOTAL }; this.prog('face', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); onp?.(got, TOTAL); };
-    for (const x of PLAN) { let last = 0; const BUF = await this.cachedFetch(x.url, (g) => { got += g - last; last = g; SHOW(); }, x.gz, x.raw); got += x.size - last; SHOW(); BUFS[x.key] = BUF; }
-    // the parts go over as they are: the worker joins them on its own thread, so the UI never does a 174 MB copy
-    const PARTS = REC_PARTS.map((_, i) => BUFS['rec' + i]);
-    this.faceBlobs = { blobs: { wasm: BUFS['wasm'], det: BUFS['det'], recParts: PARTS, spk: BUFS['spk'] }, kinds: MAN.kinds, cfg: MAN.cfg };
+    const W = MAN?.wasm || {};
+    const WASM: FileSpec = { url: 'models/ort/ort-wasm-simd-threaded.wasm.gz', bytes: W.gzsize || 0, raw: W.size || 0, gz: true, sha: W.sha256, parts: W.pieces };   // the one runtime the ORT glue loads; handed to the worker as bytes
+    if (!MAN?.rec) return { MAN, plan: [{ key: 'wasm', spec: WASM }], recCount: 0 };
+    // a model whose path ends in .gz is shipped packed: gzsize is the download, size the inflated bytes
+    const ONE = (M: { path: string; size: number; gzsize?: number; sha256?: string; pieces?: number }): FileSpec => { const GZ = /\.gz$/.test(M.path); return { url: M.path, bytes: GZ ? (M.gzsize || 0) : M.size, raw: M.size, gz: GZ, sha: M.sha256, parts: M.pieces }; };
+    const R = MAN.rec, REC_PARTS: { path: string; size: number; gzsize?: number; sha256?: string; pieces?: number }[] = R.parts ? R.parts : [R];
+    return { MAN, plan: [{ key: 'wasm', spec: WASM }, { key: 'det', spec: ONE(MAN.det) }, { key: 'spk', spec: ONE(MAN.spk) }].concat(REC_PARTS.map((PT, I) => ({ key: 'rec' + I, spec: ONE(PT) }))), recCount: REC_PARTS.length };
   }
-
+  private async fetchFaceModels(onp?: (got: number, total: number) => void): Promise<void> {
+    const P = await this.faceSpecs(); if (!P) return;
+    await this.sweepRuntimes(P.plan[0].spec.url);
+    const TOTAL = P.plan.reduce((A, X) => A + X.spec.bytes, 0); let got = 0; const BUFS: Record<string, ArrayBuffer> = {};
+    const SHOW = () => { this.bytes['face'] = { got, total: TOTAL }; this.prog('face', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); onp?.(got, TOTAL); };
+    for (const X of P.plan) { let last = 0; BUFS[X.key] = await getFile(X.spec, (G) => { got += G - last; last = G; SHOW(); }, this.NET); got += X.spec.bytes - last; SHOW(); }
+    if (!P.recCount) return;
+    // the parts go over as they are: the worker joins them on its own thread, so the UI never does a 174 MB copy
+    const PARTS = Array.from({ length: P.recCount }, (_, I) => BUFS['rec' + I]);
+    this.faceBlobs = { blobs: { wasm: BUFS['wasm'], det: BUFS['det'], recParts: PARTS, spk: BUFS['spk'] }, kinds: P.MAN.kinds, cfg: P.MAN.cfg };
+  }
 
   /**
    * The family build (Sani 2026-11-22): the face models are not part of the first visit. They come after the parent has
@@ -276,6 +311,10 @@ export class LoaderService {
     this.faceRun = (async () => {
       try {
         await this.engineScript();
+        // Android Chrome: the phone takes the download over, so it carries on with the app closed (Sani 2026-11-24)
+        const F = await this.faceSpecs();
+        const JOB = F ? await handOver('kratu-face', F.plan.map((X) => X.spec), t('Getting Laila ready')) : null;
+        if (JOB && F) { const TOT = F.plan.reduce((A, X) => A + X.spec.bytes, 0); await follow(JOB, (DOWN) => { this.netWait.set(!navigator.onLine); this.faceProg.set({ got: Math.min(DOWN, TOT), total: TOT, state: 'busy' }); }); this.netWait.set(false); }
         await this.fetchFaceModels((got, total) => this.faceProg.set({ got, total, state: 'busy' }));
         const O = this.faceBlobs; this.faceBlobs = null; await this.identity.init(O?.blobs, O?.kinds, O?.cfg);
         this.faceProg.update((p) => ({ ...p, state: 'ready' })); return true;

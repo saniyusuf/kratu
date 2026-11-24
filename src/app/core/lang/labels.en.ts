@@ -218,4 +218,11 @@ export const LABELS_EN: Record<string, Label> = {
  "Ruwan sama": {"en":"","kind":"game"},
  "Tukwane": {"en":"","kind":"game"},
  "Ƙirgen shanu": {"en":"","kind":"game"},
+ "Carrying on where we stopped": {"en":"Carrying on where we stopped","kind":"screen"},
+ "No internet just now. I’ll carry on by myself when it’s back.": {"en":"No internet just now. I’ll carry on by myself when it’s back.","kind":"screen"},
+ "Waiting for the internet…": {"en":"Waiting for the internet…","kind":"screen"},
+ "Getting Laila ready": {"en":"Getting Laila ready","kind":"screen"},
+ "New version ready": {"en":"New version ready","kind":"screen"},
+ "Update": {"en":"Update","kind":"screen"},
+ "Later": {"en":"Later","kind":"screen"},
 };

@@ -222,6 +222,13 @@
   { "ha": "Marubucin wasiƙa", "en": "", "kind": "game" },
   { "ha": "Ruwan sama", "en": "", "kind": "game" },
   { "ha": "Tukwane", "en": "", "kind": "game" },
-  { "ha": "Ƙirgen shanu", "en": "", "kind": "game" }
+  { "ha": "Ƙirgen shanu", "en": "", "kind": "game" },
+  { "ha": "Carrying on where we stopped", "en": "Carrying on where we stopped", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "No internet just now. I’ll carry on by myself when it’s back.", "en": "No internet just now. I’ll carry on by myself when it’s back.", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "Waiting for the internet…", "en": "Waiting for the internet…", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "Getting Laila ready", "en": "Getting Laila ready", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "New version ready", "en": "New version ready", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "Update", "en": "Update", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" },
+  { "ha": "Later", "en": "Later", "kind": "screen", "draft": "English only: the key holds the English until Sani gives the Hausa (24 Nov, the downloads design)" }
  ]
 }

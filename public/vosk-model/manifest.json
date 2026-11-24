@@ -5,79 +5,105 @@
    "path": "graph/Gr.fst",
    "size": 24013795,
    "gz": "graph/Gr.fst.gz",
-   "gzsize": 13648357
+   "gzsize": 13648357,
+   "sha256": "44e97694ba8578a481850c512afcc2cc4d22b0e6df014e85e88183a8354b9ef9",
+   "pieces": 14
   },
   {
    "path": "graph/HCLr.fst",
    "size": 22416994,
    "gz": "graph/HCLr.fst.gz",
-   "gzsize": 4683075
+   "gzsize": 4683075,
+   "sha256": "2dc4e8ce8c4b2181ba867d6f250c7fd269a4f132396694bf4e644fee17e4cbe9",
+   "pieces": 5
   },
   {
    "path": "am/final.mdl",
    "size": 15962575,
    "gz": "am/final.mdl.gz",
-   "gzsize": 14643088
+   "gzsize": 14643088,
+   "sha256": "29e189451d569fe70e4299ad685ee71bb09d8885869b7dc62a012df1b27949f6",
+   "pieces": 14
   },
   {
    "path": "ivector/final.ie",
    "size": 8288887,
    "gz": "ivector/final.ie.gz",
-   "gzsize": 7941859
+   "gzsize": 7941859,
+   "sha256": "75622bad32db8c4922ce618782a5d5695df2c8f2a8a7e4350b62ac59209263c4",
+   "pieces": 8
   },
   {
    "path": "ivector/final.dubm",
    "size": 168048,
    "gz": "ivector/final.dubm.gz",
-   "gzsize": 153760
+   "gzsize": 153760,
+   "sha256": "20699217fc525b948f5fe7ff08720d6a4f3a132bd1255794eab57f7aea06f884",
+   "pieces": 1
   },
   {
    "path": "ivector/final.mat",
    "size": 44975,
    "gz": "ivector/final.mat.gz",
-   "gzsize": 42948
+   "gzsize": 42948,
+   "sha256": "239230bfe203b5bb27ea48e23c4c07464989410ebb504a67c2b0c1a8acd43b25",
+   "pieces": 1
   },
   {
    "path": "graph/phones/word_boundary.int",
    "size": 1761,
    "gz": "graph/phones/word_boundary.int.gz",
-   "gzsize": 451
+   "gzsize": 451,
+   "sha256": "b2751de866bc5f0914bb95c347375546b96e6cb6d1bb96f3bd3e58e62e70532a",
+   "pieces": 1
   },
   {
    "path": "ivector/global_cmvn.stats",
    "size": 1080,
    "gz": "ivector/global_cmvn.stats.gz",
-   "gzsize": 490
+   "gzsize": 490,
+   "sha256": "ca37a1a43bf8c0862bbaa914ad546052fe6b84e51692dbcd2ddd2ee6f2d6bb52",
+   "pieces": 1
   },
   {
    "path": "conf/model.conf",
    "size": 290,
    "gz": "conf/model.conf.gz",
-   "gzsize": 182
+   "gzsize": 182,
+   "sha256": "22c48cbb54f9bb6579f22ae3cc8e255e8a37d80def5064334d39e436361bbb20",
+   "pieces": 1
   },
   {
    "path": "conf/mfcc.conf",
    "size": 131,
    "gz": "conf/mfcc.conf.gz",
-   "gzsize": 123
+   "gzsize": 123,
+   "sha256": "c6a8aaf3126eda0b22e5176f1d6a9131325fb32b65d09b1c1107f44ad23342b4",
+   "pieces": 1
   },
   {
    "path": "graph/disambig_tid.int",
    "size": 102,
    "gz": "graph/disambig_tid.int.gz",
-   "gzsize": 79
+   "gzsize": 79,
+   "sha256": "c6917336b84d44cf384013fcab7e5016cc622b5802cc121cdf3f6652f5efe52a",
+   "pieces": 1
   },
   {
    "path": "ivector/online_cmvn.conf",
    "size": 95,
    "gz": "ivector/online_cmvn.conf.gz",
-   "gzsize": 117
+   "gzsize": 117,
+   "sha256": "467b90630209dad594858ac3735f478aad66ee584a754c02e7bf306b7464f884",
+   "pieces": 1
   },
   {
    "path": "ivector/splice.conf",
    "size": 35,
    "gz": "ivector/splice.conf.gz",
-   "gzsize": 57
+   "gzsize": 57,
+   "sha256": "570af6bd7990edd62dbffe9c26d33265d0bd59d92fcd65d7bc8304598ada208b",
+   "pieces": 1
   }
  ]
 }

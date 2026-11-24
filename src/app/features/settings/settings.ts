@@ -10,6 +10,7 @@ import { CourseService } from '../../core/state/course.service';
 import { ProgressService } from '../../core/state/progress.service';
 import { LEVEL_AT, TITLES, levelOf } from '../../core/state/zinari';
 import { bi, t } from '../../core/lang/t';
+import { AppUpdate } from '../../core/pwa/app-update.service';
 import { FAMILY } from '../../core/edition';
 import { FamilyService } from '../../core/family/family.service';
 
@@ -52,6 +53,8 @@ const ICO = {
 <button id="admingear" class="show" [attr.aria-label]="t('Saituna')" (click)="open()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 <div id="admin" [class.open]="isOpen()" (click)="backdrop($event)"><div class="box">
   <h3>{{ bi('Saituna', 'settings') }}</h3>
+  <button class="upd" [class.busy]="updates.words().busy" [class.warn]="updates.words().warn" (click)="updates.press()"><span class="uic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></span><span class="utx"><b>{{ updates.words().b }}</b><small>{{ updates.words().s }}</small>@if (updates.words().busy) {<span class="ubar"><i></i></span>}</span></button>
+  @if (updates.state() === 'failed') {<button class="urepair" (click)="updates.repair()">Repair the app · loads it fresh, keeps every child's records</button>}
   @if (session.debug) {
     <div class="ldstat" [innerHTML]="status()"></div>
     <div class="mictest"><button class="mtgo" [class.rec]="micRec()" (click)="micTest()">🎤 {{ bi('Gwada makirufo', 'Test the mic') }}</button><select class="mtdev" [title]="t('Makirufo') + ' · microphone'" (change)="pickMic($event)">@for (d of devices(); track d.id) {<option [value]="d.id" [selected]="d.id === micId()">{{ d.label }}</option>}</select><span class="mtout">{{ micOut() }}</span><button class="mtreset" title="Wipe every stored engine copy and reload" (click)="resetEngines()">↻ {{ bi('Sabunta injin', 'Reset engines') }}</button></div>
@@ -103,6 +106,8 @@ export class Settings {
   private readonly router = inject(Router);
   private readonly fam = inject(FamilyService);
   readonly ico = ICO;
+  /** The update button (Sani 19 Nov 2026), from the Hausa branch. */
+  readonly updates = inject(AppUpdate);
   readonly games = GAME_LIST;
   readonly course = inject(CourseService);
   private readonly progress = inject(ProgressService);
@@ -130,7 +135,7 @@ export class Settings {
 
   /** The family build (Sani 2026-11-22: no Parent button on the children's screens): the gear is the parents' way in.
    *  It asks for the parent's code and opens Manage profiles; that page's "Settings: Open" comes back here for real. */
-  open(): void { if (FAMILY && !FamilyService.settingsNext) { this.fam.manage(); return; } FamilyService.settingsNext = false; this.bus.stopAll(); this.stage.set('who'); this.pending.set(null); this.isOpen.set(true); if (this.session.debug) { this.refreshStatus(); this.fillDevices(); } }
+  open(): void { if (FAMILY && !FamilyService.settingsNext) { this.fam.manage(); return; } FamilyService.settingsNext = false; this.bus.stopAll(); this.updates.reset(); this.stage.set('who'); this.pending.set(null); this.isOpen.set(true); if (this.session.debug) { this.refreshStatus(); this.fillDevices(); } }
   close(): void { this.isOpen.set(false); }
   backdrop(e: Event): void { if ((e.target as HTMLElement).id === 'admin') this.close(); }
   toPerm(): void { this.close(); this.router.navigate(['/perm']); }

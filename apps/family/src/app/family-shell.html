@@ -112,6 +112,7 @@
   <app-laila [size]="lailaSmall()" />
   <p class="gtext">Getting the camera ready</p>
   <div class="gbar" role="progressbar" [attr.aria-valuenow]="facePct()" aria-valuemin="0" aria-valuemax="100"><i [style.width]="facePct() + '%'"></i></div>
+  @if (loader.netWait()) {<p class="hint" role="status">{{ waitLine }}</p>}
   @if (loader.faceProg().state === 'fail') {<p class="hint">{{ faceText() }}</p><button class="btn" (click)="fam.toCamera()">Try again</button>}
 </section>
 }
@@ -151,6 +152,9 @@
     </div>
     <div class="col">
       <h1>On this phone</h1>
+      <!-- (Sani 2026-11-24, the downloads design point 5) the app's own update, as in the school settings -->
+      <div class="row"><span><b>{{ upd.words().b }}</b><small>{{ upd.words().s }}</small></span><button class="link" [disabled]="upd.words().busy" (click)="upd.press()">{{ upd.state() === 'confirm' ? 'Update' : 'Check' }}</button></div>
+      @if (upd.state() === 'failed') {<div class="row"><span><b>Repair the app</b><small>Loads it fresh, keeps every child’s records</small></span><button class="link" (click)="upd.repair()">Repair</button></div>}
       <div class="row"><span><b>Settings</b><small>The app's settings</small></span><button class="link" (click)="openSettings()">Open</button></div>
       <div class="row"><span><b>Read names online</b><small>{{ fam.nameOnline() ? 'A child’s spoken name is sent once to a speech service to read it' : 'Off: names are read on this phone only' }}</small></span><button class="sw" role="switch" [attr.aria-checked]="fam.nameOnline()" aria-label="Read names online" (click)="fam.setNameOnline(!fam.nameOnline())"><i></i></button></div>
       <div class="row"><span><b>Microphone</b><small>So Laila can hear</small></span><button class="link" (click)="fam.show('mic')">Ask again</button></div>

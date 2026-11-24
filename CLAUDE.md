@@ -65,6 +65,23 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
 - `public/models/`, `public/vosk-model/` — gzipped models with manifests carrying true sizes; the loader inflates them and
   keeps them in Cache Storage `kratu-models-1`; ORT gets its wasm as bytes (`wasmBinary`). The service worker keeps the
   app, the engine scripts and every clip and picture; it never caches the models.
+- Downloads (Sani 24 Nov, the downloads design): `scripts/models.mjs` (in `npm run content`) writes a fingerprint
+  (`sha256` of the bytes served) and `pieces` into every model list, packs the school's plain .onnx into .onnx.gz, and cuts
+  every served model into 1 MB part files `<file>.parts/000.bin…` (ignored by git, remade when the file changes). The
+  loader (`core/loader/pieces.ts`) fetches the parts whole, saves each in `kratu-pieces-1` as it arrives (a closed tab
+  carries on from the last piece: "Carrying on where we stopped"), waits through a lost line ("No internet just now…",
+  auto-resume on 'online', Try again / Continue anyway), and keeps finished files under `url?v=<fingerprint>`: an update
+  fetches only changed files and drops the old copy once the new one is in (offline, the old copy is used). Never HTTP
+  Range: Firebase (brotli) and the dev server (gzip) answer a range with a slice of their compressed stream, which the
+  browser cannot decode. A 5xx (Angular's worker turns a cut line into a 504) is the network, not a broken file.
+  Android Chrome: the app registers `public/kratu-sw.js` (Angular's ngsw-worker.js plus Background Fetch, files to
+  `kratu-bgf-1`, "Getting Laila ready" / "Laila is ready"); a background job that does not move for 20 s is stopped and
+  the pieces take over (`core/loader/bg-fetch.ts`).
+- Updates (Sani 19 and 24 Nov): `core/pwa/app-update.service.ts` checks on return to the screen, on 'online' and hourly;
+  a new version downloads quietly and shows the pill "New version ready · Update · Later" on the children screen only
+  (`/perm`, `/gender`); Later hides it until the next check; it never restarts by itself, and the next open starts in the
+  new version (app.ts freshCopy). "Get the latest version" sits in the school settings and the family Parent area.
+  `scripts/stamp.mjs` writes `public/version.json` (ignored) at every build.
 - `src/app/core` (audio bus, clips, words, session, flow, speech, identity, loader, zoom), `shared` (Laila, chrome, lesson
   base + topic-lesson base, topic menu, results grid, allo button, abc keyboard, subs, icons), `features` (loader,
   onboarding, home + leave, lessons, settings). Screens extend `LessonBase` / `TopicLessonBase`; add shared behaviour

@@ -1070,3 +1070,43 @@ html.fam-gate #admingear{display:none!important}
    the big preview with the strip of games and its arrows below; the one-at-a-time arrows and dots are not shown */
 html.fam-build #app .s.wasanni .wdial,html.fam-build #app .s.wasanni .wside,html.fam-build #app .s.wasanni .wdots{display:none!important}
 html.fam-build #app .s.wasanni .wprev{touch-action:pan-y}
+
+/* (Sani 2026-11-24, the downloads design) "Carrying on where we stopped"; no internet: Laila rests and the bar greys */
+#loader .ld-resume{font:800 clamp(13px,2.4vh,16px) var(--body,sans-serif);color:#3B2E1E}
+#loader.st-wait .ld-bar i{filter:grayscale(.6)}
+#loader.st-wait .ld-laila .laila-v{animation-play-state:paused}
+#loader.st-wait .ld-bubble{animation:ldwait 2.2s ease-in-out infinite}
+@keyframes ldwait{50%{opacity:.55}}
+@media (prefers-reduced-motion: reduce){#loader.st-wait .ld-bubble{animation:none}}
+
+/* (Sani 2026-11-24) the "New version ready" pill on the children screen, always with Later; words only */
+.updpill{position:fixed;top:max(12px, env(safe-area-inset-top, 0px));left:50%;transform:translateX(-50%);z-index:240;display:flex;align-items:center;gap:6px;padding:6px 6px 6px 16px;max-width:calc(100vw - 24px);box-sizing:border-box;background:#fff;border:2px solid #2FAE9E;border-radius:999px;box-shadow:0 4px 14px rgba(80,60,20,.16);font:800 15px var(--body,'Nunito',sans-serif);color:#1E4E4B;animation:updIn .35s ease-out both}
+.updpill .upd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.updpill button{border:0;border-radius:999px;padding:8px 14px;min-height:40px;font:800 15px var(--body,'Nunito',sans-serif);cursor:pointer;white-space:nowrap}
+.updpill .upd-go{background:#2FAE9E;color:#fff;box-shadow:0 2px 0 #1E8A7C}
+.updpill .upd-later{background:transparent;color:#4C5E5C;text-decoration:underline}
+@keyframes updIn{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion: reduce){.updpill{animation:none}}
+/* settings: the update button, the install and storage lines (Sani 19 Nov 2026; no tick or cross in any state) */
+#admin .upd{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0 8px;padding:10px 14px;border:2px solid #2FAE9E;border-radius:14px;background:#EAF7F4;color:#1F5F56;text-align:left;cursor:pointer;font-family:var(--body,sans-serif)}
+#admin .upd:active{background:#D3EFEA}
+#admin .upd .uic{flex:none;width:40px;height:40px;border-radius:50%;background:#2FAE9E;display:flex;align-items:center;justify-content:center}
+#admin .upd .uic svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#admin .upd.busy .uic svg{animation:kratu-spin 1.2s linear infinite}
+@keyframes kratu-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#admin .upd.busy .uic svg{animation:none}}
+#admin .upd .utx{display:flex;flex-direction:column;min-width:0;flex:1}
+#admin .upd .utx b{font:800 16px var(--disp,sans-serif);color:#1E4E4B}
+#admin .upd .utx small{font:700 12px var(--body,sans-serif);color:#4C5E5C}
+#admin .upd .ubar{display:block;height:6px;border-radius:99px;background:#BFE2DE;overflow:hidden;margin-top:5px}
+#admin .upd .ubar i{display:block;height:100%;width:35%;border-radius:99px;background:#2FAE9E;animation:kratu-bar 1.4s ease-in-out infinite}
+@keyframes kratu-bar{from{transform:translateX(-100%)}to{transform:translateX(290%)}}
+#admin .upd.warn{border-color:#E0A21B;background:#FFF6DC}#admin .upd.warn .uic{background:#E0A21B}#admin .upd.warn .utx b{color:#7A5200}
+#admin .urepair{width:100%;margin:0 0 8px;font:800 13px var(--disp,sans-serif);border:2px solid #E0A21B;background:#fff;color:#7A5200;border-radius:12px;padding:8px 12px;cursor:pointer}
+/* (Sani 2026-11-24, point 7) Laila fits her own box: drawn at 150 px in a box that shrinks with the height, she spilt
+   onto the Kratu letters on a short tablet (1006×601) */
+#loader .ld-laila{flex:none;display:grid;place-items:center}
+#loader .ld-laila app-laila,#loader .ld-laila .lm{width:100% !important;height:100% !important}
+#loader .ld-laila .lm svg{width:100%;height:100%}
+/* a narrow screen: under the door (upper left) and the ear (upper right), never over them */
+@media (max-width: 560px){.updpill{top:calc(max(12px, env(safe-area-inset-top, 0px)) + 64px)}}

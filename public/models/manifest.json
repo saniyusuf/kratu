@@ -1,22 +1,35 @@
 {
  "det": {
-  "path": "models/insightface/det_500m.onnx",
-  "size": 2524817
+  "path": "models/insightface/det_500m.onnx.gz",
+  "size": 2524817,
+  "srcsha256": "5e4447f50245bbd7966bd6c0fa52938c61474a04ec7def48753668a9d8b4ea3a",
+  "gzsize": 2334925,
+  "sha256": "fde650522644edc679a12fec11b55b8bc7062ef68eac2216ac5d9f30b4b6f1eb",
+  "pieces": 3
  },
  "spk": {
-  "path": "models/speaker/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx",
-  "size": 29596978
+  "path": "models/speaker/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx.gz",
+  "size": 29596978,
+  "srcsha256": "357a834f702b80161e5b981182c038e18553c1f2ca752ed6cec2052365d4129b",
+  "gzsize": 27220408,
+  "sha256": "76214cb9802bb4119c2c2ac9079a384dc2f54f61baf6eb655d72322ff40ef183",
+  "pieces": 26
  },
  "rec": {
-  "path": "models/insightface/w600k_r50_fp16.onnx",
+  "path": "models/insightface/w600k_r50_fp16.onnx.gz",
   "size": 87206789,
-  "sha256": "3a728e738b4c0c802d3f2315ca877e76387f4fee9f240d4ae49e8da371dab25c",
-  "note": "half precision: same embeddings as the fp32 original to six decimal places, half the download"
+  "sha256": "b305214f5f99ec46a0a67337762f30f26d8ddfcfd67902ba271605227750d17f",
+  "note": "half precision: same embeddings as the fp32 original to six decimal places, half the download",
+  "srcsha256": "3a728e738b4c0c802d3f2315ca877e76387f4fee9f240d4ae49e8da371dab25c",
+  "gzsize": 77721078,
+  "pieces": 75
  },
  "wasm": {
   "path": "models/ort/ort-wasm-simd-threaded.wasm.gz",
   "size": 14239897,
   "gzsize": 3652793,
-  "note": "onnxruntime-web 1.30.0, plain threaded WASM \u2014 no WebGPU"
+  "note": "onnxruntime-web 1.30.0, plain threaded WASM — no WebGPU",
+  "sha256": "7d6e31923ab88cdf56c0f4c0b8e27853c6153bed4da4476c2a33424aaf6fa197",
+  "pieces": 4
  }
 }

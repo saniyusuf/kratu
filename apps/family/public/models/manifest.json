@@ -18,23 +18,31 @@
  },
  "det": {
   "path": "models/family/yunet_2023mar.onnx",
-  "size": 232589
+  "size": 232589,
+  "sha256": "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4",
+  "pieces": 1
  },
  "spk": {
   "path": "models/family/campplus_sv_voxceleb_fp16.onnx.gz",
   "size": 15323270,
   "gzsize": 13173210,
-  "note": "3dspeaker_speech_campplus_sv_en_voxceleb_16k in fp16: embeddings within cos 0.99995 of fp32 on 60 clips"
+  "note": "3dspeaker_speech_campplus_sv_en_voxceleb_16k in fp16: embeddings within cos 0.99995 of fp32 on 60 clips",
+  "sha256": "c08f482545f4d6f8fe8b63d7000b66553cfcec1fb7d2c924d398e9e8b998e1c1",
+  "pieces": 13
  },
  "rec": {
   "path": "models/family/sface_2021dec_int8.onnx.gz",
   "size": 9896933,
-  "gzsize": 7081795
+  "gzsize": 7081795,
+  "sha256": "be438a6d21f7c88052813ac23c539666f2fbc386d591afac145118297831ba6d",
+  "pieces": 7
  },
  "wasm": {
   "path": "models/ort/ort-wasm-simd-threaded.wasm.gz",
   "size": 14239897,
-  "gzsize": 3652793
+  "gzsize": 3652793,
+  "sha256": "7d6e31923ab88cdf56c0f4c0b8e27853c6153bed4da4476c2a33424aaf6fa197",
+  "pieces": 4
  },
  "cfg_note": "SFace (int8) sits on another scale than the school's R50. Frames are scored by their MEDIAN (frameAgg 'median'), not the best 3, which kept climbing while a stranger stayed in view. In the app's own pipeline some look-alike strangers still reach 0.56-0.63 against a child's prints (22 Nov test), so: on the face alone only at 0.70 and up (earlyAccept, at least 4 frames) or 0.68 at the end of the capture (faceAccept); from 0.50 (faceMaybe) only when the child's voice agrees (voiceAccept 0.55); margin 0.07; voice-weight gaps 0.066/0.21."
 }

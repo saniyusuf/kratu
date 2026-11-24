@@ -9,6 +9,8 @@ import { Laila } from '@kratu/app/shared/laila/laila';
 import { BACKSPACE_SVG, CAMERA_SVG, DOOR_SVG, EAR_SVG, GEAR_SVG, HAND_SVG } from '@kratu/app/shared/svg';
 import { BOY_SVG, GIRL_SVG } from './kids';
 import { LoaderService } from '@kratu/app/core/loader/loader.service';
+import { t } from '@kratu/app/core/lang/t';
+import { AppUpdate } from '@kratu/app/core/pwa/app-update.service';
 import { NavigationEnd, Router } from '@angular/router';
 
 /** TEMPORARY tester entries (Sani 2026-11-23) in the settings gear of the boy/girl and face screens: "Enter as Musa" and
@@ -47,6 +49,10 @@ export class FamilyShell implements OnDestroy {
   readonly TESTER = TESTER;
   readonly gearOpen = signal(false);
   /** Refresh: reload the app, back to the start of sign-in, nothing saved or removed. */
+  /** (Sani 2026-11-24) the camera's download waits for the internet and carries on by itself. */
+  /** The app's own update (Parent area). */
+  readonly upd = inject(AppUpdate);
+  readonly waitLine = t('No internet just now. I’ll carry on by myself when it’s back.');
   reload(): void { location.reload(); }
   gearGo(what: 'm' | 'f' | 'parent'): void { this.gearOpen.set(false); if (what === 'parent') this.fam.manage(); else this.fam.testAs(what); }
   readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
