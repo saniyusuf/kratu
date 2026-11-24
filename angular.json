@@ -378,7 +378,8 @@
               "Cross-Origin-Opener-Policy": "same-origin",
               "Cross-Origin-Embedder-Policy": "require-corp"
             },
-            "port": 4250
+            "port": 4250,
+            "proxyConfig": "apps/family/proxy.conf.json"
           }
         }
       }

@@ -19,13 +19,22 @@ Live: https://kratu-app.web.app (Firebase project `kratu-app`).
   one-time consent, the school's gender → face screens (FAMILY: gender goes straight to /face); a new child needs face AND
   a spoken "Sunana …" only when the face is close to another child's (hybrid, Sani 23 Nov: a face no one is near
   enrols or signs in on the face alone; a record missing a voice print or a name gets it added at a later sign-in, a complete
-  record is never added to; the name is set in the background by `FamilyService.nameStep()` only when sure, 6 s cap, an online
-  check behind `NAME_ONLINE`, off), `face.ts enter()` hands over to `FamilyService.faceDone()` (straight to
+  record is never added to; the name is set in the background by `FamilyService.nameStep()` only when sure, 7 s cap:
+  online (`NAME_ONLINE`, on since Sani 24 Nov) the "Sunana" clip alone goes to our own `/api/name`, and the name is set
+  only when PlotWeaver's words are a near-exact bank name AND the offline grammar hearing agrees (bank test 40% set, 95%
+  right); no answer in 5 s or no network: offline strict only. A named child is never asked or sent again; PlotWeaver
+  answers once per clip (`Profile.nameAsked`)), `face.ts enter()` hands over to `FamilyService.faceDone()` (straight to
   Meet Laila, no animal step). The profile id is the identity record's id; names are optional (Manage profiles).
   No cards: face and voice are the only way in; Guest and Parent buttons float over /gender and /face; a refused camera
   or microphone goes to /perm. No emoji in the family build (`html.fam-build` rules at the end of app.css, HAND_SVG);
   its camera box takes the video's own shape and its border is the progress (no face ring).
   `npm run start:family` / `npm run build:family`.
+  Name server: the PlotWeaver key NEVER goes in the app or its bundle. Locally `node tools/name-proxy.mjs` (127.0.0.1:4261;
+  reads `PLOTWEAVER_API_KEY` from the env, the ignored `.env`, or ~/Documents/kratu-langs/tools/.env.plotweaver) and
+  `ng serve family` proxies `/api` to it (apps/family/proxy.conf.json). Without it the name step is offline only.
+  For release (not built, not deployed): the same handler as a Firebase Function on kratu-app (needs the Blaze plan,
+  the key stored with `firebase functions:secrets:set PLOTWEAVER_API_KEY`, a Hosting rewrite of `/api/name` to it,
+  App Check so only the app can call it, and a per-device rate limit). WAV only, 10 s cap, nothing stored or logged.
 - `npm run content` — `content/` → `public/assets/clips.json` + `words.json`. Never edit those two by hand.
 - Written labels (Sani 18 Nov): `content/labels.json` is the one dictionary, Hausa and English, of every label a screen
   writes (`t('Ci gaba')`, `tx()`, `bi(ha, en)`, `sub()`). Every version shows the English (Sani 18 Nov: `EN_LABELS` in

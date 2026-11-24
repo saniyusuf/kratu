@@ -35,6 +35,7 @@
     "voice:pcm": "node scripts/voice.mjs --lang pcm",
     "start:pcm": "npm run content:pcm && ng serve --configuration pcm --port 4204",
     "build:pcm": "npm run content:pcm && npm run lint:pcm && ng build --configuration production,pcm",
+    "name-proxy": "node tools/name-proxy.mjs",
     "start:family": "npm run content && ng serve family",
     "build:family": "npm run content && npm run lint:content && ng build family"
   },

@@ -13,9 +13,10 @@ import { SpeechService } from '../speech/speech.service';
  * `name` is empty unless the parent types one in Manage profiles: the child's own clip says their name.
  */
 export interface Profile { id: string; name: string; g: Gender; at: number;
-  /** Up to three names-bank names the offline recogniser heard in the child's own "Sunana …" (Sani 2026-11-23). */
-  /** The bank name the parent confirmed, and its clip (Laila says it from then on; the clip is kept on the phone). */
-  nameKey?: string; nameClip?: string; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
+  /** The bank name the name step set, and its clip (Laila says it from then on; the clip is kept on the phone). */
+  nameKey?: string; nameClip?: string;
+  /** PlotWeaver has answered for this child's clip once; the same clip is not sent again (Sani 2026-11-24). */
+  nameAsked?: boolean; }   // no animal any more (Sani 2026-11-22: no emoji, no animal step); older saved profiles may still carry one, ignored
 
 /** The parent's account (Sani 2026-11-21, "for now"): an email, a phone number and a 6-digit code the parent sets
  *  (typed twice). Manage profiles asks for that code; adding a child needs nothing. Later the code will be sent to the
@@ -87,8 +88,8 @@ export class FamilyService {
     if (NAME) this.identity.api?.store.upsert({ id, name: NAME }).catch(() => undefined);
   }
   // ---- the name (Sani 2026-11-23): heard offline from the child's clip, set only in strict mode, never sent anywhere
-  private namesData: Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> | null = null;
-  names(): Promise<{ phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> } | null> {
+  private namesData: Promise<NamesData | null> | null = null;
+  names(): Promise<NamesData | null> {
     if (!this.namesData) this.namesData = fetch('names/phrases.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
     return this.namesData;
   }
@@ -96,38 +97,64 @@ export class FamilyService {
   nameOf(key: string): string { return key.charAt(0).toUpperCase() + key.slice(1); }
   async clipUrl(key: string): Promise<string | null> { const D = await this.names(); return D?.file[key] ? 'names/' + D.file[key] + '.ogg' : null; }
   /**
-   * The name step (Sani 2026-11-23, hybrid): try hard for an accurate name, set it only when sure, and never hold the child
-   * up. It runs in the background after the child is in, and gives up after NAME_WAIT_MS.
-   *  1. Offline, both ways: the names-bank grammar hears a phrase that is ONE name, and free listening, matched to the
-   *     bank by a sound key, lands on that same name (or a spelling of it). On the 1,958 bank recordings: 23% set, 91% right.
-   *  2. Online (NAME_ONLINE, off): the place where a hosted recogniser (Google / PlotWeaver, Sani's open question) plugs in,
-   *     asked only when the offline step is not sure and the phone is online. Nothing is sent anywhere while it is off.
-   * Not sure: nothing is set and the child's own clip stays their name. A name a parent typed is never replaced.
+   * The name step (Sani 2026-11-24: "a perfect match is better than a wrong name"). It runs in the background once the
+   * child is in, only for a child with no stored name, and gives up after NAME_WAIT_MS; nothing holds the child up.
+   *  - Online (NAME_ONLINE): the child's "Sunana …" clip, and nothing else, goes to our own /api/name, which holds the
+   *    PlotWeaver key (tools/name-proxy.mjs locally; a small server for release). The words that come back are matched
+   *    to the closest bank name by sound. The name is set only when that match is near exact (PlotWeaver sure) AND the
+   *    offline grammar hearing names the same child. On the 1,958 bank recordings: 40% set, 95% right.
+   *  - No answer in ONLINE_WAIT_MS, or no network: offline strict only (the grammar hears ONE name and free listening
+   *    lands on it too: 23% set, 91% right).
+   * Not sure: no name, the child's own clip stays their name. Once PlotWeaver has answered for a clip it is not sent
+   * again; if it never answered, a later sign-in tries again. A named child's clip is never sent again.
    */
-  async nameStep(id: string): Promise<void> {
-    const KEY = await Promise.race([this.findName(id), new Promise<null>((r) => setTimeout(() => r(null), NAME_WAIT_MS))]);
-    if (!KEY || this.profiles().find((p) => p.id === id)?.name || this.identity.people().find((x) => x.id === id)?.key) return;
-    await this.setBankName(id, KEY);
+  async nameStep(id: string, later = false): Promise<void> {
+    if (this.named(id)) return;
+    if (later && !(NAME_ONLINE && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked && this.clipOf(id))) return;
+    if (this.naming.has(id)) return;   // one try at a time per child
+    this.naming.add(id);
+    try {
+      const KEY = await Promise.race([this.findName(id), new Promise<null>((r) => setTimeout(() => r(null), NAME_WAIT_MS))]);
+      if (KEY && !this.named(id)) await this.setBankName(id, KEY);
+    } finally { this.naming.delete(id); }
   }
+  private naming = new Set<string>();
+  /** A typed name, or a bank name already set: the child is named, and nothing is asked or sent for them again. */
+  private named(id: string): boolean { return !!(this.profiles().find((p) => p.id === id)?.name || this.identity.people().find((x) => x.id === id)?.key); }
   private async findName(id: string): Promise<string | null> {
     try {
       const CLIP = this.clipOf(id), D = await this.names(); if (!CLIP || !D) return null;
       const CTX = new AudioContext({ sampleRate: 16000 });
       const PCM = (await CTX.decodeAudioData(await (await fetch(CLIP)).arrayBuffer())).getChannelData(0); CTX.close();
-      const OFFLINE = await this.offlineName(PCM, D);
-      if (OFFLINE) return OFFLINE;
-      if (NAME_ONLINE && navigator.onLine) return await this.onlineName(PCM, Object.keys(D.file));
-      return null;
+      const ASK = NAME_ONLINE && navigator.onLine && !this.profiles().find((p) => p.id === id)?.nameAsked;
+      const ONLINE = ASK ? this.onlineText(PCM) : Promise.resolve(null);   // on its way while the phone listens
+      const HEARD = heardPhrase(await this.speech.recognizeClip(PCM, 16000, grammarOf(D)));
+      const TEXT = await ONLINE;
+      if (TEXT !== null) {
+        this.write(this.profiles().map((p) => (p.id === id ? { ...p, nameAsked: true } : p)));
+        const KEY = onlineName(TEXT, HEARD, D);
+        console.log('[kratu] name step: online', KEY ? 'sure, offline agrees' : 'not sure, no name');
+        return KEY;
+      }
+      const KEY = await this.offlineName(PCM, HEARD, D);
+      console.log('[kratu] name step: offline strict', KEY ? 'sure' : 'not sure, no name');
+      return KEY;
     } catch { return null; }
   }
-  private async offlineName(PCM: Float32Array, D: { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> }): Promise<string | null> {
-    const HEARD = await this.speech.recognizeClip(PCM, 16000, Object.keys(D.phrases));
+  private async offlineName(PCM: Float32Array, HEARD: string, D: NamesData): Promise<string | null> {
     const ONE = D.phrases[HEARD]; if (!ONE || ONE.length !== 1) return null;
-    const KEY = ONE[0], NEAR = nearestName(await this.speech.recognizeClip(PCM, 16000, null), Object.keys(D.file));
-    return NEAR && (NEAR === KEY || (D.variants[KEY] || []).includes(NEAR)) ? KEY : null;
+    const FREE = dropSunana(await this.speech.recognizeClip(PCM, 16000, null));
+    const KEY = ONE[0], NEAR = nearestName(FREE, Object.keys(D.file));
+    return NEAR && sameName(NEAR, KEY, D) ? KEY : null;
   }
-  /** The online check's socket: returns a names-bank key it is sure of, or null. Not built yet (NAME_ONLINE is false). */
-  private async onlineName(_pcm: Float32Array, _keys: string[]): Promise<string | null> { return null; }
+  /** The words PlotWeaver heard in the clip (through our /api/name), or null with no answer in ONLINE_WAIT_MS. */
+  private async onlineText(PCM: Float32Array): Promise<string | null> {
+    try {
+      const R = await fetch('api/name', { method: 'POST', headers: { 'Content-Type': 'audio/wav' }, body: wav16k(PCM), signal: AbortSignal.timeout(ONLINE_WAIT_MS) });
+      if (!R.ok) return null;
+      const J = await R.json(); return typeof J?.text === 'string' ? J.text : null;
+    } catch { return null; }
+  }
   /** The name is written and its bank clip kept on the phone for Laila's "Sannu, <name>". */
   private async setBankName(id: string, key: string): Promise<void> {
     const URL0 = await this.clipUrl(key); let clip: string | undefined;
@@ -243,7 +270,9 @@ export class FamilyService {
       this.write([...this.profiles(), p]);
     }
     this.signIn(p); this.current.set(p);
-    if (isNew) this.nameStep(p.id);   // in the background: set only when sure, never holds the child up
+    // in the background: set only when sure, never holds the child up; a known child with no name is tried again
+    // only if PlotWeaver never answered for their clip (Sani 2026-11-24)
+    if (isNew) this.nameStep(p.id); else this.nameStep(p.id, true);
     // a known child with a name: "Sannu, <name>" first, nothing appended (Sani 2026-11-23)
     const SAY = p.nameClip || this.clipOf(p.id);   // Laila's bank clip, else the child's own recording of their name
     if (!isNew && SAY) { const CLIP = SAY; this.show(null); this.bus.play('s_sannu').then((ok) => (ok ? this.bus.playRaw(CLIP) : false)).then(() => { this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
@@ -283,10 +312,35 @@ export class FamilyService {
   }
 }
 
-/** The name step (Sani 2026-11-23): an online check plugs in behind this one switch; off, nothing leaves the phone. */
-const NAME_ONLINE = false;
+type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> };
+/** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
+const NAME_ONLINE = true;
 /** The name step never takes longer than this; the child is already in, it only decides whether a name gets set. */
-const NAME_WAIT_MS = 6000;
+const NAME_WAIT_MS = 7000;
+/** No answer from /api/name by then: the offline strict check decides alone. */
+const ONLINE_WAIT_MS = 5000;
+/** PlotWeaver is sure when its words sound almost exactly like one bank name (the names test: 76% of clips, 89% right). */
+const ONLINE_SURE = 0.15;
+const SUNANA_KEY = soundKey('sunana');
+/** How the offline grammar hears "Sunana" (the names test's grammar: every phrase alone, and after this). */
+const SUNANA_PHRASE = 'su nona';
+let GRAMMAR: string[] | null = null;
+/** Every bank phrase, alone and after "Sunana", as the names test heard them (the child says "Sunana <name>"). */
+function grammarOf(D: NamesData): string[] {
+  if (!GRAMMAR) { const P = Object.keys(D.phrases); GRAMMAR = [...P, ...P.map((p) => SUNANA_PHRASE + ' ' + p)]; }
+  return GRAMMAR;
+}
+/** The bank phrase in what the grammar heard: "[unk]" and the "Sunana" before it dropped. */
+function heardPhrase(text: string): string {
+  const T = text.replace(/\[unk\]/g, ' ').replace(/\s+/g, ' ').trim();
+  return T.startsWith(SUNANA_PHRASE + ' ') ? T.slice(SUNANA_PHRASE.length + 1) : T;
+}
+/** Free listening hears "Sunana" as one to three words ("so now now zubaydah"): the closest such start is dropped. */
+function dropSunana(text: string): string {
+  const W = text.split(/\s+/).filter(Boolean); let best = 0, bestD = 3;
+  for (let k = 1; k <= 3 && k < W.length; k++) { const DD = editDistance(soundKey(W.slice(0, k).join('')), SUNANA_KEY); if (DD < bestD) { bestD = DD; best = k; } }
+  return W.slice(best).join(' ');
+}
 /** A rough Hausa/English sound key (the names test's free.py): letters folded to how they sound, doubles and h after consonants dropped. */
 function soundKey(text: string): string {
   let s = text.toLowerCase().replace(/'/g, '');
@@ -303,9 +357,33 @@ function editDistance(a: string, b: string): number {
   return D[b.length];
 }
 /** The bank name whose sound key is closest to what free listening heard. */
-function nearestName(heard: string, keys: string[]): string | null {
-  const T = soundKey(heard.replace(/\s+/g, '')); if (!T) return null;
+function nearestName(heard: string, keys: string[]): string | null { return nearest(heard, keys).key; }
+/** The closest bank name by sound, and how far off it is (0 = the same sound key, 1 = nothing alike). */
+function nearest(heard: string, keys: string[]): { key: string | null; dist: number } {
+  const T = soundKey(heard.replace(/\s+/g, '')); if (!T) return { key: null, dist: 1 };
   let best: string | null = null, bestD = Infinity;
   for (const K of keys) { const SK = soundKey(K), DD = editDistance(T, SK) / Math.max(T.length, SK.length); if (DD < bestD) { bestD = DD; best = K; } }
-  return best;
+  return { key: best, dist: bestD };
+}
+/** One name, or two spellings of it. */
+function sameName(a: string, b: string, D: NamesData): boolean { return a === b || (D.variants[a] || []).includes(b); }
+/** PlotWeaver's words to a bank name, set only when it is sure AND the offline grammar hearing names the same child
+ *  (the names test's 95% setting). "Suna na Aisha." → aisha. */
+function onlineName(text: string, heard: string, D: NamesData): string | null {
+  let w = text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z ]/g, ' ').split(/\s+/).filter(Boolean);
+  if (w.length > 2 && editDistance(soundKey(w[0] + w[1]), SUNANA_KEY) <= 1) w = w.slice(2);
+  else if (w.length && editDistance(soundKey(w[0]), SUNANA_KEY) <= 2) w = w.slice(1);
+  else if (w.length && soundKey(w[0]).startsWith(SUNANA_KEY.slice(0, 4)) && soundKey(w[0]).length > SUNANA_KEY.length) w = [w[0].slice(6), ...w.slice(1)];
+  const { key: KEY, dist: DIST } = nearest(w.join(''), Object.keys(D.file));
+  if (!KEY || DIST > ONLINE_SURE) return null;
+  return (D.phrases[heard] || []).some((x) => sameName(KEY, x, D)) ? KEY : null;
+}
+/** The clip as a 16 kHz mono 16-bit WAV, 10 s at most: the one thing the name check sends. */
+function wav16k(pcm: Float32Array): Blob {
+  const N = Math.min(pcm.length, 16000 * 10), B = new DataView(new ArrayBuffer(44 + N * 2));
+  const STR = (o: number, t: string) => { for (let i = 0; i < t.length; i++) B.setUint8(o + i, t.charCodeAt(i)); };
+  STR(0, 'RIFF'); B.setUint32(4, 36 + N * 2, true); STR(8, 'WAVE'); STR(12, 'fmt '); B.setUint32(16, 16, true); B.setUint16(20, 1, true); B.setUint16(22, 1, true);
+  B.setUint32(24, 16000, true); B.setUint32(28, 32000, true); B.setUint16(32, 2, true); B.setUint16(34, 16, true); STR(36, 'data'); B.setUint32(40, N * 2, true);
+  for (let i = 0; i < N; i++) B.setInt16(44 + i * 2, Math.max(-1, Math.min(1, pcm[i])) * 0x7fff, true);
+  return new Blob([B.buffer], { type: 'audio/wav' });
 }
