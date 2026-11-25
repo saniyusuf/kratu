@@ -108,7 +108,11 @@ export class FamilyService {
   // ---- the name (Sani 2026-11-23): heard offline from the child's clip, set only in strict mode, never sent anywhere
   private namesData: Promise<NamesData | null> | null = null;
   names(): Promise<NamesData | null> {
-    if (!this.namesData) this.namesData = fetch('names/phrases.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    if (!this.namesData) {
+      const GET = (u: string) => fetch(u).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      // (Sani 2026-11-25) how PlotWeaver may write an English bank name in Hausa spelling, by sound key (spellings.json)
+      this.namesData = Promise.all([GET('names/phrases.json'), GET('names/spellings.json')]).then(([D, S]) => (D ? { ...D, spell: S?.spellings || {} } : null));
+    }
     return this.namesData;
   }
   /** How a bank key is written: "a'isha" → "A'isha". */
@@ -421,7 +425,7 @@ export class FamilyService {
 }
 
 const K_NAME_ONLINE = 'kratu_fam_name_online';
-type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]> };
+type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]>; spell: Record<string, string> };
 /** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
 const NAME_ONLINE = true;
 /** (Sani 2026-11-24) the name step reads a child's clip at most this many times while no name is set. */
@@ -440,6 +444,8 @@ const NAME_WAIT_MS = 7000;
 const ONLINE_WAIT_MS = 5000;
 /** PlotWeaver is sure when its words sound almost exactly like one bank name (the names test: 76% of clips, 89% right). */
 const ONLINE_SURE = 0.15;
+/** A name this short (in sounds, e.g. Faith = "fait") may be one sound off when the offline check agrees. */
+const SHORT_NAME = 5;
 const SUNANA_KEY = soundKey('sunana');
 /** How the offline grammar hears "Sunana" (the names test's grammar: every phrase alone, and after this). */
 const SUNANA_PHRASE = 'su nona';
@@ -493,12 +499,23 @@ function onlineName(text: string, heard: string, D: NamesData): string | null {
   if (w.length > 2 && editDistance(soundKey(w[0] + w[1]), SUNANA_KEY) <= 1) w = w.slice(2);
   else if (w.length && editDistance(soundKey(w[0]), SUNANA_KEY) <= 2) w = w.slice(1);
   else if (w.length && soundKey(w[0]).startsWith(SUNANA_KEY.slice(0, 4)) && soundKey(w[0]).length > SUNANA_KEY.length) w = [w[0].slice(6), ...w.slice(1)];
+  // (Sani 2026-11-25, "Both") 1) the spelling table first: "Sunana Fet" is Faith
+  const SK = soundKey(w.join('')), SPELT = D.spell[SK];
+  if (SPELT && D.file[SPELT]) { console.log('[kratu] name step: PlotWeaver spelling found in the table'); return SPELT; }
   const { key: KEY, dist: DIST } = nearest(w.join(''), Object.keys(D.file));
-  if (!KEY || DIST > ONLINE_SURE) return null;
+  if (!KEY) return null;
+  const OFFLINE_SAME = (D.phrases[heard] || []).some((x) => sameName(KEY, x, D));
+  // 2) a short name may be one sound off, only when the phone's own offline check names the same child
+  //    (the offline check heard ONE bank name, a short one, and PlotWeaver's words are within one sound of it)
+  if (DIST > ONLINE_SURE) {
+    const ONE = D.phrases[heard] || [], OWN = ONE.length === 1 ? soundKey(ONE[0]) : '';
+    if (OWN && D.file[ONE[0]] && OWN.length <= SHORT_NAME && editDistance(SK, OWN) <= 1) { console.log('[kratu] name step: short name one sound off, offline agrees'); return ONE[0]; }
+    return null;
+  }
   // (Sani 2026-11-24, 22:42) PlotWeaver alone is enough when its words are a bank name, exactly or nearly (spelling folded),
   // whatever the offline check heard; a name outside the bank is never set here (it needs both to agree, and only bank
   // names can be set by the name step). Still only when no name is stored, never over one.
-  if (!(D.phrases[heard] || []).some((x) => sameName(KEY, x, D))) console.log('[kratu] name step: offline heard otherwise; PlotWeaver alone decides (bank name)');
+  if (!OFFLINE_SAME) console.log('[kratu] name step: offline heard otherwise; PlotWeaver alone decides (bank name)');
   return KEY;
 }
 /** The clip as a 16 kHz mono 16-bit WAV, 10 s at most: the one thing the name check sends. */
