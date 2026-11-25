@@ -130,9 +130,9 @@ export class LoaderService {
     if (this.finished()) { this.stageSet('ready', 0, 'An shirya! · Ready', 'Laila is ready · everything is on this tablet now', 'Mu fara!', 'Let’s start'); this.eta.set(''); }
     else if (!small.every((p) => this.dlDone(p))) { this.stageSet('names', 1, 'Ana ɗaukar sunaye da hotuna…', 'Getting the names and pictures', 'Ina zuwa…', 'Coming…'); }
     else if (!heavy.every((p) => this.dlDone(p))) {
-      const cur = heavy.find((p) => !this.dlDone(p))!, b = this.bytes[cur.id] || { got: 0, total: 0 }; const mb = b.total ? Math.round(b.got / 1048576) + ' / ' + Math.round(b.total / 1048576) + ' MB' : '';
-      if (cur.id === 'speech') this.stageSet('download', 2, 'Ana ɗaukar muryar Laila…', 'Downloading Laila’s voice' + (mb ? ' · ' + mb : ''), 'Ina koyon magana…', 'Learning to talk…');
-      else this.stageSet('download', 3, 'Ana ɗaukar idanun Laila…', 'Downloading Laila’s eyes' + (mb ? ' · ' + mb : '') + ' · once only, then it stays on this tablet', 'Ina koyon gani…', 'Learning to see…');
+      const cur = heavy.find((p) => !this.dlDone(p))!, b = this.bytes[cur.id] || { got: 0, total: 0 };   // (Sani 2026-11-25) no download size in the headline: the bar shows how far it is
+      if (cur.id === 'speech') this.stageSet('download', 2, 'Ana ɗaukar muryar Laila…', 'Downloading Laila’s voice', 'Ina koyon magana…', 'Learning to talk…');
+      else this.stageSet('download', 3, 'Ana ɗaukar idanun Laila…', 'Downloading Laila’s eyes · once only, then it stays on this tablet', 'Ina koyon gani…', 'Learning to see…');
       if (b.total) this.etaFrom(got, total);
     } else { this.stageSet('wake', 4, 'Ana tada Laila…', 'Waking Laila up · a few seconds', 'Ina zuwa!', 'Almost there'); this.eta.set(''); }
   }
@@ -176,7 +176,7 @@ export class LoaderService {
     const JOB = await handOver('kratu-models', ALL, t('Getting Laila ready')); if (!JOB) return;
     await follow(JOB, (DOWN) => {
       let LEFT = DOWN;
-      for (const X of PARTS) { const TOT = X.specs.reduce((A, F) => A + F.bytes, 0), G = Math.max(0, Math.min(TOT, LEFT)); LEFT -= G; this.bytes[X.id] = { got: G, total: TOT }; this.prog(X.id, Math.round(G / 1048576) + ' / ' + Math.round(TOT / 1048576) + ' MB'); }
+      for (const X of PARTS) { const TOT = X.specs.reduce((A, F) => A + F.bytes, 0), G = Math.max(0, Math.min(TOT, LEFT)); LEFT -= G; this.bytes[X.id] = { got: G, total: TOT }; this.prog(X.id, pct(G, TOT)); }
       this.netWait.set(!navigator.onLine); this.paint();
     });
     this.netWait.set(false);
@@ -194,7 +194,7 @@ export class LoaderService {
   private async fetchSpeechFiles(): Promise<Record<string, ArrayBuffer> | null> {
     const S = await this.speechSpecs(); if (!S) return null;
     const TOTAL = S.specs.reduce((A, F) => A + F.bytes, 0); let got = 0; const FILES: Record<string, ArrayBuffer> = {};
-    const SHOW = () => { this.bytes['speech'] = { got, total: TOTAL }; this.prog('speech', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); };
+    const SHOW = () => { this.bytes['speech'] = { got, total: TOTAL }; this.prog('speech', pct(got, TOTAL)); this.paint(); };
     for (let I = 0; I < S.specs.length; I++) {
       const F = S.specs[I]; let last = 0;
       FILES[S.paths[I]] = await getFile(F, (G) => { got += G - last; last = G; SHOW(); }, this.NET);
@@ -221,7 +221,7 @@ export class LoaderService {
     if (!man?.files?.length) return 'skip';
     const total: number = man.total, size = new Map<string, number>(man.files.map((f: any) => [new URL(f.path, document.baseURI).href, f.size]));
     let got = 0;
-    const show = () => { this.bytes['pictures'] = { got, total }; this.prog('pictures', Math.round(got / 1048576) + ' / ' + Math.round(total / 1048576) + ' MB'); this.paint(); };
+    const show = () => { this.bytes['pictures'] = { got, total }; this.prog('pictures', pct(got, total)); this.paint(); };
     show();
     const held = async (): Promise<number> => {
       if (typeof caches === 'undefined') return -1;
@@ -290,7 +290,7 @@ export class LoaderService {
     const P = await this.faceSpecs(); if (!P) return;
     await this.sweepRuntimes(P.plan[0].spec.url);
     const TOTAL = P.plan.reduce((A, X) => A + X.spec.bytes, 0); let got = 0; const BUFS: Record<string, ArrayBuffer> = {};
-    const SHOW = () => { this.bytes['face'] = { got, total: TOTAL }; this.prog('face', Math.round(got / 1048576) + ' / ' + Math.round(TOTAL / 1048576) + ' MB'); this.paint(); onp?.(got, TOTAL); };
+    const SHOW = () => { this.bytes['face'] = { got, total: TOTAL }; this.prog('face', pct(got, TOTAL)); this.paint(); onp?.(got, TOTAL); };
     for (const X of P.plan) { let last = 0; BUFS[X.key] = await getFile(X.spec, (G) => { got += G - last; last = G; SHOW(); }, this.NET); got += X.spec.bytes - last; SHOW(); }
     if (!P.recCount) return;
     // the parts go over as they are: the worker joins them on its own thread, so the UI never does a 174 MB copy
@@ -327,3 +327,5 @@ export class LoaderService {
     return new Promise((res, rej) => { const S = document.createElement('script'); S.src = 'kratu-id.js'; S.onload = () => res(); S.onerror = () => rej(new Error('kratu-id.js')); document.head.appendChild(S); });
   }
 }
+/** (Sani 2026-11-25) how far a download is, as a share, never its size in MB. */
+function pct(got: number, total: number): string { return (total ? Math.min(100, Math.round(100 * got / total)) : 0) + '%'; }

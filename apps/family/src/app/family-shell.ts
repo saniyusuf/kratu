@@ -57,7 +57,7 @@ export class FamilyShell implements OnDestroy {
   gearGo(what: 'm' | 'f' | 'parent'): void { this.gearOpen.set(false); if (what === 'parent') this.fam.manage(); else this.fam.testAs(what); }
   readonly facePct = computed(() => { const P = this.loader.faceProg(); return P.total ? Math.round(100 * P.got / P.total) : 3; });
   readonly faceText = computed(() => { const P = this.loader.faceProg(); if (P.state === 'fail') return 'The camera could not be downloaded. Check the connection and try again.';
-    return (P.total ? Math.round(P.got / 1048576) + ' of ' + Math.round(P.total / 1048576) + ' MB' : 'Starting') + ' · once only, then it stays on this phone'; });
+    return (P.total ? Math.min(100, Math.round(100 * P.got / P.total)) + '%' : 'Starting') + ' · once only, then it stays on this phone'; });
   private readonly san = inject(DomSanitizer);
   private readonly host = inject(ElementRef) as ElementRef<HTMLElement>;
   readonly door = this.san.bypassSecurityTrustHtml(DOOR_SVG);
