@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
+import { FAMILY } from '../edition';
 
 /** The screens between two children, where nothing is lost: a press of the update button there switches at once. */
 const SAFE = /^\/(perm|gender|blank)?(\?|$)/;
@@ -8,6 +9,22 @@ const SAFE = /^\/(perm|gender|blank)?(\?|$)/;
 const PILL_AT = /^\/(perm|gender)(\?|$)/;
 /** While Kratu stays open, ask for a new version this often. */
 const EVERY = 60 * 60 * 1000;
+
+/** (Sani 2026-11-25) Reload keeps the session: the child, and the screen, are written here just before the switch. */
+const K_RESUME = 'kratu_resume';
+/** A mark older than this is from some other time, not this reload. */
+const RESUME_FRESH_MS = 60 * 1000;
+export interface ResumeMark { kid: string | null; guest: boolean; route: string; at: number }
+/** Read once as Kratu starts, and wiped at once, so only the one reload after Reload uses it. */
+const RESUME: ResumeMark | null = (() => {
+  try {
+    const RAW = sessionStorage.getItem(K_RESUME); sessionStorage.removeItem(K_RESUME); if (!RAW) return null;
+    const M = JSON.parse(RAW) as ResumeMark;
+    if (!M || typeof M.at !== 'number' || Date.now() - M.at > RESUME_FRESH_MS || Date.now() < M.at) return null;
+    document.documentElement.classList.add('kratu-resume');   // the loader's words and pictures stay hidden: the top bar says "Updating Kratu…"
+    return M;
+  } catch { return null; }
+})();
 
 export type UpdateState = 'idle' | 'confirm' | 'checking' | 'downloading' | 'ready' | 'latest' | 'offline' | 'failed' | 'dev';
 
@@ -39,6 +56,14 @@ export class AppUpdate {
   private readonly url = signal('');
   private asking = false;
   private started = false;
+  /** (Sani 2026-11-25) Kratu was just reloaded into a new version from the top bar: back to the same child and screen. */
+  static readonly RESUME = RESUME;
+  /** From the reload until the child is back on the screen they left: the top bar says "Updating Kratu…". */
+  readonly resuming = signal(!!RESUME);
+  /** Reload pressed: the switch is under way. */
+  readonly busy = signal(false);
+  /** The install sheet is up: the update bar waits for it (and the sheet never rises over the bar). */
+  readonly installUp = signal(false);
 
   start(): void {
     if (this.started) return; this.started = true;
@@ -80,9 +105,17 @@ export class AppUpdate {
     }
   });
   /** The pill: a new version is in, on the children screen, and Later was not pressed since the last check. */
-  pillOn(): boolean { return this.ready() && !this.later() && PILL_AT.test(this.url() || this.router.url); }
+  pillOn(): boolean { return !FAMILY && this.ready() && !this.later() && PILL_AT.test(this.url() || this.router.url); }
   /** The pill's Update: into the new version now. */
   updateNow(): void { this.restart(); }
+  /** (Sani 2026-11-25, the top bar 2a) Reload: the child and the screen are kept for the reload, which goes straight back to them. */
+  reloadKeep(mark: Omit<ResumeMark, 'at'>): void {
+    if (this.busy()) return; this.busy.set(true);
+    try { sessionStorage.setItem(K_RESUME, JSON.stringify({ ...mark, at: Date.now() })); } catch { /* no session storage: the reload starts as any opening */ }
+    this.restart();
+  }
+  /** The child is back where they were: the bar may go. */
+  resumed(): void { this.resuming.set(false); document.documentElement.classList.remove('kratu-resume'); }
   /** The pill's Later: hidden until the next check, or the next time Kratu is opened. */
   dismiss(): void { this.later.set(true); }
 

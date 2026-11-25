@@ -1,6 +1,7 @@
 import { Component, inject, effect } from '@angular/core';
 import { LoaderService } from '../../core/loader/loader.service';
 import { AudioBus } from '../../core/audio/audio-bus.service';
+import { AppUpdate } from '../../core/pwa/app-update.service';
 import { ClipsService } from '../../core/clips/clips.service';
 import { Laila } from '../../shared/laila/laila';
 import { bi, EN_ON, t } from '../../core/lang/t';
@@ -40,7 +41,7 @@ export class LoaderScreen {
   private said = false;
   constructor() {
     // Laila: "please wait a little, everything is getting ready" — at once where sound is allowed before a tap, else on the first touch
-    effect(() => { if (this.clips.ready() && !this.said) { this.said = true; this.bus.play('s_loading').then((ok) => { if (!ok) this.said = false; }); } });
+    effect(() => { if (this.clips.ready() && !this.said && !AppUpdate.RESUME) { this.said = true; this.bus.play('s_loading').then((ok) => { if (!ok) this.said = false; }); } });
   }
-  tap(): void { if (!this.said && this.clips.ready()) { this.said = true; this.bus.play('s_loading'); } }
+  tap(): void { if (!this.said && this.clips.ready() && !AppUpdate.RESUME) { this.said = true; this.bus.play('s_loading'); } }
 }

@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { Laila } from '@kratu/app/shared/laila/laila';
 import { FamilyService } from '@kratu/app/core/family/family.service';
+import { AppUpdate } from '@kratu/app/core/pwa/app-update.service';
 
 /** Chrome's install offer, kept by main.ts the moment it arrives (it can come before the app is up). */
 interface InstallOffer extends Event { prompt(): Promise<void>; userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }> }
@@ -101,6 +102,8 @@ button:focus-visible{outline:3px solid #2FAE9E;outline-offset:2px}
 export class InstallSheet {
   private readonly router = inject(Router);
   private readonly fam = inject(FamilyService);
+  /** (Sani 2026-11-25) a new version's bar wins: the sheet waits for a later visit to home. */
+  private readonly upd = inject(AppUpdate);
   /** The brand's K on cream (public/favicon.svg, as the app icon draws it). */
   readonly K = inject(DomSanitizer).bypassSecurityTrustHtml('<svg viewBox="0 0 930 930" aria-hidden="true"><rect width="930" height="930" fill="#FBF3DE"/><g transform="translate(465 472) scale(.62) translate(-465 -472)"><path fill="#E63946" transform="translate(157.0,775.0) scale(1,-1)" d="M152 310 215 350Q321 248 397.5 168.0Q474 88 527 40Q526 18 514.0 5.5Q502 -7 484 -7Q467 -7 453.5 3.0Q440 13 426 26ZM226 282 145 300 446 612Q472 611 485.0 599.0Q498 587 498 571Q498 558 491.5 546.5Q485 535 471 523ZM89 367H171V1Q165 -1 155.0 -3.5Q145 -6 133 -6Q111 -6 100.0 3.0Q89 12 89 31ZM171 300H89V606Q94 608 104.5 610.5Q115 613 127 613Q149 613 160.0 604.5Q171 596 171 576Z"/></g></svg>');
   /** An iPhone or iPad (iPadOS says it is a Mac, but has touch). */
@@ -135,8 +138,8 @@ export class InstallSheet {
     if (this.on() || this.timer || !this.can() || this.waiting()) return;
     this.timer = setTimeout(() => {
       this.timer = null;
-      if (!/^\/home(?:[/?#]|$)/.test(this.router.url) || this.fam.screen() || !this.can() || this.waiting()) return;
-      this.on.set(true);
+      if (!/^\/home(?:[/?#]|$)/.test(this.router.url) || this.fam.screen() || !this.can() || this.waiting() || this.upd.ready() || this.upd.resuming()) return;
+      this.on.set(true); this.upd.installUp.set(true);
       requestAnimationFrame(() => requestAnimationFrame(() => this.up.set(true)));
       if (INSTALL_LINE) console.log('[kratu] install sheet line', INSTALL_LINE);
       console.log('[kratu] install sheet shown', this.ios ? '(iPhone steps)' : '(install offer)');
@@ -145,7 +148,7 @@ export class InstallSheet {
   private clear(): void { if (this.timer) { clearTimeout(this.timer); this.timer = null; } }
   private hide(): void {
     this.clear(); if (!this.on()) return;
-    this.up.set(false); setTimeout(() => { if (!this.up()) this.on.set(false); }, 450);
+    this.up.set(false); setTimeout(() => { if (!this.up()) { this.on.set(false); this.upd.installUp.set(false); } }, 450);
   }
   /** Later, the close X, or "I’ve done it" on an iPhone: kept on the phone, not again for 3 days. */
   later(): void { try { localStorage.setItem(K_LATER, String(Date.now())); } catch { /* ignore */ } this.hide(); }

@@ -6,6 +6,7 @@ import { IdentityService } from '../identity/identity.service';
 import { LoaderService } from '../loader/loader.service';
 import { SpeechService } from '../speech/speech.service';
 import { ZoomService } from '../zoom/zoom.service';
+import { AppUpdate } from '../pwa/app-update.service';
 
 /**
  * A child's profile on this phone. Since 22 Nov (Sani: "we don't need enrolment manually, this is based on face now")
@@ -278,7 +279,25 @@ export class FamilyService {
     if (this.account()?.faceOk) this.loader.loadFace();   // from Cache Storage after the first time: ready by the time the camera opens
     await this.loaded;
     if (!(await this.micGranted())) { this.show('mic'); return; }
+    if (this.resume()) return;
     this.afterSetup();
+  }
+  /**
+   * (Sani 2026-11-25) Reload from the update bar keeps the session: the same child signed in again, straight back to the
+   * screen they were on (the home screen), with no sign-in, no greeting and no loading line. A child no longer on this
+   * phone, or a mark too old, starts as any opening does.
+   */
+  private resume(): boolean {
+    const M = AppUpdate.RESUME; if (!M) return false;
+    const ROUTE = /^\/home(?:[/?#]|$)/.test(M.route) ? M.route : '/home';
+    const P = M.guest ? null : this.profiles().find((p) => p.id === M.kid); if (!M.guest && !P) return false;
+    // the same session carried on, not a new one: the ear and door hints already said stay said (signing in clears them)
+    const HINTS: [string, string | null][] = ['kratu_hints', 'kratu_hint_ear', 'kratu_hint_door'].map((k) => { try { return [k, sessionStorage.getItem(k)]; } catch { return [k, null]; } });
+    if (P) { this.signIn(P); this.current.set(P); this.session.known.set(true); this.show(null); } else this.guest();
+    for (const [k, v] of HINTS) try { if (v !== null) sessionStorage.setItem(k, v); } catch { /* ignore */ }
+    if (P) this.router.navigateByUrl(ROUTE);
+    console.log('[kratu] back after the update, same child and screen');
+    return true;
   }
   /** (Sani 2026-11-24) the microphone and camera are needed before anything, guests too: if either is taken away while
    *  the app is open, or while it was in the background, every screen goes back to the permission screen. */

@@ -81,6 +81,11 @@ Scripts are tracked; the weights, the Python env, raw renders and the Hedra key 
   a new version downloads quietly and shows the pill "New version ready · Update · Later" on the children screen only
   (`/perm`, `/gender`); Later hides it until the next check; it never restarts by itself, and the next open starts in the
   new version (app.ts freshCopy). "Get the latest version" sits in the school settings and the family Parent area.
+  The family app has no pill (Sani 25 Nov, design 2a): `apps/family/src/app/update-bar.ts` is a teal bar at the top edge
+  of the family home, shown once the new version is ready; the home eases down under it by a transform (ZoomService.fit
+  lifts that transform while it measures). Reload writes `sessionStorage.kratu_resume` {kid, guest, route, at}, read once
+  and wiped at the next start, valid 60 s: `FamilyService.resume()` signs the same child in and goes straight back to
+  home, no face, greeting or loading line. Nothing new is stored. The update bar wins over the install sheet.
   `scripts/stamp.mjs` writes `public/version.json` (ignored) at every build.
 - `src/app/core` (audio bus, clips, words, session, flow, speech, identity, loader, zoom), `shared` (Laila, chrome, lesson
   base + topic-lesson base, topic menu, results grid, allo button, abc keyboard, subs, icons), `features` (loader,

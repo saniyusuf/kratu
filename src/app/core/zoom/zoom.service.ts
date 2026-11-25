@@ -120,7 +120,18 @@ export class ZoomService {
     };
   }
   static small(): boolean { return (matchMedia('(pointer: coarse)').matches || matchMedia('(any-pointer: coarse)').matches || navigator.maxTouchPoints > 0) && Math.min(screen.width, screen.height) <= 640; }
+  /**
+   * (Sani 2026-11-25, the update bar 2a) while the family's update bar is down, the screen is drawn moved down and a
+   * little smaller (a transform on #app). The fit must measure the screen as laid out, not as drawn, or it shrinks the
+   * home to make room the transform already made: the transform is lifted for the measurement only, never painted.
+   */
   fit(force = true): void {
+    const C = document.documentElement.classList, LIFT = C.contains('fam-updbar');
+    if (LIFT) C.add('fub-still', 'fub-measure');
+    try { this.fitNow(force); }
+    finally { if (LIFT) { C.remove('fub-measure'); void document.body.offsetHeight; requestAnimationFrame(() => C.remove('fub-still')); } }
+  }
+  private fitNow(force: boolean): void {
     const root = document.documentElement.style, prev = this.z();
     // held upright, the whole app is drawn turned a quarter (app.css), so the landscape screen's width is the window's height
     const [W, H] = ZoomService.upright() ? [innerHeight, innerWidth] : [innerWidth, innerHeight];

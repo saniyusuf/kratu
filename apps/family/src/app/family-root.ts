@@ -4,6 +4,7 @@ import { App } from '@kratu/app/app';
 import { ZoomService } from '@kratu/app/core/zoom/zoom.service';
 import { FamilyShell } from './family-shell';
 import { InstallSheet } from './install-sheet';
+import { UpdateBar } from './update-bar';
 
 /**
  * The family app (Sani 2026-11-18): the whole Kratu app (loader, lessons, games, settings) shared from the main app,
@@ -11,8 +12,8 @@ import { InstallSheet } from './install-sheet';
  */
 @Component({
   selector: 'family-root',
-  imports: [App, FamilyShell, InstallSheet],
-  template: `<app-root /><app-family-shell /><app-install-sheet />`,
+  imports: [App, FamilyShell, InstallSheet, UpdateBar],
+  template: `<app-root /><app-family-shell /><app-install-sheet /><app-update-bar />`,
   styles: [`:host{display:contents}`],
 })
 export class FamilyRoot {
