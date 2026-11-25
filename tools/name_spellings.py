@@ -12,6 +12,10 @@ from nigerian_names import ENGLISH_M, ENGLISH_F
 NAMES = R / "apps/family/public/names/phrases.json"
 OUT = R / "apps/family/public/names/spellings.json"
 
+# different names that the app's sound key folds into one (Sani 2026-11-25): never set from PlotWeaver alone; only
+# when the phone's offline check heard one of them
+DISTINCT = [["iro", "yero"]]
+
 # heard by ear or expected from Hausa spelling habits; checked against clashes like the rest
 HAND = {
     # (Sani 2026-11-25) Hausa speakers say English P as F, so F and P are one sound; the ending decides:
@@ -36,6 +40,12 @@ HAND = {
     "comfort": ["komfot", "kamfat", "komfat"],
     "victor": ["biktor", "bikta", "fikta"],
     "victoria": ["biktoriya", "biktoria"],
+    "godspower": ["godsfawa", "gadfawa", "gospawa", "godifawa", "gotsfawa"],
+    "victory": ["biktori", "biktoriy", "fiktori"],
+    "purity": ["fiyoriti", "furiti", "fyuriti"],
+    "testimony": ["tastimoni", "tesmoni", "tastamoni"],
+    "beauty": ["biyuti", "byuti", "buti"],
+    "destiny": ["dastini", "distani", "dastine"],
 }
 
 def sound_key(t):
@@ -77,11 +87,15 @@ def main():
             if not sk or sk == own or len(sk) < 2: continue
             by_sound.setdefault(sk, set()).add(k)
     table, dropped, DROPS = {}, 0, []
+    hand = {}   # a spelling written by hand wins a clash with one made by the rules
+    for k, L in HAND.items():
+        for x in L: hand.setdefault(sound_key(x), set()).add(k)
     for sk, ks in sorted(by_sound.items()):
+        if len(ks) > 1 and len(hand.get(sk, set()) & ks) == 1: ks = hand[sk] & ks
         if len(ks) != 1 or sk in BANK_SOUND:   # two names, or another bank name's own sound
             dropped += 1; DROPS.append((sk, sorted(ks), sorted(BANK_SOUND.get(sk, [])))); continue
         table[sk] = next(iter(ks))
-    OUT.write_text(json.dumps({"note": "Sani 2026-11-25: how PlotWeaver may write an English or Christian bank name in Hausa spelling, by sound key (as the app folds letters) -> bank name. Built by tools/name_spellings.py; checked before the closest-name match.", "spellings": table}, indent=0, sort_keys=True) + "\n")
+    OUT.write_text(json.dumps({"note": "Sani 2026-11-25: how PlotWeaver may write an English or Christian bank name in Hausa spelling, by sound key (as the app folds letters) -> bank name. Built by tools/name_spellings.py; checked before the closest-name match.", "spellings": table, "distinct": {sound_key(g[0]): g for g in DISTINCT}}, indent=0, sort_keys=True) + "\n")
     if "-v" in sys.argv:
         for sk, ks, own in DROPS: print("  dropped", sk, "from", "/".join(ks), ("= the bank's own " + "/".join(own)) if own else "")
     print(f"{len(english)} English/Christian bank names, {len(table)} spellings kept, {dropped} dropped (clash)")

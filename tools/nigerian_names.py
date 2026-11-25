@@ -73,6 +73,7 @@ Clement Collins Desmond Dennis Edwin Elvis Eric Ernest Eugene Evans Harrison Hen
 Lawrence Leonard Martin Maxwell Michael Nelson Oliver Oscar Patrick Paul Raymond Reginald Ronald Rufus Silas Sylvester Tony
 Valentine Wilson Alexander Albert Alfred Ben Brian Bright Cyril Derek Dominic Douglas Edmund Felix Hope Ifeanyi Ivan Jerome
 Joel Joe Jude Julius Kenny Leo Marcus Mike Nicholas Obed Owen Ryan Sam Scott Smart Ted Tim Tom Walter Zachary Zion
+Divine Marvellous Testimony Prosper Blessed Victory Destiny Godspower Justice Ambrose Cornelius Ebenezer Fortune
 """.split()
 
 ENGLISH_F = """
@@ -83,6 +84,7 @@ Irene Isabella Lilian Linda Lucy Margaret Monica Nancy Patricia Pauline Phoebe R
 Theresa Vanessa Veronica Vivian Angela Anna Annabel Beatrice Bridget Caroline Catherine Cecilia Chloe Clara Dora Edith Ella
 Emily Emma Evelyn Felicia Frances Grace Harriet Ivy Jacinta Kate Laura Lilian Lois Lovely Mabel Mariam Matilda Maureen Mildred
 Mirabel Miracle Nora Olivia Pamela Pearl Princess Queen Regina Rita Roseline Sophia Success Tabitha Tracy Ursula Vera Winifred
+Happiness Purity Treasure Agnes Christabel Angel Doris Ann Keziah Godiya Kauna Rejoice Endurance Loveth Kindness Beauty
 """.split()
 
 GROUPS = (("m", NORTH_M), ("f", NORTH_F), ("m", YORUBA_M), ("f", YORUBA_F), ("m", IGBO_M), ("f", IGBO_F),

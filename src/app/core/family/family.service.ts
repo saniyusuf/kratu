@@ -111,7 +111,7 @@ export class FamilyService {
     if (!this.namesData) {
       const GET = (u: string) => fetch(u).then((r) => (r.ok ? r.json() : null)).catch(() => null);
       // (Sani 2026-11-25) how PlotWeaver may write an English bank name in Hausa spelling, by sound key (spellings.json)
-      this.namesData = Promise.all([GET('names/phrases.json'), GET('names/spellings.json')]).then(([D, S]) => (D ? { ...D, spell: S?.spellings || {} } : null));
+      this.namesData = Promise.all([GET('names/phrases.json'), GET('names/spellings.json')]).then(([D, S]) => (D ? { ...D, spell: S?.spellings || {}, distinct: S?.distinct || {} } : null));
     }
     return this.namesData;
   }
@@ -425,7 +425,7 @@ export class FamilyService {
 }
 
 const K_NAME_ONLINE = 'kratu_fam_name_online';
-type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]>; spell: Record<string, string> };
+type NamesData = { phrases: Record<string, string[]>; file: Record<string, string>; variants: Record<string, string[]>; spell: Record<string, string>; distinct: Record<string, string[]> };
 /** The online name check (Sani 2026-11-24: PlotWeaver, through our own /api/name). Off: nothing leaves the phone. */
 const NAME_ONLINE = true;
 /** (Sani 2026-11-24) the name step reads a child's clip at most this many times while no name is set. */
@@ -505,6 +505,9 @@ function onlineName(text: string, heard: string, D: NamesData): string | null {
   if (SPELT && D.file[SPELT]) { console.log('[kratu] name step: PlotWeaver spelling found in the table'); return SPELT; }
   const { key: KEY, dist: DIST } = nearest(w.join(''), Object.keys(D.file));
   if (!KEY) return null;
+  // two different names with one sound (Iro, Yero): only the offline check can choose between them
+  const TWINS = D.distinct[soundKey(KEY)];
+  if (TWINS) { const HIT = (D.phrases[heard] || []).filter((x) => TWINS.includes(x)); const PICK = HIT.length === 1 ? HIT[0] : null; console.log('[kratu] name step: two names with one sound,', PICK ? 'offline chose' : 'no name'); return PICK; }
   const OFFLINE_SAME = (D.phrases[heard] || []).some((x) => sameName(KEY, x, D));
   // 2) a short name may be one sound off, only when the phone's own offline check names the same child
   //    (the offline check heard ONE bank name, a short one, and PlotWeaver's words are within one sound of it)

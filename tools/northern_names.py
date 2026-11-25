@@ -52,6 +52,7 @@ Lawan Madu Mai Mala Modu Mustafa Sarki Shettima Tijjani Usman Wakil Yerima Zanna
 Adamu Alhaji Audu Yohanna Yakubu Danjuma Ishaya Iliya Istifanus Bitrus Yunana Musa Ibrahim Danladi Dogo Gambo Tanko Bature Sunday Monday
 Friday Saturday Bulus Filibus Markus Luka Yakubu Danbaba Emmanuel Samuel Daniel Joseph Jonathan Ezekiel Gideon Habila Habakkuk
 Ndagi Ndako Baba Kolo Manko Mohammed Idris Umar Usman Aliyu Isah Abubakar Tsado Etsu Legbo Shaba Ndakotsu Sheshi Yisa Kolo Ndanusa
+Talle Iro Ardo Yero Abu Juma'a Dan-Asabe
 """.split()
 
 FEMALE = """
@@ -89,6 +90,7 @@ Simbiat Sitta Suwaibat Tabitha Tabitu Tanimu Tawakalt Tawakaltu Tayyiba Tayyibat
 Yasmina Ya'u Zahrah Zainaba Zakiyah Zara'u Zarau Zeenat Zinat Zulaihatu Zulfa Zulfat Zuwaira Zuwairah Yagana Falmata Fanna Fantami Kaka
 Yakura Yagana Hadiza Aisami Kellu Gana Falta Zara Yagana Ashe Ashee Hasseina Hussaina Mamma Mama Amsa Amina Ashe Kaka Fanta Fantah Fana
 Nana Asha Lami Lamin Saba Sabo Sadau Sa'a Saa Gaji Gimba Gizo Kandi Kwace Laminu Ladi Delu Hafsat Rahmatu Suwaiba Ummi Yar'adua Yaya
+Hajo Inno Amarya Bube Bebi
 """.split()
 
 def clean(n):

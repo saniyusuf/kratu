@@ -11071,6 +11071,170 @@
   "line_f_start": {
    "type": "line",
    "src": "f_start"
+  },
+  "name_talle": {
+   "type": "name",
+   "src": "talle"
+  },
+  "name_iro": {
+   "type": "name",
+   "src": "iro"
+  },
+  "name_ardo": {
+   "type": "name",
+   "src": "ardo"
+  },
+  "name_yero": {
+   "type": "name",
+   "src": "yero"
+  },
+  "name_hajo": {
+   "type": "name",
+   "src": "hajo"
+  },
+  "name_inno": {
+   "type": "name",
+   "src": "inno"
+  },
+  "name_amarya": {
+   "type": "name",
+   "src": "amarya"
+  },
+  "name_abu": {
+   "type": "name",
+   "src": "abu"
+  },
+  "name_bube": {
+   "type": "name",
+   "src": "bube"
+  },
+  "name_jumaa": {
+   "type": "name",
+   "src": "juma'a"
+  },
+  "name_dan_asabe": {
+   "type": "name",
+   "src": "dan-asabe"
+  },
+  "name_bebi": {
+   "type": "name",
+   "src": "bebi"
+  },
+  "name_happiness": {
+   "type": "name",
+   "src": "happiness"
+  },
+  "name_divine": {
+   "type": "name",
+   "src": "divine"
+  },
+  "name_marvellous": {
+   "type": "name",
+   "src": "marvellous"
+  },
+  "name_purity": {
+   "type": "name",
+   "src": "purity"
+  },
+  "name_treasure": {
+   "type": "name",
+   "src": "treasure"
+  },
+  "name_testimony": {
+   "type": "name",
+   "src": "testimony"
+  },
+  "name_agnes": {
+   "type": "name",
+   "src": "agnes"
+  },
+  "name_christabel": {
+   "type": "name",
+   "src": "christabel"
+  },
+  "name_angel": {
+   "type": "name",
+   "src": "angel"
+  },
+  "name_doris": {
+   "type": "name",
+   "src": "doris"
+  },
+  "name_ann": {
+   "type": "name",
+   "src": "ann"
+  },
+  "name_keziah": {
+   "type": "name",
+   "src": "keziah"
+  },
+  "name_godiya": {
+   "type": "name",
+   "src": "godiya"
+  },
+  "name_kauna": {
+   "type": "name",
+   "src": "kauna"
+  },
+  "name_rejoice": {
+   "type": "name",
+   "src": "rejoice"
+  },
+  "name_endurance": {
+   "type": "name",
+   "src": "endurance"
+  },
+  "name_prosper": {
+   "type": "name",
+   "src": "prosper"
+  },
+  "name_loveth": {
+   "type": "name",
+   "src": "loveth"
+  },
+  "name_kindness": {
+   "type": "name",
+   "src": "kindness"
+  },
+  "name_beauty": {
+   "type": "name",
+   "src": "beauty"
+  },
+  "name_blessed": {
+   "type": "name",
+   "src": "blessed"
+  },
+  "name_victory": {
+   "type": "name",
+   "src": "victory"
+  },
+  "name_destiny": {
+   "type": "name",
+   "src": "destiny"
+  },
+  "name_godspower": {
+   "type": "name",
+   "src": "godspower"
+  },
+  "name_justice": {
+   "type": "name",
+   "src": "justice"
+  },
+  "name_ambrose": {
+   "type": "name",
+   "src": "ambrose"
+  },
+  "name_cornelius": {
+   "type": "name",
+   "src": "cornelius"
+  },
+  "name_ebenezer": {
+   "type": "name",
+   "src": "ebenezer"
+  },
+  "name_fortune": {
+   "type": "name",
+   "src": "fortune"
   }
  }
 }
