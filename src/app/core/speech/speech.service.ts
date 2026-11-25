@@ -59,8 +59,6 @@ const QUICK = 200;
  * The offline recogniser (Vosk) behind one door. Every lesson calls hear(): the microphone opens, the child speaks,
  * the answer comes back as the word or the letters, and the mic closes. Laila is silent while it is open.
  */
-/** An iPhone or iPad (iPadOS says it is a Mac, but has touch). */
-const IOS = typeof navigator !== 'undefined' && (/iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
 @Injectable({ providedIn: 'root' })
 export class SpeechService {
@@ -261,11 +259,6 @@ export class SpeechService {
     return { value: v, raw: v };
   }
   private closeMic(): void {
-    // (Sani 2026-11-25, an iPhone recording: Laila's lines came in short bursts, cut every second or so) on an iPhone or
-    // iPad an open microphone puts the whole page's sound into call mode, which ducks and chops every clip that plays.
-    // There the microphone is given back after each answer and opened again for the next; elsewhere it stays open, so
-    // the second before a child's answer is still heard (the preroll).
-    if (IOS) queueMicrotask(() => { if (!this.feeding && !this.rec) this.resetAudio(); });
     this.feeding = false; try { this.rec?.remove(); } catch { /* ignore */ } this.rec = null; this.peak = 0;
     this.listening.set(false); this.preparing.set(false); this.amp.set(0); this.bus.setMic(false);
   }
