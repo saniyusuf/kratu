@@ -4,6 +4,7 @@ import { afterPaint } from '../../shared/paint';
 import { Door, Ear } from '../../shared/chrome/chrome';
 import { LailaButton } from '../../shared/laila/laila-button';
 import { AlloButton } from '../../shared/lesson/allo-button';
+import { FAMILY } from '../../core/edition';
 import { Item, LessonBase, Stopped } from '../../shared/lesson/lesson-base';
 import { ResultsGrid } from '../../shared/lesson/results-grid';
 import { firstHints, joy, matchWord, retryPic, shakeNo, shuffle, wait } from '../../shared/lesson/helpers';
@@ -34,6 +35,8 @@ const STAGES = [
   <app-allo-btn #dk (pressed)="pressDk()" />
 </div>`,
 })
+/** (Sani 2026-11-25, family) the pointing hand shows only while Laila says "danna Laila" (s_o_turn), above her, pointing
+ *  down; never on the slate or during the test's explanation, and no hand under Laila (app.css, html.fam-build). */
 export class ObjLessonScreen extends LessonBase implements OnInit {
   protected readonly retryPic = retryPic;
   private readonly route = inject(ActivatedRoute);
@@ -142,8 +145,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
       const skip = this.arm(it, true); await this.say(it);
       if (this.awaiting) { this.awaiting = false; this.pend = null; this.armed.set(false); } else { await skip; await this.askSay(it, false); await wait(400); continue; }
       if (first && i === 0) {
-        this.nohand.set(true); this.spotter.spot(this.lb().head(), 'above'); await this.play(this.bus.gk('s_o_turn')); await this.play('app_yn_hint_no');
-        this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false);
+        this.nohand.set(true); this.spotter.spot(this.lb().head(), 'above'); await this.play(this.bus.gk('s_o_turn')); if (FAMILY) this.spotter.unspot(); await this.play('app_yn_hint_no');
+        if (!FAMILY) this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false);
         await firstHints(this.bus, this.session, this.spotter, this.s, null);
       }
       await this.askSay(it, !(first && i === 0)); await wait(400);
@@ -151,8 +154,8 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   }
   private async quiz(set: Item[]): Promise<Item[]> {
     this.inTest = true; const order = shuffle(set), misses: Item[] = []; this.markActive(set); this.clearMarks(set); this.eye.set(this.catName() + ' · ƙaramin jarrabawa · ' + set.length);
-    const skip = this.arm(set[0], true); this.nohand.set(true); this.spotter.spot(this.lb().head(), 'above');
-    const explain = (async () => { await this.play(this.bus.gk('s_o_test2')); this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false); await this.play(this.bus.gk('s_o_go')); })();
+    const skip = this.arm(set[0], true); this.nohand.set(true); if (!FAMILY) this.spotter.spot(this.lb().head(), 'above');
+    const explain = (async () => { await this.play(this.bus.gk('s_o_test2')); if (!FAMILY) this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false); await this.play(this.bus.gk('s_o_go')); })();
     await Promise.race([explain, skip]); if (this.awaiting) { this.awaiting = false; this.pend = null; this.armed.set(false); } this.spotter.unspot(); this.nohand.set(false);
     for (let i = 0; i < order.length; i++) {
       this.check(); const it = order[i]; this.showPic(it); const dot = set[i]; this.onItem.set(dot.k); let tries = 0;
@@ -193,7 +196,7 @@ export class ObjLessonScreen extends LessonBase implements OnInit {
   private async practice(set: Item[]): Promise<void> { for (const it of set) { this.check(); await this.askSay(it, true); await wait(400); } }
   private async test(list: Item[]): Promise<void> {
     this.inTest = true; this.right = []; this.wrongs = []; this.markActive(list); this.clearMarks(list); this.eye.set(this.catName() + (this.big ? '' : ' · ƙaramin jarrabawa') + ' · ' + list.length); const order = shuffle(list);
-    this.nohand.set(true); this.spotter.spot(this.lb().head(), 'above'); await this.play(this.bus.gk(this.big ? 's_n_big' : 's_o_test2')); this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false); await this.play(this.bus.gk('s_o_go'));
+    this.nohand.set(true); if (!FAMILY) this.spotter.spot(this.lb().head(), 'above'); await this.play(this.bus.gk(this.big ? 's_n_big' : 's_o_test2')); if (!FAMILY) this.spotter.spot(this.dk().slate(), 'above'); await this.play('app_press_allo'); this.spotter.unspot(); this.nohand.set(false); await this.play(this.bus.gk('s_o_go'));
     for (let i = 0; i < order.length; i++) {
       this.check(); const it = order[i], dot = list[i]; let tries = 0; this.showPic(it); this.onItem.set(dot.k);
       this.speak.set(true); await this.seq(['app_wannan', this.ha(it)]); this.speak.set(false);
