@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NavigationEnd, ResolveEnd, Router } from '@angular/router';
 import { App } from '@kratu/app/app';
+import { ZoomService } from '@kratu/app/core/zoom/zoom.service';
 import { FamilyShell } from './family-shell';
 
 /**
@@ -21,8 +22,9 @@ export class FamilyRoot {
    */
   static readonly GAMES = /^\/(wasanni(?:\/[^/?#]+)?|fashe|nemo|haruffa\/gwada)(?:[/?#]|$)/;   // the board too (Sani 2026-11-23: landscape only)
   constructor() {
-    const set = (url: string) => document.documentElement.classList.toggle('fam-up', !FamilyRoot.GAMES.test(url));
+    // (Sani 2026-11-25) the screen lock follows: landscape in a game, free everywhere else (ZoomService.orient)
     document.documentElement.classList.add('fam-build');   // the family build's own look on shared screens (app.css), e.g. no emoji, the camera's border
+    const set = (url: string) => { document.documentElement.classList.toggle('fam-up', !FamilyRoot.GAMES.test(url)); ZoomService.orient(); };
     const router = inject(Router);
     set(location.pathname);
     // before the new screen is drawn (ResolveEnd), so its fit is measured the right way round

@@ -82,7 +82,7 @@ export class App implements OnInit {
     this.router.events.subscribe((e) => { if (e instanceof NavigationStart) document.querySelectorAll('body > .float').forEach((h) => h.remove()); });
     const app = matchMedia('(display-mode: fullscreen), (display-mode: standalone)');
     console.log('[kratu] screen', 'small', ZoomService.small(), 'coarse', matchMedia('(pointer: coarse)').matches, 'anycoarse', matchMedia('(any-pointer: coarse)').matches, 'fsEnabled', document.fullscreenEnabled, 'app', app.matches);
-    if (!ZoomService.small()) document.addEventListener('click', () => { try { (screen.orientation as any)?.lock?.('landscape').catch(() => undefined); } catch { /* ignore */ } }, { once: true, capture: true });
+    if (!ZoomService.small()) document.addEventListener('click', () => ZoomService.orient(), { once: true, capture: true });
     {
       // pointerup, not click: a click's pointerType is not reliable on every Android Chrome, and the 7-inch tablet of
       // 16 Nov stayed in the browser with its bars (1006×427) the whole session
@@ -93,7 +93,7 @@ export class App implements OnInit {
         if (app.matches || document.fullscreenElement || (!ZoomService.small() && (e as PointerEvent).pointerType !== 'touch')) return;
         if (!document.fullscreenEnabled || !document.documentElement.requestFullscreen) { console.warn('[kratu] full screen not available'); return; }
         document.documentElement.requestFullscreen({ navigationUI: 'hide' })
-          .then(() => { console.log('[kratu] full screen', innerWidth + 'x' + innerHeight); return (screen.orientation as any)?.lock?.('landscape'); })
+          .then(() => { console.log('[kratu] full screen', innerWidth + 'x' + innerHeight); ZoomService.orient(); })
           .catch((err) => console.warn('[kratu] full screen refused', String(err)));
       };
       for (const ev of ['pointerup', 'touchend', 'click']) document.addEventListener(ev, full, { capture: true });

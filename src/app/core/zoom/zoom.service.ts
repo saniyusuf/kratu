@@ -93,6 +93,17 @@ export class ZoomService {
   /** Held upright: the app is drawn turned a quarter (Sani 2026-11-17: always landscape, never a portrait layout). */
   static upright(): boolean { return innerHeight > innerWidth && !ZoomService.free(); }
   /** The family build draws its own screens and every lesson upright too (Sani 2026-11-18): only its games stay landscape. */
+  /** (Sani 2026-11-25: "the signup is not on portrait") the screen lock that goes with full screen. The school app is
+   *  always landscape. The family build locks landscape only while a game is on screen and lets the phone turn freely
+   *  everywhere else (its setup, menus and lessons are upright on a phone). Android only honours a lock in full screen. */
+  static orient(): void {
+    const O = (screen as any).orientation; if (!O) return;
+    const FAM = document.documentElement.classList.contains('fam-build'), GAME = !ZoomService.free();
+    try {
+      if (!FAM || GAME) { if (document.fullscreenElement || !FAM) O.lock?.('landscape')?.catch?.(() => undefined); }
+      else O.unlock?.();
+    } catch { /* not supported */ }
+  }
   static free(): boolean { const c = document.documentElement.classList; return c.contains('fam-on') || c.contains('fam-up'); }
   /** An element's box in the app's own landscape frame: when the app is drawn turned, the screen box is turned back. */
   static rect(el: Element): { top: number; bottom: number; left: number; right: number; width: number; height: number } { return el.getBoundingClientRect(); }

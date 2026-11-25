@@ -5,6 +5,7 @@ import { SessionService, Gender } from '../state/session.service';
 import { IdentityService } from '../identity/identity.service';
 import { LoaderService } from '../loader/loader.service';
 import { SpeechService } from '../speech/speech.service';
+import { ZoomService } from '../zoom/zoom.service';
 
 /**
  * A child's profile on this phone. Since 22 Nov (Sani: "we don't need enrolment manually, this is based on face now")
@@ -421,6 +422,7 @@ export class FamilyService {
   show(s: FamScreen): void {
     this.bus.stopAll(); this.screen.set(s);
     document.documentElement.classList.toggle('fam-on', !!s);
+    ZoomService.orient();   // (Sani 2026-11-25) the family screens follow the phone; only a game keeps it landscape
   }
 }
 
