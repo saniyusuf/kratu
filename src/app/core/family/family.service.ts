@@ -469,7 +469,8 @@ function dropSunana(text: string): string {
 /** A rough Hausa/English sound key (the names test's free.py): letters folded to how they sound, doubles and h after consonants dropped. */
 function soundKey(text: string): string {
   let s = text.toLowerCase().replace(/'/g, '');
-  const FOLDS: [string, string][] = [['ph', 'f'], ['ck', 'k'], ['q', 'k'], ['c', 'k'], ['x', 'ks'], ['z', 's'], ['ee', 'i'], ['ea', 'i'], ['oo', 'u'], ['ou', 'u'], ['y', 'i'], ['w', 'u'], ['e', 'i'], ['o', 'u'], ['dh', 'd'], ['th', 't'], ['kh', 'k'], ['gh', 'g'], ['sh', 'S'], ['ch', 'S'], ['j', 'J'], ['ts', 'S']];
+  // (Sani 2026-11-25) Hausa speakers say English P as F: one sound ("Feis" is Peace)
+  const FOLDS: [string, string][] = [['ph', 'f'], ['p', 'f'], ['ck', 'k'], ['q', 'k'], ['c', 'k'], ['x', 'ks'], ['z', 's'], ['ee', 'i'], ['ea', 'i'], ['oo', 'u'], ['ou', 'u'], ['y', 'i'], ['w', 'u'], ['e', 'i'], ['o', 'u'], ['dh', 'd'], ['th', 't'], ['kh', 'k'], ['gh', 'g'], ['sh', 'S'], ['ch', 'S'], ['j', 'J'], ['ts', 'S']];
   for (const [A, B] of FOLDS) s = s.split(A).join(B);
   return s.replace(/([bdfgklmnprst])h/g, '$1').replace(/[^a-zSJ]/g, '').replace(/(.)\1+/g, '$1');
 }
