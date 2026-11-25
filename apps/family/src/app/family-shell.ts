@@ -93,8 +93,9 @@ export class FamilyShell implements OnDestroy {
   readonly code = signal('');
   readonly busy = signal(false);
   readonly codeMsg = signal('');
-  /** A full name: at least two words (Sani 2026-11-22: "name too, full name"). */
-  readonly nameOk = computed(() => this.fullName().trim().split(/\s+/).filter(Boolean).length >= 2);
+  /** The parent's name: one name is enough (Sani 2026-11-25: "the full name can be one name, doesn't have to be 2"),
+   *  as long as it has at least two letters. */
+  readonly nameOk = computed(() => (this.fullName().match(/\p{L}/gu) || []).length >= 2);
   readonly emailOk = computed(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email().trim()));
   readonly phoneOk = computed(() => this.phone().replace(/\D/g, '').length >= 10);
 
