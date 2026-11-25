@@ -16,7 +16,7 @@ import { NavigationEnd, Router } from '@angular/router';
 /** TEMPORARY tester entries (Sani 2026-11-23) in the settings gear of the boy/girl and face screens: "Enter as Musa" and
  *  "Enter as Aisha" sign in as the sample children with no camera. Set to false (this one line) before release; the gear
  *  itself (Refresh, Parent area) stays. */
-const TESTER = true;
+const TESTER = false;
 /** How long the success moment after Register and after the code stays (Sani 2026-11-24: small and light). */
 const CHEER_MS = 1700;
 
