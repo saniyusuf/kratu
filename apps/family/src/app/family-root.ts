@@ -3,6 +3,7 @@ import { NavigationEnd, ResolveEnd, Router } from '@angular/router';
 import { App } from '@kratu/app/app';
 import { ZoomService } from '@kratu/app/core/zoom/zoom.service';
 import { FamilyShell } from './family-shell';
+import { InstallSheet } from './install-sheet';
 
 /**
  * The family app (Sani 2026-11-18): the whole Kratu app (loader, lessons, games, settings) shared from the main app,
@@ -10,8 +11,8 @@ import { FamilyShell } from './family-shell';
  */
 @Component({
   selector: 'family-root',
-  imports: [App, FamilyShell],
-  template: `<app-root /><app-family-shell />`,
+  imports: [App, FamilyShell, InstallSheet],
+  template: `<app-root /><app-family-shell /><app-install-sheet />`,
   styles: [`:host{display:contents}`],
 })
 export class FamilyRoot {
