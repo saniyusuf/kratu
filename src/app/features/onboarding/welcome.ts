@@ -40,6 +40,11 @@ const ARC: Record<string, { x: number; y: number; r: number; dir: string }> = {
 };
 const ARC_ORDER = ['letters', 'read', 'spell', 'numbers', 'things'];
 
+/** Family first day (Sani 2026-11-25): how long the welcome waits for the new child's name before "Sunana Laila",
+ *  and, if it was not ready then, how long it may still wait after that line (the 5 s rule in FamilyService caps both). */
+const FIRST_NAME_LOOK_MS = 1200;
+const NAME_LATE_MS = 5000;
+
 /** The first day: who she is, what the two of you will learn, and what to press. Once in a child's life. */
 const INTRO: Beat[] = [
   { key: 's_w_name',     pose: 'wave' },
@@ -184,7 +189,21 @@ export class WelcomeScreen implements OnInit, OnDestroy {
   async run(): Promise<void> {
     const my = ++this.seq;
     this.talking.set(true);
+    // (Sani 2026-11-25) family, first day: when the name step found the child's name, Laila greets them by it, before
+    // "Sunana Laila" if it is ready in a moment, else just after it; no name by then, the welcome as it was
+    const FAM = FAMILY && !this.session.known() ? this.injector.get(FamilyService) : null;
+    let named = !FAM;
     for (let i = 0; i < this.script.length; i++) {
+      if (FAM && !named && i <= 1) {
+        const SRC = await FAM.firstNameSound(i === 0 ? FIRST_NAME_LOOK_MS : NAME_LATE_MS);
+        if (my !== this.seq) return;
+        if (SRC) {
+          named = true; this.beat.set(0);
+          const OK = await this.bus.play('s_sannu'); if (my !== this.seq) return;
+          if (!OK) break;                      // autoplay refused: leave the cue on screen
+          await this.bus.playRaw(SRC); if (my !== this.seq) return;
+        } else if (i === 1) named = true;
+      }
       this.beat.set(i);
       const b = this.script[i], ok = await this.bus.play(b.plain ? b.key : this.bus.gk(b.key));
       if (my !== this.seq) return;          // she was pressed, or the ear started it again

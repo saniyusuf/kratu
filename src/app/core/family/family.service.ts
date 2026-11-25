@@ -366,12 +366,26 @@ export class FamilyService {
     this.signIn(p); this.current.set(p);
     // in the background: set only when sure, never holds the child up; a known child with no name is tried again
     // only if PlotWeaver never answered for their clip (Sani 2026-11-24)
-    if (isNew) this.nameStep(p.id); else this.nameStep(p.id, true);
+    if (isNew) {
+      // (Sani 2026-11-25) a name worked out on the first try is said in the first-day welcome: the name step, then its
+      // sound (bank clip, else PlotWeaver's), all within NAME_SOUND_WAIT_MS of this moment; later than that, no name
+      const ID = p.id, UNTIL = Date.now() + NAME_SOUND_WAIT_MS;
+      const SOUND = this.nameStep(ID).then(() => this.nameSound(ID, Math.max(0, UNTIL - Date.now()))).catch(() => null);
+      this.firstHello = { id: ID, until: UNTIL, sound: SOUND };
+    } else { this.firstHello = null; this.nameStep(p.id, true); }
     // a known child: "Sannu", then the name when its sound is ready within NAME_SOUND_WAIT_MS (the bank clip, else
     // PlotWeaver's, made once); otherwise just "Sannu". Never the child's own recording (Sani 2026-11-24).
     if (!isNew) { const ID = p.id; this.show(null); this.nameSound(ID).then(async (SRC) => { if ((await this.bus.play('s_sannu')) && SRC) await this.bus.playRaw(SRC); this.session.known.set(true); this.router.navigate(['/welcome']); }); return; }
     // a new child meets Laila (her first-day welcome), a known one hears her welcome back (Sani 2026-11-22: no animal step)
     this.session.known.set(!isNew); this.show(null); this.router.navigate(['/welcome']);
+  }
+  private firstHello: { id: string; until: number; sound: Promise<string | null> } | null = null;
+  /** The new child's name sound for the first-day welcome (welcome.ts), waiting at most `waitMs` and never past
+   *  NAME_SOUND_WAIT_MS after sign-up; null when there is no name by then. */
+  firstNameSound(waitMs: number): Promise<string | null> {
+    const F = this.firstHello; if (!F || F.id !== this.current()?.id) return Promise.resolve(null);
+    const LEFT = Math.min(waitMs, F.until - Date.now()); if (LEFT <= 0) return Promise.race([F.sound, Promise.resolve(null)]);
+    return Promise.race([F.sound, new Promise<null>((r) => setTimeout(() => r(null), LEFT))]);
   }
   /** Manage profiles: the parent's code first (Sani 2026-11-21). */
   manage(): void { this.show('code'); }
