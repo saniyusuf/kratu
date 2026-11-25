@@ -32,6 +32,7 @@ const INSTALL_LINE: string | null = null;
   <div class="isd-dim" (click)="later()"></div>
   <div class="isd-sheet">
     <div class="isd-grab" aria-hidden="true"></div>
+    <button class="isd-x" type="button" aria-label="Close" (click)="later()"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></svg></i></button>
     <div class="isd-head"><div class="isd-k" [innerHTML]="K"></div><h2 id="isd-h">Add Kratu to your home screen</h2></div>
     @if (ios) {<p class="isd-p">On iPhone, Kratu goes on the home screen from Safari’s Share menu.</p>}
     @else {<p class="isd-p">Put Kratu on your home screen and open it from its own icon.</p>}
@@ -62,7 +63,12 @@ const INSTALL_LINE: string | null = null;
 .isd-sheet{position:relative;background:#FFFCF4;border-radius:26px 26px 0 0;box-shadow:0 -8px 30px rgba(40,28,10,.2);padding:14px 20px calc(150px + env(safe-area-inset-bottom,0px));width:100%;max-width:520px;display:grid;gap:14px;transform:translateY(105%);transition:transform .42s cubic-bezier(.2,.8,.2,1);pointer-events:auto}
 .isd.up .isd-sheet{transform:none}
 .isd-grab{width:44px;height:5px;border-radius:3px;background:#E2D3B0;justify-self:center}
-.isd-head{display:flex;gap:14px;align-items:center}
+.isd-head{display:flex;gap:14px;align-items:center;padding-right:40px}
+/* Close (Sani 2026-11-25, pick 3: teal circle): same as Later; 48 px tap square, 34 px circle */
+.isd-x{position:absolute;top:6px;right:8px;width:48px;height:48px;border:0;background:none;padding:0;display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.isd-x i{display:block;box-sizing:border-box;width:34px;height:34px;border-radius:50%;background:#2FAE9E;box-shadow:0 3px 0 #23897C;padding:8px}
+.isd-x svg{display:block;width:100%;height:100%}
+.isd-x:active i{transform:translateY(2px);box-shadow:0 1px 0 #23897C}
 .isd-k{width:52px;height:52px;border-radius:13px;box-shadow:0 6px 18px rgba(80,60,20,.18);flex:none;overflow:hidden}
 .isd-k ::ng-deep svg{width:100%;height:100%;display:block}
 h2{font:800 24px/1.15 var(--disp,'Baloo 2',sans-serif);margin:0;color:#3B2E1E}
@@ -141,7 +147,7 @@ export class InstallSheet {
     this.clear(); if (!this.on()) return;
     this.up.set(false); setTimeout(() => { if (!this.up()) this.on.set(false); }, 450);
   }
-  /** Later, or "I've done it" on an iPhone: kept on the phone, not again for 3 days. */
+  /** Later, the close X, or "I’ve done it" on an iPhone: kept on the phone, not again for 3 days. */
   later(): void { try { localStorage.setItem(K_LATER, String(Date.now())); } catch { /* ignore */ } this.hide(); }
   /** Chrome's own install box. Turned down there counts as Later; accepted, the sheet never comes back. */
   async install(): Promise<void> {
