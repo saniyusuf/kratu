@@ -522,9 +522,9 @@ function onlineName(text: string, heard: string, D: NamesData): string | null {
   if (!OFFLINE_SAME) console.log('[kratu] name step: offline heard otherwise; PlotWeaver alone decides (bank name)');
   return KEY;
 }
-/** The clip as a 16 kHz mono 16-bit WAV, 10 s at most: the one thing the name check sends. */
+/** The clip as a 16 kHz mono 16-bit WAV, 6 s at most (the name server takes up to 200 KB): the one thing the name check sends. */
 function wav16k(pcm: Float32Array): Blob {
-  const N = Math.min(pcm.length, 16000 * 10), B = new DataView(new ArrayBuffer(44 + N * 2));
+  const N = Math.min(pcm.length, 16000 * 6), B = new DataView(new ArrayBuffer(44 + N * 2));
   const STR = (o: number, t: string) => { for (let i = 0; i < t.length; i++) B.setUint8(o + i, t.charCodeAt(i)); };
   STR(0, 'RIFF'); B.setUint32(4, 36 + N * 2, true); STR(8, 'WAVE'); STR(12, 'fmt '); B.setUint32(16, 16, true); B.setUint16(20, 1, true); B.setUint16(22, 1, true);
   B.setUint32(24, 16000, true); B.setUint32(28, 32000, true); B.setUint16(32, 2, true); B.setUint16(34, 16, true); STR(36, 'data'); B.setUint32(40, N * 2, true);

@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "kratu-app"
+  },
+  "targets": {
+    "kratu-app": {
+      "hosting": {
+        "school": [
+          "kratu-app"
+        ],
+        "family": [
+          "kratu-family"
+        ]
+      }
+    }
   }
 }

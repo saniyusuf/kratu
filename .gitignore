@@ -88,3 +88,7 @@ tools/.env.plotweaver
 /public/version.json
 # 1 MB part files of every model (scripts/models.mjs)
 *.parts/
+
+# Firebase Functions local secrets (never committed)
+.secret.local
+functions/.secret.local
